@@ -1,6 +1,11 @@
 import { DefaultTheme } from "styled-components";
 
-const colors = {};
+const colors = {
+  main: "#5200FF",
+  sub1: "#43FF8E",
+  sub2: "#E965FF",
+  sub3: "#0D0E11",
+};
 
 export type ColorsTypes = typeof colors;
 
@@ -13,11 +18,11 @@ interface Font {
 
 function FONT({ weight, size, lineHeight, letterSpacing }: Font): string {
   return `
-    font-family:notosans,
-    font-size : ${size},
-    font-weight : ${weight},
-    line-height : ${lineHeight},
-    letter-spacing : ${letterSpacing}
+    font-family: Pretendard;
+    font-weight : ${weight};
+    font-size : ${size}rem;
+    line-height : ${lineHeight}%;
+    letter-spacing : ${letterSpacing}rem
     `;
 }
 
