@@ -26,12 +26,17 @@ const CategoryListWrapper=styled.section`
 `
 
 const CategoryTextBox=styled.article`
+  display: flex;
+  align-items: center;
 
   width: 30.9rem;
   height: 5rem;
 
   padding-left: 6.396rem;
   margin-bottom: 1.9rem;
+
+  border:0.15rem solid ${({ theme }) => theme.colors.sub1};
+  border-radius: 3.26307rem;
 
 `
 
