@@ -51,11 +51,15 @@ const CategoryContainer=styled.div`
     justify-content: center;
 `
 
-const CategoryWrapper=styled.div`
-    margin-top:3.73rem;
-    
+const CategoryWrapper=styled.div`    
+    display: flex;
+    justify-content: space-between;
+
     position: absolute;
     z-index: 2;
+
+    width: 27.9rem;
+    margin-top:3.73rem;
 `
 
 const ProfileWrapper=styled.div`
