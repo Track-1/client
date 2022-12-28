@@ -1,15 +1,26 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { ToggleIc, Track1Ic } from '../../assets/icon'
 import profileImgSrc from '../../assets/image/profileImg.png'
 
-export default function categoryHeader() {
+export default function CategoryHeader() {
+    const [tracksClicked, setTracksClicked] = useState<boolean>(true)
+
+    function tracksButtonClick(){
+        setTracksClicked(true)
+    }
+
+    function vocalsButtonClick(){
+        setTracksClicked(false)
+    }
+    
   return (
     <>
     <CategoryContainer>
         <CategoryWrapper>
-            <p>Tracks</p>
-            <p>Vocals</p>
+            <TracksButton onClick={tracksButtonClick} tracksClicked={tracksClicked}>Tracks</TracksButton>
+            <VocalsButton onClick={vocalsButtonClick} tracksClicked={tracksClicked}>Vocals</VocalsButton>
         </CategoryWrapper>
     </CategoryContainer>
 
@@ -31,8 +42,6 @@ const HeaderContainer=styled.header`
     justify-content: center;
 
     height: 14.3rem;
-
-    background-color: black;
 `
 
 const HeaderWrapper=styled.div`
@@ -53,13 +62,35 @@ const CategoryContainer=styled.div`
 
 const CategoryWrapper=styled.div`    
     display: flex;
-    justify-content: space-between;
 
     position: absolute;
     z-index: 2;
 
-    width: 27.9rem;
-    margin-top:3.73rem;
+    margin-top:6.65rem;
+
+    ${({ theme }) => theme.fonts.title};
+`
+
+const TracksButton=styled.p<{tracksClicked:boolean}>`
+    border-bottom: 0.15rem solid;
+    border-bottom-color: ${({tracksClicked, theme})=>tracksClicked?(theme.colors.white):(theme.colors.sub3)};
+    padding-bottom: 1rem;
+
+    color:${({ tracksClicked, theme }) => tracksClicked?(theme.colors.white):(theme.colors.gray3)};
+
+    cursor: pointer;
+`
+
+const VocalsButton=styled.p<{tracksClicked:boolean}>`
+    margin-left: 7.368rem;
+
+    border-bottom: 0.15rem solid;
+    border-bottom-color: ${({tracksClicked, theme})=>!tracksClicked?(theme.colors.white):(theme.colors.sub3)};
+    padding-bottom: 1rem;
+
+    color:${({ tracksClicked, theme }) => !tracksClicked?(theme.colors.white):(theme.colors.gray3)};
+
+    cursor: pointer;
 `
 
 const ProfileWrapper=styled.div`

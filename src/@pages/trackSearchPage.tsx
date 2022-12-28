@@ -1,4 +1,4 @@
-import CategoryHeader from "../@components/@common/categoryHeader"
+import CategoryHeader from "../@components/@common/CategoryHeader"
 
 export default function trackSearchPage() {
   return (
