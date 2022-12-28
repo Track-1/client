@@ -26,6 +26,14 @@ const CategoryText=styled.p`
 `
 
 const UploadButton=styled.button`
+  width: 24.6rem;
+  height: 5.2rem;
+
+  border:0.1rem solid ${({ theme }) => theme.colors.main};
+  border-radius: 2.55188rem;
+
   ${({ theme }) => theme.fonts.title};
+  background-color: ${({ theme }) => theme.colors.main};
+  color: ${({ theme }) => theme.colors.white};
 
 `
