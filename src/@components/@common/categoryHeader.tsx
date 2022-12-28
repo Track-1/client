@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { ToggleIcon, Track1Icon, BtnTracks, BtnVocals } from '../../assets/icon'
+import { ToggleIc, Track1Ic, BtnTracksIc, BtnVocalsIc } from '../../assets/icon'
 import profileImgSrc from '../../assets/image/profileImg.png'
 
 export default function categoryHeader() {

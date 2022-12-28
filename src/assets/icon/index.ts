@@ -1,4 +1,4 @@
-export { ReactComponent as Track1Icon } from './trackOneIcon.svg';
-export { ReactComponent as ToggleIcon } from './toggleIcon.svg';
-export { ReactComponent as BtnTracks } from './btn_Tracks.svg';
-export { ReactComponent as BtnVocals } from './btn_Vocals.svg';
+export { ReactComponent as Track1Ic } from './trackOneIc.svg';
+export { ReactComponent as ToggleIc } from './toggleIc.svg';
+export { ReactComponent as BtnTracksIc } from './btn_Tracks.svg';
+export { ReactComponent as BtnVocalsIc } from './btn_Vocals.svg';
