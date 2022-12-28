@@ -3,7 +3,7 @@ import CategoryHeader from "../@components/@common/CategoryHeader"
 export default function trackSearchPage() {
   return (
     <>
-    <CategoryHeader/>
+    <CategoryHeader isClicked={true}/>
     </>
   )
 }

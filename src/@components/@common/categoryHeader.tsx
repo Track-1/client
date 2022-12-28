@@ -1,18 +1,24 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ToggleIc, Track1Ic } from '../../assets/icon'
 import profileImgSrc from '../../assets/image/profileImg.png'
+import { ClickProps } from '../../type/headerProps'
 
-export default function CategoryHeader() {
-    const [tracksClicked, setTracksClicked] = useState<boolean>(true)
+export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
+    const navigate=useNavigate();
+
+    const [tracksClicked, setTracksClicked] = useState<boolean>(isClicked)
 
     function tracksButtonClick(){
         setTracksClicked(true)
+        navigate('/track-search')
     }
 
     function vocalsButtonClick(){
         setTracksClicked(false)
+        navigate('/vocals')
     }
     
   return (

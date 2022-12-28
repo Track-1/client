@@ -1,3 +1,7 @@
+import CategoryHeader from "../@components/@common/CategoryHeader";
+
 export default function VocalsPage() {
-  return <>vocals</>;
+  return (<>
+  <CategoryHeader isClicked={false}/>
+  </>);
 }
