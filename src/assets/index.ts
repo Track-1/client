@@ -10,3 +10,4 @@ export { ReactComponent as EDMTextIc } from './icon/EDMTextIc.svg';
 export { ReactComponent as JazzTextIc } from './icon/JazzTextIc.svg';
 export { ReactComponent as HouseTextIc } from './icon/HouseTextIc.svg';
 export { ReactComponent as FunkTextIc } from './icon/FunkTextIc.svg';
+export { ReactComponent as NeonXIc } from './icon/neonXIc.svg';
