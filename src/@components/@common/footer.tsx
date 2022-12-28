@@ -1,21 +1,11 @@
-import styled from "styled-components";
-import { useState, useEffect, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 import banner from "../../assets/image/banner.svg";
 
 export default function Footer() {
-  const [pixel, setPixel] = useState<number>(0);
-  const interval: { current: NodeJS.Timeout | null } = useRef(null);
-
-  useEffect(() => {
-    interval.current = setInterval(() => {
-      setPixel((prev) => prev + 1);
-    }, 50);
-    return () => clearInterval(interval.current as NodeJS.Timeout);
-  });
   return (
     <>
       <FooterContainer>
-        <Banner src={banner} alt="배너 이미지" />
+        <Banner title="배너이미지" />
         <Copyright>
           <p className="text">Conditions of Use Privacy Notice Your Ads Privacy Choices</p>
           <p className="text">ⓒ 2022 Trackone.com, Inc. or its affiliates</p>
@@ -32,9 +22,23 @@ const FooterContainer = styled.footer`
   background-color: black;
 `;
 
-const Banner = styled.img`
+const LinearFlow = keyframes`
+  from {background-position : 0px;}
+  to { background-position : -1920px;}
+
+`;
+
+const Banner = styled.div`
+  width: 100%;
+  height: 61px;
+
   margin-top: 31px;
+  background-image: url(${banner});
+  background-repeat: no-repeat;
   background-repeat: repeat-x;
+  -webkit-animation: ${LinearFlow} 15s infinite linear;
+  -moz-animation: ${LinearFlow} 15s infinite linear;
+  -o-animation: ${LinearFlow} 15s infinite linear;
 `;
 
 const Copyright = styled.div`
