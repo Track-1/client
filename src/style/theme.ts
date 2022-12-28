@@ -31,15 +31,14 @@ function FONT({ weight, size, lineHeight }: Font): string {
 
 const fonts = {
   hashtag: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  cations: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  body1: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  comment: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  description: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  player_title: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  producer_id: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  comment_id: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  caption_large: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
-  title: FONT({ weight: 300, size: 1.5, lineHeight: 1.9 }),
+  cations: FONT({ weight: 400, size: 1.6, lineHeight: 1.9 }),
+  body1: FONT({ weight: 300, size: 1.8, lineHeight: 2.3 }),
+  comment: FONT({ weight: 400, size: 1.8, lineHeight: 3.5 }),
+  description: FONT({ weight: 400, size: 1.6, lineHeight: 2.9 }),
+  player_title: FONT({ weight: 700, size: 2, lineHeight: 2.6 }),
+  id: FONT({ weight: 300, size: 2, lineHeight: 2.6 }),
+  caption_large: FONT({ weight: 300, size: 3, lineHeight: 3.9 }),
+  title: FONT({ weight: 300, size: 5.5, lineHeight: 7.1 }),
 };
 
 export type FontsTypes = typeof fonts;
