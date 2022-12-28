@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { ToggleIc, Track1Ic } from '../../assets/icon'
-import profileImgSrc from '../../assets/image/profileImg.png'
+import { ToggleIc, Track1Ic } from '../../assets'
+import profileImg from '../../assets/image/profileImg.png'
 import { ClickProps } from '../../type/headerProps'
 
 export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
@@ -34,7 +34,7 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
         <HeaderWrapper>
             <TrackOneIcon/>
             <ProfileWrapper>
-                <img src={profileImgSrc} alt="프로필이미지"/>
+                <img src={profileImg} alt="프로필이미지"/>
                 <ToggleIc/>
             </ProfileWrapper>
         </HeaderWrapper>
