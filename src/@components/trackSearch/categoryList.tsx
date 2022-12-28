@@ -1,15 +1,18 @@
-import categorys from '../../mocks/categoryDummy.json'
 import styled from 'styled-components'
+import {UploadTextIc,RnBTextIc,HiphopTextIc,BalladTextIc,PopTextIc,RockTextIc,EDMTextIc,JazzTextIc,HouseTextIc,FunkTextIc} from '../../assets'
+import categorys from "../../mocks/categoryDummy.json"
 
 export default function CategoryList() {
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category})=>(
-      <CategoryTextBox>
-        <p key={id}>{category}</p>
+      <CategoryTextBox key={id}>
+        <img src={category} alt="카테고리 텍스트"/>
       </CategoryTextBox>
     ))}
-    <UploadButton type="button">Upload</UploadButton>
+    <UploadButton type="button">
+      <UploadTextIc/>
+    </UploadButton>
     </CategoryListWrapper>
   )
 }
@@ -29,11 +32,6 @@ const CategoryTextBox=styled.article`
   padding-left: 6.396rem;
   margin-bottom: 1.9rem;
 
-  & > p{
-    margin-bottom: 5.4rem;
-    ${({ theme }) => theme.fonts.title};
-    color:${({ theme }) => theme.colors.white};
-  }
 `
 
 const UploadButton=styled.button`
