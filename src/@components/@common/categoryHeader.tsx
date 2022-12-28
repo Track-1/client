@@ -13,30 +13,37 @@ export default function categoryHeader() {
         </CategoryWrapper>
     </CategoryContainer>
 
+    <HeaderContainer>
     <HeaderWrapper>
-        <TrackOneIcon/>
-        <ProfileWrapper>
-            <img src={profileImgSrc} alt="프로필이미지"/>
-            <ToggleIcon/>
-        </ProfileWrapper>
-    </HeaderWrapper>
+            <TrackOneIcon/>
+            <ProfileWrapper>
+                <img src={profileImgSrc} alt="프로필이미지"/>
+                <ToggleIcon/>
+            </ProfileWrapper>
+        </HeaderWrapper>
+    </HeaderContainer>
     </>
   )
 }
 
-const HeaderWrapper=styled.header`
+const HeaderContainer=styled.header`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 
-    width: 192rem;
     height: 14.3rem;
 
     background-color: black;
-    color: white;
+`
+
+const HeaderWrapper=styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    width: 178.7rem;
 `
 
 const TrackOneIcon=styled(Track1Icon)`
-    margin: 4.1rem 0 0 5.8rem;
+    margin-top: 4.1rem;
 `
 
 const CategoryContainer=styled.div`
@@ -55,8 +62,6 @@ const ProfileWrapper=styled.div`
     display: flex;
     align-items: center;
     
-    margin-right: 4.9rem;
-
     & > img{
         margin-right: 1.29rem;
     }
