@@ -14,7 +14,7 @@ export default function categoryHeader() {
     </CategoryContainer>
 
     <HeaderContainer>
-    <HeaderWrapper>
+        <HeaderWrapper>
             <TrackOneIcon/>
             <ProfileWrapper>
                 <img src={profileImgSrc} alt="프로필이미지"/>
