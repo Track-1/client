@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { ToggleIc, Track1Ic, BtnTracksIc, BtnVocalsIc } from '../../assets/icon'
+import { ToggleIc, Track1Ic } from '../../assets/icon'
 import profileImgSrc from '../../assets/image/profileImg.png'
 
 export default function categoryHeader() {
@@ -8,8 +8,8 @@ export default function categoryHeader() {
     <>
     <CategoryContainer>
         <CategoryWrapper>
-            <BtnTracks/>
-            <BtnVocals/>
+            <p>Tracks</p>
+            <p>Vocals</p>
         </CategoryWrapper>
     </CategoryContainer>
 
@@ -18,7 +18,7 @@ export default function categoryHeader() {
             <TrackOneIcon/>
             <ProfileWrapper>
                 <img src={profileImgSrc} alt="프로필이미지"/>
-                <ToggleIcon/>
+                <ToggleIc/>
             </ProfileWrapper>
         </HeaderWrapper>
     </HeaderContainer>
@@ -42,7 +42,7 @@ const HeaderWrapper=styled.div`
     width: 178.7rem;
 `
 
-const TrackOneIcon=styled(Track1Icon)`
+const TrackOneIcon=styled(Track1Ic)`
     margin-top: 4.1rem;
 `
 
