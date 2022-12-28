@@ -1,0 +1,11 @@
+[
+    {"id": 1, "category": "R&B"},
+    {"id": 2, "category": "Hiphop"},
+    {"id": 3, "category": "Ballad"},
+    {"id": 4, "category": "Pop"},
+    {"id": 5, "category": "Rock"},
+    {"id": 6, "category": "EDM"},
+    {"id": 7, "category": "Jazz"},
+    {"id": 8, "category": "House"},
+    {"id": 9, "category": "Funk"}
+]
