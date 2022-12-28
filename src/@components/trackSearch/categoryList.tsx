@@ -5,7 +5,9 @@ export default function CategoryList() {
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category})=>(
-      <CategoryText key={id}>{category}</CategoryText>
+      <CategoryTextBox>
+        <p key={id}>{category}</p>
+      </CategoryTextBox>
     ))}
     <UploadButton type="button">Upload</UploadButton>
     </CategoryListWrapper>
@@ -16,18 +18,29 @@ const CategoryListWrapper=styled.section`
   display: flex;
   flex-direction: column;
 
-  margin:4.652rem 0 0 7.596rem;
+  margin:2.7rem 0 0 1.2rem;
 `
 
-const CategoryText=styled.p`
-  margin-bottom: 5.4rem;
-  ${({ theme }) => theme.fonts.title};
-  color:${({ theme }) => theme.colors.white};
+const CategoryTextBox=styled.article`
+
+  width: 30.9rem;
+  height: 5rem;
+
+  padding-left: 6.396rem;
+  margin-bottom: 1.9rem;
+
+  & > p{
+    margin-bottom: 5.4rem;
+    ${({ theme }) => theme.fonts.title};
+    color:${({ theme }) => theme.colors.white};
+  }
 `
 
 const UploadButton=styled.button`
   width: 24.6rem;
   height: 5.2rem;
+
+  margin: 5.2rem 0 0 6.3rem ;
 
   border:0.1rem solid ${({ theme }) => theme.colors.main};
   border-radius: 2.55188rem;
