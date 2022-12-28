@@ -68,5 +68,8 @@ const ProfileWrapper=styled.div`
     
     & > img{
         margin-right: 1.29rem;
+
+        border: 0.15rem solid white;
+        border-radius: 2.4rem;
     }
 `
