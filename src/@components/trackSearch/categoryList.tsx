@@ -1,11 +1,11 @@
 import categorys from '../../mocks/categoryDummy.json'
 
-export default function categoryList() {
+export default function CategoryList() {
   return (
     <>
-    {categorys.map({id, category})=>(
-      <p>{category}</p>
-    )}
+    {categorys.map(({id, category})=>(
+      <p key={id}>{category}</p>
+    ))}
     </>
   )
 }
