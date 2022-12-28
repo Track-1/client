@@ -1,4 +1,4 @@
-import CategoryHeader from "../@components/@common/CategoryHeader";
+import CategoryHeader from "../@components/@common/categoryHeader";
 
 export default function VocalsPage() {
   return (<>
