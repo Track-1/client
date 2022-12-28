@@ -7,6 +7,7 @@ export default function CategoryList() {
     {categorys.map(({id, category})=>(
       <CategoryText key={id}>{category}</CategoryText>
     ))}
+    <UploadButton type="button">Upload</UploadButton>
     </CategoryListWrapper>
   )
 }
@@ -22,4 +23,9 @@ const CategoryText=styled.p`
   margin-bottom: 5.4rem;
   ${({ theme }) => theme.fonts.title};
   color:${({ theme }) => theme.colors.white};
+`
+
+const UploadButton=styled.button`
+  ${({ theme }) => theme.fonts.title};
+
 `
