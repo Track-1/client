@@ -1,7 +1,11 @@
-import React from 'react'
+import categorys from '../../mocks/categoryDummy.json'
 
 export default function categoryList() {
   return (
-    <div>categoryList</div>
+    <>
+    {categorys.map({id, category})=>(
+      <p>{category}</p>
+    )}
+    </>
   )
 }
