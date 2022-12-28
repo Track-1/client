@@ -1,7 +1,9 @@
-import React from 'react'
+import CategoryHeader from "../@components/@common/categoryHeader"
 
 export default function trackSearchPage() {
   return (
-    <div>trackSearchPage</div>
+    <>
+    <CategoryHeader/>
+    </>
   )
 }
