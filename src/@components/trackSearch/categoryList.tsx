@@ -1,13 +1,14 @@
 import styled from 'styled-components'
-import {UploadTextIc,RnBTextIc,HiphopTextIc,BalladTextIc,PopTextIc,RockTextIc,EDMTextIc,JazzTextIc,HouseTextIc,FunkTextIc} from '../../assets'
+import {UploadTextIc} from '../../assets'
 import categorys from "../../mocks/categoryDummy.json"
+// import aa from '../../assets/icon/Ballad.svg'
 
 export default function CategoryList() {
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category})=>(
       <CategoryTextBox key={id}>
-        <img src={category} alt="카테고리 텍스트"/>
+        <img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />
       </CategoryTextBox>
     ))}
     <UploadButton type="button">
