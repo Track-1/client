@@ -74,7 +74,7 @@ const CategoryWrapper=styled.div`
 
     margin-top:6.65rem;
 
-    ${({ theme }) => theme.fonts.title};
+    ${({ theme }) => theme.fonts.body1};
 `
 
 const TracksButton=styled.p<{tracksClicked:boolean}>`
