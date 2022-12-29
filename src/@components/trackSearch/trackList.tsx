@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc } from "../../assets"
+import tracks from '../../mocks/tracksListDummy.json'
 
 export default function TrackList() {
   return (
@@ -10,12 +11,18 @@ export default function TrackList() {
         <Category/>
         <Hashtag/>
     </CategoryWrapper>
+
+    {tracks.map(({id, imgSrc, title, producer, category, hashtag})=>(
+        <div>
+
+        </div>
+    ))}
     </>
   )
 }
 
 const CategoryWrapper=styled.section`
-    margin: 3.6rem 0 0 9rem;
+    margin: 3.6rem 0 3.5rem 9rem;
 `
 const Title=styled(TitleTextIc)`
 `
