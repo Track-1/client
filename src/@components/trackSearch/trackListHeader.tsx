@@ -10,8 +10,8 @@ export default function TrackListHeader() {
       <ProducerStickerWrapper>
         <ProducerSticker/>
       </ProducerStickerWrapper>
-      
-      <VocalTextIc/>
+
+      <VocalSticker/>
       <VocalStickerBackground>
         <div></div>
         <div></div>
@@ -34,8 +34,7 @@ const SloganIc=styled(TrackListHeaderSloganIc)`
 `
 
 const StickerWrapper=styled.article`
-  display:flex;
-  justify-content: space-between;
+  display:inline-block;
 
   width: 37.5rem;
 `
@@ -56,6 +55,7 @@ const ProducerStickerWrapper=styled.div`
 
   width: 25.298rem;
   height: 6.143rem;
+  margin-left: 1rem;
 
   background: ${({ theme }) => theme.colors.sub1};
   transform: rotate(14.99deg);
@@ -63,39 +63,68 @@ const ProducerStickerWrapper=styled.div`
   border-radius: 10rem;
 `
 
+const VocalSticker=styled(VocalTextIc)`
+  position: absolute;
+  z-index: 3;
+
+  margin: 5.5rem 0 0 23.5rem;
+
+  transform: rotate(-15.03deg);
+`
+
 const VocalStickerBackground=styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 3.69rem;
+  margin-left: 22.5rem;
+
   & > div:nth-child(1){
     position: absolute;
-    z-index: 2;
+    z-index: 1;
 
-    width: 4.5rem;
-    height: 4.5rem;
+    margin-left: -2rem;
+    margin-top: 2rem;
 
-    background: linear-gradient(281.42deg, ${({ theme }) => theme.colors.sub2} 41.04%, rgba(233, 101, 255, 0) 85.02%);
+    width: 5rem;
+    height: 5rem;
+    /* background: ${({ theme }) => theme.colors.sub2}; */
+
+    /* background: linear-gradient(335deg, ${({ theme }) => theme.colors.sub2} -40%, transparent 75%); */
+    background: linear-gradient(355deg, ${({ theme }) => theme.colors.sub2} -70%, transparent 75%);
+
     transform: rotate(-60.03deg);
     
-    border-radius: 0.7rem;
+    border-radius: 1.2rem;
   }
 
   & > div:nth-child(2){
-    width: 17.618rem;
+    width: 12rem;
     height: 6.143rem;
+    /* background: ${({ theme }) => theme.colors.sub2}; */
+    position: absolute;
+    z-index: 2;
 
-    background: linear-gradient(281.42deg, ${({ theme }) => theme.colors.sub2} 41.04%, rgba(233, 101, 255, 0) 85.02%);
+    background: linear-gradient(310deg, ${({ theme }) => theme.colors.sub2} 40%, ${({ theme }) => theme.colors.sub3} 90%);
+
+    /* background: linear-gradient(295deg, ${({ theme }) => theme.colors.sub2} 50%, ${({ theme }) => theme.colors.sub3} 95%); */
     transform: rotate(-15.03deg);
   }
 
   & > div:nth-child(3){
     position: absolute;
-    z-index: 2;
+    z-index: 1;
 
-    width: 4.5rem;
-    height: 4.5rem;
+    margin-left: 9rem;
+    margin-top: -0.9rem;
+
+    width: 5rem;
+    height: 5rem;
 
     background: ${({ theme }) => theme.colors.sub2};
     transform: rotate(-60.03deg);
 
-    border-radius: 0.7rem;
+    border-radius: 1.2rem;
 
   }
 `
