@@ -11,3 +11,6 @@ export { ReactComponent as JazzTextIc } from './icon/JazzTextIc.svg';
 export { ReactComponent as HouseTextIc } from './icon/HouseTextIc.svg';
 export { ReactComponent as FunkTextIc } from './icon/FunkTextIc.svg';
 export { ReactComponent as NeonXIc } from './icon/neonXIc.svg';
+export { ReactComponent as TrackListHeaderSloganIc } from './icon/trackListHeaderSloganIc.svg';
+export { ReactComponent as ProducerTextIc } from './icon/ProducerTextIc.svg';
+export { ReactComponent as VocalTextIc } from './icon/VocalTextIc.svg';
