@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ditto from "../../assets/audio/ditto.mp3";
-import { useState, useMemo, useRef, useLayoutEffect } from "react";
+import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 
 export default function Player() {
   const audio = useMemo(() => new Audio(ditto), [ditto]);
@@ -10,25 +10,43 @@ export default function Player() {
   const [progress, setProgress] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
 
+  const [play, setPlay] = useState<boolean>(false)
+  const [currentTime, setCurrentTime] = useState<string>('0:0');
+
+  const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
+
+
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
 
+  useEffect(() => {
+    audio.addEventListener('timeupdate', () => {
+      setCurrentTime(parseInt(String(audio.currentTime/60))+":"+parseInt(String(audio.currentTime%60)))
+      setProgress((audio.currentTime / audio.duration) * 1000);
+    });
+
+}, [audio,play]);
+
   function playAudio() {
-    audio.play();
-    audio.addEventListener("timeupdate", () => {
-      goProgress();
-    });
+    setPlay((play)=>!play)
   }
 
-  function pauseAudio() {
-    audio.pause();
-    audio.removeEventListener("timeupdate", () => {
-      goProgress();
-    });
-  }
+    if (play) {
+        audio.play();
+        audio.addEventListener("timeupdate", () => {
+          goProgress();
+        });
+    
+    } else {
+        audio.pause();
+        audio.removeEventListener("timeupdate", () => {
+          goProgress();
+        });
+    
+    }
 
-  function stopAudio() {
+  function quitAudio() {
     audio.pause();
     audio.currentTime = 0;
   }
@@ -65,9 +83,8 @@ export default function Player() {
   return (
     <PlayerContainer>
       <ButtonContainer>
-        <PlayBtn onClick={playAudio}>play</PlayBtn>
-        <PauseBtn onClick={pauseAudio}>pause</PauseBtn>
-        <StopBtn onClick={stopAudio}>stop</StopBtn>
+        <PlayBtn onClick={playAudio}>{!play?("▶️"):("⏸")}</PlayBtn>
+        <StopBtn onClick={quitAudio}>stop</StopBtn>
       </ButtonContainer>
       <PlayerWrapper
         onClick={controlAudio}
@@ -77,22 +94,13 @@ export default function Player() {
         ref={playBar}>
         <Playbar progress={progress} />
       </PlayerWrapper>
-      <DownloadBtn href={ditto} download>
-        DownLoad
-      </DownloadBtn>
+      <p>{currentTime}</p>
+    <p>{duration}</p>
     </PlayerContainer>
   );
 }
 
 const PlayerContainer = styled.section`
-  height: 15rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10rem;
-  background-color: blueviolet;
-
   position: fixed;
   z-index: 10;
 `;
@@ -113,15 +121,6 @@ const PlayBtn = styled.div`
   background-color: white;
 `;
 
-const PauseBtn = styled.div`
-  height: 5rem;
-  width: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 1rem;
-  background-color: white;
-`;
 
 const StopBtn = styled.div`
   height: 5rem;
@@ -146,7 +145,3 @@ const PlayerWrapper = styled.div`
   background-color: burlywood;
 `;
 
-const DownloadBtn = styled.a`
-  font-size: 2rem;
-  color: white;
-`;

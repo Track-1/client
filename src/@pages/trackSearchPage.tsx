@@ -10,6 +10,8 @@ export default function trackSearchPage() {
   return (
     <>
     <CategoryHeader isClicked={true} />
+    <Player/>
+
     <TrackSearchPageWrapper>
       <article className="left-article">
       <CategoryList/>
@@ -19,7 +21,6 @@ export default function trackSearchPage() {
         <TrackList/>
       </article>
     </TrackSearchPageWrapper>
-    <Player/>
     </>
   )
 }
