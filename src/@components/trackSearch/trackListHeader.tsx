@@ -38,6 +38,7 @@ const StickerWrapper=styled.article`
   display:inline-block;
 
   width: 37.5rem;
+  margin-top: 1.8rem;
 `
 
 const ProducerSticker=styled(ProducerTextIc)`
