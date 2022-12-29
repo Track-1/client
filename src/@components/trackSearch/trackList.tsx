@@ -30,7 +30,7 @@ export default function TrackList() {
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
         <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
         <TrackBox key={id}>
-            {/* <HoverPauseIcon/> */}
+            {trackhover&&<HoverPauseIcon/>}
             <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
             <TrackText width={31.5}>{title}</TrackText>
             <TrackText width={21.3}>{producer}</TrackText>
