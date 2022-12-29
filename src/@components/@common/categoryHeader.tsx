@@ -50,7 +50,7 @@ const CategoryHeaderContainer=styled.header`
     width: 192rem;
     height: 14.3rem;
 
-    padding-left: 7.5rem;
+    /* padding-left: 5.8rem; */
 
     background: linear-gradient(180deg, ${({ theme }) => theme.colors.sub3} 49.92%, rgba(0, 0, 0, 0) 105.16%, rgba(13, 14, 17, 0) 105.16%);
 `
