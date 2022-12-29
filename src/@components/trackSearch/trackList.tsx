@@ -1,8 +1,22 @@
+import { useState } from "react"
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
 
 export default function TrackList() {
+    const [trackhover, setTrackHover] = useState<boolean>(false)
+
+    function mouseOverTrackBox(){
+        setTrackHover(true)
+    }
+
+    function mouseOutTrackBox(){
+        setTrackHover(false)
+    }
+
+    console.log(trackhover)
+
+
   return (
     <TrackListContainer>
     <CategoryWrapper>
@@ -14,7 +28,7 @@ export default function TrackList() {
 
     <TracksWrapper>
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
-        <Tracks>
+        <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
         <div key={id}>
             <img src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
             <div>{title}</div>
@@ -55,7 +69,7 @@ const TracksWrapper=styled.section`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Tracks=styled.article`
+const Tracks=styled.article<{trackhover:boolean}>`
     display: flex;
     align-items: center;
 
@@ -65,14 +79,18 @@ const Tracks=styled.article`
     margin-left: 6.6rem;
     margin-bottom: 0.7rem;
 
+    
     border:0.15rem solid transparent;
+
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ theme }) => theme.colors.sub1} 0%,  ${({ theme }) => theme.colors.sub3} 100%);
+    linear-gradient(to right, ${({ trackhover, theme }) => trackhover?(theme.colors.sub1):(theme.colors.sub3)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
     background-origin: border-box;
     background-clip: content-box, border-box;
-    border-radius: 117px 0px 0px 117px;
+    border-radius: 11.7rem 0 0 11.7rem;
 
     & > div{
+        /* pointer-events: none; */
+
         display: flex;
         align-items: center;
 
