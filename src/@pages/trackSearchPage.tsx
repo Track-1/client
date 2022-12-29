@@ -4,6 +4,7 @@ import CategoryHeader from "../@components/@common/categoryHeader"
 import CategoryList from "../@components/trackSearch/categoryList"
 import TrackListHeader from "../@components/trackSearch/trackListHeader"
 import TrackList from "../@components/trackSearch/trackList"
+import Player from "../@components/@common/player"
 
 export default function trackSearchPage() {
   return (
@@ -18,6 +19,7 @@ export default function trackSearchPage() {
         <TrackList/>
       </article>
     </TrackSearchPageWrapper>
+    <Player/>
     </>
   )
 }
