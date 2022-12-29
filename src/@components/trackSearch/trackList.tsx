@@ -21,7 +21,7 @@ export default function TrackList() {
             <div>{producer}</div>
             <div>{category}</div>
         </div>
-        {hashtags.map((tag, idx)=>(<p key={idx}>{tag}</p>))}
+        {hashtags.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
         </Tracks>
     ))}
     </TracksWrapper>
@@ -67,7 +67,7 @@ const Tracks=styled.article`
 
     border:0.15rem solid transparent;
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ theme }) => theme.colors.sub1} 0%, ${({ theme }) => theme.colors.sub3} 90%,  ${({ theme }) => theme.colors.sub3} 100%);
+    linear-gradient(to right, ${({ theme }) => theme.colors.sub1} 0%,  ${({ theme }) => theme.colors.sub3} 100%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     border-radius: 117px 0px 0px 117px;
@@ -86,7 +86,7 @@ const Tracks=styled.article`
         }
 
         & > div:nth-child(2){
-            width: 35rem;
+            width: 34.5rem;
             padding-left: 2.8rem;
         }
 
@@ -95,9 +95,22 @@ const Tracks=styled.article`
         }
 
         & > div:nth-child(4){
-            width: 21rem;
+            width: 20.5rem;
         }
 
 
     }
+`
+
+const Tag=styled.span`
+    display: flex;
+    align-items: center;
+
+    height: 3.8rem;
+
+    padding: 0.9rem 1.5rem;
+    margin: 0 0.8rem 0 0;
+
+    background: ${({ theme }) => theme.colors.gray4};
+    border-radius: 21px;
 `
