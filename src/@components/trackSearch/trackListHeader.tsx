@@ -1,6 +1,6 @@
 import { TrackListHeaderSloganIc, ProducerTextIc, VocalTextIc } from "../../assets"
 
-export default function TrackListHedaer() {
+export default function TrackListHeader() {
   return (
     <>
     <TrackListHeaderSloganIc/>
