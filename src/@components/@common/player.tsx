@@ -82,20 +82,23 @@ export default function Player() {
 
   return (
     <PlayerContainer>
-      <ButtonContainer>
-        <PlayBtn onClick={playAudio}>{!play?("▶️"):("⏸")}</PlayBtn>
-        <StopBtn onClick={quitAudio}>stop</StopBtn>
-      </ButtonContainer>
-      <PlayerWrapper
+    <PlayerWrapper>
+      <PlayerBarWrapper
         onClick={controlAudio}
         onMouseDown={downMouse}
         onMouseUp={upMouse}
         onMouseMove={moveAudio}
         ref={playBar}>
         <Playbar progress={progress} />
-      </PlayerWrapper>
-      <p>{currentTime}</p>
-    <p>{duration}</p>
+      </PlayerBarWrapper>
+
+      <PlayerInformWrapper>
+        <PlayBtn onClick={playAudio}>{!play?("▶️"):("⏸")}</PlayBtn>
+        <StopBtn onClick={quitAudio}>stop</StopBtn>
+        <p>{currentTime}</p>
+        <p>{duration}</p>
+      </PlayerInformWrapper>
+    </PlayerWrapper>
     </PlayerContainer>
   );
 }
@@ -103,12 +106,32 @@ export default function Player() {
 const PlayerContainer = styled.section`
   position: fixed;
   z-index: 10;
+
+  display: flex;
+  justify-content: flex-end;
+
+  width: 192rem;
+  height: 108rem;
+
 `;
 
-const ButtonContainer = styled.div`
+const PlayerWrapper=styled.article`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+`
+
+const PlayerInformWrapper = styled.div`
+  width: 192rem;
+  height: 11rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
 `;
 
 const PlayBtn = styled.div`
@@ -135,13 +158,14 @@ const StopBtn = styled.div`
 const Playbar = styled.div<{ progress: number }>`
   height: 1rem;
   width: ${(props) => props.progress}%;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.sub1};
 `;
 
-const PlayerWrapper = styled.div`
-  height: 1rem;
-  width: 20rem;
+const PlayerBarWrapper = styled.div`
+  height: 0.3rem;
+  width: 192rem;
+
   margin-top: 2rem;
-  background-color: burlywood;
+  background-color: ${({ theme }) => theme.colors.gray3};
 `;
 
