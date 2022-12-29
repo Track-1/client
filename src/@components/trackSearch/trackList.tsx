@@ -12,10 +12,16 @@ export default function TrackList() {
         <Hashtag/>
     </CategoryWrapper>
 
-    {tracks.map(({id, imgSrc, title, producer, category, hashtag})=>(
-        <div>
-
+    {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
+        <>
+        <div key={id}>
+            <img src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
+            {title}
+            {producer}
+            {category}
         </div>
+        {hashtags.map((tag, idx)=>(<p key={idx}>{tag}</p>))}
+        </>
     ))}
     </>
   )
