@@ -1,15 +1,24 @@
 import styled from 'styled-components'
 import {UploadTextIc,NeonXIc} from '../../assets'
 import categorys from "../../mocks/categoryDummy.json"
+import { useState } from 'react';
 
 export default function CategoryList() {
+  const [categoryClicked, setCategoryClicked]=useState<boolean>(false)
+  const [countIdx, setCountIdx]=useState<number>(0);
+
+  function categoryClick(id:number, category:string){
+    setCategoryClicked((prev)=>!prev)
+    setCountIdx(id);
+  }
+
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category})=>(
-      <CategoryTextBoxWrapper>
-        <CategoryTextBox key={id}>
+      <CategoryTextBoxWrapper key={id} categoryClicked={categoryClicked} onClick={()=>categoryClick(id, category)} className={`${categoryClicked && 'active'}`} >
+        <CategoryTextBox>
           <img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />
-          <NeonXIc/>
+          {categoryClicked&&(<NeonXIc/>)}
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
     ))}
@@ -28,7 +37,7 @@ const CategoryListWrapper=styled.section`
 
 `
 
-const CategoryTextBoxWrapper=styled.article`
+const CategoryTextBoxWrapper=styled.article<{categoryClicked:boolean}>`
   display: flex;
   align-items: center;
 
@@ -41,10 +50,12 @@ const CategoryTextBoxWrapper=styled.article`
   border:0.15rem solid transparent;
   border-radius: 3.26307rem;
 
-  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-  linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ theme }) => theme.colors.sub1} 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
+  /* & > .active{ */
+    background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
+    linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ categoryClicked,theme }) => categoryClicked?(theme.colors.sub1):(theme.colors.sub3)} 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  /* } */
 `
 
 const CategoryTextBox=styled.div`
@@ -52,6 +63,8 @@ const CategoryTextBox=styled.div`
   justify-content: space-between;
 
   width: 22.104rem;
+
+  cursor: pointer;
 `
 
 const UploadButton=styled.button`
