@@ -106,6 +106,8 @@ const VocalStickerBackground=styled.div`
     background: linear-gradient(310deg, ${({ theme }) => theme.colors.sub2} 40%, ${({ theme }) => theme.colors.sub3} 90%);
 
     transform: rotate(-15.03deg);
+
+    border-radius: 0.4rem;
   }
 
   & > div:nth-child(3){
