@@ -3,6 +3,7 @@ import styled from "styled-components"
 import CategoryHeader from "../@components/@common/categoryHeader"
 import CategoryList from "../@components/trackSearch/categoryList"
 import TrackListHeader from "../@components/trackSearch/trackListHeader"
+import TrackList from "../@components/trackSearch/trackList"
 
 export default function trackSearchPage() {
   return (
@@ -14,6 +15,7 @@ export default function trackSearchPage() {
       </article>
       <article className="right-article">
       <TrackListHeader/>
+      <TrackList/>
       </article>
     </TrackSearchPageWrapper>
     </>
