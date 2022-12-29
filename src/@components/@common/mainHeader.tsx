@@ -1,54 +1,56 @@
 import styled from "styled-components";
 
-import logoIc from "../../assets/icon/logoIC.svg";
 import sloganImg from "../../assets/image/sloganImg.svg";
-import userIc from "../../assets/icon/userIC.svg";
-import mypageTextIc from "../../assets/icon/userIC.svg";
+import { UserIc, LogoIc, MyPageTextIc } from "../../assets/index";
 
-export default function Header() {
+export default function MainHeader() {
   return (
-    <>
-      <HeaderContainer>
-        <img src={logoIc} alt="로고" />
+    <HeaderContainer>
+      <HeaderWrapper>
+        <LogoIc />
         <img src={sloganImg} alt="슬로건" />
         <MyPageBtn type="button">
-          <UserImg src={userIc} alt="userImage" />
-          <MyPageText src={mypageTextIc} alt="mypage" />
+          <UserIcon />
+          <MyPageTextIcon />
         </MyPageBtn>
-      </HeaderContainer>
-    </>
+      </HeaderWrapper>
+    </HeaderContainer>
   );
 }
 
 const HeaderContainer = styled.header`
-  height: 143px;
+  width: 100%;
+  height: 14.3rem;
+`;
+
+const HeaderWrapper = styled.div`
+  height: 100%;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 69px 0 75px;
+  margin: 0 6.9rem 0 7.5rem;
 `;
 
 const MyPageBtn = styled.button`
-  width: 195px;
-  height: 52px;
+  width: 19.5rem;
+  height: 5.2rem;
 
   display: flex;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 3rem;
   background-color: ${({ theme }) => theme.colors.main};
-  color: #ffffff;
 `;
 
-const UserImg = styled.img`
-  width: 31px;
-  height: 31px;
+const UserIcon = styled(UserIc)`
+  width: 3.1rem;
+  height: 3.1rem;
 
-  margin-left: 13px;
-  border-radius: 50px;
-  border: 1px solid white;
+  margin-left: 1.3rem;
+  border-radius: 5rem;
+  border: 0.1rem solid white;
 `;
 
-const MyPageText = styled.img`
-  margin-left: 13px;
+const MyPageTextIcon = styled(MyPageTextIc)`
+  margin-left: 1.3rem;
 `;
