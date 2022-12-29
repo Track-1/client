@@ -1,9 +1,8 @@
-import styled, { keyframes, css } from "styled-components";
+import styled, { css } from "styled-components";
 import { useState } from "react";
 
+import { TracksTextIc, VocalsTextIc } from "../assets";
 import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
-import tracksTextImg from "../assets/image/tracksTextImg.svg";
-import vocalsTextImg from "../assets/image/vocalsTextImg.svg";
 import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
@@ -36,9 +35,9 @@ export default function MainPage() {
   return (
     <MainBackground background={background}>
       <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} />
-      <VocalsText state={isVocalsHover} onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} />
+      <VocalsTextIcon state={isVocalsHover} />
       <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} />
-      <TracksText state={isTracksHover} onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} />
+      <TracksTextIcon state={isTracksHover} />
       <MainSlogan src={mainSloganImg} alt="슬로건" />
     </MainBackground>
   );
@@ -54,38 +53,24 @@ const MainBackground = styled.main<{ background: string }>`
 `;
 
 const VocalsArea = styled.div`
-  width: 34.25rem;
-  height: 35.75rem;
+  width: 54.8rem;
+  height: 57.2rem;
 
   position: absolute;
   z-index: 99;
-  top: 25.75rem;
-  left: 75.25rem;
+  top: 41.2rem;
+  left: 120.4rem;
   transform: rotate(40deg);
   cursor: pointer;
 `;
 
-const TracksArea = styled.div`
-  width: 35.25rem;
-  height: 33.625rem;
+const VocalsTextIcon = styled(VocalsTextIc)<{ state: boolean }>`
+  width: 21.7rem;
+  height: 21.2rem;
 
   position: absolute;
-  z-index: 99;
-  top: 2rem;
-  left: 45rem;
-  transform: rotate(-50deg);
-  border-radius: 1.75rem 0 0;
-  cursor: pointer;
-`;
-
-const TracksText = styled.div<{ state: boolean }>`
-  width: 11.8125rem;
-  height: 12.75rem;
-
-  position: absolute;
-  top: 26.5rem;
-  left: 62.1875rem;
-  background-image: url(${tracksTextImg});
+  top: 81.3rem;
+  left: 144.7rem;
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -99,14 +84,26 @@ const TracksText = styled.div<{ state: boolean }>`
     `}
 `;
 
-const VocalsText = styled.div<{ state: boolean }>`
-  width: 13.5625rem;
-  height: 13.25rem;
+const TracksArea = styled.div`
+  width: 56.4rem;
+  height: 53.8rem;
 
   position: absolute;
-  top: 50.8125rem;
-  left: 90.4375rem;
-  background-image: url(${vocalsTextImg});
+  z-index: 99;
+  top: 3.2rem;
+  left: 72rem;
+  transform: rotate(-50deg);
+  border-radius: 2.8rem 0 0;
+  cursor: pointer;
+`;
+
+const TracksTextIcon = styled(TracksTextIc)<{ state: boolean }>`
+  width: 18.9rem;
+  height: 20.4rem;
+
+  position: absolute;
+  top: 42.4rem;
+  left: 99.5rem;
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -122,6 +119,6 @@ const VocalsText = styled.div<{ state: boolean }>`
 
 const MainSlogan = styled.img`
   position: absolute;
-  top: 56.8125rem;
-  left: 5.1875rem;
+  top: 90.9rem;
+  left: 8.3rem;
 `;
