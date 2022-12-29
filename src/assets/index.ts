@@ -14,3 +14,7 @@ export { ReactComponent as NeonXIc } from './icon/neonXIc.svg';
 export { ReactComponent as TrackListHeaderSloganIc } from './icon/trackListHeaderSloganIc.svg';
 export { ReactComponent as ProducerTextIc } from './icon/ProducerTextIc.svg';
 export { ReactComponent as VocalTextIc } from './icon/VocalTextIc.svg';
+export { ReactComponent as TitleTextIc } from './icon/TitleTextIc.svg';
+export { ReactComponent as ProducerCategoryTextIc } from './icon/ProducerCategoryTextIc.svg';
+export { ReactComponent as CategoryTextIc } from './icon/CategoryTextIc.svg';
+export { ReactComponent as HashtagTextIc } from './icon/HashtagTextIc.svg';

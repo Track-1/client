@@ -30,6 +30,6 @@ const TrackSearchPageWrapper=styled.section`
   }
 
   & > .right-article{
-    width: 15.99rem;
+    width: 159.9rem;
   }
 `
