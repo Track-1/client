@@ -1,39 +1,33 @@
 import styled, { keyframes } from "styled-components";
-import banner from "../../assets/image/banner.svg";
+import bannerImg from "../../assets/image/bannerImg.svg";
 
 export default function Footer() {
   return (
-    <>
-      <FooterContainer>
-        <Banner title="배너이미지" />
-        <Copyright>
-          <p className="text">Conditions of Use Privacy Notice Your Ads Privacy Choices</p>
-          <p className="text">ⓒ 2022 Trackone.com, Inc. or its affiliates</p>
-        </Copyright>
-      </FooterContainer>
-    </>
+    <FooterContainer>
+      <Banner />
+      <Copyright>
+        <CopyrightText className="text">Conditions of Use Privacy Notice Your Ads Privacy Choices</CopyrightText>
+        <CopyrightText className="text">ⓒ 2022 Trackone.com, Inc. or its affiliates</CopyrightText>
+      </Copyright>
+    </FooterContainer>
   );
 }
 
 const FooterContainer = styled.footer`
   width: 100%;
-  height: 230px;
-
-  background-color: black;
+  height: 23rem;
 `;
 
 const LinearFlow = keyframes`
-  from {background-position : 0px;}
-  to { background-position : -1920px;}
-
+  from {background-position : 0rem;}
+  to { background-position : -192rem;}
 `;
 
 const Banner = styled.div`
-  width: 100%;
-  height: 61px;
+  height: 6.2rem;
 
-  margin-top: 31px;
-  background-image: url(${banner});
+  margin-top: 3.1rem;
+  background-image: url(${bannerImg});
   background-repeat: no-repeat;
   background-repeat: repeat-x;
   -webkit-animation: ${LinearFlow} 15s infinite linear;
@@ -45,6 +39,10 @@ const Copyright = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 42px;
-  color: #ffffff;
+  margin-top: 4.2rem;
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const CopyrightText = styled.p`
+  margin-bottom: 1rem;
 `;
