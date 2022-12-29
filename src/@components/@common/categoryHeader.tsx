@@ -22,7 +22,7 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
     }
     
   return (
-    <>
+    <CategoryHeaderContainer>
     <CategoryContainer>
         <CategoryWrapper>
             <TracksButton onClick={tracksButtonClick} tracksClicked={tracksClicked}>Tracks</TracksButton>
@@ -39,11 +39,23 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
             </ProfileWrapper>
         </HeaderWrapper>
     </HeaderContainer>
-    </>
+    </CategoryHeaderContainer>
   )
 }
 
-const HeaderContainer=styled.header`
+const CategoryHeaderContainer=styled.header`
+    position: fixed;
+    z-index: 10;
+
+    width: 192rem;
+    height: 14.3rem;
+
+    padding-left: 7.5rem;
+
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.sub3} 49.92%, rgba(0, 0, 0, 0) 105.16%, rgba(13, 14, 17, 0) 105.16%);
+`
+
+const HeaderContainer=styled.div`
     display: flex;
     justify-content: center;
 

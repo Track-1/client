@@ -4,7 +4,7 @@ import tracks from '../../mocks/tracksListDummy.json'
 
 export default function TrackList() {
   return (
-    <>
+    <TrackListContainer>
     <CategoryWrapper>
         <Title/>
         <Producer/>
@@ -25,9 +25,12 @@ export default function TrackList() {
         </Tracks>
     ))}
     </TracksWrapper>
-    </>
+    </TrackListContainer>
   )
 }
+
+const TrackListContainer=styled.section`
+`
 
 const CategoryWrapper=styled.section`
     margin: 3.6rem 0 3.5rem 9rem;

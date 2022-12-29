@@ -33,6 +33,9 @@ const CategoryListWrapper=styled.section`
   display: flex;
   flex-direction: column;
 
+  position: fixed;
+  padding-top:14.3rem;
+
   margin:2.7rem 0 0 1.2rem;
 
 `

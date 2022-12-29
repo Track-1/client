@@ -27,6 +27,7 @@ const TrackListHeaderWrapper=styled.section`
 
   display:flex;
   justify-content: space-between;
+  padding-top: 14.3rem;
 `
 
 const SloganIc=styled(TrackListHeaderSloganIc)`

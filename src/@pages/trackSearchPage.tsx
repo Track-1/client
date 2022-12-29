@@ -8,14 +8,14 @@ import TrackList from "../@components/trackSearch/trackList"
 export default function trackSearchPage() {
   return (
     <>
-    <CategoryHeader isClicked={true}/>
+    <CategoryHeader isClicked={true} />
     <TrackSearchPageWrapper>
       <article className="left-article">
       <CategoryList/>
       </article>
       <article className="right-article">
-      <TrackListHeader/>
-      <TrackList/>
+        <TrackListHeader />
+        <TrackList/>
       </article>
     </TrackSearchPageWrapper>
     </>
