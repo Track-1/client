@@ -1,5 +1,9 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import Header from "../@components/@common/header";
+import Footer from "../@components/@common/footer";
 
 import { TracksTextIc, VocalsTextIc } from "../assets";
 import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
@@ -8,6 +12,7 @@ import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
 
 export default function MainPage() {
+  const navigate = useNavigate();
   const [background, setBackground] = useState<string>(mainBackgroundImg);
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
@@ -32,14 +37,22 @@ export default function MainPage() {
     }
   }
 
+  function movePage(e: React.MouseEvent<HTMLDivElement>) {
+    isTracksHover ? navigate(`/track-search`) : navigate(`/vocals`);
+  }
+
   return (
-    <MainBackground background={background}>
-      <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} />
-      <VocalsTextIcon state={isVocalsHover} />
-      <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} />
-      <TracksTextIcon state={isTracksHover} />
-      <MainSlogan src={mainSloganImg} alt="슬로건" />
-    </MainBackground>
+    <>
+      <Header />
+      <MainBackground background={background}>
+        <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+        <VocalsTextIcon state={isVocalsHover} />
+        <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+        <TracksTextIcon state={isTracksHover} />
+        <MainSlogan src={mainSloganImg} alt="슬로건" />
+      </MainBackground>
+      <Footer />
+    </>
   );
 }
 
