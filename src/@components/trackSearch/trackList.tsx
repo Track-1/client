@@ -29,13 +29,13 @@ export default function TrackList() {
     <TracksWrapper>
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
         <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
-        <div key={id}>
-            <HoverPauseIcon/>
-            <img src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
-            <div>{title}</div>
-            <div>{producer}</div>
-            <div>{category}</div>
-        </div>
+        <TrackBox key={id}>
+            {/* <HoverPauseIcon/> */}
+            <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
+            <TrackText width={31.5}>{title}</TrackText>
+            <TrackText width={21.3}>{producer}</TrackText>
+            <TrackText width={20.5}>{category}</TrackText>
+        </TrackBox>
         {hashtags.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
         </Tracks>
     ))}
@@ -94,36 +94,26 @@ const Tracks=styled.article<{trackhover:boolean}>`
     background-clip: content-box, border-box;
     border-radius: 11.7rem 0 0 11.7rem;
 
-    & > div{
-        /* pointer-events: none; */
+`
 
-        display: flex;
-        align-items: center;
+const TrackBox=styled.div`
+    display: flex;
+    align-items: center;
 
-        margin-left: 2.4rem;
+    margin-left: 2.4rem;
+`
 
-        & > img{
-            width: 8.3rem;
-            height: 8.3rem;
+const Thumbnail=styled.img`
+    width: 8.3rem;
+    height: 8.3rem;
 
-            border-radius: 6.55rem;
-        }
+    margin-right: 2.8rem;
 
-        & > div:nth-child(2){
-            width: 34.5rem;
-            padding-left: 2.8rem;
-        }
+    border-radius: 6.55rem;
+`
 
-        & > div:nth-child(3){
-            width: 21.3rem;
-        }
-
-        & > div:nth-child(4){
-            width: 20.5rem;
-        }
-
-
-    }
+const TrackText=styled.div<{width:number}>`
+    width:${(props) => props.width}rem;
 `
 
 const Tag=styled.span`
