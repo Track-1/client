@@ -14,9 +14,6 @@ export default function TrackList() {
         setTrackHover(false)
     }
 
-    console.log(trackhover)
-
-
   return (
     <TrackListContainer>
     <CategoryWrapper>
