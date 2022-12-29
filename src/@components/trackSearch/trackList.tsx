@@ -1,6 +1,6 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc } from "../../assets"
+import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
 
 export default function TrackList() {
@@ -30,6 +30,7 @@ export default function TrackList() {
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
         <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
         <div key={id}>
+            <HoverPauseIcon/>
             <img src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
             <div>{title}</div>
             <div>{producer}</div>
@@ -44,6 +45,11 @@ export default function TrackList() {
 }
 
 const TrackListContainer=styled.section`
+`
+
+const HoverPauseIcon=styled(HoverPauseIc)`
+    position: absolute;
+    z-index: 2;
 `
 
 const CategoryWrapper=styled.section`

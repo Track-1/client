@@ -19,3 +19,4 @@ export { ReactComponent as ProducerCategoryTextIc } from './icon/ProducerCategor
 export { ReactComponent as CategoryTextIc } from './icon/CategoryTextIc.svg';
 export { ReactComponent as HashtagTextIc } from './icon/HashtagTextIc.svg';
 export { ReactComponent as PauseIc } from './icon/PauseIc.svg';
+export { ReactComponent as HoverPauseIc } from './icon/HoverPauseIc.svg';
