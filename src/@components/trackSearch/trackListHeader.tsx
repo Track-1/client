@@ -88,9 +88,7 @@ const VocalStickerBackground=styled.div`
 
     width: 5rem;
     height: 5rem;
-    /* background: ${({ theme }) => theme.colors.sub2}; */
 
-    /* background: linear-gradient(335deg, ${({ theme }) => theme.colors.sub2} -40%, transparent 75%); */
     background: linear-gradient(355deg, ${({ theme }) => theme.colors.sub2} -70%, transparent 75%);
 
     transform: rotate(-60.03deg);
@@ -101,13 +99,12 @@ const VocalStickerBackground=styled.div`
   & > div:nth-child(2){
     width: 12rem;
     height: 6.143rem;
-    /* background: ${({ theme }) => theme.colors.sub2}; */
+
     position: absolute;
     z-index: 2;
 
     background: linear-gradient(310deg, ${({ theme }) => theme.colors.sub2} 40%, ${({ theme }) => theme.colors.sub3} 90%);
 
-    /* background: linear-gradient(295deg, ${({ theme }) => theme.colors.sub2} 50%, ${({ theme }) => theme.colors.sub3} 95%); */
     transform: rotate(-15.03deg);
   }
 
