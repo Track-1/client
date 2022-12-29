@@ -1,18 +1,19 @@
 import styled from "styled-components";
-import logo from "../../assets/image/logo.svg";
-import slogan from "../../assets/image/slogan.svg";
-import userImg from "../../assets/image/userImg.svg";
-import mypageText from "../../assets/image/mypageText.svg";
+
+import logoIc from "../../assets/icon/logoIC.svg";
+import sloganImg from "../../assets/image/sloganImg.svg";
+import userIc from "../../assets/icon/userIC.svg";
+import mypageTextIc from "../../assets/icon/userIC.svg";
 
 export default function Header() {
   return (
     <>
       <HeaderContainer>
-        <img src={logo} alt="로고" />
-        <img src={slogan} alt="슬로건" />
+        <img src={logoIc} alt="로고" />
+        <img src={sloganImg} alt="슬로건" />
         <MyPageBtn type="button">
-          <UserImg src={userImg} alt="userImage" />
-          <MyPageText src={mypageText} alt="mypage" />
+          <UserImg src={userIc} alt="userImage" />
+          <MyPageText src={mypageTextIc} alt="mypage" />
         </MyPageBtn>
       </HeaderContainer>
     </>
