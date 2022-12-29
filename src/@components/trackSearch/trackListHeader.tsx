@@ -30,7 +30,7 @@ const TrackListHeaderWrapper=styled.section`
 `
 
 const SloganIc=styled(TrackListHeaderSloganIc)`
-  margin: 2.64rem 0 0 9.46rem;
+  margin: 2.64rem 0 0 9rem;
 `
 
 const StickerWrapper=styled.article`

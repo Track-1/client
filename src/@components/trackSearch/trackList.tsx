@@ -16,5 +16,7 @@ export default function TrackList() {
 const CategoryWrapper=styled.section`
     display: flex;
 
+    margin: 3.6rem 0 0 9rem;
+
     color:${({ theme }) => theme.colors.white};
 `
