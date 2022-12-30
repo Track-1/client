@@ -7,16 +7,21 @@ import TrackList from "../@components/trackSearch/trackList"
 import Player from "../@components/@common/player"
 
 import {showPlayerBar} from "../recoil/player"
-import { useRecoilValue } from "recoil"
+import {tracksOrVocalsCheck} from "../recoil/tracksOrVocalsCheck"
+
+import { useRecoilState, useRecoilValue } from "recoil"
 
 export default function TrackSearchPage() {
   const showPlayer=useRecoilValue<boolean>(showPlayerBar);
+  const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck);
+
+  setWhom("Tracks") // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
 
   console.log(showPlayer)
   return (
     <>
     <CategoryHeader isClicked={true} />
-    {showPlayer&&(<Player/>)}
+    {showPlayer&&(<Player />)}
 
     <TrackSearchPageWrapper>
       <article className="left-article">

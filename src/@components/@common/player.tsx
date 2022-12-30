@@ -4,10 +4,12 @@ import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import thumbnailImg from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
 import {showPlayerBar, playMusic} from "../../recoil/player"
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
 
-export default function Player() {
+export default function Player(){
+
   const audio = useMemo(() => new Audio(ditto), [ditto]);
 
   const playBar = useRef<HTMLDivElement>(null);
@@ -23,6 +25,8 @@ export default function Player() {
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
 
   const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
+
+  const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
 
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
@@ -104,7 +108,7 @@ export default function Player() {
         onMouseUp={upMouse}
         onMouseMove={moveAudio}
         ref={playBar}>
-        <Playbar progress={progress} />
+        <Playbar progress={progress} tracksOrVocals={tracksOrVocals}/>
       </PlayerBarWrapper>
 
       <PlayerInformWrapper>
@@ -154,12 +158,12 @@ const PlayerInformWrapper = styled.div`
   backdrop-filter: blur(5px);
 `;
 
-const Playbar = styled.div<{ progress: number }>`
+const Playbar = styled.div<{ progress: number,tracksOrVocals:string }>`
   width: ${(props) => props.progress}%;
   height: 3rem;
 
   background-color: transparent;
-  border-bottom: 0.3rem solid ${({ theme }) => theme.colors.sub1};
+  border-bottom: 0.3rem solid ${({ tracksOrVocals, theme }) => tracksOrVocals==="Tracks"?(theme.colors.sub1):(theme.colors.sub2)};
   pointer-events: auto; 
 `;
 
