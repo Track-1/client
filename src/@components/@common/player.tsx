@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import thumbnailImg from '../../assets/image/thumbnailImg.png'
-import { PauseIc, QuitIc } from "../../assets";
+import { PauseIc, PlayIc, QuitIc } from "../../assets";
 
 export default function Player() {
   const audio = useMemo(() => new Audio(ditto), [ditto]);
@@ -99,7 +99,7 @@ export default function Player() {
         <Thumbnail src={thumbnailImg} alt="썸네일 이미지"/>
         <PlayerInformText width={74} color={"white"}>Favorite</PlayerInformText>
         <PlayerInformText width={16} color={"gray2"}>Nct127</PlayerInformText>
-        <PauseIcon onClick={playAudio}/>
+        {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
         <PlayerInformText width={10} color={"white"}>{currentTime}</PlayerInformText>
         <PlayerInformText width={30} color={"gray2"}>3:11</PlayerInformText>
         <QuitIc onClick={quitAudio}/>
@@ -168,11 +168,15 @@ const PlayerInformText=styled.div<{width:number, color:string}>`
     width: ${({width})=>width}rem;
 
     ${({ theme }) => theme.fonts.player_title};
-    /* color: ${({ color }) => color==="white"?("white"):("gray")}; */
+    color: ${({ color }) => color==="white"?("white"):("gray")};
 
-    color: ${({ color, theme }) => theme.colors+'.'+color};
+    /* color: ${({ color, theme }) => theme.colors+'.'+color}; */
 `
 
 const PauseIcon=styled(PauseIc)`
+    margin-right: 5.1rem;
+`
+
+const PlayIcon=styled(PlayIc)`
     margin-right: 5.1rem;
 `
