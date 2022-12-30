@@ -15,6 +15,8 @@ export default function Player() {
   const [play, setPlay] = useState<boolean>(false)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
+  const title="Sweet (feat. 구슬한 of 보수동쿨러)"
+  const producer="해서웨이(hathaw9y)"
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
 
 
@@ -89,11 +91,11 @@ export default function Player() {
 
       <PlayerInformWrapper>
         <Thumbnail src={thumbnailImg} alt="썸네일 이미지"/>
-        <PlayerInformText width={74} color={"white"}>Favorite</PlayerInformText>
-        <PlayerInformText width={16} color={"gray2"}>Nct127</PlayerInformText>
+        <PlayerInformText width={74} color={"white"}>{title}</PlayerInformText>
+        <PlayerInformText width={16} color={"gray2"}>{producer}</PlayerInformText>
         {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
         <PlayerInformText width={10} color={"white"}>{currentTime}</PlayerInformText>
-        <PlayerInformText width={30} color={"gray2"}>3:11</PlayerInformText>
+        <PlayerInformText width={30} color={"gray2"}>{duration}</PlayerInformText>
         <QuitIc onClick={quitAudio}/>
 
       </PlayerInformWrapper>
@@ -116,7 +118,7 @@ const PlayerContainer = styled.section`
 const PlayerWrapper=styled.article`
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-end; */
+  justify-content: flex-end;
 
   cursor: pointer;
 
@@ -127,7 +129,6 @@ const PlayerInformWrapper = styled.div`
   height: 11rem;
 
   display: flex;
-  /* justify-content: center; */
   align-items: center;
 
   background: rgba(0, 0, 0, 0.75);
@@ -139,7 +140,6 @@ const Playbar = styled.div<{ progress: number }>`
   height: 3rem;
 
   background-color: transparent;
-
   border-bottom: 0.3rem solid ${({ theme }) => theme.colors.sub1};
 `;
 
@@ -168,8 +168,6 @@ const PlayerInformText=styled.div<{width:number, color:string}>`
 
     ${({ theme }) => theme.fonts.player_title};
     color: ${({ color }) => color==="white"?("white"):("gray")};
-
-    /* color: ${({ color, theme }) => theme.colors+'.'+color}; */
 `
 
 const PauseIcon=styled(PauseIc)`
