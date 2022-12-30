@@ -45,6 +45,11 @@ export default function Player() {
 
   function playAudio() {
     setPlay((play)=>!play)
+    if(audio.currentTime===audio.duration){
+      audio.play()
+      audio.currentTime=0
+      setPlay(true)
+    }  
   }
 
   function quitAudio() {
@@ -84,18 +89,11 @@ export default function Player() {
     }
   }
 
-  useEffect(() => {
-    if(audio.currentTime===audio.duration){
-      audio.pause();
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
-  }, [])
-  
   if(audio.currentTime===audio.duration){
+    audio.pause()
+    audio.currentTime=1000
     setPlay(false)
-  }
-  
+  } 
 
   return (
     <PlayerContainer>
