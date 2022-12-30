@@ -109,11 +109,11 @@ export default function Player() {
 
       <PlayerInformWrapper>
         <Thumbnail src={thumbnailImg} alt="썸네일 이미지"/>
-        <PlayerInformText width={74} color={"white"}>{title}</PlayerInformText>
-        <PlayerInformText width={16} color={"gray2"}>{producer}</PlayerInformText>
+        <PlayerInformText width={74} whiteText={true}>{title}</PlayerInformText>
+        <PlayerInformText width={16} whiteText={false}>{producer}</PlayerInformText>
         {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
-        <PlayerInformText width={10} color={"white"}>{currentTime}</PlayerInformText>
-        <PlayerInformText width={30} color={"gray2"}>{duration}</PlayerInformText>
+        <PlayerInformText width={10} whiteText={true}>{currentTime}</PlayerInformText>
+        <PlayerInformText width={30} whiteText={false}>{duration}</PlayerInformText>
         <QuitIcon onClick={quitAudio}/>
 
       </PlayerInformWrapper>
@@ -185,11 +185,11 @@ const Thumbnail = styled.img`
     border-radius: 5rem;
 `
 
-const PlayerInformText=styled.div<{width:number, color:string}>`
+const PlayerInformText=styled.div<{width:number, whiteText:boolean}>`
     width: ${({width})=>width}rem;
 
     ${({ theme }) => theme.fonts.player_title};
-    color: ${({ color }) => color==="white"?("white"):("gray")};
+    color: ${({ whiteText,theme }) => whiteText?(theme.colors.white):(theme.colors.gray2)};
     pointer-events: auto; 
 
 `
