@@ -171,8 +171,6 @@ const PlayerBarWrapper = styled.div`
   width: 192rem;
   height: 3rem;
 
-  margin-top: 2rem;
-
   background-color: transparent;
   border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto; 
