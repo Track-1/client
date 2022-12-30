@@ -3,7 +3,7 @@ import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import thumbnailImg from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar} from "../../recoil/showPlayerBar"
+import {showPlayerBar} from "../../recoil/player"
 import { useRecoilState } from "recoil";
 
 

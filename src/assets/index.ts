@@ -22,3 +22,4 @@ export { ReactComponent as PauseIc } from './icon/PauseIc.svg';
 export { ReactComponent as QuitIc } from './icon/QuitIc.svg';
 export { ReactComponent as PlayIc } from './icon/PlayIc.svg';
 export { ReactComponent as HoverPauseIc } from './icon/HoverPauseIc.svg';
+export { ReactComponent as HoverPlayIc } from './icon/HoverPlayIc.svg';

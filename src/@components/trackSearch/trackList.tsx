@@ -1,14 +1,15 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc } from "../../assets"
+import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc,HoverPlayIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
-import {showPlayerBar} from "../../recoil/showPlayerBar"
+import {showPlayerBar, playMusic} from "../../recoil/player"
 import { useRecoilState } from "recoil";
 
 
 export default function TrackList() {
     const [trackhover, setTrackHover] = useState<boolean>(false)
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
+    const [play, setPlay]=useRecoilState<boolean>(playMusic)
 
     function mouseOverTrackBox(){
         setTrackHover(true)
@@ -18,8 +19,13 @@ export default function TrackList() {
         setTrackHover(false)
     }
 
-    function clickThumbnail(){
+    function clickThumbnailPauseIc(){
         setShowPlayer(true)
+        setPlay(true)
+    }
+
+    function clickThumbnailPlayIc(){
+        setPlay(false)
     }
 
   return (
@@ -35,7 +41,8 @@ export default function TrackList() {
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
         <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
         <TrackBox key={id}>
-            {trackhover&&<HoverPauseIcon onClick={clickThumbnail}/>}
+            {trackhover&&!play&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
+            {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
             <TrackText width={31.5}>{title}</TrackText>
             <TrackText width={21.3}>{producer}</TrackText>
@@ -53,6 +60,10 @@ const TrackListContainer=styled.section`
 `
 
 const HoverPauseIcon=styled(HoverPauseIc)`
+    position: absolute;
+    z-index: 2;
+`
+const HoverPlayIcon=styled(HoverPlayIc)`
     position: absolute;
     z-index: 2;
 `

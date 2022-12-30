@@ -6,7 +6,7 @@ import TrackListHeader from "../@components/trackSearch/trackListHeader"
 import TrackList from "../@components/trackSearch/trackList"
 import Player from "../@components/@common/player"
 
-import {showPlayerBar} from "../recoil/showPlayerBar"
+import {showPlayerBar} from "../recoil/player"
 import { useRecoilValue } from "recoil"
 
 export default function TrackSearchPage() {
