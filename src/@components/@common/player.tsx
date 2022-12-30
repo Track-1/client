@@ -32,8 +32,9 @@ export default function Player() {
     if (play) {
       audio.play();
     } else {
-        audio.pause();
+      audio.pause();
     }
+
     audio.addEventListener('timeupdate', () => {
       setCurrentTime(parseInt(String(audio.currentTime/60))+":"+parseInt(String(audio.currentTime%60)))
       setProgress((audio.currentTime / audio.duration) * 1000);
@@ -51,7 +52,7 @@ export default function Player() {
     audio.currentTime = 0;
 
     setShowPlayer(false)
-    setPlay(false)
+    setPlay((play)=>!play)
   }
 
   function goProgress() {
@@ -82,6 +83,19 @@ export default function Player() {
       audio.currentTime = currentStop;
     }
   }
+
+  useEffect(() => {
+    if(audio.currentTime===audio.duration){
+      audio.pause();
+      const currentDuration = (audio.currentTime / audio.duration) * 100;
+      setProgress(currentDuration);
+    }
+  }, [])
+  
+  if(audio.currentTime===audio.duration){
+    setPlay(false)
+  }
+  
 
   return (
     <PlayerContainer>
