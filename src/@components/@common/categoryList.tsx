@@ -71,6 +71,10 @@ const CategoryTextBox=styled.div`
 `
 
 const UploadButton=styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 24.6rem;
   height: 5.2rem;
 
