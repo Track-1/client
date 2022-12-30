@@ -27,3 +27,12 @@ export { ReactComponent as TracksSelectTextIc } from './icon/TracksSelectTextIc.
 export { ReactComponent as TracksTextIc } from './icon/TracksTextIc.svg';
 export { ReactComponent as VocalsSelectTextIc } from './icon/VocalsSelectTextIc.svg';
 export { ReactComponent as VocalsTextIc } from './icon/VocalsTextIc.svg';
+export { ReactComponent as RnBSelectTextIc } from './icon/R&BSelectTextIc.svg';
+export { ReactComponent as HiphopSelectTextIc } from './icon/HiphopSelectTextIc.svg';
+export { ReactComponent as BalladSelectTextIc } from './icon/BalladSelectTextIc.svg';
+export { ReactComponent as PopSelectTextIc } from './icon/PopSelectTextIc.svg';
+export { ReactComponent as RockSelectTextIc } from './icon/RockSelectTextIc.svg';
+export { ReactComponent as EDMSelectTextIc } from './icon/EDMSelectTextIc.svg';
+export { ReactComponent as JazzSelectTextIc } from './icon/JazzSelectTextIc.svg';
+export { ReactComponent as HouseSelectTextIc } from './icon/HouseSelectTextIc.svg';
+export { ReactComponent as FunkSelectTextIc } from './icon/FunkSelectTextIc.svg';

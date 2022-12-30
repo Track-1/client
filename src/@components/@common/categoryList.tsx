@@ -14,10 +14,10 @@ export default function CategoryList() {
 
   return (
     <CategoryListWrapper>
-    {categorys.map(({id, category})=>(
+    {categorys.map(({id, category, selectCategory})=>(
       <CategoryTextBoxWrapper key={id} categoryClicked={categoryClicked} onClick={()=>categoryClick(id, category)} className={`${categoryClicked && 'active'}`} >
         <CategoryTextBox>
-          <img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />
+          {categoryClicked?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
           {categoryClicked&&(<NeonXIc/>)}
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
