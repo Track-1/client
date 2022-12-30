@@ -107,6 +107,7 @@ export default function Player() {
 const PlayerContainer = styled.section`
   position: fixed;
   z-index: 10;
+  pointer-events: none; 
 
   display: flex;
 
@@ -141,6 +142,7 @@ const Playbar = styled.div<{ progress: number }>`
 
   background-color: transparent;
   border-bottom: 0.3rem solid ${({ theme }) => theme.colors.sub1};
+  pointer-events: auto; 
 `;
 
 const PlayerBarWrapper = styled.div`
@@ -151,6 +153,8 @@ const PlayerBarWrapper = styled.div`
 
   background-color: transparent;
   border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
+  pointer-events: auto; 
+
 `;
 
 const Thumbnail = styled.img`
@@ -168,12 +172,18 @@ const PlayerInformText=styled.div<{width:number, color:string}>`
 
     ${({ theme }) => theme.fonts.player_title};
     color: ${({ color }) => color==="white"?("white"):("gray")};
+    pointer-events: auto; 
+
 `
 
 const PauseIcon=styled(PauseIc)`
     margin-right: 5.1rem;
+    pointer-events: auto; 
+
 `
 
 const PlayIcon=styled(PlayIc)`
     margin-right: 5.1rem;
+    pointer-events: auto; 
+
 `
