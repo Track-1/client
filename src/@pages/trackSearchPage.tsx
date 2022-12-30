@@ -20,7 +20,7 @@ export default function TrackSearchPage() {
   console.log(showPlayer)
   return (
     <>
-    <CategoryHeader isClicked={true} />
+    <CategoryHeader />
     {showPlayer&&(<Player />)}
 
     <TrackSearchPageWrapper>

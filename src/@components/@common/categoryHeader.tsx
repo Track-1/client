@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { ToggleIc, Track1Ic } from '../../assets'
+import { ToggleIc, Track1Ic, TracksSelectTextIc, VocalsSelectTextIc, TracksTextIc,VocalsTextIc } from '../../assets'
 import profileImg from '../../assets/image/profileImg.png'
 // import { ClickProps } from '../../type/headerProps'
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -31,8 +31,18 @@ export default function CategoryHeader() {
     <CategoryHeaderContainer>
     <CategoryContainer>
         <CategoryWrapper>
-            <TracksButton onClick={clickTracksButton} tracksOrVocals={tracksOrVocals}>Tracks</TracksButton>
-            <VocalsButton onClick={clickVocalsButton} tracksOrVocals={tracksOrVocals}>Vocals</VocalsButton>
+            {tracksOrVocals==="Tracks"&&(
+                <>
+                <TracksSelectTextIcon onClick={clickTracksButton} />
+                <VocalsTextIcon onClick={clickVocalsButton}/>
+                </>
+            )}
+            {tracksOrVocals==="Vocals"&&(
+                <>
+                <TracksTextIcon onClick={clickTracksButton} />
+                <VocalsSelectTextIcon onClick={clickVocalsButton}/>
+                </>
+            )}
         </CategoryWrapper>
     </CategoryContainer>
 
@@ -95,23 +105,22 @@ const CategoryWrapper=styled.div`
     ${({ theme }) => theme.fonts.body1};
 `
 
-const TracksButton=styled.p<{tracksClicked:boolean}>`
-    border-bottom : 0.15rem solid ${({tracksClicked, theme})=>!tracksClicked?(theme.colors.white):(theme.colors.sub3)};
-    padding-bottom: 1rem;
+const TracksSelectTextIcon=styled(TracksSelectTextIc)`
+    cursor: pointer;
+`
 
-    color:${({ tracksClicked, theme }) => tracksClicked?(theme.colors.white):(theme.colors.gray3)};
+const TracksTextIcon=styled(TracksTextIc)`
+    cursor: pointer;
+`
+
+const VocalsSelectTextIcon=styled(VocalsSelectTextIc)`
+    margin-left: 7.368rem;
 
     cursor: pointer;
 `
 
-const VocalsButton=styled.p<{tracksClicked:boolean}>`
+const VocalsTextIcon=styled(VocalsTextIc)`
     margin-left: 7.368rem;
-
-    border-bottom: 0.15rem solid;
-    border-bottom-color: ${({tracksClicked, theme})=>!tracksClicked?(theme.colors.white):(theme.colors.sub3)};
-    padding-bottom: 1rem;
-
-    color:${({ tracksClicked, theme }) => !tracksClicked?(theme.colors.white):(theme.colors.gray3)};
 
     cursor: pointer;
 `

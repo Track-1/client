@@ -23,3 +23,7 @@ export { ReactComponent as QuitIc } from './icon/QuitIc.svg';
 export { ReactComponent as PlayIc } from './icon/PlayIc.svg';
 export { ReactComponent as HoverPauseIc } from './icon/HoverPauseIc.svg';
 export { ReactComponent as HoverPlayIc } from './icon/HoverPlayIc.svg';
+export { ReactComponent as TracksSelectTextIc } from './icon/TracksSelectTextIc.svg';
+export { ReactComponent as TracksTextIc } from './icon/TracksTextIc.svg';
+export { ReactComponent as VocalsSelectTextIc } from './icon/VocalsSelectTextIc.svg';
+export { ReactComponent as VocalsTextIc } from './icon/VocalsTextIc.svg';
