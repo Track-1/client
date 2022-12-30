@@ -11,12 +11,12 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
 
     const [tracksClicked, setTracksClicked] = useState<boolean>(isClicked)
 
-    function tracksButtonClick(){
+    function clickTracksButton(){
         setTracksClicked(true)
         navigate('/track-search')
     }
 
-    function vocalsButtonClick(){
+    function clickVocalsButton(){
         setTracksClicked(false)
         navigate('/vocals')
     }
@@ -25,8 +25,8 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
     <CategoryHeaderContainer>
     <CategoryContainer>
         <CategoryWrapper>
-            <TracksButton onClick={tracksButtonClick} tracksClicked={tracksClicked}>Tracks</TracksButton>
-            <VocalsButton onClick={vocalsButtonClick} tracksClicked={tracksClicked}>Vocals</VocalsButton>
+            <TracksButton onClick={clickTracksButton} tracksClicked={tracksClicked}>Tracks</TracksButton>
+            <VocalsButton onClick={clickVocalsButton} tracksClicked={tracksClicked}>Vocals</VocalsButton>
         </CategoryWrapper>
     </CategoryContainer>
 
@@ -34,7 +34,7 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
         <HeaderWrapper>
             <TrackOneIcon/>
             <ProfileWrapper>
-                <img src={profileImg} alt="프로필이미지"/>
+                <ProfileImg src={profileImg} alt="프로필이미지"/>
                 <ToggleIc/>
             </ProfileWrapper>
         </HeaderWrapper>
@@ -90,8 +90,7 @@ const CategoryWrapper=styled.div`
 `
 
 const TracksButton=styled.p<{tracksClicked:boolean}>`
-    border-bottom: 0.15rem solid;
-    border-bottom-color: ${({tracksClicked, theme})=>tracksClicked?(theme.colors.white):(theme.colors.sub3)};
+    border-bottom : 0.15rem solid ${({tracksClicked, theme})=>!tracksClicked?(theme.colors.white):(theme.colors.sub3)};
     padding-bottom: 1rem;
 
     color:${({ tracksClicked, theme }) => tracksClicked?(theme.colors.white):(theme.colors.gray3)};
@@ -114,11 +113,11 @@ const VocalsButton=styled.p<{tracksClicked:boolean}>`
 const ProfileWrapper=styled.div`
     display: flex;
     align-items: center;
-    
-    & > img{
-        margin-right: 1.29rem;
+`
 
-        border: 0.15rem solid white;
-        border-radius: 2.4rem;
-    }
+const ProfileImg=styled.img`
+    margin-right: 1.29rem;
+
+    border: 0.15rem solid white;
+    border-radius: 2.4rem;
 `
