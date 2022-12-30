@@ -39,9 +39,9 @@ export default function TrackList() {
 
     <TracksWrapper>
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
-        <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
+        <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover} showPlayer={showPlayer}>
         <TrackBox key={id}>
-            {trackhover&&!play&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
+            {((!play&&trackhover)||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
             <TrackText width={31.5}>{title}</TrackText>
@@ -91,7 +91,7 @@ const TracksWrapper=styled.section`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Tracks=styled.article<{trackhover:boolean}>`
+const Tracks=styled.article<{trackhover:boolean, showPlayer:boolean}>`
     display: flex;
     align-items: center;
 
@@ -105,7 +105,7 @@ const Tracks=styled.article<{trackhover:boolean}>`
     border:0.15rem solid transparent;
 
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ trackhover, theme }) => trackhover?(theme.colors.sub1):(theme.colors.sub3)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
+    linear-gradient(to right, ${({ trackhover, showPlayer, theme }) => trackhover||showPlayer?(theme.colors.sub1):(theme.colors.sub3)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     border-radius: 11.7rem 0 0 11.7rem;
