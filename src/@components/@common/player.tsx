@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
+import thumbnailImg from '../../assets/image/thumbnailImg.png'
+import { PauseIc, QuitIc } from "../../assets";
 
 export default function Player() {
   const audio = useMemo(() => new Audio(ditto), [ditto]);
@@ -32,6 +34,7 @@ export default function Player() {
     setPlay((play)=>!play)
   }
 
+  console.log(play)
     if (play) {
         audio.play();
         audio.addEventListener("timeupdate", () => {
@@ -93,10 +96,14 @@ export default function Player() {
       </PlayerBarWrapper>
 
       <PlayerInformWrapper>
-        <PlayBtn onClick={playAudio}>{!play?("▶️"):("⏸")}</PlayBtn>
-        <StopBtn onClick={quitAudio}>stop</StopBtn>
-        <p>{currentTime}</p>
-        <p>{duration}</p>
+        <Thumbnail src={thumbnailImg} alt="썸네일 이미지"/>
+        <PlayerInformText width={74} color={"white"}>Favorite</PlayerInformText>
+        <PlayerInformText width={16} color={"gray2"}>Nct127</PlayerInformText>
+        <PauseIcon onClick={playAudio}/>
+        <PlayerInformText width={10} color={"white"}>{currentTime}</PlayerInformText>
+        <PlayerInformText width={30} color={"gray2"}>3:11</PlayerInformText>
+        <QuitIc onClick={quitAudio}/>
+
       </PlayerInformWrapper>
     </PlayerWrapper>
     </PlayerContainer>
@@ -108,7 +115,6 @@ const PlayerContainer = styled.section`
   z-index: 10;
 
   display: flex;
-  justify-content: flex-end;
 
   width: 192rem;
   height: 108rem;
@@ -118,7 +124,7 @@ const PlayerContainer = styled.section`
 const PlayerWrapper=styled.article`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
 
 `
 
@@ -127,32 +133,11 @@ const PlayerInformWrapper = styled.div`
   height: 11rem;
 
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
-`;
-
-const PlayBtn = styled.div`
-  height: 5rem;
-  width: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 1rem;
-  background-color: white;
-`;
-
-
-const StopBtn = styled.div`
-  height: 5rem;
-  width: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 1rem;
-  background-color: white;
 `;
 
 const Playbar = styled.div<{ progress: number }>`
@@ -169,3 +154,25 @@ const PlayerBarWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.gray3};
 `;
 
+const Thumbnail = styled.img`
+    width: 6.5rem;
+    height: 6.5rem;
+
+    margin-left: 34rem;
+    margin-right: 3.069rem;
+
+    border-radius: 5rem;
+`
+
+const PlayerInformText=styled.div<{width:number, color:string}>`
+    width: ${({width})=>width}rem;
+
+    ${({ theme }) => theme.fonts.player_title};
+    /* color: ${({ color }) => color==="white"?("white"):("gray")}; */
+
+    color: ${({ color, theme }) => theme.colors+'.'+color};
+`
+
+const PauseIcon=styled(PauseIc)`
+    margin-right: 5.1rem;
+`
