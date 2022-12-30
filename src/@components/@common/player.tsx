@@ -26,6 +26,7 @@ export default function Player() {
     audio.addEventListener('timeupdate', () => {
       setCurrentTime(parseInt(String(audio.currentTime/60))+":"+parseInt(String(audio.currentTime%60)))
       setProgress((audio.currentTime / audio.duration) * 1000);
+      goProgress();
     });
 
 }, [audio,play]);
@@ -34,20 +35,11 @@ export default function Player() {
     setPlay((play)=>!play)
   }
 
-  console.log(play)
-    if (play) {
-        audio.play();
-        audio.addEventListener("timeupdate", () => {
-          goProgress();
-        });
-    
-    } else {
-        audio.pause();
-        audio.removeEventListener("timeupdate", () => {
-          goProgress();
-        });
-    
-    }
+  if (play) {
+      audio.play();    
+  } else {
+      audio.pause();
+  }
 
   function quitAudio() {
     audio.pause();
@@ -88,9 +80,9 @@ export default function Player() {
     <PlayerWrapper>
       <PlayerBarWrapper
         onClick={controlAudio}
-        onMouseDown={downMouse}
-        onMouseUp={upMouse}
-        onMouseMove={moveAudio}
+        // onMouseDown={downMouse}
+        // onMouseUp={upMouse}
+        // onMouseMove={moveAudio}
         ref={playBar}>
         <Playbar progress={progress} />
       </PlayerBarWrapper>
