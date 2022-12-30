@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 import CategoryHeader from "../@components/@common/categoryHeader"
-import CategoryList from "../@components/trackSearch/categoryList"
+import CategoryList from "../@components/@common/categoryList"
 import TrackListHeader from "../@components/trackSearch/trackListHeader"
 import TrackList from "../@components/trackSearch/trackList"
 import Player from "../@components/@common/player"
