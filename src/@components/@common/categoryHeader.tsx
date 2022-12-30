@@ -4,20 +4,26 @@ import styled from 'styled-components'
 
 import { ToggleIc, Track1Ic } from '../../assets'
 import profileImg from '../../assets/image/profileImg.png'
-import { ClickProps } from '../../type/headerProps'
+// import { ClickProps } from '../../type/headerProps'
+import { useRecoilState, useRecoilValue } from "recoil";
+import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
-export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
+
+export default function CategoryHeader() {
     const navigate=useNavigate();
 
-    const [tracksClicked, setTracksClicked] = useState<boolean>(isClicked)
+    // const [tracksClicked, setTracksClicked] = useState<boolean>(isClicked)
+
+    const [tracksOrVocals,setTracksOrVocals]=useRecoilState<string>(tracksOrVocalsCheck)
+
 
     function clickTracksButton(){
-        setTracksClicked(true)
+        setTracksOrVocals("Tracks")
         navigate('/track-search')
     }
 
     function clickVocalsButton(){
-        setTracksClicked(false)
+        setTracksOrVocals("Vocals")
         navigate('/vocals')
     }
     
@@ -25,8 +31,8 @@ export default function CategoryHeader({ isClicked }: ClickProps): JSX.Element {
     <CategoryHeaderContainer>
     <CategoryContainer>
         <CategoryWrapper>
-            <TracksButton onClick={clickTracksButton} tracksClicked={tracksClicked}>Tracks</TracksButton>
-            <VocalsButton onClick={clickVocalsButton} tracksClicked={tracksClicked}>Vocals</VocalsButton>
+            <TracksButton onClick={clickTracksButton} tracksOrVocals={tracksOrVocals}>Tracks</TracksButton>
+            <VocalsButton onClick={clickVocalsButton} tracksOrVocals={tracksOrVocals}>Vocals</VocalsButton>
         </CategoryWrapper>
     </CategoryContainer>
 
