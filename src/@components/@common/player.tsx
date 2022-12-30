@@ -80,9 +80,9 @@ export default function Player() {
     <PlayerWrapper>
       <PlayerBarWrapper
         onClick={controlAudio}
-        // onMouseDown={downMouse}
-        // onMouseUp={upMouse}
-        // onMouseMove={moveAudio}
+        onMouseDown={downMouse}
+        onMouseUp={upMouse}
+        onMouseMove={moveAudio}
         ref={playBar}>
         <Playbar progress={progress} />
       </PlayerBarWrapper>
@@ -118,6 +118,8 @@ const PlayerWrapper=styled.article`
   flex-direction: column;
   /* justify-content: flex-end; */
 
+  cursor: pointer;
+
 `
 
 const PlayerInformWrapper = styled.div`
@@ -133,17 +135,22 @@ const PlayerInformWrapper = styled.div`
 `;
 
 const Playbar = styled.div<{ progress: number }>`
-  height: 1rem;
   width: ${(props) => props.progress}%;
-  background-color: ${({ theme }) => theme.colors.sub1};
+  height: 3rem;
+
+  background-color: transparent;
+
+  border-bottom: 0.3rem solid ${({ theme }) => theme.colors.sub1};
 `;
 
 const PlayerBarWrapper = styled.div`
-  height: 0.3rem;
   width: 192rem;
+  height: 3rem;
 
   margin-top: 2rem;
-  background-color: ${({ theme }) => theme.colors.gray3};
+
+  background-color: transparent;
+  border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
 `;
 
 const Thumbnail = styled.img`
