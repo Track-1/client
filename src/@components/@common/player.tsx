@@ -3,7 +3,7 @@ import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import thumbnailImg from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar} from "../../recoil/player"
+import {showPlayerBar, playMusic} from "../../recoil/player"
 import { useRecoilState } from "recoil";
 
 
@@ -15,7 +15,7 @@ export default function Player() {
   const [progress, setProgress] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
 
-  const [play, setPlay] = useState<boolean>(false)
+  const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
   const title="Sweet (feat. 구슬한 of 보수동쿨러)"
@@ -29,6 +29,11 @@ export default function Player() {
   });
 
   useEffect(() => {
+    if (play) {
+      audio.play();
+    } else {
+        audio.pause();
+    }
     audio.addEventListener('timeupdate', () => {
       setCurrentTime(parseInt(String(audio.currentTime/60))+":"+parseInt(String(audio.currentTime%60)))
       setProgress((audio.currentTime / audio.duration) * 1000);
@@ -41,17 +46,12 @@ export default function Player() {
     setPlay((play)=>!play)
   }
 
-  if (play) {
-      audio.play();    
-  } else {
-      audio.pause();
-  }
-
   function quitAudio() {
     audio.pause();
     audio.currentTime = 0;
 
     setShowPlayer(false)
+    setPlay(false)
   }
 
   function goProgress() {
