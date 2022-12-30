@@ -3,6 +3,9 @@ import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import thumbnailImg from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
+import {showPlayerBar} from "../../recoil/showPlayerBar"
+import { useRecoilState } from "recoil";
+
 
 export default function Player() {
   const audio = useMemo(() => new Audio(ditto), [ditto]);
@@ -19,6 +22,7 @@ export default function Player() {
   const producer="해서웨이(hathaw9y)"
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
 
+  const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
 
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
@@ -46,6 +50,8 @@ export default function Player() {
   function quitAudio() {
     audio.pause();
     audio.currentTime = 0;
+
+    setShowPlayer(false)
   }
 
   function goProgress() {
@@ -96,7 +102,7 @@ export default function Player() {
         {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
         <PlayerInformText width={10} color={"white"}>{currentTime}</PlayerInformText>
         <PlayerInformText width={30} color={"gray2"}>{duration}</PlayerInformText>
-        <QuitIc onClick={quitAudio}/>
+        <QuitIcon onClick={quitAudio}/>
 
       </PlayerInformWrapper>
     </PlayerWrapper>
@@ -186,4 +192,8 @@ const PlayIcon=styled(PlayIc)`
     margin-right: 5.1rem;
     pointer-events: auto; 
 
+`
+
+const QuitIcon=styled(QuitIc)`
+    pointer-events: auto; 
 `

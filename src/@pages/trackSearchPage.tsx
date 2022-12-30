@@ -6,11 +6,17 @@ import TrackListHeader from "../@components/trackSearch/trackListHeader"
 import TrackList from "../@components/trackSearch/trackList"
 import Player from "../@components/@common/player"
 
-export default function trackSearchPage() {
+import {showPlayerBar} from "../recoil/showPlayerBar"
+import { useRecoilValue } from "recoil"
+
+export default function TrackSearchPage() {
+  const showPlayer=useRecoilValue<boolean>(showPlayerBar);
+
+  console.log(showPlayer)
   return (
     <>
     <CategoryHeader isClicked={true} />
-    <Player/>
+    {showPlayer&&(<Player/>)}
 
     <TrackSearchPageWrapper>
       <article className="left-article">

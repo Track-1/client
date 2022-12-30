@@ -2,9 +2,13 @@ import { useState } from "react"
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
+import {showPlayerBar} from "../../recoil/showPlayerBar"
+import { useRecoilState } from "recoil";
+
 
 export default function TrackList() {
     const [trackhover, setTrackHover] = useState<boolean>(false)
+    const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
 
     function mouseOverTrackBox(){
         setTrackHover(true)
@@ -12,6 +16,10 @@ export default function TrackList() {
 
     function mouseOutTrackBox(){
         setTrackHover(false)
+    }
+
+    function clickThumbnail(){
+        setShowPlayer(true)
     }
 
   return (
@@ -27,7 +35,7 @@ export default function TrackList() {
     {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
         <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover}>
         <TrackBox key={id}>
-            {trackhover&&<HoverPauseIcon/>}
+            {trackhover&&<HoverPauseIcon onClick={clickThumbnail}/>}
             <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
             <TrackText width={31.5}>{title}</TrackText>
             <TrackText width={21.3}>{producer}</TrackText>
