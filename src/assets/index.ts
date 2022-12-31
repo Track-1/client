@@ -41,3 +41,15 @@ export { ReactComponent as VocalSearchingIc } from './icon/VocalSearchingIc.svg'
 export { ReactComponent as PortfolioIc } from './icon/PortfolioIc.svg';
 export { ReactComponent as VocalSearchingTextIc } from './icon/VocalSearchingTextIc.svg';
 export { ReactComponent as PortfolioTextIc } from './icon/PortfolioTextIc.svg';
+export { ReactComponent as RnBPinkTextIc } from './icon/R&BPinkTextIc.svg';
+export { ReactComponent as HiphopPinkTextIc } from './icon/HiphopPinkTextIc.svg';
+export { ReactComponent as BalladPinkTextIc } from './icon/BalladPinkTextIc.svg';
+export { ReactComponent as PopPinkTextIc } from './icon/PopPinkTextIc.svg';
+export { ReactComponent as RockPinkTextIc } from './icon/RockPinkTextIc.svg';
+export { ReactComponent as EDMPinkTextIc } from './icon/EDMPinkTextIc.svg';
+export { ReactComponent as JazzPinkTextIc } from './icon/JazzPinkTextIc.svg';
+export { ReactComponent as HousePinkTextIc } from './icon/HousePinkTextIc.svg';
+export { ReactComponent as FunkPinkTextIc } from './icon/FunkPinkTextIc.svg';
+export { ReactComponent as TrackSearchingTextIc } from './icon/TrackSearchingTextIc.svg';
+export { ReactComponent as TrackSearchingPinkIc } from './icon/TrackSearchingPinkIc.svg';
+export { ReactComponent as PinkXIc } from './icon/PinkXIc.svg';

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import {UploadTextIc,NeonXIc} from '../../assets'
+import {UploadTextIc,NeonXIc,TrackSearchingTextIc,TrackSearchingPinkIc,PinkXIc} from '../../assets'
 import categorys from "../../mocks/categoryDummy.json"
 import { useState, useEffect, useRef } from 'react';
-import { useRecoilSnapshot, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { categorySelect } from '../../recoil/categorySelect';
 import UploadButtonModal from '../trackSearch/uploadButtonModal';
+import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 
 interface CategoryChecks{
   categId:number;
@@ -27,7 +28,10 @@ const categorySelectedCheck: CategoryChecks[] = [
 export default function CategoryList() {  
   const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
   const[selectedCategorysApi, setSelectedCategorysApi]=useRecoilState<string>(categorySelect);
-  const [buttonClicked, setButtonClicked]=useState<boolean>(false);
+  const [uploadButtonClicked, setUploadButtonClicked]=useState<boolean>(false);
+  const [trackSearchingClicked, setTrackSearchingClicked]=useState<boolean>(false);
+  const tracksOrVocals=useRecoilValue<string>(tracksOrVocalsCheck)
+
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -46,13 +50,17 @@ export default function CategoryList() {
   setSelectedCategorysApi(categApi)
 
   function clickUploadButton(){
-    setButtonClicked(true)
+    setUploadButtonClicked(true)
+  }
+
+  function clickTrackSearching(){
+    setTrackSearchingClicked((prev)=>!prev)
   }
 
   const modalRef = useRef<HTMLDivElement>(null);
   const modalOutSideClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if(modalRef.current === e.target) {
-      setButtonClicked(false)
+      setUploadButtonClicked(false)
       console.log("이게 잘 안되어요")
     }  
     else{
@@ -60,21 +68,26 @@ export default function CategoryList() {
     }
   }
 
+  
   return (
     <>
-    {buttonClicked&&<UploadButtonModal modalRef={modalRef} modalOutSideClick={modalOutSideClick}/>}
+    {uploadButtonClicked&&<UploadButtonModal modalRef={modalRef} modalOutSideClick={modalOutSideClick}/>}
     <CategoryListWrapper>
-    {categorys.map(({id, category, selectCategory})=>(
-      <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected}>
+    {categorys.map(({id, category, selectTrackCategory, selectVocalCategory})=>(
+      <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected} tracksOrVocals={tracksOrVocals}>
         <CategoryTextBox>
-          {selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
-          {selectedCategorys[id].selected&&(<NeonXIc/>)}
+          {tracksOrVocals==="Tracks"?(selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectTrackCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="선택된 카테고리 텍스트" />)):(selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectVocalCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="선택된 카테고리 텍스트" />))}
+          {tracksOrVocals==="Tracks"&&selectedCategorys[id].selected&&(<NeonXIc/>)}
+          {tracksOrVocals==="Vocals"&&selectedCategorys[id].selected&&(<PinkXIc/>)}
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
     ))}
-    <UploadButton type="button" onClick={clickUploadButton}>
+    {tracksOrVocals==="Tracks"&&(<UploadButton type="button" onClick={clickUploadButton}>
       <UploadTextIc/>
     </UploadButton>
+    )}
+
+    {tracksOrVocals==="Vocals"&&(trackSearchingClicked?(<TrackSearchingPinkIcon onClick={clickTrackSearching}/>):(<TrackSearchingTextIcon onClick={clickTrackSearching}/>))}
     </CategoryListWrapper>
     </>
   )
@@ -91,7 +104,7 @@ const CategoryListWrapper=styled.section`
 
 `
 
-const CategoryTextBoxWrapper=styled.article<{selectCategBool:boolean}>`
+const CategoryTextBoxWrapper=styled.article<{selectCategBool:boolean, tracksOrVocals:string}>`
   display: flex;
   align-items: center;
 
@@ -104,8 +117,8 @@ const CategoryTextBoxWrapper=styled.article<{selectCategBool:boolean}>`
   border:0.15rem solid transparent;
   border-radius: 3.26307rem;
 
-  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-  linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ selectCategBool,theme }) => selectCategBool?(theme.colors.sub1):(theme.colors.sub3)} 100%);
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),  
+  linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ selectCategBool,tracksOrVocals,theme }) => tracksOrVocals==="Tracks"?(selectCategBool?(theme.colors.sub1):(theme.colors.sub3)):(selectCategBool?(theme.colors.sub2):(theme.colors.sub3)) } 100%);
   background-origin: border-box;
   background-clip: content-box, border-box;
 `
@@ -135,5 +148,16 @@ const UploadButton=styled.button`
   ${({ theme }) => theme.fonts.title};
   background-color: ${({ theme }) => theme.colors.main};
   color: ${({ theme }) => theme.colors.white};
+`
 
+const TrackSearchingTextIcon=styled(TrackSearchingTextIc)`
+  margin: 2.275rem 0 0 6.3rem ;
+
+  cursor: pointer;
+`
+
+const TrackSearchingPinkIcon=styled(TrackSearchingPinkIc)`
+  margin: 2.275rem 0 0 6.3rem ;
+
+  cursor: pointer;
 `
