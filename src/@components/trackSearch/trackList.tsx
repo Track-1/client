@@ -31,10 +31,10 @@ export default function TrackList() {
   return (
     <TrackListContainer>
     <CategoryWrapper>
-        <Title/>
-        <Producer/>
-        <Category/>
-        <Hashtag/>
+        <TitleTextIcon/>
+        <ProducerCategoryTextIcon/>
+        <CategoryTextIcon/>
+        <HashtagTextIcon/>
     </CategoryWrapper>
 
     <TracksWrapper>
@@ -44,7 +44,7 @@ export default function TrackList() {
             {((!play&&trackhover)||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
-            <TrackText width={31.5}>{title}</TrackText>
+            <TrackText width={36.8}>{title}</TrackText>
             <TrackText width={21.3}>{producer}</TrackText>
             <TrackText width={20.5}>{category}</TrackText>
         </TrackBox>
@@ -71,18 +71,18 @@ const HoverPlayIcon=styled(HoverPlayIc)`
 const CategoryWrapper=styled.section`
     margin: 3.6rem 0 3.5rem 9rem;
 `
-const Title=styled(TitleTextIc)`
+const TitleTextIcon=styled(TitleTextIc)`
 `
 
-const Producer=styled(ProducerCategoryTextIc)`
-    margin-left:38.1rem;
+const ProducerCategoryTextIcon=styled(ProducerCategoryTextIc)`
+    margin-left:43rem;
 `
 
-const Category=styled(CategoryTextIc)`
+const CategoryTextIcon=styled(CategoryTextIc)`
     margin-left:10.7rem;
 `
 
-const Hashtag=styled(HashtagTextIc)`
+const HashtagTextIcon=styled(HashtagTextIc)`
     margin-left:10.7rem;
 `
 
