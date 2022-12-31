@@ -24,19 +24,6 @@ const categorySelectedCheck: CategoryChecks[] = [
 
 
 export default function CategoryList() {  
-  // const [selectedCategorys, setSelectedCategorys]=useState<number[]>([]);
-
-  // function categoryClick(id:number){
-  //   if(selectedCategorys.includes(id)){
-  //     setSelectedCategorys(selectedCategorys.filter((element) => element !== id))
-  //   }
-  //   else{
-  //     selectedCategorys.push(id)
-  //   }
-  //   setSelectedCategorys(selectedCategorys.sort())  
-  // }
-
-  
   const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
   const[selectedCategorysApi, setSelectedCategorysApi]=useRecoilState<string>(categorySelect);
 
@@ -59,11 +46,8 @@ export default function CategoryList() {
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category, selectCategory})=>(
-      // <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)}  selectCategBool={selectedCategorys.includes(id)}>
       <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected}>
         <CategoryTextBox>
-          {/* {selectedCategorys.includes(id)?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
-          {selectedCategorys.includes(id)&&(<NeonXIc/>)} */}
           {selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
           {selectedCategorys[id].selected&&(<NeonXIc/>)}
         </CategoryTextBox>
