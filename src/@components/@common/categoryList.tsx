@@ -107,7 +107,7 @@ const UploadButton=styled.button`
   width: 24.6rem;
   height: 5.2rem;
 
-  margin: 5.2rem 0 0 6.3rem ;
+  margin: 4.175rem 0 0 6.3rem ;
 
   border:0.1rem solid ${({ theme }) => theme.colors.main};
   border-radius: 2.55188rem;
