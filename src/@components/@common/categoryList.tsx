@@ -4,6 +4,7 @@ import categorys from "../../mocks/categoryDummy.json"
 import { useState, useEffect } from 'react';
 import { useRecoilSnapshot, useRecoilState } from 'recoil';
 import { categorySelect } from '../../recoil/categorySelect';
+import UploadButtonModal from '../trackSearch/uploadButtonModal';
 
 interface CategoryChecks{
   categId:number;
@@ -44,6 +45,8 @@ export default function CategoryList() {
   setSelectedCategorysApi(categApi)
 
   return (
+    <>
+    <UploadButtonModal/>
     <CategoryListWrapper>
     {categorys.map(({id, category, selectCategory})=>(
       <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected}>
@@ -57,6 +60,7 @@ export default function CategoryList() {
       <UploadTextIc/>
     </UploadButton>
     </CategoryListWrapper>
+    </>
   )
 }
 
@@ -107,7 +111,7 @@ const UploadButton=styled.button`
   width: 24.6rem;
   height: 5.2rem;
 
-  margin: 4.175rem 0 0 6.3rem ;
+  margin: 2.275rem 0 0 6.3rem ;
 
   border:0.1rem solid ${({ theme }) => theme.colors.main};
   border-radius: 2.55188rem;

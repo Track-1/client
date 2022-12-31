@@ -36,3 +36,8 @@ export { ReactComponent as EDMSelectTextIc } from './icon/EDMSelectTextIc.svg';
 export { ReactComponent as JazzSelectTextIc } from './icon/JazzSelectTextIc.svg';
 export { ReactComponent as HouseSelectTextIc } from './icon/HouseSelectTextIc.svg';
 export { ReactComponent as FunkSelectTextIc } from './icon/FunkSelectTextIc.svg';
+export { ReactComponent as UnionIc } from './icon/UnionIc.svg';
+export { ReactComponent as VocalSearchingIc } from './icon/VocalSearchingIc.svg';
+export { ReactComponent as PortfolioIc } from './icon/PortfolioIc.svg';
+export { ReactComponent as VocalSearchingTextIc } from './icon/VocalSearchingTextIc.svg';
+export { ReactComponent as PortfolioTextIc } from './icon/PortfolioTextIc.svg';
