@@ -38,17 +38,17 @@ export default function TrackList() {
     </CategoryWrapper>
 
     <TracksWrapper>
-    {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
-        <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover} showPlayer={showPlayer}>
-        <TrackBox key={id}>
+    {tracks.map((track)=>(
+        <Tracks onMouseEnter={mouseOverTrackBox} onMouseLeave={mouseOutTrackBox} trackhover={trackhover} showPlayer={showPlayer}>
+        <TrackBox key={track.beatId}>
             {((!play&&trackhover)||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
-            <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
-            <TrackText width={36.8}>{title}</TrackText>
-            <TrackText width={21.3}>{producer}</TrackText>
-            <TrackText width={20.5}>{category}</TrackText>
+            <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
+            <TrackText width={36.8}>{track.title}</TrackText>
+            <TrackText width={21.3}>{track.producerName}</TrackText>
+            <TrackText width={20.5}>{track.category}</TrackText>
         </TrackBox>
-        {hashtags.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
+        {track.keyword.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
         </Tracks>
     ))}
     </TracksWrapper>
