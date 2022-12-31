@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {UploadTextIc,NeonXIc} from '../../assets'
 import categorys from "../../mocks/categoryDummy.json"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRecoilSnapshot, useRecoilState } from 'recoil';
 import { categorySelect } from '../../recoil/categorySelect';
 import UploadButtonModal from '../trackSearch/uploadButtonModal';
@@ -27,6 +27,7 @@ const categorySelectedCheck: CategoryChecks[] = [
 export default function CategoryList() {  
   const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
   const[selectedCategorysApi, setSelectedCategorysApi]=useRecoilState<string>(categorySelect);
+  const [buttonClicked, setButtonClicked]=useState<boolean>(false);
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -44,9 +45,24 @@ export default function CategoryList() {
   });
   setSelectedCategorysApi(categApi)
 
+  function clickUploadButton(){
+    setButtonClicked(true)
+  }
+
+  const modalRef = useRef<HTMLDivElement>(null);
+  const modalOutSideClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    if(modalRef.current === e.target) {
+      setButtonClicked(false)
+      console.log("이게 잘 안되어요")
+    }  
+    else{
+      console.log("이건 잘 나와요")
+    }
+  }
+
   return (
     <>
-    <UploadButtonModal/>
+    {buttonClicked&&<UploadButtonModal modalRef={modalRef} modalOutSideClick={modalOutSideClick}/>}
     <CategoryListWrapper>
     {categorys.map(({id, category, selectCategory})=>(
       <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected}>
@@ -56,7 +72,7 @@ export default function CategoryList() {
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
     ))}
-    <UploadButton type="button">
+    <UploadButton type="button" onClick={clickUploadButton}>
       <UploadTextIc/>
     </UploadButton>
     </CategoryListWrapper>
