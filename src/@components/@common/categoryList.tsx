@@ -33,9 +33,7 @@ export default function CategoryList() {
   //   setSelectedCategorys(selectedCategorys.sort())  
   // }
 
-  // console.log(selectedCategorys)
-  // console.log(selectedCategorys.includes(1))
-
+  
   const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
 
   function categoryClick(id:number){
@@ -49,7 +47,8 @@ export default function CategoryList() {
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category, selectCategory})=>(
-      <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} className='active test'>
+      // <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)}  selectCategBool={selectedCategorys.includes(id)}>
+      <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected}>
         <CategoryTextBox>
           {/* {selectedCategorys.includes(id)?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
           {selectedCategorys.includes(id)&&(<NeonXIc/>)} */}
@@ -76,7 +75,7 @@ const CategoryListWrapper=styled.section`
 
 `
 
-const CategoryTextBoxWrapper=styled.article`
+const CategoryTextBoxWrapper=styled.article<{selectCategBool:boolean}>`
   display: flex;
   align-items: center;
 
@@ -89,12 +88,10 @@ const CategoryTextBoxWrapper=styled.article`
   border:0.15rem solid transparent;
   border-radius: 3.26307rem;
 
-  & .active{
-    background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ theme }) => theme.colors.sub1} 100%);
-    background-origin: border-box;
-    background-clip: content-box, border-box;
-  }
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
+  linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ selectCategBool,theme }) => selectCategBool?(theme.colors.sub1):(theme.colors.sub3)} 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
 `
 
 const CategoryTextBox=styled.div`
