@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import {UploadTextIc,NeonXIc} from '../../assets'
 import categorys from "../../mocks/categoryDummy.json"
 import { useState, useEffect } from 'react';
+import { useRecoilSnapshot, useRecoilState } from 'recoil';
+import { categorySelect } from '../../recoil/categorySelect';
 
 interface CategoryChecks{
   categId:number;
@@ -20,6 +22,7 @@ const categorySelectedCheck: CategoryChecks[] = [
   { categId: 8, selected: false},
 ];
 
+
 export default function CategoryList() {  
   // const [selectedCategorys, setSelectedCategorys]=useState<number[]>([]);
 
@@ -35,6 +38,7 @@ export default function CategoryList() {
 
   
   const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
+  const[selectedCategorysApi, setSelectedCategorysApi]=useRecoilState<string>(categorySelect);
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -43,6 +47,14 @@ export default function CategoryList() {
       )
     ) 
   }
+  
+  const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
+
+  let categApi='tracks';
+  categs.forEach(({categId}) => {
+    categApi=categApi+`&categ=`+categId
+  });
+  setSelectedCategorysApi(categApi)
 
   return (
     <CategoryListWrapper>
