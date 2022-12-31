@@ -43,7 +43,7 @@ export default function CategoryList() {
   
   const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
 
-  let categApi='tracks';
+  let categApi='';
   categs.forEach(({categId}) => {
     categApi=categApi+`&categ=`+categId
   });
