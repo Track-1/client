@@ -1,24 +1,60 @@
 import styled from 'styled-components'
 import {UploadTextIc,NeonXIc} from '../../assets'
 import categorys from "../../mocks/categoryDummy.json"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function CategoryList() {
-  const [categoryClicked, setCategoryClicked]=useState<boolean>(false)
-  const [countIdx, setCountIdx]=useState<number>(0);
+interface CategoryChecks{
+  categId:number;
+  selected:boolean;
+}
 
-  function categoryClick(id:number, category:string){
-    setCategoryClicked((prev)=>!prev)
-    setCountIdx(id);
+const categorySelectedCheck: CategoryChecks[] = [
+  { categId: 0, selected: false},
+  { categId: 1, selected: false},
+  { categId: 2, selected: false},
+  { categId: 3, selected: false},
+  { categId: 4, selected: false},
+  { categId: 5, selected: false},
+  { categId: 6, selected: false},
+  { categId: 7, selected: false},
+  { categId: 8, selected: false},
+];
+
+export default function CategoryList() {  
+  // const [selectedCategorys, setSelectedCategorys]=useState<number[]>([]);
+
+  // function categoryClick(id:number){
+  //   if(selectedCategorys.includes(id)){
+  //     setSelectedCategorys(selectedCategorys.filter((element) => element !== id))
+  //   }
+  //   else{
+  //     selectedCategorys.push(id)
+  //   }
+  //   setSelectedCategorys(selectedCategorys.sort())  
+  // }
+
+  // console.log(selectedCategorys)
+  // console.log(selectedCategorys.includes(1))
+
+  const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
+
+  function categoryClick(id:number){
+    setSelectedCategorys(
+      selectedCategorys.map((selectCateg)=>
+        (selectCateg.categId === id ? {...selectCateg , selected : !selectCateg.selected} : selectCateg)
+      )
+    ) 
   }
 
   return (
     <CategoryListWrapper>
     {categorys.map(({id, category, selectCategory})=>(
-      <CategoryTextBoxWrapper key={id} categoryClicked={categoryClicked} onClick={()=>categoryClick(id, category)} className={`${categoryClicked && 'active'}`} >
+      <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} className='active test'>
         <CategoryTextBox>
-          {categoryClicked?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
-          {categoryClicked&&(<NeonXIc/>)}
+          {/* {selectedCategorys.includes(id)?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
+          {selectedCategorys.includes(id)&&(<NeonXIc/>)} */}
+          {selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="카테고리 텍스트" />)}
+          {selectedCategorys[id].selected&&(<NeonXIc/>)}
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
     ))}
@@ -40,7 +76,7 @@ const CategoryListWrapper=styled.section`
 
 `
 
-const CategoryTextBoxWrapper=styled.article<{categoryClicked:boolean}>`
+const CategoryTextBoxWrapper=styled.article`
   display: flex;
   align-items: center;
 
@@ -53,12 +89,12 @@ const CategoryTextBoxWrapper=styled.article<{categoryClicked:boolean}>`
   border:0.15rem solid transparent;
   border-radius: 3.26307rem;
 
-  /* & > .active{ */
+  & .active{
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ categoryClicked,theme }) => categoryClicked?(theme.colors.sub1):(theme.colors.sub3)} 100%);
+    linear-gradient(to right, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ theme }) => theme.colors.sub1} 100%);
     background-origin: border-box;
     background-clip: content-box, border-box;
-  /* } */
+  }
 `
 
 const CategoryTextBox=styled.div`
