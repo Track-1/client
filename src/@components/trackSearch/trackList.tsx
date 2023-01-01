@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function TrackList() {
     const [trackHover, setTrackHover] = useState<number>(-1)
-    const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
+    const [trackClick, setTrackClick] = useRecoilState<number>(trackClicked)
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
     const [beatId, setBeatId]=useRecoilState<number>(selectedId)
@@ -28,7 +28,7 @@ export default function TrackList() {
         setShowPlayer(true)
         setPlay(true)
         setBeatId(id)
-        setTrakClick(id)
+        setTrackClick(id)
     }
 
     function clickThumbnailPlayIc(){
