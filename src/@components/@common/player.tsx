@@ -24,11 +24,10 @@ export default function Player(){
 
   const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
   
-  const audio = useMemo(() => new Audio(ditto), [ditto]);
-  const title="Sweet (feat. 구슬한 of 보수동쿨러)"
-  const producerName="해서웨이(hathaw9y)"
-  const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
-
+  const [audioSrc, setAudioSrc]=useState<string>()
+  const [title, setTitle]=useState<string>()
+  const [producerName, setProducerName]=useState<string>()
+  const [durationSecond, setDurationSecond]=useState<number>()
   const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
 
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
@@ -37,6 +36,9 @@ export default function Player(){
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
 
+  const audio=useMemo(() => new Audio(audioSrc), [audioSrc])
+  const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60))
+
   useEffect(() => {
     if (tracksOrVocals==="Tracks"){
       setId(beatId)
@@ -44,9 +46,13 @@ export default function Player(){
     else{
       setId(vocalId)
     }
-    
-    getPlayerData();
 
+    getPlayerData();
+    setAudioSrc(ditto);
+    setTitle("Sweet (feat. 구슬한 of 보수동쿨러)")
+    setProducerName("해서웨이(hathaw9y)")
+    setDurationSecond(310);
+  
     if (play) {
       audio.play();
     } else {
@@ -62,7 +68,16 @@ export default function Player(){
 }, [audio,play]);
   
   async function getPlayerData() {
-    const response = await axios.get(`${id}`);
+    try{
+      const response = await axios.get(`${id}`);
+      setAudioSrc(ditto);
+      setTitle("Sweet (feat. 구슬한 of 보수동쿨러)")
+      setProducerName("해서웨이(hathaw9y)")
+      setDurationSecond(310);
+    }
+    catch(error){
+      console.log(error)
+    }
   }
 
   function playAudio() {
