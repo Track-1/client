@@ -7,16 +7,18 @@ import { useRecoilState } from "recoil";
 
 
 export default function TrackList() {
-    const [trackhover, setTrackHover] = useState<boolean>(false)
+    const [trackHover, setTrackHover] = useState<number>(-1)
+    const [trackClick, setTrakClick] = useState<number>(-1)
+
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
 
-    function mouseOverTrackBox(){
-        setTrackHover(true)
+    function mouseOverTrack(id:number){
+        setTrackHover(id)
     }
 
-    function mouseOutTrackBox(){
-        setTrackHover(false)
+    function mouseOutTrack(){
+        setTrackHover(-1)
     }
 
     function clickThumbnailPauseIc(){
@@ -39,9 +41,9 @@ export default function TrackList() {
 
     <TracksWrapper>
     {tracks.map((track)=>(
-        <Tracks onMouseEnter={mouseOverTrackBox} onMouseLeave={mouseOutTrackBox} trackhover={trackhover} showPlayer={showPlayer}>
-        <TrackBox key={track.beatId}>
-            {((!play&&trackhover)||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
+        <Tracks key={track.beatId} onMouseEnter={()=>mouseOverTrack(track.beatId)} onMouseLeave={mouseOutTrack} showPlayer={showPlayer}>
+        <TrackBox>
+            {((!play&&(trackHover===track.beatId))||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
             <TrackText width={36.8}>{track.title}</TrackText>
@@ -91,7 +93,7 @@ const TracksWrapper=styled.section`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Tracks=styled.article<{trackhover:boolean, showPlayer:boolean}>`
+const Tracks=styled.article<{showPlayer:boolean}>`
     display: flex;
     align-items: center;
 
@@ -101,14 +103,14 @@ const Tracks=styled.article<{trackhover:boolean, showPlayer:boolean}>`
     margin-left: 6.6rem;
     margin-bottom: 0.7rem;
 
-    
-    border:0.15rem solid transparent;
-
-    background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ trackhover, showPlayer, theme }) => trackhover||showPlayer?(theme.colors.sub1):(theme.colors.sub3)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
-    background-origin: border-box;
-    background-clip: content-box, border-box;
-    border-radius: 11.7rem 0 0 11.7rem;
+    &:hover{
+        border:0.15rem solid transparent;
+        background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
+            linear-gradient(to right, ${({ theme }) => theme.colors.sub1} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        border-radius: 11.7rem 0 0 11.7rem;
+    }
 
 `
 
