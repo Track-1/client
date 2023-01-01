@@ -1,15 +1,22 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import sloganImg from "../../assets/image/sloganImg.svg";
 import { UserIc, LogoIc, MyPageTextIc } from "../../assets/index";
 
 export default function MainHeader() {
+  const navigate = useNavigate();
+
+  function moveMyPage() {
+    navigate("/mypage");
+  }
+
   return (
     <HeaderContainer>
       <HeaderWrapper>
         <LogoIc />
         <img src={sloganImg} alt="슬로건" />
-        <MyPageBtn type="button">
+        <MyPageBtn type="button" onClick={moveMyPage}>
           <UserIcon />
           <MyPageTextIcon />
         </MyPageBtn>
