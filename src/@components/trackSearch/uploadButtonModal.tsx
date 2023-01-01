@@ -5,8 +5,9 @@ interface propsType  {
     ref: React.RefObject<HTMLDivElement>
   }
 
-export default function UploadButtonModal({ ref }: propsType): JSX.Element {
-    
+export default function UploadButtonModal( props : propsType): JSX.Element {
+    const {ref}=props
+
   return (
     <UploadButtonModalWrapper ref={ref} >
         <VocalSearchingWrapper>
