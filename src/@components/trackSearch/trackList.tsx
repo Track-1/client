@@ -69,7 +69,7 @@ export default function TrackList() {
             trackClick={trackClick}
         >
         <TrackBox>
-            {((trackClick!==track.beatId&&trackHover===track.beatId&&trackHover!==-1)||(!play&&trackClick===track.beatId&&trackHover!==-1))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
+            {((trackClick!==track.beatId&&trackHover===track.beatId&&trackHover!==-1)||(!play&&trackClick===track.beatId&&trackClick!==-1))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
             {play&&(trackClick===track.beatId&&trackClick!==-1)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
             <TrackText width={36.8} onClick={()=>clickTitle(track.beatId)}>{track.title}</TrackText>

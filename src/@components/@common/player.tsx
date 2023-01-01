@@ -39,6 +39,7 @@ export default function Player(){
   const audio=useMemo(() => new Audio(audioSrc), [audioSrc])
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60))
 
+
   useEffect(() => {
     if (tracksOrVocals==="Tracks"){
       setId(beatId)
@@ -46,7 +47,7 @@ export default function Player(){
     else{
       setId(vocalId)
     }
-
+  
     getPlayerData();
     setAudioSrc(ditto);
     setTitle("Sweet (feat. 구슬한 of 보수동쿨러)")
@@ -65,7 +66,20 @@ export default function Player(){
       goProgress();
     });
 
-}, [audio,play]);
+    window.addEventListener("keypress", (e: any) => {
+      if (e.keyCode === 32) {
+        e.preventDefault();
+        if(audio.paused){
+          setPlay(true)
+          audio.play()
+        } else {
+          setPlay(false)
+          audio.pause()
+        }
+      }
+    });
+  
+}, [audio,play,window]);
   
   async function getPlayerData() {
     try{
@@ -88,6 +102,13 @@ export default function Player(){
       setPlay(true)
     }  
   }
+
+  // function playAudioKeyPress(e: React.KeyboardEvent<HTMLInputElement>){
+  //   if (e.keyCode === 32) {
+  //     playAudio()
+  //   }  
+  // } 
+
 
   function quitAudio() {
     audio.pause();
@@ -134,6 +155,7 @@ export default function Player(){
     setPlay(false)
   } 
 
+
   return (
     <PlayerContainer>
     <PlayerWrapper>
@@ -150,7 +172,7 @@ export default function Player(){
         <Thumbnail src={jacketImage} alt="썸네일 이미지"/>
         <PlayerInformText width={74} whiteText={true}>{title}</PlayerInformText>
         <PlayerInformText width={16} whiteText={false}>{producerName}</PlayerInformText>
-        {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
+        {play?(<PlayIcon onClick={playAudio} />):(<PauseIcon onClick={playAudio} />)} 
         <PlayerInformText width={10} whiteText={true}>{currentTime}</PlayerInformText>
         <PlayerInformText width={30} whiteText={false}>{duration}</PlayerInformText>
         <QuitIcon onClick={quitAudio}/>
