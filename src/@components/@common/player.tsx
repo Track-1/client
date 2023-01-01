@@ -6,6 +6,7 @@ import { PauseIc, PlayIc, QuitIc } from "../../assets";
 import {showPlayerBar, playMusic, playingTrackId, trackClicked} from "../../recoil/player"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
+import axios from "axios";
 
 
 export default function Player(){
@@ -34,6 +35,8 @@ export default function Player(){
   });
 
   useEffect(() => {
+    getPlayerData();
+
     if (play) {
       audio.play();
     } else {
@@ -47,6 +50,10 @@ export default function Player(){
     });
 
 }, [audio,play]);
+  
+  async function getPlayerData() {
+    const response = await axios.get(`${beatId}`);
+  }
 
   function playAudio() {
     setPlay((play)=>!play)
