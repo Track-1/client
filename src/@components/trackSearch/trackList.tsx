@@ -55,7 +55,7 @@ export default function TrackList() {
             trackClickBool={trackClick===track.beatId}
         >
         <TrackBox>
-            {((!play&&(trackHover===track.beatId))||(!play&&showPlayer&&trackClick===track.beatId))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
+            {((trackClick!==track.beatId&&trackHover===track.beatId)||(!play&&trackClick===track.beatId))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
             <TrackText width={36.8}>{track.title}</TrackText>
