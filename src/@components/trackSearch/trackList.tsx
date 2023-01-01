@@ -4,15 +4,17 @@ import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPa
 import tracks from '../../mocks/tracksListDummy.json'
 import {showPlayerBar, playMusic,trackClicked,playingTrackId} from "../../recoil/player"
 import { useRecoilState } from "recoil";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function TrackList() {
     const [trackHover, setTrackHover] = useState<number>(-1)
     const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
-
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
     const [playingTrakcBeatId, setPlayingTrakcBeatId]=useRecoilState<number>(playingTrackId)
+
+    const navigate=useNavigate();
 
     function mouseOverTrack(id:number){
         setTrackHover(id)
@@ -34,6 +36,15 @@ export default function TrackList() {
 
     function clickThumbnailPlayIc(){
         setPlay(false)
+    }
+
+    function clickTitle(id:number){
+        setPlayingTrakcBeatId(id)
+        navigate('/track-post')
+    }
+
+    function clickProducerName(id:number){
+        navigate('/producer-profile', {state:id})
     }
 
   return (
@@ -60,8 +71,8 @@ export default function TrackList() {
             {((trackClick!==track.beatId&&trackHover===track.beatId)||(!play&&trackClick===track.beatId))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
             {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
-            <TrackText width={36.8}>{track.title}</TrackText>
-            <TrackText width={21.3}>{track.producerName}</TrackText>
+            <TrackText width={36.8} onClick={()=>clickTitle(track.beatId)}>{track.title}</TrackText>
+            <TrackText width={21.3} onClick={()=>clickProducerName(track.producerId)}>{track.producerName}</TrackText>
             <TrackText width={20.5}>{track.category}</TrackText>
         </TrackBox>
         {track.keyword.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
