@@ -14,20 +14,18 @@ export default function Player(){
   const [barWidth, setBarWidth] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
-
   const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
   const [id, setId]=useRecoilState<number>(selectedId)
-
   const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
-  
   const [audioSrc, setAudioSrc]=useState<string>()
   const [title, setTitle]=useState<string>()
   const [producerName, setProducerName]=useState<string>()
   const [durationSecond, setDurationSecond]=useState<number>()
-  const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
 
+  const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
+  
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
 
   useLayoutEffect(() => {
@@ -36,7 +34,6 @@ export default function Player(){
 
   const audio=useMemo(() => new Audio(audioSrc), [audioSrc])
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60))
-
 
   useEffect(() => {  
     getPlayerData();
