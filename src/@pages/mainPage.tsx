@@ -42,13 +42,12 @@ export default function MainPage() {
     <>
       <Header />
       <Main>
-        <Background background={background}>
-          <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-          <VocalsTextIcon isVocalsHover={isVocalsHover} />
-          <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-          <TracksTextIcon isTracksHover={isTracksHover} />
-          <MainSlogan src={mainSloganImg} alt="슬로건" />
-        </Background>
+        <img src={background} alt="배경이미지" />
+        <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+        <VocalsTextIcon isVocalsHover={isVocalsHover} />
+        <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+        <TracksTextIcon isTracksHover={isTracksHover} />
+        <MainSlogan src={mainSloganImg} alt="슬로건" />
       </Main>
       <Footer />
     </>
@@ -58,12 +57,6 @@ export default function MainPage() {
 const Main = styled.main`
   width: 100%;
   height: 100vh;
-`;
-
-const Background = styled.main<{ background: string }>`
-  /* position: relative; */
-  background-image: url(${({ background }) => background});
-  background-repeat: no-repeat;
 `;
 
 const VocalsArea = styled.div`
