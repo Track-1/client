@@ -2,11 +2,11 @@ import styled from 'styled-components'
 import {PortfolioIc, UnionIc, VocalSearchingIc,PortfolioTextIc, VocalSearchingTextIc} from '../../assets'
 
 interface propsType  {
-    // modalRef: React.ForwardedRef<HTMLDivElement>; 
     ref: React.RefObject<HTMLDivElement>
   }
 
 export default function UploadButtonModal({ ref }: propsType): JSX.Element {
+    
   return (
     <UploadButtonModalWrapper ref={ref} >
         <VocalSearchingWrapper>
