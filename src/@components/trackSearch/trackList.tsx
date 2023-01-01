@@ -2,7 +2,7 @@ import { useState } from "react"
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc,HoverPlayIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
-import {showPlayerBar, playMusic,trackClicked,playingTrackId} from "../../recoil/player"
+import {showPlayerBar, playMusic,trackClicked,selectedId} from "../../recoil/player"
 import { useRecoilState } from "recoil";
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ export default function TrackList() {
     const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
-    const [beatId, setBeatId]=useRecoilState<number>(playingTrackId)
+    const [beatId, setBeatId]=useRecoilState<number>(selectedId)
 
     const navigate=useNavigate();
 

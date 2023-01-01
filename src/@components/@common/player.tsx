@@ -3,7 +3,7 @@ import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import jacketImage from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar, playMusic, playingTrackId, trackClicked, playingVocalId} from "../../recoil/player"
+import {showPlayerBar, playMusic, trackClicked, selectedId} from "../../recoil/player"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 import axios from "axios";
@@ -18,9 +18,7 @@ export default function Player(){
   const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
-  const [id, setId]=useState<number>(-1)
-  const [beatId, setBeatId]=useRecoilState<number>(playingTrackId)
-  const [vocalId, setVocalId]=useRecoilState<number>(playingVocalId)
+  const [id, setId]=useRecoilState<number>(selectedId)
 
   const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
   
@@ -40,14 +38,7 @@ export default function Player(){
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60))
 
 
-  useEffect(() => {
-    if (tracksOrVocals==="Tracks"){
-      setId(beatId)
-    }
-    else{
-      setId(vocalId)
-    }
-  
+  useEffect(() => {  
     getPlayerData();
     setAudioSrc(ditto);
     setTitle("Sweet (feat. 구슬한 of 보수동쿨러)")
@@ -76,6 +67,11 @@ export default function Player(){
           setPlay(false)
           audio.pause()
         }
+        if(audio.currentTime===audio.duration){
+          audio.play()
+          audio.currentTime=0
+          setPlay(true)
+        }      
       }
     });
   
@@ -109,7 +105,7 @@ export default function Player(){
 
     setShowPlayer(false)
     setPlay((play)=>!play)
-    setBeatId(-1)
+    setId(-1)
     setTrakClick(-1)
   }
 
