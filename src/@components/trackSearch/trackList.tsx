@@ -2,13 +2,13 @@ import { useState } from "react"
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc,HoverPlayIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
-import {showPlayerBar, playMusic} from "../../recoil/player"
+import {showPlayerBar, playMusic,trackClicked} from "../../recoil/player"
 import { useRecoilState } from "recoil";
 
 
 export default function TrackList() {
     const [trackHover, setTrackHover] = useState<number>(-1)
-    const [trackClick, setTrakClick] = useState<number>(-1)
+    const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
 
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
@@ -19,6 +19,10 @@ export default function TrackList() {
 
     function mouseOutTrack(){
         setTrackHover(-1)
+    }
+
+    function clickTrack(id:number){
+        setTrakClick(id)
     }
 
     function clickThumbnailPauseIc(){
@@ -41,10 +45,10 @@ export default function TrackList() {
 
     <TracksWrapper>
     {tracks.map((track)=>(
-        <Tracks key={track.beatId} onMouseEnter={()=>mouseOverTrack(track.beatId)} onMouseLeave={mouseOutTrack} showPlayer={showPlayer}>
+        <Tracks key={track.beatId} onMouseEnter={()=>mouseOverTrack(track.beatId)} onMouseLeave={mouseOutTrack} onClick={()=>clickTrack(track.beatId)} showPlayer={showPlayer} className={trackHover===track.beatId||trackClick===track.beatId?'active':''}>
         <TrackBox>
-            {((!play&&(trackHover===track.beatId))||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
-            {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
+            {((!play&&(trackHover===track.beatId))||(!play&&showPlayer&&trackClick===track.beatId))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
+            {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
             <TrackText width={36.8}>{track.title}</TrackText>
             <TrackText width={21.3}>{track.producerName}</TrackText>
@@ -64,10 +68,14 @@ const TrackListContainer=styled.section`
 const HoverPauseIcon=styled(HoverPauseIc)`
     position: absolute;
     z-index: 2;
+
+    cursor: pointer;
 `
 const HoverPlayIcon=styled(HoverPlayIc)`
     position: absolute;
     z-index: 2;
+    
+    cursor: pointer;
 `
 
 const CategoryWrapper=styled.section`
@@ -103,7 +111,7 @@ const Tracks=styled.article<{showPlayer:boolean}>`
     margin-left: 6.6rem;
     margin-bottom: 0.7rem;
 
-    &:hover{
+    &.active{
         border:0.15rem solid transparent;
         background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
             linear-gradient(to right, ${({ theme }) => theme.colors.sub1} 0%,  ${({ theme }) => theme.colors.sub3} 95%);

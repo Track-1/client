@@ -9,3 +9,8 @@ export const playMusic = atom({
   key: 'playMusic',
   default: false,
 });
+
+export const trackClicked = atom({
+  key: 'trackClicked',
+  default: -1,
+});
