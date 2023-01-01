@@ -45,7 +45,15 @@ export default function TrackList() {
 
     <TracksWrapper>
     {tracks.map((track)=>(
-        <Tracks key={track.beatId} onMouseEnter={()=>mouseOverTrack(track.beatId)} onMouseLeave={mouseOutTrack} onClick={()=>clickTrack(track.beatId)} showPlayer={showPlayer} className={trackHover===track.beatId||trackClick===track.beatId?('active'):('')}>
+        <Tracks 
+            key={track.beatId} 
+            onMouseEnter={()=>mouseOverTrack(track.beatId)} 
+            onMouseLeave={mouseOutTrack} 
+            onClick={()=>clickTrack(track.beatId)} 
+            showPlayer={showPlayer} 
+            trackHoverBool={trackHover===track.beatId}
+            trackClickBool={trackClick===track.beatId}
+        >
         <TrackBox>
             {((!play&&(trackHover===track.beatId))||(!play&&showPlayer&&trackClick===track.beatId))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
@@ -101,7 +109,7 @@ const TracksWrapper=styled.section`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Tracks=styled.article<{showPlayer:boolean}>`
+const Tracks=styled.article<{showPlayer:boolean,trackHoverBool:boolean,trackClickBool:boolean}>`
     display: flex;
     align-items: center;
 
@@ -111,15 +119,12 @@ const Tracks=styled.article<{showPlayer:boolean}>`
     margin-left: 6.6rem;
     margin-bottom: 0.7rem;
 
-    &.active{
-        border:0.15rem solid transparent;
-        background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-            linear-gradient(to right, ${({ theme }) => theme.colors.sub1} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
-        background-origin: border-box;
-        background-clip: content-box, border-box;
-        border-radius: 11.7rem 0 0 11.7rem;
-    }
-
+    border:0.15rem solid transparent;
+    background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
+        linear-gradient(to right, ${({ trackHoverBool, trackClickBool, theme }) => (trackHoverBool||trackClickBool)&&(theme.colors.sub1)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    border-radius: 11.7rem 0 0 11.7rem;
 `
 
 const TrackBox=styled.div`
