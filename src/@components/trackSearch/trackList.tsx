@@ -45,7 +45,7 @@ export default function TrackList() {
 
     <TracksWrapper>
     {tracks.map((track)=>(
-        <Tracks key={track.beatId} onMouseEnter={()=>mouseOverTrack(track.beatId)} onMouseLeave={mouseOutTrack} onClick={()=>clickTrack(track.beatId)} showPlayer={showPlayer} className={trackHover===track.beatId||trackClick===track.beatId?'active':''}>
+        <Tracks key={track.beatId} onMouseEnter={()=>mouseOverTrack(track.beatId)} onMouseLeave={mouseOutTrack} onClick={()=>clickTrack(track.beatId)} showPlayer={showPlayer} className={trackHover===track.beatId||trackClick===track.beatId?('active'):('')}>
         <TrackBox>
             {((!play&&(trackHover===track.beatId))||(!play&&showPlayer&&trackClick===track.beatId))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
             {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
@@ -74,7 +74,7 @@ const HoverPauseIcon=styled(HoverPauseIc)`
 const HoverPlayIcon=styled(HoverPlayIc)`
     position: absolute;
     z-index: 2;
-    
+
     cursor: pointer;
 `
 
