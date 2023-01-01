@@ -12,7 +12,7 @@ export default function TrackList() {
     const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
-    const [playingTrakcBeatId, setPlayingTrakcBeatId]=useRecoilState<number>(playingTrackId)
+    const [beatId, setBeatId]=useRecoilState<number>(playingTrackId)
 
     const navigate=useNavigate();
 
@@ -31,7 +31,7 @@ export default function TrackList() {
     function clickThumbnailPauseIc(id:number){
         setShowPlayer(true)
         setPlay(true)
-        setPlayingTrakcBeatId(id)
+        setBeatId(id)
     }
 
     function clickThumbnailPlayIc(){
@@ -39,7 +39,7 @@ export default function TrackList() {
     }
 
     function clickTitle(id:number){
-        setPlayingTrakcBeatId(id)
+        setBeatId(id)
         navigate('/track-post')
     }
 
