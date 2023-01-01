@@ -28,10 +28,10 @@ const categorySelectedCheck: CategoryChecks[] = [
 export default function CategoryList() {  
   const [selectedCategorys, setSelectedCategorys]=useState<CategoryChecks[]>(categorySelectedCheck);
   const[selectedCategorysApi, setSelectedCategorysApi]=useRecoilState<string>(categorySelect);
-  const [uploadButtonClicked, setUploadButtonClicked]=useState<boolean>(false);
+  const [openModal, setOpenModal]=useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked]=useState<boolean>(false);
   const tracksOrVocals=useRecoilValue<string>(tracksOrVocalsCheck)
-
+  const modalRef = useRef<HTMLDivElement>(null)
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -50,28 +50,29 @@ export default function CategoryList() {
   setSelectedCategorysApi(categApi)
 
   function clickUploadButton(){
-    setUploadButtonClicked(true)
+    setOpenModal(true)
   }
 
   function clickTrackSearching(){
     setTrackSearchingClicked((prev)=>!prev)
   }
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const modalOutSideClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    if(modalRef.current === e.target) {
-      setUploadButtonClicked(false)
-      console.log("이게 잘 안되어요")
-    }  
-    else{
-      console.log("이건 잘 나와요")
-    }
-  }
+  
+  useEffect(() => {
+      const clickOutside = (e: any) => {
+        if (openModal && !modalRef.current?.contains(e.target)) {
+          setOpenModal(false)
+        }
+      }
+      document.addEventListener('mousedown', clickOutside)
+      return () => {
+        document.removeEventListener('mousedown', clickOutside)
+      }
+    }, [openModal])
 
   
   return (
     <>
-    {uploadButtonClicked&&<UploadButtonModal modalRef={modalRef} modalOutSideClick={modalOutSideClick}/>}
+    {openModal&&<UploadButtonModal ref={modalRef} />}
     <CategoryListWrapper>
     {categorys.map(({id, category, selectTrackCategory, selectVocalCategory})=>(
       <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected} tracksOrVocals={tracksOrVocals}>
@@ -82,9 +83,10 @@ export default function CategoryList() {
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
     ))}
-    {tracksOrVocals==="Tracks"&&(<UploadButton type="button" onClick={clickUploadButton}>
-      <UploadTextIc/>
-    </UploadButton>
+    {tracksOrVocals==="Tracks"&&(
+      <UploadButton type="button" onClick={clickUploadButton}>
+        <UploadTextIc/>
+      </UploadButton>
     )}
 
     {tracksOrVocals==="Vocals"&&(trackSearchingClicked?(<TrackSearchingPinkIcon onClick={clickTrackSearching}/>):(<TrackSearchingTextIcon onClick={clickTrackSearching}/>))}
