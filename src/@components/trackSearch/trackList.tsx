@@ -2,7 +2,7 @@ import { useState } from "react"
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc,HoverPlayIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
-import {showPlayerBar, playMusic,trackClicked} from "../../recoil/player"
+import {showPlayerBar, playMusic,trackClicked,playingTrackId} from "../../recoil/player"
 import { useRecoilState } from "recoil";
 
 
@@ -12,6 +12,7 @@ export default function TrackList() {
 
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
+    const [playingTrakcBeatId, setPlayingTrakcBeatId]=useRecoilState<number>(playingTrackId)
 
     function mouseOverTrack(id:number){
         setTrackHover(id)
@@ -25,9 +26,10 @@ export default function TrackList() {
         setTrakClick(id)
     }
 
-    function clickThumbnailPauseIc(){
+    function clickThumbnailPauseIc(id:number){
         setShowPlayer(true)
         setPlay(true)
+        setPlayingTrakcBeatId(id)
     }
 
     function clickThumbnailPlayIc(){
@@ -55,7 +57,7 @@ export default function TrackList() {
             trackClickBool={trackClick===track.beatId}
         >
         <TrackBox>
-            {((trackClick!==track.beatId&&trackHover===track.beatId)||(!play&&trackClick===track.beatId))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
+            {((trackClick!==track.beatId&&trackHover===track.beatId)||(!play&&trackClick===track.beatId))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
             {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
             <TrackText width={36.8}>{track.title}</TrackText>

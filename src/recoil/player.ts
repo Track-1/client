@@ -15,3 +15,7 @@ export const trackClicked = atom({
   default: -1,
 });
 
+export const playingTrackId = atom({
+  key: 'playingTrackId',
+  default: -1,
+})
