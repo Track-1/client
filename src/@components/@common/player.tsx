@@ -9,9 +9,6 @@ import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
 
 export default function Player(){
-
-  const audio = useMemo(() => new Audio(ditto), [ditto]);
-
   const playBar = useRef<HTMLDivElement>(null);
   const [barWidth, setBarWidth] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
@@ -21,6 +18,8 @@ export default function Player(){
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
   const beatId=useRecoilValue<number>(playingTrackId)
+  
+  const audio = useMemo(() => new Audio(ditto), [ditto]);
   const title="Sweet (feat. 구슬한 of 보수동쿨러)"
   const producerName="해서웨이(hathaw9y)"
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
