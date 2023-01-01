@@ -24,14 +24,11 @@ export default function TrackList() {
         setTrackHover(-1)
     }
 
-    function clickTrack(id:number){
-        setTrakClick(id)
-    }
-
     function clickThumbnailPauseIc(id:number){
         setShowPlayer(true)
         setPlay(true)
         setBeatId(id)
+        setTrakClick(id)
     }
 
     function clickThumbnailPlayIc(){
@@ -62,7 +59,6 @@ export default function TrackList() {
             key={track.beatId} 
             onMouseEnter={()=>mouseOverTrack(track.beatId)} 
             onMouseLeave={mouseOutTrack} 
-            onClick={()=>clickTrack(track.beatId)} 
             showPlayer={showPlayer} 
             trackHoverBool={trackHover===track.beatId}
             trackClickBool={trackClick===track.beatId}
