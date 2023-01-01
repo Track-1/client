@@ -1,21 +1,15 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ToggleIc, Track1Ic, TracksSelectTextIc, VocalsSelectTextIc, TracksTextIc,VocalsTextIc } from '../../assets'
 import profileImg from '../../assets/image/profileImg.png'
-// import { ClickProps } from '../../type/headerProps'
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
 
 export default function CategoryHeader() {
     const navigate=useNavigate();
-
-    // const [tracksClicked, setTracksClicked] = useState<boolean>(isClicked)
-
     const [tracksOrVocals,setTracksOrVocals]=useRecoilState<string>(tracksOrVocalsCheck)
-
 
     function clickTracksButton(){
         setTracksOrVocals("Tracks")

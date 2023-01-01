@@ -32,6 +32,8 @@ export default function CategoryList() {
   const [trackSearchingClicked, setTrackSearchingClicked]=useState<boolean>(false);
   const tracksOrVocals=useRecoilValue<string>(tracksOrVocalsCheck)
   const modalRef = useRef<HTMLDivElement>(null)
+  const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
+  let categApi='';
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -41,9 +43,6 @@ export default function CategoryList() {
     ) 
   }
   
-  const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
-
-  let categApi='';
   categs.forEach(({categId}) => {
     categApi=categApi+`&categ=`+categId
   });
@@ -74,12 +73,12 @@ export default function CategoryList() {
     <>
     {openModal&&<UploadButtonModal ref={modalRef} />}
     <CategoryListWrapper>
-    {categorys.map(({id, category, selectTrackCategory, selectVocalCategory})=>(
-      <CategoryTextBoxWrapper key={id} onClick={()=>categoryClick(id)} selectCategBool={selectedCategorys[id].selected} tracksOrVocals={tracksOrVocals}>
+    {categorys.map((category)=>(
+      <CategoryTextBoxWrapper key={category.id} onClick={()=>categoryClick(category.id)} selectCategBool={selectedCategorys[category.id].selected} tracksOrVocals={tracksOrVocals}>
         <CategoryTextBox>
-          {tracksOrVocals==="Tracks"?(selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectTrackCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="선택된 카테고리 텍스트" />)):(selectedCategorys[id].selected?(<img src={require('../../assets/icon/'+ selectVocalCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category + '.svg')} alt="선택된 카테고리 텍스트" />))}
-          {tracksOrVocals==="Tracks"&&selectedCategorys[id].selected&&(<NeonXIc/>)}
-          {tracksOrVocals==="Vocals"&&selectedCategorys[id].selected&&(<PinkXIc/>)}
+          {tracksOrVocals==="Tracks"?(selectedCategorys[category.id].selected?(<img src={require('../../assets/icon/'+ category.selectTrackCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category.category + '.svg')} alt="선택된 카테고리 텍스트" />)):(selectedCategorys[category.id].selected?(<img src={require('../../assets/icon/'+ category.selectVocalCategory + '.svg')} alt="선택된 카테고리 텍스트" />):(<img src={require('../../assets/icon/'+ category.category + '.svg')} alt="선택된 카테고리 텍스트" />))}
+          {tracksOrVocals==="Tracks"&&selectedCategorys[category.id].selected&&(<NeonXIc/>)}
+          {tracksOrVocals==="Vocals"&&selectedCategorys[category.id].selected&&(<PinkXIc/>)}
         </CategoryTextBox>
       </CategoryTextBoxWrapper>
     ))}
