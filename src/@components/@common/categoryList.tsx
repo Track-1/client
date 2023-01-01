@@ -32,6 +32,8 @@ export default function CategoryList() {
   const [trackSearchingClicked, setTrackSearchingClicked]=useState<boolean>(false);
   const tracksOrVocals=useRecoilValue<string>(tracksOrVocalsCheck)
   const modalRef = useRef<HTMLDivElement>(null)
+  const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
+  let categApi='';
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -41,9 +43,6 @@ export default function CategoryList() {
     ) 
   }
   
-  const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
-
-  let categApi='';
   categs.forEach(({categId}) => {
     categApi=categApi+`&categ=`+categId
   });
