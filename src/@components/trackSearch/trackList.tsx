@@ -66,10 +66,11 @@ export default function TrackList() {
             showPlayer={showPlayer} 
             trackHoverBool={trackHover===track.beatId}
             trackClickBool={trackClick===track.beatId}
+            trackClick={trackClick}
         >
         <TrackBox>
-            {((trackClick!==track.beatId&&trackHover===track.beatId)||(!play&&trackClick===track.beatId))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
-            {play&&(trackClick===track.beatId)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
+            {((trackClick!==track.beatId&&trackHover===track.beatId&&trackHover!==-1)||(!play&&trackClick===track.beatId&&trackHover!==-1))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
+            {play&&(trackClick===track.beatId&&trackClick!==-1)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
             <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
             <TrackText width={36.8} onClick={()=>clickTitle(track.beatId)}>{track.title}</TrackText>
             <TrackText width={21.3} onClick={()=>clickProducerName(track.producerId)}>{track.producerName}</TrackText>
@@ -122,7 +123,7 @@ const TracksWrapper=styled.section`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Tracks=styled.article<{showPlayer:boolean,trackHoverBool:boolean,trackClickBool:boolean}>`
+const Tracks=styled.article<{showPlayer:boolean,trackHoverBool:boolean,trackClickBool:boolean,trackClick:number}>`
     display: flex;
     align-items: center;
 
@@ -134,7 +135,7 @@ const Tracks=styled.article<{showPlayer:boolean,trackHoverBool:boolean,trackClic
 
     border:0.15rem solid transparent;
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-        linear-gradient(to right, ${({ trackHoverBool, trackClickBool, theme }) => (trackHoverBool||trackClickBool)&&(theme.colors.sub1)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
+        linear-gradient(to right, ${({ trackHoverBool, trackClickBool, trackClick, theme }) => ((trackHoverBool)||(trackClickBool&&trackClick!==-1))&&(theme.colors.sub1)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     border-radius: 11.7rem 0 0 11.7rem;

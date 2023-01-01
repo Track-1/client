@@ -3,7 +3,7 @@ import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import jacketImage from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar, playMusic, playingTrackId} from "../../recoil/player"
+import {showPlayerBar, playMusic, playingTrackId, trackClicked} from "../../recoil/player"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
@@ -17,7 +17,8 @@ export default function Player(){
   const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
-  const beatId=useRecoilValue<number>(playingTrackId)
+  const [beatId, setBeatId]=useRecoilState<number>(playingTrackId)
+  const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
   
   const audio = useMemo(() => new Audio(ditto), [ditto]);
   const title="Sweet (feat. 구슬한 of 보수동쿨러)"
@@ -62,6 +63,8 @@ export default function Player(){
 
     setShowPlayer(false)
     setPlay((play)=>!play)
+    setBeatId(-1)
+    setTrakClick(-1)
   }
 
   function goProgress() {
