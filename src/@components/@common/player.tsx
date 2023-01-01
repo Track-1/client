@@ -3,7 +3,7 @@ import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 import jacketImage from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar, playMusic, playingTrackId, trackClicked} from "../../recoil/player"
+import {showPlayerBar, playMusic, playingTrackId, trackClicked, playingVocalId} from "../../recoil/player"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 import axios from "axios";
@@ -18,7 +18,10 @@ export default function Player(){
   const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
+  const [id, setId]=useState<number>(-1)
   const [beatId, setBeatId]=useRecoilState<number>(playingTrackId)
+  const [vocalId, setVocalId]=useRecoilState<number>(playingVocalId)
+
   const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
   
   const audio = useMemo(() => new Audio(ditto), [ditto]);
@@ -35,6 +38,13 @@ export default function Player(){
   });
 
   useEffect(() => {
+    if (tracksOrVocals==="Tracks"){
+      setId(beatId)
+    }
+    else{
+      setId(vocalId)
+    }
+    
     getPlayerData();
 
     if (play) {
@@ -52,7 +62,7 @@ export default function Player(){
 }, [audio,play]);
   
   async function getPlayerData() {
-    const response = await axios.get(`${beatId}`);
+    const response = await axios.get(`${id}`);
   }
 
   function playAudio() {

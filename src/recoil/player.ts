@@ -19,3 +19,8 @@ export const playingTrackId = atom({
   key: 'playingTrackId',
   default: -1,
 })
+
+export const playingVocalId = atom({
+  key: 'playingTrackId',
+  default: -1,
+})
