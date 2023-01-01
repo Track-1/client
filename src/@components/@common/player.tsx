@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
-import thumbnailImg from '../../assets/image/thumbnailImg.png'
+import jacketImage from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar, playMusic} from "../../recoil/player"
+import {showPlayerBar, playMusic, playingTrackId} from "../../recoil/player"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
@@ -20,8 +20,9 @@ export default function Player(){
   const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
+  const beatId=useRecoilValue<number>(playingTrackId)
   const title="Sweet (feat. 구슬한 of 보수동쿨러)"
-  const producer="해서웨이(hathaw9y)"
+  const producerName="해서웨이(hathaw9y)"
   const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
 
   const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
@@ -112,9 +113,9 @@ export default function Player(){
       </PlayerBarWrapper>
 
       <PlayerInformWrapper>
-        <Thumbnail src={thumbnailImg} alt="썸네일 이미지"/>
+        <Thumbnail src={jacketImage} alt="썸네일 이미지"/>
         <PlayerInformText width={74} whiteText={true}>{title}</PlayerInformText>
-        <PlayerInformText width={16} whiteText={false}>{producer}</PlayerInformText>
+        <PlayerInformText width={16} whiteText={false}>{producerName}</PlayerInformText>
         {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
         <PlayerInformText width={10} whiteText={true}>{currentTime}</PlayerInformText>
         <PlayerInformText width={30} whiteText={false}>{duration}</PlayerInformText>
