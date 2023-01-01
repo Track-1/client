@@ -103,13 +103,6 @@ export default function Player(){
     }  
   }
 
-  // function playAudioKeyPress(e: React.KeyboardEvent<HTMLInputElement>){
-  //   if (e.keyCode === 32) {
-  //     playAudio()
-  //   }  
-  // } 
-
-
   function quitAudio() {
     audio.pause();
     audio.currentTime = 0;
@@ -154,7 +147,6 @@ export default function Player(){
     audio.currentTime=1000
     setPlay(false)
   } 
-
 
   return (
     <PlayerContainer>
