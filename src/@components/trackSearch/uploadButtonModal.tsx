@@ -2,13 +2,13 @@ import styled from 'styled-components'
 import {PortfolioIc, UnionIc, VocalSearchingIc,PortfolioTextIc, VocalSearchingTextIc} from '../../assets'
 
 interface propsType  {
-    modalRef: React.ForwardedRef<HTMLDivElement>;
-    modalOutSideClick:(e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    ref: React.RefObject<HTMLDivElement>
   }
 
-export default function UploadButtonModal({modalRef, modalOutSideClick}:propsType) {
+export default function UploadButtonModal({ ref }: propsType): JSX.Element {
+    
   return (
-    <UploadButtonModalWrapper ref={modalRef} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>)=>modalOutSideClick(e)}>
+    <UploadButtonModalWrapper ref={ref} >
         <VocalSearchingWrapper>
             <VocalSearchingIcon/>
             <TextWrapper marginTop={2.1}>
