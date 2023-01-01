@@ -13,54 +13,55 @@ import mainSloganImg from "../assets/image/mainSloganImg.png";
 
 export default function MainPage() {
   const navigate = useNavigate();
+
   const [background, setBackground] = useState<string>(mainBackgroundImg);
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
 
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
-    setBackground((prev) => hoverVocalsImg);
+    setBackground(hoverVocalsImg);
     setIsVocalsHover((prev) => !prev);
   }
 
   function setTracksImg(e: React.MouseEvent<HTMLDivElement>) {
-    setBackground((prev) => hoverTracksImg);
+    setBackground(hoverTracksImg);
     setIsTracksHover((prev) => !prev);
   }
 
   function setDefaultImg(e: React.MouseEvent<HTMLDivElement>) {
-    setBackground((prev) => mainBackgroundImg);
+    setBackground(mainBackgroundImg);
 
-    if (isTracksHover) {
-      setIsTracksHover((prev) => !prev);
-    } else {
-      setIsVocalsHover((prev) => !prev);
-    }
+    isTracksHover ? setIsTracksHover((prev) => !prev) : setIsVocalsHover((prev) => !prev);
   }
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
-    isTracksHover ? navigate(`/track-search`) : navigate(`/vocals`);
+    isTracksHover ? navigate("/track-search") : navigate("/vocals");
   }
 
   return (
     <>
       <Header />
-      <MainBackground background={background}>
-        <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-        <VocalsTextIcon state={isVocalsHover} />
-        <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-        <TracksTextIcon state={isTracksHover} />
-        <MainSlogan src={mainSloganImg} alt="슬로건" />
-      </MainBackground>
+      <Main>
+        <Background background={background}>
+          <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+          <VocalsTextIcon isVocalsHover={isVocalsHover} />
+          <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+          <TracksTextIcon isTracksHover={isTracksHover} />
+          <MainSlogan src={mainSloganImg} alt="슬로건" />
+        </Background>
+      </Main>
       <Footer />
     </>
   );
 }
 
-const MainBackground = styled.main<{ background: string }>`
+const Main = styled.main`
   width: 100%;
   height: 100vh;
+`;
 
-  position: relative;
+const Background = styled.main<{ background: string }>`
+  /* position: relative; */
   background-image: url(${({ background }) => background});
   background-repeat: no-repeat;
 `;
@@ -77,7 +78,7 @@ const VocalsArea = styled.div`
   cursor: pointer;
 `;
 
-const VocalsTextIcon = styled(VocalsTextIc)<{ state: boolean }>`
+const VocalsTextIcon = styled(VocalsTextIc)<{ isVocalsHover: boolean }>`
   width: 21.7rem;
   height: 21.2rem;
 
@@ -87,7 +88,7 @@ const VocalsTextIcon = styled(VocalsTextIc)<{ state: boolean }>`
   background-repeat: no-repeat;
 
   ${(props) =>
-    props.state &&
+    props.isVocalsHover &&
     css`
       transition-duration: 0.2s;
       transform-origin: 0 100%;
@@ -110,7 +111,7 @@ const TracksArea = styled.div`
   cursor: pointer;
 `;
 
-const TracksTextIcon = styled(TracksTextIc)<{ state: boolean }>`
+const TracksTextIcon = styled(TracksTextIc)<{ isTracksHover: boolean }>`
   width: 18.9rem;
   height: 20.4rem;
 
@@ -120,7 +121,7 @@ const TracksTextIcon = styled(TracksTextIc)<{ state: boolean }>`
   background-repeat: no-repeat;
 
   ${(props) =>
-    props.state &&
+    props.isTracksHover &&
     css`
       transition-duration: 0.2s;
       transform-origin: 0 100%;
