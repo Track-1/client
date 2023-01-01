@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ToggleIc, Track1Ic, TracksSelectTextIc, VocalsSelectTextIc, TracksTextIc,VocalsTextIc } from '../../assets'
 import profileImg from '../../assets/image/profileImg.png'
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
 
 
