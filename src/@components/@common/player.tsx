@@ -1,38 +1,47 @@
 import styled from "styled-components";
 import ditto from "../../assets/audio/ditto.mp3";
 import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
-import thumbnailImg from '../../assets/image/thumbnailImg.png'
+import jacketImage from '../../assets/image/thumbnailImg.png'
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import {showPlayerBar, playMusic} from "../../recoil/player"
+import {showPlayerBar, playMusic, trackClicked, selectedId} from "../../recoil/player"
 import { useRecoilState, useRecoilValue } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
+import axios from "axios";
 
 
 export default function Player(){
-
-  const audio = useMemo(() => new Audio(ditto), [ditto]);
-
   const playBar = useRef<HTMLDivElement>(null);
   const [barWidth, setBarWidth] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
-
   const [play, setPlay] = useRecoilState<boolean>(playMusic)
   const [currentTime, setCurrentTime] = useState<string>('0:0');
 
-  const title="Sweet (feat. 구슬한 of 보수동쿨러)"
-  const producer="해서웨이(hathaw9y)"
-  const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60));
+  const [id, setId]=useRecoilState<number>(selectedId)
+  const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked)
+  const [audioSrc, setAudioSrc]=useState<string>()
+  const [title, setTitle]=useState<string>()
+  const [producerName, setProducerName]=useState<string>()
+  const [durationSecond, setDurationSecond]=useState<number>()
 
   const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
-
+  
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
 
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
 
-  useEffect(() => {
+  const audio=useMemo(() => new Audio(audioSrc), [audioSrc])
+  const duration=parseInt(String(audio.duration/60))+":"+parseInt(String(audio.duration%60))
+
+  useEffect(() => {  
+    getPlayerData();
+    setAudioSrc(ditto);
+    setTitle("Sweet (feat. 구슬한 of 보수동쿨러)")
+    setProducerName("해서웨이(hathaw9y)")
+    setDurationSecond(310);
+  
     if (play) {
       audio.play();
     } else {
@@ -45,7 +54,38 @@ export default function Player(){
       goProgress();
     });
 
-}, [audio,play]);
+    window.addEventListener("keypress", (e: any) => {
+      if (e.keyCode === 32) {
+        e.preventDefault();
+        if(audio.paused){
+          setPlay(true)
+          audio.play()
+        } else {
+          setPlay(false)
+          audio.pause()
+        }
+        if(audio.currentTime===audio.duration){
+          audio.play()
+          audio.currentTime=0
+          setPlay(true)
+        }      
+      }
+    });
+  
+}, [audio,play,window]);
+  
+  async function getPlayerData() {
+    try{
+      const response = await axios.get(`${id}`);
+      setAudioSrc(ditto);
+      setTitle("Sweet (feat. 구슬한 of 보수동쿨러)")
+      setProducerName("해서웨이(hathaw9y)")
+      setDurationSecond(310);
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
 
   function playAudio() {
     setPlay((play)=>!play)
@@ -62,6 +102,8 @@ export default function Player(){
 
     setShowPlayer(false)
     setPlay((play)=>!play)
+    setId(-1)
+    setTrakClick(-1)
   }
 
   function goProgress() {
@@ -112,10 +154,10 @@ export default function Player(){
       </PlayerBarWrapper>
 
       <PlayerInformWrapper>
-        <Thumbnail src={thumbnailImg} alt="썸네일 이미지"/>
+        <Thumbnail src={jacketImage} alt="썸네일 이미지"/>
         <PlayerInformText width={74} whiteText={true}>{title}</PlayerInformText>
-        <PlayerInformText width={16} whiteText={false}>{producer}</PlayerInformText>
-        {play?(<PlayIcon onClick={playAudio}/>):(<PauseIcon onClick={playAudio}/>)} 
+        <PlayerInformText width={16} whiteText={false}>{producerName}</PlayerInformText>
+        {play?(<PlayIcon onClick={playAudio} />):(<PauseIcon onClick={playAudio} />)} 
         <PlayerInformText width={10} whiteText={true}>{currentTime}</PlayerInformText>
         <PlayerInformText width={30} whiteText={false}>{duration}</PlayerInformText>
         <QuitIcon onClick={quitAudio}/>
