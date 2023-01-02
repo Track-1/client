@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { VocalProfileShadowIc } from "../../assets"
 
-export default function vocalProfileShadow() {
+export default function VocalProfileShadow() {
   return (
     <>        
         <Title>profile</Title>
