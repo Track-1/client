@@ -2,53 +2,77 @@ import { useState } from "react"
 import styled from "styled-components"
 import { TitleTextIc,ProducerCategoryTextIc,CategoryTextIc,HashtagTextIc,HoverPauseIc,HoverPlayIc } from "../../assets"
 import tracks from '../../mocks/tracksListDummy.json'
-import {showPlayerBar, playMusic} from "../../recoil/player"
+import {showPlayerBar, playMusic,trackClicked,selectedId} from "../../recoil/player"
 import { useRecoilState } from "recoil";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function TrackList() {
-    const [trackhover, setTrackHover] = useState<boolean>(false)
+    const [trackHover, setTrackHover] = useState<number>(-1)
+    const [trackClick, setTrackClick] = useRecoilState<number>(trackClicked)
     const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
     const [play, setPlay]=useRecoilState<boolean>(playMusic)
+    const [beatId, setBeatId]=useRecoilState<number>(selectedId)
 
-    function mouseOverTrackBox(){
-        setTrackHover(true)
+    const navigate=useNavigate();
+
+    function mouseOverTrack(id:number){
+        setTrackHover(id)
     }
 
-    function mouseOutTrackBox(){
-        setTrackHover(false)
+    function mouseOutTrack(){
+        setTrackHover(-1)
     }
 
-    function clickThumbnailPauseIc(){
+    function clickThumbnailPauseIc(id:number){
         setShowPlayer(true)
         setPlay(true)
+        setBeatId(id)
+        setTrackClick(id)
     }
 
     function clickThumbnailPlayIc(){
         setPlay(false)
     }
 
+    function clickTitle(id:number){
+        setBeatId(id)
+        navigate('/track-post')
+    }
+
+    function clickProducerName(id:number){
+        navigate('/producer-profile', {state:id})
+    }
+
   return (
     <TrackListContainer>
     <CategoryWrapper>
-        <Title/>
-        <Producer/>
-        <Category/>
-        <Hashtag/>
+        <TitleTextIcon/>
+        <ProducerCategoryTextIcon/>
+        <CategoryTextIcon/>
+        <HashtagTextIcon/>
     </CategoryWrapper>
 
     <TracksWrapper>
-    {tracks.map(({id, imgSrc, title, producer, category, hashtags})=>(
-        <Tracks onMouseOver={mouseOverTrackBox} onMouseOut={mouseOutTrackBox} trackhover={trackhover} showPlayer={showPlayer}>
-        <TrackBox key={id}>
-            {((!play&&trackhover)||(!play&&showPlayer))&&<HoverPauseIcon onClick={clickThumbnailPauseIc}/>}
-            {play&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
-            <Thumbnail src={require('../../assets/image/'+ imgSrc + '.png')} alt="썸네일"/>
-            <TrackText width={31.5}>{title}</TrackText>
-            <TrackText width={21.3}>{producer}</TrackText>
-            <TrackText width={20.5}>{category}</TrackText>
+    {tracks.map((track)=>(
+        <Tracks 
+            key={track.beatId} 
+            onMouseEnter={()=>mouseOverTrack(track.beatId)} 
+            onMouseLeave={mouseOutTrack} 
+            showPlayer={showPlayer} 
+            trackHoverBool={trackHover===track.beatId}
+            trackClickBool={trackClick===track.beatId}
+            trackClick={trackClick}
+        >
+        <TrackBox>
+            {((trackClick!==track.beatId&&trackHover===track.beatId&&trackHover!==-1)||(!play&&trackClick===track.beatId&&trackClick!==-1))&&<HoverPauseIcon onClick={()=>clickThumbnailPauseIc(track.beatId)}/>}
+            {play&&(trackClick===track.beatId&&trackClick!==-1)&&<HoverPlayIcon onClick={clickThumbnailPlayIc}/>}
+            <Thumbnail src={require('../../assets/image/'+ track.jacketImage + '.png')} alt="썸네일"/>
+            <TrackText width={36.8} onClick={()=>clickTitle(track.beatId)}>{track.title}</TrackText>
+            <TrackText width={21.3} onClick={()=>clickProducerName(track.producerId)}>{track.producerName}</TrackText>
+            <TrackText width={20.5}>{track.category}</TrackText>
         </TrackBox>
-        {hashtags.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
+        {track.keyword.map((tag, idx)=>(<Tag key={idx}>#{tag}</Tag>))}
         </Tracks>
     ))}
     </TracksWrapper>
@@ -62,27 +86,31 @@ const TrackListContainer=styled.section`
 const HoverPauseIcon=styled(HoverPauseIc)`
     position: absolute;
     z-index: 2;
+
+    cursor: pointer;
 `
 const HoverPlayIcon=styled(HoverPlayIc)`
     position: absolute;
     z-index: 2;
+
+    cursor: pointer;
 `
 
 const CategoryWrapper=styled.section`
     margin: 3.6rem 0 3.5rem 9rem;
 `
-const Title=styled(TitleTextIc)`
+const TitleTextIcon=styled(TitleTextIc)`
 `
 
-const Producer=styled(ProducerCategoryTextIc)`
-    margin-left:38.1rem;
+const ProducerCategoryTextIcon=styled(ProducerCategoryTextIc)`
+    margin-left:43rem;
 `
 
-const Category=styled(CategoryTextIc)`
+const CategoryTextIcon=styled(CategoryTextIc)`
     margin-left:10.7rem;
 `
 
-const Hashtag=styled(HashtagTextIc)`
+const HashtagTextIcon=styled(HashtagTextIc)`
     margin-left:10.7rem;
 `
 
@@ -91,7 +119,7 @@ const TracksWrapper=styled.section`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Tracks=styled.article<{trackhover:boolean, showPlayer:boolean}>`
+const Tracks=styled.article<{showPlayer:boolean,trackHoverBool:boolean,trackClickBool:boolean,trackClick:number}>`
     display: flex;
     align-items: center;
 
@@ -101,15 +129,12 @@ const Tracks=styled.article<{trackhover:boolean, showPlayer:boolean}>`
     margin-left: 6.6rem;
     margin-bottom: 0.7rem;
 
-    
     border:0.15rem solid transparent;
-
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}), 
-    linear-gradient(to right, ${({ trackhover, showPlayer, theme }) => trackhover||showPlayer?(theme.colors.sub1):(theme.colors.sub3)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
+        linear-gradient(to right, ${({ trackHoverBool, trackClickBool, trackClick, theme }) => ((trackHoverBool)||(trackClickBool&&trackClick!==-1))&&(theme.colors.sub1)} 0%,  ${({ theme }) => theme.colors.sub3} 95%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     border-radius: 11.7rem 0 0 11.7rem;
-
 `
 
 const TrackBox=styled.div`

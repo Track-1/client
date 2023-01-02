@@ -24,13 +24,13 @@ export default function TrackSearchPage() {
     {showPlayer&&(<Player />)}
 
     <TrackSearchPageWrapper>
-      <article className="left-article">
-      <CategoryList/>
-      </article>
-      <article className="right-article">
+      <CategoryListWrapper>
+        <CategoryList/>
+      </CategoryListWrapper>
+      <TrackListWrapper>
         <TrackListHeader />
         <TrackList/>
-      </article>
+      </TrackListWrapper>
     </TrackSearchPageWrapper>
     </>
   )
@@ -38,12 +38,12 @@ export default function TrackSearchPage() {
 
 const TrackSearchPageWrapper=styled.section`
   display: flex;
+`
 
-  & > .left-article{
-    width: 32.1rem;
-  }
+const CategoryListWrapper=styled.article`
+  width: 32.1rem;
+`
 
-  & > .right-article{
-    width: 159.9rem;
-  }
+const TrackListWrapper=styled.article`
+   width: 159.9rem;
 `
