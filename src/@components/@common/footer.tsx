@@ -5,10 +5,10 @@ export default function Footer() {
   return (
     <FooterContainer>
       <Banner />
-      <Copyright>
-        <CopyrightText className="text">Conditions of Use Privacy Notice Your Ads Privacy Choices</CopyrightText>
-        <CopyrightText className="text">ⓒ 2022 Trackone.com, Inc. or its affiliates</CopyrightText>
-      </Copyright>
+      <FooterTextWrap>
+        <FooterText>Conditions of Use Privacy Notice Your Ads Privacy Choices</FooterText>
+        <FooterText>ⓒ 2022 Trackone.com, Inc. or its affiliates</FooterText>
+      </FooterTextWrap>
     </FooterContainer>
   );
 }
@@ -34,7 +34,7 @@ const Banner = styled.div`
   -o-animation: ${LinearFlow} 15s infinite linear;
 `;
 
-const Copyright = styled.div`
+const FooterTextWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,6 +42,6 @@ const Copyright = styled.div`
   /*  */
 `;
 
-const CopyrightText = styled.p`
+const FooterText = styled.p`
   margin-bottom: 1rem;
 `;
