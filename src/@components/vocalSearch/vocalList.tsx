@@ -6,8 +6,8 @@ export default function VocalList() {
   return (
     <VocalListContainer>
       {vocals.map(({ id, imgSrc, producer, category, categoryNum, hashtags }) => (
-        <VocalContainer>
-          <UsernameInformWrapper key={id}>
+        <VocalContainer key={id}>
+          <UsernameInformWrapper>
             <Username>{producer}</Username>
             <SleepIc />
           </UsernameInformWrapper>
@@ -86,20 +86,27 @@ const AlbumCoverImg = styled.img`
 const MusicProfile = styled.div`
   position: relative;
   display: inline-block;
-  width: 23.4rem;
-  height: 23.4rem;
-  background-color: white;
+  width: 28.4rem;
+  height: 28.4rem;
+  border: 0.3rem transparent;
+  background-image: linear-gradient(
+    to top,
+    ${({ theme }) => theme.colors.sub2} 0%,
+    ${({ theme }) => theme.colors.sub3} 65%
+  );
   transform: rotate(45deg);
-  margin-left: 7.3rem;
-  border-radius: 4rem;
-  overflow: hidden;
+  margin-left: 5.3rem;
+  border-radius: 5rem;
 `;
 
 const GradientEffect = styled.div`
-  position: relative;
+  display: inline-block;
   width: 23.4rem;
   height: 23.4rem;
-  color: hotpink;
+  background-color: white;
+  border-radius: 4rem;
+  overflow: hidden;
+  margin: 2.5rem;
 `;
 
 const Hashtags = styled.ul`
