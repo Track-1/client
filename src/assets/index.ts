@@ -10,3 +10,7 @@ export { ReactComponent as OpenedIc } from "./icon/openedIc.svg";
 export { ReactComponent as EditIc } from "./icon/editIc.svg";
 export { ReactComponent as DeleteIc } from "./icon/deleteIc.svg";
 export { ReactComponent as EditBtnIc } from "./icon/editBtnIc.svg";
+export { ReactComponent as UploadIc } from "./icon/uploadIc.svg";
+export { ReactComponent as AddCommentIc } from "./icon/addCommentIc.svg";
+export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIC.svg";
+export { ReactComponent as PlayBtnIc } from "./icon/playBtnIc.svg";

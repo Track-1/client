@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import {
   DownloadBtnIc,
   PauseBtnIc,
@@ -81,6 +82,7 @@ export default function TrackPostPage() {
       </InfoContainer>
     </PostSection>
   );
+
 }
 
 const PostSection = styled.section`
