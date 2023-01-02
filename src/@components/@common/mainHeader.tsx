@@ -28,6 +28,9 @@ export default function MainHeader() {
 const HeaderContainer = styled.header`
   width: 100%;
   height: 14.3rem;
+
+  position: fixed;
+  z-index: 999;
 `;
 
 const HeaderWrapper = styled.div`

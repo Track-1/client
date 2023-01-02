@@ -56,7 +56,6 @@ export default function MainPage() {
 
 const Main = styled.main`
   width: 100%;
-  height: 100vh;
 `;
 
 const VocalsArea = styled.div`
@@ -126,6 +125,6 @@ const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
 
 const MainSlogan = styled.img`
   position: absolute;
-  top: 90.9rem;
+  top: 82.5rem;
   left: 8.3rem;
 `;
