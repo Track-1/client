@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { ToggleIc, Track1Ic, TracksSelectTextIc, VocalsSelectTextIc, TracksTextIc,VocalsTextIc } from '../../assets'
+import { ToggleIc, Track1Ic, TracksSelectTextIc, VocalsSelectTextIc, TracksHeaderTextIc,VocalsHeaderTextIc } from '../../assets'
 import profileImg from '../../assets/image/profileImg.png'
 import { useRecoilState } from "recoil";
 import {tracksOrVocalsCheck} from "../../recoil/tracksOrVocalsCheck"
@@ -28,12 +28,12 @@ export default function CategoryHeader() {
             {tracksOrVocals==="Tracks"&&(
                 <>
                 <TracksSelectTextIcon onClick={clickTracksButton} />
-                <VocalsTextIcon onClick={clickVocalsButton}/>
+                <VocalsHeaderTextIcon onClick={clickVocalsButton}/>
                 </>
             )}
             {tracksOrVocals==="Vocals"&&(
                 <>
-                <TracksTextIcon onClick={clickTracksButton} />
+                <TracksHeaderTextIcon onClick={clickTracksButton} />
                 <VocalsSelectTextIcon onClick={clickVocalsButton}/>
                 </>
             )}
@@ -103,7 +103,7 @@ const TracksSelectTextIcon=styled(TracksSelectTextIc)`
     cursor: pointer;
 `
 
-const TracksTextIcon=styled(TracksTextIc)`
+const TracksHeaderTextIcon=styled(TracksHeaderTextIc)`
     cursor: pointer;
 `
 
@@ -113,7 +113,7 @@ const VocalsSelectTextIcon=styled(VocalsSelectTextIc)`
     cursor: pointer;
 `
 
-const VocalsTextIcon=styled(VocalsTextIc)`
+const VocalsHeaderTextIcon=styled(VocalsHeaderTextIc)`
     margin-left: 7.368rem;
 
     cursor: pointer;
