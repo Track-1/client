@@ -1,3 +1,5 @@
+export { ReactComponent as TracksTextIc } from "./icon/tracksTextIc.svg";
+export { ReactComponent as VocalsTextIc } from "./icon/vocalsTextIc.svg";
 export { ReactComponent as DownloadBtnIc } from "./icon/downloadBtnIc.svg";
 export { ReactComponent as PauseBtnIc } from "./icon/pauseBtnIc.svg";
 export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
