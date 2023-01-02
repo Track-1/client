@@ -56,8 +56,8 @@ export { ReactComponent as PinkXIc } from "./icon/PinkXIc.svg";
 export { ReactComponent as UserIc } from "./icon/userIC.svg";
 export { ReactComponent as LogoIc } from "./icon/logoIC.svg";
 export { ReactComponent as MyPageTextIc } from "./icon/mypageTextIC.svg";
-export { ReactComponent as TracksTextIc } from "./icon/TracksTextIc.svg";
-export { ReactComponent as VocalsTextIc } from "./icon/VocalsTextIc.svg";
+export { ReactComponent as MainTracksTextIc } from "./icon/mainTracksTextIc.svg";
+export { ReactComponent as MainVocalsTextIc } from "./icon/mainVocalsTextIc.svg";
 export { ReactComponent as DownloadBtnIc } from "./icon/downloadBtnIc.svg";
 export { ReactComponent as PauseBtnIc } from "./icon/pauseBtnIc.svg";
 export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
@@ -74,4 +74,3 @@ export { ReactComponent as UploadIc } from "./icon/uploadIc.svg";
 export { ReactComponent as AddCommentIc } from "./icon/addCommentIc.svg";
 export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIC.svg";
 export { ReactComponent as PlayBtnIc } from "./icon/playBtnIc.svg";
-
