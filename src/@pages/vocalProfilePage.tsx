@@ -1,3 +1,9 @@
+import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
+
 export default function VocalProfilePage() {
-  return <>vocal-profile</>;
+  return (
+    <>
+    <VocalProfileShadow/>
+    </>
+  );
 }
