@@ -1,3 +1,6 @@
+export { ReactComponent as UserIc } from "./icon/userIC.svg";
+export { ReactComponent as LogoIc } from "./icon/logoIC.svg";
+export { ReactComponent as MyPageTextIc } from "./icon/mypageTextIC.svg";
 export { ReactComponent as TracksTextIc } from "./icon/tracksTextIc.svg";
 export { ReactComponent as VocalsTextIc } from "./icon/vocalsTextIc.svg";
 export { ReactComponent as DownloadBtnIc } from "./icon/downloadBtnIc.svg";

@@ -1,4 +1,5 @@
 
+
 import styled, { keyframes } from "styled-components";
 import bannerImg from "../../assets/image/bannerImg.png";
 
@@ -26,6 +27,7 @@ const LinearFlow = keyframes`
 `;
 
 const Banner = styled.div`
+
   height: 6.2rem;
 
   margin-top: 3.1rem;
@@ -35,12 +37,13 @@ const Banner = styled.div`
   -o-animation: ${LinearFlow} 15s infinite linear;
 `;
 
+
 const FooterTextWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 4.2rem;
-  /*  */
+  color : ${({theme}) => theme.colors.white};
 `;
 
 const FooterText = styled.p`
