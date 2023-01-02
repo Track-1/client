@@ -1,6 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Player from "../@components/@common/player";
+import VocalProfileList from "../@components/vocalProfile/vocalProfileList";
 import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
 import {showPlayerBar} from "../recoil/player"
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
@@ -17,6 +18,7 @@ export default function VocalProfilePage() {
     {showPlayer&&(<Player />)}
 
     <VocalProfileWrapper>
+      <VocalProfileList/>
       <VocalProfileShadow/>
     </VocalProfileWrapper>
     </>
