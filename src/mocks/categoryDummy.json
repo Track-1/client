@@ -1,12 +1,12 @@
 [
-    {"id": 1, "category": "R&BTextIc"},
-    {"id": 2, "category": "HiphopTextIc"},
-    {"id": 3, "category": "BalladTextIc"},
-    {"id": 4, "category": "PopTextIc"},
-    {"id": 5, "category": "RockTextIc"},
-    {"id": 6, "category": "EDMTextIc"},
-    {"id": 7, "category": "JazzTextIc"},
-    {"id": 8, "category": "HouseTextIc"},
-    {"id": 9, "category": "FunkTextIc"}
+    {"id": 0, "category": "R&BTextIc","selectTrackCategory": "R&BSelectTextIc","selectVocalCategory": "R&BPinkTextIc"},
+    {"id": 1, "category": "HiphopTextIc","selectTrackCategory": "HiphopSelectTextIc","selectVocalCategory": "HiphopPinkTextIc"},
+    {"id": 2, "category": "BalladTextIc","selectTrackCategory": "BalladSelectTextIc","selectVocalCategory": "BalladPinkTextIc"},
+    {"id": 3, "category": "PopTextIc","selectTrackCategory": "PopSelectTextIc","selectVocalCategory": "PopPinkTextIc"},
+    {"id": 4, "category": "RockTextIc","selectTrackCategory": "RockSelectTextIc","selectVocalCategory": "RockPinkTextIc"},
+    {"id": 5, "category": "EDMTextIc","selectTrackCategory": "EDMSelectTextIc","selectVocalCategory": "EDMPinkTextIc"},
+    {"id": 6, "category": "JazzTextIc","selectTrackCategory": "JazzSelectTextIc","selectVocalCategory": "JazzPinkTextIc"},
+    {"id": 7, "category": "HouseTextIc","selectTrackCategory": "HouseSelectTextIc","selectVocalCategory": "HousePinkTextIc"},
+    {"id": 8, "category": "FunkTextIc","selectTrackCategory": "FunkSelectTextIc","selectVocalCategory": "FunkPinkTextIc"}
 ]
 

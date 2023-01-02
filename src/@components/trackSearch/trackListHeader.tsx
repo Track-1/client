@@ -5,17 +5,17 @@ import { TrackListHeaderSloganIc, ProducerTextIc, VocalTextIc } from "../../asse
 export default function TrackListHeader() {
   return (
     <TrackListHeaderWrapper>
-    <SloganIc/>
+    <TrackListHeaderSloganIcon/>
     <StickerWrapper>
       <ProducerStickerWrapper>
-        <ProducerSticker/>
+        <ProducerTextIcon/>
       </ProducerStickerWrapper>
 
-      <VocalSticker/>
+      <VocalTextIcon/>
       <VocalStickerBackground>
-        <div></div>
-        <div></div>
-        <div></div>
+        <FirstSquare></FirstSquare>
+        <SecondSquare></SecondSquare>
+        <ThirdSquare></ThirdSquare>
       </VocalStickerBackground>
     </StickerWrapper>
     </TrackListHeaderWrapper>
@@ -27,19 +27,21 @@ const TrackListHeaderWrapper=styled.section`
 
   display:flex;
   justify-content: space-between;
+  padding-top: 14.3rem;
 `
 
-const SloganIc=styled(TrackListHeaderSloganIc)`
-  margin: 2.64rem 0 0 9.46rem;
+const TrackListHeaderSloganIcon=styled(TrackListHeaderSloganIc)`
+  margin: 2.64rem 0 0 9rem;
 `
 
 const StickerWrapper=styled.article`
   display:inline-block;
 
   width: 37.5rem;
+  margin-top: 2.4rem;
 `
 
-const ProducerSticker=styled(ProducerTextIc)`
+const ProducerTextIcon=styled(ProducerTextIc)`
   position: absolute;
   z-index: 5;
 
@@ -63,7 +65,7 @@ const ProducerStickerWrapper=styled.div`
   border-radius: 10rem;
 `
 
-const VocalSticker=styled(VocalTextIc)`
+const VocalTextIcon=styled(VocalTextIc)`
   position: absolute;
   z-index: 3;
 
@@ -78,52 +80,51 @@ const VocalStickerBackground=styled.div`
 
   margin-top: 3.69rem;
   margin-left: 22.5rem;
+`
 
-  & > div:nth-child(1){
-    position: absolute;
-    z-index: 1;
+const FirstSquare=styled.div`
+  position: absolute;
+  z-index: 1;
 
-    margin-left: -2rem;
-    margin-top: 2rem;
+  margin-left: -2rem;
+  margin-top: 2rem;
 
-    width: 5rem;
-    height: 5rem;
+  width: 5rem;
+  height: 5rem;
 
-    background: linear-gradient(355deg, ${({ theme }) => theme.colors.sub2} -70%, transparent 75%);
+  background: linear-gradient(355deg, ${({ theme }) => theme.colors.sub2} -70%, transparent 75%);
 
-    transform: rotate(-60.03deg);
-    
-    border-radius: 1.2rem;
-  }
+  transform: rotate(-60.03deg);
+  
+  border-radius: 1.2rem;
+`
 
-  & > div:nth-child(2){
-    width: 12rem;
-    height: 6.143rem;
+const SecondSquare=styled.div`
+  width: 12rem;
+  height: 6.143rem;
 
-    position: absolute;
-    z-index: 2;
+  position: absolute;
+  z-index: 2;
 
-    background: linear-gradient(310deg, ${({ theme }) => theme.colors.sub2} 40%, ${({ theme }) => theme.colors.sub3} 90%);
+  background: linear-gradient(310deg, ${({ theme }) => theme.colors.sub2} 40%, ${({ theme }) => theme.colors.sub3} 90%);
 
-    transform: rotate(-15.03deg);
+  transform: rotate(-15.03deg);
 
-    border-radius: 0.4rem;
-  }
+  border-radius: 0.4rem;
+`
 
-  & > div:nth-child(3){
-    position: absolute;
-    z-index: 1;
+const ThirdSquare=styled.div`
+  position: absolute;
+  z-index: 1;
 
-    margin-left: 9rem;
-    margin-top: -0.9rem;
+  margin-left: 9rem;
+  margin-top: -0.9rem;
 
-    width: 5rem;
-    height: 5rem;
+  width: 5rem;
+  height: 5rem;
 
-    background: ${({ theme }) => theme.colors.sub2};
-    transform: rotate(-60.03deg);
+  background: ${({ theme }) => theme.colors.sub2};
+  transform: rotate(-60.03deg);
 
-    border-radius: 1.2rem;
-
-  }
+  border-radius: 1.2rem;
 `
