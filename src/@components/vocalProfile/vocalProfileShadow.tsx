@@ -3,13 +3,17 @@ import { VocalProfileShadowIc } from "../../assets"
 
 export default function VocalProfileShadow() {
   return (
-    <>        
+    <VocalProfileShadowWrapper>        
         <Title>profile</Title>
         <VocalProfileShadowIcon/>
-    </>
+    </VocalProfileShadowWrapper>
   )
 }
 
+const VocalProfileShadowWrapper=styled.section`
+  position: fixed;
+  z-index: 2;
+`
 const VocalProfileShadowIcon=styled(VocalProfileShadowIc)`
     position: relative;
 `
