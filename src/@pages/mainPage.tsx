@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Header from "../@components/@common/header";
+import Header from "../@components/@common/mainHeader";
 import Footer from "../@components/@common/footer";
 
 import { TracksTextIc, VocalsTextIc } from "../assets";
