@@ -19,7 +19,7 @@ export default function VocalList() {
 
           <MusicProfile>
             <GradientEffect>
-              <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
+              <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진"></AlbumCoverImg>
             </GradientEffect>
           </MusicProfile>
           <Hashtags>
@@ -88,12 +88,17 @@ const MusicProfile = styled.div`
   display: inline-block;
   width: 28.4rem;
   height: 28.4rem;
-  border: 0.3rem transparent;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.colors.sub2} 0%,
-    ${({ theme }) => theme.colors.sub3} 65%
-  );
+  border: 0.3rem solid transparent;
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
+    linear-gradient(
+      to top,
+      ${({ theme }) => theme.colors.sub2} 0%,
+      ${({ theme }) => theme.colors.sub3} 50%,
+      ${({ theme }) => theme.colors.sub3} 100%
+    );
+
+  background-origin: border-box;
+  background-clip: content-box, border-box;
   transform: rotate(45deg);
   margin-left: 5.3rem;
   border-radius: 5rem;
