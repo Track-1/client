@@ -1,3 +1,15 @@
+export { ReactComponent as DownloadBtnIc } from "./icon/downloadBtnIc.svg";
+export { ReactComponent as PauseBtnIc } from "./icon/pauseBtnIc.svg";
+export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
+export { ReactComponent as HashtagIc } from "./icon/hashtagIc.svg";
+export { ReactComponent as DescriptionIc } from "./icon/descriptionIc.svg";
+export { ReactComponent as BackBtnIc } from "./icon/backBtnIc.svg";
+export { ReactComponent as ClosedBtnIc } from "./icon/closedBtnIc.svg";
+export { ReactComponent as ClosedWithXIc } from "./icon/closedWithXIc.svg";
+export { ReactComponent as OpenedIc } from "./icon/openedIc.svg";
+export { ReactComponent as EditIc } from "./icon/editIc.svg";
+export { ReactComponent as DeleteIc } from "./icon/deleteIc.svg";
+export { ReactComponent as EditBtnIc } from "./icon/editBtnIc.svg";
 export { ReactComponent as UploadIc } from "./icon/uploadIc.svg";
 export { ReactComponent as AddCommentIc } from "./icon/addCommentIc.svg";
 export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIC.svg";
