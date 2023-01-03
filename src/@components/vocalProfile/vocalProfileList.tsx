@@ -20,7 +20,7 @@ export default function VocalProfileList() {
       <VocalsPortfolioWrapper>
         {vocals.map((vocal,idx)=>(
           <VocalPortfolio key={vocal.vocalPortfolioId}>
-              <VocalPortfolioTitle>{vocal.title}</VocalPortfolioTitle>
+              <VocalPortfolioTitle onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)}>{vocalPortfolioHover===vocal.vocalPortfolioId&&vocal.title}</VocalPortfolioTitle>
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
               alt="보컬 포트폴리오이미지" 
@@ -109,6 +109,8 @@ const VocalPortfolioTitle=styled.div`
 
   ${({ theme })=>theme.fonts.id};
   color: ${({ theme })=>theme.colors.white};
+
+  cursor: pointer;
 `
 
 const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean}>`
@@ -121,4 +123,6 @@ const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean}
   margin-bottom: ${({idx}) => idx===0?(12):(8.5)}rem;
 
   box-shadow: 0 0 4rem  ${({ vocalPortfolioHoverBool, theme }) => vocalPortfolioHoverBool&&theme.colors.sub2};
+
+  cursor: pointer;
 `
