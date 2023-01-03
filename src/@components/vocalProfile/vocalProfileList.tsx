@@ -2,10 +2,15 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
+import {showPlayerBar, playMusic,trackClicked,selectedId} from "../../recoil/player"
 
 export default function VocalProfileList() {
   const vocalPortfolioCount=vocals.length;
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1)
+  const [vocalPortfolioClick, setVocalPortfolioClick]=useRecoilState<number>(selectedId)
+  const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
+  const [play, setPlay]=useRecoilState<boolean>(playMusic)
+
 
   function mouseOverVocalPortfolio(id:number, title:string){
     setVocalPortfolioHover(id)
@@ -15,19 +20,25 @@ export default function VocalProfileList() {
     setVocalPortfolioHover(-1)
   }
 
+  function clickVocalPortfolio(id:number){
+    setVocalPortfolioClick(id)
+  }
+
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
         {vocals.map((vocal,idx)=>(
           <VocalPortfolio key={vocal.vocalPortfolioId}>
-              <VocalPortfolioTitle onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)}>{vocalPortfolioHover===vocal.vocalPortfolioId&&vocal.title}</VocalPortfolioTitle>
+              <VocalPortfolioTitle onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}>{vocalPortfolioHover===vocal.vocalPortfolioId&&vocal.title}</VocalPortfolioTitle>
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
               alt="보컬 포트폴리오이미지" 
               onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} 
               onMouseLeave={mouseOutVocalPortfolio}
+              onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
               idx={idx}   
               vocalPortfolioHoverBool={vocalPortfolioHover===vocal.vocalPortfolioId}
+              vocalPortfolioClickBool={vocalPortfolioClick===vocal.vocalPortfolioId}
             />
           </VocalPortfolio>
         ))}
@@ -113,9 +124,9 @@ const VocalPortfolioTitle=styled.div`
   cursor: pointer;
 `
 
-const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean}>`
-  width: ${({idx}) => idx===0?(30.2):(16.7)}rem;
-  height: ${({idx}) => idx===0?(30.2):(16.7)}rem;
+const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
+  width: ${({vocalPortfolioClickBool,idx}) => (idx===0||vocalPortfolioClickBool)?(30.2):(16.7)}rem;
+  height: ${({vocalPortfolioClickBool,idx}) => (idx===0||vocalPortfolioClickBool)?(30.2):(16.7)}rem;
   border-radius: 3rem;
 
   transform: rotate(45deg);
