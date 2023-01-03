@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
 import {showPlayerBar, playMusic,trackClicked,selectedId} from "../../recoil/player"
+import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 
 export default function VocalProfileList() {
   const vocalPortfolioCount=vocals.length;
@@ -22,14 +23,27 @@ export default function VocalProfileList() {
 
   function clickVocalPortfolio(id:number){
     setVocalPortfolioClick(id)
+    setPlay(play=>!play)
+    setShowPlayer(true)
   }
+
+  console.log(vocalPortfolioHover)
 
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
         {vocals.map((vocal,idx)=>(
           <VocalPortfolio key={vocal.vocalPortfolioId}>
-              <VocalPortfolioTitle onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}>{vocalPortfolioHover===vocal.vocalPortfolioId&&vocal.title}</VocalPortfolioTitle>
+              <VocalPortfolioTitle onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}>
+                {vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioClick!==vocal.vocalPortfolioId&&vocal.title}
+              </VocalPortfolioTitle>
+            {play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPlayIcon/>}
+            {!play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPauseIcon/>}
+            <VocalPorfolioBlur
+              idx={idx}
+              vocalPortfolioHoverBool={vocalPortfolioHover===vocal.vocalPortfolioId}
+              vocalPortfolioClickBool={vocalPortfolioClick===vocal.vocalPortfolioId}            
+            />
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
               alt="보컬 포트폴리오이미지" 
@@ -124,6 +138,37 @@ const VocalPortfolioTitle=styled.div`
   cursor: pointer;
 `
 
+const VocalProfileBlurPlayIcon=styled(VocalProfileBlurPlayIc)`
+  position: absolute;
+  z-index: 4;
+
+  margin-top: -8.5rem;
+`
+
+const VocalProfileBlurPauseIcon=styled(VocalProfileBlurPauseIc)`
+  position: absolute;
+  z-index: 4;
+
+  margin-top: -8.5rem;
+`
+
+const VocalPorfolioBlur=styled.div<{idx:number,vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
+  position: absolute;
+  z-index: 3;
+
+  width:30.2rem;
+  height:30.2rem;  
+  margin-top: -12rem;
+  margin-top: ${({vocalPortfolioClickBool,idx})=>vocalPortfolioClickBool&&idx!==0?-8.5:-12}rem;
+
+  border-radius: 3rem;
+
+  transform: rotate(45deg);
+
+  -webkit-backdrop-filter: blur(${({vocalPortfolioHoverBool, vocalPortfolioClickBool})=>vocalPortfolioHoverBool&&vocalPortfolioClickBool&&7}rem);
+  backdrop-filter: blur(${({vocalPortfolioHoverBool, vocalPortfolioClickBool})=>vocalPortfolioHoverBool&&vocalPortfolioClickBool&&7}rem);
+`
+
 const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
   width: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
   height: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
@@ -132,9 +177,9 @@ const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean,
   transform: rotate(45deg);
 
   margin-bottom: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(12):(8.5)}rem;
-  margin-top: ${({vocalPortfolioClickBool})=>vocalPortfolioClickBool&&3.5}rem;
+  margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&vocalPortfolioClickBool&&3.5}rem;
 
-  box-shadow: 0 0 4rem  ${({ vocalPortfolioHoverBool, theme }) => vocalPortfolioHoverBool&&theme.colors.sub2};
-
+  box-shadow: 0 0 4rem  ${({ vocalPortfolioHoverBool, vocalPortfolioClickBool, theme }) => vocalPortfolioHoverBool&&!vocalPortfolioClickBool&&theme.colors.sub2};
+  
   cursor: pointer;
 `
