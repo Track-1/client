@@ -2,16 +2,12 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
-import { playMusic, selectedId, showPlayerBar } from "../../recoil/player";
 
 export default function VocalProfileList() {
   const vocalPortfolioCount=vocals.length;
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1)
-  const [vocalPortfolioClick, setVocalPortfolioClick]=useRecoilState<number>(selectedId)
-  const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
-  const [play, setPlay]=useRecoilState<boolean>(playMusic)
 
-  function mouseOverVocalPortfolio(id:number){
+  function mouseOverVocalPortfolio(id:number, title:string){
     setVocalPortfolioHover(id)
   }
 
@@ -24,11 +20,11 @@ export default function VocalProfileList() {
       <VocalsPortfolioWrapper>
         {vocals.map((vocal,idx)=>(
           <VocalPortfolio key={vocal.vocalPortfolioId}>
-            <VocalPortfolioTitle>{vocal.title}</VocalPortfolioTitle>
+              <VocalPortfolioTitle>{vocal.title}</VocalPortfolioTitle>
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
               alt="보컬 포트폴리오이미지" 
-              onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId)} 
+              onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} 
               onMouseLeave={mouseOutVocalPortfolio}
               idx={idx}   
               vocalPortfolioHoverBool={vocalPortfolioHover===vocal.vocalPortfolioId}
@@ -89,6 +85,7 @@ const VocalsPortfolioWrapper=styled.section`
   position: absolute;
   z-index: 4;
   margin: 38.5rem 0 0 38.5rem;
+  padding-top: -38.5rem;
 `
 
 const VocalPortfolio=styled.article`
@@ -98,10 +95,18 @@ const VocalPortfolio=styled.article`
   align-items: center;
 `
 
-const VocalPortfolioTitle=styled.p`
+const VocalPortfolioTitle=styled.div`
   position: absolute;
-  z-index: 3;
-  
+  z-index: 5;
+
+  width: 14rem;
+  height: 5rem;
+  margin-top: -5.5rem;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+
   ${({ theme })=>theme.fonts.id};
   color: ${({ theme })=>theme.colors.white};
 `
