@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SleepIc, HoverPlayIc } from "../../assets";
+import { SleepIc, VocalHoverPlayIc } from "../../assets";
 import vocals from "../../mocks/vocalsListDummy.json";
 
 export default function VocalList() {
@@ -22,7 +22,7 @@ export default function VocalList() {
               <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
             <ProfileGradient></ProfileGradient>
-            <HoverPlayIcon />
+            <VocalHoverPlayIcon />
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -103,12 +103,12 @@ const ProfileGradient = styled.div`
   right: 19px;
 `;
 
-const HoverPlayIcon = styled(HoverPlayIc)`
- position:absolute;
- top:0;
- margin-left:10rem;
- margin-top:10rem;
- transform: rotate(-45deg);
+const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
+  position: absolute;
+  top: 0;
+  margin-left: 10rem;
+  margin-top: 10rem;
+  transform: rotate(-45deg);
 `;
 
 const MusicProfile = styled.div`
