@@ -13,7 +13,7 @@ export default function VocalProfileList() {
   const [play, setPlay]=useRecoilState<boolean>(playMusic)
 
 
-  function mouseOverVocalPortfolio(id:number, title:string){
+  function mouseOverVocalPortfolio(id:number){
     setVocalPortfolioHover(id)
   }
 
@@ -23,18 +23,8 @@ export default function VocalProfileList() {
 
   function clickVocalPortfolio(id:number){
     setVocalPortfolioClick(id)
-    setPlay(true)
+    showPlayer?setPlay((prev)=>!prev):setPlay(true)
     setShowPlayer(true)
-  }
-
-  function clickBlurPauseIc(id:number){
-    setShowPlayer(true)
-    setPlay(true)
-    setVocalPortfolioClick(id)
-  }
-
-  function clickBlurPlayIc(){
-      setPlay(false)
   }
 
   return (
@@ -43,17 +33,33 @@ export default function VocalProfileList() {
         {vocals.map((vocal,idx)=>(
           <VocalPortfolio 
             key={vocal.vocalPortfolioId}
-            onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} 
+            onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId)} 
             onMouseLeave={mouseOutVocalPortfolio}
             onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
           >
               <VocalPortfolioTitle>
-                {vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioClick!==vocal.vocalPortfolioId&&vocal.title}
+                {vocalPortfolioHover===vocal.vocalPortfolioId
+                &&vocalPortfolioClick!==vocal.vocalPortfolioId
+                &&vocal.title
+                }
               </VocalPortfolioTitle>
-            {play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPlayIcon onClick={clickBlurPlayIc}/>}
-            {!play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPauseIcon onClick={()=>clickBlurPauseIc(vocal.vocalPortfolioId)}/>}
-            {vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&
-            <VocalPorfolioBlur idx={idx} />}
+            {play
+              &&vocalPortfolioHover===vocal.vocalPortfolioId
+              &&vocalPortfolioHover!==-1
+              &&vocalPortfolioClick===vocal.vocalPortfolioId
+              &&<VocalProfileBlurPlayIcon/>
+            }
+            {!play
+              &&vocalPortfolioHover===vocal.vocalPortfolioId
+              &&vocalPortfolioHover!==-1
+              &&vocalPortfolioClick===vocal.vocalPortfolioId
+              &&<VocalProfileBlurPauseIcon/>
+            }
+            {vocalPortfolioHover===vocal.vocalPortfolioId
+              &&vocalPortfolioHover!==-1
+              &&vocalPortfolioClick===vocal.vocalPortfolioId
+              &&<VocalPorfolioBlur idx={idx} />
+            }
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
               alt="보컬 포트폴리오이미지" 
