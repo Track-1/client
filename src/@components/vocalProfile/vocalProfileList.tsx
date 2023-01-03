@@ -23,33 +23,40 @@ export default function VocalProfileList() {
 
   function clickVocalPortfolio(id:number){
     setVocalPortfolioClick(id)
-    setPlay(play=>!play)
+    setPlay(true)
     setShowPlayer(true)
   }
 
-  console.log(vocalPortfolioHover)
+  function clickBlurPauseIc(id:number){
+    setShowPlayer(true)
+    setPlay(true)
+    setVocalPortfolioClick(id)
+  }
+
+  function clickBlurPlayIc(){
+      setPlay(false)
+  }
 
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
         {vocals.map((vocal,idx)=>(
-          <VocalPortfolio key={vocal.vocalPortfolioId}>
-              <VocalPortfolioTitle onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}>
+          <VocalPortfolio 
+            key={vocal.vocalPortfolioId}
+            onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} 
+            onMouseLeave={mouseOutVocalPortfolio}
+            onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
+          >
+              <VocalPortfolioTitle>
                 {vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioClick!==vocal.vocalPortfolioId&&vocal.title}
               </VocalPortfolioTitle>
-            {play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPlayIcon/>}
-            {!play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPauseIcon/>}
-            <VocalPorfolioBlur
-              idx={idx}
-              vocalPortfolioHoverBool={vocalPortfolioHover===vocal.vocalPortfolioId}
-              vocalPortfolioClickBool={vocalPortfolioClick===vocal.vocalPortfolioId}            
-            />
+            {play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPlayIcon onClick={clickBlurPlayIc}/>}
+            {!play&&vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&<VocalProfileBlurPauseIcon onClick={()=>clickBlurPauseIc(vocal.vocalPortfolioId)}/>}
+            {vocalPortfolioHover===vocal.vocalPortfolioId&&vocalPortfolioHover!==-1&&vocalPortfolioClick===vocal.vocalPortfolioId&&
+            <VocalPorfolioBlur idx={idx} />}
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
               alt="보컬 포트폴리오이미지" 
-              onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId, vocal.title)} 
-              onMouseLeave={mouseOutVocalPortfolio}
-              onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
               idx={idx}   
               vocalPortfolioHoverBool={vocalPortfolioHover===vocal.vocalPortfolioId}
               vocalPortfolioClickBool={vocalPortfolioClick===vocal.vocalPortfolioId}
@@ -152,21 +159,21 @@ const VocalProfileBlurPauseIcon=styled(VocalProfileBlurPauseIc)`
   margin-top: -8.5rem;
 `
 
-const VocalPorfolioBlur=styled.div<{idx:number,vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
+const VocalPorfolioBlur=styled.div<{idx:number}>`
   position: absolute;
   z-index: 3;
 
   width:30.2rem;
   height:30.2rem;  
   margin-top: -12rem;
-  margin-top: ${({vocalPortfolioClickBool,idx})=>vocalPortfolioClickBool&&idx!==0?-8.5:-12}rem;
+  margin-top: ${({idx})=>idx!==0?-8.5:-12}rem;
 
   border-radius: 3rem;
 
   transform: rotate(45deg);
 
-  -webkit-backdrop-filter: blur(${({vocalPortfolioHoverBool, vocalPortfolioClickBool})=>vocalPortfolioHoverBool&&vocalPortfolioClickBool&&7}rem);
-  backdrop-filter: blur(${({vocalPortfolioHoverBool, vocalPortfolioClickBool})=>vocalPortfolioHoverBool&&vocalPortfolioClickBool&&7}rem);
+  -webkit-backdrop-filter: blur(7rem);
+  backdrop-filter: blur(7rem);
 `
 
 const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
