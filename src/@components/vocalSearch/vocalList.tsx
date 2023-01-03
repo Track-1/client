@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SleepIc } from "../../assets";
+import { SleepIc, HoverPlayIc } from "../../assets";
 import vocals from "../../mocks/vocalsListDummy.json";
 
 export default function VocalList() {
@@ -19,8 +19,10 @@ export default function VocalList() {
 
           <MusicProfile>
             <GradientEffect>
-              <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진"></AlbumCoverImg>
+              <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
+            <ProfileGradient></ProfileGradient>
+            <HoverPlayIcon />
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -83,11 +85,39 @@ const AlbumCoverImg = styled.img`
   position: relative;
 `;
 
+const ProfileGradient = styled.div`
+  position: absolute;
+  top: 0;
+  width: 23.4rem;
+  height: 23.4rem;
+  /* background: linear-gradient(135deg, ${({ theme }) => theme.colors.sub3} 15.32%, rgba(13, 14, 17, 0) 53.49%, ${({
+    theme,
+  }) => theme.colors.sub3} 92.93%); */
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors.sub3} 15.32%,
+    rgba(13, 14, 17, 0.7) 53.49%,
+    ${({ theme }) => theme.colors.sub3} 92.93%
+  );
+  top: 25px;
+  right: 19px;
+`;
+
+const HoverPlayIcon = styled(HoverPlayIc)`
+ position:absolute;
+ top:0;
+ margin-left:10rem;
+ margin-top:10rem;
+ transform: rotate(-45deg);
+`;
+
 const MusicProfile = styled.div`
   position: relative;
   display: inline-block;
   width: 28.4rem;
   height: 28.4rem;
+  top: 22px;
+  left: 22px;
   border: 0.3rem solid transparent;
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
