@@ -125,13 +125,14 @@ const VocalPortfolioTitle=styled.div`
 `
 
 const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
-  width: ${({vocalPortfolioClickBool,idx}) => (idx===0||vocalPortfolioClickBool)?(30.2):(16.7)}rem;
-  height: ${({vocalPortfolioClickBool,idx}) => (idx===0||vocalPortfolioClickBool)?(30.2):(16.7)}rem;
+  width: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
+  height: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
   border-radius: 3rem;
 
   transform: rotate(45deg);
 
-  margin-bottom: ${({idx}) => idx===0?(12):(8.5)}rem;
+  margin-bottom: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(12):(8.5)}rem;
+  margin-top: ${({vocalPortfolioClickBool})=>vocalPortfolioClickBool&&3.5}rem;
 
   box-shadow: 0 0 4rem  ${({ vocalPortfolioHoverBool, theme }) => vocalPortfolioHoverBool&&theme.colors.sub2};
 
