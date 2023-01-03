@@ -1,15 +1,38 @@
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
+import { playMusic, selectedId, showPlayerBar } from "../../recoil/player";
 
 export default function VocalProfileList() {
   const vocalPortfolioCount=vocals.length;
+  const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1)
+  const [vocalPortfolioClick, setVocalPortfolioClick]=useRecoilState<number>(selectedId)
+  const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
+  const [play, setPlay]=useRecoilState<boolean>(playMusic)
+
+  function mouseOverVocalPortfolio(id:number){
+    setVocalPortfolioHover(id)
+  }
+
+  function mouseOutVocalPortfolio(){
+    setVocalPortfolioHover(-1)
+  }
 
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
-        {vocals.map(({vocalPortfolioId,jacketImage,title},idx)=>(
-          <VocalPortfolio key={vocalPortfolioId}>
-            <VocalPortfolioImg src={require('../../assets/image/'+ jacketImage + '.png')} alt="보컬 포트폴리오이미지" idx={idx}/>
+        {vocals.map((vocal,idx)=>(
+          <VocalPortfolio key={vocal.vocalPortfolioId}>
+            <VocalPortfolioTitle>{vocal.title}</VocalPortfolioTitle>
+            <VocalPortfolioImg 
+              src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
+              alt="보컬 포트폴리오이미지" 
+              onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId)} 
+              onMouseLeave={mouseOutVocalPortfolio}
+              idx={idx}   
+              vocalPortfolioHoverBool={vocalPortfolioHover===vocal.vocalPortfolioId}
+            />
           </VocalPortfolio>
         ))}
       </VocalsPortfolioWrapper>
@@ -75,7 +98,15 @@ const VocalPortfolio=styled.article`
   align-items: center;
 `
 
-const VocalPortfolioImg=styled.img<{idx:number}>`
+const VocalPortfolioTitle=styled.p`
+  position: absolute;
+  z-index: 3;
+  
+  ${({ theme })=>theme.fonts.id};
+  color: ${({ theme })=>theme.colors.white};
+`
+
+const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean}>`
   width: ${({idx}) => idx===0?(30.2):(16.7)}rem;
   height: ${({idx}) => idx===0?(30.2):(16.7)}rem;
   border-radius: 3rem;
@@ -83,4 +114,6 @@ const VocalPortfolioImg=styled.img<{idx:number}>`
   transform: rotate(45deg);
 
   margin-bottom: ${({idx}) => idx===0?(12):(8.5)}rem;
+
+  box-shadow: 0 0 4rem  ${({ vocalPortfolioHoverBool, theme }) => vocalPortfolioHoverBool&&theme.colors.sub2};
 `
