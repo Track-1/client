@@ -1,16 +1,21 @@
 import styled from "styled-components"
+import vocals from "../../mocks/vocalProfileDummy.json"
 
 export default function VocalProfileList() {
   return (
     <VocalProfileListWrapper>
-    <VocalsBoxWrapper>
-      <VocalsBoxBody></VocalsBoxBody>
-      <VocalsBoxHead></VocalsBoxHead>
-    </VocalsBoxWrapper>
+      <VocalsPortfolioWrapper>
+        {vocals.map(({vocalPortfolioId,jacketImage,title},idx)=>(
+          <VocalPortfolio>
+            <VocalPortfolioImg src={require('../../assets/image/'+ jacketImage + '.png')} alt="보컬 포트폴리오이미지"/>
+          </VocalPortfolio>
+        ))}
+      </VocalsPortfolioWrapper>
 
-    <Vocals>
-      
-    </Vocals>
+      <VocalsBoxWrapper>
+        <VocalsBoxBody></VocalsBoxBody>
+        <VocalsBoxHead></VocalsBoxHead>
+      </VocalsBoxWrapper>
     </VocalProfileListWrapper>
   )
 }
@@ -18,7 +23,7 @@ export default function VocalProfileList() {
 const VocalProfileListWrapper=styled.section`
   position: absolute;
   z-index: 5;
-  
+
   width: 132rem;
 `
 
@@ -53,9 +58,20 @@ const VocalsBoxBody=styled.div`
   background-color: ${({ theme }) => theme.colors.sub3};
 `
 
-const Vocals=styled.section`
+const VocalsPortfolioWrapper=styled.section`
   position: absolute;
   z-index: 4;
-
+  margin: 38.5rem 0 0 38.5rem;
 `
 
+const VocalPortfolio=styled.article`
+  margin-bottom: 17rem;
+`
+
+const VocalPortfolioImg=styled.img`
+  width: 29.2rem;
+  height: 29.2rem;
+  border-radius: 3rem;
+
+  transform: rotate(45deg);
+`
