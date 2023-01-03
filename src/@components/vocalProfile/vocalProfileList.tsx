@@ -48,7 +48,7 @@ const VocalsBoxBody=styled.div<{vocalPortfolioCount:number}>`
   z-index: 3;
 
   width: 47.7rem;
-  height: ${({vocalPortfolioCount}) => vocalPortfolioCount*50}rem;
+  height: ${({vocalPortfolioCount}) => vocalPortfolioCount*26}rem;
 
   margin-left: 29.3rem;
   margin-top: 18rem;
@@ -57,10 +57,9 @@ const VocalsBoxBody=styled.div<{vocalPortfolioCount:number}>`
   border-right: 0.3rem solid transparent;
 
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),  
-  linear-gradient(to top, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ theme }) => theme.colors.sub2} 100%);
+  linear-gradient(to top, ${({ theme }) => theme.colors.sub3} -5%,  ${({ theme }) => theme.colors.sub2} 100%);
   background-origin: border-box;
   background-clip: content-box, border-box;
-
 `
 
 const VocalsPortfolioWrapper=styled.section`
