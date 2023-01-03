@@ -18,6 +18,8 @@ export default function VocalProfileList() {
 const VocalProfileListWrapper=styled.section`
   position: absolute;
   z-index: 5;
+  
+  width: 132rem;
 `
 
 const VocalsBoxWrapper=styled.section`
@@ -52,6 +54,8 @@ const VocalsBoxBody=styled.div`
 `
 
 const Vocals=styled.section`
-  
+  position: absolute;
+  z-index: 4;
+
 `
 

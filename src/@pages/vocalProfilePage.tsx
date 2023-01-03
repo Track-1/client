@@ -17,14 +17,31 @@ export default function VocalProfilePage() {
     <>
     {showPlayer&&(<Player />)}
 
+    <VocalProfilePageWrapper>
+
+    <VocalProfile>보컬프로필 부분넣어주세요</VocalProfile>
+
     <VocalProfileWrapper>
       <VocalProfileList/>
       <VocalProfileShadow/>
     </VocalProfileWrapper>
+    </VocalProfilePageWrapper>
+
     </>
   );
 }
 
-const VocalProfileWrapper=styled.section`
-  width: 132rem;
+const VocalProfilePageWrapper=styled.section`
+  display: flex;
+`
+
+const VocalProfileWrapper=styled.article`
+  display: flex;
+`
+
+const VocalProfile=styled.article`
+  width: 60rem;
+  background-color:white;
+
+  font-size:5rem;
 `
