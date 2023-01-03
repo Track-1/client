@@ -2,6 +2,8 @@ import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
 
 export default function VocalProfileList() {
+  const vocalPortfolioCount=vocals.length;
+
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
@@ -13,7 +15,7 @@ export default function VocalProfileList() {
       </VocalsPortfolioWrapper>
 
       <VocalsBoxWrapper>
-        <VocalsBoxBody></VocalsBoxBody>
+        <VocalsBoxBody vocalPortfolioCount={vocalPortfolioCount}></VocalsBoxBody>
         <VocalsBoxHead></VocalsBoxHead>
       </VocalsBoxWrapper>
     </VocalProfileListWrapper>
@@ -41,21 +43,24 @@ const VocalsBoxHead=styled.div`
   border-radius: 5.5rem 3rem 5.4rem 3rem;
 `
 
-const VocalsBoxBody=styled.div`
+const VocalsBoxBody=styled.div<{vocalPortfolioCount:number}>`
   position: absolute;
   z-index: 3;
 
   width: 47.7rem;
-  height: 100rem;
+  height: ${({vocalPortfolioCount}) => vocalPortfolioCount*50}rem;
 
   margin-left: 29.3rem;
   margin-top: 18rem;
 
-  border-left: 0.3rem solid;
-  border-right: 0.3rem solid;
-  border-color: ${({ theme }) => theme.colors.sub2};
+  border-left: 0.3rem solid transparent;
+  border-right: 0.3rem solid transparent;
 
-  background-color: ${({ theme }) => theme.colors.sub3};
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),  
+  linear-gradient(to top, ${({ theme }) => theme.colors.sub3} 0%, ${({ theme }) => theme.colors.sub3} 20%,  ${({ theme }) => theme.colors.sub2} 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+
 `
 
 const VocalsPortfolioWrapper=styled.section`
