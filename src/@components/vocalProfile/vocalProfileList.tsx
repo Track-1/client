@@ -8,8 +8,8 @@ export default function VocalProfileList() {
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
         {vocals.map(({vocalPortfolioId,jacketImage,title},idx)=>(
-          <VocalPortfolio>
-            <VocalPortfolioImg src={require('../../assets/image/'+ jacketImage + '.png')} alt="보컬 포트폴리오이미지"/>
+          <VocalPortfolio key={vocalPortfolioId}>
+            <VocalPortfolioImg src={require('../../assets/image/'+ jacketImage + '.png')} alt="보컬 포트폴리오이미지" idx={idx}/>
           </VocalPortfolio>
         ))}
       </VocalsPortfolioWrapper>
@@ -70,13 +70,18 @@ const VocalsPortfolioWrapper=styled.section`
 `
 
 const VocalPortfolio=styled.article`
-  margin-bottom: 17rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
-const VocalPortfolioImg=styled.img`
-  width: 29.2rem;
-  height: 29.2rem;
+const VocalPortfolioImg=styled.img<{idx:number}>`
+  width: ${({idx}) => idx===0?(30.2):(16.7)}rem;
+  height: ${({idx}) => idx===0?(30.2):(16.7)}rem;
   border-radius: 3rem;
 
   transform: rotate(45deg);
+
+  margin-bottom: ${({idx}) => idx===0?(12):(8.5)}rem;
 `
