@@ -6,6 +6,7 @@ import TracksPage from "./@pages/tracksPage";
 import TrackSearchPage from "./@pages/trackSearchPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalsPage from "./@pages/vocalsPage";
+import TrackUploadPage from "./@pages/trackUploadPage";
 
 export default function Router() {
   return (
@@ -18,6 +19,7 @@ export default function Router() {
         <Route path="/track-post" element={<TrackPostPage />} />
         <Route path="/producer-profile" element={<ProducerProfilePage />} />
         <Route path="/vocal-profile" element={<VocalProfilePage />} />
+        <Route path="/trackUpload" element={<TrackUploadPage />} />
       </Routes>
     </BrowserRouter>
   );
