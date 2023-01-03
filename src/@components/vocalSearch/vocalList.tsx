@@ -1,10 +1,22 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { SleepIc, VocalHoverPlayIc } from "../../assets";
 import vocals from "../../mocks/vocalsListDummy.json";
 
 export default function VocalList() {
+  const [vocalHover, setVocalHover] = useState<number>(-1);
+
+  console.log(vocalHover);
+  function mouseOverVocal(id: number) {
+    setVocalHover(id);
+  }
+
+  function mouseOutVocal() {
+    setVocalHover(-1);
+  }
+
   return (
-    <VocalListContainer>
+    <VocalListContainer className="vocal">
       {vocals.map(({ id, imgSrc, producer, category, categoryNum, hashtags }) => (
         <VocalContainer key={id}>
           <UsernameInformWrapper>
@@ -18,11 +30,14 @@ export default function VocalList() {
           </CategoryTextWrapper>
 
           <MusicProfile>
-            <GradientEffect>
+            <GradientEffect className={vocalHover === id ? "gradient" : ""}>
               <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
-            <ProfileGradient></ProfileGradient>
-            <VocalHoverPlayIcon />
+            <ProfileGradient
+              className={vocalHover === id ? "show" : "hide"}
+              onMouseLeave={mouseOutVocal}
+              onMouseEnter={() => mouseOverVocal(id)}></ProfileGradient>
+            <VocalHoverPlayIcon onMouseLeave={mouseOutVocal} onMouseEnter={() => mouseOverVocal(id)} />
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -38,6 +53,29 @@ export default function VocalList() {
 const VocalListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding-top: 5.6rem;
+  padding-left: 9rem;
+
+  .show {
+    background: linear-gradient(
+      135deg,
+      ${({ theme }) => theme.colors.sub3} 15.32%,
+      rgba(13, 14, 17, 0.7) 53.49%,
+      ${({ theme }) => theme.colors.sub3} 92.93%
+    );
+  }
+
+  .hide {
+    background: linear-gradient(
+      135deg,
+      ${({ theme }) => theme.colors.sub3} 15.32%,
+      rgba(13, 14, 17, 0) 53.49%,
+      ${({ theme }) => theme.colors.sub3} 92.93%
+    );
+  }
+
+  .gradient {
+  }
 `;
 
 const VocalContainer = styled.div`
@@ -49,7 +87,6 @@ const VocalContainer = styled.div`
 `;
 const UsernameInformWrapper = styled.div`
   display: flex;
-  margin-left: 4.1rem;
   margin-top: 1.8rem;
 `;
 
@@ -61,9 +98,7 @@ const Username = styled.span`
   line-height: 3.1rem;
 `;
 
-const CategoryTextWrapper = styled.div`
-  margin-left: 4.1rem;
-`;
+const CategoryTextWrapper = styled.div``;
 
 const CategoryText = styled.span`
   color: ${({ theme }) => theme.colors.gray3};
@@ -90,17 +125,27 @@ const ProfileGradient = styled.div`
   top: 0;
   width: 23.4rem;
   height: 23.4rem;
-  /* background: linear-gradient(135deg, ${({ theme }) => theme.colors.sub3} 15.32%, rgba(13, 14, 17, 0) 53.49%, ${({
-    theme,
-  }) => theme.colors.sub3} 92.93%); */
-  background: linear-gradient(
-    135deg,
-    ${({ theme }) => theme.colors.sub3} 15.32%,
-    rgba(13, 14, 17, 0.7) 53.49%,
-    ${({ theme }) => theme.colors.sub3} 92.93%
-  );
   top: 25px;
   right: 19px;
+  cursor: pointer;
+
+  .show {
+    background: linear-gradient(
+      135deg,
+      ${({ theme }) => theme.colors.sub3} 15.32%,
+      rgba(13, 14, 17, 0.7) 53.49%,
+      ${({ theme }) => theme.colors.sub3} 92.93%
+    );
+  }
+
+  .hide {
+    background: linear-gradient(
+      135deg,
+      ${({ theme }) => theme.colors.sub3} 15.32%,
+      rgba(13, 14, 17, 0) 53.49%,
+      ${({ theme }) => theme.colors.sub3} 92.93%
+    );
+  }
 `;
 
 const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
@@ -109,6 +154,7 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
   margin-left: 10rem;
   margin-top: 10rem;
   transform: rotate(-45deg);
+  cursor: pointer;
 `;
 
 const MusicProfile = styled.div`
@@ -118,6 +164,9 @@ const MusicProfile = styled.div`
   height: 28.4rem;
   top: 22px;
   left: 22px;
+  transform: rotate(45deg);
+  border-radius: 5rem;
+
   border: 0.3rem solid transparent;
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
@@ -126,19 +175,15 @@ const MusicProfile = styled.div`
       ${({ theme }) => theme.colors.sub3} 50%,
       ${({ theme }) => theme.colors.sub3} 100%
     );
-
   background-origin: border-box;
   background-clip: content-box, border-box;
-  transform: rotate(45deg);
-  margin-left: 5.3rem;
-  border-radius: 5rem;
 `;
 
 const GradientEffect = styled.div`
   display: inline-block;
   width: 23.4rem;
   height: 23.4rem;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.sub3};
   border-radius: 4rem;
   overflow: hidden;
   margin: 2.5rem;
@@ -154,7 +199,6 @@ const Hashtags = styled.ul`
 `;
 const Hashtag = styled.li`
   padding: 1.7rem 1.5rem;
-  height: 2rem;
   border-radius: 2.1rem;
   background-color: ${({ theme }) => theme.colors.gray5};
   ${({ theme }) => theme.fonts.hashtag};

@@ -1,6 +1,9 @@
 import { useRecoilState } from "recoil";
+import styled from "styled-components";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import CategoryList from "../@components/@common/categoryList";
+import TrackListHeader from "../@components/trackSearch/trackListHeader";
+import VocalList from "../@components/vocalSearch/vocalList";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 export default function VocalsPage() {
@@ -11,7 +14,27 @@ export default function VocalsPage() {
   return (
     <>
       <CategoryHeader />
-      <CategoryList />
+
+      <VocalSearchPageWrapper>
+        <CategoryListWrapper>
+          <CategoryList />
+        </CategoryListWrapper>
+
+        <VocalListWrapper>
+          <TrackListHeader />
+          <VocalList />
+        </VocalListWrapper>
+      </VocalSearchPageWrapper>
     </>
   );
 }
+
+const VocalSearchPageWrapper = styled.div`
+  display: flex;
+`;
+const CategoryListWrapper = styled.div`
+  width: 32.1rem;
+`;
+const VocalListWrapper = styled.div`
+  width: 159.9rem;
+`;
