@@ -191,7 +191,7 @@ const VocalPorfolioBlur=styled.div<{idx:number, vocalPortfolioClickBool:boolean}
   width: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
   height: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
 
-  margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&!vocalPortfolioClickBool?-8.45:-12}rem;
+  margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&!vocalPortfolioClickBool?-8.46:-12}rem;
   margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&vocalPortfolioClickBool&&-8.5}rem;
 
   border-radius: 3rem;
