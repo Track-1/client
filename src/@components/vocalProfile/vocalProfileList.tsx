@@ -21,11 +21,21 @@ export default function VocalProfileList() {
     setVocalPortfolioHover(-1)
   }
 
-  function clickVocalPortfolio(id:number){
-    setVocalPortfolioClick(prevId=>id)
-    vocalPortfolioClick===changedId?setPlay((prev)=>!prev):setPlay(true)
-    vocalPortfolioClick!==changedId&&setChangedId(vocalPortfolioClick)  
+  // function clickVocalPortfolio(id:number){
+  //   setVocalPortfolioClick(prevId=>id)
+  //   vocalPortfolioClick===changedId?setPlay((prev)=>!prev):setPlay(true)
+  //   vocalPortfolioClick!==changedId&&setChangedId(vocalPortfolioClick)  
+  //   setShowPlayer(true)
+  // }
+
+  function clickPauseIc(id:number){
     setShowPlayer(true)
+    setPlay(true)
+    setVocalPortfolioClick(id)
+  }
+
+  function clickPlayIc(){
+    setPlay(false)
   }
 
   return (
@@ -36,29 +46,30 @@ export default function VocalProfileList() {
             key={vocal.vocalPortfolioId}
             onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId)} 
             onMouseLeave={mouseOutVocalPortfolio}
-            onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
+            // onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
           >
               <VocalPortfolioTitle>
                 {vocalPortfolioClick!==vocal.vocalPortfolioId
+                &&vocalPortfolioHover!==vocal.vocalPortfolioId
                 &&vocal.title
                 }
               </VocalPortfolioTitle>
-            {(play
+            {play
               &&vocalPortfolioHover===vocal.vocalPortfolioId
               &&vocalPortfolioHover!==-1
-              &&vocalPortfolioClick===vocal.vocalPortfolioId)
-              &&<VocalProfileBlurPlayIcon/>
+              &&<VocalProfileBlurPlayIcon onClick={clickPlayIc}/>
             }
             {!play
               &&vocalPortfolioHover===vocal.vocalPortfolioId
               &&vocalPortfolioHover!==-1
-              &&vocalPortfolioClick===vocal.vocalPortfolioId
-              &&<VocalProfileBlurPauseIcon/>
+              &&<VocalProfileBlurPauseIcon onClick={()=>clickPauseIc(vocal.vocalPortfolioId)}/>
             }
             {vocalPortfolioHover===vocal.vocalPortfolioId
               &&vocalPortfolioHover!==-1
-              &&vocalPortfolioClick===vocal.vocalPortfolioId
-              &&<VocalPorfolioBlur idx={idx} />
+              &&<VocalPorfolioBlur 
+                idx={idx} 
+                vocalPortfolioClickBool={vocalPortfolioClick===vocal.vocalPortfolioId}
+              />
             }
             <VocalPortfolioImg 
               src={require('../../assets/image/'+ vocal.jacketImage + '.png')} 
@@ -165,14 +176,14 @@ const VocalProfileBlurPauseIcon=styled(VocalProfileBlurPauseIc)`
   margin-top: -8.5rem;
 `
 
-const VocalPorfolioBlur=styled.div<{idx:number}>`
+const VocalPorfolioBlur=styled.div<{idx:number, vocalPortfolioClickBool:boolean}>`
   position: absolute;
   z-index: 3;
 
-  width:30.2rem;
-  height:30.2rem;  
-  margin-top: -12rem;
-  margin-top: ${({idx})=>idx!==0?-8.5:-12}rem;
+  width: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
+  height: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
+
+  margin-top: ${({idx})=>idx!==0?-8.46:-12}rem;
 
   border-radius: 3rem;
 
