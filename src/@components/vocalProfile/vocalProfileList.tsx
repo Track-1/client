@@ -49,19 +49,29 @@ export default function VocalProfileList() {
             key={vocal.vocalPortfolioId}
             onMouseEnter={()=>mouseOverVocalPortfolio(vocal.vocalPortfolioId)} 
             onMouseLeave={mouseOutVocalPortfolio}
-            // onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
           >
-            {((vocalPortfolioClick!==vocal.vocalPortfolioId
-              &&vocalPortfolioHover===vocal.vocalPortfolioId
-              &&vocalPortfolioHover!==-1)
-              ||(!play
-                &&vocalPortfolioClick===vocal.vocalPortfolioId
-                &&vocalPortfolioClick!==-1))
-                &&<VocalProfileBlurPauseIcon onClick={()=>clickPauseIc(vocal.vocalPortfolioId)}/>
+            {
+              // &&vocalPortfolioClick===vocal.vocalPortfolioId
+              // &&vocalPortfolioHover===vocal.vocalPortfolioId
+              // )
+              // ||(!play
+              //   &&vocalPortfolioClick!==vocal.vocalPortfolioId
+              //   &&vocalPortfolioHover===vocal.vocalPortfolioId
+              //   ))
+                ((vocalPortfolioHover===vocal.vocalPortfolioId
+                &&vocalPortfolioClick!==vocal.vocalPortfolioId
+                &&vocalPortfolioHover!==-1)
+                ||(!play
+                  &&vocalPortfolioHover===vocal.vocalPortfolioId
+                  &&vocalPortfolioClick===vocal.vocalPortfolioId
+                  &&vocalPortfolioHover!==-1))
+                  &&(<VocalProfileBlurPauseIcon onClick={()=>clickPauseIc(vocal.vocalPortfolioId)}/>)
             }
             {play
-              &&(vocalPortfolioClick===vocal.vocalPortfolioId
-                &&vocalPortfolioClick!==-1)
+              &&vocalPortfolioClick===vocal.vocalPortfolioId
+              &&vocalPortfolioHover===vocal.vocalPortfolioId
+              &&vocalPortfolioHover!==-1   
+              &&vocalPortfolioClick!==-1 
                 &&<VocalProfileBlurPlayIcon onClick={clickPlayIc}/>
             } 
               <VocalPortfolioTitle>
