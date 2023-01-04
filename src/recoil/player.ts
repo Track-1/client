@@ -1,21 +1,21 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export const showPlayerBar = atom({
-  key: 'showPlayerBar',
+  key: "showPlayerBar",
   default: false,
 });
 
 export const playMusic = atom({
-  key: 'playMusic',
+  key: "playMusic",
   default: false,
 });
 
 export const trackClicked = atom({
-  key: 'trackClicked',
+  key: "trackClicked",
   default: -1,
 });
 
 export const selectedId = atom({
-  key: 'selectedId',
+  key: "selectedId",
   default: -1,
-})
+});

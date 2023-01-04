@@ -1,3 +1,3 @@
-export interface ClickProps{
-    isClicked:boolean;
+export interface ClickProps {
+  isClicked: boolean;
 }

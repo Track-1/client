@@ -1,53 +1,52 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
-import { TrackListHeaderSloganIc, ProducerTextIc, VocalTextIc } from "../../assets"
+import { TrackListHeaderSloganIc, ProducerTextIc, VocalTextIc } from "../../assets";
 
 export default function TrackListHeader() {
   return (
     <TrackListHeaderWrapper>
-    <TrackListHeaderSloganIcon/>
-    <StickerWrapper>
-      <ProducerStickerWrapper>
-        <ProducerTextIcon/>
-      </ProducerStickerWrapper>
+      <TrackListHeaderSloganIcon />
+      <StickerWrapper>
+        <ProducerStickerWrapper>
+          <ProducerTextIcon />
+        </ProducerStickerWrapper>
 
-      <VocalTextIcon/>
-      <VocalStickerBackground>
-        <FirstSquare></FirstSquare>
-        <SecondSquare></SecondSquare>
-        <ThirdSquare></ThirdSquare>
-      </VocalStickerBackground>
-    </StickerWrapper>
+        <VocalTextIcon />
+        <VocalStickerBackground>
+          <FirstSquare></FirstSquare>
+          <SecondSquare></SecondSquare>
+          <ThirdSquare></ThirdSquare>
+        </VocalStickerBackground>
+      </StickerWrapper>
     </TrackListHeaderWrapper>
-  )
+  );
 }
 
-const TrackListHeaderWrapper=styled.section`
+const TrackListHeaderWrapper = styled.section`
   width: 150.9rem;
 
-  display:flex;
+  display: flex;
   justify-content: space-between;
   padding-top: 14.3rem;
-`
+`;
 
-const TrackListHeaderSloganIcon=styled(TrackListHeaderSloganIc)`
+const TrackListHeaderSloganIcon = styled(TrackListHeaderSloganIc)`
   margin: 2.64rem 0 0 9rem;
-`
+`;
 
-const StickerWrapper=styled.article`
-  display:inline-block;
+const StickerWrapper = styled.article`
+  display: inline-block;
 
   width: 37.5rem;
   margin-top: 2.4rem;
-`
+`;
 
-const ProducerTextIcon=styled(ProducerTextIc)`
+const ProducerTextIcon = styled(ProducerTextIc)`
   position: absolute;
   z-index: 5;
+`;
 
-`
-
-const ProducerStickerWrapper=styled.div`
+const ProducerStickerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,26 +62,26 @@ const ProducerStickerWrapper=styled.div`
   transform: rotate(14.99deg);
 
   border-radius: 10rem;
-`
+`;
 
-const VocalTextIcon=styled(VocalTextIc)`
+const VocalTextIcon = styled(VocalTextIc)`
   position: absolute;
   z-index: 3;
 
   margin: 5.5rem 0 0 23.5rem;
 
   transform: rotate(-15.03deg);
-`
+`;
 
-const VocalStickerBackground=styled.div`
+const VocalStickerBackground = styled.div`
   display: flex;
   justify-content: space-between;
 
   margin-top: 3.69rem;
   margin-left: 22.5rem;
-`
+`;
 
-const FirstSquare=styled.div`
+const FirstSquare = styled.div`
   position: absolute;
   z-index: 1;
 
@@ -95,11 +94,11 @@ const FirstSquare=styled.div`
   background: linear-gradient(355deg, ${({ theme }) => theme.colors.sub2} -70%, transparent 75%);
 
   transform: rotate(-60.03deg);
-  
-  border-radius: 1.2rem;
-`
 
-const SecondSquare=styled.div`
+  border-radius: 1.2rem;
+`;
+
+const SecondSquare = styled.div`
   width: 12rem;
   height: 6.143rem;
 
@@ -111,9 +110,9 @@ const SecondSquare=styled.div`
   transform: rotate(-15.03deg);
 
   border-radius: 0.4rem;
-`
+`;
 
-const ThirdSquare=styled.div`
+const ThirdSquare = styled.div`
   position: absolute;
   z-index: 1;
 
@@ -127,4 +126,4 @@ const ThirdSquare=styled.div`
   transform: rotate(-60.03deg);
 
   border-radius: 1.2rem;
-`
+`;

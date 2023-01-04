@@ -4,12 +4,14 @@ import CategoryList from "../@components/@common/categoryList";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 export default function VocalsPage() {
-  const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
 
-  setWhom("Vocals") // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
+  setWhom("Vocals"); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
 
-  return (<>
-  <CategoryHeader/>
-  <CategoryList/>
-  </>);
+  return (
+    <>
+      <CategoryHeader />
+      <CategoryList />
+    </>
+  );
 }

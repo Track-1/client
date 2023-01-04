@@ -82,7 +82,6 @@ export default function TrackPostPage() {
       </InfoContainer>
     </PostSection>
   );
-
 }
 
 const PostSection = styled.section`

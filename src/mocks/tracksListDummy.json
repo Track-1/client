@@ -1,23 +1,183 @@
 [
-    {"beatId": 1, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127","producerId":1, "category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 2, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)R&B", "producerName":"NCT127", "producerId":1,"category":"R&B","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 3, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127", "producerId":1,"category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 4, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)Rock", "producerName":"NCT127","producerId":1, "category":"Rock","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 5, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127", "producerId":1,"category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 6, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)Jazz", "producerName":"NCT127", "producerId":1,"category":"Jazz","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 7, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127","producerId":1, "category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 8, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)Funk", "producerName":"NCT127","producerId":1, "category":"Funk","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 9, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)EDM", "producerName":"NCT127","producerId":1, "category":"EDM","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 10, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127", "producerId":1,"category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
+  {
+    "beatId": 1,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 2,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)R&B",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "R&B",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 3,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 4,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)Rock",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Rock",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 5,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 6,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)Jazz",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Jazz",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 7,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 8,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)Funk",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Funk",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 9,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)EDM",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "EDM",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 10,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
 
-    {"beatId": 11, "jacketImage":"thumbnailImg", "title": "R&B", "producerName":"NCT127","producerId":1, "category":"R&B","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 12, "jacketImage":"thumbnailImg", "title": "Ballad", "producerName":"NCT127", "producerId":1,"category":"Ballad","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 13, "jacketImage":"thumbnailImg", "title": "Pop", "producerName":"NCT127", "producerId":1,"category":"Pop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 14, "jacketImage":"thumbnailImg", "title": "Rock", "producerName":"NCT127", "producerId":1,"category":"Rock","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 15, "jacketImage":"thumbnailImg", "title": "EDM", "producerName":"NCT127","producerId":1, "category":"EDM","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 16, "jacketImage":"thumbnailImg", "title": "Jazz", "producerName":"NCT127", "producerId":1,"category":"Jazz","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 17, "jacketImage":"thumbnailImg", "title": "House", "producerName":"NCT127", "producerId":1,"category":"House","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 18, "jacketImage":"thumbnailImg", "title": "Funk", "producerName":"NCT127","producerId":1, "category":"Funk","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 19, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127", "producerId":1,"category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]},
-    {"beatId": 20, "jacketImage":"thumbnailImg", "title": "Favorite(Vampire)", "producerName":"NCT127", "producerId":1,"category":"hiphop","keyword":["ABCDEFG","ABCDEFG","ABCDEFG"]}
+  {
+    "beatId": 11,
+    "jacketImage": "thumbnailImg",
+    "title": "R&B",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "R&B",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 12,
+    "jacketImage": "thumbnailImg",
+    "title": "Ballad",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Ballad",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 13,
+    "jacketImage": "thumbnailImg",
+    "title": "Pop",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Pop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 14,
+    "jacketImage": "thumbnailImg",
+    "title": "Rock",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Rock",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 15,
+    "jacketImage": "thumbnailImg",
+    "title": "EDM",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "EDM",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 16,
+    "jacketImage": "thumbnailImg",
+    "title": "Jazz",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Jazz",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 17,
+    "jacketImage": "thumbnailImg",
+    "title": "House",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "House",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 18,
+    "jacketImage": "thumbnailImg",
+    "title": "Funk",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "Funk",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 19,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  },
+  {
+    "beatId": 20,
+    "jacketImage": "thumbnailImg",
+    "title": "Favorite(Vampire)",
+    "producerName": "NCT127",
+    "producerId": 1,
+    "category": "hiphop",
+    "keyword": ["ABCDEFG", "ABCDEFG", "ABCDEFG"]
+  }
 ]
