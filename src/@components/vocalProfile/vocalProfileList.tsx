@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
-import {showPlayerBar, playMusic,trackClicked,selectedId} from "../../recoil/player"
+import {showPlayerBar, playMusic,selectedId} from "../../recoil/player"
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 
 export default function VocalProfileList() {
@@ -11,7 +11,6 @@ export default function VocalProfileList() {
   const [vocalPortfolioClick, setVocalPortfolioClick]=useRecoilState<number>(selectedId)
   const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
   const [play, setPlay]=useRecoilState<boolean>(playMusic)
-  const [changedId, setChangedId]=useState<number>(-1);
 
   function mouseOverVocalPortfolio(id:number){
     setVocalPortfolioHover(id)
@@ -20,13 +19,6 @@ export default function VocalProfileList() {
   function mouseOutVocalPortfolio(){
     setVocalPortfolioHover(-1)
   }
-
-  // function clickVocalPortfolio(id:number){
-  //   setVocalPortfolioClick(prevId=>id)
-  //   vocalPortfolioClick===changedId?setPlay((prev)=>!prev):setPlay(true)
-  //   vocalPortfolioClick!==changedId&&setChangedId(vocalPortfolioClick)  
-  //   setShowPlayer(true)
-  // }
 
   function clickPauseIc(id:number){
     setShowPlayer(true)
@@ -40,7 +32,6 @@ export default function VocalProfileList() {
     setPlay(false)
   }
 
-
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
@@ -51,13 +42,6 @@ export default function VocalProfileList() {
             onMouseLeave={mouseOutVocalPortfolio}
           >
             {
-              // &&vocalPortfolioClick===vocal.vocalPortfolioId
-              // &&vocalPortfolioHover===vocal.vocalPortfolioId
-              // )
-              // ||(!play
-              //   &&vocalPortfolioClick!==vocal.vocalPortfolioId
-              //   &&vocalPortfolioHover===vocal.vocalPortfolioId
-              //   ))
                 ((vocalPortfolioHover===vocal.vocalPortfolioId
                 &&vocalPortfolioClick!==vocal.vocalPortfolioId
                 &&vocalPortfolioHover!==-1)
