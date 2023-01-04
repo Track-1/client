@@ -191,15 +191,15 @@ const VocalPorfolioBlur=styled.div<{idx:number, vocalPortfolioClickBool:boolean}
   width: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
   height: ${({vocalPortfolioClickBool,idx}) => idx===0||vocalPortfolioClickBool?(30.2):(16.7)}rem;
 
-  margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&!vocalPortfolioClickBool?-8.46:-12}rem;
+  margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&!vocalPortfolioClickBool?-8.5:-12}rem;
   margin-top: ${({vocalPortfolioClickBool,idx})=>idx!==0&&vocalPortfolioClickBool&&-8.5}rem;
 
   border-radius: 3rem;
 
   transform: rotate(45deg);
 
-  -webkit-backdrop-filter: blur(7rem);
-  backdrop-filter: blur(7rem);
+  -webkit-backdrop-filter: blur(${({idx})=>idx===0?20:7}rem);
+  backdrop-filter: blur(${({idx})=>idx===0?20:7}rem);
 `
 
 const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
