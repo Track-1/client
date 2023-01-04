@@ -1,10 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { SleepIc, VocalHoverPlayIc } from "../../assets";
+import { SleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
 import vocals from "../../mocks/vocalsListDummy.json";
+import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
+import { useRecoilState } from "recoil";
 
 export default function VocalList() {
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
+  const [clickVocal, setClickVocal] = useRecoilState<number>(trackClicked);
 
   function mouseOverVocal(id: number) {
     setHoverVocal(id);
@@ -12,6 +15,10 @@ export default function VocalList() {
 
   function mouseOutVocal() {
     setHoverVocal(-1);
+  }
+
+  function onClickVocal(id: number) {
+    setClickVocal(id);
   }
 
   return (
@@ -31,12 +38,23 @@ export default function VocalList() {
           <MusicProfile
             onMouseLeave={mouseOutVocal}
             onMouseEnter={() => mouseOverVocal(id)}
-            hoverVocalBool={hoverVocal === id}>
+            onClick={() => onClickVocal(id)}
+            hoverVocalBool={hoverVocal === id}
+            clickVocalBool={clickVocal === id}
+            clickVocal={clickVocal}>
             <GradientEffect>
               <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
-            <ProfileGradient hoverVocalBool={hoverVocal === id}></ProfileGradient>
-            <VocalHoverPlayIcon hoverVocalBool={hoverVocal === id} />
+            <ProfileGradient
+              hoverVocalBool={hoverVocal === id}
+              clickVocalBool={clickVocal === id}
+              clickVocal={clickVocal}></ProfileGradient>
+            <VocalHoverPlayIcon
+              hoverVocalBool={hoverVocal === id}
+              clickVocalBool={clickVocal === id}
+              clickVocal={clickVocal}
+            />
+            <VocalHoverPauseIcon />
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -98,7 +116,7 @@ const AlbumCoverImg = styled.img`
   position: relative;
 `;
 
-const ProfileGradient = styled.div<{ hoverVocalBool: boolean }>`
+const ProfileGradient = styled.div<{ hoverVocalBool: boolean; clickVocalBool: boolean; clickVocal: number }>`
   position: absolute;
   top: 0;
   width: 23.4rem;
@@ -110,13 +128,21 @@ const ProfileGradient = styled.div<{ hoverVocalBool: boolean }>`
   background: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.sub3} 15.32%,
-    ${({ hoverVocalBool }) => (hoverVocalBool ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%")},
+    ${({ hoverVocalBool, clickVocalBool, clickVocal }) =>
+      hoverVocalBool || (clickVocalBool && clickVocal !== -1)
+        ? " rgba(13, 14, 17, 0.7) 53.49%"
+        : " rgba(13, 14, 17, 0) 53.49%"},
     ${({ theme }) => theme.colors.sub3} 92.93%
   );
 `;
 
-const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{ hoverVocalBool: boolean }>`
-  display: ${({ hoverVocalBool }) => (hoverVocalBool ? "" : "none")};
+const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{
+  hoverVocalBool: boolean;
+  clickVocalBool: boolean;
+  clickVocal: number;
+}>`
+  display: ${({ hoverVocalBool, clickVocalBool, clickVocal }) =>
+    hoverVocalBool || (clickVocalBool && clickVocal !== -1) ? "" : "none"};
   position: absolute;
   top: 0;
   margin-left: 10rem;
@@ -125,7 +151,17 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{ hoverVocalBool: boolean }>
   cursor: pointer;
 `;
 
-const MusicProfile = styled.div<{ hoverVocalBool: boolean }>`
+const VocalHoverPauseIcon = styled(VocalHoverPauseIc)`
+  display: none;
+  position: absolute;
+  top: 0;
+  margin-left: 10rem;
+  margin-top: 10rem;
+  transform: rotate(-45deg);
+  cursor: pointer;
+`;
+
+const MusicProfile = styled.div<{ hoverVocalBool: boolean; clickVocalBool: boolean; clickVocal: number }>`
   position: relative;
   display: inline-block;
   width: 28.4rem;
@@ -139,7 +175,9 @@ const MusicProfile = styled.div<{ hoverVocalBool: boolean }>`
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to top,
-      ${({ hoverVocalBool, theme }) => hoverVocalBool && theme.colors.sub2} 0%,
+      ${({ hoverVocalBool, clickVocalBool, clickVocal, theme }) =>
+          (hoverVocalBool || (clickVocalBool && clickVocal !== -1)) && theme.colors.sub2}
+        0%,
       ${({ theme }) => theme.colors.sub3} 50%,
       ${({ theme }) => theme.colors.sub3} 100%
     );
