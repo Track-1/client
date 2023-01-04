@@ -198,8 +198,8 @@ const VocalPorfolioBlur=styled.div<{idx:number, vocalPortfolioClickBool:boolean}
 
   transform: rotate(45deg);
 
-  -webkit-backdrop-filter: blur(${({idx})=>idx===0?20:7}rem);
-  backdrop-filter: blur(${({idx})=>idx===0?20:7}rem);
+  -webkit-backdrop-filter: blur(${({idx})=>idx===0?14:7}rem);
+  backdrop-filter: blur(${({idx})=>idx===0?14:7}rem);
 `
 
 const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean, vocalPortfolioClickBool:boolean}>`
