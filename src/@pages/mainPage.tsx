@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../@components/@common/mainHeader";
 import Footer from "../@components/@common/footer";
 
-import { TracksTextIc, VocalsTextIc } from "../assets";
+import { MainTracksTextIc, MainVocalsTextIc } from "../assets";
 import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
 import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import hoverTracksImg from "../assets/image/hoverTracksImg.png";
@@ -46,7 +46,7 @@ export default function MainPage() {
         <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
         <VocalsTextIcon isVocalsHover={isVocalsHover} />
         <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-        <TracksTextIcon isTracksHover={isTracksHover} />
+        <MainTracksTextIcon isTracksHover={isTracksHover} />
         <MainSlogan src={mainSloganImg} alt="슬로건" />
       </Main>
       <Footer />
@@ -56,7 +56,6 @@ export default function MainPage() {
 
 const Main = styled.main`
   width: 100%;
-  height: 100vh;
 `;
 
 const VocalsArea = styled.div`
@@ -71,7 +70,7 @@ const VocalsArea = styled.div`
   cursor: pointer;
 `;
 
-const VocalsTextIcon = styled(VocalsTextIc)<{ isVocalsHover: boolean }>`
+const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
   width: 21.7rem;
   height: 21.2rem;
 
@@ -104,7 +103,7 @@ const TracksArea = styled.div`
   cursor: pointer;
 `;
 
-const TracksTextIcon = styled(TracksTextIc)<{ isTracksHover: boolean }>`
+const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
   width: 18.9rem;
   height: 20.4rem;
 
@@ -126,6 +125,6 @@ const TracksTextIcon = styled(TracksTextIc)<{ isTracksHover: boolean }>`
 
 const MainSlogan = styled.img`
   position: absolute;
-  top: 90.9rem;
+  top: 82.5rem;
   left: 8.3rem;
 `;
