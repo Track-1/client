@@ -29,15 +29,15 @@ export default function VocalList() {
             <CategoryNum>+{categoryNum}</CategoryNum>
           </CategoryTextWrapper>
 
-          <MusicProfile>
-            <GradientEffect className={vocalHover === id ? "gradient" : ""}>
+          <MusicProfile
+            onMouseLeave={mouseOutVocal}
+            onMouseEnter={() => mouseOverVocal(id)}
+            vocalHoverBool={vocalHover === id}>
+            <GradientEffect>
               <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
-            <ProfileGradient
-              onMouseLeave={mouseOutVocal}
-              onMouseEnter={() => mouseOverVocal(id)}
-              vocalHoverBool={vocalHover === id}></ProfileGradient>
-            <VocalHoverPlayIcon onMouseLeave={mouseOutVocal} onMouseEnter={() => mouseOverVocal(id)} />
+            <ProfileGradient vocalHoverBool={vocalHover === id}></ProfileGradient>
+            <VocalHoverPlayIcon vocalHoverBool={vocalHover === id} />
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -55,9 +55,6 @@ const VocalListContainer = styled.div`
   flex-wrap: wrap;
   padding-top: 5.6rem;
   padding-left: 9rem;
-
-  .gradient {
-  }
 `;
 
 const VocalContainer = styled.div`
@@ -119,7 +116,8 @@ const ProfileGradient = styled.div<{ vocalHoverBool: boolean }>`
   );
 `;
 
-const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
+const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{ vocalHoverBool: boolean }>`
+  display: ${({ vocalHoverBool }) => (vocalHoverBool ? "" : "none")};
   position: absolute;
   top: 0;
   margin-left: 10rem;
@@ -128,7 +126,7 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
   cursor: pointer;
 `;
 
-const MusicProfile = styled.div`
+const MusicProfile = styled.div<{ vocalHoverBool: boolean }>`
   position: relative;
   display: inline-block;
   width: 28.4rem;
@@ -142,7 +140,7 @@ const MusicProfile = styled.div`
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to top,
-      ${({ theme }) => theme.colors.sub2} 0%,
+      ${({ vocalHoverBool, theme }) => vocalHoverBool && theme.colors.sub2} 0%,
       ${({ theme }) => theme.colors.sub3} 50%,
       ${({ theme }) => theme.colors.sub3} 100%
     );
