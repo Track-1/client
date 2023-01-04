@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components"
 import vocals from "../../mocks/vocalProfileDummy.json"
@@ -11,7 +11,7 @@ export default function VocalProfileList() {
   const [vocalPortfolioClick, setVocalPortfolioClick]=useRecoilState<number>(selectedId)
   const [showPlayer, setShowPlayer]=useRecoilState<boolean>(showPlayerBar)
   const [play, setPlay]=useRecoilState<boolean>(playMusic)
-
+  const [changedId, setChangedId]=useState<number>(-1);
 
   function mouseOverVocalPortfolio(id:number){
     setVocalPortfolioHover(id)
@@ -22,8 +22,9 @@ export default function VocalProfileList() {
   }
 
   function clickVocalPortfolio(id:number){
-    setVocalPortfolioClick(id)
-    showPlayer?setPlay((prev)=>!prev):setPlay(true)
+    setVocalPortfolioClick(prevId=>id)
+    vocalPortfolioClick===changedId?setPlay((prev)=>!prev):setPlay(true)
+    vocalPortfolioClick!==changedId&&setChangedId(vocalPortfolioClick)  
     setShowPlayer(true)
   }
 
@@ -38,15 +39,14 @@ export default function VocalProfileList() {
             onClick={()=>clickVocalPortfolio(vocal.vocalPortfolioId)}
           >
               <VocalPortfolioTitle>
-                {vocalPortfolioHover===vocal.vocalPortfolioId
-                &&vocalPortfolioClick!==vocal.vocalPortfolioId
+                {vocalPortfolioClick!==vocal.vocalPortfolioId
                 &&vocal.title
                 }
               </VocalPortfolioTitle>
-            {play
+            {(play
               &&vocalPortfolioHover===vocal.vocalPortfolioId
               &&vocalPortfolioHover!==-1
-              &&vocalPortfolioClick===vocal.vocalPortfolioId
+              &&vocalPortfolioClick===vocal.vocalPortfolioId)
               &&<VocalProfileBlurPlayIcon/>
             }
             {!play
@@ -194,5 +194,7 @@ const VocalPortfolioImg=styled.img<{idx:number, vocalPortfolioHoverBool:boolean,
 
   box-shadow: 0 0 4rem  ${({ vocalPortfolioHoverBool, vocalPortfolioClickBool, theme }) => vocalPortfolioHoverBool&&!vocalPortfolioClickBool&&theme.colors.sub2};
   
+  opacity: ${({ vocalPortfolioHoverBool, vocalPortfolioClickBool }) => !vocalPortfolioHoverBool&&!vocalPortfolioClickBool&&0.2};
+
   cursor: pointer;
 `
