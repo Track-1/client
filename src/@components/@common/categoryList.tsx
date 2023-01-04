@@ -6,26 +6,11 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { categorySelect } from "../../recoil/categorySelect";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-
-interface CategoryChecks {
-  categId: number;
-  selected: boolean;
-}
-
-const categorySelectedCheck: CategoryChecks[] = [
-  { categId: 0, selected: false },
-  { categId: 1, selected: false },
-  { categId: 2, selected: false },
-  { categId: 3, selected: false },
-  { categId: 4, selected: false },
-  { categId: 5, selected: false },
-  { categId: 6, selected: false },
-  { categId: 7, selected: false },
-  { categId: 8, selected: false },
-];
+import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
+import { CategoryChecksType } from "../../type/CategoryChecksType";
 
 export default function CategoryList() {
-  const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecks[]>(categorySelectedCheck);
+  const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [selectedCategorysApi, setSelectedCategorysApi] = useRecoilState<string>(categorySelect);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
@@ -33,13 +18,24 @@ export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
   const selectedSet = new Set();
 
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openModal]);
+
   function categoryClick(id: number) {
     const tempSelectedCategorys = [...selectedCategorys];
 
-    tempSelectedCategorys[id].selected = !tempSelectedCategorys[id].selected;
+    tempSelectedCategorys[id].selected = changeSelectValue(tempSelectedCategorys[id].selected);
     tempSelectedCategorys[id].selected ? selectedSet.add(id) : selectedSet.delete(id);
 
     setSelectedCategorys([...tempSelectedCategorys]);
+  }
+
+  function changeSelectValue(value: boolean) {
+    return !value;
   }
 
   function createFilteredUrl(selectedSet: Set<number>) {
@@ -60,18 +56,15 @@ export default function CategoryList() {
     setTrackSearchingClicked(!trackSearchingClicked);
   }
 
-  function clickOutside(e: MouseEvent) {
-    if (openModal && !modalRef.current?.contains(e.target as Node)) {
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
       setOpenModal(false);
     }
   }
 
-  useEffect(() => {
-    document.addEventListener("mousedown", clickOutside);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [openModal]);
+  function isClickedOutside(e: MouseEvent) {
+    return openModal && !modalRef.current?.contains(e.target as Node);
+  }
 
   return (
     <>
