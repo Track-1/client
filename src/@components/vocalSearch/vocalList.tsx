@@ -4,15 +4,14 @@ import { SleepIc, VocalHoverPlayIc } from "../../assets";
 import vocals from "../../mocks/vocalsListDummy.json";
 
 export default function VocalList() {
-  const [vocalHover, setVocalHover] = useState<number>(-1);
+  const [hoverVocal, setHoverVocal] = useState<number>(-1);
 
-  console.log(vocalHover);
   function mouseOverVocal(id: number) {
-    setVocalHover(id);
+    setHoverVocal(id);
   }
 
   function mouseOutVocal() {
-    setVocalHover(-1);
+    setHoverVocal(-1);
   }
 
   return (
@@ -32,12 +31,12 @@ export default function VocalList() {
           <MusicProfile
             onMouseLeave={mouseOutVocal}
             onMouseEnter={() => mouseOverVocal(id)}
-            vocalHoverBool={vocalHover === id}>
+            hoverVocalBool={hoverVocal === id}>
             <GradientEffect>
               <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
-            <ProfileGradient vocalHoverBool={vocalHover === id}></ProfileGradient>
-            <VocalHoverPlayIcon vocalHoverBool={vocalHover === id} />
+            <ProfileGradient hoverVocalBool={hoverVocal === id}></ProfileGradient>
+            <VocalHoverPlayIcon hoverVocalBool={hoverVocal === id} />
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -99,7 +98,7 @@ const AlbumCoverImg = styled.img`
   position: relative;
 `;
 
-const ProfileGradient = styled.div<{ vocalHoverBool: boolean }>`
+const ProfileGradient = styled.div<{ hoverVocalBool: boolean }>`
   position: absolute;
   top: 0;
   width: 23.4rem;
@@ -111,13 +110,13 @@ const ProfileGradient = styled.div<{ vocalHoverBool: boolean }>`
   background: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.sub3} 15.32%,
-    ${({ vocalHoverBool }) => (vocalHoverBool ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%")},
+    ${({ hoverVocalBool }) => (hoverVocalBool ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%")},
     ${({ theme }) => theme.colors.sub3} 92.93%
   );
 `;
 
-const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{ vocalHoverBool: boolean }>`
-  display: ${({ vocalHoverBool }) => (vocalHoverBool ? "" : "none")};
+const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{ hoverVocalBool: boolean }>`
+  display: ${({ hoverVocalBool }) => (hoverVocalBool ? "" : "none")};
   position: absolute;
   top: 0;
   margin-left: 10rem;
@@ -126,7 +125,7 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{ vocalHoverBool: boolean }>
   cursor: pointer;
 `;
 
-const MusicProfile = styled.div<{ vocalHoverBool: boolean }>`
+const MusicProfile = styled.div<{ hoverVocalBool: boolean }>`
   position: relative;
   display: inline-block;
   width: 28.4rem;
@@ -140,7 +139,7 @@ const MusicProfile = styled.div<{ vocalHoverBool: boolean }>`
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to top,
-      ${({ vocalHoverBool, theme }) => vocalHoverBool && theme.colors.sub2} 0%,
+      ${({ hoverVocalBool, theme }) => hoverVocalBool && theme.colors.sub2} 0%,
       ${({ theme }) => theme.colors.sub3} 50%,
       ${({ theme }) => theme.colors.sub3} 100%
     );
