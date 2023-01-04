@@ -61,13 +61,12 @@ export default function CategoryHeader() {
 }
 
 const CategoryHeaderContainer = styled.header`
-  position: fixed;
+  position: sticky;
+  top: 0;
   z-index: 10;
 
   width: 192rem;
   height: 14.3rem;
-
-  /* padding-left: 5.8rem; */
 
   background: linear-gradient(
     180deg,

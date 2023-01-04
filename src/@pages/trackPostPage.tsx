@@ -17,6 +17,7 @@ import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
 import { useState } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
+import CategoryHeader from "../@components/@common/categoryHeader";
 
 export default function TrackPostPage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -35,54 +36,56 @@ export default function TrackPostPage() {
   }
 
   return (
-    <PostSection>
-      <TitleContainer>
-        <BackButton />
-        <AudioTitle>ABCDFKGHIJKL</AudioTitle>
-        <ProducerBox>
-          <ProducerProfile src={profileDummyImg}></ProducerProfile>
-          <NickName>newjeans_</NickName>
-        </ProducerBox>
-        <ButtonWrapper>
-          {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
+    <>
+      <CategoryHeader />
+      <PostSection>
+        <TitleContainer>
+          <BackButton />
+          <AudioTitle>ABCDFKGHIJKL</AudioTitle>
+          <ProducerBox>
+            <ProducerProfile src={profileDummyImg}></ProducerProfile>
+            <NickName>newjeans_</NickName>
+          </ProducerBox>
+          <ButtonWrapper>
+            {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
 
-          {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
-          <PauseBtnIc />
-          {isMe && <EditBtnIcon onClick={setEditDropDown} />}
-        </ButtonWrapper>
-        {isEditOpen && <EditDropDown />}
-      </TitleContainer>
-      <InfoContainer>
-        <PlayImageWrapper>
-          <PlayerImage src={playImg} alt="재생 이미지" />
-        </PlayImageWrapper>
-        <DescriptionContainer>
-          <CategoryBox>
-            <CategoryIcon />
-            Rock
-          </CategoryBox>
-          <HashTagBox>
-            <HashTagIcon />
-            <TagWrapper>
-              <HashTag text="#ABCDEFG" />
-              <HashTag text="#ABCDEFG" />
-              <HashTag text="#ABCDEFG" />
-            </TagWrapper>
-          </HashTagBox>
-          <DescriptionBox>
-            <DescriptionIcon />
-            <TextBox>
-              이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-              곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
-              어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-              곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다
-            </TextBox>
-          </DescriptionBox>
-        </DescriptionContainer>
-      </InfoContainer>
-    </PostSection>
+            {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+            <PauseBtnIc />
+            {isMe && <EditBtnIcon onClick={setEditDropDown} />}
+          </ButtonWrapper>
+          {isEditOpen && <EditDropDown />}
+        </TitleContainer>
+        <InfoContainer>
+          <PlayImageWrapper>
+            <PlayerImage src={playImg} alt="재생 이미지" />
+          </PlayImageWrapper>
+          <DescriptionContainer>
+            <CategoryBox>
+              <CategoryIcon />
+              Rock
+            </CategoryBox>
+            <HashTagBox>
+              <HashTagIcon />
+              <TagWrapper>
+                <HashTag text="#ABCDEFG" />
+                <HashTag text="#ABCDEFG" />
+                <HashTag text="#ABCDEFG" />
+              </TagWrapper>
+            </HashTagBox>
+            <DescriptionBox>
+              <DescriptionIcon />
+              <TextBox>
+                이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
+                곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
+                어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
+                곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다
+              </TextBox>
+            </DescriptionBox>
+          </DescriptionContainer>
+        </InfoContainer>
+      </PostSection>
+    </>
   );
-
 }
 
 const PostSection = styled.section`
