@@ -9,6 +9,8 @@ const colors = {
   gray2: "#9EA1AB",
   gray3: "#535559",
   gray4: "#1E2025",
+  gray5: "#1E2025",
+  gray6: "#141517",
   white: "#FFFFFF",
 };
 
