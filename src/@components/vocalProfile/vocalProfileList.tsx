@@ -24,8 +24,6 @@ export default function VocalProfileList() {
     setShowPlayer(true);
     setPlay(true);
     setVocalPortfolioClick(id);
-
-    console.log("Adsf");
   }
 
   function clickPlayIc() {
