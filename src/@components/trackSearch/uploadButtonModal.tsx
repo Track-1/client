@@ -1,78 +1,92 @@
-import styled from 'styled-components'
-import {PortfolioIc, UnionIc, VocalSearchingIc,PortfolioTextIc, VocalSearchingTextIc} from '../../assets'
+import styled from "styled-components";
+import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
 
-interface propsType  {
-    ref: React.RefObject<HTMLDivElement>
-  }
-
-export default function UploadButtonModal( props : propsType): JSX.Element {
-    const {ref}=props
-
-  return (
-    <UploadButtonModalWrapper ref={ref} >
-        <VocalSearchingWrapper>
-            <VocalSearchingIcon/>
-            <TextWrapper marginTop={2.1}>
-                <VocalSearchingTextIc/>
-                <Explain>보컬이 필요한 스케치곡</Explain>
-            </TextWrapper>
-        </VocalSearchingWrapper>
-        <PortfolioWrapper>
-            <PortfolioIcon/>
-            <TextWrapper marginTop={10.2}>
-                <PortfolioTextIc/>
-                <Explain>감각을 보여줄 수 있는 작업물</Explain>
-            </TextWrapper>
-        </PortfolioWrapper>
-
-        <UnionIc/>
-    </UploadButtonModalWrapper>
-  )
+interface propsType {
+  ref: React.RefObject<HTMLDivElement>;
 }
 
-const UploadButtonModalWrapper=styled.section`
-    position: fixed;
-    z-index: 15;
+export default function UploadButtonModal(props: propsType): JSX.Element {
+  const { ref } = props;
 
-    margin-top: 75.5rem;
-    margin-left: 34.2rem;
-`
+  return (
+    <ModalBg>
+      <UploadButtonModalWrapper ref={ref}>
+        <VocalSearchingWrapper>
+          <VocalSearchingIcon />
+          <TextWrapper marginTop={2.1}>
+            <VocalSearchingTextIc />
+            <Explain>보컬이 필요한 스케치곡</Explain>
+          </TextWrapper>
+        </VocalSearchingWrapper>
+        <PortfolioWrapper>
+          <PortfolioIcon />
+          <TextWrapper marginTop={10.2}>
+            <PortfolioTextIc />
+            <Explain>감각을 보여줄 수 있는 작업물</Explain>
+          </TextWrapper>
+        </PortfolioWrapper>
 
-const VocalSearchingWrapper=styled.article`
-    position: fixed;
-    z-index: 16;
+        <UnionIc />
+      </UploadButtonModalWrapper>
+    </ModalBg>
+  );
+}
 
-    display: flex;
-`
+const ModalBg = styled.section`
+  height: 100vh;
+  width: 100vw;
 
-const VocalSearchingIcon=styled(VocalSearchingIc)`
-    margin-top:2.24rem;
-    margin-left: 3.4rem;
-`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 
-const PortfolioWrapper=styled.article`
-    position: fixed;
-    z-index: 16;
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+const UploadButtonModalWrapper = styled.section`
+  position: sticky;
+  /* z-index: 15; */
 
-    display: flex;
-`
+  margin-top: 75.5rem;
+  margin-left: 34.2rem;
+`;
 
-const PortfolioIcon=styled(PortfolioIc)`
-    margin-top: 10.2rem;
-    margin-left: 3.4rem;
-`
+const VocalSearchingWrapper = styled.article`
+  position: fixed;
+  /* z-index: 16; */
 
-const TextWrapper=styled.div<{marginTop:number}>`
-    margin-left: 1.4rem;
-    margin-top: ${({ marginTop }) => marginTop}rem;
-`
+  display: flex;
+`;
 
-const Title=styled.h1`
+const VocalSearchingIcon = styled(VocalSearchingIc)`
+  margin-top: 2.24rem;
+  margin-left: 3.4rem;
+`;
+
+const PortfolioWrapper = styled.article`
+  position: fixed;
+  /* z-index: 16; */
+
+  display: flex;
+`;
+
+const PortfolioIcon = styled(PortfolioIc)`
+  margin-top: 10.2rem;
+  margin-left: 3.4rem;
+`;
+
+const TextWrapper = styled.div<{ marginTop: number }>`
+  margin-left: 1.4rem;
+  margin-top: ${({ marginTop }) => marginTop}rem;
+`;
+
+const Title = styled.h1`
   ${({ theme }) => theme.fonts.cations};
-  color: ${({ theme }) => theme.colors.white};    
-`
+  color: ${({ theme }) => theme.colors.white};
+`;
 
-const Explain=styled.p`
-  ${({ theme }) => theme.fonts.description};    
+const Explain = styled.p`
+  ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray3};
-`
+`;
