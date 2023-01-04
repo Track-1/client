@@ -8,6 +8,9 @@ import { useRecoilState } from "recoil";
 export default function VocalList() {
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
   const [clickVocal, setClickVocal] = useRecoilState<number>(trackClicked);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [beatId, setBeatId] = useRecoilState<number>(selectedId);
 
   function mouseOverVocal(id: number) {
     setHoverVocal(id);
@@ -18,7 +21,16 @@ export default function VocalList() {
   }
 
   function onClickVocal(id: number) {
+    setShowPlayer(true);
+    setPlay(true);
+    setBeatId(id);
     setClickVocal(id);
+  }
+
+  function onClickPauseVocal() {
+    if (play === true) {
+      setPlay(false);
+    }
   }
 
   return (
@@ -38,7 +50,11 @@ export default function VocalList() {
           <MusicProfile
             onMouseLeave={mouseOutVocal}
             onMouseEnter={() => mouseOverVocal(id)}
-            onClick={() => onClickVocal(id)}
+            onClick={() => {
+              onClickVocal(id);
+              onClickPauseVocal();
+            }}
+            showPlayer={showPlayer}
             hoverVocalBool={hoverVocal === id}
             clickVocalBool={clickVocal === id}
             clickVocal={clickVocal}>
@@ -49,12 +65,15 @@ export default function VocalList() {
               hoverVocalBool={hoverVocal === id}
               clickVocalBool={clickVocal === id}
               clickVocal={clickVocal}></ProfileGradient>
-            <VocalHoverPlayIcon
-              hoverVocalBool={hoverVocal === id}
-              clickVocalBool={clickVocal === id}
-              clickVocal={clickVocal}
-            />
-            <VocalHoverPauseIcon />
+            {play && clickVocal === id && clickVocal !== -1 && (
+              <VocalHoverPauseIcon
+                hoverVocalBool={hoverVocal === id}
+                clickVocalBool={clickVocal === id}
+                clickVocal={clickVocal}
+              />
+            )}
+            {((clickVocal !== id && hoverVocal === id && hoverVocal !== -1) ||
+              (!play && clickVocal === id && clickVocal !== -1)) && <VocalHoverPlayIcon />}
           </MusicProfile>
           <Hashtags>
             {hashtags.map((tag, idx) => (
@@ -136,7 +155,7 @@ const ProfileGradient = styled.div<{ hoverVocalBool: boolean; clickVocalBool: bo
   );
 `;
 
-const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{
+const VocalHoverPauseIcon = styled(VocalHoverPauseIc)<{
   hoverVocalBool: boolean;
   clickVocalBool: boolean;
   clickVocal: number;
@@ -151,8 +170,7 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)<{
   cursor: pointer;
 `;
 
-const VocalHoverPauseIcon = styled(VocalHoverPauseIc)`
-  display: none;
+const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
   position: absolute;
   top: 0;
   margin-left: 10rem;
@@ -161,7 +179,12 @@ const VocalHoverPauseIcon = styled(VocalHoverPauseIc)`
   cursor: pointer;
 `;
 
-const MusicProfile = styled.div<{ hoverVocalBool: boolean; clickVocalBool: boolean; clickVocal: number }>`
+const MusicProfile = styled.div<{
+  hoverVocalBool: boolean;
+  clickVocalBool: boolean;
+  clickVocal: number;
+  showPlayer: boolean;
+}>`
   position: relative;
   display: inline-block;
   width: 28.4rem;
