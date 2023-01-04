@@ -1,22 +1,24 @@
 import styled from "styled-components";
-import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import categorys from "../../mocks/categoryDummy.json";
 import { useState, useEffect, useRef } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { categorySelect } from "../../recoil/categorySelect";
+import { useRecoilValue } from "recoil";
+
+import categorys from "../../mocks/categoryDummy.json";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
+
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
+import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
 
 export default function CategoryList() {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+  const selectedSet = new Set();
+
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
-  const [selectedCategorysApi, setSelectedCategorysApi] = useRecoilState<string>(categorySelect);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
-  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const selectedSet = new Set();
 
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
