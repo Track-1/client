@@ -18,6 +18,7 @@ import BackButton from "../@components/@common/backButton";
 import { useState } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
+import Player from "../@components/@common/player";
 
 export default function TrackPostPage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -48,7 +49,6 @@ export default function TrackPostPage() {
           </ProducerBox>
           <ButtonWrapper>
             {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
-
             {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
             <PauseBtnIc />
             {isMe && <EditBtnIcon onClick={setEditDropDown} />}
@@ -84,6 +84,7 @@ export default function TrackPostPage() {
           </DescriptionContainer>
         </InfoContainer>
       </PostSection>
+      <Player />
     </>
   );
 }
