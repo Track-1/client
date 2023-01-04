@@ -34,9 +34,9 @@ export default function VocalList() {
               <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
             </GradientEffect>
             <ProfileGradient
-              className={vocalHover === id ? "show" : "hide"}
               onMouseLeave={mouseOutVocal}
-              onMouseEnter={() => mouseOverVocal(id)}></ProfileGradient>
+              onMouseEnter={() => mouseOverVocal(id)}
+              vocalHoverBool={vocalHover === id}></ProfileGradient>
             <VocalHoverPlayIcon onMouseLeave={mouseOutVocal} onMouseEnter={() => mouseOverVocal(id)} />
           </MusicProfile>
           <Hashtags>
@@ -55,24 +55,6 @@ const VocalListContainer = styled.div`
   flex-wrap: wrap;
   padding-top: 5.6rem;
   padding-left: 9rem;
-
-  .show {
-    background: linear-gradient(
-      135deg,
-      ${({ theme }) => theme.colors.sub3} 15.32%,
-      rgba(13, 14, 17, 0.7) 53.49%,
-      ${({ theme }) => theme.colors.sub3} 92.93%
-    );
-  }
-
-  .hide {
-    background: linear-gradient(
-      135deg,
-      ${({ theme }) => theme.colors.sub3} 15.32%,
-      rgba(13, 14, 17, 0) 53.49%,
-      ${({ theme }) => theme.colors.sub3} 92.93%
-    );
-  }
 
   .gradient {
   }
@@ -120,7 +102,7 @@ const AlbumCoverImg = styled.img`
   position: relative;
 `;
 
-const ProfileGradient = styled.div`
+const ProfileGradient = styled.div<{ vocalHoverBool: boolean }>`
   position: absolute;
   top: 0;
   width: 23.4rem;
@@ -129,23 +111,12 @@ const ProfileGradient = styled.div`
   right: 19px;
   cursor: pointer;
 
-  .show {
-    background: linear-gradient(
-      135deg,
-      ${({ theme }) => theme.colors.sub3} 15.32%,
-      rgba(13, 14, 17, 0.7) 53.49%,
-      ${({ theme }) => theme.colors.sub3} 92.93%
-    );
-  }
-
-  .hide {
-    background: linear-gradient(
-      135deg,
-      ${({ theme }) => theme.colors.sub3} 15.32%,
-      rgba(13, 14, 17, 0) 53.49%,
-      ${({ theme }) => theme.colors.sub3} 92.93%
-    );
-  }
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors.sub3} 15.32%,
+    ${({ vocalHoverBool }) => (vocalHoverBool ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%")},
+    ${({ theme }) => theme.colors.sub3} 92.93%
+  );
 `;
 
 const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
