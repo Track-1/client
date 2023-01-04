@@ -34,11 +34,6 @@ export default function CategoryList() {
   const selectedSet = new Set();
 
   function categoryClick(id: number) {
-    // setSelectedCategorys(
-    //   selectedCategorys.map((selectCateg) =>
-    //     selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
-    //   ),
-    // );
     const tempSelectedCategorys = [...selectedCategorys];
 
     tempSelectedCategorys[id].selected = !tempSelectedCategorys[id].selected;
@@ -62,15 +57,16 @@ export default function CategoryList() {
   }
 
   function clickTrackSearching() {
-    setTrackSearchingClicked((prev) => !prev);
+    setTrackSearchingClicked(!trackSearchingClicked);
+  }
+
+  function clickOutside(e: MouseEvent) {
+    if (openModal && !modalRef.current?.contains(e.target as Node)) {
+      setOpenModal(false);
+    }
   }
 
   useEffect(() => {
-    const clickOutside = (e: any) => {
-      if (openModal && !modalRef.current?.contains(e.target)) {
-        setOpenModal(false);
-      }
-    };
     document.addEventListener("mousedown", clickOutside);
     return () => {
       document.removeEventListener("mousedown", clickOutside);
