@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -14,10 +14,18 @@ import {
 export default function UploadInfo() {
   const description = useRef<HTMLTextAreaElement | null>(null);
   const [height, setHeight] = useState<String>();
+  const [titleLength, setTitleLength] = useState<number>(0);
+  const [descriptionLength, setDescriptionLength] = useState<number>(0);
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setHeight(e.target.value);
+    setDescriptionLength(e.target.value.length);
   }
+
+  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
+    setTitleLength(e.target.value.length);
+  }
+
 
   useEffect(() => {
     if (description && description.current) {
@@ -29,12 +37,12 @@ export default function UploadInfo() {
 
   return (
     <Container>
-      <TitleInput placeholder="Please enter a title" maxLength={36}></TitleInput>
+      <TitleInput placeholder="Please enter a title" maxLength={36} onChange={changeTitleText}></TitleInput>
       <Line />
 
       <TextCount font={"body"}>
         <TextWrapper>
-          <InputCount>0</InputCount>
+          <InputCount>{titleLength}</InputCount>
           <LimitCount>/36</LimitCount>
         </TextWrapper>
       </TextCount>
@@ -105,7 +113,7 @@ export default function UploadInfo() {
 
       <TextCount font={"description"}>
         <TextWrapper>
-          <InputCount>0</InputCount>
+          <InputCount>{descriptionLength}</InputCount>
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
