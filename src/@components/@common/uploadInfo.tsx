@@ -15,6 +15,8 @@ export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   const enteredHashtag = useRef<HTMLInputElement>(null);
 
+  const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
+
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
   const [hashtagInputCount, setHashtagInputCount] = useState<number>(0);
@@ -36,6 +38,14 @@ export default function UploadInfo() {
     },
     [hashtags],
   );
+
+  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
+    e.type === "focus"
+      ? setTitleHoverState(true)
+      : titleLength === 0
+      ? setTitleHoverState(false)
+      : setTitleHoverState(true);
+  }
 
   function addHashtagInput(e: React.MouseEvent<HTMLImageElement>) {
     if (hashtagInputCount === 2) return;
@@ -74,8 +84,10 @@ export default function UploadInfo() {
         placeholder="Please enter a title"
         spellCheck={false}
         maxLength={36}
-        onChange={changeTitleText}></TitleInput>
-      <Line />
+        onChange={changeTitleText}
+        onFocus={hoverTitle}
+        onBlur={hoverTitle}></TitleInput>
+      <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
       <TextCount font={"body"} textareaMargin={textareaMargin}>
         <TextWrapper>
@@ -200,10 +212,14 @@ const TitleInput = styled.input`
   margin-top: 13.6rem;
 `;
 
-const Line = styled.hr`
+const Line = styled.hr<{ titleLength: number; titleHoverState: boolean }>`
   width: 88.2rem;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray5};
+  border: 1px solid
+    ${(props) =>
+      props.titleLength !== 0 || props.titleHoverState
+        ? ({ theme }) => theme.colors.white
+        : ({ theme }) => theme.colors.gray5};
   margin-left: 5px;
 `;
 
