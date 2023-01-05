@@ -36,12 +36,16 @@ export default function VocalList() {
     }
   }
 
+  function clickVocalName(id: number) {
+    navigate("/vocal-profile", { state: id });
+  }
+
   return (
     <VocalListContainer>
       {vocals.map(({ id, imgSrc, producer, category, categoryNum, hashtags }) => (
         <VocalContainer key={id}>
           <UsernameInformWrapper>
-            <Username>{producer}</Username>
+            <Username onClick={() => clickVocalName(id)}>{producer}</Username>
             <VocalSleepIcon />
             <VocalNonSleepIcon />
           </UsernameInformWrapper>
@@ -117,6 +121,7 @@ const Username = styled.span`
   width: 28.5rem;
   font-size: 2.4rem;
   line-height: 3.1rem;
+  cursor: pointer;
 `;
 const VocalSleepIcon = styled(VocalSleepIc)`
   display: block;
