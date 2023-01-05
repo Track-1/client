@@ -82,3 +82,4 @@ export { ReactComponent as FolderUploadIc } from "./icon/folderUploadIc.svg";
 export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
 export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
 export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
+export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";

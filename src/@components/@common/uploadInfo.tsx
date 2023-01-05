@@ -9,6 +9,7 @@ import {
   CategoryDropDownIc,
   AddHashtagIc,
   HashtagWarningIc,
+  DeleteHashtagIc,
 } from "../../assets";
 
 export default function UploadInfo() {
@@ -68,6 +69,11 @@ export default function UploadInfo() {
     setHashtagInputWidth(Number(e.target.value));
   }
 
+  function deleteHashtag(item: string) {
+    setHashtags(hashtags.filter((hashtag) => hashtag !== item));
+    setHashtagInputWidth(8.827);
+  }
+
   useEffect(() => {
     if (descriptionTextarea && descriptionTextarea.current) {
       descriptionTextarea.current.style.height = "0rem";
@@ -77,6 +83,7 @@ export default function UploadInfo() {
     }
   }, [textareaHeight]);
 
+  //존나빠르게 치면 이슈생김...
   useEffect(() => {
     if (enteredHashtag.current!.value.length > 0) {
       if (enteredHashtag && enteredHashtag.current) {
@@ -156,6 +163,7 @@ export default function UploadInfo() {
                         <Hashtag key={idx}>
                           <HashtagWrapper>
                             <HashtagSharp>{`# ${item}`}</HashtagSharp>
+                            <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
                           </HashtagWrapper>
                         </Hashtag>
                       </InputHashtagWrapper>
@@ -431,4 +439,9 @@ const AddHashtagIcon = styled(AddHashtagIc)`
 
 const HashtagWarningIcon = styled(HashtagWarningIc)`
   margin-top: 0.7rem;
+`;
+
+const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  margin-left: 1rem;
+  cursor: pointer;
 `;
