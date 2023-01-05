@@ -26,7 +26,7 @@ export const vocalProfileHandler = [
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
-              isTitle: false,
+              isTitle: true,
             },
             {
               id: 6,
