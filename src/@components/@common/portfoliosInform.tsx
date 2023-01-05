@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PortfolioPropsType,PortfolioType } from "../../type/profilePropsType";
+import { PortfolioPropsType } from "../../type/profilePropsType";
 import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc} from "../../assets"
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
@@ -9,27 +9,27 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const hoverId=props.hoverId;
   const clickId=props.clickId;
   const porftolios=props.portfolios;
-
-  const portfolioInformation=porftolios.filter((portfolio) => portfolio.id === hoverId)[0];
-
+  const portfolioHoverInformation=porftolios.filter((portfolio) => portfolio.id === hoverId)[0];
+  const portfolioClickInformation=porftolios.filter((portfolio) => portfolio.id === clickId)[0];
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
-
-  portfolioInformation&&console.log(portfolioInformation.keyword[0].length)
+  const isBool=hoverId===clickId?true:false;
+  const portfolioInforms=!isBool&&hoverId!==-1?portfolioHoverInformation:portfolioClickInformation
 
   return (
     <PortfolioInformWrapper>
-    {portfolioInformation&&(
+    {(portfolioClickInformation&&portfolioInforms)&&(
       <InformWrapper>
-      {portfolioInformation.isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
-      {portfolioInformation.isTitle&&tracksOrVocals==="Vocals"&&<VocalPortfolioTitleTextIc/>}
-      <InformTitle>{portfolioInformation.title}</InformTitle>
-      <InformCategory>{portfolioInformation.category}</InformCategory>
-      <InformContent>{portfolioInformation.content}</InformContent>
+      {portfolioInforms.isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
+      {portfolioInforms.isTitle&&tracksOrVocals==="Vocals"&&<VocalPortfolioTitleTextIc/>}
+      <InformTitle>{portfolioInforms.title}</InformTitle>
+      <InformCategory>{portfolioInforms.category}</InformCategory>
+      <InformContent>{portfolioInforms.content}</InformContent>
       <InformTagWrapper>
-      {portfolioInformation.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
+      {portfolioInforms.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
       </InformTagWrapper>
       </InformWrapper>
-    )}
+    )}   
+
     </PortfolioInformWrapper>
   )
 }
