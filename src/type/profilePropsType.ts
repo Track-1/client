@@ -13,6 +13,7 @@ export interface PortfolioType{
   
 export interface PortfolioPropsType{
     isMe:boolean;
-    portfolioId:number;
-    portfolio:PortfolioType[];
+    hoverId:number;
+    clickId:number;
+    portfolios:PortfolioType[];
 }

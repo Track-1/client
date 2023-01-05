@@ -93,7 +93,7 @@ export default function VocalProfileList() {
         <VocalsBoxHead></VocalsBoxHead>
       </VocalsBoxWrapper>
 
-      {vocalPortfolioData&&<PortfoliosInform isMe={isMe} portfolioId={vocalPortfolioClick} portfolio={vocalPortfolioData}/>}
+      {vocalPortfolioData&&<PortfoliosInform isMe={isMe} hoverId={vocalPortfolioHover} clickId={vocalPortfolioClick} portfolios={vocalPortfolioData}/>}
     </VocalProfileListWrapper>
   );
 }
