@@ -16,11 +16,13 @@ export default function UploadInfo() {
   const enteredHashtag = useRef<HTMLInputElement>(null);
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
-
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
+  const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(8.827);
+
   const [hashtagInputCount, setHashtagInputCount] = useState<number>(0);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
+
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
   const [hashtags, setHashtags] = useState<Array<string>>([]);
@@ -63,6 +65,7 @@ export default function UploadInfo() {
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagLength(e.target.value.length);
+    setHashtagInputWidth(Number(e.target.value));
   }
 
   useEffect(() => {
@@ -74,8 +77,22 @@ export default function UploadInfo() {
     }
   }, [textareaHeight]);
 
-  console.log(textareaHeight);
-  console.log(textareaMargin);
+  useEffect(() => {
+    if (enteredHashtag.current!.value.length > 0) {
+      if (enteredHashtag && enteredHashtag.current) {
+        enteredHashtag.current.style.width = "0rem";
+        const inputWidth = enteredHashtag.current.scrollWidth;
+        console.log(inputWidth);
+        enteredHashtag.current.style.width = inputWidth / 10 + "rem";
+        setHashtagInputWidth(inputWidth);
+      }
+    } else {
+      enteredHashtag.current!.style.width = "8.827rem";
+      setHashtagInputWidth(8.827);
+      console.log("hlelo");
+    }
+    console.log(hashtagInputWidth);
+  }, [hashtagInputWidth]);
 
   return (
     <Container>
@@ -154,6 +171,8 @@ export default function UploadInfo() {
                         placeholder="Hashtag"
                         onKeyDown={completeHashtag}
                         onChange={changeHashtagText}
+                        hashtagInputWidth={hashtagInputWidth}
+                        maxLength={10}
                         ref={enteredHashtag}
                       />
                     </HashtagWrapper>
@@ -332,7 +351,6 @@ const InputHashtagWrapper = styled.div`
 
 const Hashtag = styled.div`
   height: 3.8rem;
-  width: 13.2rem;
 
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
@@ -350,9 +368,11 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input`
-${({ theme }) => theme.fonts.hashtag};
+const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
+  width:${(props) => props.hashtagInputWidth}rem ;
+  ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
+
   ::placeholder{
     color:color: ${({ theme }) => theme.colors.gray3};
   }
