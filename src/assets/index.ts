@@ -80,3 +80,4 @@ export { ReactComponent as VocalProfileBlurPlayIc } from "./icon/vocalProfileBlu
 export { ReactComponent as VocalProfileBlurPauseIc } from "./icon/vocalProfileBlurPauseIc.svg";
 export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";
 export { ReactComponent as ProducerPortfolioTitleTextIc } from "./icon/producerPortfolioTitleTextIc.svg";
+export { ReactComponent as UploadButtonIc } from "./icon/uploadButtonIc.svg";

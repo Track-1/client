@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { PortfolioPropsType } from "../../type/profilePropsType";
-import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc} from "../../assets"
+import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc} from "../../assets"
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 
@@ -16,7 +16,9 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const portfolioInforms=!isBool&&hoverId!==-1?portfolioHoverInformation:portfolioClickInformation
 
   return (
+    <>
     <PortfolioInformWrapper>
+    {isMe&&<UploadButtonIc/>}
     {(portfolioClickInformation&&portfolioInforms)&&(
       <InformWrapper>
       {portfolioInforms.isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
@@ -29,8 +31,8 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       </InformTagWrapper>
       </InformWrapper>
     )}   
-
     </PortfolioInformWrapper>
+    </>
   )
 }
 
