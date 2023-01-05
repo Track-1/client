@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -12,13 +12,33 @@ import {
 } from "../../assets";
 
 export default function UploadInfo() {
-  const description = useRef<HTMLTextAreaElement | null>(null);
-  const [height, setHeight] = useState<String>();
+  const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
+  const descriptionCountarea = useRef<HTMLDivElement | null>(null);
+  const enteredHashtag = useRef<HTMLInputElement>(null);
+
+  const [textareaHeight, setTextareaHeight] = useState<String>();
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
+  const [hashtags, setHashtags] = useState<Array<string>>([]);
+
+  const completeHashtag = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
+        const value = enteredHashtag.current!.value;
+        if (hashtags.includes(value)) {
+          alert("중복된 해시태그 입니다!");
+        } else {
+          setHashtags([...hashtags, value]);
+        }
+      }
+      console.log(hashtags);
+    },
+    [hashtags],
+  );
+  console.log(hashtags);
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setHeight(e.target.value);
+    setTextareaHeight(e.target.value);
     setDescriptionLength(e.target.value.length);
   }
 
@@ -26,18 +46,29 @@ export default function UploadInfo() {
     setTitleLength(e.target.value.length);
   }
 
+  // function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
+  //   if (e.key === "Enter") {
+  //     setHashtags([...hashtags,enteredHashtag.current!.value)]);
+  //     console.log(hashtags);
+  //   }
+  // }
+  console.log(hashtags.length);
 
   useEffect(() => {
-    if (description && description.current) {
-      description.current.style.height = "0rem";
-      const scrollHeight = description.current.scrollHeight;
-      description.current.style.height = scrollHeight / 10 + "rem";
+    if (descriptionTextarea && descriptionTextarea.current) {
+      descriptionTextarea.current.style.height = "0rem";
+      const scrollHeight = descriptionTextarea.current.scrollHeight;
+      descriptionTextarea.current.style.height = scrollHeight / 10 + "rem";
     }
-  }, [height]);
+  }, [textareaHeight]);
 
   return (
     <Container>
-      <TitleInput placeholder="Please enter a title" maxLength={36} onChange={changeTitleText}></TitleInput>
+      <TitleInput
+        typeof="text"
+        placeholder="Please enter a title"
+        maxLength={36}
+        onChange={changeTitleText}></TitleInput>
       <Line />
 
       <TextCount font={"body"}>
@@ -83,12 +114,26 @@ export default function UploadInfo() {
           <InputBox>
             <InputWrapper>
               <InputHashtagWrapper>
-                <Hashtag>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <HashtagInput placeholder="Hashtag" />
-                  </HashtagWrapper>
-                </Hashtag>
+                {hashtags.length > 0 ? (
+                  <>
+                    {hashtags.map((item: string, idx) => {
+                      return (
+                        <Hashtag key={idx}>
+                          <HashtagWrapper>
+                            <HashtagSharp>{`# ${item}`}</HashtagSharp>
+                          </HashtagWrapper>
+                        </Hashtag>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <Hashtag>
+                    <HashtagWrapper>
+                      <HashtagSharp># </HashtagSharp>
+                      <HashtagInput placeholder="Hashtag" onKeyDown={completeHashtag} ref={enteredHashtag} />
+                    </HashtagWrapper>
+                  </Hashtag>
+                )}
               </InputHashtagWrapper>
               <AddHashtagIcon />
             </InputWrapper>
@@ -105,18 +150,19 @@ export default function UploadInfo() {
               typeof="text"
               placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
               maxLength={250}
-              ref={description}
+              ref={descriptionTextarea}
               onChange={resizeTextarea}></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
 
-      <TextCount font={"description"}>
+      <TextCount font={"description"} ref={descriptionCountarea}>
         <TextWrapper>
           <InputCount>{descriptionLength}</InputCount>
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
+      {/* <DropDownMenuContainer></DropDownMenuContainer> */}
     </Container>
   );
 }
@@ -186,7 +232,6 @@ const InfoItemBox = styled.div`
 
   display: flex;
   margin-bottom: 0.2rem;
-  /* background-color: beige; */
 `;
 
 const NameBox = styled.div`
@@ -257,11 +302,12 @@ const Hashtag = styled.div`
 
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
-  margin-left: 1rem;
+  margin-right: 1rem;
 `;
 
 const HashtagWrapper = styled.div`
   display: flex;
+  align-items: center;
   margin: 0.9rem 1.5rem;
 `;
 
@@ -280,7 +326,7 @@ ${({ theme }) => theme.fonts.hashtag};
 
 const InputDescriptionText = styled.textarea`
   width: 72rem;
-  height: 4rem !important;
+  height: 4rem;
 
   outline: 0;
   resize: none;
@@ -296,6 +342,18 @@ const InputDescriptionText = styled.textarea`
   }
 `;
 
+// const DropDownMenuContainer = styled.div`
+//   height: 36rem;
+//   width: 13rem;
+
+//   position: absolute;
+//   top: 38.8rem;
+//   left: 20.7rem;
+//   background: rgba(30, 32, 37, 0.7);
+//   backdrop-filter: blur(6.5px);
+//   border-radius: 0.5rem;
+// `;
+
 const FolderUploadIcon = styled(FolderUploadIc)`
   margin-left: 1.2rem;
   margin-top: 1.3rem;
@@ -306,7 +364,7 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-left: 0.8rem;
+  margin-left: -0.2rem;
   margin-top: 1.3rem;
 `;
 
