@@ -28,6 +28,10 @@ export default function CategoryHeader() {
     navigate("/vocals");
   }
 
+  function moveMainPage() {
+    navigate("/");
+  }
+
   return (
     <CategoryHeaderContainer>
       <CategoryContainer>
@@ -49,7 +53,7 @@ export default function CategoryHeader() {
 
       <HeaderContainer>
         <HeaderWrapper>
-          <TrackOneIcon />
+          <TrackOneIcon onClick={moveMainPage} />
           <ProfileWrapper>
             <ProfileImg src={profileImg} alt="프로필이미지" />
             <ToggleIc />
