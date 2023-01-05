@@ -18,6 +18,7 @@ export default function VocalProfileList() {
 
   function mouseOverVocalPortfolio(id: number) {
     setVocalPortfolioHover(id);
+    console.log(id)
   }
 
   function mouseOutVocalPortfolio() {

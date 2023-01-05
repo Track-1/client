@@ -17,7 +17,7 @@ export const producerProfileHandler = [
           },
           producerPortfolio: [
             {
-              producerPortfolioId: 1,
+              id: 1,
               jacketImage: "AWS S3 image url1",
               beatWavFile: "AWS S3 beat wav file url1",
               title: "제목1",
@@ -28,7 +28,7 @@ export const producerProfileHandler = [
               isTitle: true,
             },
             {
-              producerPortfolioId: 1,
+              id: 6,
               jacketImage: "AWS S3 image url1",
               beatWavFile: "AWS S3 beat wav file url1",
               title: "제목1",

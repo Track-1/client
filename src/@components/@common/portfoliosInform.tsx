@@ -1,5 +1,3 @@
-import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck"
-import { useRecoilValue } from 'recoil';
 import { PortfolioPropsType } from "../../type/profilePropsType";
 
 export default function PortfoliosInform(props:PortfolioPropsType) {
@@ -8,7 +6,9 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const clickId=props.clickId;
   const porftolios=props.portfolios;
 
+  const portfolioInformation = porftolios.filter((portfolio) => portfolio.id === hoverId)[0];
 
+  console.log(portfolioInformation)
   return (
     <>
     </>
