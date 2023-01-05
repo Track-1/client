@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { VocalSleepIc, VocalNonSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
-import vocals from "../../mocks/vocalsListDummy.json";
 import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
+import { getVocalsData } from "../../core/api/vocalSearch";
+import { VocalSearchType } from "../../type/vocalSearchType";
 
 export default function VocalList() {
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
@@ -12,8 +13,15 @@ export default function VocalList() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [beatId, setBeatId] = useRecoilState<number>(selectedId);
+  const [vocalData, setVocalData] = useState<VocalSearchType[]>();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getVocalsData().then((result) => result && setVocalData(result.data));
+  }, []);
+
+  console.log(vocalData);
 
   function mouseOverVocal(id: number) {
     setHoverVocal(id);
@@ -42,55 +50,59 @@ export default function VocalList() {
 
   return (
     <VocalListContainer>
-      {vocals.map(({ id, imgSrc, producer, category, categoryNum, hashtags }) => (
-        <VocalContainer key={id}>
-          <UsernameInformWrapper>
-            <Username onClick={() => clickVocalName(id)}>{producer}</Username>
-            <VocalSleepIcon />
-            <VocalNonSleepIcon />
-          </UsernameInformWrapper>
+      {vocalData &&
+        vocalData.map((vocal) => (
+          <VocalContainer key={vocal.vocalId}>
+            <UsernameInformWrapper>
+              <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
+              <VocalSleepIcon />
+              <VocalNonSleepIcon />
+            </UsernameInformWrapper>
 
-          <CategoryTextWrapper>
-            <CategoryText>{category}</CategoryText>
-            <CategoryNum>+{categoryNum}</CategoryNum>
-          </CategoryTextWrapper>
+            <CategoryTextWrapper>
+              <CategoryText>{vocal.category[0]}</CategoryText>
+              <CategoryNum>+{vocal.totalCategNum}</CategoryNum>
+            </CategoryTextWrapper>
 
-          <MusicProfileWrapper
-            onMouseLeave={mouseOutVocal}
-            onMouseEnter={() => mouseOverVocal(id)}
-            onClick={() => {
-              onClickVocal(id);
-              onClickPauseVocal(id);
-            }}
-            showPlayer={showPlayer}
-            hoverVocalBool={hoverVocal === id}
-            clickVocalBool={clickVocal === id}
-            clickVocal={clickVocal}>
-            <GradientLine>
-              <AlbumCoverImg src={require("../../assets/image/" + imgSrc + ".png")} alt="앨범자켓사진" />
-            </GradientLine>
-            <GradientProfile
-              hoverVocalBool={hoverVocal === id}
-              clickVocalBool={clickVocal === id}
-              clickVocal={clickVocal}></GradientProfile>
-            {play && clickVocal === id && clickVocal !== -1 && (
-              <VocalHoverPauseIcon
-                hoverVocalBool={hoverVocal === id}
-                clickVocalBool={clickVocal === id}
-                clickVocal={clickVocal}
-              />
-            )}
-            {((clickVocal !== id && hoverVocal === id && hoverVocal !== -1) ||
-              (!play && clickVocal === id && clickVocal !== -1)) && <VocalHoverPlayIcon />}
-          </MusicProfileWrapper>
+            <MusicProfileWrapper
+              onMouseLeave={mouseOutVocal}
+              onMouseEnter={() => mouseOverVocal(vocal.vocalId)}
+              onClick={() => {
+                onClickVocal(vocal.vocalId);
+                onClickPauseVocal(vocal.vocalId);
+              }}
+              showPlayer={showPlayer}
+              hoverVocalBool={hoverVocal === vocal.vocalId}
+              clickVocalBool={clickVocal === vocal.vocalId}
+              clickVocal={clickVocal}>
+              <GradientLine>
+                <AlbumCoverImg
+                  src={require("../../assets/image/" + vocal.vocalProfileImage + ".png")}
+                  alt="앨범자켓사진"
+                />
+              </GradientLine>
+              <GradientProfile
+                hoverVocalBool={hoverVocal === vocal.vocalId}
+                clickVocalBool={clickVocal === vocal.vocalId}
+                clickVocal={clickVocal}></GradientProfile>
+              {play && clickVocal === vocal.vocalId && clickVocal !== -1 && (
+                <VocalHoverPauseIcon
+                  hoverVocalBool={hoverVocal === vocal.vocalId}
+                  clickVocalBool={clickVocal === vocal.vocalId}
+                  clickVocal={clickVocal}
+                />
+              )}
+              {((clickVocal !== vocal.vocalId && hoverVocal === vocal.vocalId && hoverVocal !== -1) ||
+                (!play && clickVocal === vocal.vocalId && clickVocal !== -1)) && <VocalHoverPlayIcon />}
+            </MusicProfileWrapper>
 
-          <HashtagUl>
-            {hashtags.map((tag, idx) => (
-              <HashtagLi key={idx}>#{tag}</HashtagLi>
-            ))}
-          </HashtagUl>
-        </VocalContainer>
-      ))}
+            <HashtagUl>
+              {vocal.keyword.map((idx) => (
+                <HashtagLi key={vocal.vocalId}>#{idx}</HashtagLi>
+              ))}
+            </HashtagUl>
+          </VocalContainer>
+        ))}
     </VocalListContainer>
   );
 }
@@ -125,17 +137,24 @@ const UsernameInformWrapper = styled.div`
 const Username = styled.span`
   display: flex;
 
-  width: 28.5rem;
-
   line-height: 3.1rem;
   font-size: 2.4rem;
   align-items: center;
 
+  margin-bottom: 1.1rem;
+
   cursor: pointer;
+
+  :hover {
+    color: ${({ theme }) => theme.colors.sub2};
+  }
 `;
 
 const VocalSleepIcon = styled(VocalSleepIc)`
   display: block;
+  position: absolute;
+
+  right: 6.2rem;
 `;
 
 const VocalNonSleepIcon = styled(VocalNonSleepIc)`
@@ -278,7 +297,7 @@ const HashtagUl = styled.ul`
   align-items: flex-end;
 
   bottom: 8.5rem;
-  right: 6rem;
+  right: 7.5rem;
 `;
 
 const HashtagLi = styled.li`
@@ -287,7 +306,7 @@ const HashtagLi = styled.li`
   padding: 1.7rem 1.5rem;
   margin-bottom: 1rem;
 
-  line-height: 0.5rem !important;
+  line-height: 0.3rem !important;
 
   border-radius: 2.1rem;
 
