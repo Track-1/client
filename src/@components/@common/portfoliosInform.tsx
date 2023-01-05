@@ -17,7 +17,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   portfolioInformation&&console.log(portfolioInformation.keyword[0].length)
 
   return (
-    <>
+    <PortfolioInformWrapper>
     {portfolioInformation&&(
       <InformWrapper>
       {portfolioInformation.isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
@@ -30,11 +30,16 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       </InformTagWrapper>
       </InformWrapper>
     )}
-    </>
+    </PortfolioInformWrapper>
   )
 }
 
-const InformWrapper=styled.section`
+const PortfolioInformWrapper=styled.section`
+  width: 38.1rem;
+  margin-left: 87rem;
+`
+
+const InformWrapper=styled.article`
 `
 
 const InformTitle=styled.h1`
