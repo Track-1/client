@@ -5,19 +5,7 @@ import vocals from "../../mocks/vocalProfileDummy.json";
 import { showPlayerBar, playMusic, selectedId } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import { getVocalProfile }  from "../../core/api/vocalProfile";
-
-interface VocalProfilePropsType{
-  beatWavFile:string;
-  category:string;
-  content:string;
-  isTitle:boolean;
-  jacketImage:string;
-  keyword:string[]
-  length:number
-  title:string;
-  vocalPortfolioId:number;
-  wavFileLength:number;
-}
+import { VocalProfilePropsType } from "../../type/profilePropsType";
 
 export default function VocalProfileList() {
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
@@ -45,7 +33,7 @@ export default function VocalProfileList() {
     setPlay(false);
   }
   
-  useEffect(()=>{
+  useEffect(()=> {
     getVocalProfile()
     .then((result) => result && setVocalProfileData(result.data[0].vocalPortfolio))
     .then((result) => result && vocalProfileData && setVocalPortfolioCount(vocalProfileData.length))
