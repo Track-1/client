@@ -13,10 +13,11 @@ import {
 
 export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
-  const descriptionCountarea = useRef<HTMLDivElement | null>(null);
   const enteredHashtag = useRef<HTMLInputElement>(null);
 
-  const [textareaHeight, setTextareaHeight] = useState<String>();
+  const [textareaHeight, setTextareaHeight] = useState<String>("33");
+  const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
+  const [hashtagInputCount, setHashtagInputCount] = useState<number>(0);
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
   const [hashtags, setHashtags] = useState<Array<string>>([]);
@@ -35,7 +36,11 @@ export default function UploadInfo() {
     },
     [hashtags],
   );
-  console.log(hashtags);
+
+  function addHashtagInput(e: React.MouseEvent<HTMLImageElement>) {
+    if (hashtagInputCount === 2) return;
+    setHashtagInputCount((prev) => (prev += 1));
+  }
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setTextareaHeight(e.target.value);
@@ -46,21 +51,17 @@ export default function UploadInfo() {
     setTitleLength(e.target.value.length);
   }
 
-  // function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-  //   if (e.key === "Enter") {
-  //     setHashtags([...hashtags,enteredHashtag.current!.value)]);
-  //     console.log(hashtags);
-  //   }
-  // }
-  console.log(hashtags.length);
-
   useEffect(() => {
     if (descriptionTextarea && descriptionTextarea.current) {
       descriptionTextarea.current.style.height = "0rem";
       const scrollHeight = descriptionTextarea.current.scrollHeight;
       descriptionTextarea.current.style.height = scrollHeight / 10 + "rem";
+      setTextareaMargin(scrollHeight);
     }
   }, [textareaHeight]);
+
+  console.log(textareaHeight);
+  console.log(textareaMargin);
 
   return (
     <Container>
@@ -71,7 +72,7 @@ export default function UploadInfo() {
         onChange={changeTitleText}></TitleInput>
       <Line />
 
-      <TextCount font={"body"}>
+      <TextCount font={"body"} textareaMargin={textareaMargin}>
         <TextWrapper>
           <InputCount>{titleLength}</InputCount>
           <LimitCount>/36</LimitCount>
@@ -135,7 +136,9 @@ export default function UploadInfo() {
                   </Hashtag>
                 )}
               </InputHashtagWrapper>
-              <AddHashtagIcon />
+              <div onClick={addHashtagInput} style={{ cursor: "pointer" }}>
+                <AddHashtagIcon />
+              </div>
             </InputWrapper>
             <HashtagWarningIcon />
           </InputBox>
@@ -156,7 +159,7 @@ export default function UploadInfo() {
         </InfoItemBox>
       </InfoContainer>
 
-      <TextCount font={"description"} ref={descriptionCountarea}>
+      <TextCount font={"description"} textareaMargin={textareaMargin}>
         <TextWrapper>
           <InputCount>{descriptionLength}</InputCount>
           <LimitCount>/250</LimitCount>
@@ -189,7 +192,7 @@ const Line = styled.hr`
   margin-left: 5px;
 `;
 
-const TextCount = styled.div<{ font: string }>`
+const TextCount = styled.div<{ font: string; textareaMargin: number }>`
   height: 2.3rem;
   width: 100%;
 
@@ -202,7 +205,7 @@ const TextCount = styled.div<{ font: string }>`
     else
       return css`
         ${({ theme }) => theme.fonts.description};
-        margin-top: 0.8rem;
+        margin-top: ${props.textareaMargin/10 - 3.3 + 0.8}rem;
       `;
   }}
 `;
