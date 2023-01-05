@@ -18,6 +18,7 @@ export default function UploadInfo() {
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
   const [hashtagInputCount, setHashtagInputCount] = useState<number>(0);
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
   const [hashtags, setHashtags] = useState<Array<string>>([]);
@@ -32,7 +33,6 @@ export default function UploadInfo() {
           setHashtags([...hashtags, value]);
         }
       }
-      console.log(hashtags);
     },
     [hashtags],
   );
@@ -49,6 +49,10 @@ export default function UploadInfo() {
 
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
     setTitleLength(e.target.value.length);
+  }
+
+  function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtagLength(e.target.value.length);
   }
 
   useEffect(() => {
@@ -68,6 +72,7 @@ export default function UploadInfo() {
       <TitleInput
         typeof="text"
         placeholder="Please enter a title"
+        spellCheck={false}
         maxLength={36}
         onChange={changeTitleText}></TitleInput>
       <Line />
@@ -114,31 +119,40 @@ export default function UploadInfo() {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              <InputHashtagWrapper>
-                {hashtags.length > 0 ? (
-                  <>
-                    {hashtags.map((item: string, idx) => {
-                      return (
+              {hashtags.length > 0 ? (
+                <>
+                  {hashtags.map((item: string, idx) => {
+                    return (
+                      <InputHashtagWrapper>
                         <Hashtag key={idx}>
                           <HashtagWrapper>
                             <HashtagSharp>{`# ${item}`}</HashtagSharp>
                           </HashtagWrapper>
                         </Hashtag>
-                      );
-                    })}
-                  </>
-                ) : (
+                      </InputHashtagWrapper>
+                    );
+                  })}
+                </>
+              ) : (
+                <InputHashtagWrapper>
                   <Hashtag>
                     <HashtagWrapper>
                       <HashtagSharp># </HashtagSharp>
-                      <HashtagInput placeholder="Hashtag" onKeyDown={completeHashtag} ref={enteredHashtag} />
+                      <HashtagInput
+                        placeholder="Hashtag"
+                        onKeyDown={completeHashtag}
+                        onChange={changeHashtagText}
+                        ref={enteredHashtag}
+                      />
                     </HashtagWrapper>
                   </Hashtag>
-                )}
-              </InputHashtagWrapper>
-              <div onClick={addHashtagInput} style={{ cursor: "pointer" }}>
-                <AddHashtagIcon />
-              </div>
+                </InputHashtagWrapper>
+              )}
+              {hashtagLength > 0 && (
+                <AddHashtagIconWrapper onClick={addHashtagInput}>
+                  <AddHashtagIcon />
+                </AddHashtagIconWrapper>
+              )}
             </InputWrapper>
             <HashtagWarningIcon />
           </InputBox>
@@ -152,6 +166,7 @@ export default function UploadInfo() {
             <InputDescriptionText
               typeof="text"
               placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+              spellCheck={false}
               maxLength={250}
               ref={descriptionTextarea}
               onChange={resizeTextarea}></InputDescriptionText>
@@ -205,7 +220,7 @@ const TextCount = styled.div<{ font: string; textareaMargin: number }>`
     else
       return css`
         ${({ theme }) => theme.fonts.description};
-        margin-top: ${props.textareaMargin/10 - 3.3 + 0.8}rem;
+        margin-top: ${props.textareaMargin / 10 - 3.3 + 0.8}rem;
       `;
   }}
 `;
@@ -325,6 +340,13 @@ ${({ theme }) => theme.fonts.hashtag};
   ::placeholder{
     color:color: ${({ theme }) => theme.colors.gray3};
   }
+`;
+
+const AddHashtagIconWrapper = styled.div`
+  height: 4rem;
+  width: 4rem;
+
+  cursor: pointer;
 `;
 
 const InputDescriptionText = styled.textarea`
