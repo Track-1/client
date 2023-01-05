@@ -1,22 +1,9 @@
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck"
 import { useRecoilValue } from 'recoil';
+import { PortfolioPropsType } from "../../type/profilePropsType";
 
-interface PortfolioType{
-    id:number;
-    title:string;
-    content:string;
-    keyword:string[];
-    category:string;
-}
-
-interface PortfolioPropsType{
-    isMe:boolean;
-    portfolioId:number;
-    portfolio:PortfolioType;
-}
-
-export default function PortfoliosInform() {
-
+export default function PortfoliosInform(props:PortfolioPropsType) {
+  
   return (
     <>
     </>

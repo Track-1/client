@@ -1,4 +1,4 @@
-export interface ProfilePropsType{
+export interface PortfolioType{
     beatWavFile:string;
     category:string;
     content:string;
@@ -11,3 +11,8 @@ export interface ProfilePropsType{
     wavFileLength:number;
   }
   
+export interface PortfolioPropsType{
+    isMe:boolean;
+    portfolioId:number;
+    portfolio:PortfolioType[];
+}

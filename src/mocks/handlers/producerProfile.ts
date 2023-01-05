@@ -6,6 +6,7 @@ export const producerProfileHandler = [
       ctx.status(200),
       ctx.json([
         {
+          isMe: true,
           producerProfile: {
             profileImage: "AWS S3 이미지 파일",
             name: "프로듀서1",

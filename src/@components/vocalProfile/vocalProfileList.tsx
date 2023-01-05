@@ -6,15 +6,15 @@ import { showPlayerBar, playMusic, selectedId } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from '../@common/portfoliosInform';
 import { getVocalProfile }  from "../../core/api/vocalProfile";
-import { ProfilePropsType } from "../../type/profilePropsType";
+import { PortfolioType } from "../../type/profilePropsType";
 
 export default function VocalProfileList() {
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
   const [vocalPortfolioClick, setVocalPortfolioClick] = useRecoilState<number>(selectedId);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [vocalProfileData, setVocalProfileData]=useState<ProfilePropsType[]>();
-  const [vocalPortfolioCount, setVocalPortfolioCount]=useState<number>(0)
+  const [vocalPortfolioData, setVocalPortfolioData]=useState<PortfolioType[]>();
+  const [isMe, setIsMe]=useState<boolean>(false);
 
   function mouseOverVocalPortfolio(id: number) {
     setVocalPortfolioHover(id);
@@ -36,16 +36,20 @@ export default function VocalProfileList() {
   
   useEffect(()=> {
     getVocalProfile()
-    .then((result) => result && setVocalProfileData(result.data[0].vocalPortfolio))
-    .then((result) => result && vocalProfileData && setVocalPortfolioCount(vocalProfileData.length))
+    .then((res) => {
+      if (res){
+        setVocalPortfolioData(res.data[0].vocalPortfolio)
+        setIsMe(res.data[0].isMe)
+      }
+    })
   },[])
 
-  console.log(vocalProfileData)
+  const vocalPortfolioCount= vocalPortfolioData ? vocalPortfolioData.length:0
 
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
-        {vocalProfileData&&vocalProfileData.map((vocal, idx) => (
+        {vocalPortfolioData&&vocalPortfolioData.map((vocal, idx) => (
           <VocalPortfolio
             key={vocal.id}
             onMouseEnter={() => mouseOverVocalPortfolio(vocal.id)}
@@ -89,7 +93,7 @@ export default function VocalProfileList() {
         <VocalsBoxHead></VocalsBoxHead>
       </VocalsBoxWrapper>
 
-      <PortfoliosInform/>
+      {vocalPortfolioData&&<PortfoliosInform isMe={isMe} portfolioId={vocalPortfolioClick} portfolio={vocalPortfolioData}/>}
     </VocalProfileListWrapper>
   );
 }
