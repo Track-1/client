@@ -57,7 +57,7 @@ export { ReactComponent as UserIc } from "./icon/userIC.svg";
 export { ReactComponent as LogoIc } from "./icon/logoIC.svg";
 export { ReactComponent as MyPageTextIc } from "./icon/mypageTextIC.svg";
 export { ReactComponent as TracksTextIc } from "./icon/TracksTextIc.svg";
-export { ReactComponent as VocalsTextIc } from "./icon/VocalsTextIc.svg";
+export { ReactComponent as VocalsTextIc } from "./icon/vocalsFontIc.svg";
 export { ReactComponent as DownloadBtnIc } from "./icon/downloadBtnIc.svg";
 export { ReactComponent as PauseBtnIc } from "./icon/pauseBtnIc.svg";
 export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
