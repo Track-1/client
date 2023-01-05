@@ -74,6 +74,7 @@ export { ReactComponent as UploadIc } from "./icon/uploadIc.svg";
 export { ReactComponent as AddCommentIc } from "./icon/addCommentIc.svg";
 export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIC.svg";
 export { ReactComponent as PlayBtnIc } from "./icon/playBtnIc.svg";
-export { ReactComponent as SleepIc } from "./icon/sleepIc.svg";
+export { ReactComponent as VocalSleepIc } from "./icon/vocalSleepIc.svg";
+export { ReactComponent as VocalNonSleepIc } from "./icon/vocalNonSleepIc.svg";
 export { ReactComponent as VocalHoverPlayIc } from "./icon/vocalHoverPlayIc.svg";
 export { ReactComponent as VocalHoverPauseIc } from "./icon/vocalHoverPauseIc.svg";

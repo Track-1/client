@@ -1,9 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { SleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
+import { VocalSleepIc, VocalNonSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
 import vocals from "../../mocks/vocalsListDummy.json";
 import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
 import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 export default function VocalList() {
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
@@ -11,6 +12,8 @@ export default function VocalList() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [beatId, setBeatId] = useRecoilState<number>(selectedId);
+
+  const navigate = useNavigate();
 
   function mouseOverVocal(id: number) {
     setHoverVocal(id);
@@ -34,12 +37,13 @@ export default function VocalList() {
   }
 
   return (
-    <VocalListContainer className="vocal">
+    <VocalListContainer>
       {vocals.map(({ id, imgSrc, producer, category, categoryNum, hashtags }) => (
         <VocalContainer key={id}>
           <UsernameInformWrapper>
             <Username>{producer}</Username>
-            <SleepIc />
+            <VocalSleepIcon />
+            <VocalNonSleepIcon />
           </UsernameInformWrapper>
 
           <CategoryTextWrapper>
@@ -103,6 +107,8 @@ const VocalContainer = styled.div`
 const UsernameInformWrapper = styled.div`
   display: flex;
   margin-top: 1.8rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const Username = styled.span`
@@ -111,6 +117,13 @@ const Username = styled.span`
   width: 28.5rem;
   font-size: 2.4rem;
   line-height: 3.1rem;
+`;
+const VocalSleepIcon = styled(VocalSleepIc)`
+  display: block;
+`;
+
+const VocalNonSleepIcon = styled(VocalNonSleepIc)`
+  display: none;
 `;
 
 const CategoryTextWrapper = styled.div``;
@@ -129,6 +142,8 @@ const CategoryNum = styled.span`
   font-weight: 400;
   font-size: 1.6rem;
   line-height: 180%;
+  position: relative;
+  z-index: 1;
 `;
 
 const AlbumCoverImg = styled.img`
@@ -189,8 +204,8 @@ const MusicProfile = styled.div<{
   display: inline-block;
   width: 28.4rem;
   height: 28.4rem;
-  top: 22px;
-  left: 22px;
+  top: -15px;
+  left: 3px;
   transform: rotate(45deg);
   border-radius: 5rem;
 
@@ -223,13 +238,15 @@ const Hashtags = styled.ul`
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
-  bottom: 4.5rem;
-  right: 2rem;
+  bottom: 8.5rem;
+  right: 6rem;
 `;
 const Hashtag = styled.li`
+  height: 3.8rem;
   padding: 1.7rem 1.5rem;
   border-radius: 2.1rem;
   background-color: ${({ theme }) => theme.colors.gray5};
   ${({ theme }) => theme.fonts.hashtag};
+  line-height: 0.5rem;
   margin-bottom: 1rem;
 `;
