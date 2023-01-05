@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { PortfolioPropsType } from "../../type/profilePropsType";
-import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc} from "../../assets"
+import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc,EllipsisIc} from "../../assets"
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 
@@ -15,14 +15,21 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const isBool=hoverId===clickId?true:false;
   const portfolioInforms=!isBool&&hoverId!==-1?portfolioHoverInformation:portfolioClickInformation
 
+  function clickEllipsis(){
+    console.log("더보기 버튼 클릭")
+  }
+
   return (
     <>
     <PortfolioInformWrapper>
     {isMe&&<UploadButtonIc/>}
     {(portfolioClickInformation&&portfolioInforms)&&(
       <InformWrapper>
+      <InformTitleWrapper>
       {portfolioInforms.isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
       {portfolioInforms.isTitle&&tracksOrVocals==="Vocals"&&<VocalPortfolioTitleTextIc/>}
+      {isMe&&isBool&&<EllipsisIc onClick={clickEllipsis}/>}
+      </InformTitleWrapper>
       <InformTitle>{portfolioInforms.title}</InformTitle>
       <InformCategory>{portfolioInforms.category}</InformCategory>
       <InformContent>{portfolioInforms.content}</InformContent>
@@ -42,6 +49,12 @@ const PortfolioInformWrapper=styled.section`
 `
 
 const InformWrapper=styled.article`
+`
+
+const InformTitleWrapper=styled.div`
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 `
 
 const InformTitle=styled.h1`
