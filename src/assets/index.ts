@@ -78,3 +78,5 @@ export { ReactComponent as VocalProfileShadowIc } from "./icon/vocalProfileShado
 export { ReactComponent as VocalProfileListContainerIc } from "./icon/vocalProfileListContainerIc.svg";
 export { ReactComponent as VocalProfileBlurPlayIc } from "./icon/vocalProfileBlurPlayIc.svg";
 export { ReactComponent as VocalProfileBlurPauseIc } from "./icon/vocalProfileBlurPauseIc.svg";
+export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";
+export { ReactComponent as ProducerPortfolioTitleTextIc } from "./icon/producerPortfolioTitleTextIc.svg";

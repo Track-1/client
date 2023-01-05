@@ -4,6 +4,7 @@ import styled from "styled-components";
 import vocals from "../../mocks/vocalProfileDummy.json";
 import { showPlayerBar, playMusic, selectedId } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
+import PortfoliosInform from '../@common/portfoliosInform';
 
 export default function VocalProfileList() {
   const vocalPortfolioCount = vocals.length;
@@ -75,6 +76,8 @@ export default function VocalProfileList() {
         <VocalsBoxBody vocalPortfolioCount={vocalPortfolioCount}></VocalsBoxBody>
         <VocalsBoxHead></VocalsBoxHead>
       </VocalsBoxWrapper>
+
+      <PortfoliosInform/>
     </VocalProfileListWrapper>
   );
 }
