@@ -30,8 +30,8 @@ export default function VocalList() {
     setClickVocal(id);
   }
 
-  function onClickPauseVocal() {
-    if (play === true) {
+  function onClickPauseVocal(id: number) {
+    if (play && id == beatId) {
       setPlay(false);
     }
   }
@@ -60,7 +60,7 @@ export default function VocalList() {
             onMouseEnter={() => mouseOverVocal(id)}
             onClick={() => {
               onClickVocal(id);
-              onClickPauseVocal();
+              onClickPauseVocal(id);
             }}
             showPlayer={showPlayer}
             hoverVocalBool={hoverVocal === id}
