@@ -17,6 +17,10 @@ export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
 
+  const [editFileName, setEditFileName] = useState<string>("");
+  const [realFileName, setRealFileName] = useState<string>("");
+  const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
+
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
@@ -32,6 +36,20 @@ export default function UploadInfo() {
   function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
       addHastag();
+    }
+  }
+
+  function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
+    setRealFileName(uploadName);
+
+    if (str.length > 14) {
+      setIsTextOverflow(true);
+      setEditFileName(str);
+    } else {
+      setIsTextOverflow(false);
+      setEditFileName(uploadName);
     }
   }
 
@@ -133,10 +151,21 @@ export default function UploadInfo() {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              <InputFileTextWrapper>
-                <InputFileText>Track1</InputFileText>
+              <InputFileTextWrapper editFileName={editFileName}>
+                <FileName value={editFileName} isTextOverflow={isTextOverflow} disabled />
+                {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>.wav</FileAttribute>}
+                <InputFileText
+                  type="file"
+                  id="fileUpload"
+                  style={{ display: "none" }}
+                  accept=".wav,.mp3"
+                  onChange={uploadFile}
+                  readOnly
+                />
               </InputFileTextWrapper>
-              <FolderUploadIcon />
+              <label htmlFor="fileUpload" style={{ cursor: "pointer" }}>
+                <FolderUploadIcon />
+              </label>
             </InputWrapper>
           </InputBox>
         </InfoItemBox>
@@ -356,15 +385,46 @@ const InputBox = styled.div`
 const InputWrapper = styled.div`
   display: flex;
 `;
-const InputFileTextWrapper = styled.div`
+
+const FileName = styled.input<{ isTextOverflow: boolean }>`
+  height: 2.5rem;
+  width: ${(props) => (props.isTextOverflow ? "16.4rem" : "100%")};
+
+  display: flex;
+  align-items: center;
+
+  text-overflow: ${(props) => (props.isTextOverflow ? "ellipsis" : "default")};
+
+  ${({ theme }) => theme.fonts.hashtag};
+  color: ${({ theme }) => theme.colors.white};
+  margin-top: 1.686rem;
+  cursor: default;
+`;
+
+const FileAttribute = styled.div<{ isTextOverflow: boolean }>`
+  height: 2.5rem;
+  /* width: ${(props) => (props.isTextOverflow ? "100%" : 0)}; */
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  ${({ theme }) => theme.fonts.hashtag};
+  color: ${({ theme }) => theme.colors.white};
+  margin-top: 1.686rem;
+`;
+
+const InputFileTextWrapper = styled.div<{ editFileName: string }>`
   height: 4.7rem;
   width: 20.8rem;
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid
+    ${(props) => (props.editFileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
-const InputFileText = styled.div`
-  height: 2.5rem;
+const InputFileText = styled.input`
+  /* height: 2.5rem;
   width: 100%;
 
   display: flex;
@@ -372,7 +432,7 @@ const InputFileText = styled.div`
 
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: 1.686rem;
+  margin-top: 1.686rem; */
 `;
 
 const InputCategoryTextWrapper = styled.div`
@@ -488,6 +548,7 @@ const WarningIcon = styled.div`
   height: 3rem;
   margin-top: 0.7rem;
   border-radius: 5rem;
+
   cursor: pointer;
 `;
 
