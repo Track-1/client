@@ -19,12 +19,14 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const portfolioClickInformation=porftolios.filter((portfolio) => portfolio.id === clickId)[0];
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
   const isBool=hoverId===clickId?true:false;
-  const portfolioInforms=!isBool&&hoverId!==-1?portfolioHoverInformation:portfolioClickInformation
+  const portfolioInforms=(!isBool&&hoverId!==-1||isBool&&hoverId!==-1)?portfolioHoverInformation:portfolioClickInformation
   const isTitle=portfolioInforms&&portfolioInforms.isTitle
   const [openEllipsisModal, setOpenEllipsisModal]=useState<boolean>(false)
   const [openUploadModal, setOpenUploadModal]=useState<boolean>(true)
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate=useNavigate()
+
+  console.log(openEllipsisModal)
 
   function clickEllipsis(){
     setOpenEllipsisModal(true)
@@ -52,7 +54,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
 
     {isMe?<UploadButtonIcon onClick={clickUploadButton}/>:<UploadButtonBlankIcon/>}
 
-    {(portfolioClickInformation&&portfolioInforms)&&(
+    {(portfolioInforms)&&(
       <>
       <InformWrapper>
       {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}

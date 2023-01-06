@@ -9,7 +9,7 @@ interface IsTitlePropsType{
 export default function PortfolioUpdateModal(props:IsTitlePropsType): JSX.Element {
     const isTitle=props.isTitle
   return (
-    <ModalWrapper>
+    <ModalWrapper isTitle={isTitle}>
         <ModalBox underline={true}>수정하기<PencilUpdateIc/></ModalBox>
         <ModalBox underline={!isTitle}>삭제하기<TrashDeleteIc/></ModalBox>
         {!isTitle&&<ModalBox underline={false}>타이틀 설정<SetIsTitleIc/></ModalBox>}
@@ -17,14 +17,14 @@ export default function PortfolioUpdateModal(props:IsTitlePropsType): JSX.Elemen
   )
 }
 
-const ModalWrapper=styled.div`
+const ModalWrapper=styled.div<{isTitle:boolean}>`
   display: flex;
   flex-direction: column;
   align-items: center;
   
   position: absolute;
-  left: 105rem;
-  margin-top: 15rem;
+  left: 17.2rem;
+  margin-top: ${({isTitle})=>isTitle?16:21}rem;
 
   width: 20.1rem;
 
