@@ -20,7 +20,7 @@ export const vocalSearchHandler = [
           vocalId: 2,
           vocalProfileImage: "albumCoverImg",
           vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
-          vocalName: "보컬8",
+          vocalName: "보컬8", 
           category: ["Jazz", "EDM"],
           keyword: ["클럽 분위기의", "신비로운", "졸린"],
           totalCategNum: 5,

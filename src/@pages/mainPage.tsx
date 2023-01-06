@@ -59,13 +59,13 @@ const Main = styled.main`
 `;
 
 const VocalsArea = styled.div`
-  width: 54.8rem;
-  height: 57.2rem;
+  width: 48rem;
+  height: 50rem;
 
   position: absolute;
   z-index: 99;
-  top: 41.2rem;
-  left: 120.4rem;
+  top: 41rem;
+  left: 129rem;
   transform: rotate(40deg);
   cursor: pointer;
 `;
@@ -91,13 +91,15 @@ const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
 `;
 
 const TracksArea = styled.div`
-  width: 56.4rem;
-  height: 53.8rem;
+  width: 50rem;
+  height: 47rem;
 
   position: absolute;
   z-index: 99;
-  top: 3.2rem;
-  left: 72rem;
+  top: 8rem;
+  left: 86.5rem;
+  //top: 3.2rem;
+  //left: 72rem;
   transform: rotate(-50deg);
   border-radius: 2.8rem 0 0;
   cursor: pointer;
@@ -110,6 +112,8 @@ const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
   position: absolute;
   top: 42.4rem;
   left: 99.5rem;
+  //top: 36rem;
+  //left: 108.5rem;
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -125,6 +129,6 @@ const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
 
 const MainSlogan = styled.img`
   position: absolute;
-  top: 82.5rem;
-  left: 8.3rem;
+  top: 50.6rem;
+  left: 8.7rem;
 `;
