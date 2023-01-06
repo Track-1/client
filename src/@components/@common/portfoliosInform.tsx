@@ -40,7 +40,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
 
   return (
     <>
-    <PortfoiloViewMoreButton/>
+    {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
     <PortfolioInformWrapper>
     {isMe&&<UploadButtonIc/>}
     {(portfolioClickInformation&&portfolioInforms)&&(
