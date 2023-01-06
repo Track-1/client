@@ -83,3 +83,4 @@ export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.
 export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
 export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
 export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
+export { ReactComponent as HoverHashtagWarningIc } from "./icon/hoverHashtagWarningIc.svg";

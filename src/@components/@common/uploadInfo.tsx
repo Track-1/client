@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -9,6 +9,7 @@ import {
   CategoryDropDownIc,
   AddHashtagIc,
   HashtagWarningIc,
+  HoverHashtagWarningIc,
   DeleteHashtagIc,
 } from "../../assets";
 
@@ -26,14 +27,12 @@ export default function UploadInfo() {
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
   const [hashtags, setHashtags] = useState<Array<string>>([]);
 
+  const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
+
   function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
       addHastag();
     }
-  }
-
-  function test(e: React.MouseEvent<HTMLInputElement>) {
-    console.dir(e.target);
   }
 
   function addHastag() {
@@ -45,7 +44,10 @@ export default function UploadInfo() {
     }
     setHashtagInputWidth(8.827);
     enteredHashtag.current!.value = "";
-    // console.log(enteredHashtag.current!.value);
+  }
+
+  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
+    e.type === "mouseenter" ? setWarningHoverState(true) : setWarningHoverState(false);
   }
 
   function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
@@ -185,7 +187,6 @@ export default function UploadInfo() {
                             onChange={changeHashtagText}
                             hashtagInputWidth={hashtagInputWidth}
                             maxLength={10}
-                            onClick={test}
                             ref={enteredHashtag}
                           />
                         </HashtagWrapper>
@@ -216,7 +217,25 @@ export default function UploadInfo() {
                 </AddHashtagIconWrapper>
               )}
             </InputWrapper>
-            <HashtagWarningIcon />
+
+            <WarningIcon onMouseEnter={hoverWarningState} onMouseLeave={hoverWarningState}>
+              {warningHoverState ? (
+                <>
+                  <HoverHashtagWarningIc />
+                  <WarningTextWrapper>
+                    <WarningText>
+                      1. 해시태그는 최대 3개까지 추가 가능합니다.
+                      <br />
+                      2. 최대 10자까지 작성이 가능합니다.
+                      <br />
+                      3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                    </WarningText>
+                  </WarningTextWrapper>
+                </>
+              ) : (
+                <HashtagWarningIc />
+              )}
+            </WarningIcon>
           </InputBox>
         </InfoItemBox>
 
@@ -400,12 +419,12 @@ const HashtagSharp = styled.p`
 `;
 
 const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
-  width:${(props) => props.hashtagInputWidth}rem ;
+  width: ${(props) => props.hashtagInputWidth}rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 
-  ::placeholder{
-    color:color: ${({ theme }) => theme.colors.gray3};
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.gray3};
   }
 `;
 
@@ -434,6 +453,25 @@ const InputDescriptionText = styled.textarea`
   }
 `;
 
+const WarningTextWrapper = styled.div`
+  height: 12.5rem;
+  width: 47.2rem;
+
+  position: absolute;
+  top: 47.6rem;
+  left: 41.9rem;
+  background: rgba(30, 32, 37, 0.7);
+  backdrop-filter: blur(3px);
+  border-radius: 5px;
+`;
+
+const WarningText = styled.div`
+  ${({ theme }) => theme.fonts.description};
+  color: ${({ theme }) => theme.colors.gray2};
+
+  margin: 1.9rem 1.8rem 0.4rem 2.9rem;
+`;
+
 // const DropDownMenuContainer = styled.div`
 //   height: 36rem;
 //   width: 13rem;
@@ -445,6 +483,13 @@ const InputDescriptionText = styled.textarea`
 //   backdrop-filter: blur(6.5px);
 //   border-radius: 0.5rem;
 // `;
+
+const WarningIcon = styled.div`
+  height: 3rem;
+  margin-top: 0.7rem;
+  border-radius: 5rem;
+  cursor: pointer;
+`;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
   margin-left: 1.2rem;
@@ -458,10 +503,6 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 const AddHashtagIcon = styled(AddHashtagIc)`
   margin-left: -0.2rem;
   margin-top: 1.3rem;
-`;
-
-const HashtagWarningIcon = styled(HashtagWarningIc)`
-  margin-top: 0.7rem;
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
