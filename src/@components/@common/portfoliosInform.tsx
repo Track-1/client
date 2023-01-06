@@ -96,7 +96,7 @@ const PortfolioInformWrapper=styled.section`
   width: 37.3rem;
   margin-left: 87rem;
 
-  position: absolute;
+  position: fixed;
   top: 0;
 `
 
