@@ -21,32 +21,28 @@ export default function ProducerPortFolioList(props: PropsType) {
     setHoveredIndex(null);
   }
 
-  function clickAudioBox(id: number) {
-    setClickedIndex(id);
-  }
-
   return (
     <ProfileListContainer>
       {portfolioData.map((portfolio, index) => {
         return (
           <PortfolioBox
             key={portfolio.producerPortfolioId}
-            isFocused={index === 0 || clickedIndex === portfolio.producerPortfolioId}
+            isLarge={index === 0 || clickedIndex === portfolio.producerPortfolioId}
             onMouseEnter={() => hoverPortfolio(portfolio.producerPortfolioId)}
             onMouseLeave={hoverOutPortfolio}
             index={index}
-            onClick={() => clickAudioBox(portfolio.producerPortfolioId)}>
+            onClick={() => setClickedIndex(portfolio.producerPortfolioId)}>
             <div>
               <PortfolioImage
                 src={portfolio.jacketImage}
-                isFocused={index === 0 || clickedIndex === portfolio.producerPortfolioId}
+                isLarge={index === 0 || clickedIndex === portfolio.producerPortfolioId}
                 index={index}
               />
             </div>
             {index === 0 && hoveredIndex === portfolio.producerPortfolioId && <PortfolioPlayBtnIcon />}
             {hoveredIndex === portfolio.producerPortfolioId && <PauseBtnIcon />}
-            {hoveredIndex !== portfolio.producerPortfolioId &&
-              index === 0 &&
+            {index === 0 &&
+              hoveredIndex !== portfolio.producerPortfolioId &&
               clickedIndex !== null &&
               clickedIndex !== portfolio.producerPortfolioId && <AudioTitle>{portfolio.title}</AudioTitle>}
             {index !== 0 && <AudioTitle>{portfolio.title}</AudioTitle>}
@@ -68,7 +64,8 @@ const ProfileListContainer = styled.section`
   flex-direction: column;
   align-items: center;
 
-  /* padding-top: 3rem; */
+  margin-left: -16rem;
+  margin-top: 23.3rem;
 
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(to bottom, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
@@ -76,9 +73,9 @@ const ProfileListContainer = styled.section`
   background-clip: content-box, border-box;
 `;
 
-const PortfolioBox = styled.article<{ isFocused: boolean; index: number }>`
-  height: ${({ isFocused }) => (isFocused ? 42 : 21.8)}rem;
-  width: ${({ isFocused }) => (isFocused ? 42 : 21.8)}rem;
+const PortfolioBox = styled.article<{ isLarge: boolean; index: number }>`
+  height: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
+  width: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
   position: relative;
 
   border-radius: 50%;
@@ -93,9 +90,9 @@ const PortfolioBox = styled.article<{ isFocused: boolean; index: number }>`
   }
 `;
 
-const PortfolioImage = styled.img<{ isFocused: boolean; index: number }>`
-  height: ${({ isFocused }) => (isFocused ? 42 : 21.8)}rem;
-  width: ${({ isFocused }) => (isFocused ? 42 : 21.8)}rem;
+const PortfolioImage = styled.img<{ isLarge: boolean; index: number }>`
+  height: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
+  width: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
 
   :hover {
     filter: blur(${({ index }) => index === 0 && 3.5}rem);
