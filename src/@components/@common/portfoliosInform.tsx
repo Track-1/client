@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { PortfolioPropsType } from "../../type/profilePropsType";
-import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc,EllipsisIc} from "../../assets"
+import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc,EllipsisIc,BlankIc,UploadButtonBlankIc} from "../../assets"
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 import { useEffect, useRef, useState } from 'react';
@@ -48,70 +48,65 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   }, [openEllipsisModal]);
 
   return (
-    <>
-    {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
     <PortfolioInformWrapper>
-    {isMe&&<UploadButtonIc onClick={clickUploadButton}/>}
+
+    {isMe?<UploadButtonIcon onClick={clickUploadButton}/>:<UploadButtonBlankIcon/>}
+
     {(portfolioClickInformation&&portfolioInforms)&&(
+      <>
       <InformWrapper>
+      {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
+
       <InformTitleWrapper>
-      {isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
-      {isTitle&&tracksOrVocals==="Vocals"&&<VocalPortfolioTitleTextIc/>}
+      {isTitle&&tracksOrVocals==="Tracks"&&profileState!=="Vocal Searching"&&<ProducerPortfolioTitleTextIc/>}
+      {isTitle&&tracksOrVocals==="Vocals"&&profileState!=="Vocal Searching"&&<VocalPortfolioTitleTextIc/>}
+      {!isTitle&&<BlankIc/>}
       {isMe&&!(!isBool&&hoverId!==-1)&&(
       <>
         <EllipsisIcon onClick={clickEllipsis}/>
         {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef}/>}
         </>
       )}
-
       </InformTitleWrapper>
       <InformTitle>{portfolioInforms.title}</InformTitle>
       <InformCategory>{portfolioInforms.category}</InformCategory>
+      </InformWrapper>
+
       <InformContent>{portfolioInforms.content}</InformContent>
       <InformTagWrapper>
       {portfolioInforms.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
       </InformTagWrapper>
-      </InformWrapper>
+      </>
     )}   
     </PortfolioInformWrapper>
-    </>
   )
 }
 
-const ModalWrapper=styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  
-  position: absolute;
-  left: 105rem;
-  margin-top: 15rem;
-
-  width: 20.1rem;
-
-  ${({ theme }) => theme.fonts.comment}
-  color:${({ theme }) => theme.colors.white};
-  background-color:${({ theme }) => theme.colors.gray4};
-  border-radius: 0.5rem;
+const UploadButtonIcon=styled(UploadButtonIc)`
+  margin-top: 5.9rem;
+  margin-left: 12.65rem;
 `
 
-const ModalBox=styled.div<{underline:boolean}>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 20.1rem;
-  height:5.6rem;
-  padding: 1.1rem 1.9rem;
-  border-bottom:0.1rem solid ${({ underline,theme }) => underline?theme.colors.gray3:theme.colors.gray4};
+const UploadButtonBlankIcon=styled(UploadButtonBlankIc)`
+  margin-top: 5.9rem;
+  margin-left: 12.65rem;
 `
 
 const PortfolioInformWrapper=styled.section`
-  width: 38.1rem;
+  width: 37.3rem;
   margin-left: 87rem;
+
+  position: absolute;
+  top: 0;
 `
 
 const InformWrapper=styled.article`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  height: 40rem;
+  margin-bottom: 2rem;
 `
 
 const InformTitleWrapper=styled.div`
@@ -121,6 +116,8 @@ const InformTitleWrapper=styled.div`
 `
 
 const InformTitle=styled.h1`
+  width: 37.3rem;
+  overflow-wrap: break-word;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
 `
@@ -128,11 +125,15 @@ const InformTitle=styled.h1`
 const InformCategory=styled.p`
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
+
+  margin-top: 0.8rem;
 `
 
 const InformContent=styled.p`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray2};
+
+  margin-bottom: 2.4rem;
 `
 
 const InformTag = styled.span<{textLength:number}>`
