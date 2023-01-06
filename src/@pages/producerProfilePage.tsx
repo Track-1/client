@@ -5,6 +5,7 @@ import { getProducerProfile, getSelectingTracks } from "../core/api/producerProf
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
+import ProducerInfos from "../@components/producerProfile/producerInfos";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
@@ -45,7 +46,7 @@ export default function ProducerProfilePage() {
 
   return (
     <PageContainer>
-      <ProducerProfile />
+      {profileData && <ProducerInfos profileData={profileData} />}
       <GradientBox src={producerGradientImg} />
       <TabContainer>
         <PortfolioTab profileState={profileState} onClick={changeToProfile}>
@@ -64,10 +65,6 @@ export default function ProducerProfilePage() {
 
 const PageContainer = styled.section`
   display: flex;
-`;
-
-const ProducerProfile = styled.section`
-  width: 61rem;
 `;
 
 const GradientBox = styled.img`
