@@ -82,3 +82,6 @@ export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfol
 export { ReactComponent as ProducerPortfolioTitleTextIc } from "./icon/producerPortfolioTitleTextIc.svg";
 export { ReactComponent as UploadButtonIc } from "./icon/uploadButtonIc.svg";
 export { ReactComponent as EllipsisIc } from "./icon/ellipsisIc.svg";
+export { ReactComponent as PencilUpdateIc } from "./icon/pencilUpdateIc.svg";
+export { ReactComponent as TrashDeleteIc } from "./icon/trashDeleteIc.svg";
+export { ReactComponent as SetIsTitleIc } from "./icon/setIsTitleIc.svg";

@@ -3,21 +3,39 @@ import { PortfolioPropsType } from "../../type/profilePropsType";
 import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc,EllipsisIc} from "../../assets"
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
+import { useEffect, useRef, useState } from 'react';
+import PortfolioUpdateModal from "./portfolioUpdateModal";
 
 export default function PortfoliosInform(props:PortfolioPropsType) {
   const isMe=props.isMe;
   const hoverId=props.hoverId;
   const clickId=props.clickId;
   const porftolios=props.portfolios;
+  const profileState=props.profileState;
   const portfolioHoverInformation=porftolios.filter((portfolio) => portfolio.id === hoverId)[0];
   const portfolioClickInformation=porftolios.filter((portfolio) => portfolio.id === clickId)[0];
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
   const isBool=hoverId===clickId?true:false;
   const portfolioInforms=!isBool&&hoverId!==-1?portfolioHoverInformation:portfolioClickInformation
+  const isTitle=portfolioInforms&&portfolioInforms.isTitle
+  const [openModal, setOpenModal]=useState<boolean>(false)
+  const modalRef = useRef<HTMLDivElement>(null);
 
   function clickEllipsis(){
-    console.log("더보기 버튼 클릭")
+    setOpenModal(true)
   }
+
+  useEffect(() => {
+    const clickOutside = (e: any) => {
+      if (openModal && !modalRef.current?.contains(e.target)) {
+        setOpenModal(false);
+      }
+    };
+    document.addEventListener("mousedown", clickOutside);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [openModal]);
 
   return (
     <>
@@ -26,9 +44,15 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
     {(portfolioClickInformation&&portfolioInforms)&&(
       <InformWrapper>
       <InformTitleWrapper>
-      {portfolioInforms.isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
-      {portfolioInforms.isTitle&&tracksOrVocals==="Vocals"&&<VocalPortfolioTitleTextIc/>}
-      {isMe&&isBool&&<EllipsisIc onClick={clickEllipsis}/>}
+      {isTitle&&tracksOrVocals==="Tracks"&&<ProducerPortfolioTitleTextIc/>}
+      {isTitle&&tracksOrVocals==="Vocals"&&<VocalPortfolioTitleTextIc/>}
+      {isMe&&!(!isBool&&hoverId!==-1)&&(
+      <>
+        <EllipsisIcon onClick={clickEllipsis}/>
+        {openModal&&<PortfolioUpdateModal isTitle={isTitle} ref={modalRef}/>}
+        </>
+      )}
+
       </InformTitleWrapper>
       <InformTitle>{portfolioInforms.title}</InformTitle>
       <InformCategory>{portfolioInforms.category}</InformCategory>
@@ -42,6 +66,34 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
     </>
   )
 }
+
+const ModalWrapper=styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  position: absolute;
+  left: 105rem;
+  margin-top: 15rem;
+
+  width: 20.1rem;
+
+  ${({ theme }) => theme.fonts.comment}
+  color:${({ theme }) => theme.colors.white};
+  background-color:${({ theme }) => theme.colors.gray4};
+  border-radius: 0.5rem;
+`
+
+const ModalBox=styled.div<{underline:boolean}>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 20.1rem;
+  height:5.6rem;
+  padding: 1.1rem 1.9rem;
+  border-bottom:0.1rem solid ${({ underline,theme }) => underline?theme.colors.gray3:theme.colors.gray4};
+`
 
 const PortfolioInformWrapper=styled.section`
   width: 38.1rem;
@@ -93,4 +145,8 @@ const InformTagWrapper=styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   column-gap:1rem
+`
+
+const EllipsisIcon=styled(EllipsisIc)`
+  cursor: pointer;
 `

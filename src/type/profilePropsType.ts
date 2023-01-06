@@ -16,4 +16,5 @@ export interface PortfolioPropsType{
     hoverId:number;
     clickId:number;
     portfolios:PortfolioType[];
+    profileState:string;
 }
