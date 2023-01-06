@@ -4,7 +4,7 @@ import { VocalProfileShadowIc } from "../../assets";
 export default function VocalProfileShadow() {
   return (
     <VocalProfileShadowWrapper>
-      <Title>profile</Title>
+      <Title>Portfolio</Title>
       <VocalProfileShadowIcon />
     </VocalProfileShadowWrapper>
   );

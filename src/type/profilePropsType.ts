@@ -1,4 +1,4 @@
-export interface VocalProfilePropsType{
+export interface PortfolioType{
     beatWavFile:string;
     category:string;
     content:string;
@@ -7,7 +7,14 @@ export interface VocalProfilePropsType{
     keyword:string[]
     length:number
     title:string;
-    vocalPortfolioId:number;
+    id:number;
     wavFileLength:number;
   }
   
+export interface PortfolioPropsType{
+    isMe:boolean;
+    hoverId:number;
+    clickId:number;
+    portfolios:PortfolioType[];
+    profileState:string;
+}

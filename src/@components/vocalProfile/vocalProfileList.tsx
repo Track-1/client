@@ -4,16 +4,17 @@ import styled from "styled-components";
 import vocals from "../../mocks/vocalProfileDummy.json";
 import { showPlayerBar, playMusic, selectedId } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
+import PortfoliosInform from '../@common/portfoliosInform';
 import { getVocalProfile }  from "../../core/api/vocalProfile";
-import { VocalProfilePropsType } from "../../type/profilePropsType";
+import { PortfolioType } from "../../type/profilePropsType";
 
 export default function VocalProfileList() {
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
   const [vocalPortfolioClick, setVocalPortfolioClick] = useRecoilState<number>(selectedId);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [vocalProfileData, setVocalProfileData]=useState<VocalProfilePropsType[]>();
-  const [vocalPortfolioCount, setVocalPortfolioCount]=useState<number>(0)
+  const [vocalPortfolioData, setVocalPortfolioData]=useState<PortfolioType[]>();
+  const [isMe, setIsMe]=useState<boolean>(false);
 
   function mouseOverVocalPortfolio(id: number) {
     setVocalPortfolioHover(id);
@@ -35,49 +36,53 @@ export default function VocalProfileList() {
   
   useEffect(()=> {
     getVocalProfile()
-    .then((result) => result && setVocalProfileData(result.data[0].vocalPortfolio))
-    .then((result) => result && vocalProfileData && setVocalPortfolioCount(vocalProfileData.length))
+    .then((res) => {
+      if (res){
+        setVocalPortfolioData(res.data[0].vocalPortfolio)
+        setIsMe(res.data[0].isMe)
+      }
+    })
   },[])
 
-  console.log(vocalProfileData)
+  const vocalPortfolioCount= vocalPortfolioData ? vocalPortfolioData.length:0
 
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
-        {vocalProfileData&&vocalProfileData.map((vocal, idx) => (
+        {vocalPortfolioData&&vocalPortfolioData.map((vocal, idx) => (
           <VocalPortfolio
-            key={vocal.vocalPortfolioId}
-            onMouseEnter={() => mouseOverVocalPortfolio(vocal.vocalPortfolioId)}
+            key={vocal.id}
+            onMouseEnter={() => mouseOverVocalPortfolio(vocal.id)}
             onMouseLeave={mouseOutVocalPortfolio}>
-            {((vocalPortfolioHover === vocal.vocalPortfolioId &&
-              vocalPortfolioClick !== vocal.vocalPortfolioId &&
+            {((vocalPortfolioHover === vocal.id &&
+              vocalPortfolioClick !== vocal.id &&
               vocalPortfolioHover !== -1) ||
               (!play &&
-                vocalPortfolioHover === vocal.vocalPortfolioId &&
-                vocalPortfolioClick === vocal.vocalPortfolioId &&
+                vocalPortfolioHover === vocal.id &&
+                vocalPortfolioClick === vocal.id &&
                 vocalPortfolioHover !== -1)) && (
-              <VocalProfileBlurPauseIcon onClick={() => clickPauseIc(vocal.vocalPortfolioId)} />
+              <VocalProfileBlurPauseIcon onClick={() => clickPauseIc(vocal.id)} />
             )}
             {play &&
-              vocalPortfolioClick === vocal.vocalPortfolioId &&
-              vocalPortfolioHover === vocal.vocalPortfolioId &&
+              vocalPortfolioClick === vocal.id &&
+              vocalPortfolioHover === vocal.id &&
               vocalPortfolioHover !== -1 &&
               vocalPortfolioClick !== -1 && <VocalProfileBlurPlayIcon onClick={clickPlayIc} />}
             <VocalPortfolioTitle>
-              {vocalPortfolioClick !== vocal.vocalPortfolioId &&
-                vocalPortfolioHover !== vocal.vocalPortfolioId &&
+              {vocalPortfolioClick !== vocal.id &&
+                vocalPortfolioHover !== vocal.id &&
                 vocal.title}
             </VocalPortfolioTitle>
-            {vocalPortfolioHover === vocal.vocalPortfolioId && vocalPortfolioHover !== -1 && (
-              <VocalPorfolioBlur idx={idx} vocalPortfolioClickBool={vocalPortfolioClick === vocal.vocalPortfolioId} />
+            {vocalPortfolioHover === vocal.id && vocalPortfolioHover !== -1 && (
+              <VocalPorfolioBlur idx={idx} vocalPortfolioClickBool={vocalPortfolioClick === vocal.id} />
             )}
             <VocalPortfolioImg
               // src={require("../../assets/image/" + vocal.jacketImage + ".png")}
               src={require("../../assets/image/" + "vocalPortfolioList1" + ".png")}
               alt="보컬 포트폴리오이미지"
               idx={idx}
-              vocalPortfolioHoverBool={vocalPortfolioHover === vocal.vocalPortfolioId}
-              vocalPortfolioClickBool={vocalPortfolioClick === vocal.vocalPortfolioId}
+              vocalPortfolioHoverBool={vocalPortfolioHover === vocal.id}
+              vocalPortfolioClickBool={vocalPortfolioClick === vocal.id}
             />
           </VocalPortfolio>
         ))}
@@ -87,6 +92,8 @@ export default function VocalProfileList() {
         <VocalsBoxBody vocalPortfolioCount={vocalPortfolioCount}></VocalsBoxBody>
         <VocalsBoxHead></VocalsBoxHead>
       </VocalsBoxWrapper>
+
+      {vocalPortfolioData&&<PortfoliosInform isMe={isMe} hoverId={vocalPortfolioHover} clickId={vocalPortfolioClick} portfolios={vocalPortfolioData} profileState={"Porfolio"}/>}
     </VocalProfileListWrapper>
   );
 }

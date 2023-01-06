@@ -78,3 +78,15 @@ export { ReactComponent as VocalProfileShadowIc } from "./icon/vocalProfileShado
 export { ReactComponent as VocalProfileListContainerIc } from "./icon/vocalProfileListContainerIc.svg";
 export { ReactComponent as VocalProfileBlurPlayIc } from "./icon/vocalProfileBlurPlayIc.svg";
 export { ReactComponent as VocalProfileBlurPauseIc } from "./icon/vocalProfileBlurPauseIc.svg";
+export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";
+export { ReactComponent as ProducerPortfolioTitleTextIc } from "./icon/producerPortfolioTitleTextIc.svg";
+export { ReactComponent as UploadButtonIc } from "./icon/uploadButtonIc.svg";
+export { ReactComponent as EllipsisIc } from "./icon/ellipsisIc.svg";
+export { ReactComponent as PencilUpdateIc } from "./icon/pencilUpdateIc.svg";
+export { ReactComponent as TrashDeleteIc } from "./icon/trashDeleteIc.svg";
+export { ReactComponent as SetIsTitleIc } from "./icon/setIsTitleIc.svg";
+export { ReactComponent as ProducerVocalSearchingArrowIc } from "./icon/producerVocalSearchingArrowIc.svg";
+export { ReactComponent as ProducerVocalSearchingViewMoreTextIc } from "./icon/producerVocalSearchingViewMoreTextIc.svg";
+export { ReactComponent as ProducerProfileUploadeModalIc } from "./icon/producerProfileUploadeModalIc.svg";
+export { ReactComponent as BlankIc } from "./icon/blankIc.svg";
+export { ReactComponent as UploadButtonBlankIc } from "./icon/uploadButtonBlankIc.svg";
