@@ -14,7 +14,7 @@ export const vocalSearchHandler = [
           keyword: ["잔잔한", "고요한"], //hashtags
           totalCategNum: 8, //categoryNum
           wavFileLength: 210,
-          isSelected: true,
+          isSelected: true, //휴면계정
         },
         {
           vocalId: 2,

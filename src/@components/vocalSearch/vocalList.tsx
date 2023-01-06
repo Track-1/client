@@ -23,15 +23,15 @@ export default function VocalList() {
 
   console.log(vocalData);
 
-  function mouseOverVocal(id: number) {
+  function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
   }
 
-  function mouseOutVocal() {
+  function mouseOutPlayVocal() {
     setHoverVocal(-1);
   }
 
-  function onClickVocal(id: number) {
+  function onClickPlayVocal(id: number) {
     setShowPlayer(true);
     setPlay(true);
     setBeatId(id);
@@ -64,15 +64,15 @@ export default function VocalList() {
             </CategoryTextWrapper>
 
             <MusicProfileWrapper
-              onMouseLeave={mouseOutVocal}
-              onMouseEnter={() => mouseOverVocal(vocal.vocalId)}
+              onMouseLeave={mouseOutPlayVocal}
+              onMouseEnter={() => mouseOverPlayVocal(vocal.vocalId)}
               onClick={() => {
-                onClickVocal(vocal.vocalId);
+                onClickPlayVocal(vocal.vocalId);
                 onClickPauseVocal(vocal.vocalId);
               }}
               showPlayer={showPlayer}
-              hoverVocalBool={hoverVocal === vocal.vocalId}
-              clickVocalBool={clickVocal === vocal.vocalId}
+              isHoverVocal={hoverVocal === vocal.vocalId}
+              isClickVocal={clickVocal === vocal.vocalId}
               clickVocal={clickVocal}>
               <GradientLine>
                 <AlbumCoverImg
@@ -81,13 +81,13 @@ export default function VocalList() {
                 />
               </GradientLine>
               <GradientProfile
-                hoverVocalBool={hoverVocal === vocal.vocalId}
-                clickVocalBool={clickVocal === vocal.vocalId}
+                isHoverVocal={hoverVocal === vocal.vocalId}
+                isClickVocal={clickVocal === vocal.vocalId}
                 clickVocal={clickVocal}></GradientProfile>
               {play && clickVocal === vocal.vocalId && clickVocal !== -1 && (
                 <VocalHoverPauseIcon
-                  hoverVocalBool={hoverVocal === vocal.vocalId}
-                  clickVocalBool={clickVocal === vocal.vocalId}
+                  isHoverVocal={hoverVocal === vocal.vocalId}
+                  isClickVocal={clickVocal === vocal.vocalId}
                   clickVocal={clickVocal}
                 />
               )}
@@ -185,7 +185,7 @@ const AlbumCoverImg = styled.img`
   position: relative;
 `;
 
-const GradientProfile = styled.div<{ hoverVocalBool: boolean; clickVocalBool: boolean; clickVocal: number }>`
+const GradientProfile = styled.div<{ isHoverVocal: boolean; isClickVocal: boolean; clickVocal: number }>`
   position: absolute;
 
   width: 23.4rem;
@@ -199,8 +199,8 @@ const GradientProfile = styled.div<{ hoverVocalBool: boolean; clickVocalBool: bo
   background: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.sub3} 15.32%,
-    ${({ hoverVocalBool, clickVocalBool, clickVocal }) =>
-      hoverVocalBool || (clickVocalBool && clickVocal !== -1)
+    ${({ isHoverVocal, isClickVocal, clickVocal }) =>
+      isHoverVocal || (isClickVocal && clickVocal !== -1)
         ? " rgba(13, 14, 17, 0.7) 53.49%"
         : " rgba(13, 14, 17, 0) 53.49%"},
     ${({ theme }) => theme.colors.sub3} 92.93%
@@ -208,12 +208,12 @@ const GradientProfile = styled.div<{ hoverVocalBool: boolean; clickVocalBool: bo
 `;
 
 const VocalHoverPauseIcon = styled(VocalHoverPauseIc)<{
-  hoverVocalBool: boolean;
-  clickVocalBool: boolean;
+  isHoverVocal: boolean;
+  isClickVocal: boolean;
   clickVocal: number;
 }>`
-  display: ${({ hoverVocalBool, clickVocalBool, clickVocal }) =>
-    hoverVocalBool || (clickVocalBool && clickVocal !== -1) ? "" : "none"};
+  display: ${({ isHoverVocal, isClickVocal, clickVocal }) =>
+    isHoverVocal || (isClickVocal && clickVocal !== -1) ? "" : "none"};
   position: absolute;
 
   top: 0;
@@ -238,8 +238,8 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
 `;
 
 const MusicProfileWrapper = styled.div<{
-  hoverVocalBool: boolean;
-  clickVocalBool: boolean;
+  isHoverVocal: boolean;
+  isClickVocal: boolean;
   clickVocal: number;
   showPlayer: boolean;
 }>`
@@ -260,8 +260,8 @@ const MusicProfileWrapper = styled.div<{
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to top,
-      ${({ hoverVocalBool, clickVocalBool, clickVocal, theme }) =>
-          (hoverVocalBool || (clickVocalBool && clickVocal !== -1)) && theme.colors.sub2}
+      ${({ isHoverVocal, isClickVocal, clickVocal, theme }) =>
+          (isHoverVocal || (isClickVocal && clickVocal !== -1)) && theme.colors.sub2}
         0%,
       ${({ theme }) => theme.colors.sub3} 50%,
       ${({ theme }) => theme.colors.sub3} 100%
