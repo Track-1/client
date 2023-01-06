@@ -49,7 +49,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
 
   return (
     <PortfolioInformWrapper>
-
+      {/* 나인 경우 업로드 버튼이 떠요 */}
     {isMe?<UploadButtonIcon onClick={clickUploadButton}/>:<UploadButtonBlankIcon/>}
 
     {(portfolioInforms)&&(
@@ -58,9 +58,11 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
 
       <InformTitleWrapper>
+        {/* 누른 곡이 타이틀곡인 경우, 색깔이 다른 타이틀 아이콘이 뜹니다. 프로듀서 프로핑-보컬서칭의 경우는 타이틀곡이 아예 존재하지 않아요 */}
       {isTitle&&tracksOrVocals==="Tracks"&&profileState!=="Vocal Searching"&&<ProducerPortfolioTitleTextIc/>}
       {isTitle&&tracksOrVocals==="Vocals"&&profileState!=="Vocal Searching"&&<VocalPortfolioTitleTextIc/>}
       {!isTitle&&<BlankIc/>}
+      {/* 나인 경우는 더보기 버튼이 떠요, 더보기 버튼은 모달 컴포넌트로 따로 구현했어요. */}
       {isMe&&!(!isBool&&hoverId!==-1)&&(
       <>
         {profileState!=="Vocal Searching"&&<EllipsisIcon onClick={clickEllipsis}/>}
