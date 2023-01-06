@@ -10,6 +10,7 @@ export default function Player(props: any) {
   const { audio, playAudio, pauseAudio, progress } = props;
   const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
+
   const playBar = useRef<HTMLDivElement>(null);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -21,9 +22,11 @@ export default function Player(props: any) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
+
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
+
 
   function quitAudio() {
     audio.pause();
@@ -31,6 +34,7 @@ export default function Player(props: any) {
 
     setPlay(false);
     setShowPlayer(false);
+
   }
 
   function controlAudio(e: React.MouseEvent<HTMLDivElement>) {
@@ -60,6 +64,7 @@ export default function Player(props: any) {
     <PlayerContainer>
       <PlayerWrapper onClick={controlAudio} onMouseDown={downMouse} onMouseUp={upMouse} onMouseMove={moveAudio}>
         <PlayerBarWrapper ref={playBar}>
+
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} />
         </PlayerBarWrapper>
 
@@ -141,6 +146,7 @@ const Thumbnail = styled.img`
 
   margin-left: 34rem;
   margin-right: 3.069rem;
+
 
   border-radius: 5rem;
 `;
