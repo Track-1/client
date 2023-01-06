@@ -75,3 +75,4 @@ export { ReactComponent as AddCommentIc } from "./icon/addCommentIc.svg";
 export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIC.svg";
 export { ReactComponent as PlayBtnIc } from "./icon/playBtnIc.svg";
 export { ReactComponent as PortfolioPlayBtnIc } from "./icon/portfolioPlayBtnIc.svg";
+export { ReactComponent as RightArrorIc } from "./icon/rightArrorIc.svg";
