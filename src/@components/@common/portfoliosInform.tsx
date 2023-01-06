@@ -65,7 +65,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       {!isTitle&&<BlankIc/>}
       {isMe&&!(!isBool&&hoverId!==-1)&&(
       <>
-        <EllipsisIcon onClick={clickEllipsis}/>
+        {profileState!=="Vocal Searching"&&<EllipsisIcon onClick={clickEllipsis}/>}
         {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef}/>}
         </>
       )}
@@ -120,6 +120,8 @@ const InformTitleWrapper=styled.div`
 const InformTitle=styled.h1`
   width: 37.3rem;
   overflow-wrap: break-word;
+
+  margin-top: 1.7rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
 `
