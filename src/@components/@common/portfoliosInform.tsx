@@ -26,8 +26,6 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate=useNavigate()
 
-  console.log(openEllipsisModal)
-
   function clickEllipsis(){
     setOpenEllipsisModal(true)
   }
