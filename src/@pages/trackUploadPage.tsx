@@ -5,6 +5,7 @@ export default function TrackUploadPage() {
   return (
     <>
       <UploadHeader />
+      <UploadInfo></UploadInfo>
     </>
   );
 }
