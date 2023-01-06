@@ -14,33 +14,39 @@ import {
 
 export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
-  const enteredHashtag = useRef<HTMLInputElement>(null);
+  let enteredHashtag = useRef<HTMLInputElement | null>(null);
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
   const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(8.827);
-
-  const [hashtagInputCount, setHashtagInputCount] = useState<number>(0);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
 
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
   const [hashtags, setHashtags] = useState<Array<string>>([]);
 
-  const completeHashtag = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
-        const value = enteredHashtag.current!.value;
-        if (hashtags.includes(value)) {
-          alert("중복된 해시태그 입니다!");
-        } else {
-          setHashtags([...hashtags, value]);
-        }
-      }
-    },
-    [hashtags],
-  );
+  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
+      addHastag();
+    }
+  }
+
+  function test(e: React.MouseEvent<HTMLInputElement>) {
+    console.dir(e.target);
+  }
+
+  function addHastag() {
+    const value = enteredHashtag.current!.value;
+    if (hashtags.includes(value)) {
+      alert("중복된 해시태그 입니다!");
+    } else {
+      setHashtags([...hashtags, value]);
+    }
+    setHashtagInputWidth(8.827);
+    enteredHashtag.current!.value = "";
+    // console.log(enteredHashtag.current!.value);
+  }
 
   function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
     e.type === "focus"
@@ -50,9 +56,8 @@ export default function UploadInfo() {
       : setTitleHoverState(true);
   }
 
-  function addHashtagInput(e: React.MouseEvent<HTMLImageElement>) {
-    if (hashtagInputCount === 2) return;
-    setHashtagInputCount((prev) => (prev += 1));
+  function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
+    if (hashtags.length < 3) addHastag();
   }
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -85,20 +90,19 @@ export default function UploadInfo() {
 
   //존나빠르게 치면 이슈생김...
   useEffect(() => {
-    if (enteredHashtag.current!.value.length > 0) {
-      if (enteredHashtag && enteredHashtag.current) {
-        enteredHashtag.current.style.width = "0rem";
-        const inputWidth = enteredHashtag.current.scrollWidth;
-        console.log(inputWidth);
-        enteredHashtag.current.style.width = inputWidth / 10 + "rem";
-        setHashtagInputWidth(inputWidth);
+    if (hashtags.length < 3) {
+      if (enteredHashtag.current!.value.length > 0) {
+        if (enteredHashtag && enteredHashtag.current) {
+          enteredHashtag.current.style.width = "0rem";
+          const inputWidth = enteredHashtag.current.scrollWidth;
+          enteredHashtag.current.style.width = inputWidth / 10 + "rem";
+          setHashtagInputWidth(inputWidth);
+        }
+      } else {
+        enteredHashtag.current!.style.width = "8.827rem";
+        setHashtagInputWidth(8.827);
       }
-    } else {
-      enteredHashtag.current!.style.width = "8.827rem";
-      setHashtagInputWidth(8.827);
-      console.log("hlelo");
     }
-    console.log(hashtagInputWidth);
   }, [hashtagInputWidth]);
 
   return (
@@ -157,7 +161,7 @@ export default function UploadInfo() {
             <InputWrapper>
               {hashtags.length > 0 ? (
                 <>
-                  {hashtags.map((item: string, idx) => {
+                  {hashtags.map((item: string, idx: number) => {
                     return (
                       <InputHashtagWrapper>
                         <Hashtag key={idx}>
@@ -169,6 +173,25 @@ export default function UploadInfo() {
                       </InputHashtagWrapper>
                     );
                   })}
+                  {hashtags.length < 3 && (
+                    <InputHashtagWrapper>
+                      <Hashtag>
+                        <HashtagWrapper>
+                          <HashtagSharp># </HashtagSharp>
+                          <HashtagInput
+                            placeholder="Hashtag"
+                            defaultValue=""
+                            onKeyDown={completeHashtag}
+                            onChange={changeHashtagText}
+                            hashtagInputWidth={hashtagInputWidth}
+                            maxLength={10}
+                            onClick={test}
+                            ref={enteredHashtag}
+                          />
+                        </HashtagWrapper>
+                      </Hashtag>
+                    </InputHashtagWrapper>
+                  )}
                 </>
               ) : (
                 <InputHashtagWrapper>
@@ -187,7 +210,7 @@ export default function UploadInfo() {
                   </Hashtag>
                 </InputHashtagWrapper>
               )}
-              {hashtagLength > 0 && (
+              {hashtagLength > 0 && hashtags.length < 2 && (
                 <AddHashtagIconWrapper onClick={addHashtagInput}>
                   <AddHashtagIcon />
                 </AddHashtagIconWrapper>
