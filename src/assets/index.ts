@@ -85,3 +85,5 @@ export { ReactComponent as EllipsisIc } from "./icon/ellipsisIc.svg";
 export { ReactComponent as PencilUpdateIc } from "./icon/pencilUpdateIc.svg";
 export { ReactComponent as TrashDeleteIc } from "./icon/trashDeleteIc.svg";
 export { ReactComponent as SetIsTitleIc } from "./icon/setIsTitleIc.svg";
+export { ReactComponent as ProducerVocalSearchingArrowIc } from "./icon/producerVocalSearchingArrowIc.svg";
+export { ReactComponent as ProducerVocalSearchingViewMoreTextIc } from "./icon/producerVocalSearchingViewMoreTextIc.svg";

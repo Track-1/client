@@ -6,7 +6,7 @@ interface IsTitlePropsType{
     ref: React.RefObject<HTMLDivElement>;
 }
 
-export default function portfolioUpdateModal(props:IsTitlePropsType): JSX.Element {
+export default function PortfolioUpdateModal(props:IsTitlePropsType): JSX.Element {
     const isTitle=props.isTitle
   return (
     <ModalWrapper>

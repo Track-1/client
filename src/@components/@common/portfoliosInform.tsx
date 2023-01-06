@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 import { useEffect, useRef, useState } from 'react';
 import PortfolioUpdateModal from "./portfolioUpdateModal";
+import PortfoiloViewMoreButton from "./portfoiloViewMoreButton"
 
 export default function PortfoliosInform(props:PortfolioPropsType) {
   const isMe=props.isMe;
@@ -39,6 +40,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
 
   return (
     <>
+    <PortfoiloViewMoreButton/>
     <PortfolioInformWrapper>
     {isMe&&<UploadButtonIc/>}
     {(portfolioClickInformation&&portfolioInforms)&&(
