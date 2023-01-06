@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { VocalSleepIc, VocalNonSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
+import { VocalSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
 import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
 import { getVocalsData } from "../../core/api/vocalSearch";
 import { VocalSearchType } from "../../type/vocalSearchType";
@@ -55,8 +55,7 @@ export default function VocalList() {
           <VocalContainer key={vocal.vocalId}>
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
-              <VocalSleepIcon />
-              <VocalNonSleepIcon />
+              {vocal.isSelected && <VocalSleepIcon />}
             </UsernameInformWrapper>
 
             <CategoryTextWrapper>
@@ -155,10 +154,6 @@ const VocalSleepIcon = styled(VocalSleepIc)`
   position: absolute;
 
   right: 6.2rem;
-`;
-
-const VocalNonSleepIcon = styled(VocalNonSleepIc)`
-  display: none;
 `;
 
 const CategoryTextWrapper = styled.div``;
