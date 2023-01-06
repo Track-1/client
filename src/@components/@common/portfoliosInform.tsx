@@ -6,6 +6,8 @@ import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 import { useEffect, useRef, useState } from 'react';
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton"
+import { useNavigate } from 'react-router-dom';
+import TracksProfileUploadModal from "./tracksProfileUploadModal";
 
 export default function PortfoliosInform(props:PortfolioPropsType) {
   const isMe=props.isMe;
@@ -19,30 +21,37 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const isBool=hoverId===clickId?true:false;
   const portfolioInforms=!isBool&&hoverId!==-1?portfolioHoverInformation:portfolioClickInformation
   const isTitle=portfolioInforms&&portfolioInforms.isTitle
-  const [openModal, setOpenModal]=useState<boolean>(false)
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [openEllipsisModal, setOpenEllipsisModal]=useState<boolean>(false)
+  const [openUploadModal, setOpenUploadModal]=useState<boolean>(true)
+  const ellipsisModalRef = useRef<HTMLDivElement>(null);
+  const navigate=useNavigate()
 
   function clickEllipsis(){
-    setOpenModal(true)
+    setOpenEllipsisModal(true)
+  }
+
+  function clickUploadButton(){
+    tracksOrVocals==="Tracks"&&setOpenUploadModal(true)
+    tracksOrVocals==="Vocals"&&navigate('/upload-vocal')
   }
 
   useEffect(() => {
     const clickOutside = (e: any) => {
-      if (openModal && !modalRef.current?.contains(e.target)) {
-        setOpenModal(false);
+      if (openEllipsisModal && !ellipsisModalRef.current?.contains(e.target)) {
+        setOpenEllipsisModal(false);
       }
     };
     document.addEventListener("mousedown", clickOutside);
     return () => {
       document.removeEventListener("mousedown", clickOutside);
     };
-  }, [openModal]);
+  }, [openEllipsisModal]);
 
   return (
     <>
     {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
     <PortfolioInformWrapper>
-    {isMe&&<UploadButtonIc/>}
+    {isMe&&<UploadButtonIc onClick={clickUploadButton}/>}
     {(portfolioClickInformation&&portfolioInforms)&&(
       <InformWrapper>
       <InformTitleWrapper>
@@ -51,7 +60,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       {isMe&&!(!isBool&&hoverId!==-1)&&(
       <>
         <EllipsisIcon onClick={clickEllipsis}/>
-        {openModal&&<PortfolioUpdateModal isTitle={isTitle} ref={modalRef}/>}
+        {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef}/>}
         </>
       )}
 
