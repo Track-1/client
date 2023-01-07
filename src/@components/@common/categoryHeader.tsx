@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Category } from "../../core/common/categoryHeader";
 
 import {
   ToggleIc,
@@ -15,29 +16,33 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
-  const [tracksOrVocals, setTracksOrVocals] = useRecoilState<string>(tracksOrVocalsCheck);
+  const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
 
   function clickTracksButton() {
-    setTracksOrVocals("Tracks");
+    setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
   }
 
   function clickVocalsButton() {
-    setTracksOrVocals("Vocals");
+    setTracksOrVocals(Category.VOCALS);
     navigate("/vocals");
+  }
+
+  function moveMainPage() {
+    navigate("/");
   }
 
   return (
     <CategoryHeaderContainer>
       <CategoryContainer>
         <CategoryWrapper>
-          {tracksOrVocals === "Tracks" && (
+          {tracksOrVocals === Category.TRACKS && (
             <>
               <TracksSelectTextIcon onClick={clickTracksButton} />
               <VocalsHeaderTextIcon onClick={clickVocalsButton} />
             </>
           )}
-          {tracksOrVocals === "Vocals" && (
+          {tracksOrVocals === Category.VOCALS && (
             <>
               <TracksHeaderTextIcon onClick={clickTracksButton} />
               <VocalsSelectTextIcon onClick={clickVocalsButton} />
@@ -48,7 +53,7 @@ export default function CategoryHeader() {
 
       <HeaderContainer>
         <HeaderWrapper>
-          <TrackOneIcon />
+          <TrackOneIcon onClick={moveMainPage} />
           <ProfileWrapper>
             <ProfileImg src={profileImg} alt="프로필이미지" />
             <ToggleIc />
@@ -60,13 +65,12 @@ export default function CategoryHeader() {
 }
 
 const CategoryHeaderContainer = styled.header`
-  position: fixed;
+  position: sticky;
+  top: 0;
   z-index: 10;
 
   width: 192rem;
   height: 14.3rem;
-
-  /* padding-left: 5.8rem; */
 
   background: linear-gradient(
     180deg,

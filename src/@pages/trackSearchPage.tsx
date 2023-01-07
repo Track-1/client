@@ -6,32 +6,73 @@ import TrackListHeader from "../@components/trackSearch/trackListHeader";
 import TrackList from "../@components/trackSearch/trackList";
 import Player from "../@components/@common/player";
 
-import { showPlayerBar } from "../recoil/player";
+
+import { showPlayerBar, playMusic, currentAudioTime } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
+import { Category } from "../core/common/categoryHeader";
+import { useState, useEffect, useMemo } from "react";
+
+import ditto from "../assets/audio/ditto.mp3";
 
 export default function TrackSearchPage() {
+  const audio = useMemo(() => new Audio(ditto), [ditto]);
+
+  const [progress, setProgress] = useState<number>(0);
+
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [currentTime, setCurrentTime] = useRecoilState<number>(currentAudioTime);
 
-  setWhom("Tracks"); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
+  useEffect(() => {
+    setWhom(Category.TRACKS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
+  }, []);
 
-  console.log(showPlayer);
+  function playAudio() {
+    console.log("00", audio.currentTime);
+    audio.play();
+    setPlay(true);
+  }
+
+  useEffect(() => {
+    if (play) {
+      audio.addEventListener("timeupdate", () => {
+        goProgress();
+      });
+    } else {
+      audio.removeEventListener("timeupdate", () => {
+        goProgress();
+      });
+    }
+  }, [audio]);
+
+  function pauseAudio() {
+    console.log(audio.currentTime);
+    audio.pause();
+    setPlay(false);
+  }
+
+  function goProgress() {
+    const currentDuration = (audio.currentTime / audio.duration) * 100;
+
+    setProgress(currentDuration);
+  }
+
   return (
     <>
       <CategoryHeader />
-      {showPlayer && <Player />}
-
       <TrackSearchPageWrapper>
         <CategoryListWrapper>
           <CategoryList />
         </CategoryListWrapper>
         <TrackListWrapper>
           <TrackListHeader />
-          <TrackList />
+          <TrackList audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} />
         </TrackListWrapper>
       </TrackSearchPageWrapper>
+      {showPlayer && <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} />}
     </>
   );
 }

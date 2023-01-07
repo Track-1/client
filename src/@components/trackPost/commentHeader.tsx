@@ -1,0 +1,56 @@
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import { ToggleIc, Track1Ic } from "../../assets";
+import profileImg from "../../assets/image/profileImg.png";
+
+export default function CommentHeader() {
+  const navigate = useNavigate();
+
+  function moveMainPage() {
+    navigate("/");
+  }
+
+  return (
+    <CategoryHeaderContainer>
+      <HeaderContainer>
+        <HeaderWrapper>
+          <TrackOneIcon onClick={moveMainPage} />
+        </HeaderWrapper>
+      </HeaderContainer>
+    </CategoryHeaderContainer>
+  );
+}
+
+const CategoryHeaderContainer = styled.header`
+  /* position: absolute; */
+  top: 0;
+
+  width: 192rem;
+  height: 14.3rem;
+
+  background: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.colors.sub3} 49.92%,
+    rgba(0, 0, 0, 0) 105.16%,
+    rgba(13, 14, 17, 0) 105.16%
+  );
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
+  height: 14.3rem;
+`;
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  width: 178.7rem;
+`;
+
+const TrackOneIcon = styled(Track1Ic)`
+  margin-top: 4.1rem;
+`;

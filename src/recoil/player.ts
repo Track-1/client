@@ -19,3 +19,8 @@ export const selectedId = atom({
   key: "selectedId",
   default: -1,
 });
+
+export const currentAudioTime = atom({
+  key: "currentAudioTime",
+  default: 0,
+});

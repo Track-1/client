@@ -10,18 +10,37 @@ import {
   ClosedWithXIc,
   OpenedIc,
   EditBtnIc,
+  SmallPlayBtnIc,
+  CommentBtnIc,
 } from "../assets";
 import profileDummyImg from "../assets/image/profileDummyImg.png";
 import playImg from "../assets/image/playImg.png";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
+import CategoryHeader from "../@components/@common/categoryHeader";
+import { useRecoilState } from "recoil";
+import { playMusic, showPlayerBar } from "../recoil/player";
+import Player from "../@components/@common/player";
+import ditto from "../assets/audio/ditto.mp3";
+import UserComment from "../@components/trackPost/userComment";
+import CommentHeader from "../@components/trackPost/commentHeader";
+import { useNavigate } from "react-router-dom";
 
 export default function TrackPostPage() {
+  const audio = useMemo(() => new Audio(ditto), [ditto]);
+
+  const navigate = useNavigate();
+
   const [isMe, setIsMe] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useState<boolean>(true);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
+
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
@@ -34,53 +53,104 @@ export default function TrackPostPage() {
     setIsEditOpen(false);
   }
 
-  return (
-    <PostSection>
-      <TitleContainer>
-        <BackButton />
-        <AudioTitle>ABCDFKGHIJKL</AudioTitle>
-        <ProducerBox>
-          <ProducerProfile src={profileDummyImg}></ProducerProfile>
-          <NickName>newjeans_</NickName>
-        </ProducerBox>
-        <ButtonWrapper>
-          {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
+  function playAudio() {
+    console.log("00", audio.currentTime);
+    audio.play();
+    setPlay(true);
+    setShowPlayer(true);
 
-          {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
-          <PauseBtnIc />
-          {isMe && <EditBtnIcon onClick={setEditDropDown} />}
-        </ButtonWrapper>
-        {isEditOpen && <EditDropDown />}
-      </TitleContainer>
-      <InfoContainer>
-        <PlayImageWrapper>
-          <PlayerImage src={playImg} alt="재생 이미지" />
-        </PlayImageWrapper>
-        <DescriptionContainer>
-          <CategoryBox>
-            <CategoryIcon />
-            Rock
-          </CategoryBox>
-          <HashTagBox>
-            <HashTagIcon />
-            <TagWrapper>
-              <HashTag text="#ABCDEFG" />
-              <HashTag text="#ABCDEFG" />
-              <HashTag text="#ABCDEFG" />
-            </TagWrapper>
-          </HashTagBox>
-          <DescriptionBox>
-            <DescriptionIcon />
-            <TextBox>
-              이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-              곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
-              어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-              곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다
-            </TextBox>
-          </DescriptionBox>
-        </DescriptionContainer>
-      </InfoContainer>
-    </PostSection>
+    audio.addEventListener("timeupdate", () => {
+      goProgress();
+    });
+  }
+
+  function pauseAudio() {
+    console.log(audio.currentTime);
+    audio.pause();
+    setPlay(false);
+
+    audio.removeEventListener("timeupdate", () => {
+      goProgress();
+    });
+  }
+
+  function goProgress() {
+    const currentDuration = (audio.currentTime / audio.duration) * 100;
+
+    setProgress(currentDuration);
+  }
+
+  function openComment() {
+    setIsCommentOpen(true);
+  }
+
+  function closeComment() {
+    setIsCommentOpen(false);
+  }
+
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      {isCommentOpen && <UserComment closeComment={closeComment} />}
+      {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
+
+      <>
+        <PostSection>
+          <TitleContainer>
+            <BackButtonWrapper onClick={movePreviousPage}>
+              <BackButton />
+            </BackButtonWrapper>
+            <AudioTitle>ABCDFKGHIJKL</AudioTitle>
+            <ProducerBox>
+              <ProducerProfile src={profileDummyImg}></ProducerProfile>
+              <NickName>newjeans_</NickName>
+            </ProducerBox>
+            <ButtonWrapper>
+              {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
+              {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+              {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+
+              {isMe && <EditBtnIcon onClick={setEditDropDown} />}
+            </ButtonWrapper>
+            {isEditOpen && <EditDropDown />}
+          </TitleContainer>
+          <InfoContainer>
+            <PlayImageWrapper>
+              <PlayerImage src={playImg} alt="재생 이미지" />
+            </PlayImageWrapper>
+            <DescriptionContainer>
+              <CategoryBox>
+                <CategoryIcon />
+                Rock
+              </CategoryBox>
+              <HashTagBox>
+                <HashTagIcon />
+                <TagWrapper>
+                  <HashTag text="#ABCDEFG" />
+                  <HashTag text="#ABCDEFG" />
+                  <HashTag text="#ABCDEFG" />
+                </TagWrapper>
+              </HashTagBox>
+              <DescriptionBox>
+                <DescriptionIcon />
+                <TextBox>
+                  이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
+                  어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
+                  곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
+                  어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
+                  곡입니다
+                </TextBox>
+              </DescriptionBox>
+            </DescriptionContainer>
+          </InfoContainer>
+        </PostSection>
+      </>
+      <CommentBtnIcon onClick={openComment} />
+      {showPlayer && <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} />}
+    </>
   );
 }
 
@@ -94,6 +164,8 @@ const TitleContainer = styled.section`
   display: flex;
   flex-direction: column;
 `;
+
+const BackButtonWrapper = styled.div``;
 
 const AudioTitle = styled.h1`
   width: 47rem;
@@ -188,7 +260,7 @@ const PlayImageWrapper = styled.div`
   height: 60.4rem;
   width: 60.4rem;
 
-  border-radius: 60rem;
+  border-radius: 50%;
 
   margin-left: 3.6rem;
 
@@ -253,4 +325,11 @@ const TextBox = styled.div`
   font-family: "pretended";
 
   color: ${({ theme }) => theme.colors.gray2};
+`;
+
+const CommentBtnIcon = styled(CommentBtnIc)`
+  margin-top: 4.7rem;
+  margin-right: 7.5rem;
+
+  float: right;
 `;

@@ -1,0 +1,163 @@
+[
+  {
+    "id": 1,
+    "imgSrc": "albumCoverImg",
+    "producer": "Seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "Hi", "SOPT"]
+  },
+  {
+    "id": 2,
+    "imgSrc": "albumCoverImg",
+    "producer": "UJaeSeok__",
+    "category": "R&B",
+    "categoryNum": "5",
+    "hashtags": ["Hi", "Imseoyong", "kkk"]
+  },
+  {
+    "id": 3,
+    "imgSrc": "albumCoverImg",
+    "producer": "Seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "3",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 4,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Rock",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK"]
+  },
+  {
+    "id": 5,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 6,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Jazz",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 7,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 8,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Funk",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 9,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "EDM",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 10,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+
+  {
+    "id": 11,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "R&B",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 12,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Ballad",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 13,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Pop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 14,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Rock",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 15,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "EDM",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 16,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Jazz",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 17,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "House",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 18,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Funk",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 19,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  },
+  {
+    "id": 20,
+    "imgSrc": "albumCoverImg",
+    "producer": "seoyounging__",
+    "category": "Hiphop",
+    "categoryNum": "8",
+    "hashtags": ["ABCDEFGHJK", "ABCDEFGHJK", "ABCDEFGHJK"]
+  }
+]

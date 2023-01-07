@@ -9,16 +9,20 @@ import {
   HoverPlayIc,
 } from "../../assets";
 import tracks from "../../mocks/tracksListDummy.json";
-import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
+import { showPlayerBar, playMusic, trackClicked, selectedId, currentAudioTime } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 
-export default function TrackList() {
+export default function TrackList(props: any) {
+  const { audio, playAudio, pauseAudio } = props;
+
   const [trackHover, setTrackHover] = useState<number>(-1);
+
   const [trackClick, setTrackClick] = useRecoilState<number>(trackClicked);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [beatId, setBeatId] = useRecoilState<number>(selectedId);
+  const [currentTime, setCurrentTime] = useRecoilState<number>(currentAudioTime);
 
   const navigate = useNavigate();
 
@@ -30,23 +34,33 @@ export default function TrackList() {
     setTrackHover(-1);
   }
 
-  function clickThumbnailPauseIc(id: number) {
-    setShowPlayer(true);
+
+  function playAudioOnTrack(id: number) {
+    playAudio();
+
     setPlay(true);
+
+    setShowPlayer(true);
     setBeatId(id);
     setTrackClick(id);
   }
 
-  function clickThumbnailPlayIc() {
+  function pauseAudioOnTrack() {
+    pauseAudio();
+
     setPlay(false);
   }
 
-  function clickTitle(id: number) {
+  function movePostPage(id: number) {
+    pauseAudio();
+
+    setPlay(false);
     setBeatId(id);
+
     navigate("/track-post");
   }
 
-  function clickProducerName(id: number) {
+  function moveProducerProfilePage(id: number) {
     navigate("/producer-profile", { state: id });
   }
 
@@ -72,16 +86,15 @@ export default function TrackList() {
             <TrackBox>
               {((trackClick !== track.beatId && trackHover === track.beatId && trackHover !== -1) ||
                 (!play && trackClick === track.beatId && trackClick !== -1)) && (
-                <HoverPauseIcon onClick={() => clickThumbnailPauseIc(track.beatId)} />
+
+                <HoverPauseIcon onClick={() => playAudioOnTrack(track.beatId)} />
               )}
-              {play && trackClick === track.beatId && trackClick !== -1 && (
-                <HoverPlayIcon onClick={clickThumbnailPlayIc} />
-              )}
+              {play && trackClick === track.beatId && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
               <Thumbnail src={require("../../assets/image/" + track.jacketImage + ".png")} alt="썸네일" />
-              <TrackText width={36.8} onClick={() => clickTitle(track.beatId)}>
+              <TrackText width={36.8} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} onClick={() => clickProducerName(track.producerId)}>
+              <TrackText width={21.3} onClick={() => moveProducerProfilePage(track.producerId)}>
                 {track.producerName}
               </TrackText>
               <TrackText width={20.5}>{track.category}</TrackText>

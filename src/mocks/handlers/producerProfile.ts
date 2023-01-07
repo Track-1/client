@@ -1,4 +1,6 @@
 import { rest } from "msw";
+import portFolioImg from "../../assets/image/portFolioImg.png";
+import ditto from "../../assets/audio/ditto.mp3";
 
 export const producerProfileHandler = [
   rest.get("/profile/producer/:producerId", async (req, res, ctx) => {
@@ -6,9 +8,9 @@ export const producerProfileHandler = [
       ctx.status(200),
       ctx.json([
         {
-          isMe: true,
+          isMe: false,
           producerProfile: {
-            profileImage: "AWS S3 이미지 파일",
+            profileImage: portFolioImg,
             name: "프로듀서1",
             contact: "010-1234-5678",
             category: ["r&b", "hiphop"],
@@ -17,9 +19,9 @@ export const producerProfileHandler = [
           },
           producerPortfolio: [
             {
-              id: 1,
-              jacketImage: "AWS S3 image url1",
-              beatWavFile: "AWS S3 beat wav file url1",
+              producerPortfolioId: 1,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
               title: "제목1",
               content: "내용",
               keyword: ["신나는", "힙한"],
@@ -28,9 +30,75 @@ export const producerProfileHandler = [
               isTitle: true,
             },
             {
-              id: 6,
-              jacketImage: "AWS S3 image url1",
-              beatWavFile: "AWS S3 beat wav file url1",
+              producerPortfolioId: 2,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
+              title: "제목1",
+              content: "내용",
+              keyword: ["신나는", "힙한"],
+              category: "pop",
+              wavFileLength: 210,
+              isTitle: false,
+            },
+            {
+              producerPortfolioId: 3,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
+              title: "제목1",
+              content: "내용",
+              keyword: ["신나는", "힙한"],
+              category: "hiphop",
+              wavFileLength: 210,
+              isTitle: true,
+            },
+            {
+              producerPortfolioId: 4,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
+              title: "제목1",
+              content: "내용",
+              keyword: ["신나는", "힙한"],
+              category: "pop",
+              wavFileLength: 210,
+              isTitle: false,
+            },
+            {
+              producerPortfolioId: 5,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
+              title: "제목1",
+              content: "내용",
+              keyword: ["신나는", "힙한"],
+              category: "hiphop",
+              wavFileLength: 210,
+              isTitle: true,
+            },
+            {
+              producerPortfolioId: 6,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
+              title: "제목1",
+              content: "내용",
+              keyword: ["신나는", "힙한"],
+              category: "pop",
+              wavFileLength: 210,
+              isTitle: false,
+            },
+            {
+              producerPortfolioId: 7,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
+              title: "제목1",
+              content: "내용",
+              keyword: ["신나는", "힙한"],
+              category: "hiphop",
+              wavFileLength: 210,
+              isTitle: true,
+            },
+            {
+              producerPortfolioId: 8,
+              jacketImage: portFolioImg,
+              beatWavFile: ditto,
               title: "제목1",
               content: "내용",
               keyword: ["신나는", "힙한"],

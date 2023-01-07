@@ -1,112 +1,42 @@
 import styled from "styled-components";
-import ditto from "../../assets/audio/ditto.mp3";
-import { useState, useMemo, useRef, useLayoutEffect, useEffect } from "react";
+
+import { useState, useLayoutEffect, useRef } from "react";
 import jacketImage from "../../assets/image/thumbnailImg.png";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { playMusic, showPlayerBar, currentAudioTime } from "../../recoil/player";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import axios from "axios";
+import { useRecoilState, useRecoilValue } from "recoil";
 
-export default function Player() {
+export default function Player(props: any) {
+  const { audio, playAudio, pauseAudio, progress } = props;
+  const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
+  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
+
   const playBar = useRef<HTMLDivElement>(null);
-  const [barWidth, setBarWidth] = useState<number>(0);
-  const [progress, setProgress] = useState<number>(0);
-  const [down, setDown] = useState<boolean>(false);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [currentTime, setCurrentTime] = useState<string>("0:0");
 
-  const [id, setId] = useRecoilState<number>(selectedId);
-  const [trackClick, setTrakClick] = useRecoilState<number>(trackClicked);
-  const [audioSrc, setAudioSrc] = useState<string>();
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const [title, setTitle] = useState<string>();
   const [producerName, setProducerName] = useState<string>();
-  const [durationSecond, setDurationSecond] = useState<number>();
+  const [barWidth, setBarWidth] = useState<number>(0);
+  const [down, setDown] = useState<boolean>(false);
 
+
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
 
-  const audio = useMemo(() => new Audio(audioSrc), [audioSrc]);
-  const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
-
-  useEffect(() => {
-    getPlayerData();
-    setAudioSrc(ditto);
-    setTitle("Sweet (feat. 구슬한 of 보수동쿨러)");
-    setProducerName("해서웨이(hathaw9y)");
-    setDurationSecond(310);
-
-    if (play) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-
-    audio.addEventListener("timeupdate", () => {
-      setCurrentTime(parseInt(String(audio.currentTime / 60)) + ":" + parseInt(String(audio.currentTime % 60)));
-      setProgress((audio.currentTime / audio.duration) * 1000);
-      goProgress();
-    });
-
-    window.addEventListener("keypress", (e: any) => {
-      if (e.keyCode === 32) {
-        e.preventDefault();
-        if (audio.paused) {
-          setPlay(true);
-          audio.play();
-        } else {
-          setPlay(false);
-          audio.pause();
-        }
-        if (audio.currentTime === audio.duration) {
-          audio.play();
-          audio.currentTime = 0;
-          setPlay(true);
-        }
-      }
-    });
-  }, [audio, play, window]);
-
-  async function getPlayerData() {
-    try {
-      const response = await axios.get(`${id}`);
-      setAudioSrc(ditto);
-      setTitle("Sweet (feat. 구슬한 of 보수동쿨러)");
-      setProducerName("해서웨이(hathaw9y)");
-      setDurationSecond(310);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function playAudio() {
-    setPlay((play) => !play);
-    if (audio.currentTime === audio.duration) {
-      audio.play();
-      audio.currentTime = 0;
-      setPlay(true);
-    }
-  }
 
   function quitAudio() {
     audio.pause();
     audio.currentTime = 0;
 
+    setPlay(false);
     setShowPlayer(false);
-    setPlay((play) => !play);
-    setId(-1);
-    setTrakClick(-1);
-  }
 
-  function goProgress() {
-    const currentDuration = (audio.currentTime / audio.duration) * 100;
-
-    setProgress(currentDuration);
   }
 
   function controlAudio(e: React.MouseEvent<HTMLDivElement>) {
@@ -132,21 +62,12 @@ export default function Player() {
     }
   }
 
-  if (audio.currentTime === audio.duration) {
-    audio.pause();
-    audio.currentTime = 1000;
-    setPlay(false);
-  }
 
   return (
     <PlayerContainer>
-      <PlayerWrapper>
-        <PlayerBarWrapper
-          onClick={controlAudio}
-          onMouseDown={downMouse}
-          onMouseUp={upMouse}
-          onMouseMove={moveAudio}
-          ref={playBar}>
+      <PlayerWrapper onClick={controlAudio} onMouseDown={downMouse} onMouseUp={upMouse} onMouseMove={moveAudio}>
+        <PlayerBarWrapper ref={playBar}>
+
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} />
         </PlayerBarWrapper>
 
@@ -158,7 +79,7 @@ export default function Player() {
           <PlayerInformText width={16} whiteText={false}>
             {producerName}
           </PlayerInformText>
-          {play ? <PlayIcon onClick={playAudio} /> : <PauseIcon onClick={playAudio} />}
+          {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
             {currentTime}
           </PlayerInformText>
@@ -173,14 +94,15 @@ export default function Player() {
 }
 
 const PlayerContainer = styled.section`
-  position: fixed;
+  position: sticky;
+  bottom: 0;
   z-index: 10;
   pointer-events: none;
 
   display: flex;
 
   width: 192rem;
-  height: 108rem;
+  /* height: 108rem; */
 `;
 
 const PlayerWrapper = styled.article`
@@ -227,6 +149,7 @@ const Thumbnail = styled.img`
 
   margin-left: 34rem;
   margin-right: 3.069rem;
+
 
   border-radius: 5rem;
 `;

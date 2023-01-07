@@ -1,71 +1,73 @@
 import styled from "styled-components";
-import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import categorys from "../../mocks/categoryDummy.json";
+
 import { useState, useEffect, useRef } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { categorySelect } from "../../recoil/categorySelect";
+import { useRecoilValue } from "recoil";
+
+import categorys from "../../mocks/categoryDummy.json";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
+
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-
-interface CategoryChecks {
-  categId: number;
-  selected: boolean;
-}
-
-const categorySelectedCheck: CategoryChecks[] = [
-  { categId: 0, selected: false },
-  { categId: 1, selected: false },
-  { categId: 2, selected: false },
-  { categId: 3, selected: false },
-  { categId: 4, selected: false },
-  { categId: 5, selected: false },
-  { categId: 6, selected: false },
-  { categId: 7, selected: false },
-  { categId: 8, selected: false },
-];
+import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
+import { CategoryChecksType } from "../../type/CategoryChecksType";
+import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
 
 export default function CategoryList() {
-  const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecks[]>(categorySelectedCheck);
-  const [selectedCategorysApi, setSelectedCategorysApi] = useRecoilState<string>(categorySelect);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+  const selectedSet = new Set();
+
+  const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
-  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const categs = selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true);
-  let categApi = "";
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openModal]);
 
   function categoryClick(id: number) {
-    setSelectedCategorys(
-      selectedCategorys.map((selectCateg) =>
-        selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
-      ),
-    );
+    const tempSelectedCategorys = [...selectedCategorys];
+
+    tempSelectedCategorys[id].selected = changeSelectValue(tempSelectedCategorys[id].selected);
+    tempSelectedCategorys[id].selected ? selectedSet.add(id) : selectedSet.delete(id);
+
+    setSelectedCategorys([...tempSelectedCategorys]);
   }
 
-  categs.forEach(({ categId }) => {
-    categApi = categApi + `&categ=` + categId;
-  });
-  setSelectedCategorysApi(categApi);
+  function changeSelectValue(value: boolean) {
+    return !value;
+  }
+
+  function createFilteredUrl(selectedSet: Set<number>) {
+    let filteredUrl = "";
+
+    selectedSet.forEach((id) => {
+      filteredUrl += `$categ${id}`;
+    });
+
+    return filteredUrl;
+  }
 
   function clickUploadButton() {
     setOpenModal(true);
   }
 
   function clickTrackSearching() {
-    setTrackSearchingClicked((prev) => !prev);
+    setTrackSearchingClicked(!trackSearchingClicked);
   }
 
-  useEffect(() => {
-    const clickOutside = (e: any) => {
-      if (openModal && !modalRef.current?.contains(e.target)) {
-        setOpenModal(false);
-      }
-    };
-    document.addEventListener("mousedown", clickOutside);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [openModal]);
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setOpenModal(false);
+    }
+  }
+
+  function isClickedOutside(e: MouseEvent) {
+    return openModal && !modalRef.current?.contains(e.target as Node);
+  }
 
   return (
     <>
@@ -121,8 +123,8 @@ const CategoryListWrapper = styled.section`
   display: flex;
   flex-direction: column;
 
-  position: fixed;
-  padding-top: 14.3rem;
+  position: sticky;
+  top: 17rem;
 
   margin: 2.7rem 0 0 1.2rem;
 `;
