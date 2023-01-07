@@ -1,14 +1,19 @@
 import styled from "styled-components";
-import { UploadBackIc, BackBtnIc, UploadBtnIc } from "../../assets";
+import { UploadBackIc, UploadBtnIc } from "../../assets";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadHeader() {
-  
+  const navigate = useNavigate();
+
+  function backPage(e: React.MouseEvent<SVGSVGElement>) {
+    navigate("/track-search");
+  }
 
   return (
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
-          <UploadBackIc />
+          <UploadBackIc onClick={backPage} style={{ cursor: "pointer" }} />
           <UserClass>Vocal Searching</UserClass>
         </LeftWrapper>
         <UploadBtnIc />
