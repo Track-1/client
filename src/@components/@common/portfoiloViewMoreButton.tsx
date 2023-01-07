@@ -7,7 +7,7 @@ interface ClickEventPropsType{
 
 
 export default function PortfoiloViewMoreButton(props:ClickEventPropsType) {
-    
+
   return (
     <ViewMoreButtonWrapper>
         <ProducerVocalSearchingArrowIcon/>
@@ -19,6 +19,8 @@ export default function PortfoiloViewMoreButton(props:ClickEventPropsType) {
 const ViewMoreButtonWrapper=styled.div`
     display: flex;
     flex-direction: column;
+
+    width: 30rem;
 `
 
 const arrowSliding=keyframes`
@@ -31,6 +33,7 @@ const arrowSliding=keyframes`
 `
 const ProducerVocalSearchingArrowIcon=styled(ProducerVocalSearchingArrowIc)`
     cursor: pointer;
+    overflow: visible;
     
     &:hover{
         animation-name: ${arrowSliding};
