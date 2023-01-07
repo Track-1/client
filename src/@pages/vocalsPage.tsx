@@ -25,7 +25,7 @@ export default function VocalsPage() {
     <>
       <CategoryHeader />
 
-      {showPlayer && <Player />}
+      {/* {showPlayer && <Player />} */}
 
       <VocalSearchPageWrapper>
         <CategoryListWrapper>
