@@ -1,7 +1,13 @@
 import styled,{ keyframes} from "styled-components"
 import {ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc} from "../../assets"
 
-export default function PortfoiloViewMoreButton() {
+interface ClickEventPropsType{
+    onClick: (e: React.MouseEvent<HTMLElement>) => void;
+}
+
+
+export default function PortfoiloViewMoreButton(props:ClickEventPropsType) {
+    
   return (
     <ViewMoreButtonWrapper>
         <ProducerVocalSearchingArrowIcon/>
