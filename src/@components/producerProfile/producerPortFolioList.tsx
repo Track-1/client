@@ -36,13 +36,19 @@ export default function ProducerPortFolioList(props: PropsType) {
             onMouseLeave={hoverOutPortfolio}
             index={index}
             profileState={profileState}
+            producerPortfolioClickBool={clickedIndex === portfolio.id}
             onClick={() => setClickedIndex(portfolio.id)}>
             <div>
+            {hoveredIndex === portfolio.id && hoveredIndex !== -1 && (
+              <ProducerPorfolioBlur index={index} producerPortfolioClickBool={clickedIndex === portfolio.id} profileState={profileState}/>
+            )}
+
               <PortfolioImage
                 src={portfolio.jacketImage}
                 isLarge={index === 0 || clickedIndex === portfolio.id}
                 index={index}
                 profileState={profileState}
+                clickBool={clickedIndex === portfolio.id}
               />
             </div>
             {index === 0 && hoveredIndex === portfolio.id && <PortfolioPlayBtnIcon />}
@@ -50,8 +56,8 @@ export default function ProducerPortFolioList(props: PropsType) {
             {index === 0 &&
               hoveredIndex !== portfolio.id &&
               clickedIndex !== null &&
-              clickedIndex !== portfolio.id && <AudioTitle>{portfolio.title}</AudioTitle>}
-            {index !== 0 && <AudioTitle>{portfolio.title}</AudioTitle>}
+              clickedIndex !== portfolio.id && <AudioTitle hoverBool={hoveredIndex === portfolio.id} clickBool={clickedIndex === portfolio.id}>{portfolio.title}</AudioTitle>}
+            {index !== 0 && <AudioTitle hoverBool={hoveredIndex === portfolio.id} clickBool={clickedIndex === portfolio.id}>{portfolio.title}</AudioTitle>}
           </PortfolioBox>
         );
       })}
@@ -63,6 +69,29 @@ export default function ProducerPortFolioList(props: PropsType) {
     </>
   );
 }
+
+const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickBool: boolean, profileState:string }>`
+  position: absolute;
+  z-index: 3;
+
+  width: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
+  height: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
+
+  /* margin-top: ${({ producerPortfolioClickBool, index,profileState }) => (index !== 0 && !producerPortfolioClickBool ? -8.5 : -12)}rem;
+  margin-top: ${({ producerPortfolioClickBool, index,profileState }) => index !== 0 && producerPortfolioClickBool && -8.5}rem; */
+
+  /* margin-top: ${({ index,profileState }) => (index === 0 && profileState!=="Vocal Searching" ? 0 : 1)}rem; */
+  /* margin-top: ${({ index,profileState }) => (index === 0 && profileState==="Vocal Searching" &&0)}rem; */
+
+
+  border-radius: 50%;
+
+  transform: rotate(45deg);
+
+  -webkit-backdrop-filter: blur(2rem);
+  backdrop-filter: blur(2rem);
+`;
+
 
 const InformWrapper=styled.div`
   margin-left: -77.2rem;
@@ -88,9 +117,12 @@ const ProfileListContainer = styled.section`
   background-clip: content-box, border-box;
 `;
 
-const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileState:string }>`
-  height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
-  width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
+const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileState:string, producerPortfolioClickBool:boolean }>`
+  /* height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
+  width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem; */
+  width: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
+  height: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
+
   position: relative;
 
   border-radius: 50%;
@@ -99,6 +131,8 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
 
   margin-top: ${({ index,profileState }) => (index === 0 && profileState!=="Vocal Searching" ? 3 : 4)}rem;
   margin-top: ${({ index,profileState }) => (index === 0 && profileState==="Vocal Searching" &&13)}rem;
+  margin-top: ${({ index,profileState,producerPortfolioClickBool }) => (index === 0 && profileState==="Vocal Searching"&&producerPortfolioClickBool &&3)}rem;
+
 
   :hover {
       box-shadow:0 0 4rem ${({ theme }) => theme.colors.sub1};
@@ -106,16 +140,14 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
   }
 `;
 
-const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string }>`
-  height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
-  width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
+const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string, clickBool:boolean }>`
+  height: ${({ clickBool,profileState }) => (clickBool ? 42 : 21.8)}rem;
+  width: ${({ clickBool,profileState }) => (clickBool ? 42 : 21.8)}rem;
 
   :hover {
-    filter: blur(${({ index }) => index === 0 && 3.5}rem);
-    opacity: ${({ index }) => index !== 0 && 1};
+    
   }
-
-  opacity: ${({ index }) => (index === 0 ? 1 : 0.2)};
+  /* opacity: ${({clickBool})=>clickBool?1:0.2}; */
 `;
 
 const PortfolioPlayBtnIcon = styled(PortfolioPlayBtnIc)`
@@ -142,8 +174,9 @@ const PauseBtnIcon = styled(PauseBtnIc)`
   transform: translate(-50%, -50%);
 `;
 
-const AudioTitle = styled.h1`
-  color: ${({ theme }) => theme.colors.white};
+const AudioTitle = styled.h1<{hoverBool:boolean, clickBool:boolean}>`
+  color: ${({ theme }) => theme.colors.gray2};
+  display: ${({hoverBool,clickBool})=>(hoverBool||clickBool)&&"none"};
 
   ${({ theme }) => theme.fonts.id}
 
