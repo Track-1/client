@@ -20,18 +20,18 @@ export default function MainPage() {
 
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
-    setIsVocalsHover((prev) => !prev);
+    setIsVocalsHover(!isVocalsHover);
   }
 
   function setTracksImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverTracksImg);
-    setIsTracksHover((prev) => !prev);
+    setIsTracksHover(!isTracksHover);
   }
 
   function setDefaultImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(mainBackgroundImg);
 
-    isTracksHover ? setIsTracksHover((prev) => !prev) : setIsVocalsHover((prev) => !prev);
+    isTracksHover ? setIsTracksHover(!isTracksHover) : setIsVocalsHover(!isVocalsHover);
   }
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {

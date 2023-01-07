@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import { AddCommentIc, CommentBtnIc } from "../../assets";
+import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
 import comments from "../../core/trackPost/userComments";
 import { useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
-export default function UseComment() {
+export default function UserComment(props: any) {
+  const { closeComment } = props;
   const [uploadData, setUploadData] = useState<UploadDataType>({
     text: "",
     file: null,
@@ -27,8 +28,7 @@ export default function UseComment() {
   return (
     <CommentContainer>
       <CloseCommentBtn>
-        <CommentBtnIcon />
-        <CloseText>Close</CloseText>
+        <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
       <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} />
       <AddWrapper>
@@ -49,9 +49,15 @@ const CommentContainer = styled.section`
   float: right;
 
   background-color: rgba(13, 14, 17, 0.75);
+  backdrop-filter: blur(1.5rem);
 
-  padding-left: 2.6rem;
+  padding-left: 6.5rem;
   padding-top: 6.1rem;
+  padding-right: 7.5rem;
+
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
 
 const CloseCommentBtn = styled.div`
