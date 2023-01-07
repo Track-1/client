@@ -6,8 +6,8 @@ export default function TrackUploadPage() {
   return (
     <>
       <UploadHeader />
-      {/* <TrackUpload></TrackUpload> */}
-      <VocalUpload/>
+      <TrackUpload></TrackUpload>
+      {/* <VocalUpload/> */}
     </>
   );
 }

@@ -90,6 +90,7 @@ const VocalUploadImage = styled.img`
   width: 59.8rem;
   height: 59.8rem;
   transform: rotate(-45deg);
+  object-fit:cover
   margin-left: -7.4rem;
   margin-top: -7.4rem;
 `;
