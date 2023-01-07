@@ -1,6 +1,7 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
+import { Category } from "../core/common/categoryHeader";
 
 export const tracksOrVocalsCheck = atom({
-  key: 'tracksOrVocalsCheck',
-  default: ``,
+  key: "tracksOrVocalsCheck",
+  default: Category.TRACKS,
 });
