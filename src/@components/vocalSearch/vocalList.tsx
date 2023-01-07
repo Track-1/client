@@ -21,8 +21,6 @@ export default function VocalList() {
     getVocalsData().then((result) => result && setVocalData(result.data));
   }, []);
 
-  console.log(vocalData);
-
   function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
   }
@@ -96,8 +94,8 @@ export default function VocalList() {
             </MusicProfileWrapper>
 
             <HashtagUl>
-              {vocal.keyword.map((idx) => (
-                <HashtagLi key={vocal.vocalId}>#{idx}</HashtagLi>
+              {vocal.keyword.map((tag, idx) => (
+                <HashtagLi key={idx}>#{tag}</HashtagLi>
               ))}
             </HashtagUl>
           </VocalContainer>
@@ -110,7 +108,7 @@ const VocalListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  padding-top: 5.6rem;
+  padding-top: 4rem;
   padding-left: 9rem;
 `;
 
