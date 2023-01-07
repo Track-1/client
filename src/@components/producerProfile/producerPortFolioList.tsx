@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PauseBtnIc, PortfolioPlayBtnIc,ProducerProfilePauseIc,ProducerProfilePlayIc } from "../../assets";
+import { playMusic } from "../../recoil/player";
 import { ProducerPortfolioType } from "../../type/producerProfile";
 import PortfoliosInform from "../@common/portfoliosInform";
 
@@ -17,7 +19,7 @@ export default function ProducerPortFolioList(props: PropsType) {
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
 
-  const [play, setPlay] = useState<boolean>(false);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function hoverPortfolio(id: number) {
     setHoveredIndex(id);
