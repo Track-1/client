@@ -97,7 +97,8 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
 
   overflow: hidden;
 
-  margin-top: ${({ index }) => (index === 0 ? 3 : 4)}rem;
+  margin-top: ${({ index,profileState }) => (index === 0 && profileState!=="Vocal Searching" ? 3 : 4)}rem;
+  margin-top: ${({ index,profileState }) => (index === 0 && profileState==="Vocal Searching" &&13)}rem;
 
   :hover {
       box-shadow:0 0 4rem ${({ theme }) => theme.colors.sub1};
@@ -108,7 +109,6 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
 const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string }>`
   height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
   width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
-  margin-top: ${({profileState})=>profileState==="Vocal Searching"&&50}rem;
 
   :hover {
     filter: blur(${({ index }) => index === 0 && 3.5}rem);
