@@ -35,12 +35,12 @@ export default function ProducerProfilePage() {
 
   function changeToProfile() {
     setProfileState("Portfolio");
-    setStateChange(true)
+    setStateChange((prev)=>!prev)
   }
 
   function changeToVocalSearch() {
     setProfileState("Vocal Searching");
-    setStateChange(true)
+    setStateChange((prev)=>!prev)
   }
 
   async function getVocalSearchData() {

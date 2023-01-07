@@ -72,7 +72,6 @@ export default function ProducerPortFolioList(props: PropsType) {
               hoveredIndex !== -1 &&
               clickedIndex !== -1 && <ProducerProfilePlayIcon onClick={clickPlayIc}/>}
 
-
             {hoveredIndex === portfolio.id && hoveredIndex !== -1 && (
               <ProducerPorfolioBlur index={index} producerPortfolioClickBool={clickedIndex === portfolio.id} profileState={profileState}/>
             )}
@@ -85,11 +84,13 @@ export default function ProducerPortFolioList(props: PropsType) {
                 clickBool={clickedIndex === portfolio.id}
               />
             </div>
+            <TitleWrapper>
             {index === 0 &&
               hoveredIndex !== portfolio.id &&
               clickedIndex !== null &&
               clickedIndex !== portfolio.id && <AudioTitle hoverBool={hoveredIndex === portfolio.id} clickBool={clickedIndex === portfolio.id}>{portfolio.title}</AudioTitle>}
             {index !== 0 && <AudioTitle hoverBool={hoveredIndex === portfolio.id} clickBool={clickedIndex === portfolio.id}>{portfolio.title}</AudioTitle>}
+            </TitleWrapper>
           </PortfolioBox>
         );
       })}
@@ -101,6 +102,15 @@ export default function ProducerPortFolioList(props: PropsType) {
     </>
   );
 }
+
+const TitleWrapper=styled.div`
+  width: 14rem;
+  height: 5rem;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+`
 
 const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickBool: boolean, profileState:string }>`
   position: absolute;
