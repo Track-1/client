@@ -78,6 +78,7 @@ export { ReactComponent as PlayBtnIc } from "./icon/playBtnIc.svg";
 export { ReactComponent as UploadBackIc } from "./icon/uploadBackIc.svg";
 export { ReactComponent as UploadBtnIc } from "./icon/uploadBtnIc.svg";
 export { ReactComponent as CanUploadBtnIc } from "./icon/canUploadBtnIc.svg";
+export { ReactComponent as VocalUploadFrameIc } from "./icon/vocalUploadFrameIc.svg";
 
 export { ReactComponent as UploadFileUpdateIc } from "./icon/uploadFileUpdateIc.svg";
 export { ReactComponent as UploadCategoryIc } from "./icon/uploadCategoryIc.svg";
