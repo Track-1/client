@@ -13,8 +13,6 @@ export default function TracksProfileUploadModal() {
 
   return (
     <>
-    {visible&&(
-        <>
     <UploadButtonModalWrapper>
         <ModalWrapper>
         <VocalSearchingWrapper>
@@ -37,7 +35,6 @@ export default function TracksProfileUploadModal() {
         </ModalBackgroundShadow>
     </UploadButtonModalWrapper>
 
-    </>)}
     </>
   )
 }
@@ -50,7 +47,7 @@ const ModalBackgroundShadow=styled.section`
 `
 
 const ModalWrapper=styled.div`
-    margin: 19.8rem 0 0 156.1rem;
+    margin: 12.5rem 0 0 156.1rem;
     
     position: absolute;
     z-index: 10;

@@ -6,6 +6,9 @@ import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProf
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
+import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
+import { useRecoilValue } from 'recoil';
+import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
@@ -13,6 +16,7 @@ export default function ProducerProfilePage() {
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false) 
   const [stateChange,setStateChange]=useState<boolean>(false);
+  const visible=useRecoilValue(uploadButtonClicked)
 
   useEffect(() => {
     async function getData() {
@@ -55,6 +59,7 @@ export default function ProducerProfilePage() {
 
   return (
     <PageContainer>
+      {visible&&<TracksProfileUploadModal/>}
       {profileData && <ProducerInfos profileData={profileData} />}
       <GradientBox src={producerGradientImg} />
       <TabContainer>
