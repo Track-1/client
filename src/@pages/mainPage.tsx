@@ -71,12 +71,10 @@ const VocalsArea = styled.div`
 `;
 
 const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
-  width: 21.7rem;
-  height: 21.2rem;
-
   position: absolute;
-  top: 81.3rem;
-  left: 144.7rem;
+  top: 77rem;
+  left: 151.7rem;
+
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -106,14 +104,10 @@ const TracksArea = styled.div`
 `;
 
 const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
-  width: 18.9rem;
-  height: 20.4rem;
-
   position: absolute;
-  top: 42.4rem;
-  left: 99.5rem;
-  //top: 36rem;
-  //left: 108.5rem;
+
+  top: 41rem;
+  left: 110rem;
   background-repeat: no-repeat;
 
   ${(props) =>
