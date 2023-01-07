@@ -78,3 +78,4 @@ export { ReactComponent as VocalSleepIc } from "./icon/vocalSleepIc.svg";
 export { ReactComponent as VocalNonSleepIc } from "./icon/vocalNonSleepIc.svg";
 export { ReactComponent as VocalHoverPlayIc } from "./icon/vocalHoverPlayIc.svg";
 export { ReactComponent as VocalHoverPauseIc } from "./icon/vocalHoverPauseIc.svg";
+export { ReactComponent as VocalListHeaderTextIc } from "./icon/vocalListHeaderTextIc.svg";

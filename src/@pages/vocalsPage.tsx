@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import CategoryHeader from "../@components/@common/categoryHeader";
 import CategoryList from "../@components/@common/categoryList";
-import TrackListHeader from "../@components/trackSearch/trackListHeader";
+import VocalListHeader from "../@components/vocalSearch/vocalListHeader";
 import VocalList from "../@components/vocalSearch/vocalList";
 import Player from "../@components/@common/player";
 
@@ -30,7 +30,7 @@ export default function VocalsPage() {
         </CategoryListWrapper>
 
         <VocalListWrapper>
-          <TrackListHeader />
+          <VocalListHeader />
           <VocalList />
         </VocalListWrapper>
       </VocalSearchPageWrapper>

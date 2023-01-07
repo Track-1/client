@@ -108,7 +108,7 @@ const VocalListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  padding-top: 5.6rem;
+  padding-top: 4rem;
   padding-left: 9rem;
 `;
 
