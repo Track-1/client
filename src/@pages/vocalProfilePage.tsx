@@ -4,6 +4,7 @@ import Player from "../@components/@common/player";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
 import VocalProfileList from "../@components/vocalProfile/vocalProfileList";
 import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
+import { Category } from "../core/common/categoryHeader";
 import { showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
@@ -12,14 +13,14 @@ import { Category } from "../core/common/categoryHeader";
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [visible, setVisible]=useRecoilState<boolean>(uploadButtonClicked)
+  const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
 
-  setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
+  setWhom(Category.VOCALS);
 
   return (
     <>
-      {visible&&<TracksProfileUploadModalSection />}
-      {showPlayer && <Player />}
+      {visible && <TracksProfileUploadModalSection />}
+      {/* {showPlayer && <Player />} */}
       <VocalProfilePageWrapper>
         <VocalProfile>보컬프로필 부분넣어주세요</VocalProfile>
 
@@ -32,10 +33,10 @@ export default function VocalProfilePage() {
   );
 }
 
-const TracksProfileUploadModalSection=styled(TracksProfileUploadModal)`
+const TracksProfileUploadModalSection = styled(TracksProfileUploadModal)`
   position: absolute;
   z-index: 100;
-`
+`;
 
 const VocalProfilePageWrapper = styled.section`
   display: flex;
