@@ -49,7 +49,7 @@ export const producerProfileHandler = [
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
-              isTitle: true,
+              isTitle: false,
             },
             {
               id: 4,
@@ -71,7 +71,7 @@ export const producerProfileHandler = [
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
-              isTitle: true,
+              isTitle: false,
             },
             {
               id: 6,
@@ -93,7 +93,7 @@ export const producerProfileHandler = [
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
-              isTitle: true,
+              isTitle: false,
             },
             {
               id: 8,
