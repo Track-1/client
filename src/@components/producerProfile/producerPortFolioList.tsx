@@ -100,8 +100,8 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
   margin-top: ${({ index }) => (index === 0 ? 3 : 4)}rem;
 
   :hover {
-    box-shadow: ${({ index }) => index !== 0 ? 0:0} ${({ index }) => index !== 0 ? 0: 0}
-      ${({ index }) => index !== 0 ?4: 4}rem ${({ index,theme }) => index !== 0 ? theme.colors.sub1:theme.colors.sub1};
+      box-shadow:0 0 4rem ${({ theme }) => theme.colors.sub1};
+
   }
 `;
 
