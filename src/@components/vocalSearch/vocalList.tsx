@@ -21,8 +21,6 @@ export default function VocalList() {
     getVocalsData().then((result) => result && setVocalData(result.data));
   }, []);
 
-  console.log(vocalData);
-
   function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
   }
