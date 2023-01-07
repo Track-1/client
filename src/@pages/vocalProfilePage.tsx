@@ -8,7 +8,6 @@ import { Category } from "../core/common/categoryHeader";
 import { showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
-import { Category } from "../core/common/categoryHeader";
 
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
