@@ -24,24 +24,28 @@ export default function ProducerProfilePage() {
     getData();
   }, []);
 
+  useEffect(()=>{
+    async function getData() {
+      profileState==="Portfolio"?await getProfileData():await getVocalSearchData();
+    }
+    getData();
+  },[profileState]) 
+
+
   function changeToProfile() {
     setProfileState("Portfolio");
-
-    getProfileData();
   }
 
   function changeToVocalSearch() {
     setProfileState("Vocal Searching");
-
-    getVocalSearchData();
   }
 
-  async function getProfileData() {
+  async function getVocalSearchData() {
     const data = await getSelectingTracks();
     setPortfolioData(data?.data);
   }
 
-  async function getVocalSearchData() {
+  async function getProfileData() {
     const data = await getProducerProfile();
     setPortfolioData(data?.data[0].producerPortfolio);
   }

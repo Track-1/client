@@ -52,7 +52,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       {/* 나인 경우 업로드 버튼이 떠요 */}
     {isMe?<UploadButtonIcon onClick={clickUploadButton}/>:<UploadButtonBlankIcon/>}
 
-    {(portfolioInforms)&&(
+    {portfolioInforms&&
       <>
       <InformWrapper>
       {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
@@ -76,10 +76,10 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
 
       <InformContent>{portfolioInforms.content}</InformContent>
       <InformTagWrapper>
-      {portfolioInforms.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
+      { portfolioInforms.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
       </InformTagWrapper>
       </>
-    )}   
+    }   
     </PortfolioInformWrapper>
   )
 }
