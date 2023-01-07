@@ -35,12 +35,14 @@ export default function ProducerPortFolioList(props: PropsType) {
             onMouseEnter={() => hoverPortfolio(portfolio.id)}
             onMouseLeave={hoverOutPortfolio}
             index={index}
+            profileState={profileState}
             onClick={() => setClickedIndex(portfolio.id)}>
             <div>
               <PortfolioImage
                 src={portfolio.jacketImage}
                 isLarge={index === 0 || clickedIndex === portfolio.id}
                 index={index}
+                profileState={profileState}
               />
             </div>
             {index === 0 && hoveredIndex === portfolio.id && <PortfolioPlayBtnIcon />}
@@ -86,9 +88,9 @@ const ProfileListContainer = styled.section`
   background-clip: content-box, border-box;
 `;
 
-const PortfolioBox = styled.article<{ isLarge: boolean; index: number }>`
-  height: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
-  width: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
+const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileState:string }>`
+  height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
+  width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
   position: relative;
 
   border-radius: 50%;
@@ -98,14 +100,15 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number }>`
   margin-top: ${({ index }) => (index === 0 ? 3 : 4)}rem;
 
   :hover {
-    box-shadow: ${({ index }) => index !== 0 && 0} ${({ index }) => index !== 0 && 0}
-      ${({ index }) => index !== 0 && 4}rem ${({ index }) => index !== 0 && "#43ff8e"};
+    box-shadow: ${({ index }) => index !== 0 ? 0:0} ${({ index }) => index !== 0 ? 0: 0}
+      ${({ index }) => index !== 0 ?4: 4}rem ${({ index,theme }) => index !== 0 ? theme.colors.sub1:theme.colors.sub1};
   }
 `;
 
-const PortfolioImage = styled.img<{ isLarge: boolean; index: number }>`
-  height: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
-  width: ${({ isLarge }) => (isLarge ? 42 : 21.8)}rem;
+const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string }>`
+  height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
+  width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
+  margin-top: ${({profileState})=>profileState==="Vocal Searching"&&50}rem;
 
   :hover {
     filter: blur(${({ index }) => index === 0 && 3.5}rem);
