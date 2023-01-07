@@ -20,18 +20,18 @@ export default function MainPage() {
 
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
-    setIsVocalsHover((prev) => !prev);
+    setIsVocalsHover(!isVocalsHover);
   }
 
   function setTracksImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverTracksImg);
-    setIsTracksHover((prev) => !prev);
+    setIsTracksHover(!isTracksHover);
   }
 
   function setDefaultImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(mainBackgroundImg);
 
-    isTracksHover ? setIsTracksHover((prev) => !prev) : setIsVocalsHover((prev) => !prev);
+    isTracksHover ? setIsTracksHover(!isTracksHover) : setIsVocalsHover(!isVocalsHover);
   }
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
@@ -59,24 +59,22 @@ const Main = styled.main`
 `;
 
 const VocalsArea = styled.div`
-  width: 54.8rem;
-  height: 57.2rem;
+  width: 48rem;
+  height: 50rem;
 
   position: absolute;
   z-index: 99;
-  top: 41.2rem;
-  left: 120.4rem;
+  top: 41rem;
+  left: 129rem;
   transform: rotate(40deg);
   cursor: pointer;
 `;
 
 const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
-  width: 21.7rem;
-  height: 21.2rem;
-
   position: absolute;
-  top: 81.3rem;
-  left: 144.7rem;
+  top: 77rem;
+  left: 151.7rem;
+
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -91,25 +89,25 @@ const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
 `;
 
 const TracksArea = styled.div`
-  width: 56.4rem;
-  height: 53.8rem;
+  width: 50rem;
+  height: 47rem;
 
   position: absolute;
   z-index: 99;
-  top: 3.2rem;
-  left: 72rem;
+  top: 8rem;
+  left: 86.5rem;
+  //top: 3.2rem;
+  //left: 72rem;
   transform: rotate(-50deg);
   border-radius: 2.8rem 0 0;
   cursor: pointer;
 `;
 
 const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
-  width: 18.9rem;
-  height: 20.4rem;
-
   position: absolute;
-  top: 42.4rem;
-  left: 99.5rem;
+
+  top: 41rem;
+  left: 110rem;
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -125,6 +123,6 @@ const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
 
 const MainSlogan = styled.img`
   position: absolute;
-  top: 82.5rem;
-  left: 8.3rem;
+  top: 50.6rem;
+  left: 8.7rem;
 `;
