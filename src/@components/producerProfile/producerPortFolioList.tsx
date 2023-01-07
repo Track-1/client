@@ -8,10 +8,11 @@ interface PropsType {
   portfolioData: ProducerPortfolioType[];
   isMe: boolean;
   profileState: string;
+  stateChange:boolean;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState } = props;
+  const { portfolioData, isMe, profileState,stateChange } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -34,6 +35,13 @@ export default function ProducerPortFolioList(props: PropsType) {
     setPlay(false);
   }
 
+  useEffect(()=>{
+    setHoveredIndex(-1);
+    setClickedIndex(-1);
+    setPlay(false);
+  },[stateChange])
+  
+
   return (
     <>
     <ProfileListContainer>
@@ -47,15 +55,14 @@ export default function ProducerPortFolioList(props: PropsType) {
             index={index}
             profileState={profileState}
             producerPortfolioClickBool={clickedIndex === portfolio.id}
-            onClick={() => setClickedIndex(portfolio.id)}>
+          >
             <div>
-            {/* <PortfolioPlayBtnIcon />
-            <PauseBtnIcon /> */}
-            {((clickedIndex === portfolio.id &&
+            {((hoveredIndex === portfolio.id &&
               clickedIndex !== portfolio.id &&
               hoveredIndex !== -1) ||
               (!play &&
                 hoveredIndex === portfolio.id &&
+                clickedIndex === portfolio.id &&
                 hoveredIndex !== -1)) && (
               <ProducerProfilePauseIcon onClick={() => clickPauseIc(portfolio.id)} />
             )}
@@ -102,13 +109,6 @@ const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickB
   width: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
   height: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
 
-  /* margin-top: ${({ producerPortfolioClickBool, index,profileState }) => (index !== 0 && !producerPortfolioClickBool ? -8.5 : -12)}rem;
-  margin-top: ${({ producerPortfolioClickBool, index,profileState }) => index !== 0 && producerPortfolioClickBool && -8.5}rem; */
-
-  /* margin-top: ${({ index,profileState }) => (index === 0 && profileState!=="Vocal Searching" ? 0 : 1)}rem; */
-  /* margin-top: ${({ index,profileState }) => (index === 0 && profileState==="Vocal Searching" &&0)}rem; */
-
-
   border-radius: 50%;
 
   transform: rotate(45deg);
@@ -143,8 +143,6 @@ const ProfileListContainer = styled.section`
 `;
 
 const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileState:string, producerPortfolioClickBool:boolean }>`
-  /* height: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem;
-  width: ${({ isLarge,profileState }) => (isLarge&&profileState!=="Vocal Searching" ? 42 : 21.8)}rem; */
   width: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
   height: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
 
@@ -161,34 +159,26 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
 
   :hover {
       box-shadow:0 0 4rem ${({ theme }) => theme.colors.sub1};
-
   }
 `;
 
 const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string, clickBool:boolean }>`
   height: ${({ clickBool,index,profileState }) => ((index===0&&profileState!=="Vocal Searching")||clickBool ? 42 : 21.8)}rem;
   width: ${({ clickBool,index,profileState }) => ((index===0&&profileState!=="Vocal Searching")||clickBool ? 42 : 21.8)}rem;
-
-  :hover {
-    
-  }
-  /* opacity: ${({clickBool})=>clickBool?1:0.2}; */
 `;
 
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
   position: absolute;
-  z-index: 100;
-  /* pointer-events: none; */
+  z-index: 5;
 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
 
-const ProducerProfilePlayIcon = styled(ProducerProfilePauseIc)`
+const ProducerProfilePlayIcon = styled(ProducerProfilePlayIc)`
   position: absolute;
-  z-index: 100;
-  /* pointer-events: none; */
+  z-index: 5;
 
   top: 50%;
   left: 50%;

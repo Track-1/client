@@ -12,6 +12,7 @@ export default function ProducerProfilePage() {
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>();
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false) 
+  const [stateChange,setStateChange]=useState<boolean>(false);
 
   useEffect(() => {
     async function getData() {
@@ -34,10 +35,12 @@ export default function ProducerProfilePage() {
 
   function changeToProfile() {
     setProfileState("Portfolio");
+    setStateChange(true)
   }
 
   function changeToVocalSearch() {
     setProfileState("Vocal Searching");
+    setStateChange(true)
   }
 
   async function getVocalSearchData() {
@@ -64,7 +67,7 @@ export default function ProducerProfilePage() {
           Vocal Searching
         </VocalSearchingTab>
       </TabContainer>
-      {portfolioData && <ProducerPortFolioList isMe={isMe} portfolioData={portfolioData} profileState={profileState}/>}
+      {portfolioData && <ProducerPortFolioList isMe={isMe} portfolioData={portfolioData} profileState={profileState} stateChange={stateChange}/>}
     </PageContainer>
   );
 }
