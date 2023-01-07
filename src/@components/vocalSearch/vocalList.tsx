@@ -94,8 +94,8 @@ export default function VocalList() {
             </MusicProfileWrapper>
 
             <HashtagUl>
-              {vocal.keyword.map((idx) => (
-                <HashtagLi key={vocal.vocalId}>#{idx}</HashtagLi>
+              {vocal.keyword.map((tag, idx) => (
+                <HashtagLi key={idx}>#{tag}</HashtagLi>
               ))}
             </HashtagUl>
           </VocalContainer>
