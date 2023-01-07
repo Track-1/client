@@ -47,7 +47,7 @@ export const vocalSearchHandler = [
           keyword: ["클럽 분위기의", "신비로운"],
           totalCategNum: 5,
           wavFileLength: 210,
-          isSelected: false,
+          isSelected: true,
         },
         {
           vocalId: 5,

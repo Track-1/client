@@ -13,7 +13,13 @@ import { showPlayerBar, playMusic, trackClicked, selectedId, currentAudioTime } 
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 
-export default function TrackList(props: any) {
+interface PropsType {
+  audio: HTMLAudioElement;
+  playAudio: () => void;
+  pauseAudio: () => void;
+}
+
+export default function TrackList(props: PropsType) {
   const { audio, playAudio, pauseAudio } = props;
 
   const [trackHover, setTrackHover] = useState<number>(-1);
@@ -33,7 +39,6 @@ export default function TrackList(props: any) {
   function mouseOutTrack() {
     setTrackHover(-1);
   }
-
 
   function playAudioOnTrack(id: number) {
     playAudio();
@@ -86,7 +91,6 @@ export default function TrackList(props: any) {
             <TrackBox>
               {((trackClick !== track.beatId && trackHover === track.beatId && trackHover !== -1) ||
                 (!play && trackClick === track.beatId && trackClick !== -1)) && (
-
                 <HoverPauseIcon onClick={() => playAudioOnTrack(track.beatId)} />
               )}
               {play && trackClick === track.beatId && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}

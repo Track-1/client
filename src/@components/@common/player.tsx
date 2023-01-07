@@ -7,7 +7,14 @@ import { playMusic, showPlayerBar, currentAudioTime } from "../../recoil/player"
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-export default function Player(props: any) {
+interface PropsType {
+  audio: HTMLAudioElement;
+  playAudio: () => void;
+  pauseAudio: () => void;
+  progress: number;
+}
+
+export default function Player(props: PropsType) {
   const { audio, playAudio, pauseAudio, progress } = props;
   const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
@@ -20,15 +27,12 @@ export default function Player(props: any) {
   const [barWidth, setBarWidth] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
 
-
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
 
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
-
 
   function quitAudio() {
     audio.pause();
@@ -36,7 +40,6 @@ export default function Player(props: any) {
 
     setPlay(false);
     setShowPlayer(false);
-
   }
 
   function controlAudio(e: React.MouseEvent<HTMLDivElement>) {
@@ -62,12 +65,10 @@ export default function Player(props: any) {
     }
   }
 
-
   return (
     <PlayerContainer>
       <PlayerWrapper onClick={controlAudio} onMouseDown={downMouse} onMouseUp={upMouse} onMouseMove={moveAudio}>
         <PlayerBarWrapper ref={playBar}>
-
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} />
         </PlayerBarWrapper>
 
@@ -149,7 +150,6 @@ const Thumbnail = styled.img`
 
   margin-left: 34rem;
   margin-right: 3.069rem;
-
 
   border-radius: 5rem;
 `;
