@@ -1,5 +1,5 @@
 export interface ProducerPortfolioType {
-  producerPortfolioId: number;
+  id: number;
   jacketImage: string;
   beatWavFile: string;
   title: string;

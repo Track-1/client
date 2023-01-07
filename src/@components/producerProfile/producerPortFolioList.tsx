@@ -7,10 +7,11 @@ import PortfoliosInform from "../@common/portfoliosInform";
 interface PropsType {
   portfolioData: ProducerPortfolioType[];
   isMe: boolean;
+  profileState: string;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe } = props;
+  const { portfolioData, isMe, profileState } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -24,6 +25,7 @@ export default function ProducerPortFolioList(props: PropsType) {
   }
 
   return (
+    <>
     <ProfileListContainer>
       {portfolioData.map((portfolio, index) => {
         return (
@@ -51,10 +53,18 @@ export default function ProducerPortFolioList(props: PropsType) {
           </PortfolioBox>
         );
       })}
-      {portfolioData&&<PortfoliosInform isMe={isMe} hoverId={hoveredIndex} clickId={clickedIndex} portfolios={portfolioData} profileState={"Porfolio"}/>}
     </ProfileListContainer>
+    {portfolioData&&
+    (<InformWrapper>
+    <PortfoliosInform isMe={isMe} hoverId={hoveredIndex} clickId={clickedIndex} portfolios={portfolioData} profileState={profileState}/>
+    </InformWrapper>)}
+    </>
   );
 }
+
+const InformWrapper=styled.div`
+  margin-left: -77.2rem;
+`
 
 const ProfileListContainer = styled.section`
   width: 47.8rem;

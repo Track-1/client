@@ -10,7 +10,7 @@ import ProducerInfos from "../@components/producerProfile/producerInfos";
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>();
-  const [profileState, setProfileState] = useState<string>("Profile");
+  const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false) 
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function ProducerProfilePage() {
   }, []);
 
   function changeToProfile() {
-    setProfileState("Profile");
+    setProfileState("Portfolio");
 
     getProfileData();
   }
@@ -52,15 +52,15 @@ export default function ProducerProfilePage() {
       <GradientBox src={producerGradientImg} />
       <TabContainer>
         <PortfolioTab profileState={profileState} onClick={changeToProfile}>
-          {profileState === "Profile" ? <RightArrorIcon /> : <BlankDiv />}
-          PortfolioTab
+          {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
+          Portfolio
         </PortfolioTab>
         <VocalSearchingTab profileState={profileState} onClick={changeToVocalSearch}>
           {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
-          VocalSearchingTab
+          Vocal Searching
         </VocalSearchingTab>
       </TabContainer>
-      {portfolioData && <ProducerPortFolioList isMe={isMe} portfolioData={portfolioData} />}
+      {portfolioData && <ProducerPortFolioList isMe={isMe} portfolioData={portfolioData} profileState={profileState}/>}
     </PageContainer>
   );
 }
@@ -84,7 +84,7 @@ const TabContainer = styled.ul`
 const PortfolioTab = styled.li<{ profileState: string }>`
   height: 4rem;
 
-  color: ${({ theme, profileState }) => (profileState === "Profile" ? theme.colors.white : theme.colors.gray3)};
+  color: ${({ theme, profileState }) => (profileState === "Portfolio" ? theme.colors.white : theme.colors.gray3)};
 
   display: flex;
 `;
