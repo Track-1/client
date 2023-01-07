@@ -1,20 +1,18 @@
 import styled from "styled-components";
 import { PortfolioPropsType } from "../../type/profilePropsType";
 import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc,EllipsisIc,BlankIc,UploadButtonBlankIc} from "../../assets"
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 import { useEffect, useRef, useState } from 'react';
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton"
 import { useNavigate } from 'react-router-dom';
 import TracksProfileUploadModal from "./tracksProfileUploadModal";
+import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 
 export default function PortfoliosInform(props:PortfolioPropsType) {
-  const isMe=props.isMe;
-  const hoverId=props.hoverId;
-  const clickId=props.clickId;
+  const {isMe,hoverId,clickId,profileState}=props;
   const porftolios=props.portfolios;
-  const profileState=props.profileState;
   const portfolioHoverInformation=porftolios.filter((portfolio) => portfolio.id === hoverId)[0];
   const portfolioClickInformation=porftolios.filter((portfolio) => portfolio.id === clickId)[0];
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
@@ -22,7 +20,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const portfolioInforms=(!isBool&&hoverId!==-1||isBool&&hoverId!==-1)?portfolioHoverInformation:portfolioClickInformation
   const isTitle=portfolioInforms&&portfolioInforms.isTitle
   const [openEllipsisModal, setOpenEllipsisModal]=useState<boolean>(false)
-  const [openUploadModal, setOpenUploadModal]=useState<boolean>(true)
+  const [openUploadModal, setOpenUploadModal]=useRecoilState<boolean>(uploadButtonClicked)
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate=useNavigate()
 
@@ -66,7 +64,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       {isMe&&!(!isBool&&hoverId!==-1)&&(
       <>
         {<EllipsisIcon onClick={clickEllipsis}/>}
-        {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef}/>}
+        {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef} profileState={profileState}/>}
         </>
       )}
       </InformTitleWrapper>

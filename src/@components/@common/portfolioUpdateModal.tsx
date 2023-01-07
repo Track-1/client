@@ -3,16 +3,18 @@ import {PencilUpdateIc,TrashDeleteIc,SetIsTitleIc} from "../../assets"
 
 interface IsTitlePropsType{
     isTitle:boolean
+    profileState:string
     ref: React.RefObject<HTMLDivElement>;
 }
 
 export default function PortfolioUpdateModal(props:IsTitlePropsType): JSX.Element {
-    const isTitle=props.isTitle
+    const {isTitle, profileState, ref}=props
+
   return (
     <ModalWrapper isTitle={isTitle}>
         <ModalBox underline={true}>수정하기<PencilUpdateIc/></ModalBox>
-        <ModalBox underline={!isTitle}>삭제하기<TrashDeleteIc/></ModalBox>
-        {!isTitle&&<ModalBox underline={false}>타이틀 설정<SetIsTitleIc/></ModalBox>}
+        {profileState!=="Vocal Searching"?(<ModalBox underline={!isTitle}>삭제하기<TrashDeleteIc/></ModalBox>):(<ModalBox underline={false}>삭제하기<TrashDeleteIc/></ModalBox>)}
+        {!isTitle&&profileState!=="Vocal Searching"&&<ModalBox underline={false}>타이틀 설정<SetIsTitleIc/></ModalBox>}
     </ModalWrapper>
   )
 }
@@ -24,7 +26,7 @@ const ModalWrapper=styled.div<{isTitle:boolean}>`
   
   position: absolute;
   left: 17.2rem;
-  margin-top: ${({isTitle})=>isTitle?16:21}rem;
+  margin-top: ${({isTitle})=>isTitle?14:19}rem;
 
   width: 20.1rem;
 
