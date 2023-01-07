@@ -34,6 +34,7 @@ export default function TrackList(props: any) {
     setTrackHover(-1);
   }
 
+
   function playAudioOnTrack(id: number) {
     playAudio();
 
@@ -85,6 +86,7 @@ export default function TrackList(props: any) {
             <TrackBox>
               {((trackClick !== track.beatId && trackHover === track.beatId && trackHover !== -1) ||
                 (!play && trackClick === track.beatId && trackClick !== -1)) && (
+
                 <HoverPauseIcon onClick={() => playAudioOnTrack(track.beatId)} />
               )}
               {play && trackClick === track.beatId && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}

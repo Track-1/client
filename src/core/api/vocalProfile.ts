@@ -4,7 +4,7 @@ export async function getVocalProfile() {
   try {
     const data = await axios.get("/profile/vocal/:vocalId");
     data && console.log(data);
-    return data;
+    return data && data;
   } catch (e) {
     console.log(e);
   }

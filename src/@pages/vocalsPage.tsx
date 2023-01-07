@@ -18,7 +18,6 @@ export default function VocalsPage() {
     <>
       <CategoryHeader />
       <CategoryList />
-
     </>
   );
 }

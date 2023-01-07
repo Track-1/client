@@ -9,6 +9,7 @@ export default function UploadButtonModal(props: propsType): JSX.Element {
   const { ref } = props;
 
   return (
+
     <ModalBg>
       <UploadButtonModalWrapper ref={ref}>
         <VocalSearchingWrapper>

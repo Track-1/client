@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { useState, useLayoutEffect, useRef } from "react";
 import jacketImage from "../../assets/image/thumbnailImg.png";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
@@ -18,6 +19,7 @@ export default function Player(props: any) {
   const [producerName, setProducerName] = useState<string>();
   const [barWidth, setBarWidth] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
+
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -59,6 +61,7 @@ export default function Player(props: any) {
       audio.currentTime = currentStop;
     }
   }
+
 
   return (
     <PlayerContainer>
