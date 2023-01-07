@@ -9,8 +9,14 @@ export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
 
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length === 0) return;
-    
+    if (e.target.value.length === 0) {
+      if (vocalUploadImg === VocalUploadDefaultImg) {
+        setVocalUploadImg(VocalUploadDefaultImg);
+      } else {
+        return;
+      }
+    }
+
     if (e.target.files !== null) {
       const file = e.target.files as FileList;
       const fileUrl = URL.createObjectURL(e.target.files[0]);
