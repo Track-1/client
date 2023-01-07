@@ -2,23 +2,25 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { PauseBtnIc, PortfolioPlayBtnIc } from "../../assets";
 import { ProducerPortfolioType } from "../../type/producerProfile";
+import PortfoliosInform from "../@common/portfoliosInform";
 
 interface PropsType {
   portfolioData: ProducerPortfolioType[];
+  isMe: boolean;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData } = props;
+  const { portfolioData, isMe } = props;
 
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
 
   function hoverPortfolio(id: number) {
     setHoveredIndex(id);
   }
 
   function hoverOutPortfolio() {
-    setHoveredIndex(null);
+    setHoveredIndex(-1);
   }
 
   return (
@@ -26,29 +28,30 @@ export default function ProducerPortFolioList(props: PropsType) {
       {portfolioData.map((portfolio, index) => {
         return (
           <PortfolioBox
-            key={portfolio.producerPortfolioId}
-            isLarge={index === 0 || clickedIndex === portfolio.producerPortfolioId}
-            onMouseEnter={() => hoverPortfolio(portfolio.producerPortfolioId)}
+            key={portfolio.id}
+            isLarge={index === 0 || clickedIndex === portfolio.id}
+            onMouseEnter={() => hoverPortfolio(portfolio.id)}
             onMouseLeave={hoverOutPortfolio}
             index={index}
-            onClick={() => setClickedIndex(portfolio.producerPortfolioId)}>
+            onClick={() => setClickedIndex(portfolio.id)}>
             <div>
               <PortfolioImage
                 src={portfolio.jacketImage}
-                isLarge={index === 0 || clickedIndex === portfolio.producerPortfolioId}
+                isLarge={index === 0 || clickedIndex === portfolio.id}
                 index={index}
               />
             </div>
-            {index === 0 && hoveredIndex === portfolio.producerPortfolioId && <PortfolioPlayBtnIcon />}
-            {hoveredIndex === portfolio.producerPortfolioId && <PauseBtnIcon />}
+            {index === 0 && hoveredIndex === portfolio.id && <PortfolioPlayBtnIcon />}
+            {hoveredIndex === portfolio.id && <PauseBtnIcon />}
             {index === 0 &&
-              hoveredIndex !== portfolio.producerPortfolioId &&
+              hoveredIndex !== portfolio.id &&
               clickedIndex !== null &&
-              clickedIndex !== portfolio.producerPortfolioId && <AudioTitle>{portfolio.title}</AudioTitle>}
+              clickedIndex !== portfolio.id && <AudioTitle>{portfolio.title}</AudioTitle>}
             {index !== 0 && <AudioTitle>{portfolio.title}</AudioTitle>}
           </PortfolioBox>
         );
       })}
+      {portfolioData&&<PortfoliosInform isMe={isMe} hoverId={hoveredIndex} clickId={clickedIndex} portfolios={portfolioData} profileState={"Porfolio"}/>}
     </ProfileListContainer>
   );
 }
