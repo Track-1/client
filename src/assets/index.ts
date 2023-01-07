@@ -98,3 +98,5 @@ export { ReactComponent as VocalHoverPlayIc } from "./icon/vocalHoverPlayIc.svg"
 export { ReactComponent as VocalHoverPauseIc } from "./icon/vocalHoverPauseIc.svg";
 export { ReactComponent as PortfolioPlayBtnIc } from "./icon/portfolioPlayBtnIc.svg";
 export { ReactComponent as RightArrorIc } from "./icon/rightArrorIc.svg";
+export { ReactComponent as ProducerProfilePauseIc } from "./icon/producerProfilePauseIc.svg";
+export { ReactComponent as ProducerProfilePlayIc } from "./icon/producerProfilePlayIc.svg";

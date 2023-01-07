@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { PauseBtnIc, PortfolioPlayBtnIc } from "../../assets";
+import { PauseBtnIc, PortfolioPlayBtnIc,ProducerProfilePauseIc,ProducerProfilePlayIc } from "../../assets";
 import { ProducerPortfolioType } from "../../type/producerProfile";
 import PortfoliosInform from "../@common/portfoliosInform";
 
@@ -16,12 +16,22 @@ export default function ProducerPortFolioList(props: PropsType) {
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
 
+  const [play, setPlay] = useState<boolean>(false);
+
   function hoverPortfolio(id: number) {
     setHoveredIndex(id);
   }
 
   function hoverOutPortfolio() {
     setHoveredIndex(-1);
+  }
+  function clickPauseIc(id: number) {
+    setPlay(true);
+    setClickedIndex(id);
+  }
+
+  function clickPlayIc() {
+    setPlay(false);
   }
 
   return (
@@ -39,6 +49,23 @@ export default function ProducerPortFolioList(props: PropsType) {
             producerPortfolioClickBool={clickedIndex === portfolio.id}
             onClick={() => setClickedIndex(portfolio.id)}>
             <div>
+            {/* <PortfolioPlayBtnIcon />
+            <PauseBtnIcon /> */}
+            {((clickedIndex === portfolio.id &&
+              clickedIndex !== portfolio.id &&
+              hoveredIndex !== -1) ||
+              (!play &&
+                hoveredIndex === portfolio.id &&
+                hoveredIndex !== -1)) && (
+              <ProducerProfilePauseIcon onClick={() => clickPauseIc(portfolio.id)} />
+            )}
+            {play &&
+              clickedIndex === portfolio.id &&
+              hoveredIndex === portfolio.id &&
+              hoveredIndex !== -1 &&
+              clickedIndex !== -1 && <ProducerProfilePlayIcon onClick={clickPlayIc}/>}
+
+
             {hoveredIndex === portfolio.id && hoveredIndex !== -1 && (
               <ProducerPorfolioBlur index={index} producerPortfolioClickBool={clickedIndex === portfolio.id} profileState={profileState}/>
             )}
@@ -51,8 +78,6 @@ export default function ProducerPortFolioList(props: PropsType) {
                 clickBool={clickedIndex === portfolio.id}
               />
             </div>
-            {index === 0 && hoveredIndex === portfolio.id && <PortfolioPlayBtnIcon />}
-            {hoveredIndex === portfolio.id && <PauseBtnIcon />}
             {index === 0 &&
               hoveredIndex !== portfolio.id &&
               clickedIndex !== null &&
@@ -141,8 +166,8 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
 `;
 
 const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string, clickBool:boolean }>`
-  height: ${({ clickBool,profileState }) => (clickBool ? 42 : 21.8)}rem;
-  width: ${({ clickBool,profileState }) => (clickBool ? 42 : 21.8)}rem;
+  height: ${({ clickBool,index,profileState }) => ((index===0&&profileState!=="Vocal Searching")||clickBool ? 42 : 21.8)}rem;
+  width: ${({ clickBool,index,profileState }) => ((index===0&&profileState!=="Vocal Searching")||clickBool ? 42 : 21.8)}rem;
 
   :hover {
     
@@ -150,24 +175,20 @@ const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileStat
   /* opacity: ${({clickBool})=>clickBool?1:0.2}; */
 `;
 
-const PortfolioPlayBtnIcon = styled(PortfolioPlayBtnIc)`
-  height: 5.2rem;
-  width: 5.2rem;
-
+const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
   position: absolute;
-  pointer-events: none;
+  z-index: 100;
+  /* pointer-events: none; */
 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
 
-const PauseBtnIcon = styled(PauseBtnIc)`
-  height: 5.2rem;
-  width: 5.2rem;
-
+const ProducerProfilePlayIcon = styled(ProducerProfilePauseIc)`
   position: absolute;
-  pointer-events: none;
+  z-index: 100;
+  /* pointer-events: none; */
 
   top: 50%;
   left: 50%;
