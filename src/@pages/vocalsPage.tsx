@@ -23,6 +23,7 @@ export default function VocalsPage() {
   return (
     <>
       <CategoryHeader />
+
       {showPlayer && <Player />}
 
       <VocalSearchPageWrapper>
@@ -35,6 +36,7 @@ export default function VocalsPage() {
           <VocalList />
         </VocalListWrapper>
       </VocalSearchPageWrapper>
+
     </>
   );
 }
