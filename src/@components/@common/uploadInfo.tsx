@@ -154,7 +154,7 @@ export default function UploadInfo() {
               <InputFileTextWrapper editFileName={editFileName}>
                 <FileName value={editFileName} isTextOverflow={isTextOverflow} disabled />
                 {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>.wav</FileAttribute>}
-                <InputFileText
+                <input
                   type="file"
                   id="fileUpload"
                   style={{ display: "none" }}
@@ -421,18 +421,6 @@ const InputFileTextWrapper = styled.div<{ editFileName: string }>`
   align-items: center;
   border-bottom: 1px solid
     ${(props) => (props.editFileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
-`;
-
-const InputFileText = styled.input`
-  /* height: 2.5rem;
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-
-  ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.white};
-  margin-top: 1.686rem; */
 `;
 
 const InputCategoryTextWrapper = styled.div`
