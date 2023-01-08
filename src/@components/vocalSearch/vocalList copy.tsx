@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -13,14 +13,19 @@ export default function VocalList() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [beatId, setBeatId] = useRecoilState<number>(selectedId);
+
   const [vocalData, setVocalData] = useState<VocalSearchType[]>();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const loadMore = () => setPageNumber((prev) => prev + 1);
+  const target = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     getVocalsData().then((result) => result && setVocalData(result.data));
-  }, []);
-
+  }, [pageNumber]);
+  console.log(vocalData);
   function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
   }
@@ -45,9 +50,21 @@ export default function VocalList() {
   function clickVocalName(id: number) {
     navigate("/vocal-profile", { state: id });
   }
+  let num = 1;
+  useEffect(() => {
+    if (loading) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          num++;
+          loadMore();
+        }
+      });
+      observer.observe(target.current!);
+    }
+  }, []);
 
   return (
-    <VocalListContainer>
+    <VocalListContainer ref={target}>
       {vocalData &&
         vocalData.map((vocal) => (
           <VocalContainer key={vocal.vocalId}>
