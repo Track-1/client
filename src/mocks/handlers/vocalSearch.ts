@@ -2,6 +2,8 @@ import { rest } from "msw";
 
 export const vocalSearchHandler = [
   rest.get("/vocals", async (req, res, ctx) => {
+   // const page = req.url.searchParams.get("page");
+
     return res(
       ctx.status(200),
       ctx.json([
