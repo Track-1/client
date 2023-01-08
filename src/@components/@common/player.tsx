@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import jacketImage from "../../assets/image/thumbnailImg.png";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
 import { playMusic, showPlayerBar } from "../../recoil/player";
@@ -34,6 +34,17 @@ export default function Player(props: PropsType) {
   useLayoutEffect(() => {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
+
+  function createTimeText(time: number) {
+    const currentSecond = Math.round(time);
+    const minute =
+      parseInt(String(currentSecond / 60)) < 10
+        ? `0${parseInt(String(currentSecond / 60))}`
+        : `${parseInt(String(currentSecond / 60))}`;
+
+    const second = currentSecond % 60 < 10 ? `0${currentSecond % 60}` : `${currentSecond % 60}`;
+    return minute + ":" + second;
+  }
 
   function quitAudio() {
     audio.pause();
@@ -87,10 +98,10 @@ export default function Player(props: PropsType) {
           </PlayerInformText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
-            {Math.round(audio.currentTime)}
+            {createTimeText(Math.round(audio.currentTime))}
           </PlayerInformText>
           <PlayerInformText width={30} whiteText={false}>
-            {duration}
+            {createTimeText(Math.round(duration))}
           </PlayerInformText>
           <QuitIcon onClick={quitAudio} />
         </PlayerInformWrapper>
