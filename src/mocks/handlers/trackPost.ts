@@ -11,6 +11,7 @@ export const trackPostHandler = [
           beatWavFile: "AWS S3 beat wav file url1",
           title: "제목1",
           producerName: "프로듀서1",
+          producerId : 1,
           producerProfileImage: "AWS S3 profile image file url1",
           introduce: "게시글 소개",
           keyword: ["신나는", "힙한"],
