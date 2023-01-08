@@ -2,7 +2,7 @@ import { rest } from "msw";
 
 export const vocalSearchHandler = [
   rest.get("/vocals", async (req, res, ctx) => {
-   // const page = req.url.searchParams.get("page");
+    // const page = req.url.searchParams.get("page");
 
     return res(
       ctx.status(200),
@@ -236,6 +236,7 @@ export const vocalSearchHandler = [
       ctx.status(200),
       ctx.json([
         {
+          vocalId: 1,
           vocalProfileImage: "AWS S3 bucket 보컬 프로필 URL",
           vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
           vocalName: "보컬3",
@@ -246,6 +247,7 @@ export const vocalSearchHandler = [
           totalCategNum: 8,
         },
         {
+          vocalId: 2,
           vocalProfileImage: "AWS S3 bucket 보컬 프로필 URL",
           vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
           vocalName: "보컬8",
