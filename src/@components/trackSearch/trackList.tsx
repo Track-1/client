@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   TitleTextIc,
@@ -9,26 +9,44 @@ import {
   HoverPlayIc,
 } from "../../assets";
 import tracks from "../../mocks/tracksListDummy.json";
-import { showPlayerBar, playMusic, trackClicked, selectedId, currentAudioTime } from "../../recoil/player";
+import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
+import { TracksDataType } from "../../type/tracksDataType";
 
 interface PropsType {
   audio: HTMLAudioElement;
   playAudio: () => void;
   pauseAudio: () => void;
+  tracksData: TracksDataType[];
+  duration: number;
+  getDuration: (durationTime: number) => void;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, playAudio, pauseAudio } = props;
+  const { audio, playAudio, pauseAudio, tracksData, duration, getDuration } = props;
 
   const [trackHover, setTrackHover] = useState<number>(-1);
 
-  const [trackClick, setTrackClick] = useRecoilState<number>(trackClicked);
+  const [trackClick, setTrackClick] = useState<number>(-1);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [beatId, setBeatId] = useRecoilState<number>(selectedId);
-  const [currentTime, setCurrentTime] = useRecoilState<number>(currentAudioTime);
+  const [beatId, setBeatId] = useState<number>();
+  const [currentTime, setCurrentTime] = useState<number>();
+
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+
+  useEffect(() => {
+    playAudio();
+  }, [currentFile]);
+
+  useEffect(() => {
+    setCurrentFile(tracksData[trackClick]?.wavFile);
+    audio.src = tracksData[trackClick]?.wavFile;
+    getDuration(tracksData[trackClick]?.wavFileLength);
+
+    console.log(trackClick);
+  }, [trackClick]);
 
   const navigate = useNavigate();
 
@@ -41,13 +59,16 @@ export default function TrackList(props: PropsType) {
   }
 
   function playAudioOnTrack(id: number) {
-    playAudio();
+    if (trackClick === id) {
+      audio.play();
+      setPlay(true);
+    } else {
+      setPlay(true);
 
-    setPlay(true);
-
-    setShowPlayer(true);
-    setBeatId(id);
-    setTrackClick(id);
+      setShowPlayer(true);
+      setBeatId(id);
+      setTrackClick(id);
+    }
   }
 
   function pauseAudioOnTrack() {
@@ -63,6 +84,7 @@ export default function TrackList(props: PropsType) {
     setBeatId(id);
 
     navigate("/track-post");
+    setShowPlayer(false);
   }
 
   function moveProducerProfilePage(id: number) {
@@ -79,26 +101,26 @@ export default function TrackList(props: PropsType) {
       </CategoryWrapper>
 
       <TracksWrapper>
-        {tracks.map((track) => (
+        {tracksData.map((track, index) => (
           <Tracks
             key={track.beatId}
-            onMouseEnter={() => mouseOverTrack(track.beatId)}
+            onMouseEnter={() => mouseOverTrack(index)}
             onMouseLeave={mouseOutTrack}
             showPlayer={showPlayer}
-            trackHoverBool={trackHover === track.beatId}
-            trackClickBool={trackClick === track.beatId}
+            trackHoverBool={trackHover === index}
+            trackClickBool={trackClick === index}
             trackClick={trackClick}>
             <TrackBox>
-              {((trackClick !== track.beatId && trackHover === track.beatId && trackHover !== -1) ||
-                (!play && trackClick === track.beatId && trackClick !== -1)) && (
-                <HoverPauseIcon onClick={() => playAudioOnTrack(track.beatId)} />
+              {((trackClick !== index && trackHover === index && trackHover !== -1) ||
+                (!play && trackClick === index && trackClick !== -1)) && (
+                <HoverPauseIcon onClick={() => playAudioOnTrack(index)} />
               )}
-              {play && trackClick === track.beatId && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
-              <Thumbnail src={require("../../assets/image/" + track.jacketImage + ".png")} alt="썸네일" />
+              {play && trackClick === index && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
+              <Thumbnail src={track.jacketImage} alt="썸네일" />
               <TrackText width={36.8} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} onClick={() => moveProducerProfilePage(track.producerId)}>
+              <TrackText width={21.3} onClick={() => moveProducerProfilePage(track.beatId)}>
                 {track.producerName}
               </TrackText>
               <TrackText width={20.5}>{track.category}</TrackText>
