@@ -16,10 +16,28 @@ import {
 export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
+  let categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
+  const [category, setCategory] = useState<string[]>([
+    "R&B",
+    "Hiphop",
+    "Ballad",
+    "Pop",
+    "Rock",
+    "EDM",
+    "Jazz",
+    "House",
+    "Funk",
+  ]);
+
+  const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [editFileName, setEditFileName] = useState<string>("");
   const [realFileName, setRealFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
+
+  const [isHoverMenu, setIsHoverMenu] = useState<boolean>(false);
+  const [genre, setGenre] = useState<string>("");
+  const [categoryState, setCategoryState] = useState<boolean>(false);
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
@@ -39,6 +57,15 @@ export default function UploadInfo() {
     }
   }
 
+  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
+    setGenre(e.currentTarget.innerText);
+    setCategoryState(true);
+  }
+
+  function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
+    setHiddenDropBox((prev) => !prev);
+  }
+
   function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
     let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
@@ -50,6 +77,17 @@ export default function UploadInfo() {
     } else {
       setIsTextOverflow(false);
       setEditFileName(uploadName);
+    }
+  }
+
+  function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
+    const index = category.indexOf(e.currentTarget.innerText);
+
+    e.type === "mouseenter" ? setIsHoverMenu(true) : setIsHoverMenu(false);
+    if (e.type === "mouseenter") {
+      categoryRefs.current[index]!.style.color = "#ffffff";
+    } else {
+      categoryRefs.current[index]!.style.color = "#535559";
     }
   }
 
@@ -124,6 +162,7 @@ export default function UploadInfo() {
       }
     }
   }, [hashtagInputWidth]);
+  
 
   return (
     <Container>
@@ -176,10 +215,12 @@ export default function UploadInfo() {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              <InputCategoryTextWrapper>
-                <InputCategoryText>Select</InputCategoryText>
+              <InputCategoryTextWrapper categoryState={categoryState}>
+                <InputCategoryText categoryState={categoryState} onClick={showDropBox}>
+                  {categoryState ? `${genre}` : "Select"}
+                </InputCategoryText>
               </InputCategoryTextWrapper>
-              <CategoryDropDownIcon />
+              <CategoryDropDownIcon onClick={showDropBox} />
             </InputWrapper>
           </InputBox>
         </InfoItemBox>
@@ -290,7 +331,21 @@ export default function UploadInfo() {
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
-      {/* <DropDownMenuContainer></DropDownMenuContainer> */}
+      <DropMenuBox hiddenDropBox={hiddenDropBox}>
+        <DropMenuWrapper>
+          {category.map((text: string, index: number) => (
+            <DropMenuItem
+              onMouseEnter={hoverMenu}
+              onMouseLeave={hoverMenu}
+              onClick={selectCategory}
+              ref={(element) => {
+                categoryRefs.current[index] = element;
+              }}>
+              <DropMenuText>{text}</DropMenuText>
+            </DropMenuItem>
+          ))}
+        </DropMenuWrapper>
+      </DropMenuBox>
     </Container>
   );
 }
@@ -423,14 +478,15 @@ const InputFileTextWrapper = styled.div<{ editFileName: string }>`
     ${(props) => (props.editFileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
-const InputCategoryTextWrapper = styled.div`
-  height: 4.7rem;
+const InputCategoryTextWrapper = styled.div<{ categoryState: boolean }>`
+  height: 4.2rem;
   width: 9.9rem;
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: 1px solid
+    ${(props) => (props.categoryState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
-const InputCategoryText = styled.div`
+const InputCategoryText = styled.div<{ categoryState: boolean }>`
   height: 2rem;
   width: 100%;
 
@@ -438,8 +494,9 @@ const InputCategoryText = styled.div`
   align-items: center;
 
   ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.gray3};
-  margin-top: 1.4rem;
+  color: ${(props) => (props.categoryState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+  margin-top: 1.5rem;
+  cursor: pointer;
 `;
 
 const InputHashtagWrapper = styled.div`
@@ -520,17 +577,39 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
-// const DropDownMenuContainer = styled.div`
-//   height: 36rem;
-//   width: 13rem;
+const DropMenuBox = styled.div<{ hiddenDropBox: boolean }>`
+  display: ${(props) => (props.hiddenDropBox ? "none" : "default")};
+  width: 13rem;
 
-//   position: absolute;
-//   top: 38.8rem;
-//   left: 20.7rem;
-//   background: rgba(30, 32, 37, 0.7);
-//   backdrop-filter: blur(6.5px);
-//   border-radius: 0.5rem;
-// `;
+  position: absolute;
+  top: 54.4rem;
+  left: 103.7rem;
+  background: rgba(30, 32, 37, 0.7);
+  backdrop-filter: blur(6.5px);
+  border-radius: 0.5rem;
+`;
+
+const DropMenuWrapper = styled.ul`
+  width: 100%;
+
+  margin: 0.8rem 0;
+`;
+
+const DropMenuItem = styled.li`
+  height: 3.2rem;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  ${({ theme }) => theme.fonts.hashtag};
+  color: ${({ theme }) => theme.colors.gray3};
+  cursor: pointer;
+`;
+
+const DropMenuText = styled.p`
+  height: 2rem;
+  margin-left: 2rem;
+`;
 
 const WarningIcon = styled.div`
   height: 3rem;
@@ -547,6 +626,7 @@ const FolderUploadIcon = styled(FolderUploadIc)`
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
   margin-top: 0.9rem;
+  cursor: pointer;
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
