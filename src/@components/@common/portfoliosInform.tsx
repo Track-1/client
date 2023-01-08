@@ -1,20 +1,18 @@
 import styled from "styled-components";
 import { PortfolioPropsType } from "../../type/profilePropsType";
 import {VocalPortfolioTitleTextIc,ProducerPortfolioTitleTextIc,UploadButtonIc,EllipsisIc,BlankIc,UploadButtonBlankIc} from "../../assets"
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from '../../recoil/tracksOrVocalsCheck';
 import { useEffect, useRef, useState } from 'react';
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton"
 import { useNavigate } from 'react-router-dom';
 import TracksProfileUploadModal from "./tracksProfileUploadModal";
+import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 
 export default function PortfoliosInform(props:PortfolioPropsType) {
-  const isMe=props.isMe;
-  const hoverId=props.hoverId;
-  const clickId=props.clickId;
+  const {isMe,hoverId,clickId,profileState}=props;
   const porftolios=props.portfolios;
-  const profileState=props.profileState;
   const portfolioHoverInformation=porftolios.filter((portfolio) => portfolio.id === hoverId)[0];
   const portfolioClickInformation=porftolios.filter((portfolio) => portfolio.id === clickId)[0];
   const tracksOrVocals=useRecoilValue(tracksOrVocalsCheck)
@@ -22,7 +20,7 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
   const portfolioInforms=(!isBool&&hoverId!==-1||isBool&&hoverId!==-1)?portfolioHoverInformation:portfolioClickInformation
   const isTitle=portfolioInforms&&portfolioInforms.isTitle
   const [openEllipsisModal, setOpenEllipsisModal]=useState<boolean>(false)
-  const [openUploadModal, setOpenUploadModal]=useState<boolean>(true)
+  const [openUploadModal, setOpenUploadModal]=useRecoilState<boolean>(uploadButtonClicked)
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate=useNavigate()
 
@@ -52,21 +50,21 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
       {/* 나인 경우 업로드 버튼이 떠요 */}
     {isMe?<UploadButtonIcon onClick={clickUploadButton}/>:<UploadButtonBlankIcon/>}
 
-    {(portfolioInforms)&&(
+    {portfolioInforms&&
       <>
       <InformWrapper>
-      {profileState==="Vocal Searching"&&<PortfoiloViewMoreButton/>}
 
       <InformTitleWrapper>
         {/* 누른 곡이 타이틀곡인 경우, 색깔이 다른 타이틀 아이콘이 뜹니다. 프로듀서 프로핑-보컬서칭의 경우는 타이틀곡이 아예 존재하지 않아요 */}
+      {profileState==="Vocal Searching"&&!(!isBool&&hoverId!==-1)&&<PortfoiloViewMoreButton onClick={()=>navigate('/tracks/'+`${clickId}`)}/>}
       {isTitle&&tracksOrVocals==="Tracks"&&profileState!=="Vocal Searching"&&<ProducerPortfolioTitleTextIc/>}
       {isTitle&&tracksOrVocals==="Vocals"&&profileState!=="Vocal Searching"&&<VocalPortfolioTitleTextIc/>}
-      {!isTitle&&<BlankIc/>}
+      {(!isTitle||profileState!=="Vocal Searching")&&<BlankIc/>}
       {/* 나인 경우는 더보기 버튼이 떠요, 더보기 버튼은 모달 컴포넌트로 따로 구현했어요. */}
       {isMe&&!(!isBool&&hoverId!==-1)&&(
       <>
-        {profileState!=="Vocal Searching"&&<EllipsisIcon onClick={clickEllipsis}/>}
-        {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef}/>}
+        {<EllipsisIcon onClick={clickEllipsis}/>}
+        {openEllipsisModal&&<PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef} profileState={profileState}/>}
         </>
       )}
       </InformTitleWrapper>
@@ -76,10 +74,10 @@ export default function PortfoliosInform(props:PortfolioPropsType) {
 
       <InformContent>{portfolioInforms.content}</InformContent>
       <InformTagWrapper>
-      {portfolioInforms.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
+      { portfolioInforms.keyword.map((tag, idx)=>(<InformTag key={idx} textLength={tag.length}>#{tag}</InformTag>))}
       </InformTagWrapper>
       </>
-    )}   
+    }   
     </PortfolioInformWrapper>
   )
 }

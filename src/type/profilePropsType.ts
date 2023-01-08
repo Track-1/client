@@ -5,7 +5,6 @@ export interface PortfolioType{
     isTitle:boolean;
     jacketImage:string;
     keyword:string[]
-    length:number
     title:string;
     id:number;
     wavFileLength:number;

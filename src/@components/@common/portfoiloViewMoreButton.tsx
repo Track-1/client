@@ -1,7 +1,13 @@
 import styled,{ keyframes} from "styled-components"
 import {ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc} from "../../assets"
 
-export default function PortfoiloViewMoreButton() {
+interface ClickEventPropsType{
+    onClick: (e: React.MouseEvent<HTMLElement>) => void;
+}
+
+
+export default function PortfoiloViewMoreButton(props:ClickEventPropsType) {
+
   return (
     <ViewMoreButtonWrapper>
         <ProducerVocalSearchingArrowIcon/>
@@ -13,6 +19,8 @@ export default function PortfoiloViewMoreButton() {
 const ViewMoreButtonWrapper=styled.div`
     display: flex;
     flex-direction: column;
+
+    width: 30rem;
 `
 
 const arrowSliding=keyframes`
@@ -25,6 +33,7 @@ const arrowSliding=keyframes`
 `
 const ProducerVocalSearchingArrowIcon=styled(ProducerVocalSearchingArrowIc)`
     cursor: pointer;
+    overflow: visible;
     
     &:hover{
         animation-name: ${arrowSliding};
