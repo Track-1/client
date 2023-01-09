@@ -105,8 +105,8 @@ export default function VocalList(props: PropsType) {
               isClickVocal={clickVocal === vocal.vocalId}
               clickVocal={clickVocal}>
               <GradientLine>
-                <AlbumCoverImg
-                  src={require("../../assets/image/" + vocal.vocalProfileImage + ".png")}
+                <AlbumCoverImg              
+                  src={vocal.vocalProfileImage}
                   alt="앨범자켓사진"
                 />
               </GradientLine>
