@@ -216,11 +216,6 @@ const AlbumCoverImg = styled.img`
   transform: rotate(-45deg);
   object-fit:cover;
 
-  /* width: 35rem;
-  height: 35rem; */
-  /* margin-top: -2rem;
-  margin-left: -5rem; */
-
   width: 130%;
   height: 130%;
   bottom: 3rem;
