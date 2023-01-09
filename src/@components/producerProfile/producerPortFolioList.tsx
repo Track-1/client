@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { PauseBtnIc, PortfolioPlayBtnIc,ProducerProfilePauseIc,ProducerProfilePlayIc } from "../../assets";
-import { playMusic } from "../../recoil/player";
+import { PauseBtnIc, PortfolioPlayBtnIc, ProducerProfilePauseIc, ProducerProfilePlayIc } from "../../assets";
+import { playMusic, showPlayerBar, audioFile } from "../../recoil/player";
 import { ProducerPortfolioType } from "../../type/producerProfile";
 import PortfoliosInform from "../@common/portfoliosInform";
 
@@ -10,14 +10,22 @@ interface PropsType {
   portfolioData: ProducerPortfolioType[];
   isMe: boolean;
   profileState: string;
-  stateChange:boolean;
+  stateChange: boolean;
+  audio: HTMLAudioElement;
+  playAudio: () => void;
+  pauseAudio: () => void;
+  duration: number;
+  getDuration: (durationTime: number) => void;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState,stateChange } = props;
+  const { portfolioData, isMe, profileState, stateChange, audio, playAudio, pauseAudio, duration, getDuration } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+  const [beatId, setBeatId] = useState<number>();
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
@@ -28,98 +36,134 @@ export default function ProducerPortFolioList(props: PropsType) {
   function hoverOutPortfolio() {
     setHoveredIndex(-1);
   }
-  function clickPauseIc(id: number) {
-    setPlay(true);
-    setClickedIndex(id);
-  }
+  // function clickPauseIc(id: number) {
+  //   setPlay(true);
+  //   setClickedIndex(id);
+  // }
 
-  function clickPlayIc() {
-    setPlay(false);
-  }
+  // function clickPlayIc() {
+  //   setPlay(false);
+  // }
 
-  useEffect(()=>{
+  useEffect(() => {
     setHoveredIndex(-1);
     setClickedIndex(-1);
     setPlay(false);
-  },[stateChange])
-  
+  }, [stateChange]);
+
+  useEffect(() => {
+    playAudio();
+  }, [currentFile]);
+
+  useEffect(() => {
+    setCurrentFile(portfolioData[clickedIndex]?.beatWavFile);
+    audio.src = portfolioData[clickedIndex]?.beatWavFile;
+    getDuration(portfolioData[clickedIndex]?.wavFileLength);
+
+    console.log(clickedIndex);
+  }, [clickedIndex]);
+
+  function playAudioOnTrack(id: number) {
+    if (clickedIndex === id) {
+      audio.play();
+      setPlay(true);
+    } else {
+      setPlay(true);
+
+      setShowPlayer(true);
+      setBeatId(id);
+      setClickedIndex(id);
+    }
+  }
 
   return (
     <>
-    <ProfileListContainer>
-      {portfolioData.map((portfolio, index) => {
-        return (
-          <PortfolioBox
-            key={portfolio.id}
-            isLarge={index === 0 || clickedIndex === portfolio.id}
-            onMouseEnter={() => hoverPortfolio(portfolio.id)}
-            onMouseLeave={hoverOutPortfolio}
-            index={index}
+      <ProfileListContainer>
+        {portfolioData.map((portfolio, index) => {
+          return (
+            <PortfolioBox
+              key={portfolio.id}
+              isLarge={index === 0 || clickedIndex === index}
+              onMouseEnter={() => hoverPortfolio(index)}
+              onMouseLeave={hoverOutPortfolio}
+              index={index}
+              profileState={profileState}
+              producerPortfolioClickBool={clickedIndex === index}>
+              <div>
+                {((hoveredIndex === index && clickedIndex !== index && hoveredIndex !== -1) ||
+                  (!play && hoveredIndex === index && clickedIndex === index && hoveredIndex !== -1)) && (
+                  <ProducerProfilePauseIcon onClick={() => playAudioOnTrack(index)} />
+                )}
+                {play &&
+                  clickedIndex === index &&
+                  hoveredIndex === index &&
+                  hoveredIndex !== -1 &&
+                  clickedIndex !== -1 && <ProducerProfilePlayIcon onClick={pauseAudio} />}
+
+                {hoveredIndex === index && hoveredIndex !== -1 && (
+                  <ProducerPorfolioBlur
+                    index={index}
+                    producerPortfolioClickBool={clickedIndex === index}
+                    profileState={profileState}
+                  />
+                )}
+
+                <PortfolioImage
+                  src={portfolio.jacketImage}
+                  isLarge={index === 0 || clickedIndex === index}
+                  index={index}
+                  profileState={profileState}
+                  clickBool={clickedIndex === index}
+                />
+              </div>
+              <TitleWrapper>
+                {index === 0 && hoveredIndex !== index && clickedIndex !== null && clickedIndex !== index && (
+                  <AudioTitle hoverBool={hoveredIndex === index} clickBool={clickedIndex === index}>
+                    {portfolio.title}
+                  </AudioTitle>
+                )}
+                {index !== 0 && (
+                  <AudioTitle hoverBool={hoveredIndex === index} clickBool={clickedIndex === index}>
+                    {portfolio.title}
+                  </AudioTitle>
+                )}
+              </TitleWrapper>
+            </PortfolioBox>
+          );
+        })}
+      </ProfileListContainer>
+      {portfolioData && (
+        <InformWrapper>
+          <PortfoliosInform
+            isMe={isMe}
+            hoverId={hoveredIndex}
+            clickId={clickedIndex}
+            portfolios={portfolioData}
             profileState={profileState}
-            producerPortfolioClickBool={clickedIndex === portfolio.id}
-          >
-            <div>
-            {((hoveredIndex === portfolio.id &&
-              clickedIndex !== portfolio.id &&
-              hoveredIndex !== -1) ||
-              (!play &&
-                hoveredIndex === portfolio.id &&
-                clickedIndex === portfolio.id &&
-                hoveredIndex !== -1)) && (
-              <ProducerProfilePauseIcon onClick={() => clickPauseIc(portfolio.id)} />
-            )}
-            {play &&
-              clickedIndex === portfolio.id &&
-              hoveredIndex === portfolio.id &&
-              hoveredIndex !== -1 &&
-              clickedIndex !== -1 && <ProducerProfilePlayIcon onClick={clickPlayIc}/>}
-
-            {hoveredIndex === portfolio.id && hoveredIndex !== -1 && (
-              <ProducerPorfolioBlur index={index} producerPortfolioClickBool={clickedIndex === portfolio.id} profileState={profileState}/>
-            )}
-
-              <PortfolioImage
-                src={portfolio.jacketImage}
-                isLarge={index === 0 || clickedIndex === portfolio.id}
-                index={index}
-                profileState={profileState}
-                clickBool={clickedIndex === portfolio.id}
-              />
-            </div>
-            <TitleWrapper>
-            {index === 0 &&
-              hoveredIndex !== portfolio.id &&
-              clickedIndex !== null &&
-              clickedIndex !== portfolio.id && <AudioTitle hoverBool={hoveredIndex === portfolio.id} clickBool={clickedIndex === portfolio.id}>{portfolio.title}</AudioTitle>}
-            {index !== 0 && <AudioTitle hoverBool={hoveredIndex === portfolio.id} clickBool={clickedIndex === portfolio.id}>{portfolio.title}</AudioTitle>}
-            </TitleWrapper>
-          </PortfolioBox>
-        );
-      })}
-    </ProfileListContainer>
-    {portfolioData&&
-    (<InformWrapper>
-    <PortfoliosInform isMe={isMe} hoverId={hoveredIndex} clickId={clickedIndex} portfolios={portfolioData} profileState={profileState}/>
-    </InformWrapper>)}
+          />
+        </InformWrapper>
+      )}
     </>
   );
 }
 
-const TitleWrapper=styled.div`
+const TitleWrapper = styled.div`
   width: 14rem;
   height: 5rem;
 
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: normal;
-`
+`;
 
-const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickBool: boolean, profileState:string }>`
+const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickBool: boolean; profileState: string }>`
   position: absolute;
   z-index: 3;
 
-  width: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
-  height: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
+  width: ${({ producerPortfolioClickBool, profileState, index }) =>
+    (index === 0 && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
+  height: ${({ producerPortfolioClickBool, profileState, index }) =>
+    (index === 0 && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
 
   border-radius: 50%;
 
@@ -129,10 +173,9 @@ const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickB
   backdrop-filter: blur(2rem);
 `;
 
-
-const InformWrapper=styled.div`
+const InformWrapper = styled.div`
   margin-left: -77.2rem;
-`
+`;
 
 const ProfileListContainer = styled.section`
   width: 47.8rem;
@@ -154,9 +197,16 @@ const ProfileListContainer = styled.section`
   background-clip: content-box, border-box;
 `;
 
-const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileState:string, producerPortfolioClickBool:boolean }>`
-  width: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
-  height: ${({ producerPortfolioClickBool, profileState,index }) => ((index === 0&&profileState!=="Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8)}rem;
+const PortfolioBox = styled.article<{
+  isLarge: boolean;
+  index: number;
+  profileState: string;
+  producerPortfolioClickBool: boolean;
+}>`
+  width: ${({ producerPortfolioClickBool, profileState, index }) =>
+    (index === 0 && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
+  height: ${({ producerPortfolioClickBool, profileState, index }) =>
+    (index === 0 && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
 
   position: relative;
 
@@ -164,19 +214,21 @@ const PortfolioBox = styled.article<{ isLarge: boolean; index: number, profileSt
 
   overflow: hidden;
 
-  margin-top: ${({ index,profileState }) => (index === 0 && profileState!=="Vocal Searching" ? 3 : 4)}rem;
-  margin-top: ${({ index,profileState }) => (index === 0 && profileState==="Vocal Searching" &&13)}rem;
-  margin-top: ${({ index,profileState,producerPortfolioClickBool }) => (index === 0 && profileState==="Vocal Searching"&&producerPortfolioClickBool &&3)}rem;
-
+  margin-top: ${({ index, profileState }) => (index === 0 && profileState !== "Vocal Searching" ? 3 : 4)}rem;
+  margin-top: ${({ index, profileState }) => index === 0 && profileState === "Vocal Searching" && 13}rem;
+  margin-top: ${({ index, profileState, producerPortfolioClickBool }) =>
+    index === 0 && profileState === "Vocal Searching" && producerPortfolioClickBool && 3}rem;
 
   :hover {
-      box-shadow:0 0 4rem ${({ theme }) => theme.colors.sub1};
+    box-shadow: 0 0 4rem ${({ theme }) => theme.colors.sub1};
   }
 `;
 
-const PortfolioImage = styled.img<{ isLarge: boolean; index: number, profileState:string, clickBool:boolean }>`
-  height: ${({ clickBool,index,profileState }) => ((index===0&&profileState!=="Vocal Searching")||clickBool ? 42 : 21.8)}rem;
-  width: ${({ clickBool,index,profileState }) => ((index===0&&profileState!=="Vocal Searching")||clickBool ? 42 : 21.8)}rem;
+const PortfolioImage = styled.img<{ isLarge: boolean; index: number; profileState: string; clickBool: boolean }>`
+  height: ${({ clickBool, index, profileState }) =>
+    (index === 0 && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
+  width: ${({ clickBool, index, profileState }) =>
+    (index === 0 && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
 `;
 
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
@@ -197,9 +249,9 @@ const ProducerProfilePlayIcon = styled(ProducerProfilePlayIc)`
   transform: translate(-50%, -50%);
 `;
 
-const AudioTitle = styled.h1<{hoverBool:boolean, clickBool:boolean}>`
+const AudioTitle = styled.h1<{ hoverBool: boolean; clickBool: boolean }>`
   color: ${({ theme }) => theme.colors.gray2};
-  display: ${({hoverBool,clickBool})=>(hoverBool||clickBool)&&"none"};
+  display: ${({ hoverBool, clickBool }) => (hoverBool || clickBool) && "none"};
 
   ${({ theme }) => theme.fonts.id}
 
