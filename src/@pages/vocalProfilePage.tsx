@@ -34,7 +34,7 @@ export default function VocalProfilePage() {
   }, []);
 
 
-  const { data } = useQuery("vocalProfile", ()=>getVocalProfile(state)
+  const { data } = useQuery(["state",state], ()=>getVocalProfile(state)
   , {
     refetchOnWindowFocus: false, 
     retry: 0, 

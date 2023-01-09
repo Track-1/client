@@ -2,9 +2,13 @@ import axios from "axios";
 
 export async function getTrackInfo(props:number) {
   const state=props
-
   try {
-    const data = await axios.get(`/tracks/${state}`);
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`,
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
     data && console.log(data);
     return data;
   } catch (e) {

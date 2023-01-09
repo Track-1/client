@@ -32,6 +32,7 @@ import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/common/categoryHeader";
+import { setEmitFlags } from "typescript";
 
 export default function TrackPostPage() {
   const audio = useMemo(() => new Audio(), []);
@@ -49,8 +50,13 @@ export default function TrackPostPage() {
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [title, setTitle]=useState<string>();
+  // const [trackPostData, setTrackPostData]=useState<string>();
+  // const [tags, setTags]=useState<string[]>();
+  // const [img, setImg]=useState<string>();
 
   const {state}=useLocation()
+  console.log(state)
 
   useEffect(() => {
     setWhom(Category.TRACKS); 
@@ -119,7 +125,7 @@ export default function TrackPostPage() {
     navigate(-1);
   }
 
-  const { data } = useQuery("trackPost",()=>getTrackInfo(state)
+  const { data } = useQuery(["state",state],()=>getTrackInfo(state)
   , {
     refetchOnWindowFocus: false, 
     retry: 0, 
@@ -127,15 +133,13 @@ export default function TrackPostPage() {
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
-        
+        setTrackInfoData(data?.data.data)
       }    
     },
     onError: error => {
       console.log("실패");
     }
   });
-
-  console.log(data?.data)
 
 
   return (
@@ -144,15 +148,16 @@ export default function TrackPostPage() {
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <>
+      {trackInfoData&&
         <PostSection>
           <TitleContainer>
             <BackButtonWrapper onClick={movePreviousPage}>
               <BackButton />
             </BackButtonWrapper>
-            <AudioTitle>ABCDFKGHIJKL</AudioTitle>
+            <AudioTitle>{trackInfoData.title}</AudioTitle>
             <ProducerBox>
               <ProducerProfile src={profileDummyImg}></ProducerProfile>
-              <NickName>newjeans_</NickName>
+              <NickName>trackPostData.producerName</NickName>
             </ProducerBox>
             <ButtonWrapper>
               {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
@@ -165,34 +170,29 @@ export default function TrackPostPage() {
           </TitleContainer>
           <InfoContainer>
             <PlayImageWrapper>
-              <PlayerImage src={playImg} alt="재생 이미지" />
+            <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
             </PlayImageWrapper>
             <DescriptionContainer>
               <CategoryBox>
                 <CategoryIcon />
-                Rock
+                {trackInfoData.category}
               </CategoryBox>
               <HashTagBox>
                 <HashTagIcon />
                 <TagWrapper>
-                  <HashTag text="#ABCDEFG" />
-                  <HashTag text="#ABCDEFG" />
-                  <HashTag text="#ABCDEFG" />
+                  {trackInfoData.keyword.map((tag:string)=>(<HashTag text={tag} />))}
                 </TagWrapper>
               </HashTagBox>
               <DescriptionBox>
                 <DescriptionIcon />
                 <TextBox>
-                  이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
-                  어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-                  곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
-                  어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-                  곡입니다
+                {trackInfoData.introduce}
                 </TextBox>
               </DescriptionBox>
             </DescriptionContainer>
           </InfoContainer>
         </PostSection>
+      }
       </>
       <CommentBtnIcon onClick={openComment} />
       {showPlayer && (
