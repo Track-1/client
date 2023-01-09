@@ -29,14 +29,14 @@ export default function VocalUpload() {
       <SectionWrapper>
         <VocalImageBox>
           <VocalImageFrame>
-            <label htmlFor="fileUpload" style={{ cursor: "pointer" }}>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" />
             </label>
           </VocalImageFrame>
         </VocalImageBox>
         <input
           type="file"
-          id="fileUpload"
+          id="imageFileUpload"
           style={{ display: "none" }}
           accept=".jpg,.jpeg,.png"
           onChange={uploadImage}

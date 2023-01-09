@@ -25,13 +25,13 @@ export default function TrackUpload() {
     <Container>
       <SectionWrapper>
         <TrackImageBox>
-          <label htmlFor="fileUpload" style={{ cursor: "pointer" }}>
+          <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
             <TrackUploadImage src={trackUploadImg} alt="트랙이미지" />
           </label>
         </TrackImageBox>
         <input
           type="file"
-          id="fileUpload"
+          id="imageFileUpload"
           style={{ display: "none" }}
           accept=".jpg,.jpeg,.png"
           onChange={uploadImage}
@@ -79,5 +79,5 @@ const TrackImageBox = styled.div`
 const TrackUploadImage = styled.img`
   width: 60.4rem;
   height: 60.4rem;
-  object-fit:cover;
+  object-fit: cover;
 `;

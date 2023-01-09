@@ -15,6 +15,7 @@ import {
 
 export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
+  const dropBoxRef = useRef<HTMLDivElement>(null);
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
   let categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
@@ -30,6 +31,8 @@ export default function UploadInfo() {
     "Funk",
   ]);
 
+  const [title, setTitle] = useState<string>("");
+  const [description, setDeiscription] = useState<string>("");
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [editFileName, setEditFileName] = useState<string>("");
   const [realFileName, setRealFileName] = useState<string>("");
@@ -51,6 +54,14 @@ export default function UploadInfo() {
 
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
 
+  function testBtn() {
+    console.log(title, genre, description, hashtags);
+  }
+
+  function closeDropBox(e: React.MouseEvent<HTMLDivElement>) {
+    console.dir(dropBoxRef.current);
+  }
+
   function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
       addHastag();
@@ -60,6 +71,7 @@ export default function UploadInfo() {
   function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
     setGenre(e.currentTarget.innerText);
     setCategoryState(true);
+    setHiddenDropBox(true);
   }
 
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
@@ -121,10 +133,12 @@ export default function UploadInfo() {
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setTextareaHeight(e.target.value);
     setDescriptionLength(e.target.value.length);
+    setDeiscription(descriptionTextarea.current!.value);
   }
 
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
     setTitleLength(e.target.value.length);
+    setTitle(e.target.value);
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -162,7 +176,22 @@ export default function UploadInfo() {
       }
     }
   }, [hashtagInputWidth]);
-  
+
+  console.log(hiddenDropBox);
+  useEffect(() => {
+    function clickOutside(e: any) {
+      console.log("hidden?", hiddenDropBox);
+
+      if (!hiddenDropBox && !dropBoxRef.current!.contains(e.target)) {
+        console.log("helo");
+        setHiddenDropBox((prev) => prev);
+      }
+    }
+    document.addEventListener("click", clickOutside);
+    return () => {
+      document.removeEventListener("click", clickOutside);
+    };
+  }, [hiddenDropBox]);
 
   return (
     <Container>
@@ -195,14 +224,14 @@ export default function UploadInfo() {
                 {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>.wav</FileAttribute>}
                 <input
                   type="file"
-                  id="fileUpload"
+                  id="wavFileUpload"
                   style={{ display: "none" }}
                   accept=".wav,.mp3"
                   onChange={uploadFile}
                   readOnly
                 />
               </InputFileTextWrapper>
-              <label htmlFor="fileUpload" style={{ cursor: "pointer" }}>
+              <label htmlFor="wavFileUpload" style={{ cursor: "pointer" }}>
                 <FolderUploadIcon />
               </label>
             </InputWrapper>
@@ -324,14 +353,16 @@ export default function UploadInfo() {
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
-
+      <button typeof="button" onClick={testBtn} style={{ backgroundColor: "blue" }}>
+        test
+      </button>
       <TextCount font={"description"} textareaMargin={textareaMargin}>
         <TextWrapper>
           <InputCount>{descriptionLength}</InputCount>
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
-      <DropMenuBox hiddenDropBox={hiddenDropBox}>
+      <DropMenuBox hiddenDropBox={hiddenDropBox} onClick={closeDropBox} ref={dropBoxRef}>
         <DropMenuWrapper>
           {category.map((text: string, index: number) => (
             <DropMenuItem
