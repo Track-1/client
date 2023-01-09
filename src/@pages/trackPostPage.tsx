@@ -27,9 +27,11 @@ import ditto from "../assets/audio/ditto.mp3";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useNavigate } from "react-router-dom";
+import { getTrackInfo } from "../core/api/trackPost";
+import { TrackInfoDataType } from "../type/tracksDataType";
 
 export default function TrackPostPage() {
-  const audio = useMemo(() => new Audio(ditto), [ditto]);
+  const audio = useMemo(() => new Audio(), []);
 
   const navigate = useNavigate();
 
@@ -39,8 +41,28 @@ export default function TrackPostPage() {
   const [progress, setProgress] = useState<number>(0);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
+  const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
+  const [duration, setCurrentDuration] = useState<number>(0);
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+
+  useEffect(() => {
+    async function getData() {
+      const data = await getTrackInfo();
+      console.log(data?.data[0]);
+      setTrackInfoData(data?.data[0]);
+    }
+
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (trackInfoData?.beatWavFile !== undefined) {
+      audio.src = trackInfoData?.beatWavFile;
+      console.log(audio.duration);
+      setCurrentDuration(trackInfoData?.wavFileLength);
+    }
+  }, [trackInfoData]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
@@ -54,30 +76,34 @@ export default function TrackPostPage() {
   }
 
   function playAudio() {
-    console.log("00", audio.currentTime);
     audio.play();
     setPlay(true);
     setShowPlayer(true);
-
-    audio.addEventListener("timeupdate", () => {
-      goProgress();
-    });
   }
 
   function pauseAudio() {
     console.log(audio.currentTime);
     audio.pause();
     setPlay(false);
-
-    audio.removeEventListener("timeupdate", () => {
-      goProgress();
-    });
   }
 
-  function goProgress() {
-    const currentDuration = (audio.currentTime / audio.duration) * 100;
+  useEffect(() => {
+    if (play) {
+      audio.addEventListener("timeupdate", () => {
+        goProgress();
+      });
+    } else {
+      audio.removeEventListener("timeupdate", () => {
+        goProgress();
+      });
+    }
+  }, [play]);
 
-    setProgress(currentDuration);
+  function goProgress() {
+    if (audio.duration) {
+      const currentDuration = (audio.currentTime / audio.duration) * 100;
+      setProgress(currentDuration);
+    }
   }
 
   function openComment() {
@@ -149,7 +175,9 @@ export default function TrackPostPage() {
         </PostSection>
       </>
       <CommentBtnIcon onClick={openComment} />
-      {showPlayer && <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} />}
+      {showPlayer && (
+        <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
+      )}
     </>
   );
 }

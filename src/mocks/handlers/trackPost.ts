@@ -1,4 +1,5 @@
 import { rest } from "msw";
+import bonfire from "../../assets/audio/bonfire.mp3";
 
 export const trackPostHandler = [
   rest.get("/tracks/:beatId", async (req, res, ctx) => {
@@ -8,10 +9,11 @@ export const trackPostHandler = [
         {
           beatId: 1,
           jacketImage: "AWS S3 image url1",
-          beatWavFile: "AWS S3 beat wav file url1",
+          beatWavFile: bonfire,
           title: "제목1",
           producerName: "프로듀서1",
-          producerId : 1,
+
+          producerId: 1,
           producerProfileImage: "AWS S3 profile image file url1",
           introduce: "게시글 소개",
           keyword: ["신나는", "힙한"],
