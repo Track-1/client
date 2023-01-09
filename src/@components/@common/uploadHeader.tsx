@@ -1,4 +1,6 @@
+import axios from "axios";
 import styled from "styled-components";
+import { uploadInfo } from "../../core/api/upload";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,15 +24,16 @@ export default function UploadHeader() {
   const wavFile = useRecoilValue(uploadWavFile);
   const introduce = useRecoilValue(uploadIntroduce);
   const keyword = useRecoilValue(uploadKeyword);
+  const jacketImage = useRecoilValue(uploadTrackJacketImage);
 
-  // const [obj, setObj] = useState<UploadData>({
-  //   title: useRecoilValue(uploadTitle),
-  //   category: useRecoilValue(uploadCategory),
-  //   wavFile: useRecoilValue(uploadWavFile),
-  //   introduce: useRecoilValue(uploadIntroduce),
-  //   keyword: useRecoilValue(uploadKeyword),
-  //   jacketImage: useRecoilValue(uploadTrackJacketImage),
-  // });
+  const postData = {
+    title: title,
+    category: category,
+    wavFile: wavFile,
+    introduce: introduce,
+    keyword: keyword,
+    jacketImage : jacketImage
+  };
 
   const [uploadState, setUploadState] = useState<boolean>(false);
 
@@ -39,7 +42,15 @@ export default function UploadHeader() {
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
-    // console.log(obj);
+    async function post() {
+      if (wavFile !== null) {
+        const data = await uploadInfo(postData);
+        console.log(data);
+      }
+    }
+    if (uploadState) {
+      post();
+    }
   }
   useEffect(() => {
     if (title !== "" && category !== "" && wavFile !== null && keyword.length !== 0) {
@@ -53,10 +64,10 @@ export default function UploadHeader() {
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
-          <UploadBackIc onClick={backPage} style={{ cursor: "pointer" }} />
+          <UploadBackIcon onClick={backPage} />
           <UserClass>Vocal Searching</UserClass>
         </LeftWrapper>
-        {uploadState ? <CanUploadBtnIc /> : <UploadBtnIcon onClick={upload} />}
+        {uploadState ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
       </HeaderWrapper>
     </Container>
   );
@@ -87,6 +98,14 @@ const UserClass = styled.div`
   margin-left: 6.1rem;
 `;
 
+const UploadBackIcon = styled(UploadBackIc)`
+  cursor: pointer;
+`;
+
 const UploadBtnIcon = styled(UploadBtnIc)`
+  cursor: pointer;
+`;
+
+const CanUploadBtnIcon = styled(CanUploadBtnIc)`
   cursor: pointer;
 `;

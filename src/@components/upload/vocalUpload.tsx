@@ -4,12 +4,13 @@ import UploadInfo from "../@common/uploadInfo";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { uploadVocalJacketImage } from "../../recoil/upload";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
   const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File>(uploadVocalJacketImage);
 
+  
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) {
       if (vocalUploadImg === VocalUploadDefaultImg) {
