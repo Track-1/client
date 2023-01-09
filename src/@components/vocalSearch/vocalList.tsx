@@ -34,7 +34,7 @@ export default function VocalList(props: PropsType) {
     audio.src = vocalData[clickVocal]?.vocalTitleFile;
     getDuration(vocalData[clickVocal]?.wavFileLength);
 
-    console.log(clickVocal);
+    // console.log(clickVocal);
   }, [clickVocal]);
 
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function VocalList(props: PropsType) {
 
   function playAudioOnTrack(id: number) {
     if (clickVocal === id) {
-      audio.play();
+      audio.play().then((_) => {}).catch((error) => {});
       setPlay(true);
     } else {
       setPlay(true);
@@ -68,14 +68,14 @@ export default function VocalList(props: PropsType) {
   }
 
   function onClickPauseVocal(id: number) {
-    if (play && id == beatId) {
+    if (play && id === beatId) {
       audio.pause();
       setPlay(false);
     }
   }
 
   function clickVocalName(id: number) {
-    navigate("/vocal-profile", { state: id });
+    navigate(`/vocal-profile/${id}`, { state:id });
   }
 
   return (
@@ -85,7 +85,7 @@ export default function VocalList(props: PropsType) {
           <VocalContainer key={vocal.vocalId}>
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
-              {vocal.isSelected && <VocalSleepIcon />}
+              {!vocal.isSelected && <VocalSleepIcon />}
             </UsernameInformWrapper>
 
             <CategoryTextWrapper>
