@@ -8,7 +8,7 @@ export const producerProfileHandler = [
       ctx.status(200),
       ctx.json([
         {
-          isMe: true,
+          isMe: false,
           producerProfile: {
             profileImage: portFolioImg,
             name: "프로듀서1",
