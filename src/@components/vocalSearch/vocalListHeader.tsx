@@ -18,11 +18,10 @@ const TrackListHeaderWrapper = styled.section`
 
   display: flex;
   justify-content: space-between;
-  padding-top: 14.3rem;
 `;
 
 const TrackListHeaderSloganIcon = styled(TrackListHeaderSloganIc)`
-  margin: 2.3rem 0 0 9rem;
+  margin: 2.6rem 0 0 9rem;
 `;
 
 const StickerWrapper = styled.article`
