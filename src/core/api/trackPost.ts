@@ -16,10 +16,15 @@ export async function getTrackInfo(props:number) {
   }
 }
 
-export async function getComment() {
-  //trackid 필요해
+export async function getComment(props:number) {
+  const state=props
   try {
-    const data = await axios.get("/tracks/comments/:beatId");
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${state}?page=1&limit=2`, 
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
     data && console.log(data);
     return data;
   } catch (e) {
@@ -27,10 +32,17 @@ export async function getComment() {
   }
 }
 
-export async function postComment() {
-  //trackid 필요해
+export async function postComment(props:number) {
+  const state=props
   try {
-    await axios.post("/tracks/:beatId", {});
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
+      //body
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
   } catch (e) {
     console.log(e);
   }

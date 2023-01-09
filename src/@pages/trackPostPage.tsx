@@ -50,7 +50,7 @@ export default function TrackPostPage() {
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [title, setTitle]=useState<string>();
+  const [beatId, setBeatId]=useState<number>(-1)
 
   const {state}=useLocation()
 
@@ -109,6 +109,7 @@ export default function TrackPostPage() {
 
   function openComment() {
     setIsCommentOpen(true);
+    setBeatId(state)
   }
 
   function closeComment() {
@@ -135,10 +136,9 @@ export default function TrackPostPage() {
     }
   });
 
-
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} />}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId}/>}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <>
@@ -150,7 +150,7 @@ export default function TrackPostPage() {
             </BackButtonWrapper>
             <AudioTitle>{trackInfoData.title}</AudioTitle>
             <ProducerBox>
-              <ProducerProfile src={profileDummyImg}></ProducerProfile>
+              <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지"></ProducerProfile>
               <NickName>{trackInfoData.producerName}</NickName>
             </ProducerBox>
             <ButtonWrapper>

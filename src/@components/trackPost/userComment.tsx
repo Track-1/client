@@ -5,9 +5,16 @@ import EachUseComment from "./eachUserComment";
 import comments from "../../core/trackPost/userComments";
 import { useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
+import { useMutation, useQuery } from "react-query";
+import { getComment, postComment } from "../../core/api/trackPost";
 
-export default function UserComment(props: any) {
-  const { closeComment } = props;
+interface CommentPropsType{
+  closeComment:any;
+  beatId:number;
+}
+
+export default function UserComment(props: CommentPropsType) {
+  const { closeComment, beatId } = props;
   const [uploadData, setUploadData] = useState<UploadDataType>({
     text: "",
     file: null,
@@ -24,6 +31,22 @@ export default function UserComment(props: any) {
       file: audioFile,
     });
   }
+
+  const { data } = useQuery(["beatId",beatId], ()=>getComment(beatId)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+      if (data?.status === 200) {
+        console.log(data);
+        console.log("성공");
+        setUploadData(data?.data.data.commentList)
+      }    
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
 
   return (
     <CommentContainer>
