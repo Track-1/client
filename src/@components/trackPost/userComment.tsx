@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
-import comments from "../../core/trackPost/userComments";
+// import comments from "../../core/trackPost/userComments";
 import { useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 import { useMutation, useQuery } from "react-query";
 import { getComment, postComment } from "../../core/api/trackPost";
+import {UserCommentType} from '../../type/userCommentsType'
 
 interface CommentPropsType{
   closeComment:any;
@@ -20,7 +21,7 @@ export default function UserComment(props: CommentPropsType) {
     file: null,
   });
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-
+  const [comments, setComments]=useState<UserCommentType[]>()
   function uploadComment() {
     setIsCompleted(true);
   }
@@ -40,13 +41,15 @@ export default function UserComment(props: CommentPropsType) {
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
-        setUploadData(data?.data.data.commentList)
+        setComments(data?.data.data.commentList)
       }    
     },
     onError: error => {
       console.log("실패");
     }
   });
+
+  const { mutate } = useMutation(()=>postComment(beatId, uploadData));
 
   return (
     <CommentContainer>
@@ -58,9 +61,9 @@ export default function UserComment(props: CommentPropsType) {
         <div></div>
         <AddCommentIcon onClick={uploadComment} />
       </AddWrapper>
-      {comments.map((data, index) => {
+      {comments&&comments.map((data, index) => {
         // data.isMe ? : merge할 때 분기처리
-        return <EachUseComment key={index} data={data} />;
+        return <EachUseComment key={index} data={comments} />; //여기가 각각의 데이터
       })}
       <BlurSection />
     </CommentContainer>

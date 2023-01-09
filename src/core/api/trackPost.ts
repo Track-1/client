@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UploadDataType } from "../../type/uploadDataType";
 
 export async function getTrackInfo(props:number) {
   const state=props
@@ -32,17 +33,18 @@ export async function getComment(props:number) {
   }
 }
 
-export async function postComment(props:number) {
-  const state=props
+export async function postComment(beatId:number, uploadData:UploadDataType) {
   try {
-    await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
+     const data=await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, {
       //body
+      uploadData
     },
     {
       headers: {
         Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
       },
     });
+    data && console.log(data);
   } catch (e) {
     console.log(e);
   }
