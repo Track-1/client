@@ -51,12 +51,8 @@ export default function TrackPostPage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [title, setTitle]=useState<string>();
-  // const [trackPostData, setTrackPostData]=useState<string>();
-  // const [tags, setTags]=useState<string[]>();
-  // const [img, setImg]=useState<string>();
 
   const {state}=useLocation()
-  console.log(state)
 
   useEffect(() => {
     setWhom(Category.TRACKS); 
@@ -66,7 +62,6 @@ export default function TrackPostPage() {
   useEffect(() => {
     if (trackInfoData?.beatWavFile !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
-      console.log(audio.duration);
       setCurrentDuration(trackInfoData?.wavFileLength);
     }
   }, [trackInfoData]);
@@ -89,7 +84,6 @@ export default function TrackPostPage() {
   }
 
   function pauseAudio() {
-    console.log(audio.currentTime);
     audio.pause();
     setPlay(false);
   }
