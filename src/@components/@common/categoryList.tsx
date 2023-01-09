@@ -62,40 +62,6 @@ export default function CategoryList() {
     return !value;
   }
 
-  // function createFilteredUrl(selectedSet:Set<number|unknown>) {
-  //   let filteredUrl = "";
-
-  //   selectedSet.forEach((id) => {
-  //     filteredUrl += `$categ${id}`;
-  //   });
-  //   filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-
-  //   // return filteredUrl;
-  // }
-
-  function createFilteredUrl(selectedCategorys:CategoryChecksType[]) {
-    // let filteredUrl = "";
-
-    // selectedCategorys.forEach((categId) => {
-    //   filteredUrl += `$categ${categId}`;
-    // });
-    // filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-    // categs.forEach(({categId}) => {
-    //   categApi=categApi+`&categ=`+categId
-    // });
-    // setSelectedCategorysApi(categApi)
-    // return filteredUrl;
-  }
-
-  // useEffect(()=>{
-  //   selectedSet&&createFilteredUrl(selectedSet)
-  //   console.log(selectedSet)
-  // },[selectedSet])
-
-  // useEffect(()=>{
-  //   createFilteredUrl(selectedCategorys)
-  // },[selectedCategorys])
-
   useEffect(()=>{
     let filteredUrl=""
     const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
