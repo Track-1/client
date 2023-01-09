@@ -10,7 +10,7 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import { categorySelect } from "../../recoil/categorySelect";
+import { categorySelect, trackSearching } from "../../recoil/categorySelect";
 
 export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function CategoryList() {
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
+  const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
 
   const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
 
@@ -32,14 +32,6 @@ export default function CategoryList() {
     };
   }, [openModal]);
 
-  // function categoryClick(id: number) {
-  //   const tempSelectedCategorys = [...selectedCategorys];
-
-  //   // tempSelectedCategorys[id].selected = changeSelectValue(tempSelectedCategorys[id].selected);
-  //   // tempSelectedCategorys[id].selected ? addSelectedSet(id) : addSelectedDelete(id);
-
-  //   setSelectedCategorys([...tempSelectedCategorys]);
-  // }
   function categoryClick(id:number){
     setSelectedCategorys(
       selectedCategorys.map((selectCateg)=>
