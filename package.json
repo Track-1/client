@@ -69,5 +69,6 @@
   },
   "msw": {
     "workerDirectory": "public"
-  }
+  },
+  "proxy": "https://www.track-1.link"
 }
