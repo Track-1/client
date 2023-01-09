@@ -18,6 +18,8 @@ import { AudioTypes } from "../type/audioTypes";
 import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
+import { useQuery } from "react-query";
+
 export default function TrackSearchPage() {
   const [progress, setProgress] = useState<number>(0);
 
@@ -31,16 +33,19 @@ export default function TrackSearchPage() {
 
   const audio = useMemo(() => new Audio(), []);
   // const [currentAudio, setCurrentAudio] = useRecoilState<AudioTypes>(audioState);
+  const { data, isLoading } = useQuery(["tracksData"], getTracksData);
+
+  console.log(data)
 
   useEffect(() => {
     setWhom(Category.TRACKS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
 
-    async function getData() {
-      const data = await getTracksData();
-      setTracksData(data?.data);
-    }
+    // async function getData() {
+    //   const data = await getTracksData();
+    //   setTracksData(data?.data);
+    // }
 
-    getData();
+    // getData();
   }, []);
 
   function playAudio() {
@@ -86,12 +91,12 @@ export default function TrackSearchPage() {
         </CategoryListWrapper>
         <TrackListWrapper>
           <TrackListHeader />
-          {tracksData && (
+          {data && (
             <TrackList
               audio={audio}
               playAudio={playAudio}
               pauseAudio={pauseAudio}
-              tracksData={tracksData}
+              tracksData={data?.data}
               duration={duration}
               getDuration={getDuration}
             />
