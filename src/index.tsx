@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <App />,
+  // </React.StrictMode>,
 );

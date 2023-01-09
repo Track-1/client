@@ -32,8 +32,19 @@ export default function VocalList(props: PropsType) {
   const loadMore = () => setPage((prev) => prev + 1);
   const target = useRef<HTMLDivElement | null>(null);
 
+  //  console.log(vocalData);
+
+  useEffect(() => {
+    //  if (loading) {
+    const observer = new IntersectionObserver((endDiv) => {
+      if (endDiv[0].isIntersecting) {
+        loadMore();
+      }
+    });
+    observer.observe(target.current!);
+    // }
+  }, []);
   console.log(page);
-  console.log(vocalData);
 
   useEffect(() => {
     playAudio();
@@ -44,7 +55,7 @@ export default function VocalList(props: PropsType) {
     audio.src = vocalData[clickVocal]?.vocalTitleFile;
     getDuration(vocalData[clickVocal]?.wavFileLength);
 
-    console.log(clickVocal);
+    //  console.log(clickVocal);
   }, [clickVocal]);
 
   const navigate = useNavigate();
@@ -87,17 +98,6 @@ export default function VocalList(props: PropsType) {
   function clickVocalName(id: number) {
     navigate("/vocal-profile", { state: id });
   }
-
-  useEffect(() => {
-    //  if (loading) {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        loadMore();
-      }
-    });
-    observer.observe(target.current!);
-    // }
-  }, []);
 
   return (
     <VocalListContainer>
@@ -323,6 +323,5 @@ const HashtagLi = styled.li`
 
 const InfiniteDiv = styled.div`
   width: 100%;
-  height: 100px;
-  background-color: pink;
+  height: 1rem;
 `;
