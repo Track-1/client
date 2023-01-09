@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -12,6 +13,8 @@ import {
   HoverHashtagWarningIc,
   DeleteHashtagIc,
 } from "../../assets";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
 export default function UploadInfo() {
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
@@ -31,15 +34,15 @@ export default function UploadInfo() {
     "Funk",
   ]);
 
-  const [title, setTitle] = useState<string>("");
-  const [description, setDeiscription] = useState<string>("");
+  const [title, setTitle] = useRecoilState<string>(uploadTitle);
+  const [description, setDeiscription] = useRecoilState<string>(uploadIntroduce);
+  const [genre, setGenre] = useRecoilState<string>(uploadCategory);
+  const [hashtags, setHashtags] = useRecoilState<Array<string>>(uploadKeyword);
+  const [wavFile, setWavFile] = useRecoilState<File | null>(uploadWavFile);
+
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [editFileName, setEditFileName] = useState<string>("");
-  const [realFileName, setRealFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
-
-  const [isHoverMenu, setIsHoverMenu] = useState<boolean>(false);
-  const [genre, setGenre] = useState<string>("");
   const [categoryState, setCategoryState] = useState<boolean>(false);
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
@@ -50,16 +53,11 @@ export default function UploadInfo() {
 
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
-  const [hashtags, setHashtags] = useState<Array<string>>([]);
 
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
 
-  function testBtn() {
-    console.log(title, genre, description, hashtags);
-  }
-
   function closeDropBox(e: React.MouseEvent<HTMLDivElement>) {
-    console.dir(dropBoxRef.current);
+    // console.dir(dropBoxRef.current);
   }
 
   function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -81,7 +79,6 @@ export default function UploadInfo() {
   function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
     let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
-    setRealFileName(uploadName);
 
     if (str.length > 14) {
       setIsTextOverflow(true);
@@ -90,12 +87,16 @@ export default function UploadInfo() {
       setIsTextOverflow(false);
       setEditFileName(uploadName);
     }
+
+    if (e.target.files !== null) {
+      setWavFile(e.target.files[0]);
+    }
+
+    // setWavFile()
   }
 
   function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
     const index = category.indexOf(e.currentTarget.innerText);
-
-    e.type === "mouseenter" ? setIsHoverMenu(true) : setIsHoverMenu(false);
     if (e.type === "mouseenter") {
       categoryRefs.current[index]!.style.color = "#ffffff";
     } else {
@@ -177,13 +178,9 @@ export default function UploadInfo() {
     }
   }, [hashtagInputWidth]);
 
-  console.log(hiddenDropBox);
   useEffect(() => {
     function clickOutside(e: any) {
-      console.log("hidden?", hiddenDropBox);
-
       if (!hiddenDropBox && !dropBoxRef.current!.contains(e.target)) {
-        console.log("helo");
         setHiddenDropBox((prev) => prev);
       }
     }
@@ -353,9 +350,6 @@ export default function UploadInfo() {
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
-      <button typeof="button" onClick={testBtn} style={{ backgroundColor: "blue" }}>
-        test
-      </button>
       <TextCount font={"description"} textareaMargin={textareaMargin}>
         <TextWrapper>
           <InputCount>{descriptionLength}</InputCount>

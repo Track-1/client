@@ -1,12 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
-import Test from "../../assets/image/test.png";
+import { uploadVocalJacketImage } from "../../recoil/upload";
+import { useRecoilState } from "recoil";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
+  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File>(uploadVocalJacketImage);
 
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) {
@@ -18,9 +20,9 @@ export default function VocalUpload() {
     }
 
     if (e.target.files !== null) {
-      const file = e.target.files as FileList;
       const fileUrl = URL.createObjectURL(e.target.files[0]);
       setVocalUploadImg(fileUrl);
+      setVocalJacketImage(e.target.files[0]);
     }
   }
 
@@ -84,13 +86,13 @@ const VocalImageFrame = styled.div`
   border-radius: 5rem;
   transform: rotate(45deg);
   overflow: hidden;
+  object-fit: cover;
 `;
 
 const VocalUploadImage = styled.img`
   width: 59.8rem;
   height: 59.8rem;
   transform: rotate(-45deg);
-  object-fit:cover
   margin-left: -7.4rem;
   margin-top: -7.4rem;
 `;
