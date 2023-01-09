@@ -19,8 +19,11 @@ import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
-  const portfolioHoverInformation = portfolios.filter((portfolio) => portfolio.id === hoverId)[0];
-  const portfolioClickInformation = portfolios.filter((portfolio) => portfolio.id === clickId)[0];
+  // const portfolioHoverInformation = portfolios.filter((portfolio) => portfolio.id === hoverId)[0];
+  const portfolioHoverInformation = portfolios[hoverId];
+
+  // const portfolioClickInformation = portfolios.filter((portfolio) => portfolio.id === clickId)[0];
+  const portfolioClickInformation = portfolios[clickId];
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const isBool = hoverId === clickId ? true : false;
   const portfolioInforms =
