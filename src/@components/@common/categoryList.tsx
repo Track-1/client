@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { useState, useEffect, useRef } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import categorys from "../../mocks/categoryDummy.json";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
@@ -10,16 +10,20 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
+import { categorySelect } from "../../recoil/categorySelect";
 
 export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  const selectedSet = new Set();
+  // const selectedSet = new Set<number|unknown>();
+  const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
+
+  const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
 
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
@@ -28,28 +32,78 @@ export default function CategoryList() {
     };
   }, [openModal]);
 
-  function categoryClick(id: number) {
-    const tempSelectedCategorys = [...selectedCategorys];
+  // function categoryClick(id: number) {
+  //   const tempSelectedCategorys = [...selectedCategorys];
 
-    tempSelectedCategorys[id].selected = changeSelectValue(tempSelectedCategorys[id].selected);
-    tempSelectedCategorys[id].selected ? selectedSet.add(id) : selectedSet.delete(id);
+  //   // tempSelectedCategorys[id].selected = changeSelectValue(tempSelectedCategorys[id].selected);
+  //   // tempSelectedCategorys[id].selected ? addSelectedSet(id) : addSelectedDelete(id);
 
-    setSelectedCategorys([...tempSelectedCategorys]);
+  //   setSelectedCategorys([...tempSelectedCategorys]);
+  // }
+  function categoryClick(id:number){
+    setSelectedCategorys(
+      selectedCategorys.map((selectCateg)=>
+        (selectCateg.categId === id ? {...selectCateg , selected : !selectCateg.selected} : selectCateg)
+      )
+    ) 
+  }
+
+  function addSelectedSet(id:number){
+    selectedSet&&selectedSet.add(id)
+    setSelectedSet(selectedSet)
+  }
+
+  function addSelectedDelete(id:number){
+    selectedSet&&selectedSet.delete(id)
+    setSelectedSet(selectedSet)
   }
 
   function changeSelectValue(value: boolean) {
     return !value;
   }
 
-  function createFilteredUrl(selectedSet: Set<number>) {
-    let filteredUrl = "";
+  // function createFilteredUrl(selectedSet:Set<number|unknown>) {
+  //   let filteredUrl = "";
 
-    selectedSet.forEach((id) => {
-      filteredUrl += `$categ${id}`;
-    });
+  //   selectedSet.forEach((id) => {
+  //     filteredUrl += `$categ${id}`;
+  //   });
+  //   filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
 
-    return filteredUrl;
+  //   // return filteredUrl;
+  // }
+
+  function createFilteredUrl(selectedCategorys:CategoryChecksType[]) {
+    // let filteredUrl = "";
+
+    // selectedCategorys.forEach((categId) => {
+    //   filteredUrl += `$categ${categId}`;
+    // });
+    // filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
+    // categs.forEach(({categId}) => {
+    //   categApi=categApi+`&categ=`+categId
+    // });
+    // setSelectedCategorysApi(categApi)
+    // return filteredUrl;
   }
+
+  // useEffect(()=>{
+  //   selectedSet&&createFilteredUrl(selectedSet)
+  //   console.log(selectedSet)
+  // },[selectedSet])
+
+  // useEffect(()=>{
+  //   createFilteredUrl(selectedCategorys)
+  // },[selectedCategorys])
+
+  useEffect(()=>{
+    let filteredUrl=""
+    const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
+    categs.forEach(({categId}) => {
+      filteredUrl+=`&categ=${categId}`;
+    });
+    filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
+   },[selectedCategorys])
 
   function clickUploadButton() {
     setOpenModal(true);
