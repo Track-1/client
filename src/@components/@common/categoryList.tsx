@@ -68,7 +68,8 @@ export default function CategoryList() {
   }
 
   function clickTrackSearching() {
-    setTrackSearchingClicked(!trackSearchingClicked);
+    // setTrackSearchingClicked(!trackSearchingClicked);
+    setTrackSearchingClicked((prev)=>!prev);
   }
 
   function closeModal(e: MouseEvent) {
