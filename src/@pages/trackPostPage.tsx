@@ -157,7 +157,7 @@ export default function TrackPostPage() {
             <AudioTitle>{trackInfoData.title}</AudioTitle>
             <ProducerBox>
               <ProducerProfile src={profileDummyImg}></ProducerProfile>
-              <NickName>trackPostData.producerName</NickName>
+              <NickName>{trackInfoData.producerName}</NickName>
             </ProducerBox>
             <ButtonWrapper>
               {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
