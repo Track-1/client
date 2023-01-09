@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export async function getTrackInfo() {
-  //trackId 필요하
+export async function getTrackInfo(props:number) {
+  const state=props
+
   try {
-    const data = await axios.get("/tracks/:beatId");
+    const data = await axios.get(`/tracks/${state}`);
     data && console.log(data);
     return data;
   } catch (e) {

@@ -26,9 +26,12 @@ import Player from "../@components/@common/player";
 import ditto from "../assets/audio/ditto.mp3";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getTrackInfo } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import { useQuery } from "react-query";
+import { Category } from "../core/common/categoryHeader";
 
 export default function TrackPostPage() {
   const audio = useMemo(() => new Audio(), []);
@@ -45,16 +48,14 @@ export default function TrackPostPage() {
   const [duration, setCurrentDuration] = useState<number>(0);
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+
+  const {state}=useLocation()
 
   useEffect(() => {
-    async function getData() {
-      const data = await getTrackInfo();
-      console.log(data?.data[0]);
-      setTrackInfoData(data?.data[0]);
-    }
-
-    getData();
+    setWhom(Category.TRACKS); 
   }, []);
+
 
   useEffect(() => {
     if (trackInfoData?.beatWavFile !== undefined) {
@@ -117,6 +118,25 @@ export default function TrackPostPage() {
   function movePreviousPage() {
     navigate(-1);
   }
+
+  const { data } = useQuery("trackPost",()=>getTrackInfo(state)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+      if (data?.status === 200) {
+        console.log(data);
+        console.log("성공");
+        
+      }    
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
+
+  console.log(data?.data)
+
 
   return (
     <>

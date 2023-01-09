@@ -47,8 +47,6 @@ export default function TrackSearchPage() {
     retry: 0, 
     onSuccess: data => {
       if (data?.status === 200) {
-        console.log(data);
-        console.log("성공");
         setTracksData(data?.data.data.trackList);
       }    
     },
