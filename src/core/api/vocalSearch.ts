@@ -15,12 +15,12 @@ export async function getVocalsData(filteredUrlApi:string, isSelected:boolean) {
   }
 }
 
-export async function getFilteredVocals() {
-  try {
-    const data = await axios.get("/vocals&categ=Hiphop&categ=rb&…&isSelected=True");
-    data && console.log(data);
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-}
+// export async function getFilteredVocals() {
+//   try {
+//     const data = await axios.get("/vocals&categ=Hiphop&categ=rb&…&isSelected=True");
+//     data && console.log(data);
+//     return data;
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
