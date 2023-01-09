@@ -1,14 +1,18 @@
 import { rest } from "msw";
+import bonfire from "../../assets/audio/bonfire.mp3";
+import ditto from "../../assets/audio/ditto.mp3";
 
 export const vocalSearchHandler = [
   rest.get("/vocals", async (req, res, ctx) => {
+    // const page = req.url.searchParams.get("page");
+
     return res(
       ctx.status(200),
       ctx.json([
         {
           vocalId: 1, //id
           vocalProfileImage: "albumCoverImg", //imgSrc
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
+          vocalTitleFile: bonfire,
           vocalName: "보컬3", //producer
           category: ["R&B", "House"], //category
           keyword: ["잔잔한", "고요한"], //hashtags
@@ -19,7 +23,7 @@ export const vocalSearchHandler = [
         {
           vocalId: 2,
           vocalProfileImage: "albumCoverImg",
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
+          vocalTitleFile: ditto,
           vocalName: "보컬8",
           category: ["Jazz", "EDM"],
           keyword: ["클럽 분위기의", "신비로운", "졸린"],
@@ -30,7 +34,7 @@ export const vocalSearchHandler = [
         {
           vocalId: 3,
           vocalProfileImage: "albumCoverImg",
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
+          vocalTitleFile: bonfire,
           vocalName: "보컬6 ",
           category: ["Jazz", "EDM"],
           keyword: ["클럽 분위기의"],
@@ -41,7 +45,7 @@ export const vocalSearchHandler = [
         {
           vocalId: 4,
           vocalProfileImage: "albumCoverImg",
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
+          vocalTitleFile: ditto,
           vocalName: "보컬1",
           category: ["Jazz", "EDM"],
           keyword: ["클럽 분위기의", "신비로운"],
@@ -52,7 +56,7 @@ export const vocalSearchHandler = [
         {
           vocalId: 5,
           vocalProfileImage: "albumCoverImg",
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
+          vocalTitleFile: bonfire,
           vocalName: "보컬9",
           category: ["Jazz", "EDM"],
           keyword: ["클럽 분위기의"],
@@ -214,17 +218,6 @@ export const vocalSearchHandler = [
           wavFileLength: 210,
           isSelected: true,
         },
-        {
-          vocalId: 20,
-          vocalProfileImage: "albumCoverImg",
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
-          vocalName: "보컬9",
-          category: ["Jazz", "EDM"],
-          keyword: ["클럽 분위기의"],
-          totalCategNum: 5,
-          wavFileLength: 210,
-          isSelected: false,
-        },
       ]),
     );
   }),
@@ -234,6 +227,7 @@ export const vocalSearchHandler = [
       ctx.status(200),
       ctx.json([
         {
+          vocalId: 1,
           vocalProfileImage: "AWS S3 bucket 보컬 프로필 URL",
           vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
           vocalName: "보컬3",
@@ -244,6 +238,7 @@ export const vocalSearchHandler = [
           totalCategNum: 8,
         },
         {
+          vocalId: 2,
           vocalProfileImage: "AWS S3 bucket 보컬 프로필 URL",
           vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
           vocalName: "보컬8",

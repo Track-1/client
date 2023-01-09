@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import jacketImage from "../../assets/image/thumbnailImg.png";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import { playMusic, showPlayerBar, currentAudioTime } from "../../recoil/player";
+import { playMusic, showPlayerBar } from "../../recoil/player";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -12,11 +12,12 @@ interface PropsType {
   playAudio: () => void;
   pauseAudio: () => void;
   progress: number;
+  duration: number;
 }
 
 export default function Player(props: PropsType) {
-  const { audio, playAudio, pauseAudio, progress } = props;
-  const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
+  const { audio, playAudio, pauseAudio, progress, duration } = props;
+  // const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   const playBar = useRef<HTMLDivElement>(null);
@@ -34,6 +35,17 @@ export default function Player(props: PropsType) {
     playBar.current && setBarWidth(playBar.current.offsetWidth);
   });
 
+  function createTimeText(time: number) {
+    const currentSecond = Math.round(time);
+    const minute =
+      parseInt(String(currentSecond / 60)) < 10
+        ? `0${parseInt(String(currentSecond / 60))}`
+        : `${parseInt(String(currentSecond / 60))}`;
+
+    const second = currentSecond % 60 < 10 ? `0${currentSecond % 60}` : `${currentSecond % 60}`;
+    return minute + ":" + second;
+  }
+
   function quitAudio() {
     audio.pause();
     audio.currentTime = 0;
@@ -45,7 +57,6 @@ export default function Player(props: PropsType) {
   function controlAudio(e: React.MouseEvent<HTMLDivElement>) {
     const barPercent = Math.round((e.nativeEvent.offsetX / barWidth) * 100);
     const currentStop = (audio.duration * barPercent) / 100;
-
     audio.currentTime = currentStop;
   }
 
@@ -67,8 +78,13 @@ export default function Player(props: PropsType) {
 
   return (
     <PlayerContainer>
-      <PlayerWrapper onClick={controlAudio} onMouseDown={downMouse} onMouseUp={upMouse} onMouseMove={moveAudio}>
-        <PlayerBarWrapper ref={playBar}>
+      <PlayerWrapper>
+        <PlayerBarWrapper
+          ref={playBar}
+          onClick={controlAudio}
+          onMouseDown={downMouse}
+          onMouseUp={upMouse}
+          onMouseMove={moveAudio}>
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} />
         </PlayerBarWrapper>
 
@@ -82,10 +98,10 @@ export default function Player(props: PropsType) {
           </PlayerInformText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
-            {currentTime}
+            {createTimeText(Math.round(audio.currentTime))}
           </PlayerInformText>
           <PlayerInformText width={30} whiteText={false}>
-            {duration}
+            {createTimeText(Math.round(duration))}
           </PlayerInformText>
           <QuitIcon onClick={quitAudio} />
         </PlayerInformWrapper>

@@ -3,30 +3,52 @@ import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { VocalSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
-import { showPlayerBar, playMusic, trackClicked, selectedId } from "../../recoil/player";
+import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { getVocalsData } from "../../core/api/vocalSearch";
 import { VocalSearchType } from "../../type/vocalSearchType";
 
-export default function VocalList() {
+interface PropsType {
+  vocalData: VocalSearchType[];
+  audio: HTMLAudioElement;
+  playAudio: () => void;
+  pauseAudio: () => void;
+  duration: number;
+  getDuration: (durationTime: number) => void;
+}
+
+export default function VocalList(props: PropsType) {
+  const { vocalData, audio, playAudio, pauseAudio, duration, getDuration } = props;
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
-  const [clickVocal, setClickVocal] = useRecoilState<number>(trackClicked);
+  const [clickVocal, setClickVocal] = useState<number>(-1);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [beatId, setBeatId] = useRecoilState<number>(selectedId);
 
-  const [vocalData, setVocalData] = useState<VocalSearchType[]>();
+  const [beatId, setBeatId] = useState<number>(-1);
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+
+  //무한 스크롤
   const [page, setPage] = useState(1);
   // const [loading, setLoading] = useState(false);
   const loadMore = () => setPage((prev) => prev + 1);
   const target = useRef<HTMLDivElement | null>(null);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    getVocalsData().then((result) => result && setVocalData(result.data));
-  }, [page]);
   console.log(page);
   console.log(vocalData);
+
+  useEffect(() => {
+    playAudio();
+  }, [currentFile]);
+
+  useEffect(() => {
+    setCurrentFile(vocalData[clickVocal]?.vocalTitleFile);
+    audio.src = vocalData[clickVocal]?.vocalTitleFile;
+    getDuration(vocalData[clickVocal]?.wavFileLength);
+
+    console.log(clickVocal);
+  }, [clickVocal]);
+
+  const navigate = useNavigate();
+
   function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
   }
@@ -35,15 +57,29 @@ export default function VocalList() {
     setHoverVocal(-1);
   }
 
-  function onClickPlayVocal(id: number) {
-    setShowPlayer(true);
-    setPlay(true);
-    setBeatId(id);
-    setClickVocal(id);
+  // function onClickPlayVocal(id: number) {
+  //   setShowPlayer(true);
+  //   setPlay(true);
+  //   setBeatId(id);
+  //   setClickVocal(id);
+  // }
+
+  function playAudioOnTrack(id: number) {
+    if (clickVocal === id) {
+      audio.play();
+      setPlay(true);
+    } else {
+      setPlay(true);
+
+      setShowPlayer(true);
+      setBeatId(id);
+      setClickVocal(id);
+    }
   }
 
   function onClickPauseVocal(id: number) {
     if (play && id == beatId) {
+      audio.pause();
       setPlay(false);
     }
   }
@@ -51,6 +87,7 @@ export default function VocalList() {
   function clickVocalName(id: number) {
     navigate("/vocal-profile", { state: id });
   }
+
   useEffect(() => {
     //  if (loading) {
     const observer = new IntersectionObserver((entries) => {
@@ -61,6 +98,7 @@ export default function VocalList() {
     observer.observe(target.current!);
     // }
   }, []);
+
   return (
     <VocalListContainer>
       {vocalData &&
@@ -80,7 +118,7 @@ export default function VocalList() {
               onMouseLeave={mouseOutPlayVocal}
               onMouseEnter={() => mouseOverPlayVocal(vocal.vocalId)}
               onClick={() => {
-                onClickPlayVocal(vocal.vocalId);
+                playAudioOnTrack(vocal.vocalId);
                 onClickPauseVocal(vocal.vocalId);
               }}
               showPlayer={showPlayer}

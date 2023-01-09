@@ -10,17 +10,7 @@ export const playMusic = atom({
   default: false,
 });
 
-export const trackClicked = atom({
-  key: "trackClicked",
-  default: -1,
-});
-
-export const selectedId = atom({
-  key: "selectedId",
-  default: -1,
-});
-
-export const currentAudioTime = atom({
-  key: "currentAudioTime",
-  default: 0,
+export const audioFile = atom({
+  key: "audioFile",
+  default: "",
 });
