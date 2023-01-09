@@ -19,7 +19,7 @@ export const producerProfileHandler = [
           },
           producerPortfolio: [
             {
-              producerPortfolioId: 1,
+              id: 1,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -30,7 +30,7 @@ export const producerProfileHandler = [
               isTitle: true,
             },
             {
-              producerPortfolioId: 2,
+              id: 2,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -41,7 +41,7 @@ export const producerProfileHandler = [
               isTitle: false,
             },
             {
-              producerPortfolioId: 3,
+              id: 3,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -52,7 +52,7 @@ export const producerProfileHandler = [
               isTitle: true,
             },
             {
-              producerPortfolioId: 4,
+              id: 4,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -63,7 +63,7 @@ export const producerProfileHandler = [
               isTitle: false,
             },
             {
-              producerPortfolioId: 5,
+              id: 5,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -74,7 +74,7 @@ export const producerProfileHandler = [
               isTitle: true,
             },
             {
-              producerPortfolioId: 6,
+              id: 6,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -85,7 +85,7 @@ export const producerProfileHandler = [
               isTitle: false,
             },
             {
-              producerPortfolioId: 7,
+              id: 7,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -96,7 +96,7 @@ export const producerProfileHandler = [
               isTitle: true,
             },
             {
-              producerPortfolioId: 8,
+              id: 8,
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1",
@@ -117,22 +117,22 @@ export const producerProfileHandler = [
       ctx.status(200),
       ctx.json([
         {
-          beatId: 1,
+          id: 1,
           jacketImage: "AWS S3 image url1",
           beatWavFile: "AWS S3 beat wav file url1",
           title: "제목1",
-          introduce: "게시글 소개",
+          content: "게시글 소개",
           keyword: ["신나는", "힙한"],
           category: "hiphop",
           wavFileLength: 210,
           isSelected: false,
         },
         {
-          beatId: 3,
+          id: 3,
           jacketImage: "AWS S3 image url1",
           beatWavFile: "AWS S3 beat wav file url1",
           title: "제목1",
-          introduce: "게시글 소개",
+          content: "게시글 소개",
           keyword: ["신나는", "힙한"],
           category: "pop",
           wavFileLength: 215,
