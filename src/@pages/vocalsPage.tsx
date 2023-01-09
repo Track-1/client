@@ -77,6 +77,7 @@ export default function VocalsPage() {
     <>
       <CategoryHeader />
 
+
       <VocalSearchPageWrapper>
         <CategoryListWrapper>
           <CategoryList />

@@ -118,6 +118,7 @@ export const producerProfileHandler = [
       ctx.json([
         {
           id: 1,
+
           jacketImage: portFolioImg,
           beatWavFile: "AWS S3 beat wav file url1",
           title: "제목이지롱",
@@ -128,6 +129,7 @@ export const producerProfileHandler = [
           isSelected: false,
         },
         {
+
           id: 2,
           jacketImage: portFolioImg,
           beatWavFile: "AWS S3 beat wav file url1",
