@@ -111,9 +111,9 @@ export default function Player(props: PropsType) {
 }
 
 const PlayerContainer = styled.section`
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  z-index: 10;
+  z-index: 1000;
   pointer-events: none;
 
   display: flex;
@@ -128,6 +128,7 @@ const PlayerWrapper = styled.article`
   justify-content: flex-end;
 
   cursor: pointer;
+  z-index: 1000;
 `;
 
 const PlayerInformWrapper = styled.div`
@@ -139,6 +140,7 @@ const PlayerInformWrapper = styled.div`
 
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
+  z-index: 1000;
 `;
 
 const Playbar = styled.div<{ progress: number; tracksOrVocals: string }>`
@@ -149,6 +151,7 @@ const Playbar = styled.div<{ progress: number; tracksOrVocals: string }>`
   border-bottom: 0.3rem solid
     ${({ tracksOrVocals, theme }) => (tracksOrVocals === "Tracks" ? theme.colors.sub1 : theme.colors.sub2)};
   pointer-events: auto;
+  z-index: 1000;
 `;
 
 const PlayerBarWrapper = styled.div`
@@ -158,6 +161,7 @@ const PlayerBarWrapper = styled.div`
   background-color: transparent;
   border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto;
+  z-index: 1000;
 `;
 
 const Thumbnail = styled.img`
@@ -168,6 +172,7 @@ const Thumbnail = styled.img`
   margin-right: 3.069rem;
 
   border-radius: 5rem;
+  z-index: 1000;
 `;
 
 const PlayerInformText = styled.div<{ width: number; whiteText: boolean }>`
@@ -176,18 +181,22 @@ const PlayerInformText = styled.div<{ width: number; whiteText: boolean }>`
   ${({ theme }) => theme.fonts.player_title};
   color: ${({ whiteText, theme }) => (whiteText ? theme.colors.white : theme.colors.gray2)};
   pointer-events: auto;
+  z-index: 1000;
 `;
 
 const PauseIcon = styled(PauseIc)`
   margin-right: 5.1rem;
   pointer-events: auto;
+  z-index: 1000;
 `;
 
 const PlayIcon = styled(PlayIc)`
   margin-right: 5.1rem;
   pointer-events: auto;
+  z-index: 1000;
 `;
 
 const QuitIcon = styled(QuitIc)`
   pointer-events: auto;
+  z-index: 1000;
 `;

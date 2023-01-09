@@ -28,11 +28,16 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const isBool = hoverId === clickId ? true : false;
   const portfolioInforms =
     (!isBool && hoverId !== -1) || (isBool && hoverId !== -1) ? portfolioHoverInformation : portfolioClickInformation;
-  const isTitle = portfolioInforms && portfolioInforms.isTitle;
+  const isTitle = hoverId === 0 ? true : false;
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(hoverId);
+  }, [hoverId]);
 
   function clickEllipsis() {
     setOpenEllipsisModal(true);
@@ -79,7 +84,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isMe && !(!isBool && hoverId !== -1) && (
                 <>
                   {<EllipsisIcon onClick={clickEllipsis} />}
-                  {openEllipsisModal && (
+                  {openEllipsisModal && isTitle && (
                     <PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef} profileState={profileState} />
                   )}
                 </>

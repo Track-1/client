@@ -2,19 +2,23 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import vocals from "../../mocks/vocalProfileDummy.json";
-import { showPlayerBar, playMusic } from "../../recoil/player";
+import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 import { getVocalProfile } from "../../core/api/vocalProfile";
 import { PortfolioType } from "../../type/profilePropsType";
+import { VocalProfileType, VocalPortfolioType } from "../../type/vocalProfile";
+import Player from "../@common/player";
 
-export default function VocalProfileList() {
-  const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
-  const [vocalPortfolioClick, setVocalPortfolioClick] = useState<number>(-1);
+export default function VocalProfileList(props: any) {
+  const { audio, isMe, portfolioData, playAudio, pauseAudio, duration, getDuration } = props;
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [vocalPortfolioData, setVocalPortfolioData] = useState<PortfolioType[]>();
-  const [isMe, setIsMe] = useState<boolean>(false);
+  // const [vocalPortfolioData, setVocalPortfolioData] = useState<VocalPortfolioType[]>();
+  const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
+  const [vocalPortfolioClick, setVocalPortfolioClick] = useState<number>(-1);
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+  const [beatId, setBeatId] = useState<number>();
 
   function mouseOverVocalPortfolio(id: number) {
     setVocalPortfolioHover(id);
@@ -35,48 +39,63 @@ export default function VocalProfileList() {
   }
 
   useEffect(() => {
-    getVocalProfile().then((res) => {
-      if (res) {
-        setVocalPortfolioData(res.data[0].vocalPortfolio);
-        setIsMe(res.data[0].isMe);
-      }
-    });
-  }, []);
+    playAudio();
+  }, [currentFile]);
 
-  const vocalPortfolioCount = vocalPortfolioData ? vocalPortfolioData.length : 0;
+  useEffect(() => {
+    setCurrentFile(portfolioData[vocalPortfolioClick]?.beatWavFile);
+    audio.src = portfolioData[vocalPortfolioClick]?.beatWavFile;
+    getDuration(portfolioData[vocalPortfolioClick]?.wavFileLength);
+
+    console.log(vocalPortfolioClick);
+  }, [vocalPortfolioClick]);
+
+  function playAudioOnTrack(id: number) {
+    if (vocalPortfolioClick === id) {
+      audio.play();
+      setPlay(true);
+    } else {
+      setPlay(true);
+
+      setShowPlayer(true);
+      setBeatId(id);
+      setVocalPortfolioClick(id);
+    }
+  }
+  const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
-        {vocalPortfolioData &&
-          vocalPortfolioData.map((vocal, idx) => (
+        {portfolioData &&
+          portfolioData.map((vocal: any, index: number) => (
             <VocalPortfolio
               key={vocal.id}
-              onMouseEnter={() => mouseOverVocalPortfolio(vocal.id)}
+              onMouseEnter={() => mouseOverVocalPortfolio(index)}
               onMouseLeave={mouseOutVocalPortfolio}>
-              {((vocalPortfolioHover === vocal.id && vocalPortfolioClick !== vocal.id && vocalPortfolioHover !== -1) ||
+              {((vocalPortfolioHover === index && vocalPortfolioClick !== index && vocalPortfolioHover !== -1) ||
                 (!play &&
-                  vocalPortfolioHover === vocal.id &&
-                  vocalPortfolioClick === vocal.id &&
-                  vocalPortfolioHover !== -1)) && <VocalProfileBlurPauseIcon onClick={() => clickPauseIc(vocal.id)} />}
+                  vocalPortfolioHover === index &&
+                  vocalPortfolioClick === index &&
+                  vocalPortfolioHover !== -1)) && <VocalProfileBlurPauseIcon onClick={() => playAudioOnTrack(index)} />}
               {play &&
-                vocalPortfolioClick === vocal.id &&
-                vocalPortfolioHover === vocal.id &&
+                vocalPortfolioClick === index &&
+                vocalPortfolioHover === index &&
                 vocalPortfolioHover !== -1 &&
-                vocalPortfolioClick !== -1 && <VocalProfileBlurPlayIcon onClick={clickPlayIc} />}
+                vocalPortfolioClick !== -1 && <VocalProfileBlurPlayIcon onClick={pauseAudio} />}
               <VocalPortfolioTitle>
-                {vocalPortfolioClick !== vocal.id && vocalPortfolioHover !== vocal.id && vocal.title}
+                {vocalPortfolioClick !== index && vocalPortfolioHover !== index && vocal.title}
               </VocalPortfolioTitle>
-              {vocalPortfolioHover === vocal.id && vocalPortfolioHover !== -1 && (
-                <VocalPorfolioBlur idx={idx} vocalPortfolioClickBool={vocalPortfolioClick === vocal.id} />
+              {vocalPortfolioHover === index && vocalPortfolioHover !== -1 && (
+                <VocalPorfolioBlur idx={index} vocalPortfolioClickBool={vocalPortfolioClick === index} />
               )}
               <VocalPortfolioImg
                 // src={require("../../assets/image/" + vocal.jacketImage + ".png")}
                 src={require("../../assets/image/" + "vocalPortfolioList1" + ".png")}
                 alt="보컬 포트폴리오이미지"
-                idx={idx}
-                vocalPortfolioHoverBool={vocalPortfolioHover === vocal.id}
-                vocalPortfolioClickBool={vocalPortfolioClick === vocal.id}
+                idx={index}
+                vocalPortfolioHoverBool={vocalPortfolioHover === index}
+                vocalPortfolioClickBool={vocalPortfolioClick === index}
               />
             </VocalPortfolio>
           ))}
@@ -87,12 +106,12 @@ export default function VocalProfileList() {
         <VocalsBoxHead></VocalsBoxHead>
       </VocalsBoxWrapper>
 
-      {vocalPortfolioData && (
+      {portfolioData && (
         <PortfoliosInform
           isMe={isMe}
           hoverId={vocalPortfolioHover}
           clickId={vocalPortfolioClick}
-          portfolios={vocalPortfolioData}
+          portfolios={portfolioData}
           profileState={"Porfolio"}
         />
       )}
