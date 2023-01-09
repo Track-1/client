@@ -216,17 +216,6 @@ export const vocalSearchHandler = [
           wavFileLength: 210,
           isSelected: true,
         },
-        {
-          vocalId: 20,
-          vocalProfileImage: "albumCoverImg",
-          vocalTitleFile: "AWS S3 bucket 보컬 타이틀 wav 파일 URL",
-          vocalName: "보컬9",
-          category: ["Jazz", "EDM"],
-          keyword: ["클럽 분위기의"],
-          totalCategNum: 5,
-          wavFileLength: 210,
-          isSelected: false,
-        },
       ]),
     );
   }),
