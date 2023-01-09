@@ -21,7 +21,7 @@ const TrackListHeaderWrapper = styled.section`
 `;
 
 const TrackListHeaderSloganIcon = styled(TrackListHeaderSloganIc)`
-  margin: 2.3rem 0 0 9rem;
+  margin: 2.6rem 0 0 9rem;
 `;
 
 const StickerWrapper = styled.article`

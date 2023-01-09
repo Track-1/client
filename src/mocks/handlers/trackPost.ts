@@ -12,6 +12,7 @@ export const trackPostHandler = [
           beatWavFile: bonfire,
           title: "제목1",
           producerName: "프로듀서1",
+
           producerId: 1,
           producerProfileImage: "AWS S3 profile image file url1",
           introduce: "게시글 소개",

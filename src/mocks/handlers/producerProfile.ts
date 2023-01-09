@@ -1,6 +1,7 @@
 import { rest } from "msw";
 import portFolioImg from "../../assets/image/portFolioImg.png";
 import ditto from "../../assets/audio/ditto.mp3";
+import bonfire from "../../assets/audio/bonfire.mp3";
 
 export const producerProfileHandler = [
   rest.get("/profile/producer/:producerId", async (req, res, ctx) => {
@@ -23,7 +24,8 @@ export const producerProfileHandler = [
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목제목제목제목제목제목제목제목",
-              content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도 나는 언제나 여기에 있을 거야 불어라 푸른 바람 황혼을 쫓아 영원을 싣고 저 멀리 날아가라 오늘이 이 세계의 마지막 밤이라도 시공을 넘어 구름을 건너 가자 저 섬을 향해",
+              content:
+                "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도 나는 언제나 여기에 있을 거야 불어라 푸른 바람 황혼을 쫓아 영원을 싣고 저 멀리 날아가라 오늘이 이 세계의 마지막 밤이라도 시공을 넘어 구름을 건너 가자 저 섬을 향해",
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
@@ -32,9 +34,10 @@ export const producerProfileHandler = [
             {
               id: 2,
               jacketImage: portFolioImg,
-              beatWavFile: ditto,
+              beatWavFile: bonfire,
               title: "DittoDittotoDittoDittoDitto",
-              content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도 나는 언제나 여기에 있을 거야 불어라 푸른 바람 황혼을 쫓아 영원을 싣고 저 멀리 날아가라",
+              content:
+                "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도 나는 언제나 여기에 있을 거야 불어라 푸른 바람 황혼을 쫓아 영원을 싣고 저 멀리 날아가라",
               keyword: ["신나는", "힙한"],
               category: "pop",
               wavFileLength: 210,
@@ -45,7 +48,8 @@ export const producerProfileHandler = [
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "DittoDittoDitto",
-              content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도 나는 언제나 여기에 있을 거야 불어라",
+              content:
+                "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도 나는 언제나 여기에 있을 거야 불어라",
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
@@ -54,9 +58,10 @@ export const producerProfileHandler = [
             {
               id: 4,
               jacketImage: portFolioImg,
-              beatWavFile: ditto,
+              beatWavFile: bonfire,
               title: "Ditto",
-              content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도",
+              content:
+                "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요 무성한 미움이 자라나고 비탄한 눈물이 몰아쳐도",
               keyword: ["신나는", "힙한"],
               category: "pop",
               wavFileLength: 210,
@@ -67,7 +72,8 @@ export const producerProfileHandler = [
               jacketImage: portFolioImg,
               beatWavFile: ditto,
               title: "제목1제목1제목1제목1제목1목1제목1제목1제목1",
-              content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요",
+              content:
+                "이곳의 이름을 지어야해 내게 이름이 없다고 해도 거부당한 이야기들 모두 끌어안고 나와 함께 울어주세요",
               keyword: ["신나는", "힙한"],
               category: "hiphop",
               wavFileLength: 210,
@@ -76,7 +82,7 @@ export const producerProfileHandler = [
             {
               id: 6,
               jacketImage: portFolioImg,
-              beatWavFile: ditto,
+              beatWavFile: bonfire,
               title: "제목1제목1제목목1제목1제목1제목1제목1",
               content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도",
               keyword: ["신나는", "힙한"],
@@ -98,7 +104,7 @@ export const producerProfileHandler = [
             {
               id: 8,
               jacketImage: portFolioImg,
-              beatWavFile: ditto,
+              beatWavFile: bonfire,
               title: "제목1",
               content: "내용",
               keyword: ["신나는", "힙한"],
@@ -118,6 +124,7 @@ export const producerProfileHandler = [
       ctx.json([
         {
           id: 1,
+
           jacketImage: portFolioImg,
           beatWavFile: "AWS S3 beat wav file url1",
           title: "제목이지롱",
@@ -128,6 +135,7 @@ export const producerProfileHandler = [
           isSelected: false,
         },
         {
+
           id: 2,
           jacketImage: portFolioImg,
           beatWavFile: "AWS S3 beat wav file url1",
@@ -143,7 +151,8 @@ export const producerProfileHandler = [
           jacketImage: portFolioImg,
           beatWavFile: "AWS S3 beat wav file url1",
           title: "제목1제목1제목1제목1제목1",
-          content: "이곳의 이름을 지어야해 내게 이름이 없다고 해도이곳의 이름을 지어야해 내게 이름이 없다고 해도이곳의 이름을 지어야해 내게 이름이 없다고 해도",
+          content:
+            "이곳의 이름을 지어야해 내게 이름이 없다고 해도이곳의 이름을 지어야해 내게 이름이 없다고 해도이곳의 이름을 지어야해 내게 이름이 없다고 해도",
           keyword: ["신나는", "힙한", "힙한힙"],
           category: "pop",
           wavFileLength: 215,
@@ -193,7 +202,6 @@ export const producerProfileHandler = [
           wavFileLength: 215,
           isSelected: true,
         },
-
       ]),
     );
   }),
