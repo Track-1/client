@@ -20,7 +20,7 @@ export async function getTrackInfo(props:number) {
 export async function getComment(props:number) {
   const state=props
   try {
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${state}?page=1&limit=2`, 
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/8?page=1&limit=2`, 
     {
       headers: {
         Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
