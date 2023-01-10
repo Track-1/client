@@ -1,16 +1,14 @@
 import axios from "axios";
 import { server } from "./common/axios";
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue } from "recoil";
 import { categorySelect } from "../../recoil/categorySelect";
 
+export async function getTracksData(props: string) {
+  const filteredUrlApi = props;
+  console.log(props);
 
-export async function getTracksData(props:any) {
-  const {filteredUrlApi}= props
-  console.log(filteredUrlApi)
   try {
-    // const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/filter?page=1&limit=6${filteredUrlApi}`,
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/filter?page=1&limit=6&categ=0&categ=1&categ=2&categ=3`,
-    {
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/filter?page=1&limit=6${filteredUrlApi}`, {
       headers: {
         Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
       },
