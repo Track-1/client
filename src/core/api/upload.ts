@@ -1,15 +1,26 @@
 import axios from "axios";
+import PATH from "../../core/api/common/path";
 
-
-export async function UploadInfo(postData: Object) {
+export async function UploadInfo(postData: Object, userType: string, producerUploadType: string) {
   try {
-    console.log(postData);
-    await axios.post("https://www.track-1.link/tracks", postData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MiwiaWF0IjoxNjczMjAwNTExLCJleHAiOjE3MDQ3MzY1MTF9.OtWWSdtZuaM5qa9uYkNfm7dWDNOhsszBa7yGzFfsM2U"}`,
-      },
-    });
+    if (userType === "producer") {
+      const path = producerUploadType === "Portfolio" ? `${PATH.MYPAGE}/${PATH.PRODUCER}` : `${PATH.TRACKS}`;
+      console.log(userType, path);
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/${path}`, postData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+        },
+      });
+    } else {
+      console.log(userType);
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/${PATH.MYPAGE}/${PATH.VOCAL}`, postData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${`${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`}`,
+        },
+      });
+    }
   } catch (error) {
     console.log(error);
   }

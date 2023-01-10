@@ -1,4 +1,3 @@
-import axios from "axios";
 import styled from "styled-components";
 import { UploadInfo } from "../../core/api/upload";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
@@ -16,33 +15,42 @@ import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 
-export default function UploadHeader() {
+interface UploadHeaderType {
+  userType: string;
+  producerUploadType: string;
+}
+
+export default function UploadHeader(props: UploadHeaderType) {
+  const { userType, producerUploadType } = props;
   const navigate = useNavigate();
 
-  const title = useRecoilValue(uploadTitle);
-  const category = useRecoilValue(uploadCategory);
-  const wavFile = useRecoilValue(uploadWavFile);
-  const introduce = useRecoilValue(uploadIntroduce);
-  const keyword = useRecoilValue(uploadKeyword);
-  const jacketImage = useRecoilValue(uploadTrackJacketImage);
+  const jacketImageKey = userType === "producer" ? uploadTrackJacketImage : uploadVocalJacketImage;
 
   const postData = {
-    title: title,
-    category: category,
-    wavFile: wavFile,
-    introduce: introduce,
-    keyword: keyword,
-    jacketImage: jacketImage,
+    title: useRecoilValue(uploadTitle),
+    category: useRecoilValue(uploadCategory),
+    wavFile: useRecoilValue(uploadWavFile),
+    introduce: useRecoilValue(uploadIntroduce),
+    keyword: useRecoilValue(uploadKeyword),
+    jacketImage: useRecoilValue(jacketImageKey),
   };
 
   const [uploadState, setUploadState] = useState<boolean>(false);
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation(post)
-  // console.log(mutate, isLoading, isError, error, isSuccess);
+  const { mutate } = useMutation(post, {
+    onSuccess: () => {
+      // userType === 'producer' ? navigate("/track-search") : navigate("/mypage");
+      console.log("성공!");
+    },
+    onError: () => {
+      console.log("에러!!");
+    },
+  });
 
   async function post() {
-    if (wavFile !== null) {
-      const data = await UploadInfo(postData);
+    if (postData.wavFile !== null) {
+      console.log(postData);
+      const data = await UploadInfo(postData, userType, producerUploadType);
       return data;
     }
   }
@@ -53,23 +61,28 @@ export default function UploadHeader() {
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     if (uploadState) {
-      post();
+      mutate();
     }
   }
   useEffect(() => {
-    if (title !== "" && category !== "" && wavFile !== null && keyword.length !== 0) {
+    if (
+      postData.title !== "" &&
+      postData.category !== "" &&
+      postData.wavFile !== null &&
+      postData.keyword.length !== 0
+    ) {
       setUploadState(true);
     } else {
       setUploadState(false);
     }
-  }, [title, category, wavFile, introduce, keyword]);
+  }, [postData.title, postData.category, postData.wavFile, postData.introduce, postData.keyword]);
 
   return (
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
           <UploadBackIcon onClick={backPage} />
-          <UserClass>Vocal Searching</UserClass>
+          <UserClass> {producerUploadType === "Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
         </LeftWrapper>
         {uploadState ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
       </HeaderWrapper>
@@ -97,7 +110,7 @@ const LeftWrapper = styled.div`
 `;
 
 const UserClass = styled.div`
-  ${({ theme }) => theme.fonts.comment};
+  ${({ theme }) => theme.fonts.id};
   color: ${({ theme }) => theme.colors.gray3};
   margin-left: 6.1rem;
 `;
