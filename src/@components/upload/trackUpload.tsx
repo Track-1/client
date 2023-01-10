@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
 import { uploadTrackJacketImage } from "../../recoil/upload";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 
 export default function TrackUpload() {
@@ -25,17 +25,17 @@ export default function TrackUpload() {
     }
   }
 
-  useEffect(() => {
-    const convertURLtoFile = async (url: string) => {
-      const response = await fetch(url);
-      const data = await response.blob();
-      const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-      const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-      const metadata = { type: `image/${ext}` };
-      return new File([data], filename!, metadata);
-    };
+  async function convertURLtoFile(url: string) {
+    const response = await fetch(url);
+    const data = await response.blob();
+    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename!, metadata);
+  }
 
-    const test = convertURLtoFile("../assets/image/trackUploadDefaultImg.png").then((data) => {
+  useEffect(() => {
+    convertURLtoFile("../assets/image/trackUploadDefaultImg.png").then((data) => {
       setTrackJacketImage(data);
     });
   }, []);

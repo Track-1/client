@@ -1,6 +1,6 @@
 import axios from "axios";
 import styled from "styled-components";
-import { uploadInfo } from "../../core/api/upload";
+import { UploadInfo } from "../../core/api/upload";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,7 +14,7 @@ import {
 } from "../../recoil/upload";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { UploadData } from "../../type/uploadData";
+import { useMutation } from "react-query";
 
 export default function UploadHeader() {
   const navigate = useNavigate();
@@ -32,22 +32,26 @@ export default function UploadHeader() {
     wavFile: wavFile,
     introduce: introduce,
     keyword: keyword,
-    jacketImage : jacketImage
+    jacketImage: jacketImage,
   };
 
   const [uploadState, setUploadState] = useState<boolean>(false);
+
+  const { mutate, isLoading, isError, error, isSuccess } = useMutation(post)
+  // console.log(mutate, isLoading, isError, error, isSuccess);
+
+  async function post() {
+    if (wavFile !== null) {
+      const data = await UploadInfo(postData);
+      return data;
+    }
+  }
 
   function backPage(e: React.MouseEvent<SVGSVGElement>) {
     navigate("/track-search");
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
-    async function post() {
-      if (wavFile !== null) {
-        const data = await uploadInfo(postData);
-        console.log(data);
-      }
-    }
     if (uploadState) {
       post();
     }
