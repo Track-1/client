@@ -38,7 +38,7 @@ export default function CommentWrite(props: PropsType) {
     setFileName(fileName);
   }
 
-  return (
+  return ( //post
     <WriteContainer>
       <ProfileImage src={profileDummyImg} />
       <InfoBox>

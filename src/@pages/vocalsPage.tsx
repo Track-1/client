@@ -16,28 +16,40 @@ import TrackListHeader from "../@components/trackSearch/trackListHeader";
 import { useEffect, useState, useMemo } from "react";
 import { getVocalsData } from "../core/api/vocalSearch";
 import { playMusic } from "../recoil/player";
+import { categorySelect, trackSearching } from "../recoil/categorySelect";
+import { useQuery } from "react-query";
+
 
 export default function VocalsPage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [vocalData, setVocalData] = useState<VocalSearchType[]>();
+  // const [vocalData, setVocalData] = useState<VocalSearchType[]>();
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
+  const isSelected=useRecoilValue(trackSearching)
+  const filteredUrlApi=useRecoilValue(categorySelect)
 
   const audio = useMemo(() => new Audio(), []);
 
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
-
-    async function getData() {
-      const data = await getVocalsData();
-      console.log(data?.data);
-      setVocalData(data?.data);
-    }
-
-    getData();
   }, []);
+
+  const { data } = useQuery(["changeVocal",filteredUrlApi,isSelected],()=>getVocalsData(filteredUrlApi, isSelected)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+      if (data?.status === 200) {
+        console.log(data);
+        console.log("성공");
+      }    
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
 
   function playAudio() {
     audio.play();
@@ -83,9 +95,9 @@ export default function VocalsPage() {
 
         <VocalListWrapper>
           <VocalListHeader />
-          {vocalData && (
+          {data && (
             <VocalList
-              vocalData={vocalData}
+              vocalData={data?.data.data.vocalList}
               audio={audio}
               playAudio={playAudio}
               pauseAudio={pauseAudio}

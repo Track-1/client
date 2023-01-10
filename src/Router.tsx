@@ -14,9 +14,9 @@ export default function Router() {
         <Route path="/" element={<MainPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocals" element={<VocalsPage />} />
-        <Route path="/track-post" element={<TrackPostPage />} />
+        <Route path="/track-post/:beatId" element={<TrackPostPage />} />
         <Route path="/producer-profile" element={<ProducerProfilePage />} />
-        <Route path="/vocal-profile" element={<VocalProfilePage />} />
+        <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         <Route path="/upload" element={<UploadPage />} />
       </Routes>
     </BrowserRouter>
