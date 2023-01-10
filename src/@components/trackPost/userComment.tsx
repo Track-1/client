@@ -35,14 +35,14 @@ export default function UserComment(props: CommentPropsType) {
 
   const { data } = useQuery(["beatId",beatId], ()=>getComment(beatId)
   , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
+    refetchOnWindowFocus: false,
+    retry: 0,
     onSuccess: data => {
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
         setComments(data?.data.data.commentList)
-      }    
+      }
     },
     onError: error => {
       console.log("실패");
@@ -60,10 +60,10 @@ export default function UserComment(props: CommentPropsType) {
       <AddWrapper>
         <div></div>
         <AddCommentIcon onClick={uploadComment} />
-      </AddWrapper>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+      </AddWrapper>
       {comments&&comments.map((data, index) => {
         // data.isMe ? : merge할 때 분기처리
-        return <EachUseComment key={index} data={comments} />; //여기가 각각의 데이터
+        return <EachUseComment key={index} data={data} />; //여기가 각각의 데이터
       })}
       <BlurSection />
     </CommentContainer>
