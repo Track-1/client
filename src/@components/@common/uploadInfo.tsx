@@ -91,8 +91,6 @@ export default function UploadInfo() {
     if (e.target.files !== null) {
       setWavFile(e.target.files[0]);
     }
-
-    // setWavFile()
   }
 
   function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {

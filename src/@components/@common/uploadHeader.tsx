@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { UploadInfo } from "../../core/api/upload";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,51 +13,78 @@ import {
 } from "../../recoil/upload";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { UploadData } from "../../type/uploadData";
+import { useMutation } from "react-query";
 
-export default function UploadHeader() {
+interface UploadHeaderType {
+  userType: string;
+  producerUploadType: string;
+}
+
+export default function UploadHeader(props: UploadHeaderType) {
+  const { userType, producerUploadType } = props;
   const navigate = useNavigate();
 
-  const title = useRecoilValue(uploadTitle);
-  const category = useRecoilValue(uploadCategory);
-  const wavFile = useRecoilValue(uploadWavFile);
-  const introduce = useRecoilValue(uploadIntroduce);
-  const keyword = useRecoilValue(uploadKeyword);
+  const jacketImageKey = userType === "producer" ? uploadTrackJacketImage : uploadVocalJacketImage;
 
-  // const [obj, setObj] = useState<UploadData>({
-  //   title: useRecoilValue(uploadTitle),
-  //   category: useRecoilValue(uploadCategory),
-  //   wavFile: useRecoilValue(uploadWavFile),
-  //   introduce: useRecoilValue(uploadIntroduce),
-  //   keyword: useRecoilValue(uploadKeyword),
-  //   jacketImage: useRecoilValue(uploadTrackJacketImage),
-  // });
+  const postData = {
+    title: useRecoilValue(uploadTitle),
+    category: useRecoilValue(uploadCategory),
+    wavFile: useRecoilValue(uploadWavFile),
+    introduce: useRecoilValue(uploadIntroduce),
+    keyword: useRecoilValue(uploadKeyword),
+    jacketImage: useRecoilValue(jacketImageKey),
+  };
 
   const [uploadState, setUploadState] = useState<boolean>(false);
+
+  const { mutate } = useMutation(post, {
+    onSuccess: () => {
+      // userType === 'producer' ? navigate("/track-search") : navigate("/mypage");
+      console.log("성공!");
+    },
+    onError: () => {
+      console.log("에러!!");
+    },
+  });
+
+  async function post() {
+    if (postData.wavFile !== null) {
+      console.log(postData);
+      const data = await UploadInfo(postData, userType, producerUploadType);
+      return data;
+    }
+  }
 
   function backPage(e: React.MouseEvent<SVGSVGElement>) {
     navigate("/track-search");
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
-    // console.log(obj);
+    if (uploadState) {
+      mutate();
+    }
   }
   useEffect(() => {
-    if (title !== "" && category !== "" && wavFile !== null && keyword.length !== 0) {
+    if (
+      postData.title !== "" &&
+      postData.category !== "" &&
+      postData.wavFile !== null &&
+      postData.keyword.length !== 0
+    ) {
       setUploadState(true);
     } else {
       setUploadState(false);
     }
-  }, [title, category, wavFile, introduce, keyword]);
+  }, [postData.title, postData.category, postData.wavFile, postData.introduce, postData.keyword]);
 
   return (
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
-          <UploadBackIc onClick={backPage} style={{ cursor: "pointer" }} />
-          <UserClass>Vocal Searching</UserClass>
+          <UploadBackIcon onClick={backPage} />
+          <UserClass> {producerUploadType === "Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
         </LeftWrapper>
-        {uploadState ? <CanUploadBtnIc /> : <UploadBtnIcon onClick={upload} />}
+        {uploadState ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
       </HeaderWrapper>
     </Container>
   );
@@ -82,11 +110,19 @@ const LeftWrapper = styled.div`
 `;
 
 const UserClass = styled.div`
-  ${({ theme }) => theme.fonts.comment};
+  ${({ theme }) => theme.fonts.id};
   color: ${({ theme }) => theme.colors.gray3};
   margin-left: 6.1rem;
 `;
 
+const UploadBackIcon = styled(UploadBackIc)`
+  cursor: pointer;
+`;
+
 const UploadBtnIcon = styled(UploadBtnIc)`
+  cursor: pointer;
+`;
+
+const CanUploadBtnIcon = styled(CanUploadBtnIc)`
   cursor: pointer;
 `;
