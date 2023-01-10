@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 
 interface PropsType {
   getUploadData: (content: string, wavFile: File | null) => any;
@@ -22,25 +22,27 @@ export default function CommentWrite(props: PropsType) {
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
   const [comment, setComment]=useRecoilState<string>(postContent)
   const [wavFile, setWavFile]=useRecoilState<any>(postWavFile);
+  const [isEnd, setIsEnd]=useRecoilState<boolean>(endPost);
+
 
   useEffect(() => {
     const currentText = commentText.current!.value;
-    const currentFile=commentFile.current!.files[0];
+    console.log(commentFile.current!.files)
+
     isCompleted&&getUploadData(currentText, uploadedFile);
     console.log(isCompleted)
-    if(!isCompleted&&!comment&&!wavFile){
+    if(!isCompleted&&!comment&&commentFile){
       commentText.current!.value="";
-      // setFileName("file_upload.mp3")  
-      setUploadedFile(null)
+      // setFileName("file_upload.mp3");
     }
   }, [isCompleted]);
 
   useEffect(()=>{
-    console.log("텍스트",commentText.current!.value)
-    console.log("파일",commentFile.current!.files[0])
+    // console.log("텍스트",commentText.current!.value)
+    // console.log("파일",uploadedFile)
 
     setComment(commentText.current!.value)
-    setWavFile(commentFile.current!.files[0])
+    setWavFile(uploadedFile)
   },[commentLength])
   
   // useEffect(()=>{
@@ -63,6 +65,7 @@ export default function CommentWrite(props: PropsType) {
     currentFile && setUploadedFile(currentFile);
 
     currentFile && changeFileName(currentFile.name);
+    setIsEnd(true)
   }
 
   function changeFileName(fileName: string) {

@@ -11,7 +11,7 @@ import {UserCommentType} from '../../type/userCommentsType'
 import axios from "axios";
 import{postComment} from '../../core/api/trackPost'
 import { useRecoilState, useRecoilValue } from "recoil";
-import { postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 
 interface CommentPropsType{
   closeComment:any;
@@ -29,7 +29,7 @@ export default function UserComment(props: CommentPropsType) {
   const contentLength=useRecoilValue(postContentLength)
   const [content, setContent]=useRecoilState<string>(postContent)
   const [wavFile, setWavFile]=useRecoilState(postWavFile)
-
+  const [isEnd, setIsEnd]=useRecoilState<boolean>(endPost);
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -88,6 +88,7 @@ export default function UserComment(props: CommentPropsType) {
       setContent("")
       setWavFile(null)
       setIsCompleted(false)
+      setIsEnd(false)
     }
   });
 

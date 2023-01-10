@@ -20,10 +20,10 @@ export const postWavFile = atom({
   default: null,
 });
 
-// export const endPost=atom({
-//   key:"endPost",
-//   default:false,
-// })
+export const endPost=atom({
+  key:"endPost",
+  default:false,
+})
 
 // export const uploadCommentData=atom({
 //   key: "uploadCommentData",
