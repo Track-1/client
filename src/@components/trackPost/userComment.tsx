@@ -3,9 +3,9 @@ import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
 // import comments from "../../core/trackPost/userComments";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getComment, postComment } from "../../core/api/trackPost";
 import {UserCommentType} from '../../type/userCommentsType'
 
@@ -16,15 +16,13 @@ interface CommentPropsType{
 
 export default function UserComment(props: CommentPropsType) {
   const { closeComment, beatId } = props;
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [comments, setComments]=useState<UserCommentType[]>()
   const [uploadData, setUploadData] = useState<UploadDataType>({
     text: "",
     file: null,
   });
-  const [isCompleted, setIsCompleted] = useState<boolean>(false);
-  const [comments, setComments]=useState<UserCommentType[]>()
-  function uploadComment() {
-    setIsCompleted(true);
-  }
+
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -49,21 +47,55 @@ export default function UserComment(props: CommentPropsType) {
     }
   });
 
-  console.log(comments)
-  const { mutate } = useMutation(()=>postComment(beatId, uploadData));
+  console.log(data?.data.data)
+  // const { mutate } = useMutation(()=>postComment(beatId, uploadData));
+
+ const queryClient = useQueryClient();
+ const mutation = useMutation(()=>postComment(beatId, uploadData), {
+    onMutate: (data: UploadDataType) => {
+      const previousValue = queryClient.getQueryData('users');
+      console.log('previousValue', data);
+      // queryClient.setQueryData('beatId', (old:any) => {
+      //   console.log('beatId', old);
+      //   return [...old, data];
+      // });
+
+      return previousValue;
+    },
+    onSuccess: (result, variables, context) => {
+      console.log('성공 메시지:', result);
+      console.log('변수', variables);
+      console.log('onMutate에서 넘어온 값', context);
+      // queryCache.invalidateQueries('todos')
+      // 초기화
+      setUploadData({
+        text: "",
+        file: null,
+      });
+    },
+  });
+
+
+  const uploadComment = useCallback(
+    (uploadData: UploadDataType) => {
+      setIsCompleted(true);
+      mutation.mutate(uploadData);
+    },
+    [mutation],
+  )
 
   return (
     <CommentContainer>
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
-      <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} />
+      <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted}/>
       <AddWrapper>
         <div></div>
-        <AddCommentIcon onClick={uploadComment} />
-      </AddWrapper>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+        <AddCommentIcon onClick={()=>uploadComment(uploadData)} />
+      </AddWrapper>                                  
       {comments&&comments.map((data, index) => {
-        return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
+        return <EachUseComment key={index} data={comments[index]}/>; //여기가 각각의 데이터
       })}
       <BlurSection />
     </CommentContainer>

@@ -10,7 +10,7 @@ export async function getTrackInfo(props:number) {
         Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
       },
     });
-    data && console.log(data);
+    // data && console.log(data);
     return data;
   } catch (e) {
     console.log(e);
@@ -26,7 +26,7 @@ export async function getComment(props:number) {
         Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
       },
     });
-    data && console.log(data);
+    // data && console.log(data);
     return data;
   } catch (e) {
     console.log(e);
@@ -35,13 +35,11 @@ export async function getComment(props:number) {
 
 export async function postComment(beatId:number, uploadData:UploadDataType) {
   try {
-     const data=await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, {
-      //body
-      uploadData
-    },
+     const data=await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/8`, uploadData,
     {
       headers: {
-        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+        'Content-Type': 'amultipart/form-data',
+        Authorization: `Bearer ${`${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`}`,
       },
     });
     data && console.log(data);

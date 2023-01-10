@@ -22,7 +22,7 @@ export default function EachUserComment(props: dataType) {
 
   return (
     <CommentContainer onMouseOver={changeHoverTrue} onMouseOut={changeHoverFalse}>
-      <ProfileImage>
+      <ProfileImage img={data.vocalProfileImage}>
         {isHover && (
           <PlayerBlur>
             <PlayBtnIc />
@@ -54,7 +54,7 @@ const CommentContainer = styled.article`
   }
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.div<{img:string}>`
   height: 9rem;
   width: 9rem;
 
@@ -63,7 +63,7 @@ const ProfileImage = styled.div`
 
   border-radius: 9rem;
 
-  background-image: url(${profileDummyImg});
+  background-image: url(${({img})=>img});
   background-repeat: no-repeat;
   background-size: contain;
 `;

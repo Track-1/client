@@ -126,8 +126,8 @@ export default function TrackPostPage() {
     retry: 0, 
     onSuccess: data => {
       if (data?.status === 200) {
-        console.log(data);
-        console.log("성공");
+        // console.log(data);
+        // console.log("성공");
         setTrackInfoData(data?.data.data)
       }    
     },
