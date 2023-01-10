@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 export default function UploadPage() {
-  const navivation = useNavigate();
   const [userType, setUserType] = useState<string>("vocal");
   const [producerUploadState, setProducerUploadState] = useState<string>("Portfolio");
 

@@ -5,7 +5,6 @@ export async function UploadInfo(postData: Object, userType: string, producerUpl
   try {
     if (userType === "producer") {
       const path = producerUploadType === "Portfolio" ? `${PATH.MYPAGE}/${PATH.PRODUCER}` : `${PATH.TRACKS}`;
-      console.log(userType, path);
       await axios.post(`${process.env.REACT_APP_BASE_URL}/${path}`, postData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -13,7 +12,6 @@ export async function UploadInfo(postData: Object, userType: string, producerUpl
         },
       });
     } else {
-      console.log(userType);
       await axios.post(`${process.env.REACT_APP_BASE_URL}/${PATH.MYPAGE}/${PATH.VOCAL}`, postData, {
         headers: {
           "Content-Type": "multipart/form-data",

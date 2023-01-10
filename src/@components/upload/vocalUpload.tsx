@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
-import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
-import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { uploadVocalJacketImage } from "../../recoil/upload";
 import { useRecoilState } from "recoil";
+import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
+import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
