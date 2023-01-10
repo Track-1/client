@@ -76,6 +76,27 @@ export default function ProducerPortFolioList(props: PropsType) {
     }
   }
 
+  //infinite scroll
+  //무한 스크롤
+  const [page, setPage] = useState<number>();
+  const [loading, setLoading] = useState(false);
+  const loadMore = () => setPage((prev) => prev && prev + 1);
+  const target = useRef<HTMLDivElement | null>(null);
+
+  //  console.log(vocalData);
+
+  useEffect(() => {
+    //  if (!loading) {
+    const observer = new IntersectionObserver((endDiv) => {
+      if (endDiv[0].isIntersecting) {
+        loadMore();
+      }
+    });
+    observer.observe(target.current!);
+    console.log("dd");
+    // }
+  }, []);
+
   return (
     <>
       <ProfileListContainer>
@@ -141,11 +162,19 @@ export default function ProducerPortFolioList(props: PropsType) {
             portfolios={portfolioData}
             profileState={profileState}
           />
+          <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
         </InformWrapper>
       )}
     </>
   );
 }
+
+// infinite
+const InfiniteDiv = styled.div`
+  width: 100%;
+  height: 1rem;
+  background-color: pink;
+`;
 
 const TitleWrapper = styled.div`
   width: 14rem;

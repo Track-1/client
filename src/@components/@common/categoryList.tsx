@@ -10,7 +10,7 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import { categorySelect } from "../../recoil/categorySelect";
+import { categorySelect, trackSearching } from "../../recoil/categorySelect";
 
 export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function CategoryList() {
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
+  const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
 
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
 
@@ -32,15 +32,7 @@ export default function CategoryList() {
     };
   }, [openModal]);
 
-  // function categoryClick(id: number) {
-  //   const tempSelectedCategorys = [...selectedCategorys];
-
-  //   // tempSelectedCategorys[id].selected = changeSelectValue(tempSelectedCategorys[id].selected);
-  //   // tempSelectedCategorys[id].selected ? addSelectedSet(id) : addSelectedDelete(id);
-
-  //   setSelectedCategorys([...tempSelectedCategorys]);
-  // }
-  function categoryClick(id: number) {
+  function categoryClick(id:number){
     setSelectedCategorys(
       selectedCategorys.map((selectCateg) =>
         selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
@@ -62,47 +54,12 @@ export default function CategoryList() {
     return !value;
   }
 
-  // function createFilteredUrl(selectedSet:Set<number|unknown>) {
-  //   let filteredUrl = "";
 
-  //   selectedSet.forEach((id) => {
-  //     filteredUrl += `$categ${id}`;
-  //   });
-  //   filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-
-  //   // return filteredUrl;
-  // }
-
-  function createFilteredUrl(selectedCategorys: CategoryChecksType[]) {
-    // let filteredUrl = "";
-    // selectedCategorys.forEach((categId) => {
-    //   filteredUrl += `$categ${categId}`;
-    // });
-    // filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-    // categs.forEach(({categId}) => {
-    //   categApi=categApi+`&categ=`+categId
-    // });
-    // setSelectedCategorysApi(categApi)
-    // return filteredUrl;
-  }
-
-  // useEffect(()=>{
-  //   selectedSet&&createFilteredUrl(selectedSet)
-  //   console.log(selectedSet)
-  // },[selectedSet])
-
-  // useEffect(()=>{
-  //   createFilteredUrl(selectedCategorys)
-  // },[selectedCategorys])
-
-  useEffect(() => {
-    let filteredUrl = "";
-    console.log(filteredUrl);
-    const categs = selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true);
-    console.log(categs);
-
-    categs.forEach(({ categId }) => {
-      filteredUrl += `&categ=${categId}`;
+  useEffect(()=>{
+    let filteredUrl=""
+    const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
+    categs.forEach(({categId}) => {
+      filteredUrl+=`&categ=${categId}`;
     });
     console.log(filteredUrl);
 
@@ -116,7 +73,8 @@ export default function CategoryList() {
   }
 
   function clickTrackSearching() {
-    setTrackSearchingClicked(!trackSearchingClicked);
+    // setTrackSearchingClicked(!trackSearchingClicked);
+    setTrackSearchingClicked((prev)=>!prev);
   }
 
   function closeModal(e: MouseEvent) {

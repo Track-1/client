@@ -54,8 +54,7 @@ export default function VocalList(props: PropsType) {
     setCurrentFile(vocalData[clickVocal]?.vocalTitleFile);
     audio.src = vocalData[clickVocal]?.vocalTitleFile;
     getDuration(vocalData[clickVocal]?.wavFileLength);
-
-    //  console.log(clickVocal);
+    // console.log(clickVocal);
   }, [clickVocal]);
 
   const navigate = useNavigate();
@@ -77,7 +76,7 @@ export default function VocalList(props: PropsType) {
 
   function playAudioOnTrack(id: number) {
     if (clickVocal === id) {
-      audio.play();
+      audio.play().then((_) => {}).catch((error) => {});
       setPlay(true);
     } else {
       setPlay(true);
@@ -89,14 +88,14 @@ export default function VocalList(props: PropsType) {
   }
 
   function onClickPauseVocal(id: number) {
-    if (play && id == beatId) {
+    if (play && id === beatId) {
       audio.pause();
       setPlay(false);
     }
   }
 
   function clickVocalName(id: number) {
-    navigate("/vocal-profile", { state: id });
+    navigate(`/vocal-profile/${id}`, { state:id });
   }
 
   return (
@@ -106,7 +105,7 @@ export default function VocalList(props: PropsType) {
           <VocalContainer key={vocal.vocalId}>
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
-              {vocal.isSelected && <VocalSleepIcon />}
+              {!vocal.isSelected && <VocalSleepIcon />}
             </UsernameInformWrapper>
 
             <CategoryTextWrapper>
@@ -126,8 +125,8 @@ export default function VocalList(props: PropsType) {
               isClickVocal={clickVocal === vocal.vocalId}
               clickVocal={clickVocal}>
               <GradientLine>
-                <AlbumCoverImg
-                  src={require("../../assets/image/" + vocal.vocalProfileImage + ".png")}
+                <AlbumCoverImg              
+                  src={vocal.vocalProfileImage}
                   alt="앨범자켓사진"
                 />
               </GradientLine>
@@ -220,6 +219,13 @@ const CategoryNum = styled.span`
 
 const AlbumCoverImg = styled.img`
   position: relative;
+  transform: rotate(-45deg);
+  object-fit:cover;
+
+  width: 130%;
+  height: 130%;
+  bottom: 3rem;
+  right: 3rem;
 `;
 
 const GradientProfile = styled.div<{ isHoverVocal: boolean; isClickVocal: boolean; clickVocal: number }>`

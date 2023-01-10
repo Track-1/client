@@ -102,7 +102,7 @@ export default function TrackList(props: PropsType) {
     setPlay(false);
     setBeatId(id);
 
-    navigate("/track-post");
+    navigate(`/track-post/${id}`, {state:id});
     setShowPlayer(false);
   }
 

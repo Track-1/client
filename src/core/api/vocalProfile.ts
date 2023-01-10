@@ -1,8 +1,15 @@
 import axios from "axios";
 
-export async function getVocalProfile() {
+export async function getVocalProfile(props:number) {
+  const state=props
+
   try {
-    const data = await axios.get("/profile/vocal/:vocalId");
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/profile/vocal/${state}?page=1&limit=5`,
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
     data && console.log(data);
     return data && data;
   } catch (e) {

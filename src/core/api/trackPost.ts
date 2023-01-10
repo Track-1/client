@@ -1,9 +1,15 @@
 import axios from "axios";
+import { UploadDataType } from "../../type/uploadDataType";
 
-export async function getTrackInfo() {
-  //trackId 필요하
+export async function getTrackInfo(props:number) {
+  const state=props
   try {
-    const data = await axios.get("/tracks/:beatId");
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`,
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
     data && console.log(data);
     return data;
   } catch (e) {
@@ -11,10 +17,15 @@ export async function getTrackInfo() {
   }
 }
 
-export async function getComment() {
-  //trackid 필요해
+export async function getComment(props:number) {
+  const state=props
   try {
-    const data = await axios.get("/tracks/comments/:beatId");
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/8?page=1&limit=2`, 
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
     data && console.log(data);
     return data;
   } catch (e) {
@@ -22,10 +33,18 @@ export async function getComment() {
   }
 }
 
-export async function postComment() {
-  //trackid 필요해
+export async function postComment(beatId:number, uploadData:UploadDataType) {
   try {
-    await axios.post("/tracks/:beatId", {});
+     const data=await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, {
+      //body
+      uploadData
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+      },
+    });
+    data && console.log(data);
   } catch (e) {
     console.log(e);
   }
