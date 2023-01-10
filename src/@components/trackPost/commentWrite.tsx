@@ -21,7 +21,7 @@ export default function CommentWrite(props: PropsType) {
     const currentText = commentText.current!.value;
     getUploadData(currentText, uploadedFile);
   }, [isCompleted]);
-
+  
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
     setCommentLength(currentLength);

@@ -37,8 +37,8 @@ export default function UserComment(props: CommentPropsType) {
     retry: 0, 
     onSuccess: data => {
       if (data?.status === 200) {
-        console.log(data);
-        console.log("성공");
+        // console.log(data);
+        // console.log("성공");
         setComments(data?.data.data.commentList)
       }    
     },
@@ -47,7 +47,7 @@ export default function UserComment(props: CommentPropsType) {
     }
   });
 
-  console.log(data?.data.data)
+  // console.log(data?.data.data)
   // const { mutate } = useMutation(()=>postComment(beatId, uploadData));
 
  const queryClient = useQueryClient();
@@ -76,24 +76,35 @@ export default function UserComment(props: CommentPropsType) {
   });
 
 
-  const uploadComment = useCallback(
-    (uploadData: UploadDataType) => {
-      setIsCompleted(true);
-      mutation.mutate(uploadData);
-    },
-    [mutation],
-  )
+  // const uploadComment = useCallback(
+  //   (uploadData: UploadDataType) => {
+  //     setIsCompleted(true);
+  //     mutation.mutate(uploadData);
+  //   },
+  //   [mutation],
+  // )
+
+  function uploadComment(uploadData:UploadDataType){
+    console.log(uploadData.file)
+    if(uploadData.text&&uploadData.file){
+    //   let formData = new FormData();
+    //   formData.append("wavFile", uploadData.file);
+    //   formData.append("content", uploadData.text);
+    }
+  } 
 
   return (
     <CommentContainer>
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
+      <form>
       <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted}/>
       <AddWrapper>
         <div></div>
         <AddCommentIcon onClick={()=>uploadComment(uploadData)} />
       </AddWrapper>                                  
+      </form>
       {comments&&comments.map((data, index) => {
         return <EachUseComment key={index} data={comments[index]}/>; //여기가 각각의 데이터
       })}
