@@ -11,6 +11,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
+import { useQuery } from "react-query";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
@@ -32,19 +33,19 @@ export default function ProducerProfilePage() {
     async function getData() {
       const data = await getProducerProfile();
 
-      setPortfolioData(data?.data[0].producerPortfolio);
-      setProfileData(data?.data[0].producerProfile);
-      setIsMe(data?.data[0].isMe);
+      setPortfolioData(data?.data?.data.producerPortfolio);
+      setProfileData(data?.data?.data.producerProfile);
+      setIsMe(data?.data?.data.isMe);
     }
     getData();
   }, []);
 
-  useEffect(() => {
-    async function getData() {
-      profileState === "Portfolio" ? await getProfileData() : await getVocalSearchData();
-    }
-    getData();
-  }, [profileState]);
+  // useEffect(() => {
+  //   async function getData() {
+  //     profileState === "Portfolio" ? await getProfileData() : await getVocalSearchData();
+  //   }
+  //   getData();
+  // }, [profileState]);
 
   function playAudio() {
     audio.play();
@@ -95,7 +96,7 @@ export default function ProducerProfilePage() {
 
   async function getProfileData() {
     const data = await getProducerProfile();
-    setPortfolioData(data?.data[0].producerPortfolio);
+    setPortfolioData(data?.data.producerPortfolio);
   }
 
   function getDuration(durationTime: number) {
