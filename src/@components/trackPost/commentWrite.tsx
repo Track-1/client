@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { UploadIc } from "../../assets";
-import profileDummyImg from "../../assets/image/profileDummyImg.png";
+// import profileDummyImg from "https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user.png"
 
 interface PropsType {
   getUploadData: (content: string, wavFile: File | null) => any;
@@ -40,7 +40,7 @@ export default function CommentWrite(props: PropsType) {
 
   return ( //post
     <WriteContainer>
-      <ProfileImage src={profileDummyImg} />
+      <ProfileImage src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user.png"} alt="프로필 이미지"/>
       <InfoBox>
         <TitleWrapper>
           <InputTitle>{fileName}</InputTitle>

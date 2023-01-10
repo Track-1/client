@@ -2,7 +2,7 @@ export interface UploadData {
   title: string;
   category: string;
   wavFile: File | null;
-  introduce: string;
+  comment: string;
   keyword: string[];
   jacketImage: File;
 }
