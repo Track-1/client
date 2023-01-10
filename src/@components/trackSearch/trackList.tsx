@@ -26,7 +26,6 @@ interface PropsType {
 
 export default function TrackList(props: PropsType) {
   const { audio, playAudio, pauseAudio, tracksData, duration, getDuration } = props;
-
   const [trackHover, setTrackHover] = useState<number>(-1);
 
   const [trackClick, setTrackClick] = useState<number>(-1);

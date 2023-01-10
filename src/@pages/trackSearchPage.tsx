@@ -33,12 +33,15 @@ export default function TrackSearchPage() {
 
   const [duration, setCurrentDuration] = useState<number>(0);
 
+  //이전 데이터랑 합치는 useState
+  const [trackData, setTrackData] = useState<any>([]);
+
   const audio = useMemo(() => new Audio(), []);
   // const [currentAudio, setCurrentAudio] = useRecoilState<AudioTypes>(audioState);
 
   const filteredUrlApi = useRecoilValue(categorySelect);
   const pageNum = useRecoilValue(trackListinfiniteScroll);
-
+  let prevData;
   useEffect(() => {
     console.log(filteredUrlApi);
   }, [filteredUrlApi]);
@@ -46,11 +49,27 @@ export default function TrackSearchPage() {
   // const { isLoading, isError, data, error } = useQuery(["filteredUrlApi", filteredUrlApi, pageNum], () =>
   //   getTracksData(filteredUrlApi, pageNum),
   // );
-  const { isLoading, isError, data, error } = useQuery(["filteredUrlApi", pageNum], () =>
-  getTracksData(pageNum),
-);
+  console.log(tracksData);
+  console.log(prevData);
 
+  const { isLoading, isError, data, error } = useQuery(["filteredUrlApi", pageNum], () => getTracksData(pageNum), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      if (data?.status === 200) {
+        setTracksData(data?.data.data.trackList);
+        setTrackData(tracksData);
+        setTrackData([...trackData, ...data?.data.data.trackList]);
+      }
+    },
+    onError: (error) => {
+      console.log("실패");
+    },
+  });
 
+  useEffect(() => {
+    console.log(trackData);
+  }, [trackData]);
   // , {
   //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
   //   retry: 0, // 실패시 재호출 몇번 할지
@@ -137,7 +156,8 @@ export default function TrackSearchPage() {
               audio={audio}
               playAudio={playAudio}
               pauseAudio={pauseAudio}
-              tracksData={data?.data.data.trackList}
+              //tracksData={data?.data.data.trackList}
+              tracksData={trackData}
               duration={duration}
               getDuration={getDuration}
             />
