@@ -12,7 +12,6 @@ export default function VocalProfileShadow() {
 
 const VocalProfileShadowWrapper = styled.section`
   position: fixed;
-  z-index: 2;
 `;
 const VocalProfileShadowIcon = styled(VocalProfileShadowIc)`
   position: relative;
