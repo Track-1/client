@@ -20,6 +20,7 @@ import { TracksDataType } from "../type/tracksDataType";
 
 import { useQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
+import { trackListinfiniteScroll } from "../recoil/infiniteScroll";
 
 export default function TrackSearchPage() {
   const [progress, setProgress] = useState<number>(0);
@@ -35,14 +36,20 @@ export default function TrackSearchPage() {
   const audio = useMemo(() => new Audio(), []);
   // const [currentAudio, setCurrentAudio] = useRecoilState<AudioTypes>(audioState);
 
-  const filteredUrlApi=useRecoilValue(categorySelect)
+  const filteredUrlApi = useRecoilValue(categorySelect);
+  const pageNum = useRecoilValue(trackListinfiniteScroll);
 
   useEffect(() => {
-    console.log(filteredUrlApi)
+    console.log(filteredUrlApi);
+  }, [filteredUrlApi]);
 
-  },[filteredUrlApi])
+  // const { isLoading, isError, data, error } = useQuery(["filteredUrlApi", filteredUrlApi, pageNum], () =>
+  //   getTracksData(filteredUrlApi, pageNum),
+  // );
+  const { isLoading, isError, data, error } = useQuery(["filteredUrlApi", pageNum], () =>
+  getTracksData(pageNum),
+);
 
-  const { isLoading, isError, data, error } = useQuery("tracks", ()=>getTracksData(filteredUrlApi))
 
   // , {
   //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
@@ -52,7 +59,7 @@ export default function TrackSearchPage() {
   //     if (data?.status === 200) {
   //       console.log(data);
   //       setTracksData(data?.data);
-  //     }    
+  //     }
   //   },
   //   onError: error => {
   //     // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
