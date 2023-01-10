@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
 import { uploadTrackJacketImage } from "../../recoil/upload";
 import { useRecoilState } from "recoil";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
+import { FileChangeIc } from "../../assets";
 
 export default function TrackUpload() {
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
   const [tarckJacketImage, setTrackJacketImage] = useRecoilState<File>(uploadTrackJacketImage);
+
+  const [isHover, setIsHover] = useState<boolean>(false);
+
+  function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
+    if (trackUploadImg !== TrackUploadDefaultImg) {
+      e.type === "mouseenter" ? setIsHover(true) : setIsHover(false);
+    }
+  }
 
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) {
@@ -45,7 +54,16 @@ export default function TrackUpload() {
       <SectionWrapper>
         <TrackImageBox>
           <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-            <TrackUploadImage src={trackUploadImg} alt="트랙이미지" />
+            <TrackUploadImage
+              src={trackUploadImg}
+              alt="트랙이미지"
+              onMouseEnter={setHover}
+              onMouseLeave={setHover}
+              isHover={isHover}
+            />
+          </label>
+          <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+            {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
           </label>
         </TrackImageBox>
         <input
@@ -95,8 +113,25 @@ const TrackImageBox = styled.div`
   cursor: pointer;
 `;
 
-const TrackUploadImage = styled.img`
+const TrackUploadImage = styled.img<{ isHover: boolean }>`
   width: 60.4rem;
   height: 60.4rem;
   object-fit: cover;
+  ${(props) =>
+    props.isHover
+      ? css`
+          background: rgba(30, 32, 37, 0.5);
+          filter: blur(3rem);
+        `
+      : css`
+          background: default;
+          filter: default;
+        `}
+`;
+
+const FileChangeIcon = styled(FileChangeIc)`
+  position: absolute;
+  top: 47.95rem;
+  left: 42.8rem;
+  cursor: pointer;
 `;

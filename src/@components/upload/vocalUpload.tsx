@@ -136,8 +136,8 @@ const VocalUploadImage = styled.img<{ isHover: boolean }>`
 
 const FileChangeIcon = styled(FileChangeIc)`
   position: absolute;
-  top: 19rem;
-  left: 14rem;
+  top: 17rem;
+  left: 12rem;
   transform: rotate(-45deg);
   cursor: pointer;
 `;
