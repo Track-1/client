@@ -3,11 +3,13 @@ import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
 // import comments from "../../core/trackPost/userComments";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getComment, postComment } from "../../core/api/trackPost";
+import { getComment } from "../../core/api/trackPost";
 import {UserCommentType} from '../../type/userCommentsType'
+import axios from "axios";
+import{postComment} from '../../core/api/trackPost'
 
 interface CommentPropsType{
   closeComment:any;
@@ -19,15 +21,15 @@ export default function UserComment(props: CommentPropsType) {
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [comments, setComments]=useState<UserCommentType[]>()
   const [uploadData, setUploadData] = useState<UploadDataType>({
-    text: "",
-    file: null,
+    content: "",
+    wavFile: null,
   });
-
+  const [commentData, setCommentData]=useState<any>()
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
-      text: text,
-      file: audioFile,
+      content: text,
+      wavFile: audioFile,
     });
   }
 
@@ -50,30 +52,69 @@ export default function UserComment(props: CommentPropsType) {
   // console.log(data?.data.data)
   // const { mutate } = useMutation(()=>postComment(beatId, uploadData));
 
- const queryClient = useQueryClient();
- const mutation = useMutation(()=>postComment(beatId, uploadData), {
-    onMutate: (data: UploadDataType) => {
-      const previousValue = queryClient.getQueryData('users');
-      console.log('previousValue', data);
-      // queryClient.setQueryData('beatId', (old:any) => {
-      //   console.log('beatId', old);
-      //   return [...old, data];
-      // });
+  function uploadComment(uploadData:UploadDataType){
+    setIsCompleted(true);
+    if(uploadData.content&&uploadData.wavFile){      
+      let formData = new FormData();
+      formData.append("wavFile", uploadData.wavFile);
+      formData.append("content", uploadData.content);
 
-      return previousValue;
-    },
-    onSuccess: (result, variables, context) => {
-      console.log('성공 메시지:', result);
-      console.log('변수', variables);
-      console.log('onMutate에서 넘어온 값', context);
-      // queryCache.invalidateQueries('todos')
-      // 초기화
+      // setCommentData(formData)
+      // postComment(8, formData)
+      mutate(formData)
+
+
+      // axios
+      // .post(`https://www.track-1.link/tracks/8`, formData, {
+      //   headers:{
+      //     "Content-Type": 'amultipart/form-data',
+      //     Authorization: `Bearer ${`${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`}`
+      //   } 
+      // })
+      // .then((res) => {
+      //   console.log("성공했다 포스트");
+      //   // if (res.data.ok) {
+      //   //   console.log(res);
+      //   //   alert("추가완료!");
+      //   // }
+      // });
+    }
+  } 
+  
+  // const {mutate} = useMutation(()=>postComment(formData))
+  const {mutate} = useMutation(postComment, {
+    onSuccess: () => {
       setUploadData({
-        text: "",
-        file: null,
+        content: "",
+        wavFile: null,
       });
-    },
+    }
   });
+
+//  const queryClient = useQueryClient();
+//  const mutation = useMutation(()=>postComment(beatId, uploadData), {
+//     onMutate: (data: UploadDataType) => {
+//       const previousValue = queryClient.getQueryData('users');
+//       console.log('previousValue', data);
+//       // queryClient.setQueryData('beatId', (old:any) => {
+//       //   console.log('beatId', old);
+//       //   return [...old, data];
+//       // });
+
+//       return previousValue;
+//     },
+//     onSuccess: (result, variables, context) => {
+//       console.log('성공 메시지:', result);
+//       console.log('변수', variables);
+//       console.log('onMutate에서 넘어온 값', context);
+//       // queryCache.invalidateQueries('todos')
+//       // 초기화
+//       setUploadData({
+//         text: "",
+//         file: null,
+//       });
+//     },
+//   });
 
 
   // const uploadComment = useCallback(
@@ -83,15 +124,7 @@ export default function UserComment(props: CommentPropsType) {
   //   },
   //   [mutation],
   // )
-
-  function uploadComment(uploadData:UploadDataType){
-    console.log(uploadData.file)
-    if(uploadData.text&&uploadData.file){
-    //   let formData = new FormData();
-    //   formData.append("wavFile", uploadData.file);
-    //   formData.append("content", uploadData.text);
-    }
-  } 
+  
 
   return (
     <CommentContainer>

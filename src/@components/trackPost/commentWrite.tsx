@@ -4,7 +4,7 @@ import { UploadIc } from "../../assets";
 import profileDummyImg from "../../assets/image/profileDummyImg.png";
 
 interface PropsType {
-  getUploadData: (text: string, audioFile: File | null) => any;
+  getUploadData: (content: string, wavFile: File | null) => any;
   isCompleted: boolean;
 }
 
@@ -21,7 +21,7 @@ export default function CommentWrite(props: PropsType) {
     const currentText = commentText.current!.value;
     getUploadData(currentText, uploadedFile);
   }, [isCompleted]);
-  
+
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
     setCommentLength(currentLength);
@@ -36,7 +36,7 @@ export default function CommentWrite(props: PropsType) {
 
   function changeFileName(fileName: string) {
     setFileName(fileName);
-  }
+  } 
 
   return ( //post
     <WriteContainer>

@@ -1,4 +1,4 @@
 export interface UploadDataType {
-  text: string;
-  file: File | null;
+  content: string;
+  wavFile: File | null;
 }
