@@ -33,7 +33,6 @@ export default function CommentWrite(props: PropsType) {
     console.log(isCompleted)
     if(!isCompleted&&!comment&&commentFile){
       commentText.current!.value="";
-      // setFileName("file_upload.mp3");
     }
   }, [isCompleted]);
 
@@ -44,16 +43,6 @@ export default function CommentWrite(props: PropsType) {
     setComment(commentText.current!.value)
     setWavFile(uploadedFile)
   },[commentLength])
-  
-  // useEffect(()=>{
-  //   // commentText.current&&commentText.current.value = "asdf";
-  //   // // comment&&commentText=``;
-  //   // // wavFile
-  //   commentText.current!.value="";
-  //   end&&setFileName("file_upload.mp3")
-
-  // },[end])
-
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;

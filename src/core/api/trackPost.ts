@@ -49,10 +49,6 @@ export async function postComment(formData:any) {
   }
 }
 
-// export const postCommentMutation = () => {
-//   return useMutation(postComment) 
-// }
-
 export async function getAudioFile() {
   try {
     const data = await axios.get("/tracks/:beatId/download");

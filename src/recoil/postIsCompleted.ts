@@ -24,11 +24,3 @@ export const endPost=atom({
   key:"endPost",
   default:false,
 })
-
-// export const uploadCommentData=atom({
-//   key: "uploadCommentData",
-//   default: {
-//     content: ``,
-//     wavFile: null,
-//   }
-// })
