@@ -55,7 +55,6 @@ export default function TrackList(props: PropsType) {
     // }
   }, []);
 
-
   useEffect(() => {
     playAudio();
   }, [currentFile]);

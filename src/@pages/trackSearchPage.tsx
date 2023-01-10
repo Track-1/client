@@ -46,6 +46,7 @@ export default function TrackSearchPage() {
     console.log(filteredUrlApi);
   }, [filteredUrlApi]);
 
+  let datalength;
   // const { isLoading, isError, data, error } = useQuery(["filteredUrlApi", filteredUrlApi, pageNum], () =>
   //   getTracksData(filteredUrlApi, pageNum),
   // );
@@ -58,6 +59,8 @@ export default function TrackSearchPage() {
     onSuccess: (data) => {
       if (data?.status === 200) {
         setTracksData(data?.data.data.trackList);
+        console.log(trackData.length);
+        datalength = trackData.length;
         setTrackData(tracksData);
         setTrackData([...trackData, ...data?.data.data.trackList]);
       }
@@ -66,6 +69,8 @@ export default function TrackSearchPage() {
       console.log("실패");
     },
   });
+
+  console.log(datalength);
 
   useEffect(() => {
     console.log(trackData);
