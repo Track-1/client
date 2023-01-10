@@ -17,13 +17,13 @@ export default function CategoryList() {
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
   // const selectedSet = new Set<number|unknown>();
-  const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
+  const [selectedSet, setSelectedSet] = useState<Set<number | unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useState<boolean>(false);
 
-  const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
+  const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
 
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
@@ -40,22 +40,22 @@ export default function CategoryList() {
 
   //   setSelectedCategorys([...tempSelectedCategorys]);
   // }
-  function categoryClick(id:number){
+  function categoryClick(id: number) {
     setSelectedCategorys(
-      selectedCategorys.map((selectCateg)=>
-        (selectCateg.categId === id ? {...selectCateg , selected : !selectCateg.selected} : selectCateg)
-      )
-    ) 
+      selectedCategorys.map((selectCateg) =>
+        selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
+      ),
+    );
   }
 
-  function addSelectedSet(id:number){
-    selectedSet&&selectedSet.add(id)
-    setSelectedSet(selectedSet)
+  function addSelectedSet(id: number) {
+    selectedSet && selectedSet.add(id);
+    setSelectedSet(selectedSet);
   }
 
-  function addSelectedDelete(id:number){
-    selectedSet&&selectedSet.delete(id)
-    setSelectedSet(selectedSet)
+  function addSelectedDelete(id: number) {
+    selectedSet && selectedSet.delete(id);
+    setSelectedSet(selectedSet);
   }
 
   function changeSelectValue(value: boolean) {
@@ -73,9 +73,8 @@ export default function CategoryList() {
   //   // return filteredUrl;
   // }
 
-  function createFilteredUrl(selectedCategorys:CategoryChecksType[]) {
+  function createFilteredUrl(selectedCategorys: CategoryChecksType[]) {
     // let filteredUrl = "";
-
     // selectedCategorys.forEach((categId) => {
     //   filteredUrl += `$categ${categId}`;
     // });
@@ -96,14 +95,21 @@ export default function CategoryList() {
   //   createFilteredUrl(selectedCategorys)
   // },[selectedCategorys])
 
-  useEffect(()=>{
-    let filteredUrl=""
-    const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
-    categs.forEach(({categId}) => {
-      filteredUrl+=`&categ=${categId}`;
+  useEffect(() => {
+    let filteredUrl = "";
+    console.log(filteredUrl);
+    const categs = selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true);
+    console.log(categs);
+
+    categs.forEach(({ categId }) => {
+      filteredUrl += `&categ=${categId}`;
     });
-    filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-   },[selectedCategorys])
+    console.log(filteredUrl);
+
+    filteredUrl === ""
+      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
+      : setFilteredUrlApi(filteredUrl);
+  }, [selectedCategorys]);
 
   function clickUploadButton() {
     setOpenModal(true);
