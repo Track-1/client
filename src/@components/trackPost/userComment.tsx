@@ -18,15 +18,12 @@ interface CommentPropsType{
 
 export default function UserComment(props: CommentPropsType) {
   const { closeComment, beatId } = props;
-  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(true);
   const [comments, setComments]=useState<UserCommentType[]>()
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     wavFile: null,
   });
-  const [commentData, setCommentData]=useState<any>()
-  const [newComments, setNewComments]=useState<UserCommentType>()
-  const [isNew, setIsNew]=useState<boolean>(false)
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -53,58 +50,53 @@ export default function UserComment(props: CommentPropsType) {
   });
 
   //post
-  function uploadComment(uploadData:UploadDataType){
+  function uploadComment(){
     setIsCompleted(true);
+    console.log("클릭됨")
     if(uploadData.content&&uploadData.wavFile){      
-      let formData = new FormData();
-      formData.append("wavFile", uploadData.wavFile);
-      formData.append("content", uploadData.content);
-
-      mutate(formData)
-      setCommentData(formData)
+      mutate(uploadData)
     }
   } 
+  // useEffect(()=>{
+  //   if(uploadData.content&&uploadData.wavFile){      
+  //     mutate(uploadData)
+  //   }
+  // },[isCompleted])
+  
   const queryClient = useQueryClient();
 
   const {mutate} = useMutation(postComment, {
     onSuccess: () => {
-      console.log("성공")
       queryClient.invalidateQueries("beatId");
       setUploadData({
         content: "",
         wavFile: null,
       });
-      setCommentData(null)
+      getUploadData("", null)
+      setIsCompleted(false)
+    
+      console.log("성공")      
     }
   });
 
   useEffect(()=>{
-    console.log("새로고침")
-    setNewComments({
-      comment: "사랑해요",
-      commentId: 1000,
-      isMe: true,
-      vocalName: "bepore",
-      vocalProfileImage: "https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user.png",
-      vocalWavFile: "https://track1-bucket.s3.ap-northeast-2.amazonaws.com/comment/1673260760701-%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%A8%E1%84%8B%E1%85%B4%20%E1%84%8C%E1%85%A5%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9_%E1%84%90%E1%85%A1%E1%86%B8%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AB%28%E1%84%87%E1%85%A9%E1%84%8F%E1%85%A5%E1%86%AF%29.mp3",
-      vocalWavFileLength: 107.807375    
-    })
-  },[commentData])
-
+    if(uploadData.content&&uploadData.wavFile){      
+      console.log(uploadData.wavFile)
+    }
+  },[uploadData])
 
   return (
     <CommentContainer>
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
-      <form>
+ 
       <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted}/>
       <AddWrapper>
         <div></div>
-        <AddCommentIcon onClick={()=>uploadComment(uploadData)} />
+        <AddCommentIcon onClick={uploadComment} />
       </AddWrapper>                                  
-      </form>
-      {isCompleted&&newComments&&<EachUseComment data={newComments}/>}
+    
       {comments&&comments.map((data, index) => {
         return <EachUseComment key={index} data={comments[index]}/>; //여기가 각각의 데이터
       })}

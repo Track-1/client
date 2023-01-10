@@ -22,12 +22,18 @@ export default function CommentWrite(props: PropsType) {
     getUploadData(currentText, uploadedFile);
   }, [isCompleted]);
 
+
+
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
     setCommentLength(currentLength);
   }
 
   function getFile(e: React.ChangeEvent<HTMLInputElement>) {
+    
+    // if(e.target.files !== null){
+    //   setUploadedFile(e.target.files[0])
+    // }
     const currentFile = e.target.files && e.target.files[0];
     currentFile && setUploadedFile(currentFile);
 

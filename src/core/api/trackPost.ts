@@ -34,9 +34,12 @@ export async function getComment(props:number) {
   }
 }
 
-export async function postComment(formData:any) {
+export async function postComment(post:UploadDataType) {
   try {
-     const data=await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/8`, formData,
+     const data=await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/8`, {
+        "wavFile" : post.wavFile,
+        "content" : post.content
+     },
     {
       headers: {
         'Content-Type': 'amultipart/form-data',
@@ -48,10 +51,6 @@ export async function postComment(formData:any) {
     console.log(e);
   }
 }
-
-// export const postCommentMutation = () => {
-//   return useMutation(postComment) 
-// }
 
 export async function getAudioFile() {
   try {
