@@ -1,27 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { UploadIc } from "../../assets";
-// import profileDummyImg from "https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user.png"
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 
 interface PropsType {
   getUploadData: (content: string, wavFile: File | null) => any;
-  isCompleted: boolean;
+  // isCompleted: boolean;
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData, isCompleted } = props;
+  // const { getUploadData, isCompleted } = props;
+  const { getUploadData } = props;
+  const isCompleted=useRecoilValue(postIsCompleted)
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
+  const commentFile=useRef<any>(null);
 
-  const [commentLength, setCommentLength] = useState<number>(0);
+  const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
+  const [comment, setComment]=useRecoilState<string>(postContent)
+  const [wavFile, setWavFile]=useRecoilState<any>(postWavFile);
 
   useEffect(() => {
     const currentText = commentText.current!.value;
-    getUploadData(currentText, uploadedFile);
+    const currentFile=commentFile.current!.files[0];
+    isCompleted&&getUploadData(currentText, uploadedFile);
+    console.log(isCompleted)
+    if(!isCompleted&&!comment&&!wavFile){
+      commentText.current!.value="";
+      // setFileName("file_upload.mp3")  
+      setUploadedFile(null)
+    }
   }, [isCompleted]);
 
+  useEffect(()=>{
+    console.log("텍스트",commentText.current!.value)
+    console.log("파일",commentFile.current!.files[0])
+
+    setComment(commentText.current!.value)
+    setWavFile(commentFile.current!.files[0])
+  },[commentLength])
+  
+  // useEffect(()=>{
+  //   // commentText.current&&commentText.current.value = "asdf";
+  //   // // comment&&commentText=``;
+  //   // // wavFile
+  //   commentText.current!.value="";
+  //   end&&setFileName("file_upload.mp3")
+
+  // },[end])
 
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -30,10 +59,6 @@ export default function CommentWrite(props: PropsType) {
   }
 
   function getFile(e: React.ChangeEvent<HTMLInputElement>) {
-    
-    // if(e.target.files !== null){
-    //   setUploadedFile(e.target.files[0])
-    // }
     const currentFile = e.target.files && e.target.files[0];
     currentFile && setUploadedFile(currentFile);
 
@@ -55,7 +80,7 @@ export default function CommentWrite(props: PropsType) {
               <UploadIcon />
             </div>
           </label>
-          <FileInput type="file" id="userFile" onChange={getFile} />
+          <FileInput type="file" id="userFile" onChange={getFile} ref={commentFile}/>
           <CountWrapper>
             <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
           </CountWrapper>

@@ -10,6 +10,8 @@ import { getComment } from "../../core/api/trackPost";
 import {UserCommentType} from '../../type/userCommentsType'
 import axios from "axios";
 import{postComment} from '../../core/api/trackPost'
+import { useRecoilState, useRecoilValue } from "recoil";
+import { postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 
 interface CommentPropsType{
   closeComment:any;
@@ -18,12 +20,16 @@ interface CommentPropsType{
 
 export default function UserComment(props: CommentPropsType) {
   const { closeComment, beatId } = props;
-  const [isCompleted, setIsCompleted] = useState<boolean>(true);
+  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [comments, setComments]=useState<UserCommentType[]>()
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     wavFile: null,
   });
+  const contentLength=useRecoilValue(postContentLength)
+  const [content, setContent]=useRecoilState<string>(postContent)
+  const [wavFile, setWavFile]=useRecoilState(postWavFile)
+
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -50,53 +56,53 @@ export default function UserComment(props: CommentPropsType) {
   });
 
   //post
-  function uploadComment(){
+  function uploadComment(uploadData:UploadDataType){
     setIsCompleted(true);
-    console.log("클릭됨")
-    if(uploadData.content&&uploadData.wavFile){      
-      mutate(uploadData)
-    }
+    console.log("1")
   } 
-  // useEffect(()=>{
-  //   if(uploadData.content&&uploadData.wavFile){      
-  //     mutate(uploadData)
-  //   }
-  // },[isCompleted])
-  
+
+  useEffect(()=>{
+    if(content&&wavFile){      
+
+    // if(uploadData.content&&uploadData.wavFile){      
+      console.log("2")
+
+      let formData = new FormData();
+      formData.append("wavFile", wavFile);
+      formData.append("content", content);
+
+      mutate(formData)
+    }
+  },[isCompleted])
+
   const queryClient = useQueryClient();
 
   const {mutate} = useMutation(postComment, {
     onSuccess: () => {
+      console.log("3")
       queryClient.invalidateQueries("beatId");
       setUploadData({
         content: "",
         wavFile: null,
       });
-      getUploadData("", null)
+      setContent("")
+      setWavFile(null)
       setIsCompleted(false)
-    
-      console.log("성공")      
     }
   });
-
-  useEffect(()=>{
-    if(uploadData.content&&uploadData.wavFile){      
-      console.log(uploadData.wavFile)
-    }
-  },[uploadData])
 
   return (
     <CommentContainer>
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
- 
-      <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted}/>
+      <form>
+      <CommentWrite getUploadData={getUploadData} />
       <AddWrapper>
         <div></div>
-        <AddCommentIcon onClick={uploadComment} />
+        <AddCommentIcon onClick={()=>uploadComment(uploadData)} />
       </AddWrapper>                                  
-    
+      </form>
       {comments&&comments.map((data, index) => {
         return <EachUseComment key={index} data={comments[index]}/>; //여기가 각각의 데이터
       })}
