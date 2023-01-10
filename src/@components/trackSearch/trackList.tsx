@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
   TitleTextIc,
@@ -13,6 +13,7 @@ import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { TracksDataType } from "../../type/tracksDataType";
+import { trackListinfiniteScroll } from "../../recoil/infiniteScroll";
 
 interface PropsType {
   audio: HTMLAudioElement;
@@ -35,6 +36,26 @@ export default function TrackList(props: PropsType) {
   const [currentTime, setCurrentTime] = useState<number>();
 
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+
+  //무한 스크롤
+  const [page, setPage] = useRecoilState(trackListinfiniteScroll);
+  const [loading, setLoading] = useState(false);
+  const loadMore = () => setPage((prev) => prev + 1);
+  const target = useRef<HTMLDivElement | null>(null);
+
+  //  console.log(vocalData);
+
+  useEffect(() => {
+    //  if (!loading) {
+    const observer = new IntersectionObserver((endDiv) => {
+      if (endDiv[0].isIntersecting) {
+        loadMore();
+      }
+    });
+    observer.observe(target.current!);
+    // }
+  }, []);
+
 
   useEffect(() => {
     playAudio();
@@ -131,6 +152,7 @@ export default function TrackList(props: PropsType) {
           </Tracks>
         ))}
       </TracksWrapper>
+      <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
     </TrackListContainer>
   );
 }
@@ -232,4 +254,10 @@ const Tag = styled.span`
 
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
+`;
+
+const InfiniteDiv = styled.div`
+  width: 100%;
+  height: 1rem;
+  background-color: pink;
 `;
