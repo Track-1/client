@@ -1,4 +1,4 @@
-export const profileCategory = {
-  PORTFOLIO: "portfolio",
-  VOCAL_SEARCHING: "Vocal Searching",
-};
+export enum profileCategory {
+  PORTFOLIO = "portfolio",
+  VOCAL_SEARCHING = "Vocal Searching",
+}
