@@ -24,6 +24,7 @@ export default function CategoryList() {
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
+
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
     return () => {
@@ -39,6 +40,7 @@ export default function CategoryList() {
         filteredUrl += `&categ=${categ.categId}`;
       }
     });
+
 
     filteredUrl === ""
       ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")

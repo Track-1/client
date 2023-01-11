@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useState, useMemo } from "react";
+import axios from "axios";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { getProducerProfile, getSelectingTracks } from "../core/api/producerProfile";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
@@ -15,7 +16,7 @@ import { useQuery } from "react-query";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
-  const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>();
+  const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
@@ -29,23 +30,58 @@ export default function ProducerProfilePage() {
 
   const audio = useMemo(() => new Audio(), []);
 
+  // infinite
+  const targetRef = useRef<any>();
+  const page = useRef<number>(1);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+
+  const fetch = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
+          },
+        },
+      );
+      setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
+      console.log(page);
+      console.log(portfolioData);
+
+      setHasNextPage(data?.data.producerPortfolio.length === 4);
+      if (data?.data.producerPortfolio.length) {
+        page.current += 1;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    // if (!targetRef.current || !hasNextPage) return;
+    const io = new IntersectionObserver((entries, observer) => {
+      if (entries[0].isIntersecting) {
+        fetch();
+      }
+    });
+    io.observe(targetRef.current);
+
+    return () => {
+      io.disconnect();
+    };
+  }, [fetch, hasNextPage]);
+
+  //end
+
   useEffect(() => {
     async function getData() {
       const data = await getProducerProfile();
-
-      setPortfolioData(data?.data?.data.producerPortfolio);
       setProfileData(data?.data?.data.producerProfile);
       setIsMe(data?.data?.data.isMe);
     }
     getData();
   }, []);
-
-  // useEffect(() => {
-  //   async function getData() {
-  //     profileState === "Portfolio" ? await getProfileData() : await getVocalSearchData();
-  //   }
-  //   getData();
-  // }, [profileState]);
 
   function playAudio() {
     audio.play();
@@ -133,12 +169,19 @@ export default function ProducerProfilePage() {
           />
         )}
       </PageContainer>
+      <InfiniteDiv ref={targetRef}> 아아이 </InfiniteDiv>
+
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
     </>
   );
 }
+// infinite
+const InfiniteDiv = styled.div`
+  width: 100%;
+  height: 1rem;
+`;
 
 const PageContainer = styled.section`
   display: flex;
