@@ -158,7 +158,7 @@ export default function VocalProfilePage() {
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
       <InfiniteDiv ref={targetRef}> 아아이 </InfiniteDiv>
-
+{/* //ref 바꿀 예정 */}
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
