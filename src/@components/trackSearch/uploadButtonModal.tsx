@@ -8,8 +8,6 @@ interface propsType {
   ref: React.RefObject<HTMLDivElement>;
 }
 
-// export default function UploadButtonModal(props: propsType): JSX.Element {
-//   const { ref } = props;
 export default function UploadButtonModal() {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -17,27 +15,6 @@ export default function UploadButtonModal() {
   function clickOutside(){
     setOpenModal(false)
   }
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", closeModal);
-  //   return () => {
-  //     document.removeEventListener("mousedown", closeModal);
-  //   };
-  // }, [openModal]);
-
-  // function closeModal(e: MouseEvent) {
-  //   if (isClickedOutside(e)) {
-  //     setOpenModal(false);
-  //   }
-  // }
-  
-  // function clickUploadButton() {
-  //   setOpenModal(true);
-  // }
-
-  // function isClickedOutside(e: MouseEvent) {
-  //   return openModal && !modalRef.current?.contains(e.target as Node);
-  // }
 
   function clickVocalSearching(){
     

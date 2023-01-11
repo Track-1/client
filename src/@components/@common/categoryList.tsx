@@ -14,10 +14,7 @@ import { categorySelect, trackSearching } from "../../recoil/categorySelect";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
 export default function CategoryList() {
-  // const modalRef = useRef<HTMLDivElement>(null);
-
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  // const selectedSet = new Set<number|unknown>();
   const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
@@ -25,13 +22,6 @@ export default function CategoryList() {
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
 
   const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", closeModal);
-  //   return () => {
-  //     document.removeEventListener("mousedown", closeModal);
-  //   };
-  // }, [openModal]);
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -69,19 +59,8 @@ export default function CategoryList() {
   }
 
   function clickTrackSearching() {
-    // setTrackSearchingClicked(!trackSearchingClicked);
     setTrackSearchingClicked((prev)=>!prev);
   }
-
-  // function closeModal(e: MouseEvent) {
-  //   if (isClickedOutside(e)) {
-  //     setOpenModal(false);
-  //   }
-  // }
-
-  // function isClickedOutside(e: MouseEvent) {
-  //   return openModal && !modalRef.current?.contains(e.target as Node);
-  // }
 
   return (
     <>
