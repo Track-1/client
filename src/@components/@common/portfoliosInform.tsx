@@ -36,16 +36,11 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const userType=useRecoilValue(UserType)
-  let { vocalId } = useParams();
   const [meId, setMeId]=useState<boolean>(false)
 
   useEffect(() => {
     console.log(hoverId);
   }, [hoverId]);
-
-  useEffect(()=>{
-    vocalId==="1"&&setMeId(true)
-  },[])
 
   function clickEllipsis() {
     setOpenEllipsisModal(true);

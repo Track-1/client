@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
 
@@ -5,13 +6,37 @@ interface propsType {
   ref: React.RefObject<HTMLDivElement>;
 }
 
-export default function UploadButtonModal(props: propsType): JSX.Element {
-  const { ref } = props;
+// export default function UploadButtonModal(props: propsType): JSX.Element {
+//   const { ref } = props;
+export default function UploadButtonModal() {
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openModal]);
+
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setOpenModal(false);
+    }
+  }
+  
+  function clickUploadButton() {
+    setOpenModal(true);
+  }
+
+  function isClickedOutside(e: MouseEvent) {
+    return openModal && !modalRef.current?.contains(e.target as Node);
+  }
 
   return (
 
     <ModalBg>
-      <UploadButtonModalWrapper ref={ref}>
+      <UploadButtonModalWrapper ref={modalRef} >
         <VocalSearchingWrapper>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.1}>
@@ -38,6 +63,7 @@ const ModalBg = styled.section`
   width: 100vw;
 
   position: fixed;
+  z-index: 10000;
   top: 0;
   bottom: 0;
   right: 0;

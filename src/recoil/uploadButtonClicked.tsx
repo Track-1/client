@@ -4,3 +4,8 @@ export const uploadButtonClicked = atom({
   key: "uploadButtonClicked",
   default: false,
 });
+
+export const uploadButtonClickedInTrackList = atom({
+  key: "uploadButtonClicked",
+  default: false,
+});

@@ -13,7 +13,7 @@ import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, Pink
 import { categorySelect, trackSearching } from "../../recoil/categorySelect";
 
 export default function CategoryList() {
-  const modalRef = useRef<HTMLDivElement>(null);
+  // const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
   // const selectedSet = new Set<number|unknown>();
@@ -25,12 +25,12 @@ export default function CategoryList() {
 
   const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [openModal]);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", closeModal);
+  //   return () => {
+  //     document.removeEventListener("mousedown", closeModal);
+  //   };
+  // }, [openModal]);
 
   function categoryClick(id:number){
     setSelectedCategorys(
@@ -72,19 +72,19 @@ export default function CategoryList() {
     setTrackSearchingClicked((prev)=>!prev);
   }
 
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e)) {
-      setOpenModal(false);
-    }
-  }
+  // function closeModal(e: MouseEvent) {
+  //   if (isClickedOutside(e)) {
+  //     setOpenModal(false);
+  //   }
+  // }
 
-  function isClickedOutside(e: MouseEvent) {
-    return openModal && !modalRef.current?.contains(e.target as Node);
-  }
+  // function isClickedOutside(e: MouseEvent) {
+  //   return openModal && !modalRef.current?.contains(e.target as Node);
+  // }
 
   return (
     <>
-      {openModal && <UploadButtonModal ref={modalRef} />}
+      {openModal && <UploadButtonModal/>}
       <CategoryListWrapper>
         {categorys.map((category) => (
           <CategoryTextBoxWrapper
