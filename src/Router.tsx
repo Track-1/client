@@ -12,7 +12,7 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/track-search" element={<TrackSearchPage />} />
+        <Route path="/tracks" element={<TrackSearchPage />} />
         <Route path="/vocals" element={<VocalsPage />} />
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
         <Route path="/producer-profile" element={<ProducerProfilePage />} />
