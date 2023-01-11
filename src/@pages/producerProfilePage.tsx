@@ -30,7 +30,7 @@ export default function ProducerProfilePage() {
 
   const audio = useMemo(() => new Audio(), []);
 
-  // 무한스크롤 시작
+  // infinite
   const targetRef = useRef<any>();
   const page = useRef<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
@@ -73,25 +73,16 @@ export default function ProducerProfilePage() {
     };
   }, [fetch, hasNextPage]);
 
-  //무한스크롤 끝
+  //end
 
   useEffect(() => {
     async function getData() {
       const data = await getProducerProfile();
-
-      // setPortfolioData(data?.data?.data.producerPortfolio[0]);
       setProfileData(data?.data?.data.producerProfile);
       setIsMe(data?.data?.data.isMe);
     }
     getData();
   }, []);
-
-  // useEffect(() => {
-  //   async function getData() {
-  //     profileState === "Portfolio" ? await getProfileData() : await getVocalSearchData();
-  //   }
-  //   getData();
-  // }, [profileState]);
 
   function playAudio() {
     audio.play();
