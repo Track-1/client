@@ -27,7 +27,7 @@ export default function CategoryHeader() {
 
   function clickVocalsButton() {
     setTracksOrVocals(Category.VOCALS);
-    navigate("/vocals");
+    navigate("/vocal-search");
   }
 
   function moveMainPage() {
