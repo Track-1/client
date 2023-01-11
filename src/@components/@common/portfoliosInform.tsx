@@ -47,7 +47,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   function clickUploadButton() {
     tracksOrVocals === "Tracks" && setOpenUploadModal(true);
-    tracksOrVocals === "Vocals" && navigate("/upload-vocal");
+    tracksOrVocals === "Vocals" && navigate("/upload");
   }
 
   useEffect(() => {
