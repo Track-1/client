@@ -220,6 +220,7 @@ const Thumbnail = styled.img`
 
 const TrackText = styled.div<{ width: number, isHover:boolean }>`
   width: ${(props) => props.width}rem;
+  ${({ theme }) => theme.fonts.body1};
   :hover{
     color: ${({isHover, theme})=>isHover&&theme.colors.sub1};
     cursor: pointer;
@@ -234,7 +235,8 @@ const Tag = styled.span`
 
   padding: 0.9rem 1.5rem;
   margin: 0 0.8rem 0 0;
-
+  
+  ${({ theme }) => theme.fonts.body1};
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
 `;
