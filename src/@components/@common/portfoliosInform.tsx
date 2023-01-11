@@ -20,6 +20,7 @@ import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
+
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -48,6 +49,18 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     isVocalsPage(tracksOrVocals) && navigate("/upload-vocal");
   }
 
+  function checkIsVocalSearching() {
+    return profileState === "Vocal Searching";
+  }
+
+  function isHoveredNClicked() {
+    return hoverId === clickId;
+  }
+
+  function checkIsTitle() {
+    return hoverId === 0;
+  }
+
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
@@ -56,23 +69,19 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
         <>
           <InformWrapper>
             <InformTitleWrapper>
-              {profileState === "Vocal Searching" && !(hoverId !== clickId && hoverId !== -1) && (
+              {checkIsVocalSearching() && isHoveredNClicked() && (
                 <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
               )}
-              {hoverId === 0 && isTracksPage(tracksOrVocals) && profileState !== "Vocal Searching" && (
+              {isTracksPage(tracksOrVocals) && !checkIsVocalSearching() && checkIsTitle() && (
                 <ProducerPortfolioTitleTextIc />
               )}
-              {hoverId === 0 && isVocalsPage(tracksOrVocals) && profileState !== "Vocal Searching" && (
+              {isVocalsPage(tracksOrVocals) && !checkIsVocalSearching() && checkIsTitle() && (
                 <VocalPortfolioTitleTextIc />
               )}
-              {(hoverId !== 0 || profileState !== "Vocal Searching") && <BlankIc />}
-              {isMe && !(hoverId !== clickId && hoverId !== -1) && (
-                <>
-                  {<EllipsisIcon onClick={clickEllipsis} />}
-                  {openEllipsisModal && hoverId === 0 && (
-                    <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
-                  )}
-                </>
+              {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
+              {isMe && isHoveredNClicked() && <EllipsisIcon onClick={clickEllipsis} />}
+              {openEllipsisModal && checkIsTitle() && (
+                <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
               )}
             </InformTitleWrapper>
             <InformTitle>{portfolios[hoverId].title}</InformTitle>
