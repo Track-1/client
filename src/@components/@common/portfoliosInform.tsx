@@ -47,8 +47,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     vocalId==="1"&&setMeId(true)
   },[])
 
-  console.log("me",meId)
-
   function clickEllipsis() {
     setOpenEllipsisModal(true);
   }

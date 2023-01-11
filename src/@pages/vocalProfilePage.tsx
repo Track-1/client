@@ -59,14 +59,6 @@ export default function VocalProfilePage() {
     setPlay(true);
   }
 
-
-  // function playAudio() {
-  //   audio.play();
-  //   setPlay(true);
-
-  //   console.log(play);
-  // }
-
   function pauseAudio() {
     audio.pause();
     setPlay(false);
