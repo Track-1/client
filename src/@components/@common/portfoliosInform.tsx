@@ -13,7 +13,7 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useEffect, useRef, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TracksProfileUploadModal from "./tracksProfileUploadModal";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 import { UserType } from "../../recoil/main";
@@ -29,17 +29,25 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const isBool = hoverId === clickId ? true : false;
   const portfolioInforms =
     (!isBool && hoverId !== -1) || (isBool && hoverId !== -1) ? portfolioHoverInformation : portfolioClickInformation;
-  const isTitle = hoverId === 0 ? true : false;
+  const isTitle = (hoverId === 0||clickId===0)? true : false;
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const userType=useRecoilValue(UserType)
+  let { vocalId } = useParams();
+  const [meId, setMeId]=useState<boolean>(false)
+
+  console.log("vocalId", vocalId)
 
   useEffect(() => {
     console.log(hoverId);
   }, [hoverId]);
+
+  useEffect(()=>{
+    vocalId==="1"&&setMeId(true)
+  },[])
 
   function clickEllipsis() {
     setOpenEllipsisModal(true);
@@ -62,9 +70,10 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     };
   }, [openEllipsisModal]);
 
+  console.log(isTitle)
   return (
     <PortfolioInformWrapper>
-      {isMe&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {(isMe||meId)&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
       {portfolioInforms && (
         <>
@@ -81,7 +90,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               )}
               {(!isTitle || profileState !== "Vocal Searching") && <BlankIc />}
 
-              {isMe && userType==="vocal"&&!(!isBool && hoverId !== -1) && (
+              {(isMe||meId) && userType==="vocal"&&!(!isBool && hoverId !== -1) && (
                 <>
                   {<EllipsisIcon onClick={clickEllipsis} />}
                   {openEllipsisModal && isTitle && (
