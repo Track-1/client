@@ -45,7 +45,6 @@ export default function ProducerProfilePage() {
           },
         },
       );
-      data?.data?.producerPortfolio.shift();
       setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
       console.log(page);
       console.log(portfolioData);
@@ -182,7 +181,6 @@ export default function ProducerProfilePage() {
 const InfiniteDiv = styled.div`
   width: 100%;
   height: 1rem;
-  background-color: red;
 `;
 
 const PageContainer = styled.section`
