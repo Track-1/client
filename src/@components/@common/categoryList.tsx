@@ -16,14 +16,11 @@ export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  // const selectedSet = new Set<number|unknown>();
-  const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
+  const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
+  const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
-
-  const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
 
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
@@ -32,44 +29,35 @@ export default function CategoryList() {
     };
   }, [openModal]);
 
-  function categoryClick(id:number){
-    setSelectedCategorys(
-      selectedCategorys.map((selectCateg)=>
-        (selectCateg.categId === id ? {...selectCateg , selected : !selectCateg.selected} : selectCateg)
-      )
-    ) 
-  }
+  useEffect(() => {
+    let filteredUrl = "";
 
-  function addSelectedSet(id:number){
-    selectedSet&&selectedSet.add(id)
-    setSelectedSet(selectedSet)
-  }
-
-  function addSelectedDelete(id:number){
-    selectedSet&&selectedSet.delete(id)
-    setSelectedSet(selectedSet)
-  }
-
-  function changeSelectValue(value: boolean) {
-    return !value;
-  }
-
-  useEffect(()=>{
-    let filteredUrl=""
-    const categs=selectedCategorys.filter((selectedCategory) => selectedCategory.selected === true)
-    categs.forEach(({categId}) => {
-      filteredUrl+=`&categ=${categId}`;
+    selectedCategorys.forEach((categ) => {
+      if (categ.selected) {
+        filteredUrl += `&categ=${categ.categId}`;
+      }
     });
-    filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-   },[selectedCategorys])
 
-  function clickUploadButton() {
+    filteredUrl === ""
+      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
+      : setFilteredUrlApi(filteredUrl);
+  }, [selectedCategorys]);
+
+  function selectCategory(id: number) {
+    const tempSelectedCategors = selectedCategorys;
+    tempSelectedCategors[id].selected
+      ? (tempSelectedCategors[id].selected = false)
+      : (tempSelectedCategors[id].selected = true);
+    console.log(tempSelectedCategors, "Dfa");
+    setSelectedCategorys([...tempSelectedCategors]);
+  }
+
+  function moveUploadPage() {
     setOpenModal(true);
   }
 
-  function clickTrackSearching() {
-    // setTrackSearchingClicked(!trackSearchingClicked);
-    setTrackSearchingClicked((prev)=>!prev);
+  function searchFilterdVocals() {
+    setTrackSearchingClicked((prev) => !prev);
   }
 
   function closeModal(e: MouseEvent) {
@@ -89,8 +77,8 @@ export default function CategoryList() {
         {categorys.map((category) => (
           <CategoryTextBoxWrapper
             key={category.id}
-            onClick={() => categoryClick(category.id)}
-            selectCategBool={selectedCategorys[category.id].selected}
+            onClick={() => selectCategory(category.id)}
+            isSelected={selectedCategorys[category.id].selected}
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
               {tracksOrVocals === "Tracks" ? (
@@ -116,16 +104,16 @@ export default function CategoryList() {
           </CategoryTextBoxWrapper>
         ))}
         {tracksOrVocals === "Tracks" && (
-          <UploadButton type="button" onClick={clickUploadButton}>
+          <UploadButton type="button" onClick={moveUploadPage}>
             <UploadTextIc />
           </UploadButton>
         )}
 
         {tracksOrVocals === "Vocals" &&
           (trackSearchingClicked ? (
-            <TrackSearchingPinkIcon onClick={clickTrackSearching} />
+            <TrackSearchingPinkIcon onClick={searchFilterdVocals} />
           ) : (
-            <TrackSearchingTextIcon onClick={clickTrackSearching} />
+            <TrackSearchingTextIcon onClick={searchFilterdVocals} />
           ))}
       </CategoryListWrapper>
     </>
@@ -142,7 +130,7 @@ const CategoryListWrapper = styled.section`
   margin: 2.7rem 0 0 1.2rem;
 `;
 
-const CategoryTextBoxWrapper = styled.article<{ selectCategBool: boolean; tracksOrVocals: string }>`
+const CategoryTextBoxWrapper = styled.article<{ isSelected: boolean; tracksOrVocals: string }>`
   display: flex;
   align-items: center;
 
@@ -160,12 +148,12 @@ const CategoryTextBoxWrapper = styled.article<{ selectCategBool: boolean; tracks
       to right,
       ${({ theme }) => theme.colors.sub3} 0%,
       ${({ theme }) => theme.colors.sub3} 20%,
-      ${({ selectCategBool, tracksOrVocals, theme }) =>
+      ${({ isSelected, tracksOrVocals, theme }) =>
           tracksOrVocals === "Tracks"
-            ? selectCategBool
+            ? isSelected
               ? theme.colors.sub1
               : theme.colors.sub3
-            : selectCategBool
+            : isSelected
             ? theme.colors.sub2
             : theme.colors.sub3}
         100%
