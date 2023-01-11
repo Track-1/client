@@ -64,7 +64,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   return (
     <PortfolioInformWrapper>
-      {/* 나인 경우 업로드 버튼이 떠요 */}
       {isMe&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
       {portfolioInforms && (
