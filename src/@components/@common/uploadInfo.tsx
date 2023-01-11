@@ -12,8 +12,9 @@ import {
   HashtagWarningIc,
   HoverHashtagWarningIc,
   DeleteHashtagIc,
+  CheckCategoryIc,
 } from "../../assets";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
 export default function UploadInfo() {
@@ -33,6 +34,10 @@ export default function UploadInfo() {
     "House",
     "Funk",
   ]);
+
+  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(category.length).fill(false));
+  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(category.length).fill(false));
+  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(category.length).fill(false));
 
   const [title, setTitle] = useRecoilState<string>(uploadTitle);
   const [description, setDeiscription] = useRecoilState<string>(uploadIntroduce);
@@ -67,12 +72,6 @@ export default function UploadInfo() {
     }
   }
 
-  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
-    setGenre(e.currentTarget.innerText);
-    setCategoryState(true);
-    setHiddenDropBox(true);
-  }
-
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
     setHiddenDropBox((prev) => !prev);
   }
@@ -95,12 +94,29 @@ export default function UploadInfo() {
     }
   }
 
+  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
+    const index = category.indexOf(e.currentTarget.innerText);
+    setGenre(e.currentTarget.innerText);
+
+    const temp = new Array(category.length).fill(false);
+    temp[index] = true;
+    setCheckState([...temp]);
+    setCheckStateIcon([...temp]);
+    setCategoryState(true);
+    setHiddenDropBox(true);
+  }
+
   function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
     const index = category.indexOf(e.currentTarget.innerText);
     if (e.type === "mouseenter") {
-      categoryRefs.current[index]!.style.color = "#ffffff";
+      const temp = new Array(category.length).fill(false);
+      temp[index] = true;
+      setCheckHoverState([...temp]);
+      // categoryRefs.current[index]!.style.color = "#ffffff";
     } else {
-      categoryRefs.current[index]!.style.color = "#535559";
+      const temp = new Array(category.length).fill(false);
+      setCheckHoverState([...temp]);
+      // categoryRefs.current[index]!.style.color = "#535559";
     }
   }
 
@@ -149,7 +165,6 @@ export default function UploadInfo() {
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.value);
     setHashtagLength(e.target.value.length);
     setHashtagInputWidth(Number(e.target.value));
   }
@@ -367,6 +382,8 @@ export default function UploadInfo() {
         <DropMenuWrapper>
           {category.map((text: string, index: number) => (
             <DropMenuItem
+              checkState={checkState[index]}
+              checkHoverState={checkHoverState[index]}
               onMouseEnter={hoverMenu}
               onMouseLeave={hoverMenu}
               onClick={selectCategory}
@@ -374,6 +391,7 @@ export default function UploadInfo() {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
+              {checkStateIcon[index] && <CheckCategoryIc />}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>
@@ -627,20 +645,22 @@ const DropMenuWrapper = styled.ul`
   margin: 0.8rem 0;
 `;
 
-const DropMenuItem = styled.li`
+const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState : boolean }>`
   height: 3.2rem;
-  width: 100%;
+  width: 9.3rem;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
   ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.gray3};
+  color: ${(props) =>
+    (props.checkState || props.checkHoverState) ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
+  margin: 0 1.9rem;
   cursor: pointer;
 `;
 
 const DropMenuText = styled.p`
   height: 2rem;
-  margin-left: 2rem;
 `;
 
 const WarningIcon = styled.div`

@@ -124,3 +124,4 @@ export { ReactComponent as ProducerMypageIc } from "./icon/producerMypageIc.svg"
 export { ReactComponent as ProducerToggleIc } from "./icon/producerToggleIc.svg";
 export { ReactComponent as VocalMypageIc } from "./icon/vocalMypageIc.svg";
 export { ReactComponent as VocalToggleIc } from "./icon/vocalToggleIc.svg";
+export { ReactComponent as CheckCategoryIc } from "./icon/checkCategoryIc.svg";
