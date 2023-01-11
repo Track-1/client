@@ -17,13 +17,13 @@ export default function CategoryList() {
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
   // const selectedSet = new Set<number|unknown>();
-  const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
+  const [selectedSet, setSelectedSet] = useState<Set<number | unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
 
-  const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);
+  const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
 
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
@@ -34,25 +34,26 @@ export default function CategoryList() {
 
   function categoryClick(id:number){
     setSelectedCategorys(
-      selectedCategorys.map((selectCateg)=>
-        (selectCateg.categId === id ? {...selectCateg , selected : !selectCateg.selected} : selectCateg)
-      )
-    ) 
+      selectedCategorys.map((selectCateg) =>
+        selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
+      ),
+    );
   }
 
-  function addSelectedSet(id:number){
-    selectedSet&&selectedSet.add(id)
-    setSelectedSet(selectedSet)
+  function addSelectedSet(id: number) {
+    selectedSet && selectedSet.add(id);
+    setSelectedSet(selectedSet);
   }
 
-  function addSelectedDelete(id:number){
-    selectedSet&&selectedSet.delete(id)
-    setSelectedSet(selectedSet)
+  function addSelectedDelete(id: number) {
+    selectedSet && selectedSet.delete(id);
+    setSelectedSet(selectedSet);
   }
 
   function changeSelectValue(value: boolean) {
     return !value;
   }
+
 
   useEffect(()=>{
     let filteredUrl=""
@@ -60,8 +61,12 @@ export default function CategoryList() {
     categs.forEach(({categId}) => {
       filteredUrl+=`&categ=${categId}`;
     });
-    filteredUrl===""?setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8"):setFilteredUrlApi(filteredUrl)
-   },[selectedCategorys])
+    console.log(filteredUrl);
+
+    filteredUrl === ""
+      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
+      : setFilteredUrlApi(filteredUrl);
+  }, [selectedCategorys]);
 
   function clickUploadButton() {
     setOpenModal(true);
