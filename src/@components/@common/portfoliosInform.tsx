@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 import { isClickedOutside } from "../../utils/common/modal";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
+import { profileCategory } from "../../core/constants/pageCategory";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
@@ -50,7 +51,11 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function checkIsVocalSearching() {
-    return profileState === "Vocal Searching";
+    return profileState === profileCategory.VOCAL_SEARCHING;
+  }
+
+  function checkIsPortfolio() {
+    return profileState === profileCategory.PORTFOLIO;
   }
 
   function isHoveredNClicked() {
@@ -72,12 +77,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {checkIsVocalSearching() && isHoveredNClicked() && (
                 <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
               )}
-              {isTracksPage(tracksOrVocals) && !checkIsVocalSearching() && checkIsTitle() && (
-                <ProducerPortfolioTitleTextIc />
-              )}
-              {isVocalsPage(tracksOrVocals) && !checkIsVocalSearching() && checkIsTitle() && (
-                <VocalPortfolioTitleTextIc />
-              )}
+              {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
+              {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
               {isMe && isHoveredNClicked() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkIsTitle() && (
