@@ -6,7 +6,7 @@ export async function getVocalProfile(props: number) {
   try {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/profile/vocal/${state}?page=1&limit=3`, {
       headers: {
-        Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     data && console.log(data);

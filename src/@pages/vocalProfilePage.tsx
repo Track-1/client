@@ -14,6 +14,7 @@ import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
+import { UserType } from '../recoil/main';
 
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
@@ -74,6 +75,8 @@ export default function VocalProfilePage() {
 
   //end
 
+  const userType=useRecoilValue(UserType)
+  
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
@@ -82,6 +85,7 @@ export default function VocalProfilePage() {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
+
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
