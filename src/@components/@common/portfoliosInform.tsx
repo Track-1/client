@@ -16,6 +16,7 @@ import PortfoiloViewMoreButton from "./portfoiloViewMoreButton";
 import { useNavigate } from "react-router-dom";
 import TracksProfileUploadModal from "./tracksProfileUploadModal";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
+import { UserType } from "../../recoil/main";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
@@ -34,6 +35,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const userType=useRecoilValue(UserType)
 
   useEffect(() => {
     console.log(hoverId);
@@ -63,7 +65,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   return (
     <PortfolioInformWrapper>
       {/* 나인 경우 업로드 버튼이 떠요 */}
-      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {isMe&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
       {portfolioInforms && (
         <>
@@ -81,7 +83,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               )}
               {(!isTitle || profileState !== "Vocal Searching") && <BlankIc />}
               {/* 나인 경우는 더보기 버튼이 떠요, 더보기 버튼은 모달 컴포넌트로 따로 구현했어요. */}
-              {isMe && !(!isBool && hoverId !== -1) && (
+              {isMe && userType==="vocal"&&!(!isBool && hoverId !== -1) && (
                 <>
                   {<EllipsisIcon onClick={clickEllipsis} />}
                   {openEllipsisModal && isTitle && (
