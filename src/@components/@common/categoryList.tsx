@@ -11,6 +11,8 @@ import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
 import { categorySelect, trackSearching } from "../../recoil/categorySelect";
+import { Category } from "../../core/common/categoryHeader";
+import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
 export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -70,6 +72,25 @@ export default function CategoryList() {
     return openModal && !modalRef.current?.contains(e.target as Node);
   }
 
+  function changeCategoryColor(id: number) {
+    if (selectedCategorys[id].selected) {
+      switch (tracksOrVocals) {
+        case Category.TRACKS:
+          return <NeonXIc />;
+        case Category.VOCALS:
+          return <PinkXIc />;
+      }
+    }
+  }
+
+  function checkIsSelectedTrackCategory(id: number) {
+    return selectedCategorys[id].selected ? categorys[id].selectTrackCategory : categorys[id].category;
+  }
+
+  function checkIsSelectedVocalCategory(id: number) {
+    return selectedCategorys[id].selected ? categorys[id].selectVocalCategory : categorys[id].category;
+  }
+
   return (
     <>
       {openModal && <UploadButtonModal ref={modalRef} />}
@@ -81,35 +102,29 @@ export default function CategoryList() {
             isSelected={selectedCategorys[category.id].selected}
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
-              {tracksOrVocals === "Tracks" ? (
-                selectedCategorys[category.id].selected ? (
-                  <img
-                    src={require("../../assets/icon/" + category.selectTrackCategory + ".svg")}
-                    alt="선택된 카테고리 텍스트"
-                  />
-                ) : (
-                  <img src={require("../../assets/icon/" + category.category + ".svg")} alt="선택된 카테고리 텍스트" />
-                )
-              ) : selectedCategorys[category.id].selected ? (
+              {isTracksPage(tracksOrVocals) && (
                 <img
-                  src={require("../../assets/icon/" + category.selectVocalCategory + ".svg")}
+                  src={require(`../../assets/icon/${checkIsSelectedTrackCategory(category.id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
-              ) : (
-                <img src={require("../../assets/icon/" + category.category + ".svg")} alt="선택된 카테고리 텍스트" />
               )}
-              {tracksOrVocals === "Tracks" && selectedCategorys[category.id].selected && <NeonXIc />}
-              {tracksOrVocals === "Vocals" && selectedCategorys[category.id].selected && <PinkXIc />}
+              {isVocalsPage(tracksOrVocals) && (
+                <img
+                  src={require(`../../assets/icon/${checkIsSelectedVocalCategory(category.id)}.svg`)}
+                  alt="선택된 카테고리 텍스트"
+                />
+              )}
+              {changeCategoryColor(category.id)}
             </CategoryTextBox>
           </CategoryTextBoxWrapper>
         ))}
-        {tracksOrVocals === "Tracks" && (
+        {isTracksPage(tracksOrVocals) && (
           <UploadButton type="button" onClick={moveUploadPage}>
             <UploadTextIc />
           </UploadButton>
         )}
 
-        {tracksOrVocals === "Vocals" &&
+        {isVocalsPage(tracksOrVocals) &&
           (trackSearchingClicked ? (
             <TrackSearchingPinkIcon onClick={searchFilterdVocals} />
           ) : (
@@ -149,7 +164,7 @@ const CategoryTextBoxWrapper = styled.article<{ isSelected: boolean; tracksOrVoc
       ${({ theme }) => theme.colors.sub3} 0%,
       ${({ theme }) => theme.colors.sub3} 20%,
       ${({ isSelected, tracksOrVocals, theme }) =>
-          tracksOrVocals === "Tracks"
+          tracksOrVocals === Category.TRACKS
             ? isSelected
               ? theme.colors.sub1
               : theme.colors.sub3
