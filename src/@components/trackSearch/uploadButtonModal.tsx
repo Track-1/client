@@ -39,6 +39,14 @@ export default function UploadButtonModal() {
   //   return openModal && !modalRef.current?.contains(e.target as Node);
   // }
 
+  function clickVocalSearching(){
+    
+  }
+
+  function clickPortfolio(){
+
+  }
+
   return (
 
     <ModalBg onClick={clickOutside}>
@@ -46,15 +54,19 @@ export default function UploadButtonModal() {
         <VocalSearchingWrapper>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
+            <div onClick={clickVocalSearching}>
             <VocalSearchingTextIc />
             <Explain>보컬이 필요한 스케치곡</Explain>
+            </div>
           </TextWrapper>
         </VocalSearchingWrapper>
         <PortfolioWrapper>
           <PortfolioIcon />
           <TextWrapper marginTop={10.7}>
+          <div onClick={clickPortfolio}>
             <PortfolioTextIc />
             <Explain>감각을 보여줄 수 있는 작업물</Explain>
+            </div>
           </TextWrapper>
         </PortfolioWrapper>
 
