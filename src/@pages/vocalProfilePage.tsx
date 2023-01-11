@@ -11,6 +11,8 @@ import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import { useMemo, useState, useEffect } from "react";
 import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
+import { useQuery } from "react-query";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
@@ -25,26 +27,43 @@ export default function VocalProfilePage() {
 
   const audio = useMemo(() => new Audio(), []);
 
+  const {state}=useLocation()
+
   useEffect(() => {
-    async function getData() {
-      const data = await getVocalProfile();
-      console.log(data?.data);
-      setIsMe(data?.data[0].isMe);
-      setProfileData(data?.data[0].vocalProfile);
-      setPortfolioData(data?.data[0].vocalPortfolio);
-    }
-
-    getData();
-
     setWhom(Category.VOCALS);
   }, []);
+
+
+  const { data } = useQuery(["state",state], ()=>getVocalProfile(state)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+      if (data?.status === 200) {
+        console.log(data);
+        console.log("성공");
+        setIsMe(data?.data.data.isMe);
+        setProfileData(data?.data.data.vocalProfile);
+        setPortfolioData(data?.data.data.vocalPortfolio);  
+      }    
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
 
   function playAudio() {
     audio.play();
     setPlay(true);
-
-    console.log(play);
   }
+
+
+  // function playAudio() {
+  //   audio.play();
+  //   setPlay(true);
+
+  //   console.log(play);
+  // }
 
   function pauseAudio() {
     audio.pause();

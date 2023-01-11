@@ -101,6 +101,7 @@ export default function TrackSearchPage() {
 
   useEffect(() => {
     setWhom(Category.TRACKS);
+
   }, []);
 
   function playAudio() {

@@ -26,9 +26,13 @@ import Player from "../@components/@common/player";
 import ditto from "../assets/audio/ditto.mp3";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getTrackInfo } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import { useQuery } from "react-query";
+import { Category } from "../core/common/categoryHeader";
+import { setEmitFlags } from "typescript";
 
 export default function TrackPostPage() {
   const audio = useMemo(() => new Audio(), []);
@@ -45,21 +49,19 @@ export default function TrackPostPage() {
   const [duration, setCurrentDuration] = useState<number>(0);
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [beatId, setBeatId]=useState<number>(-1)
+
+  const {state}=useLocation()
 
   useEffect(() => {
-    async function getData() {
-      const data = await getTrackInfo();
-      console.log(data?.data[0]);
-      setTrackInfoData(data?.data[0]);
-    }
-
-    getData();
+    setWhom(Category.TRACKS); 
   }, []);
+
 
   useEffect(() => {
     if (trackInfoData?.beatWavFile !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
-      console.log(audio.duration);
       setCurrentDuration(trackInfoData?.wavFileLength);
     }
   }, [trackInfoData]);
@@ -82,7 +84,6 @@ export default function TrackPostPage() {
   }
 
   function pauseAudio() {
-    console.log(audio.currentTime);
     audio.pause();
     setPlay(false);
   }
@@ -108,6 +109,7 @@ export default function TrackPostPage() {
 
   function openComment() {
     setIsCommentOpen(true);
+    setBeatId(state)
   }
 
   function closeComment() {
@@ -118,61 +120,73 @@ export default function TrackPostPage() {
     navigate(-1);
   }
 
+  const { data } = useQuery(["state",state],()=>getTrackInfo(state)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+      if (data?.status === 200) {
+        // console.log(data);
+        // console.log("성공");
+        setTrackInfoData(data?.data.data)
+      }    
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
+
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} />}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId}/>}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <>
+      {trackInfoData&&
         <PostSection>
           <TitleContainer>
             <BackButtonWrapper onClick={movePreviousPage}>
               <BackButton />
             </BackButtonWrapper>
-            <AudioTitle>ABCDFKGHIJKL</AudioTitle>
+            <AudioTitle>{trackInfoData.title}</AudioTitle>
             <ProducerBox>
-              <ProducerProfile src={profileDummyImg}></ProducerProfile>
-              <NickName>newjeans_</NickName>
+              <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지"></ProducerProfile>
+              <NickName>{trackInfoData.producerName}</NickName>
             </ProducerBox>
             <ButtonWrapper>
-              {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
-              {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+              {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
+              {!trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
               {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
-              {isMe && <EditBtnIcon onClick={setEditDropDown} />}
+              {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
             </ButtonWrapper>
             {isEditOpen && <EditDropDown />}
           </TitleContainer>
           <InfoContainer>
             <PlayImageWrapper>
-              <PlayerImage src={playImg} alt="재생 이미지" />
+            <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
             </PlayImageWrapper>
             <DescriptionContainer>
               <CategoryBox>
                 <CategoryIcon />
-                Rock
+                {trackInfoData.category}
               </CategoryBox>
               <HashTagBox>
                 <HashTagIcon />
                 <TagWrapper>
-                  <HashTag text="#ABCDEFG" />
-                  <HashTag text="#ABCDEFG" />
-                  <HashTag text="#ABCDEFG" />
+                  {trackInfoData.keyword.map((tag:string)=>(<HashTag text={tag} />))}
                 </TagWrapper>
               </HashTagBox>
               <DescriptionBox>
                 <DescriptionIcon />
                 <TextBox>
-                  이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
-                  어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-                  곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은
-                  어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고 곡입니다이곡은 어쩌고저쩌고
-                  곡입니다
+                {trackInfoData.introduce}
                 </TextBox>
               </DescriptionBox>
             </DescriptionContainer>
           </InfoContainer>
         </PostSection>
+      }
       </>
       <CommentBtnIcon onClick={openComment} />
       {showPlayer && (
