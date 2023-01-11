@@ -6,6 +6,6 @@ export const uploadButtonClicked = atom({
 });
 
 export const uploadButtonClickedInTrackList = atom({
-  key: "uploadButtonClicked",
+  key: "uploadButtonClickedInTrackList",
   default: false,
 });

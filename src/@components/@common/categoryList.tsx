@@ -11,6 +11,7 @@ import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
 import { categorySelect, trackSearching } from "../../recoil/categorySelect";
+import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
 export default function CategoryList() {
   // const modalRef = useRef<HTMLDivElement>(null);
@@ -20,7 +21,7 @@ export default function CategoryList() {
   const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
 
   const [filteredUrlApi, setFilteredUrlApi]=useRecoilState(categorySelect);

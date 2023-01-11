@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
+import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
 interface propsType {
   ref: React.RefObject<HTMLDivElement>;
@@ -9,44 +11,48 @@ interface propsType {
 // export default function UploadButtonModal(props: propsType): JSX.Element {
 //   const { ref } = props;
 export default function UploadButtonModal() {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [openModal]);
-
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e)) {
-      setOpenModal(false);
-    }
+  function clickOutside(){
+    setOpenModal(false)
   }
+
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", closeModal);
+  //   return () => {
+  //     document.removeEventListener("mousedown", closeModal);
+  //   };
+  // }, [openModal]);
+
+  // function closeModal(e: MouseEvent) {
+  //   if (isClickedOutside(e)) {
+  //     setOpenModal(false);
+  //   }
+  // }
   
-  function clickUploadButton() {
-    setOpenModal(true);
-  }
+  // function clickUploadButton() {
+  //   setOpenModal(true);
+  // }
 
-  function isClickedOutside(e: MouseEvent) {
-    return openModal && !modalRef.current?.contains(e.target as Node);
-  }
+  // function isClickedOutside(e: MouseEvent) {
+  //   return openModal && !modalRef.current?.contains(e.target as Node);
+  // }
 
   return (
 
-    <ModalBg>
-      <UploadButtonModalWrapper ref={modalRef} >
+    <ModalBg onClick={clickOutside}>
+      <UploadButtonModalWrapper>
         <VocalSearchingWrapper>
           <VocalSearchingIcon />
-          <TextWrapper marginTop={2.1}>
+          <TextWrapper marginTop={2.5}>
             <VocalSearchingTextIc />
             <Explain>보컬이 필요한 스케치곡</Explain>
           </TextWrapper>
         </VocalSearchingWrapper>
         <PortfolioWrapper>
           <PortfolioIcon />
-          <TextWrapper marginTop={10.2}>
+          <TextWrapper marginTop={10.7}>
             <PortfolioTextIc />
             <Explain>감각을 보여줄 수 있는 작업물</Explain>
           </TextWrapper>
