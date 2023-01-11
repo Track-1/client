@@ -11,7 +11,7 @@ export default function MainHeader() {
   const [userType, setUserType] = useRecoilState(UserType);
 
   function moveMyPage() {
-    userType === "producer" ? navigate("/producer-profile/8") : navigate("/vocal-profile/1", {state:1});
+    userType === "producer" ? navigate("/producer-profile/2", {state:2}) : navigate("/vocal-profile/1", {state:1});
   }
 
   function changeUserType(e: React.MouseEvent<SVGSVGElement>) {
