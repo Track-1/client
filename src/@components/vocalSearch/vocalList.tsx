@@ -200,10 +200,7 @@ const CategoryNum = styled.span`
 
   border-radius: 50%;
 
-  font-family: "Pretendard";
-  font-weight: 400;
-  font-size: 1.6rem;
-  line-height: 180%;
+  ${({ theme }) => theme.fonts.description};
 
   padding: 0.5rem 0.6rem 0.6rem 0.4rem;
 
