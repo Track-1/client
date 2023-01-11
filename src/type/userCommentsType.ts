@@ -1,8 +1,9 @@
 export interface UserCommentType {
-  commentId: number;
-  vocalWavFile: string;
-  vocalName: string;
-  comment: string;
-  isMe: boolean;
-  vocalWavFileLength: number;
+  comment:string;
+  commentId:number;
+  isMe:boolean;
+  vocalName:string;
+  vocalProfileImage:string;
+  vocalWavFile:string;
+  vocalWavFileLength:number;
 }

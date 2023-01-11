@@ -15,7 +15,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 
 import ditto from "../assets/audio/ditto.mp3";
 import { AudioTypes } from "../type/audioTypes";
-//import { getTracksData } from "../core/api/trackSearch";
+import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
 import { useQuery, useInfiniteQuery } from "react-query";
@@ -42,20 +42,35 @@ export default function TrackSearchPage() {
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-  //  const [page, setPage] = useRecoilState<any>(trackListinfiniteScroll);
-  const page = useRef<number>(1);
 
-  const fetch = useCallback(async () => {
+  // const [page, setPage] = useState<any>(1);
+  const page = useRef<any>(1);
+
+  const { data } = useQuery(["filteredUrlApi", filteredUrlApi], () => getTracksData(filteredUrlApi), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      if (data?.status === 200) {
+        setTracksData(data?.data.data.trackList);
+      }
+    },
+    onError: (error) => {
+      console.log("실패");
+    },
+  });
+
+  const fetch = useCallback(async (filteredUrlApi: any) => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/tracks/filterpage=${page.current}&limit=6${filteredUrlApi}`,
+        `${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page.current}&limit=6${filteredUrlApi}`,
         {
           headers: {
-            Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
           },
         },
       );
       setTracksData((prev) => prev && [...prev, ...data?.data?.trackList]);
+      console.log(page);
       setHasNextPage(data?.data.trackList.length === 6);
       if (data?.data.trackList.length) {
         page.current += 1;
@@ -69,7 +84,8 @@ export default function TrackSearchPage() {
     // if (!targetRef.current || !hasNextPage) return;
     const io = new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
-        fetch();
+     //   fetch();
+        fetch(filteredUrlApi);
       }
     });
     io.observe(targetRef.current);
@@ -80,7 +96,6 @@ export default function TrackSearchPage() {
   }, [fetch, hasNextPage]);
 
   //end
-
   // useEffect(() => {
   //   console.log(filteredUrlApi);
   // }, [filteredUrlApi]);
@@ -98,6 +113,13 @@ export default function TrackSearchPage() {
   //     console.log("실패");
   //   },
   // });
+
+ // useEffect(() => {
+ //   setWhom(Category.TRACKS);
+
+  useEffect(() => {
+    console.log(filteredUrlApi);
+  }, [filteredUrlApi]);
 
   useEffect(() => {
     setWhom(Category.TRACKS);

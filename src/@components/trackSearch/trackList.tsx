@@ -22,6 +22,7 @@ interface PropsType {
   tracksData: TracksDataType[];
   duration: number;
   getDuration: (durationTime: number) => void;
+  // targetRef: any;
 }
 
 export default function TrackList(props: PropsType) {
@@ -102,7 +103,7 @@ export default function TrackList(props: PropsType) {
     setPlay(false);
     setBeatId(id);
 
-    navigate(`/track-post/${id}`, {state:id});
+    navigate(`/track-post/${id}`, { state: id });
     setShowPlayer(false);
   }
 

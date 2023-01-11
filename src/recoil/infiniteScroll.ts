@@ -14,3 +14,8 @@ export const vocalListinfiniteScroll = atom({
   key: "vocalListinfiniteScroll",
   default: 1,
 });
+
+export const trackLpageistinfiniteScroll = atom({
+  key: "trackListinfiniteScroll",
+  default: 1,
+});
