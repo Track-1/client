@@ -186,7 +186,7 @@ const VocalPortfolioTitle = styled.div`
   white-space: normal;
 
   ${({ theme }) => theme.fonts.id};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.gray2};
 
   cursor: pointer;
 `;
