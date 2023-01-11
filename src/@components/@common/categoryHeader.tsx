@@ -9,6 +9,8 @@ import {
   VocalsSelectTextIc,
   TracksHeaderTextIc,
   VocalsHeaderTextIc,
+  TrackOneMainLogoIc,
+  
 } from "../../assets";
 import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState } from "recoil";
@@ -53,7 +55,7 @@ export default function CategoryHeader() {
 
       <HeaderContainer>
         <HeaderWrapper>
-          <TrackOneIcon onClick={moveMainPage} />
+          <TrackOneMainLogoIcon onClick={moveMainPage} />
           <ProfileWrapper>
             <ProfileImg src={profileImg} alt="프로필이미지" />
             <ToggleIc />
@@ -81,6 +83,7 @@ const CategoryHeaderContainer = styled.header`
 `;
 
 const HeaderContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
 
@@ -90,12 +93,17 @@ const HeaderContainer = styled.div`
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
-  width: 178.7rem;
+  width: 100%;
+  height: 100%;
+  padding: 5.9rem 7.5rem;
+
+  height: 100%;
 `;
 
-const TrackOneIcon = styled(Track1Ic)`
-  margin-top: 4.1rem;
+const TrackOneMainLogoIcon = styled(TrackOneMainLogoIc)`
+  cursor: pointer;
 `;
 
 const CategoryContainer = styled.div`
