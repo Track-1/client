@@ -119,3 +119,8 @@ export { ReactComponent as ProducerProfilePauseIc } from "./icon/producerProfile
 export { ReactComponent as ProducerProfilePlayIc } from "./icon/producerProfilePlayIc.svg";
 
 export { ReactComponent as FileChangeIc } from "./icon/fileChangeIc.svg";
+
+export { ReactComponent as ProducerMypageIc } from "./icon/producerMypageIc.svg";
+export { ReactComponent as ProducerToggleIc } from "./icon/producerToggleIc.svg";
+export { ReactComponent as VocalMypageIc } from "./icon/vocalMypageIc.svg";
+export { ReactComponent as VocalToggleIc } from "./icon/vocalToggleIc.svg";

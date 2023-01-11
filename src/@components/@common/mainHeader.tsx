@@ -1,14 +1,21 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
 import sloganImg from "../../assets/image/sloganImg.svg";
-import { UserIc, LogoIc, MyPageTextIc } from "../../assets/index";
+import { LogoIc, ProducerMypageIc, ProducerToggleIc, VocalMypageIc, VocalToggleIc } from "../../assets";
+import { useRecoilState } from "recoil";
+import { UserType } from "../../recoil/main";
 
 export default function MainHeader() {
   const navigate = useNavigate();
 
+  const [userType, setUserType] = useRecoilState(UserType);
+
   function moveMyPage() {
     navigate("/mypage");
+  }
+
+  function changeUserType(e: React.MouseEvent<SVGSVGElement>) {
+    userType === "producer" ? setUserType("vocal") : setUserType("producer");
   }
 
   return (
@@ -16,10 +23,19 @@ export default function MainHeader() {
       <HeaderWrapper>
         <LogoIc />
         <img src={sloganImg} alt="슬로건" />
-        <MyPageBtn type="button" onClick={moveMyPage}>
-          <UserIcon />
-          <MyPageTextIcon />
-        </MyPageBtn>
+        <BtnWrpper>
+          {userType === "producer" ? (
+            <>
+              <ProducerToggleIc onClick={changeUserType} />
+              <ProducerMypageIc onClick={moveMyPage} />
+            </>
+          ) : (
+            <>
+              <VocalToggleIc onClick={changeUserType} />
+              <VocalMypageIc onClick={moveMyPage} />
+            </>
+          )}
+        </BtnWrpper>
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -42,25 +58,10 @@ const HeaderWrapper = styled.div`
   margin: 0 6.9rem 0 7.5rem;
 `;
 
-const MyPageBtn = styled.button`
-  width: 19.5rem;
-  height: 5.2rem;
+const BtnWrpper = styled.div`
+  width: 29rem;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  border-radius: 3rem;
-  background-color: ${({ theme }) => theme.colors.main};
-`;
-
-const UserIcon = styled(UserIc)`
-  width: 3.1rem;
-  height: 3.1rem;
-
-  margin-left: 1.3rem;
-  border-radius: 5rem;
-  border: 0.1rem solid white;
-`;
-
-const MyPageTextIcon = styled(MyPageTextIc)`
-  margin-left: 1.3rem;
 `;

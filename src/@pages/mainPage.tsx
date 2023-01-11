@@ -11,6 +11,7 @@ import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
 
+
 export default function MainPage() {
   const navigate = useNavigate();
 

@@ -3,68 +3,110 @@ import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
 // import comments from "../../core/trackPost/userComments";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
-import { useMutation, useQuery } from "react-query";
-import { getComment, postComment } from "../../core/api/trackPost";
-import {UserCommentType} from '../../type/userCommentsType'
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { getComment } from "../../core/api/trackPost";
+import { UserCommentType } from "../../type/userCommentsType";
+import axios from "axios";
+import { postComment } from "../../core/api/trackPost";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 
-interface CommentPropsType{
-  closeComment:any;
-  beatId:number;
+interface CommentPropsType {
+  closeComment: any;
+  beatId: number;
 }
 
 export default function UserComment(props: CommentPropsType) {
   const { closeComment, beatId } = props;
+  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
+  const [comments, setComments] = useState<UserCommentType[]>();
   const [uploadData, setUploadData] = useState<UploadDataType>({
-    text: "",
-    file: null,
+    content: "",
+    wavFile: null,
   });
-  const [isCompleted, setIsCompleted] = useState<boolean>(false);
-  const [comments, setComments]=useState<UserCommentType[]>()
-  function uploadComment() {
-    setIsCompleted(true);
-  }
+  const contentLength = useRecoilValue(postContentLength);
+  const [content, setContent] = useRecoilState<string>(postContent);
+  const [wavFile, setWavFile] = useRecoilState(postWavFile);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
-      text: text,
-      file: audioFile,
+      content: text,
+      wavFile: audioFile,
     });
   }
 
-  const { data } = useQuery(["beatId",beatId], ()=>getComment(beatId)
-  , {
+  //get
+  const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
-    onSuccess: data => {
+    onSuccess: (data) => {
       if (data?.status === 200) {
-        console.log(data);
-        console.log("성공");
-        setComments(data?.data.data.commentList)
+        // console.log(data);
+        // console.log("성공");
+        setComments(data?.data.data.commentList);
       }
     },
-    onError: error => {
+    onError: (error) => {
       console.log("실패");
-    }
+    },
   });
 
-  const { mutate } = useMutation(()=>postComment(beatId, uploadData));
+  //post
+  function uploadComment(uploadData: UploadDataType) {
+    setIsCompleted(true);
+    console.log("1");
+  }
+
+  useEffect(() => {
+    if (content && wavFile) {
+      // if(uploadData.content&&uploadData.wavFile){
+      console.log("2");
+
+      let formData = new FormData();
+      formData.append("wavFile", wavFile);
+      formData.append("content", content);
+
+      mutate(formData);
+    }
+  }, [isCompleted]);
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(postComment, {
+    onSuccess: () => {
+      console.log("3");
+      queryClient.invalidateQueries("beatId");
+      setUploadData({
+        content: "",
+        wavFile: null,
+      });
+      setContent("");
+      setWavFile(null);
+      setIsCompleted(false);
+      setIsEnd(false);
+    },
+  });
 
   return (
     <CommentContainer>
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
-      <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} />
-      <AddWrapper>
-        <div></div>
-        <AddCommentIcon onClick={uploadComment} />
-      </AddWrapper>
-      {comments&&comments.map((data, index) => {
-        // data.isMe ? : merge할 때 분기처리
-        return <EachUseComment key={index} data={data} />; //여기가 각각의 데이터
-      })}
+      <form>
+        <CommentWrite getUploadData={getUploadData} />
+        <AddWrapper>
+          <div></div>
+
+          <AddCommentIcon onClick={() => uploadComment(uploadData)} />
+        </AddWrapper>
+      </form>
+      {comments &&
+        comments.map((data, index) => {
+          return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
+        })}
       <BlurSection />
     </CommentContainer>
   );
