@@ -29,7 +29,7 @@ const TrackListHeaderWrapper = styled.section`
   justify-content: space-between;
 `;
 
-const TrackListHeaderSloganIcon = styled(TrackListHeaderSloganNewIc)`
+const TrackListHeaderSloganIcon = styled(TrackListHeaderSloganIc)`
   margin: 2.64rem 0 0 9rem;
 `;
 

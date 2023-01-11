@@ -152,7 +152,7 @@ const HoverPlayIcon = styled(HoverPlayIc)`
 `;
 
 const CategoryWrapper = styled.section`
-  margin: 3.6rem 0 3.5rem 9rem;
+  margin: 4.6rem 0 3.5rem 9rem;
 `;
 const TitleTextIcon = styled(TitleTextIc)``;
 

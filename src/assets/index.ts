@@ -127,3 +127,4 @@ export { ReactComponent as VocalToggleIc } from "./icon/vocalToggleIc.svg";
 export { ReactComponent as TrackOneMainLogoIc } from "./icon/track1MainLogoIc.svg";
 export { ReactComponent as FooterTextsIc } from "./icon/footerTextsIc.svg";
 export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHeaderSloganNewIc.svg";
+export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
