@@ -14,15 +14,12 @@ import { useEffect, useRef, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton";
 import { useNavigate } from "react-router-dom";
-import TracksProfileUploadModal from "./tracksProfileUploadModal";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
-  // const portfolioHoverInformation = portfolios.filter((portfolio) => portfolio.id === hoverId)[0];
   const portfolioHoverInformation = portfolios[hoverId];
 
-  // const portfolioClickInformation = portfolios.filter((portfolio) => portfolio.id === clickId)[0];
   const portfolioClickInformation = portfolios[clickId];
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const isBool = hoverId === clickId ? true : false;
@@ -62,14 +59,12 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   return (
     <PortfolioInformWrapper>
-      {/* 나인 경우 업로드 버튼이 떠요 */}
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
       {portfolioInforms && (
         <>
           <InformWrapper>
             <InformTitleWrapper>
-              {/* 누른 곡이 타이틀곡인 경우, 색깔이 다른 타이틀 아이콘이 뜹니다. 프로듀서 프로핑-보컬서칭의 경우는 타이틀곡이 아예 존재하지 않아요 */}
               {profileState === "Vocal Searching" && !(!isBool && hoverId !== -1) && (
                 <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
               )}
@@ -80,7 +75,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
                 <VocalPortfolioTitleTextIc />
               )}
               {(!isTitle || profileState !== "Vocal Searching") && <BlankIc />}
-              {/* 나인 경우는 더보기 버튼이 떠요, 더보기 버튼은 모달 컴포넌트로 따로 구현했어요. */}
               {isMe && !(!isBool && hoverId !== -1) && (
                 <>
                   {<EllipsisIcon onClick={clickEllipsis} />}
