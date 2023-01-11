@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { TrackListHeaderSloganIc, ProducerTextIc, VocalTextIc,TrackListHeaderSloganNewIc } from "../../assets";
+import { TrackListHeaderSloganIc, ProducerTextIc, VocalTextIc } from "../../assets";
 
 export default function TrackListHeader() {
   return (
