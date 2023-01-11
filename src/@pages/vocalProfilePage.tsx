@@ -14,7 +14,7 @@ import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
-import { UserType } from '../recoil/main';
+import { UserType } from "../recoil/main";
 
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
@@ -75,17 +75,16 @@ export default function VocalProfilePage() {
 
   //end
 
-  const userType=useRecoilValue(UserType)
-  
+  const userType = useRecoilValue(UserType);
+
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
-  const { data } = useQuery(["state", state], () => getVocalProfile(state), {
+  const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
@@ -162,7 +161,7 @@ export default function VocalProfilePage() {
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
       <InfiniteDiv ref={targetRef}> 아아이 </InfiniteDiv>
-{/* //ref 바꿀 예정 */}
+      {/* //ref 바꿀 예정 */}
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
