@@ -9,3 +9,8 @@ export const prevTrackListinfiniteScroll = atom({
   key: "prevTrackListinfiniteScroll",
   default: 0,
 });
+
+export const vocalListinfiniteScroll = atom({
+  key: "vocalListinfiniteScroll",
+  default: 1,
+});

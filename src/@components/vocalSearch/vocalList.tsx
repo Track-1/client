@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { VocalSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
 import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
-import { getVocalsData } from "../../core/api/vocalSearch";
 import { VocalSearchType } from "../../type/vocalSearchType";
 
 interface PropsType {
@@ -25,26 +24,6 @@ export default function VocalList(props: PropsType) {
 
   const [beatId, setBeatId] = useState<number>(-1);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-
-  //무한 스크롤
-  const [page, setPage] = useState(1);
-  // const [loading, setLoading] = useState(false);
-  const loadMore = () => setPage((prev) => prev + 1);
-  const target = useRef<HTMLDivElement | null>(null);
-
-  //  console.log(vocalData);
-
-  useEffect(() => {
-    //  if (loading) {
-    const observer = new IntersectionObserver((endDiv) => {
-      if (endDiv[0].isIntersecting) {
-        loadMore();
-      }
-    });
-    observer.observe(target.current!);
-    // }
-  }, []);
-  console.log(page);
 
   useEffect(() => {
     playAudio();
@@ -152,7 +131,7 @@ export default function VocalList(props: PropsType) {
             </HashtagUl>
           </VocalContainer>
         ))}
-      <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
+      <InfiniteDiv> 아아 </InfiniteDiv>
     </VocalListContainer>
   );
 }

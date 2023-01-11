@@ -11,15 +11,16 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Category } from "../core/common/categoryHeader";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 
 import ditto from "../assets/audio/ditto.mp3";
 import { AudioTypes } from "../type/audioTypes";
-import { getTracksData } from "../core/api/trackSearch";
+//import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
-import { useQuery } from "react-query";
+import { useQuery, useInfiniteQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
+import axios from "axios";
 import { trackListinfiniteScroll } from "../recoil/infiniteScroll";
 
 export default function TrackSearchPage() {
@@ -33,34 +34,73 @@ export default function TrackSearchPage() {
 
   const [duration, setCurrentDuration] = useState<number>(0);
 
-  //이전 데이터랑 합치는 useState
-  const [trackData, setTrackData] = useState<any>([]);
-
   const audio = useMemo(() => new Audio(), []);
   // const [currentAudio, setCurrentAudio] = useRecoilState<AudioTypes>(audioState);
 
-  const filteredUrlApi=useRecoilValue(categorySelect)
-  
-  useEffect(() => {
-    console.log(filteredUrlApi)
-  },[filteredUrlApi])
+  const filteredUrlApi = useRecoilValue(categorySelect);
 
-  const { data } = useQuery(["filteredUrlApi",filteredUrlApi],()=>getTracksData(filteredUrlApi)
-  , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
-    onSuccess: data => {
-      if (data?.status === 200) {
-        setTracksData(data?.data.data.trackList);
-      }    
-    },
-    onError: error => {
-      console.log("실패");
+  //infinite scroll
+  const targetRef = useRef<any>();
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  //  const [page, setPage] = useRecoilState<any>(trackListinfiniteScroll);
+  const page = useRef<number>(1);
+
+  const fetch = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/tracks/filterpage=${page.current}&limit=6${filteredUrlApi}`,
+        {
+          headers: {
+            Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+          },
+        },
+      );
+      setTracksData((prev) => prev && [...prev, ...data?.data?.trackList]);
+      setHasNextPage(data?.data.trackList.length === 6);
+      if (data?.data.trackList.length) {
+        page.current += 1;
+      }
+    } catch (e) {
+      console.error(e);
     }
-  });
+  }, []);
 
   useEffect(() => {
-    setWhom(Category.TRACKS); 
+    // if (!targetRef.current || !hasNextPage) return;
+    const io = new IntersectionObserver((entries, observer) => {
+      if (entries[0].isIntersecting) {
+        fetch();
+      }
+    });
+    io.observe(targetRef.current);
+
+    return () => {
+      io.disconnect();
+    };
+  }, [fetch, hasNextPage]);
+
+  //end
+
+  // useEffect(() => {
+  //   console.log(filteredUrlApi);
+  // }, [filteredUrlApi]);
+
+  // const { data } = useQuery(["filteredUrlApi", filteredUrlApi], () => getTracksData(filteredUrlApi), {
+  //   refetchOnWindowFocus: false,
+  //   retry: 0,
+  //   onSuccess: (data) => {
+  //     if (data?.status === 200) {
+  //       setTracksData(data?.data.data.trackList);
+  //       console.log(data?.data);
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     console.log("실패");
+  //   },
+  // });
+
+  useEffect(() => {
+    setWhom(Category.TRACKS);
   }, []);
 
   function playAudio() {
@@ -106,13 +146,12 @@ export default function TrackSearchPage() {
         </CategoryListWrapper>
         <TrackListWrapper>
           <TrackListHeader />
-          {data && (
+          {tracksData && (
             <TrackList
               audio={audio}
               playAudio={playAudio}
               pauseAudio={pauseAudio}
-              //tracksData={data?.data.data.trackList}
-              tracksData={trackData}
+              tracksData={tracksData}
               duration={duration}
               getDuration={getDuration}
             />
@@ -122,9 +161,15 @@ export default function TrackSearchPage() {
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
+      <Fuck ref={targetRef}></Fuck>
     </>
   );
 }
+
+const Fuck = styled.div`
+  width: 100%;
+  height: 2rem;
+`;
 
 const TrackSearchPageWrapper = styled.section`
   display: flex;
