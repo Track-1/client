@@ -47,7 +47,7 @@ export default function UploadInfo() {
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
-  const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
+  const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
   const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(8.827);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
 
@@ -130,9 +130,15 @@ export default function UploadInfo() {
   }
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setTextareaHeight(e.target.value);
-    setDescriptionLength(e.target.value.length);
-    setDeiscription(descriptionTextarea.current!.value);
+    const enterCount = e.target.value.split("\n").length;
+    console.log(enterCount);
+    if (enterCount < 8) {
+      setTextareaHeight(e.target.value);
+      setDescriptionLength(e.target.value.length);
+      setDeiscription(descriptionTextarea.current!.value);
+    } else {
+      console.log(descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0,-1));
+    }
   }
 
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
