@@ -7,11 +7,11 @@ import { useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 import { useMutation, useQuery } from "react-query";
 import { getComment, postComment } from "../../core/api/trackPost";
-import {UserCommentType} from '../../type/userCommentsType'
+import { UserCommentType } from "../../type/userCommentsType";
 
-interface CommentPropsType{
-  closeComment:any;
-  beatId:number;
+interface CommentPropsType {
+  closeComment: any;
+  beatId: number;
 }
 
 export default function UserComment(props: CommentPropsType) {
@@ -21,7 +21,7 @@ export default function UserComment(props: CommentPropsType) {
     file: null,
   });
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-  const [comments, setComments]=useState<UserCommentType[]>()
+  const [comments, setComments] = useState<UserCommentType[]>();
   function uploadComment() {
     setIsCompleted(true);
   }
@@ -33,23 +33,22 @@ export default function UserComment(props: CommentPropsType) {
     });
   }
 
-  const { data } = useQuery(["beatId",beatId], ()=>getComment(beatId)
-  , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
-    onSuccess: data => {
+  const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
-        setComments(data?.data.data.commentList)
-      }    
+        setComments(data?.data.data.commentList);
+      }
     },
-    onError: error => {
+    onError: (error) => {
       console.log("실패");
-    }
+    },
   });
 
-  const { mutate } = useMutation(()=>postComment(beatId, uploadData));
+  const { mutate } = useMutation(() => postComment(beatId, uploadData));
 
   return (
     <CommentContainer>
@@ -60,11 +59,12 @@ export default function UserComment(props: CommentPropsType) {
       <AddWrapper>
         <div></div>
         <AddCommentIcon onClick={uploadComment} />
-      </AddWrapper>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-      {comments&&comments.map((data, index) => {
-        // data.isMe ? : merge할 때 분기처리
-        return <EachUseComment key={index} data={comments} />; //여기가 각각의 데이터
-      })}
+      </AddWrapper>
+      {comments &&
+        comments.map((data, index) => {
+          // data.isMe ? : merge할 때 분기처리
+          return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
+        })}
       <BlurSection />
     </CommentContainer>
   );
