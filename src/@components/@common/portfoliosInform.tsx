@@ -13,35 +13,35 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useEffect, useRef, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton";
-import { useNavigate, useParams } from "react-router-dom";
-import TracksProfileUploadModal from "./tracksProfileUploadModal";
+import { useNavigate } from "react-router-dom";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
-import { UserType } from "../../recoil/main";
+import { isClickedOutside } from "../../utils/common/modal";
+import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
+import { profileCategory } from "../../core/constants/pageCategory";
+
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
-  // const portfolioHoverInformation = portfolios.filter((portfolio) => portfolio.id === hoverId)[0];
-  const portfolioHoverInformation = portfolios[hoverId];
-
-  // const portfolioClickInformation = portfolios.filter((portfolio) => portfolio.id === clickId)[0];
-  const portfolioClickInformation = portfolios[clickId];
-  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
-  const isBool = hoverId === clickId ? true : false;
-  const portfolioInforms =
-    (!isBool && hoverId !== -1) || (isBool && hoverId !== -1) ? portfolioHoverInformation : portfolioClickInformation;
-  const isTitle = (hoverId === 0||clickId===0)? true : false;
-  const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
-  const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const userType=useRecoilValue(UserType)
-  let { vocalId } = useParams();
-  const [meId, setMeId]=useState<boolean>(false)
+
+  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
+  const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+
+  const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
+
 
   useEffect(() => {
-    console.log(hoverId);
-  }, [hoverId]);
+    function closeModal(e: MouseEvent) {
+      isClickedOutside(e, ellipsisModalRef) && setOpenEllipsisModal(false);
+    }
+
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openEllipsisModal]);
 
   useEffect(()=>{
     vocalId==="1"&&setMeId(true)
@@ -52,57 +52,54 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function clickUploadButton() {
-    tracksOrVocals === "Tracks" && setOpenUploadModal(true);
-    tracksOrVocals === "Vocals" && navigate("/upload");
+    isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
+    isVocalsPage(tracksOrVocals) && navigate("/upload-vocal");
+
   }
 
-  useEffect(() => {
-    const clickOutside = (e: any) => {
-      if (openEllipsisModal && !ellipsisModalRef.current?.contains(e.target)) {
-        setOpenEllipsisModal(false);
-      }
-    };
-    document.addEventListener("mousedown", clickOutside);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [openEllipsisModal]);
+  function checkIsVocalSearching() {
+    return profileState === profileCategory.VOCAL_SEARCHING;
+  }
+
+  function checkIsPortfolio() {
+    return profileState === profileCategory.PORTFOLIO;
+  }
+
+  function isHoveredNClicked() {
+    return hoverId === clickId;
+  }
+
+  function checkIsTitle() {
+    return hoverId === 0;
+  }
 
   return (
     <PortfolioInformWrapper>
-      {isMe&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
-      {portfolioInforms && (
+      {portfolios[hoverId] && (
         <>
           <InformWrapper>
             <InformTitleWrapper>
-              {profileState === "Vocal Searching" && !(!isBool && hoverId !== -1) && (
+              {checkIsVocalSearching() && isHoveredNClicked() && (
                 <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
               )}
-              {isTitle && tracksOrVocals === "Tracks" && profileState !== "Vocal Searching"&& (
-                <ProducerPortfolioTitleTextIc />
-              )}
-              {isTitle && tracksOrVocals === "Vocals" && profileState !== "Vocal Searching" && (
-                <VocalPortfolioTitleTextIc />
-              )}
-              {(!isTitle || profileState !== "Vocal Searching") && <BlankIc />}
+              {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
+              {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
+              {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
+              {isMe && isHoveredNClicked() && <EllipsisIcon onClick={clickEllipsis} />}
+              {openEllipsisModal && checkIsTitle() && (
+                <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
 
-              {(isMe||meId) && userType==="vocal"&&!(!isBool && hoverId !== -1) && (
-                <>
-                  {<EllipsisIcon onClick={clickEllipsis} />}
-                  {openEllipsisModal && isTitle && (
-                    <PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef} profileState={profileState} />
-                  )}
-                </>
               )}
             </InformTitleWrapper>
-            <InformTitle>{portfolioInforms.title}</InformTitle>
-            <InformCategory>{portfolioInforms.category}</InformCategory>
+            <InformTitle>{portfolios[hoverId].title}</InformTitle>
+            <InformCategory>{portfolios[hoverId].category}</InformCategory>
           </InformWrapper>
 
-          <InformContent>{portfolioInforms.content}</InformContent>
+          <InformContent>{portfolios[hoverId].content}</InformContent>
           <InformTagWrapper>
-            {portfolioInforms.keyword.map((tag, idx) => (
+            {portfolios[hoverId].keyword.map((tag, idx) => (
               <InformTag key={idx} textLength={tag.length}>
                 #{tag}
               </InformTag>

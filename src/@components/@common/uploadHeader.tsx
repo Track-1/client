@@ -15,12 +15,12 @@ import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 
-interface UploadHeaderType {
+interface PropsType {
   userType: string;
   producerUploadType: string;
 }
 
-export default function UploadHeader(props: UploadHeaderType) {
+export default function UploadHeader(props: PropsType) {
   const { userType, producerUploadType } = props;
   const navigate = useNavigate();
 
