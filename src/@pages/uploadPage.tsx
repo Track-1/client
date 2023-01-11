@@ -1,12 +1,13 @@
 import UploadHeader from "../@components/@common/uploadHeader";
 import TrackUpload from "../@components/upload/trackUpload";
 import VocalUpload from "../@components/upload/vocalUpload";
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { UserType } from "../recoil/main";
 
 export default function UploadPage() {
-  const [userType, setUserType] = useState<string>("vocal");
-  const [producerUploadState, setProducerUploadState] = useState<string>("Portfolio");
+  const userType = useRecoilValue(UserType);
+  const producerUploadState = "Portfolio";
+  // const [producerUploadState, setProducerUploadState] = useState<string>("Portfolio");
 
   return (
     <>

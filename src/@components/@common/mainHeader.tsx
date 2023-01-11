@@ -11,7 +11,7 @@ export default function MainHeader() {
   const [userType, setUserType] = useRecoilState(UserType);
 
   function moveMyPage() {
-    navigate("/mypage");
+    userType === "producer" ? navigate("/producer-profile:8") : navigate("/vocal-profile:8");
   }
 
   function changeUserType(e: React.MouseEvent<SVGSVGElement>) {
@@ -21,18 +21,18 @@ export default function MainHeader() {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <LogoIc />
+        <LogoIc style={{ cursor: "pointer" }} />
         <img src={sloganImg} alt="슬로건" />
         <BtnWrpper>
           {userType === "producer" ? (
             <>
-              <ProducerToggleIc onClick={changeUserType} />
-              <ProducerMypageIc onClick={moveMyPage} />
+              <ProducerToggleIc style={{ cursor: "pointer" }} onClick={changeUserType} />
+              <ProducerMypageIc style={{ cursor: "pointer" }} onClick={moveMyPage} />
             </>
           ) : (
             <>
-              <VocalToggleIc onClick={changeUserType} />
-              <VocalMypageIc onClick={moveMyPage} />
+              <VocalToggleIc style={{ cursor: "pointer" }} onClick={changeUserType} />
+              <VocalMypageIc style={{ cursor: "pointer" }} onClick={moveMyPage} />
             </>
           )}
         </BtnWrpper>
