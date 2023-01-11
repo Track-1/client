@@ -15,82 +15,73 @@ import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfoiloViewMoreButton from "./portfoiloViewMoreButton";
 import { useNavigate } from "react-router-dom";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
+import { isClickedOutside } from "../../utils/common/modal";
+import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
-  const portfolioHoverInformation = portfolios[hoverId];
-
-  const portfolioClickInformation = portfolios[clickId];
-  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
-  const isBool = hoverId === clickId ? true : false;
-  const portfolioInforms =
-    (!isBool && hoverId !== -1) || (isBool && hoverId !== -1) ? portfolioHoverInformation : portfolioClickInformation;
-  const isTitle = hoverId === 0 ? true : false;
-  const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
-  const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
-
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
+  const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+
+  const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
+
   useEffect(() => {
-    console.log(hoverId);
-  }, [hoverId]);
+    function closeModal(e: MouseEvent) {
+      isClickedOutside(e, ellipsisModalRef) && setOpenEllipsisModal(false);
+    }
+
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openEllipsisModal]);
 
   function clickEllipsis() {
     setOpenEllipsisModal(true);
   }
 
   function clickUploadButton() {
-    tracksOrVocals === "Tracks" && setOpenUploadModal(true);
-    tracksOrVocals === "Vocals" && navigate("/upload-vocal");
+    isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
+    isVocalsPage(tracksOrVocals) && navigate("/upload-vocal");
   }
-
-  useEffect(() => {
-    const clickOutside = (e: any) => {
-      if (openEllipsisModal && !ellipsisModalRef.current?.contains(e.target)) {
-        setOpenEllipsisModal(false);
-      }
-    };
-    document.addEventListener("mousedown", clickOutside);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [openEllipsisModal]);
 
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
-      {portfolioInforms && (
+      {portfolios[hoverId] && (
         <>
           <InformWrapper>
             <InformTitleWrapper>
-              {profileState === "Vocal Searching" && !(!isBool && hoverId !== -1) && (
+              {profileState === "Vocal Searching" && !(hoverId !== clickId && hoverId !== -1) && (
                 <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
               )}
-              {isTitle && tracksOrVocals === "Tracks" && profileState !== "Vocal Searching" && (
+              {hoverId === 0 && isTracksPage(tracksOrVocals) && profileState !== "Vocal Searching" && (
                 <ProducerPortfolioTitleTextIc />
               )}
-              {isTitle && tracksOrVocals === "Vocals" && profileState !== "Vocal Searching" && (
+              {hoverId === 0 && isVocalsPage(tracksOrVocals) && profileState !== "Vocal Searching" && (
                 <VocalPortfolioTitleTextIc />
               )}
-              {(!isTitle || profileState !== "Vocal Searching") && <BlankIc />}
-              {isMe && !(!isBool && hoverId !== -1) && (
+              {(hoverId !== 0 || profileState !== "Vocal Searching") && <BlankIc />}
+              {isMe && !(hoverId !== clickId && hoverId !== -1) && (
                 <>
                   {<EllipsisIcon onClick={clickEllipsis} />}
-                  {openEllipsisModal && isTitle && (
-                    <PortfolioUpdateModal isTitle={isTitle} ref={ellipsisModalRef} profileState={profileState} />
+                  {openEllipsisModal && hoverId === 0 && (
+                    <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
                   )}
                 </>
               )}
             </InformTitleWrapper>
-            <InformTitle>{portfolioInforms.title}</InformTitle>
-            <InformCategory>{portfolioInforms.category}</InformCategory>
+            <InformTitle>{portfolios[hoverId].title}</InformTitle>
+            <InformCategory>{portfolios[hoverId].category}</InformCategory>
           </InformWrapper>
 
-          <InformContent>{portfolioInforms.content}</InformContent>
+          <InformContent>{portfolios[hoverId].content}</InformContent>
           <InformTagWrapper>
-            {portfolioInforms.keyword.map((tag, idx) => (
+            {portfolios[hoverId].keyword.map((tag, idx) => (
               <InformTag key={idx} textLength={tag.length}>
                 #{tag}
               </InformTag>
