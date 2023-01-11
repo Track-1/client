@@ -21,6 +21,7 @@ interface PropsType {
   tracksData: TracksDataType[];
   duration: number;
   getDuration: (durationTime: number) => void;
+  // targetRef: any;
 }
 
 export default function TrackList(props: PropsType) {
