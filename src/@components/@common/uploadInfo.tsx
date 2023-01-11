@@ -44,6 +44,7 @@ export default function UploadInfo() {
   const [editFileName, setEditFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
   const [categoryState, setCategoryState] = useState<boolean>(false);
+  const [audioType, setAudioType] = useState<string>("");
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
@@ -78,6 +79,7 @@ export default function UploadInfo() {
 
   function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    uploadName.substring(uploadName.length - 4) === ".wav" ? setAudioType(".wav") : setAudioType(".mp3");
     let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
 
     if (str.length > 14) {
@@ -137,8 +139,7 @@ export default function UploadInfo() {
       setDescriptionLength(e.target.value.length);
       setDeiscription(descriptionTextarea.current!.value);
     } else {
-      console.log(descriptionTextarea.current!.value.length);
-      console.log((descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1)));
+      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
     }
   }
 
@@ -148,6 +149,7 @@ export default function UploadInfo() {
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(e.target.value);
     setHashtagLength(e.target.value.length);
     setHashtagInputWidth(Number(e.target.value));
   }
@@ -223,7 +225,7 @@ export default function UploadInfo() {
             <InputWrapper>
               <InputFileTextWrapper editFileName={editFileName}>
                 <FileName value={editFileName} isTextOverflow={isTextOverflow} disabled />
-                {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>.wav</FileAttribute>}
+                {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioType}</FileAttribute>}
                 <input
                   type="file"
                   id="wavFileUpload"
