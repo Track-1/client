@@ -71,18 +71,17 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
         <>
           <InformWrapper>
             <InformTitleWrapper>
-              {/* 누른 곡이 타이틀곡인 경우, 색깔이 다른 타이틀 아이콘이 뜹니다. 프로듀서 프로핑-보컬서칭의 경우는 타이틀곡이 아예 존재하지 않아요 */}
               {profileState === "Vocal Searching" && !(!isBool && hoverId !== -1) && (
                 <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
               )}
-              {isTitle && tracksOrVocals === "Tracks" && profileState !== "Vocal Searching" && (
+              {isTitle && tracksOrVocals === "Tracks" && profileState !== "Vocal Searching"&& (
                 <ProducerPortfolioTitleTextIc />
               )}
               {isTitle && tracksOrVocals === "Vocals" && profileState !== "Vocal Searching" && (
                 <VocalPortfolioTitleTextIc />
               )}
               {(!isTitle || profileState !== "Vocal Searching") && <BlankIc />}
-              {/* 나인 경우는 더보기 버튼이 떠요, 더보기 버튼은 모달 컴포넌트로 따로 구현했어요. */}
+
               {isMe && userType==="vocal"&&!(!isBool && hoverId !== -1) && (
                 <>
                   {<EllipsisIcon onClick={clickEllipsis} />}
