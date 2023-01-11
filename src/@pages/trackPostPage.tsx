@@ -126,8 +126,8 @@ export default function TrackPostPage() {
     retry: 0, 
     onSuccess: data => {
       if (data?.status === 200) {
-        console.log(data);
-        console.log("성공");
+        // console.log(data);
+        // console.log("성공");
         setTrackInfoData(data?.data.data)
       }    
     },
@@ -154,11 +154,11 @@ export default function TrackPostPage() {
               <NickName>{trackInfoData.producerName}</NickName>
             </ProducerBox>
             <ButtonWrapper>
-              {isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
-              {!isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+              {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
+              {!trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
               {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
-              {isMe && <EditBtnIcon onClick={setEditDropDown} />}
+              {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
             </ButtonWrapper>
             {isEditOpen && <EditDropDown />}
           </TitleContainer>
