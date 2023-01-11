@@ -90,8 +90,7 @@ export default function VocalProfileList(props: any) {
                 <VocalPorfolioBlur idx={index} vocalPortfolioClickBool={vocalPortfolioClick === index} />
               )}
               <VocalPortfolioImg
-                // src={require("../../assets/image/" + vocal.jacketImage + ".png")}
-                src={require("../../assets/image/" + "vocalPortfolioList1" + ".png")}
+                src={vocal.jacketImage}
                 alt="보컬 포트폴리오이미지"
                 idx={index}
                 vocalPortfolioHoverBool={vocalPortfolioHover === index}
