@@ -39,8 +39,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   let { vocalId } = useParams();
   const [meId, setMeId]=useState<boolean>(false)
 
-  console.log("vocalId", vocalId)
-
   useEffect(() => {
     console.log(hoverId);
   }, [hoverId]);
@@ -48,6 +46,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   useEffect(()=>{
     vocalId==="1"&&setMeId(true)
   },[])
+
+  console.log("me",meId)
 
   function clickEllipsis() {
     setOpenEllipsisModal(true);
@@ -70,10 +70,9 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     };
   }, [openEllipsisModal]);
 
-  console.log(isTitle)
   return (
     <PortfolioInformWrapper>
-      {(isMe||meId)&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {isMe&&userType==="vocal" ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
       {portfolioInforms && (
         <>
