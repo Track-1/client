@@ -40,7 +40,6 @@ export default function UserComment(props: CommentPropsType) {
     });
   }
 
-
   //get
   const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
     refetchOnWindowFocus: false,
@@ -56,7 +55,6 @@ export default function UserComment(props: CommentPropsType) {
       console.log("실패");
     },
   });
-
 
   //post
   function uploadComment(uploadData: UploadDataType) {
@@ -100,12 +98,12 @@ export default function UserComment(props: CommentPropsType) {
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
       <form>
-      <CommentWrite getUploadData={getUploadData} />
-      <AddWrapper>
-        <div></div>
+        <CommentWrite getUploadData={getUploadData} />
+        <AddWrapper>
+          <div></div>
 
-        <AddCommentIcon onClick={()=>uploadComment(uploadData)} />
-      </AddWrapper>                                  
+          <AddCommentIcon onClick={() => uploadComment(uploadData)} />
+        </AddWrapper>
       </form>
       {comments &&
         comments.map((data, index) => {
