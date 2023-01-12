@@ -1,29 +1,49 @@
+import { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
+import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
 interface propsType {
   ref: React.RefObject<HTMLDivElement>;
 }
 
-export default function UploadButtonModal(props: propsType): JSX.Element {
-  const { ref } = props;
+export default function UploadButtonModal() {
+  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  function clickOutside(){
+    setOpenModal(false)
+  }
+
+  function clickVocalSearching(){
+    
+  }
+
+  function clickPortfolio(){
+
+  }
 
   return (
 
-    <ModalBg>
-      <UploadButtonModalWrapper ref={ref}>
+    <ModalBg onClick={clickOutside}>
+      <UploadButtonModalWrapper>
         <VocalSearchingWrapper>
           <VocalSearchingIcon />
-          <TextWrapper marginTop={2.1}>
+          <TextWrapper marginTop={2.5}>
+            <div onClick={clickVocalSearching}>
             <VocalSearchingTextIc />
             <Explain>보컬이 필요한 스케치곡</Explain>
+            </div>
           </TextWrapper>
         </VocalSearchingWrapper>
         <PortfolioWrapper>
           <PortfolioIcon />
-          <TextWrapper marginTop={10.2}>
+          <TextWrapper marginTop={10.7}>
+          <div onClick={clickPortfolio}>
             <PortfolioTextIc />
             <Explain>감각을 보여줄 수 있는 작업물</Explain>
+            </div>
           </TextWrapper>
         </PortfolioWrapper>
 
@@ -38,6 +58,7 @@ const ModalBg = styled.section`
   width: 100vw;
 
   position: fixed;
+  z-index: 10000;
   top: 0;
   bottom: 0;
   right: 0;
