@@ -66,12 +66,6 @@ export default function UploadInfo() {
     // console.dir(dropBoxRef.current);
   }
 
-  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
-      addHastag();
-    }
-  }
-
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
     setHiddenDropBox((prev) => !prev);
   }
@@ -120,17 +114,6 @@ export default function UploadInfo() {
     }
   }
 
-  function addHastag() {
-    const value = enteredHashtag.current!.value;
-    if (hashtags.includes(value)) {
-      alert("중복된 해시태그 입니다!");
-    } else {
-      setHashtags([...hashtags, value]);
-    }
-    setHashtagInputWidth(8.827);
-    enteredHashtag.current!.value = "";
-  }
-
   function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
     e.type === "mouseenter" ? setWarningHoverState(true) : setWarningHoverState(false);
   }
@@ -143,9 +126,35 @@ export default function UploadInfo() {
       : setTitleHoverState(true);
   }
 
-  function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
-    if (hashtags.length < 3) addHastag();
+  function addHastag() {
+    const value = enteredHashtag.current!.value;
+    console.log(value);
+    if (hashtags.includes(value)) {
+      alert("중복된 해시태그 입니다!");
+    } else {
+      console.log("dasdf", value);
+      setHashtags([...hashtags, value]);
+    }
+    setHashtagInputWidth(8.827);
+    enteredHashtag.current!.value = "";
   }
+
+  function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
+    if (hashtags.length < 3) {
+      addHastag();
+      console.log(enteredHashtag.current!.value);
+      enteredHashtag.current!.value = "";
+    }
+  }
+
+  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      addHastag();
+      enteredHashtag.current!.value = "";
+    }
+  }
+
+  console.log(hashtags);
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = e.target.value.split("\n").length;
@@ -155,7 +164,7 @@ export default function UploadInfo() {
       setDescriptionLength(e.target.value.length);
       setDeiscription(descriptionTextarea.current!.value);
     } else {
-      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
+      enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
     }
   }
 
@@ -165,6 +174,14 @@ export default function UploadInfo() {
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputValue = e.target.value.length;
+
+    if (inputValue <= 10) {
+      setHashtagLength(e.target.value.length);
+      setHashtagInputWidth(Number(e.target.value));
+    } else {
+      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
+    }
     setHashtagLength(e.target.value.length);
     setHashtagInputWidth(Number(e.target.value));
   }
@@ -309,6 +326,8 @@ export default function UploadInfo() {
                             maxLength={10}
                             ref={enteredHashtag}
                           />
+
+                          <div style={{ width: "1" }}></div>
                         </HashtagWrapper>
                       </Hashtag>
                     </InputHashtagWrapper>
@@ -558,8 +577,10 @@ const InputHashtagWrapper = styled.div`
 
 const Hashtag = styled.div`
   height: 3.8rem;
+  /* width: ${(props) => props.hashtagInputWidth}rem; */
 
-  background-color: ${({ theme }) => theme.colors.gray5};
+  /* background-color: ${({ theme }) => theme.colors.gray5}; */
+  background-color: blue;
   border-radius: 2.1rem;
   margin-right: 1rem;
 `;
@@ -576,9 +597,12 @@ const HashtagSharp = styled.p`
 `;
 
 const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
-  width: ${(props) => props.hashtagInputWidth}rem;
+  width: 100%;
+  /* width: ${(props) => props.hashtagInputWidth}rem; */
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
+  margin-right: 0.5rem;
+  background-color: orange;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
