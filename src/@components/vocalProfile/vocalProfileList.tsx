@@ -89,14 +89,19 @@ export default function VocalProfileList(props: any) {
               {vocalPortfolioHover === index && vocalPortfolioHover !== -1 && (
                 <VocalPorfolioBlur idx={index} vocalPortfolioClickBool={vocalPortfolioClick === index} />
               )}
+              <VocalPortfolioWrapper
+                idx={index}
+                vocalPortfolioHoverBool={vocalPortfolioHover === index}
+                vocalPortfolioClickBool={vocalPortfolioClick === index}              
+              >
               <VocalPortfolioImg
-                // src={require("../../assets/image/" + vocal.jacketImage + ".png")}
-                src={require("../../assets/image/" + "vocalPortfolioList1" + ".png")}
+                src={vocal.jacketImage}
                 alt="보컬 포트폴리오이미지"
                 idx={index}
                 vocalPortfolioHoverBool={vocalPortfolioHover === index}
                 vocalPortfolioClickBool={vocalPortfolioClick === index}
               />
+              </VocalPortfolioWrapper>
             </VocalPortfolio>
           ))}
       </VocalsPortfolioWrapper>
@@ -186,7 +191,7 @@ const VocalPortfolioTitle = styled.div`
   white-space: normal;
 
   ${({ theme }) => theme.fonts.id};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.gray2};
 
   cursor: pointer;
 `;
@@ -211,8 +216,8 @@ const VocalPorfolioBlur = styled.div<{ idx: number; vocalPortfolioClickBool: boo
   position: absolute;
   z-index: 3;
 
-  width: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 32 : 16.7)}rem;
-  height: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 32 : 16.7)}rem;
+  width: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 32.2 : 16.9)}rem;
+  height: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 32.2 : 16.9)}rem;
 
   margin-top: ${({ vocalPortfolioClickBool, idx }) => (idx !== 0 && !vocalPortfolioClickBool ? -8.5 : -12)}rem;
   margin-top: ${({ vocalPortfolioClickBool, idx }) => idx !== 0 && vocalPortfolioClickBool && -8.5}rem;
@@ -225,16 +230,19 @@ const VocalPorfolioBlur = styled.div<{ idx: number; vocalPortfolioClickBool: boo
   backdrop-filter: blur(2rem);
 `;
 
-const VocalPortfolioImg = styled.img<{
+const VocalPortfolioWrapper=styled.div<{
   idx: number;
   vocalPortfolioHoverBool: boolean;
   vocalPortfolioClickBool: boolean;
 }>`
+  display: inline-block;
+
+  overflow: hidden;
   width: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 32 : 16.7)}rem;
   height: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 32 : 16.7)}rem;
   border-radius: 3rem;
 
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 
   margin-bottom: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 12 : 8.5)}rem;
   margin-top: ${({ vocalPortfolioClickBool, idx }) => idx !== 0 && vocalPortfolioClickBool && 3.5}rem;
@@ -242,6 +250,26 @@ const VocalPortfolioImg = styled.img<{
   box-shadow: 0 0 4rem
     ${({ vocalPortfolioHoverBool, vocalPortfolioClickBool, theme }) =>
       vocalPortfolioHoverBool && !vocalPortfolioClickBool && theme.colors.sub2};
+`
+
+const VocalPortfolioImg = styled.img<{
+  idx: number;
+  vocalPortfolioHoverBool: boolean;
+  vocalPortfolioClickBool: boolean;
+}>`
+  border-radius: 3rem;
+
+  transform: rotate(45deg);
+  object-fit:cover;
+
+  position: relative;
+  width: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 150 : 135)}%;
+  height: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 150 : 135)}%;
+  bottom: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 9 : 3)}rem;
+  right: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 9 : 3)}rem;
+
+  margin-bottom: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 12 : 8.5)}rem;
+  margin-top: ${({ vocalPortfolioClickBool, idx }) => idx !== 0 && vocalPortfolioClickBool && 3.5}rem;
 
   opacity: ${({ vocalPortfolioHoverBool, vocalPortfolioClickBool }) =>
     !vocalPortfolioHoverBool && !vocalPortfolioClickBool && 0.2};

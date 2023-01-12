@@ -141,9 +141,9 @@ export default function ProducerProfilePage() {
 
   return (
     <>
+      {visible && <TracksProfileUploadModal />}
+      {profileData && <ProducerInfos profileData={profileData} />}
       <PageContainer>
-        {visible && <TracksProfileUploadModal />}
-        {profileData && <ProducerInfos profileData={profileData} />}
         <GradientBox src={producerGradientImg} />
         <TabContainer>
           <PortfolioTab profileState={profileState} onClick={changeToProfile}>
@@ -169,7 +169,7 @@ export default function ProducerProfilePage() {
           />
         )}
       </PageContainer>
-      <InfiniteDiv ref={targetRef}> 아아이 </InfiniteDiv>
+      <InfiniteDiv ref={targetRef}> </InfiniteDiv>
 
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
@@ -185,6 +185,8 @@ const InfiniteDiv = styled.div`
 
 const PageContainer = styled.section`
   display: flex;
+
+  margin-left: 61rem;
 `;
 
 const GradientBox = styled.img`

@@ -11,7 +11,6 @@ import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
 
-
 export default function MainPage() {
   const navigate = useNavigate();
 
@@ -40,7 +39,7 @@ export default function MainPage() {
   }
 
   return (
-    <>
+    <MainPageWrapper>
       <Header />
       <Main>
         <img src={background} alt="배경이미지" />
@@ -51,9 +50,13 @@ export default function MainPage() {
         <MainSlogan src={mainSloganImg} alt="슬로건" />
       </Main>
       <Footer />
-    </>
+    </MainPageWrapper>
   );
 }
+
+const MainPageWrapper=styled.div`
+  background-color: black;
+`
 
 const Main = styled.main`
   width: 100%;

@@ -12,8 +12,9 @@ import {
   HashtagWarningIc,
   HoverHashtagWarningIc,
   DeleteHashtagIc,
+  CheckCategoryIc,
 } from "../../assets";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
 export default function UploadInfo() {
@@ -34,6 +35,10 @@ export default function UploadInfo() {
     "Funk",
   ]);
 
+  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(category.length).fill(false));
+  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(category.length).fill(false));
+  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(category.length).fill(false));
+
   const [title, setTitle] = useRecoilState<string>(uploadTitle);
   const [description, setDeiscription] = useRecoilState<string>(uploadIntroduce);
   const [genre, setGenre] = useRecoilState<string>(uploadCategory);
@@ -44,10 +49,11 @@ export default function UploadInfo() {
   const [editFileName, setEditFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
   const [categoryState, setCategoryState] = useState<boolean>(false);
+  const [audioType, setAudioType] = useState<string>("");
 
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
-  const [textareaMargin, setTextareaMargin] = useState<number>(0.8);
+  const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
   const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(8.827);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
 
@@ -66,18 +72,13 @@ export default function UploadInfo() {
     }
   }
 
-  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
-    setGenre(e.currentTarget.innerText);
-    setCategoryState(true);
-    setHiddenDropBox(true);
-  }
-
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
     setHiddenDropBox((prev) => !prev);
   }
 
   function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    uploadName.substring(uploadName.length - 4) === ".wav" ? setAudioType(".wav") : setAudioType(".mp3");
     let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
 
     if (str.length > 14) {
@@ -93,12 +94,29 @@ export default function UploadInfo() {
     }
   }
 
+  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
+    const index = category.indexOf(e.currentTarget.innerText);
+    setGenre(e.currentTarget.innerText);
+
+    const temp = new Array(category.length).fill(false);
+    temp[index] = true;
+    setCheckState([...temp]);
+    setCheckStateIcon([...temp]);
+    setCategoryState(true);
+    setHiddenDropBox(true);
+  }
+
   function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
     const index = category.indexOf(e.currentTarget.innerText);
     if (e.type === "mouseenter") {
-      categoryRefs.current[index]!.style.color = "#ffffff";
+      const temp = new Array(category.length).fill(false);
+      temp[index] = true;
+      setCheckHoverState([...temp]);
+      // categoryRefs.current[index]!.style.color = "#ffffff";
     } else {
-      categoryRefs.current[index]!.style.color = "#535559";
+      const temp = new Array(category.length).fill(false);
+      setCheckHoverState([...temp]);
+      // categoryRefs.current[index]!.style.color = "#535559";
     }
   }
 
@@ -130,9 +148,15 @@ export default function UploadInfo() {
   }
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setTextareaHeight(e.target.value);
-    setDescriptionLength(e.target.value.length);
-    setDeiscription(descriptionTextarea.current!.value);
+    const enterCount = e.target.value.split("\n").length;
+
+    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200) {
+      setTextareaHeight(e.target.value);
+      setDescriptionLength(e.target.value.length);
+      setDeiscription(descriptionTextarea.current!.value);
+    } else {
+      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
+    }
   }
 
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -216,7 +240,7 @@ export default function UploadInfo() {
             <InputWrapper>
               <InputFileTextWrapper editFileName={editFileName}>
                 <FileName value={editFileName} isTextOverflow={isTextOverflow} disabled />
-                {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>.wav</FileAttribute>}
+                {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioType}</FileAttribute>}
                 <input
                   type="file"
                   id="wavFileUpload"
@@ -358,6 +382,8 @@ export default function UploadInfo() {
         <DropMenuWrapper>
           {category.map((text: string, index: number) => (
             <DropMenuItem
+              checkState={checkState[index]}
+              checkHoverState={checkHoverState[index]}
               onMouseEnter={hoverMenu}
               onMouseLeave={hoverMenu}
               onClick={selectCategory}
@@ -365,6 +391,7 @@ export default function UploadInfo() {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
+              {checkStateIcon[index] && <CheckCategoryIc />}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>
@@ -618,20 +645,22 @@ const DropMenuWrapper = styled.ul`
   margin: 0.8rem 0;
 `;
 
-const DropMenuItem = styled.li`
+const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState : boolean }>`
   height: 3.2rem;
-  width: 100%;
+  width: 9.3rem;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
   ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.gray3};
+  color: ${(props) =>
+    (props.checkState || props.checkHoverState) ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
+  margin: 0 1.9rem;
   cursor: pointer;
 `;
 
 const DropMenuText = styled.p`
   height: 2rem;
-  margin-left: 2rem;
 `;
 
 const WarningIcon = styled.div`

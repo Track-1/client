@@ -14,19 +14,21 @@ import {
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { UploadData } from "../../type/uploadData";
+import { currentUser } from "../../core/constants/userType";
 
 interface PropsType {
   userType: string;
-  producerUploadType: string;
+  producerUploadType: string | undefined;
 }
 
 export default function UploadHeader(props: PropsType) {
   const { userType, producerUploadType } = props;
   const navigate = useNavigate();
 
-  const jacketImageKey = userType === "producer" ? uploadTrackJacketImage : uploadVocalJacketImage;
 
-  const postData = {
+  const jacketImageKey = userType === currentUser.PRODUCER ? uploadTrackJacketImage : uploadVocalJacketImage;
+  const postData: UploadData = {
     title: useRecoilValue(uploadTitle),
     category: useRecoilValue(uploadCategory),
     wavFile: useRecoilValue(uploadWavFile),
@@ -35,15 +37,14 @@ export default function UploadHeader(props: PropsType) {
     jacketImage: useRecoilValue(jacketImageKey),
   };
 
-  const [uploadState, setUploadState] = useState<boolean>(false);
+  const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      // userType === 'producer' ? navigate("/track-search") : navigate("/mypage");
-      console.log("성공!");
+      userType === "producer" ? navigate("/track-search") : navigate("/mypage");
     },
-    onError: () => {
-      console.log("에러!!");
+    onError: (error) => {
+      console.log("에러!!", error);
     },
   });
 
@@ -60,7 +61,7 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
-    if (uploadState) {
+    if (isUploadActive) {
       mutate();
     }
   }
@@ -71,9 +72,9 @@ export default function UploadHeader(props: PropsType) {
       postData.wavFile !== null &&
       postData.keyword.length !== 0
     ) {
-      setUploadState(true);
+      setIsUploadActive(true);
     } else {
-      setUploadState(false);
+      setIsUploadActive(false);
     }
   }, [postData.title, postData.category, postData.wavFile, postData.introduce, postData.keyword]);
 
@@ -82,9 +83,9 @@ export default function UploadHeader(props: PropsType) {
       <HeaderWrapper>
         <LeftWrapper>
           <UploadBackIcon onClick={backPage} />
-          <UserClass> {producerUploadType === "Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
+          <UserClass> {producerUploadType === ":Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
         </LeftWrapper>
-        {uploadState ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
+        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
       </HeaderWrapper>
     </Container>
   );

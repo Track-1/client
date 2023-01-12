@@ -187,10 +187,10 @@ const CategoryNum = styled.span`
   position: relative;
   z-index: 1;
   border-radius: 50%;
-  font-family: "Pretendard";
-  font-weight: 400;
-  font-size: 1.6rem;
-  line-height: 180%;
+
+  ${({ theme }) => theme.fonts.description};
+
+
   padding: 0.5rem 0.6rem 0.6rem 0.4rem;
   color: ${({ theme }) => theme.colors.gray2};
   background-color: ${({ theme }) => theme.colors.gray5};

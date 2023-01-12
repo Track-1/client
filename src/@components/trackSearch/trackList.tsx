@@ -137,13 +137,13 @@ export default function TrackList(props: PropsType) {
               )}
               {play && trackClick === index && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
               <Thumbnail src={track.jacketImage} alt="썸네일" />
-              <TrackText width={36.8} onClick={() => movePostPage(track.beatId)}>
+              <TrackText width={36.8} isHover={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} onClick={() => moveProducerProfilePage(track.beatId)}>
+              <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.beatId)}>
                 {track.producerName}
               </TrackText>
-              <TrackText width={20.5}>{track.category}</TrackText>
+              <TrackText width={20.5} isHover={false}>{track.category}</TrackText>
             </TrackBox>
             {track.keyword.map((tag, idx) => (
               <Tag key={idx}>#{tag}</Tag>
@@ -172,7 +172,7 @@ const HoverPlayIcon = styled(HoverPlayIc)`
 `;
 
 const CategoryWrapper = styled.section`
-  margin: 3.6rem 0 3.5rem 9rem;
+  margin: 4.6rem 0 3.5rem 9rem;
 `;
 const TitleTextIcon = styled(TitleTextIc)``;
 
@@ -238,8 +238,13 @@ const Thumbnail = styled.img`
   border-radius: 6.55rem;
 `;
 
-const TrackText = styled.div<{ width: number }>`
+const TrackText = styled.div<{ width: number, isHover:boolean }>`
   width: ${(props) => props.width}rem;
+  ${({ theme }) => theme.fonts.body1};
+  :hover{
+    color: ${({isHover, theme})=>isHover&&theme.colors.sub1};
+    cursor: pointer;
+  }
 `;
 
 const Tag = styled.span`
@@ -250,7 +255,8 @@ const Tag = styled.span`
 
   padding: 0.9rem 1.5rem;
   margin: 0 0.8rem 0 0;
-
+  
+  ${({ theme }) => theme.fonts.body1};
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
 `;

@@ -81,6 +81,7 @@ export default function VocalProfilePage() {
     setWhom(Category.VOCALS);
   }, []);
 
+
   const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
     refetchOnWindowFocus: false,
     retry: 0,

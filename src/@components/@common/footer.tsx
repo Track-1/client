@@ -1,13 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import bannerImg from "../../assets/image/bannerImg.png";
+import {FooterTextsIc} from "../../assets"
 
 export default function Footer() {
   return (
     <FooterContainer>
       <Banner />
       <FooterTextWrap>
-        <FooterText>Conditions of Use Privacy Notice Your Ads Privacy Choices</FooterText>
-        <FooterText>ⓒ 2022 Trackone.com, Inc. or its affiliates</FooterText>
+        <FooterTextsIc/>
       </FooterTextWrap>
     </FooterContainer>
   );
@@ -16,6 +16,8 @@ export default function Footer() {
 const FooterContainer = styled.footer`
   width: 100%;
   height: 23rem;
+
+  background-color: black;
 `;
 
 const LinearFlow = keyframes`
@@ -26,8 +28,9 @@ const LinearFlow = keyframes`
 
 const Banner = styled.div`
   height: 6.2rem;
+  background-color: black;
 
-  margin-top: 3.1rem;
+  /* margin-top: 3.1rem; */
   background: url(${bannerImg}) 0 center/192rem repeat-x;
   -webkit-animation: ${LinearFlow} 15s infinite linear;
   -moz-animation: ${LinearFlow} 15s infinite linear;
@@ -42,6 +45,3 @@ const FooterTextWrap = styled.div`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const FooterText = styled.p`
-  margin-bottom: 1rem;
-`;

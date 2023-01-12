@@ -28,6 +28,10 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
+  const ellipsisModalRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const userType=useRecoilValue(UserType)
+  const [meId, setMeId]=useState<boolean>(false)
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
   useEffect(() => {

@@ -2,8 +2,9 @@ import axios from "axios";
 import PATH from "../../core/api/common/path";
 import { currentUser } from "../constants/userType";
 
-export async function UploadInfo(postData: Object, userType: string, producerUploadType: string) {
+export async function UploadInfo(postData: Object, userType: string, producerUploadType: string | undefined) {
   try {
+
     switch (userType) {
       case currentUser.PRODUCER:
         const path = producerUploadType === currentUser.PRODUCER ? `${PATH.MYPAGE}/${PATH.PRODUCER}` : `${PATH.TRACKS}`;
