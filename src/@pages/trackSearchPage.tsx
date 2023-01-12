@@ -32,28 +32,19 @@ export default function TrackSearchPage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
-  // const [tracksData, setTracksData] = useRecoilState<TracksDataType[]>(TracksData);
-
   const [duration, setCurrentDuration] = useState<number>(0);
-
   const audio = useMemo(() => new Audio(), []);
-  // const [currentAudio, setCurrentAudio] = useRecoilState<AudioTypes>(audioState);
-
   const filteredUrlApi = useRecoilValue(categorySelect);
-
-  console.log("1",filteredUrlApi)
 
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
-  // const [page, setPage] = useState<any>(1);
   const page = useRef<number>(1);
-  const [urlfiltering, setUrlfiltering]=useState<string>(filteredUrlApi)
 
   useEffect(()=>{
     console.log(tracksData)
-    console.log("페이지", page.current)
+    console.log(page.current)
   },[tracksData])
 
   useEffect(()=>{
@@ -65,7 +56,6 @@ export default function TrackSearchPage() {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-      console.log("2",filteredUrlApi)
       if (data?.status === 200&&page.current===2) {
         setTracksData(data?.data.data.trackList);
       }
@@ -76,10 +66,6 @@ export default function TrackSearchPage() {
   });
 
   const fetch = useCallback(async (filteredUrlApi: string) => {
-    console.log("3",filteredUrlApi)
-
-    // console.log("dfdafdsafdsfdsafs")
-    console.log("6",`${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page.current}&limit=6${filteredUrlApi}`)
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page.current}&limit=6${filteredUrlApi}`,
@@ -89,10 +75,8 @@ export default function TrackSearchPage() {
           },
         },
       );
-      console.log("아니아니",tracksData)
 
       setTracksData(prev=>[...prev, ...data?.data?.trackList]);
-
       setHasNextPage(data?.data.trackList.length === 6);
       if (data?.data.trackList.length) {
         page.current += 1;
@@ -103,14 +87,12 @@ export default function TrackSearchPage() {
   }, []);
 
   useEffect(() => {
-    // if (!targetRef.current || !hasNextPage) return;
     console.log("4",filteredUrlApi)
 
     const io = new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
         console.log("5",filteredUrlApi)
 
-     //   fetch();
         fetch(filteredUrlApi);
       }
     });
