@@ -66,12 +66,6 @@ export default function UploadInfo() {
     // console.dir(dropBoxRef.current);
   }
 
-  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && enteredHashtag.current!.value !== "") {
-      addHastag();
-    }
-  }
-
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
     setHiddenDropBox((prev) => !prev);
   }
@@ -112,23 +106,10 @@ export default function UploadInfo() {
       const temp = new Array(category.length).fill(false);
       temp[index] = true;
       setCheckHoverState([...temp]);
-      // categoryRefs.current[index]!.style.color = "#ffffff";
     } else {
       const temp = new Array(category.length).fill(false);
       setCheckHoverState([...temp]);
-      // categoryRefs.current[index]!.style.color = "#535559";
     }
-  }
-
-  function addHastag() {
-    const value = enteredHashtag.current!.value;
-    if (hashtags.includes(value)) {
-      alert("중복된 해시태그 입니다!");
-    } else {
-      setHashtags([...hashtags, value]);
-    }
-    setHashtagInputWidth(8.827);
-    enteredHashtag.current!.value = "";
   }
 
   function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
@@ -143,8 +124,24 @@ export default function UploadInfo() {
       : setTitleHoverState(true);
   }
 
+  function addHastag() {
+    const value = enteredHashtag.current!.value;
+    hashtags.includes(value) ? alert("중복된 해시태그 입니다!") : setHashtags([...hashtags, value]);
+    enteredHashtag.current!.value = "";
+  }
+
   function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
-    if (hashtags.length < 3) addHastag();
+    if (hashtags.length < 3) {
+      addHastag();
+      enteredHashtag.current!.value = "";
+    }
+  }
+
+  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      addHastag();
+      enteredHashtag.current!.value = "";
+    }
   }
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -165,6 +162,14 @@ export default function UploadInfo() {
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputValue = e.target.value.length;
+
+    if (inputValue <= 10) {
+      setHashtagLength(e.target.value.length);
+      setHashtagInputWidth(Number(e.target.value));
+    } else {
+      enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
+    }
     setHashtagLength(e.target.value.length);
     setHashtagInputWidth(Number(e.target.value));
   }
@@ -190,6 +195,7 @@ export default function UploadInfo() {
         if (enteredHashtag && enteredHashtag.current) {
           enteredHashtag.current.style.width = "0rem";
           const inputWidth = enteredHashtag.current.scrollWidth;
+          console.log(inputWidth);
           enteredHashtag.current.style.width = inputWidth / 10 + "rem";
           setHashtagInputWidth(inputWidth);
         }
@@ -300,6 +306,7 @@ export default function UploadInfo() {
                           <HashtagSharp># </HashtagSharp>
                           <HashtagInput
                             placeholder="Hashtag"
+                            type="text"
                             defaultValue=""
                             onKeyDown={completeHashtag}
                             onChange={changeHashtagText}
@@ -307,6 +314,8 @@ export default function UploadInfo() {
                             maxLength={10}
                             ref={enteredHashtag}
                           />
+
+                          <div style={{ width: "1" }}></div>
                         </HashtagWrapper>
                       </Hashtag>
                     </InputHashtagWrapper>
@@ -577,6 +586,7 @@ const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
   width: ${(props) => props.hashtagInputWidth}rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
+  margin-right: 0.5rem;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
@@ -613,8 +623,9 @@ const WarningTextWrapper = styled.div`
   width: 47.2rem;
 
   position: absolute;
-  top: 47.6rem;
-  left: 41.9rem;
+
+  top: 61.2rem;
+  left: 128.4rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -645,7 +656,7 @@ const DropMenuWrapper = styled.ul`
   margin: 0.8rem 0;
 `;
 
-const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState : boolean }>`
+const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState: boolean }>`
   height: 3.2rem;
   width: 9.3rem;
 
@@ -654,7 +665,7 @@ const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState : boolean 
   align-items: center;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${(props) =>
-    (props.checkState || props.checkHoverState) ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
+    props.checkState || props.checkHoverState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
   margin: 0 1.9rem;
   cursor: pointer;
 `;
