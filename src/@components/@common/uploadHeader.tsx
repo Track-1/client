@@ -11,11 +11,12 @@ import {
   uploadVocalJacketImage,
   uploadWavFile,
 } from "../../recoil/upload";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { UploadData } from "../../type/uploadData";
 import { currentUser } from "../../core/constants/userType";
+import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
 interface PropsType {
   userType: string;
@@ -25,7 +26,7 @@ interface PropsType {
 export default function UploadHeader(props: PropsType) {
   const { userType, producerUploadType } = props;
   const navigate = useNavigate();
-
+  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
 
   const jacketImageKey = userType === currentUser.PRODUCER ? uploadTrackJacketImage : uploadVocalJacketImage;
   const postData: UploadData = {
@@ -61,6 +62,7 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
+    setOpenModal(false)
     if (isUploadActive) {
       mutate();
     }
@@ -83,7 +85,7 @@ export default function UploadHeader(props: PropsType) {
       <HeaderWrapper>
         <LeftWrapper>
           <UploadBackIcon onClick={backPage} />
-          <UserClass> {producerUploadType === ":Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
+          <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
         {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
       </HeaderWrapper>

@@ -5,31 +5,42 @@ import { useNavigate } from "react-router-dom";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
-interface propsType {
-  ref: React.RefObject<HTMLDivElement>;
-}
-
 export default function UploadButtonModal() {
   const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  function clickOutside() {
-    setOpenModal(false);
-  }
-
   function moveVocalSearching() {
-    navigate("/upload/Portfolio", { state: "Portfolio" });
+    navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
   }
 
   function movePortfolio() {
-    navigate("/upload/VocalSearching", { state: "VocalSearching" });
+    navigate("/upload/Portfoilo", { state: "Portfoilo" });
   }
 
+  function isClickedOutside(e: MouseEvent) {
+    return openModal && !modalRef.current?.contains(e.target as Node);
+  }
+
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setOpenModal(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openModal]);
+
+  console.log(openModal)
+
   return (
-    <ModalBg onClick={clickOutside}>
-      <UploadButtonModalWrapper>
+    <ModalBg>
+      <UploadButtonModalWrapper ref={modalRef}>
         <VocalSearchingWrapper>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
@@ -48,7 +59,6 @@ export default function UploadButtonModal() {
             </div>
           </TextWrapper>
         </PortfolioWrapper>
-
         <UnionIc />
       </UploadButtonModalWrapper>
     </ModalBg>
@@ -70,15 +80,15 @@ const ModalBg = styled.section`
 `;
 const UploadButtonModalWrapper = styled.section`
   position: sticky;
-  /* z-index: 15; */
 
   margin-top: 75.5rem;
   margin-left: 34.2rem;
+
+  pointer-events: none;
 `;
 
 const VocalSearchingWrapper = styled.article`
   position: fixed;
-  /* z-index: 16; */
 
   display: flex;
 `;
@@ -90,7 +100,6 @@ const VocalSearchingIcon = styled(VocalSearchingIc)`
 
 const PortfolioWrapper = styled.article`
   position: fixed;
-  /* z-index: 16; */
 
   display: flex;
 `;
@@ -103,6 +112,10 @@ const PortfolioIcon = styled(PortfolioIc)`
 const TextWrapper = styled.div<{ marginTop: number }>`
   margin-left: 1.4rem;
   margin-top: ${({ marginTop }) => marginTop}rem;
+
+  pointer-events: auto;
+
+  cursor: pointer;
 `;
 
 const Title = styled.h1`

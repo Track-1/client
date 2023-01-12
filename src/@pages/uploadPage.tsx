@@ -7,8 +7,7 @@ import { useParams } from "react-router-dom";
 
 export default function UploadPage() {
   const userType = useRecoilValue(UserType);
-  const producerUploadState = useParams().uploadType;
-  const producerUploadType = producerUploadState?.toString();
+  const {producerUploadType}=useParams();
 
 
   return (
