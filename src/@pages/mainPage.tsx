@@ -39,7 +39,7 @@ export default function MainPage() {
   }
 
   return (
-    <>
+    <MainPageWrapper>
       <Header />
       <Main>
         <img src={background} alt="배경이미지" />
@@ -50,9 +50,13 @@ export default function MainPage() {
         <MainSlogan src={mainSloganImg} alt="슬로건" />
       </Main>
       <Footer />
-    </>
+    </MainPageWrapper>
   );
 }
+
+const MainPageWrapper=styled.div`
+  background-color: black;
+`
 
 const Main = styled.main`
   width: 100%;

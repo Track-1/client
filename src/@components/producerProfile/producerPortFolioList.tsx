@@ -33,8 +33,8 @@ export default function ProducerPortFolioList(props: PropsType) {
     setHoveredIndex(id);
   }
 
-  function hoverOutPortfolio() {
-    setHoveredIndex(-1);
+  function hoverOutPortfolio(id: number) {
+    id !== clickedIndex && setHoveredIndex(-1);
   }
   // function clickPauseIc(id: number) {
   //   setPlay(true);
@@ -85,7 +85,7 @@ export default function ProducerPortFolioList(props: PropsType) {
             key={portfolio.id}
             isLarge={index === 0 || clickedIndex === index}
               onMouseEnter={() => hoverPortfolio(index)}
-              onMouseLeave={hoverOutPortfolio}
+              onMouseLeave={() => hoverOutPortfolio(index)}
               index={index}
               profileState={profileState}
               producerPortfolioClickBool={clickedIndex === index}>

@@ -13,11 +13,12 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
-        <Route path="/vocals" element={<VocalsPage />} />
+        <Route path="/vocal-search" element={<VocalsPage />} />
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
         <Route path="/producer-profile" element={<ProducerProfilePage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
-        <Route path="/upload" element={<UploadPage />} />
+        {/* <Route path="/upload" element={<UploadPage />} /> */}
+        <Route path="/upload/:uploadType" element={<UploadPage />} />
       </Routes>
     </BrowserRouter>
   );

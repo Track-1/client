@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
 import { uploadVocalJacketImage } from "../../recoil/upload";
 import { useRecoilState } from "recoil";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
+import { FileChangeIc } from "../../assets";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
   const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File>(uploadVocalJacketImage);
+  const [isHover, setIsHover] = useState<boolean>(false);
+
+  function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
+    if (vocalUploadImg !== VocalUploadDefaultImg) {
+      e.type === "mouseenter" ? setIsHover(true) : setIsHover(false);
+    }
+  }
 
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) {
@@ -45,9 +53,12 @@ export default function VocalUpload() {
     <Container>
       <SectionWrapper>
         <VocalImageBox>
-          <VocalImageFrame>
+          <VocalImageFrame onMouseEnter={setHover} onMouseLeave={setHover}>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" />
+              <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
+            </label>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
             </label>
           </VocalImageFrame>
         </VocalImageBox>
@@ -104,10 +115,29 @@ const VocalImageFrame = styled.div`
   object-fit: cover;
 `;
 
-const VocalUploadImage = styled.img`
+const VocalUploadImage = styled.img<{ isHover: boolean }>`
   width: 59.8rem;
   height: 59.8rem;
   transform: rotate(-45deg);
   margin-left: -7.4rem;
   margin-top: -7.4rem;
+  object-fit: cover;
+  ${(props) =>
+    props.isHover
+      ? css`
+          background: rgba(30, 32, 37, 0.5);
+          filter: blur(3rem);
+        `
+      : css`
+          background: default;
+          filter: default;
+        `}
+`;
+
+const FileChangeIcon = styled(FileChangeIc)`
+  position: absolute;
+  top: 17rem;
+  left: 12rem;
+  transform: rotate(-45deg);
+  cursor: pointer;
 `;

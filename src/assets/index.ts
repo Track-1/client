@@ -117,3 +117,16 @@ export { ReactComponent as PortfolioPlayBtnIc } from "./icon/portfolioPlayBtnIc.
 export { ReactComponent as RightArrorIc } from "./icon/rightArrorIc.svg";
 export { ReactComponent as ProducerProfilePauseIc } from "./icon/producerProfilePauseIc.svg";
 export { ReactComponent as ProducerProfilePlayIc } from "./icon/producerProfilePlayIc.svg";
+
+export { ReactComponent as FileChangeIc } from "./icon/fileChangeIc.svg";
+
+export { ReactComponent as ProducerMypageIc } from "./icon/producerMypageIc.svg";
+export { ReactComponent as ProducerToggleIc } from "./icon/producerToggleIc.svg";
+export { ReactComponent as VocalMypageIc } from "./icon/vocalMypageIc.svg";
+export { ReactComponent as VocalToggleIc } from "./icon/vocalToggleIc.svg";
+export { ReactComponent as CheckCategoryIc } from "./icon/checkCategoryIc.svg";
+export { ReactComponent as TrackOneMainLogoIc } from "./icon/track1MainLogoIc.svg";
+export { ReactComponent as FooterTextsIc } from "./icon/footerTextsIc.svg";
+export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHeaderSloganNewIc.svg";
+export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
+export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";

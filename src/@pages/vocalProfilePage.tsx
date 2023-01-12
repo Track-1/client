@@ -14,6 +14,7 @@ import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
+import { UserType } from "../recoil/main";
 
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
@@ -74,11 +75,14 @@ export default function VocalProfilePage() {
 
   //end
 
+  const userType = useRecoilValue(UserType);
+
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
-  const { data } = useQuery(["state", state], () => getVocalProfile(state), {
+
+  const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
@@ -158,6 +162,7 @@ export default function VocalProfilePage() {
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
+
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
