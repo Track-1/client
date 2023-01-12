@@ -16,23 +16,22 @@ import { Category } from "../../core/common/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
 export default function CategoryList() {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  const [selectedSet, setSelectedSet]=useState<Set<number|unknown>>();
+  const [selectedSet, setSelectedSet] = useState<Set<number | unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
 
-  const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
-
-
-  function categoryClick(id:number){
+  function categoryClick(id: number) {
     setSelectedCategorys(
-      selectedCategorys.map((selectCateg)=>
-        (selectCateg.categId === id ? {...selectCateg , selected : !selectCateg.selected} : selectCateg)
-      )
-    ) 
+      selectedCategorys.map((selectCateg) =>
+        selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
+      ),
+    );
   }
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
@@ -49,7 +48,6 @@ export default function CategoryList() {
         filteredUrl += `&categ=${categ.categId}`;
       }
     });
-
 
     filteredUrl === ""
       ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
@@ -70,7 +68,7 @@ export default function CategoryList() {
   }
 
   function clickTrackSearching() {
-    setTrackSearchingClicked((prev)=>!prev);
+    setTrackSearchingClicked((prev) => !prev);
   }
 
   function searchFilterdVocals() {
@@ -108,7 +106,7 @@ export default function CategoryList() {
 
   return (
     <>
-      {openModal && <UploadButtonModal/>}
+      {openModal && <UploadButtonModal />}
       <CategoryListWrapper>
         {categorys.map((category) => (
           <CategoryTextBoxWrapper

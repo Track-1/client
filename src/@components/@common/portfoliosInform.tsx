@@ -22,16 +22,12 @@ import { profileCategory } from "../../core/constants/pageCategory";
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
 
-  const ellipsisModalRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const userType=useRecoilValue(UserType)
-  const [meId, setMeId]=useState<boolean>(false)
+  const [meId, setMeId] = useState<boolean>(false);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
   useEffect(() => {
