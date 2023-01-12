@@ -9,7 +9,7 @@ import { FileChangeIc } from "../../assets";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
-  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File>(uploadVocalJacketImage);
+  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File|FormData>(uploadVocalJacketImage);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {

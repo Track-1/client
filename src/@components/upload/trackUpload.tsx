@@ -8,7 +8,7 @@ import { FileChangeIc } from "../../assets";
 
 export default function TrackUpload() {
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
-  const [tarckJacketImage, setTrackJacketImage] = useRecoilState<File>(uploadTrackJacketImage);
+  const [tarckJacketImage, setTrackJacketImage] = useRecoilState<File | FormData>(uploadTrackJacketImage);
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
