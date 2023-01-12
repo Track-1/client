@@ -18,6 +18,7 @@ import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
 export default function UploadInfo() {
+  const titleRef = useRef<HTMLInputElement>(null);
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   const dropBoxRef = useRef<HTMLDivElement>(null);
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
@@ -157,8 +158,12 @@ export default function UploadInfo() {
   }
 
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
-    setTitleLength(e.target.value.length);
-    setTitle(e.target.value);
+    if (e.target.value.length < 37) {
+      setTitleLength(e.target.value.length);
+      setTitle(e.target.value);
+    } else {
+      titleRef.current!.value = titleRef.current!.value.slice(0, -1);
+    }
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -227,7 +232,8 @@ export default function UploadInfo() {
         maxLength={36}
         onChange={changeTitleText}
         onFocus={hoverTitle}
-        onBlur={hoverTitle}></TitleInput>
+        onBlur={hoverTitle}
+        ref={titleRef}></TitleInput>
       <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
       <TextCount font={"body"} textareaMargin={textareaMargin}>
