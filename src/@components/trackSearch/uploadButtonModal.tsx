@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
 
 interface propsType {
@@ -7,19 +8,27 @@ interface propsType {
 
 export default function UploadButtonModal(props: propsType): JSX.Element {
   const { ref } = props;
+  const navigate = useNavigate();
+
+  function moveVocalSearching() {
+    navigate("/upload/Portfolio", { state: "Portfolio" });
+  }
+
+  function movePortfolio() {
+    navigate("/upload/VocalSearching", { state: "VocalSearching" });
+  }
 
   return (
-
     <ModalBg>
       <UploadButtonModalWrapper ref={ref}>
-        <VocalSearchingWrapper>
+        <VocalSearchingWrapper onClick={moveVocalSearching}>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.1}>
             <VocalSearchingTextIc />
             <Explain>보컬이 필요한 스케치곡</Explain>
           </TextWrapper>
         </VocalSearchingWrapper>
-        <PortfolioWrapper>
+        <PortfolioWrapper onClick={movePortfolio}>
           <PortfolioIcon />
           <TextWrapper marginTop={10.2}>
             <PortfolioTextIc />

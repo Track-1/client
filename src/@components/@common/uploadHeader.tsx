@@ -14,10 +14,11 @@ import {
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { UploadData } from "../../type/uploadData";
 
 interface UploadHeaderType {
   userType: string;
-  producerUploadType: string;
+  producerUploadType: string | undefined;
 }
 
 export default function UploadHeader(props: UploadHeaderType) {
@@ -26,7 +27,7 @@ export default function UploadHeader(props: UploadHeaderType) {
 
   const jacketImageKey = userType === "producer" ? uploadTrackJacketImage : uploadVocalJacketImage;
 
-  const postData = {
+  const postData: UploadData = {
     title: useRecoilValue(uploadTitle),
     category: useRecoilValue(uploadCategory),
     wavFile: useRecoilValue(uploadWavFile),
@@ -39,11 +40,10 @@ export default function UploadHeader(props: UploadHeaderType) {
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      // userType === 'producer' ? navigate("/track-search") : navigate("/mypage");
-      console.log("성공!");
+      userType === "producer" ? navigate("/track-search") : navigate("/mypage");
     },
-    onError: () => {
-      console.log("에러!!");
+    onError: (error) => {
+      console.log("에러!!", error);
     },
   });
 
@@ -82,7 +82,7 @@ export default function UploadHeader(props: UploadHeaderType) {
       <HeaderWrapper>
         <LeftWrapper>
           <UploadBackIcon onClick={backPage} />
-          <UserClass> {producerUploadType === "Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
+          <UserClass> {producerUploadType === ":Portfolio" ? "Portfolio" : "Vocal Searching"}</UserClass>
         </LeftWrapper>
         {uploadState ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
       </HeaderWrapper>

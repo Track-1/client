@@ -28,26 +28,27 @@ export default function VocalProfilePage() {
 
   const audio = useMemo(() => new Audio(), []);
 
-  const {state}=useLocation()
+  const { state } = useLocation()
+  console.log(state);
 
   const userType=useRecoilValue(UserType)
-  
+
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
   const { data } = useQuery(["state",state,userType], ()=>getVocalProfile(state,userType)
   , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
+    refetchOnWindowFocus: false,
+    retry: 0,
     onSuccess: data => {
       if (data?.status === 200) {
         console.log(data);
         console.log("성공");
         setIsMe(data?.data.data.isMe);
         setProfileData(data?.data.data.vocalProfile);
-        setPortfolioData(data?.data.data.vocalPortfolio);  
-      }    
+        setPortfolioData(data?.data.data.vocalPortfolio);
+      }
     },
     onError: error => {
       console.log("실패");
