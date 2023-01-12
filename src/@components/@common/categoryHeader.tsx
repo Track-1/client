@@ -20,12 +20,12 @@ export default function CategoryHeader() {
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
 
-  function clickTracksButton() {
+  function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
   }
 
-  function clickVocalsButton() {
+  function moveVocalSearchPage() {
     setTracksOrVocals(Category.VOCALS);
     navigate("/vocal-search");
   }
@@ -40,14 +40,14 @@ export default function CategoryHeader() {
         <CategoryWrapper>
           {tracksOrVocals === Category.TRACKS && (
             <>
-              <TracksSelectTextIcon onClick={clickTracksButton} />
-              <VocalsHeaderTextIcon onClick={clickVocalsButton} />
+              <TracksSelectTextIcon onClick={moveTrackSearchPage} />
+              <VocalsHeaderTextIcon onClick={moveVocalSearchPage} />
             </>
           )}
           {tracksOrVocals === Category.VOCALS && (
             <>
-              <TracksHeaderTextIcon onClick={clickTracksButton} />
-              <VocalsSelectTextIcon onClick={clickVocalsButton} />
+              <TracksHeaderTextIcon onClick={moveTrackSearchPage} />
+              <VocalsSelectTextIcon onClick={moveVocalSearchPage} />
             </>
           )}
         </CategoryWrapper>

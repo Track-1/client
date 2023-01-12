@@ -5,6 +5,7 @@ import EachUseComment from "./eachUserComment";
 // import comments from "../../core/trackPost/userComments";
 import { useCallback, useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
+
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
@@ -20,6 +21,7 @@ interface CommentPropsType {
 
 export default function UserComment(props: CommentPropsType) {
   const { closeComment, beatId } = props;
+
   const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [comments, setComments] = useState<UserCommentType[]>();
   const [uploadData, setUploadData] = useState<UploadDataType>({
