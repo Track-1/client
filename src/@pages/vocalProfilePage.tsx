@@ -137,10 +137,10 @@ export default function VocalProfilePage() {
   }
 
   return (
-    <>
+    <Wrap>
       {visible && <TracksProfileUploadModalSection />}
+      <VocalProfile>보컬프로필 부분넣어주세요</VocalProfile>
       <VocalProfilePageWrapper>
-        <VocalProfile>보컬프로필 부분넣어주세요</VocalProfile>
         <VocalProfileWrapper>
           {portfolioData && (
             <VocalProfileList
@@ -151,26 +151,29 @@ export default function VocalProfilePage() {
               pauseAudio={pauseAudio}
               duration={duration}
               getDuration={getDuration}
+              infiniteRef={targetRef}
             />
           )}
           <VocalProfileShadow />
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
-      <InfiniteDiv ref={targetRef}> 아아이 </InfiniteDiv>
-{/* //ref 바꿀 예정 */}
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
-    </>
+    </Wrap>
   );
 }
 
 // infinite
-const InfiniteDiv = styled.div`
-  width: 100%;
-  height: 1rem;
-  background-color: red;
+// const InfiniteDiv = styled.div`
+//   width: 100%;
+//   height: 6rem;
+//   background-color: pink;
+// `;
+
+const Wrap = styled.div`
+  display: flex;
 `;
 
 const TracksProfileUploadModalSection = styled(TracksProfileUploadModal)`

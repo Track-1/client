@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import vocals from "../../mocks/vocalProfileDummy.json";
@@ -11,7 +11,7 @@ import { VocalProfileType, VocalPortfolioType } from "../../type/vocalProfile";
 import Player from "../@common/player";
 
 export default function VocalProfileList(props: any) {
-  const { audio, isMe, portfolioData, playAudio, pauseAudio, duration, getDuration } = props;
+  const { audio, isMe, portfolioData, playAudio, pauseAudio, duration, getDuration, infiniteRef } = props;
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   // const [vocalPortfolioData, setVocalPortfolioData] = useState<VocalPortfolioType[]>();
@@ -99,8 +99,8 @@ export default function VocalProfileList(props: any) {
               />
             </VocalPortfolio>
           ))}
+        <InfiniteDiv ref={infiniteRef}> </InfiniteDiv>
       </VocalsPortfolioWrapper>
-
       <VocalsBoxWrapper>
         <VocalsBoxBody vocalPortfolioCount={vocalPortfolioCount}></VocalsBoxBody>
         <VocalsBoxHead></VocalsBoxHead>
@@ -118,12 +118,17 @@ export default function VocalProfileList(props: any) {
     </VocalProfileListWrapper>
   );
 }
+const InfiniteDiv = styled.div`
+  width: 100%;
+  height: 1rem;
+`;
 
 const VocalProfileListWrapper = styled.section`
   position: absolute;
   z-index: 5;
 
   width: 132rem;
+  height: 100%;
 `;
 
 const VocalsBoxWrapper = styled.section``;
