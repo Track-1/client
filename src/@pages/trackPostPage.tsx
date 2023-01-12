@@ -40,7 +40,7 @@ export default function TrackPostPage() {
   const navigate = useNavigate();
 
   const [isMe, setIsMe] = useState<boolean>(false);
-  const [isEnd, setIsEnd] = useState<boolean>(true);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -124,6 +124,14 @@ export default function TrackPostPage() {
     navigate(-1);
   }
 
+  function endmyTrack() {
+    setIsEnd(true);
+  }
+
+  function notEndmyTrack() {
+    setIsEnd(false);
+  }
+
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -159,8 +167,10 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {/* / {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)} */}
-                {trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+                {trackInfoData.isMe &&
+                  (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
+                {/* 아래코드의 trackInfoData.isMe가 ! 여야함. */}
+                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon onClick={src}/>)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
