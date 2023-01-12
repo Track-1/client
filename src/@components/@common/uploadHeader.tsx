@@ -10,8 +10,9 @@ import {
   uploadTrackJacketImage,
   uploadVocalJacketImage,
   uploadWavFile,
+  defaultImageState,
 } from "../../recoil/upload";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { UploadData } from "../../type/uploadData";
@@ -25,23 +26,43 @@ interface PropsType {
 
 export default function UploadHeader(props: PropsType) {
   const { userType, producerUploadType } = props;
+  const jacketImageKey = userType === currentUser.PRODUCER ? uploadTrackJacketImage : uploadVocalJacketImage;
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
+  const [image, setImage] = useRecoilState(jacketImageKey);
 
-  const jacketImageKey = userType === currentUser.PRODUCER ? uploadTrackJacketImage : uploadVocalJacketImage;
+  let formdata = new FormData();
+  formdata.append("defaultImage", image);
+
   const postData: UploadData = {
     title: useRecoilValue(uploadTitle),
     category: useRecoilValue(uploadCategory),
     wavFile: useRecoilValue(uploadWavFile),
     introduce: useRecoilValue(uploadIntroduce),
     keyword: useRecoilValue(uploadKeyword),
-    jacketImage: useRecoilValue(jacketImageKey),
+    jacketImage: useRecoilValue(defaultImageState) ? formdata : image,
   };
+
+  const resetTitle = useResetRecoilState(uploadTitle);
+  const resetCategory = useResetRecoilState(uploadCategory);
+  const resetWavFile = useResetRecoilState(uploadWavFile);
+  const resetIntroduce = useResetRecoilState(uploadIntroduce);
+  const resetKeyword = useResetRecoilState(uploadKeyword);
+  const resetJacketImage = useResetRecoilState(jacketImageKey);
+  const resetDefaultState = useResetRecoilState(defaultImageState);
 
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
+      console.log(postData);
+      resetTitle();
+      resetCategory();
+      resetWavFile();
+      resetIntroduce();
+      resetKeyword();
+      resetJacketImage();
+      resetDefaultState();
       userType === "producer" ? navigate("/track-search") : navigate("/mypage");
     },
     onError: (error) => {
@@ -62,7 +83,7 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
-    setOpenModal(false)
+    setOpenModal(false);
     if (isUploadActive) {
       mutate();
     }

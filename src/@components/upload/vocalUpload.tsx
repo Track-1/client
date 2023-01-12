@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
-import { uploadVocalJacketImage } from "../../recoil/upload";
+import { uploadVocalJacketImage, defaultImageState } from "../../recoil/upload";
 import { useRecoilState } from "recoil";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
@@ -9,7 +9,8 @@ import { FileChangeIc } from "../../assets";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
-  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File|FormData>(uploadVocalJacketImage);
+  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File | Blob>(uploadVocalJacketImage);
+  const [defaultstate, setDefaultState] = useRecoilState<boolean>(defaultImageState);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
@@ -31,6 +32,7 @@ export default function VocalUpload() {
       const fileUrl = URL.createObjectURL(e.target.files[0]);
       setVocalUploadImg(fileUrl);
       setVocalJacketImage(e.target.files[0]);
+      setDefaultState(false);
     }
   }
 
