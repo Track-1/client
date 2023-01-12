@@ -15,16 +15,8 @@ export default function UploadButtonModal() {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  function clickOutside(){
-    setOpenModal(false)
-  }
-
-  function clickVocalSearching(){
-    
-  }
-
-  function clickPortfolio(){
-
+  function clickOutside() {
+    setOpenModal(false);
   }
 
   function moveVocalSearching() {
@@ -38,21 +30,21 @@ export default function UploadButtonModal() {
   return (
     <ModalBg onClick={clickOutside}>
       <UploadButtonModalWrapper>
-        <VocalSearchingWrapper onClick={moveVocalSearching}>
+        <VocalSearchingWrapper>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
-            <div onClick={clickVocalSearching}>
-            <VocalSearchingTextIc />
-            <Explain>보컬이 필요한 스케치곡</Explain>
+            <div onClick={moveVocalSearching}>
+              <VocalSearchingTextIc />
+              <Explain>보컬이 필요한 스케치곡</Explain>
             </div>
           </TextWrapper>
         </VocalSearchingWrapper>
-        <PortfolioWrapper onClick={movePortfolio}>
+        <PortfolioWrapper>
           <PortfolioIcon />
           <TextWrapper marginTop={10.7}>
-          <div onClick={clickPortfolio}>
-            <PortfolioTextIc />
-            <Explain>감각을 보여줄 수 있는 작업물</Explain>
+            <div onClick={movePortfolio}>
+              <PortfolioTextIc />
+              <Explain>감각을 보여줄 수 있는 작업물</Explain>
             </div>
           </TextWrapper>
         </PortfolioWrapper>
