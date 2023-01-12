@@ -19,7 +19,6 @@ import { isClickedOutside } from "../../utils/common/modal";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
 
-
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
 
@@ -34,7 +33,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const userType=useRecoilValue(UserType)
   const [meId, setMeId]=useState<boolean>(false)
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
-
 
   useEffect(() => {
     function closeModal(e: MouseEvent) {
@@ -54,7 +52,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   function clickUploadButton() {
     isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
     isVocalsPage(tracksOrVocals) && navigate("/upload-vocal");
-
   }
 
   function checkIsVocalSearching() {
@@ -90,7 +87,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isMe && isHoveredNClicked() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkIsTitle() && (
                 <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
-
               )}
             </InformTitleWrapper>
             <InformTitle>{portfolios[hoverId].title}</InformTitle>
