@@ -190,6 +190,7 @@ export default function UploadInfo() {
         if (enteredHashtag && enteredHashtag.current) {
           enteredHashtag.current.style.width = "0rem";
           const inputWidth = enteredHashtag.current.scrollWidth;
+          console.log(inputWidth);
           enteredHashtag.current.style.width = inputWidth / 10 + "rem";
           setHashtagInputWidth(inputWidth);
         }
@@ -300,6 +301,7 @@ export default function UploadInfo() {
                           <HashtagSharp># </HashtagSharp>
                           <HashtagInput
                             placeholder="Hashtag"
+                            type="text"
                             defaultValue=""
                             onKeyDown={completeHashtag}
                             onChange={changeHashtagText}
@@ -613,8 +615,9 @@ const WarningTextWrapper = styled.div`
   width: 47.2rem;
 
   position: absolute;
-  top: 47.6rem;
-  left: 41.9rem;
+
+  top: 61.2rem;
+  left: 128.4rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -645,7 +648,7 @@ const DropMenuWrapper = styled.ul`
   margin: 0.8rem 0;
 `;
 
-const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState : boolean }>`
+const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState: boolean }>`
   height: 3.2rem;
   width: 9.3rem;
 
@@ -654,7 +657,7 @@ const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState : boolean 
   align-items: center;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${(props) =>
-    (props.checkState || props.checkHoverState) ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
+    props.checkState || props.checkHoverState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
   margin: 0 1.9rem;
   cursor: pointer;
 `;
