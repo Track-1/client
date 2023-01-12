@@ -159,8 +159,8 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+                {/* / {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)} */}
+                {trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}

@@ -27,7 +27,7 @@ const DropDownContainer = styled.ul`
 
   border-radius: 0.5rem;
 
-  margin-left: 32rem;
+  margin-left: 25rem;
 `;
 
 const EditWrapper = styled.li`
