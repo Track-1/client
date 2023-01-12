@@ -12,11 +12,11 @@ export default function UploadButtonModal() {
   const modalRef = useRef<HTMLDivElement>(null);
 
   function moveVocalSearching() {
-    navigate("/upload/Portfolio", { state: "Portfolio" });
+    navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
   }
 
   function movePortfolio() {
-    navigate("/upload/VocalSearching", { state: "VocalSearching" });
+    navigate("/upload/Portfoilo", { state: "Portfoilo" });
   }
 
   function isClickedOutside(e: MouseEvent) {
