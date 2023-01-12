@@ -36,13 +36,19 @@ export default function VocalProfilePage() {
   const page = useRef<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
+  const userType = useRecoilValue(UserType);
+
   const fetch = useCallback(async () => {
+    const accessToken =
+    userType === "producer"
+      ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
+      : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       );
@@ -75,7 +81,6 @@ export default function VocalProfilePage() {
 
   //end
 
-  const userType = useRecoilValue(UserType);
 
   useEffect(() => {
     setWhom(Category.VOCALS);
@@ -87,8 +92,6 @@ export default function VocalProfilePage() {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        console.log(data);
-        console.log("성공");
         setIsMe(data?.data.data.isMe);
         setProfileData(data?.data.data.vocalProfile);
         setPortfolioData(data?.data.data.vocalPortfolio);
@@ -98,6 +101,10 @@ export default function VocalProfilePage() {
       console.log("실패");
     },
   });
+
+  // useEffect(()=>{
+  //   console.log("isMe입력", isMe)
+  // },[isMe])
 
   function playAudio() {
     audio.play();
