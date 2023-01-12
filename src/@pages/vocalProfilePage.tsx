@@ -76,15 +76,16 @@ export default function VocalProfilePage() {
   //end
 
   const userType=useRecoilValue(UserType)
-  
+
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
-  const { data } = useQuery(["state", state], () => getVocalProfile(state), {
+  const { data } = useQuery(["state",state,userType], ()=>getVocalProfile(state,userType)
+  , {
     refetchOnWindowFocus: false,
     retry: 0,
-    onSuccess: (data) => {
+    onSuccess: data => {
 
       if (data?.status === 200) {
         console.log(data);

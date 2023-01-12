@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
@@ -9,6 +10,8 @@ interface propsType {
 }
 
 export default function UploadButtonModal() {
+  const navigate = useNavigate();
+
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -24,11 +27,18 @@ export default function UploadButtonModal() {
 
   }
 
-  return (
+  function moveVocalSearching() {
+    navigate("/upload/Portfolio", { state: "Portfolio" });
+  }
 
+  function movePortfolio() {
+    navigate("/upload/VocalSearching", { state: "VocalSearching" });
+  }
+
+  return (
     <ModalBg onClick={clickOutside}>
       <UploadButtonModalWrapper>
-        <VocalSearchingWrapper>
+        <VocalSearchingWrapper onClick={moveVocalSearching}>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
             <div onClick={clickVocalSearching}>
@@ -37,7 +47,7 @@ export default function UploadButtonModal() {
             </div>
           </TextWrapper>
         </VocalSearchingWrapper>
-        <PortfolioWrapper>
+        <PortfolioWrapper onClick={movePortfolio}>
           <PortfolioIcon />
           <TextWrapper marginTop={10.7}>
           <div onClick={clickPortfolio}>
