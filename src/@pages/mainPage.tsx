@@ -35,7 +35,7 @@ export default function MainPage() {
   }
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
-    isTracksHover ? navigate("/track-search") : navigate("/vocals");
+    isTracksHover ? navigate("/track-search") : navigate("/vocal-search");
   }
 
   return (
@@ -54,9 +54,9 @@ export default function MainPage() {
   );
 }
 
-const MainPageWrapper=styled.div`
+const MainPageWrapper = styled.div`
   background-color: black;
-`
+`;
 
 const Main = styled.main`
   width: 100%;
