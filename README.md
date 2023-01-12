@@ -1,20 +1,57 @@
-## 💙서비스 이름, 팀명 및 프로젝트 소개
+<div align=center>
+  <img src="https://user-images.githubusercontent.com/70846061/211734675-ab9fb60b-58c6-4c99-b658-5e51cb26cb43.png">
 
-### 🚚 서비스 이름 : Track1
+# _Discorver Your Limitless Track_
+</div>
 
-![Track1](https://user-images.githubusercontent.com/70846061/210478155-4e5110f4-fc47-4635-ac1e-d1bf4ef9ab18.png)
+## 💜 음악 프로듀서 - 보컬 매칭 플랫폼
 
-### 👨‍👩‍👦‍👦 팀명 : Tracker
+![Slide 16_9 - 56](https://user-images.githubusercontent.com/70846061/211738080-719a7470-af38-49fe-aea9-8db24f39eb53.png)
 
-![트래커](https://user-images.githubusercontent.com/70846061/210478421-3dd3d11d-471e-412a-b64e-802b5aa3ff92.jpeg)
+### [프로젝트 소개]
 
-### 📑 프로젝트 소개
+음악 프로듀서가 스케치 곡을 업로드하면 보컬이 이를 다운받아 녹음 후 업로드하여 보다 직관적으로 협업의 기회를 창출할 수 있는 매칭 플랫폼
 
-✅ 한 줄 소개: 음악 프로듀서 - 보컬 매칭 플랫폼
+## 💜 페이지 별 핵심기능
 
-✅ 간략 소개: 음악 프로듀서가 스케치 곡을 업로드하면 보컬이 이를 다운받아 녹음 후 업로드하여 보다 직관적으로 협업의 기회를 창출할 수 있는 매칭 플랫폼
+## Track Searh(프로듀서가 올린 음악을 볼 수 있는 페이지)
 
-## 🛠️ 기술 스택 및 사용 라이브러리
+<img width="1440" alt="트랙1" src="https://user-images.githubusercontent.com/70846061/211752462-805c0ea4-3135-4b86-9b54-2a21d818c4d1.png">
+- 뮤직 플레이어 : 프로듀서가 올린 음원을 재생.
+<img width="1439" alt="KakaoTalk_Photo_2023-01-11-17-21-57 004" src="https://user-images.githubusercontent.com/70846061/211754589-e6307113-4ccb-4c47-ab08-b5d8ddb94abf.png">
+- 필터링 : 장르별 필터링을 통해 장르별 곡 확인
+<img width="1440" alt="스크린샷 2023-01-11 오후 5 21 15" src="https://user-images.githubusercontent.com/70846061/211754719-6ed54966-332d-4015-999c-d5de3e61699d.png">
+- 무한 스크롤 : 데이터베이스에 있는 모든 트랙데이터를 무한스크롤로 확인.<br><br><br>
+
+## Comment(프로듀서가 올린 음악에 보컬을 입혀 올릴 수 있는 페이지)
+
+<img width="1440" alt="트랙2" src="https://user-images.githubusercontent.com/70846061/211752482-b64494ec-88b8-4e09-a294-171ab4207f33.png">
+<img width="1440" alt="트랙3" src="https://user-images.githubusercontent.com/70846061/211752498-01b07ca4-ef1f-4aa8-97f9-1014485d6853.png">
+- 보컬 댓글 Post : producer의 음원에 보컬녹음하여 comment를 통해 음원과 설명글 업로드.<br><br><br>
+
+## Vocal(보컬의 음악을 볼 수 있는 페이지)
+
+<img width="1440" alt="보컬1" src="https://user-images.githubusercontent.com/70846061/211757208-c46f2c39-1e3f-4285-9e0e-2d5b650738d1.png">
+<img width="1440" alt="보컬2" src="https://user-images.githubusercontent.com/70846061/211757222-e30be678-5a63-4969-bc85-383fc2384d4a.png">
+<img width="1440" alt="보컬3" src="https://user-images.githubusercontent.com/70846061/211757231-4674cfc2-8596-4b86-bc4c-1387a9a391ee.png">
+
+
+## Profile(보컬,프로듀서 프로필확인 페이지)
+
+![image](https://user-images.githubusercontent.com/70846061/211759877-e53662df-703e-40df-bfee-8e7fd8c272df.png)
+
+- 무한스크롤 : 업로드한 자신의 음원데이터를 무한스크롤로 확인.<br><br><br>
+
+### 5. Upload(보컬-포트폴리오 / 프로듀서-포트폴리오or게시글)
+<img width="1440" alt="업로드1" src="https://user-images.githubusercontent.com/70846061/211758734-999394d4-3623-4c5b-9293-461cac89151f.png">
+<img width="1440" alt="업로드2" src="https://user-images.githubusercontent.com/70846061/211758747-63a64234-a853-42a8-bbda-7f5d4b172fbb.png">
+<img width="1440" alt="업로드3" src="https://user-images.githubusercontent.com/70846061/211758771-325dbf3a-89ea-454a-9116-6355ab8d5ea1.png">
+- 필터링 : 장르별 필터링을 통해 장르별 곡 확인
+- 뮤직 플레이어 : 보컬이 올린 음원을 재생.
+
+- Track/Portfolio Post : UserType에 따라서 게시글을 업로드.<br><br><br>
+
+## 💜 기술 스택 및 사용 라이브러리
 
 ![기술스택](https://user-images.githubusercontent.com/70846061/210489329-c03c1357-ce80-49cb-a2b6-32b800a3765a.png)
 
@@ -32,7 +69,7 @@
   "web-vitals": "^2.1.0"
 ```
 
-## 🗂 폴더구조
+## 💜 폴더구조
 
 ```
 ├── __test
@@ -91,57 +128,7 @@
 
 ```
 
-### \_\_\_ **TEST** \_\_\_
-
-: jest 테스트함수 파일들이 위치한 폴더. 선택사항!
-
-### _**@components**_
-
-: 페이지에서 반복적으로 사용되는 컴포넌트들이 위치한 폴더.
-
-미리 만들어놓은 @common 에는 header&footer 같이 전체적으로 사용되는 컴포넌트들이 들어가고, Modal에는 모달컴포넌트만 위치시킬께요! 나머지 컴포넌트들은 페이지별로 폴더를 생성해서 위치시켜주세요!! (폴더명은 core폴더와 동일하게!)
-
-### _**@pages**_
-
-: 라우팅되는 페이지들을 모아둔 폴더.
-
-모든 페이지들을 미리 세팅 해놨어요. 거기서 작업하면 됩니다!! 혹시 페이지가 바뀌게 되면 혼자 바꾸지 말고 같이 상의해서 변경합시다!!
-
-### _**assets/assets.d.ts**_
-
-: 타입스크립트에서는 파일들을 import하기 위해서 미리 모듈들을 decalre 해줘야 해요!
-
-### _**core**_
-
-: 개발할 때 쓰는 더미데이터, 혹은 데이터가 담긴 객체&배열들을 따로 빼두는 곳이에요.
-컴포넌트나 페이지 파일에서는 객체&배열을 선언하지 않고 꼭 import 해서 쓰도록 해요! (랜더링이 일어날 때마다 변수들이 선언되는건 불필요한 리소스 낭비)
-
-### _**core/api**_
-
-axios : 서버통신 함수를 선언하고 export 하는 곳
-
-path : 라우팅 path들을 선언하고 export 하는 곳
-
-나머지 : 페이지별로 파일을 만들어주세요!
-
-### _**mock**_
-
-: 서버 연결하기 전까지 클라이언트에서 더미데이터를 생성해서 서버처럼 쓸 수 있게 데이터를 mocking 하는 폴더! 아직 명세서 안나와서 비어있음.
-
-### _**recoil**_
-
-: 리코일폴더. 각자 공부하고 필요할 때 사용하도록 합니다!
-
-### _**style**_
-
-: 다 알죠?
-
-### _**type**_
-
-: 여러 데이터의 묶음을 interface 나 type으로 지정해줘야한다면, 컴포넌트에 직접 하지 않고 type 폴더에 파일을 만들고 export 합시다!
-
-### _**utils**_
-
-: 재사용할 수 있는 함수들 & 로직들을 모아두는 곳입니다!
-
-hooks : 커스텀훅을 생성했을 때 여기에 위치시켜주세요!
+# _💜Tracker💚_
+<div align=center>
+  <img src="https://user-images.githubusercontent.com/70846061/210478421-3dd3d11d-471e-412a-b64e-802b5aa3ff92.jpeg">
+</div>
