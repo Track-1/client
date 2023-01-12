@@ -33,13 +33,7 @@ export default function CategoryList() {
       ),
     );
   }
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [openModal]);
-
+  
   useEffect(() => {
     let filteredUrl = "";
 
