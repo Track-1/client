@@ -13,9 +13,9 @@ if (process.env.NODE_ENV === "development") {
 }
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 );

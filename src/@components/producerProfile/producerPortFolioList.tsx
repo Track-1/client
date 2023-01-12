@@ -33,8 +33,8 @@ export default function ProducerPortFolioList(props: PropsType) {
     setHoveredIndex(id);
   }
 
-  function hoverOutPortfolio() {
-    setHoveredIndex(-1);
+  function hoverOutPortfolio(id: number) {
+    id !== clickedIndex && setHoveredIndex(-1);
   }
   // function clickPauseIc(id: number) {
   //   setPlay(true);
@@ -75,38 +75,17 @@ export default function ProducerPortFolioList(props: PropsType) {
       setClickedIndex(id);
     }
   }
-
-  //infinite scroll
-  //무한 스크롤
-  const [page, setPage] = useState<number>();
-  const [loading, setLoading] = useState(false);
-  const loadMore = () => setPage((prev) => prev && prev + 1);
-  const target = useRef<HTMLDivElement | null>(null);
-
-  //  console.log(vocalData);
-
-  useEffect(() => {
-    //  if (!loading) {
-    const observer = new IntersectionObserver((endDiv) => {
-      if (endDiv[0].isIntersecting) {
-        loadMore();
-      }
-    });
-    observer.observe(target.current!);
-    console.log("dd");
-    // }
-  }, []);
-
+  
   return (
     <>
       <ProfileListContainer>
         {portfolioData.map((portfolio, index) => {
           return (
             <PortfolioBox
-              key={portfolio.id}
-              isLarge={index === 0 || clickedIndex === index}
+            key={portfolio.id}
+            isLarge={index === 0 || clickedIndex === index}
               onMouseEnter={() => hoverPortfolio(index)}
-              onMouseLeave={hoverOutPortfolio}
+              onMouseLeave={() => hoverOutPortfolio(index)}
               index={index}
               profileState={profileState}
               producerPortfolioClickBool={clickedIndex === index}>
@@ -123,11 +102,11 @@ export default function ProducerPortFolioList(props: PropsType) {
 
                 {hoveredIndex === index && hoveredIndex !== -1 && (
                   <ProducerPorfolioBlur
-                    index={index}
-                    producerPortfolioClickBool={clickedIndex === index}
-                    profileState={profileState}
+                  index={index}
+                  producerPortfolioClickBool={clickedIndex === index}
+                  profileState={profileState}
                   />
-                )}
+                  )}
 
                 <PortfolioImage
                   src={portfolio.jacketImage}
@@ -161,20 +140,13 @@ export default function ProducerPortFolioList(props: PropsType) {
             clickId={clickedIndex}
             portfolios={portfolioData}
             profileState={profileState}
-          />
-          <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
+            />
         </InformWrapper>
       )}
     </>
   );
 }
 
-// infinite
-const InfiniteDiv = styled.div`
-  width: 100%;
-  height: 1rem;
-  background-color: pink;
-`;
 
 const TitleWrapper = styled.div`
   width: 14rem;

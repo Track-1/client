@@ -8,14 +8,14 @@ import React from "react";
 function App() {
   return (
     <>
-      <React.StrictMode>
-        <RecoilRoot>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Router />
-          </ThemeProvider>
-        </RecoilRoot>
-      </React.StrictMode>
+      {/* <React.StrictMode> */}
+      <RecoilRoot>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Router />
+        </ThemeProvider>
+      </RecoilRoot>
+      {/* </React.StrictMode> */}
     </>
   );
 }

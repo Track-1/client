@@ -21,7 +21,7 @@ import { TracksDataType } from "../type/tracksDataType";
 import { useQuery, useInfiniteQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
-import { trackLpageistinfiniteScroll } from "../recoil/infiniteScroll";
+import { trackListinfiniteScroll } from "../recoil/infiniteScroll";
 
 export default function TrackSearchPage() {
   const [progress, setProgress] = useState<number>(0);
@@ -42,6 +42,7 @@ export default function TrackSearchPage() {
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+
   // const [page, setPage] = useState<any>(1);
   const page = useRef<any>(1);
 
@@ -83,6 +84,7 @@ export default function TrackSearchPage() {
     // if (!targetRef.current || !hasNextPage) return;
     const io = new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
+     //   fetch();
         fetch(filteredUrlApi);
       }
     });
@@ -94,6 +96,26 @@ export default function TrackSearchPage() {
   }, [fetch, hasNextPage]);
 
   //end
+  // useEffect(() => {
+  //   console.log(filteredUrlApi);
+  // }, [filteredUrlApi]);
+
+  // const { data } = useQuery(["filteredUrlApi", filteredUrlApi], () => getTracksData(filteredUrlApi), {
+  //   refetchOnWindowFocus: false,
+  //   retry: 0,
+  //   onSuccess: (data) => {
+  //     if (data?.status === 200) {
+  //       setTracksData(data?.data.data.trackList);
+  //       console.log(data?.data);
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     console.log("실패");
+  //   },
+  // });
+
+ // useEffect(() => {
+ //   setWhom(Category.TRACKS);
 
   useEffect(() => {
     console.log(filteredUrlApi);
@@ -101,7 +123,6 @@ export default function TrackSearchPage() {
 
   useEffect(() => {
     setWhom(Category.TRACKS);
-
   }, []);
 
   function playAudio() {

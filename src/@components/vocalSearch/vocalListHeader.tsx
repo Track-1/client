@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { TrackListHeaderSloganIc, VocalListHeaderTextIc } from "../../assets";
+import { VocalListHeaderSloganIc, VocalListHeaderTextIc } from "../../assets";
 
 export default function TrackListHeader() {
   return (
@@ -20,7 +20,7 @@ const TrackListHeaderWrapper = styled.section`
   justify-content: space-between;
 `;
 
-const TrackListHeaderSloganIcon = styled(TrackListHeaderSloganIc)`
+const TrackListHeaderSloganIcon = styled(VocalListHeaderSloganIc)`
   margin: 2.6rem 0 0 9rem;
 `;
 

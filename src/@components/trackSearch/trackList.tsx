@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
   TitleTextIc,
@@ -13,6 +13,7 @@ import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { TracksDataType } from "../../type/tracksDataType";
+import { trackListinfiniteScroll } from "../../recoil/infiniteScroll";
 
 interface PropsType {
   audio: HTMLAudioElement;
@@ -26,7 +27,6 @@ interface PropsType {
 
 export default function TrackList(props: PropsType) {
   const { audio, playAudio, pauseAudio, tracksData, duration, getDuration } = props;
-
   const [trackHover, setTrackHover] = useState<number>(-1);
 
   const [trackClick, setTrackClick] = useState<number>(-1);
@@ -36,6 +36,25 @@ export default function TrackList(props: PropsType) {
   const [currentTime, setCurrentTime] = useState<number>();
 
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+
+  //무한 스크롤
+  const [page, setPage] = useRecoilState(trackListinfiniteScroll);
+  const [loading, setLoading] = useState(false);
+  const loadMore = () => setPage((prev) => prev + 1);
+  const target = useRef<HTMLDivElement | null>(null);
+
+  //  console.log(vocalData);
+
+  useEffect(() => {
+    //  if (!loading) {
+    const observer = new IntersectionObserver((endDiv) => {
+      if (endDiv[0].isIntersecting) {
+        loadMore();
+      }
+    });
+    observer.observe(target.current!);
+    // }
+  }, []);
 
   useEffect(() => {
     playAudio();
@@ -84,7 +103,7 @@ export default function TrackList(props: PropsType) {
     setPlay(false);
     setBeatId(id);
 
-    navigate(`/track-post/${id}`, {state:id});
+    navigate(`/track-post/${id}`, { state: id });
     setShowPlayer(false);
   }
 
@@ -118,13 +137,13 @@ export default function TrackList(props: PropsType) {
               )}
               {play && trackClick === index && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
               <Thumbnail src={track.jacketImage} alt="썸네일" />
-              <TrackText width={36.8} onClick={() => movePostPage(track.beatId)}>
+              <TrackText width={36.8} isHover={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} onClick={() => moveProducerProfilePage(track.beatId)}>
+              <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.beatId)}>
                 {track.producerName}
               </TrackText>
-              <TrackText width={20.5}>{track.category}</TrackText>
+              <TrackText width={20.5} isHover={false}>{track.category}</TrackText>
             </TrackBox>
             {track.keyword.map((tag, idx) => (
               <Tag key={idx}>#{tag}</Tag>
@@ -132,6 +151,7 @@ export default function TrackList(props: PropsType) {
           </Tracks>
         ))}
       </TracksWrapper>
+      <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
     </TrackListContainer>
   );
 }
@@ -152,7 +172,7 @@ const HoverPlayIcon = styled(HoverPlayIc)`
 `;
 
 const CategoryWrapper = styled.section`
-  margin: 3.6rem 0 3.5rem 9rem;
+  margin: 4.6rem 0 3.5rem 9rem;
 `;
 const TitleTextIcon = styled(TitleTextIc)``;
 
@@ -218,8 +238,13 @@ const Thumbnail = styled.img`
   border-radius: 6.55rem;
 `;
 
-const TrackText = styled.div<{ width: number }>`
+const TrackText = styled.div<{ width: number, isHover:boolean }>`
   width: ${(props) => props.width}rem;
+  ${({ theme }) => theme.fonts.body1};
+  :hover{
+    color: ${({isHover, theme})=>isHover&&theme.colors.sub1};
+    cursor: pointer;
+  }
 `;
 
 const Tag = styled.span`
@@ -230,7 +255,14 @@ const Tag = styled.span`
 
   padding: 0.9rem 1.5rem;
   margin: 0 0.8rem 0 0;
-
+  
+  ${({ theme }) => theme.fonts.body1};
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
+`;
+
+const InfiniteDiv = styled.div`
+  width: 100%;
+  height: 1rem;
+  background-color: pink;
 `;
