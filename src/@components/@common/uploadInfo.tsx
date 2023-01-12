@@ -106,11 +106,9 @@ export default function UploadInfo() {
       const temp = new Array(category.length).fill(false);
       temp[index] = true;
       setCheckHoverState([...temp]);
-      // categoryRefs.current[index]!.style.color = "#ffffff";
     } else {
       const temp = new Array(category.length).fill(false);
       setCheckHoverState([...temp]);
-      // categoryRefs.current[index]!.style.color = "#535559";
     }
   }
 
@@ -128,14 +126,7 @@ export default function UploadInfo() {
 
   function addHastag() {
     const value = enteredHashtag.current!.value;
-    console.log(value);
-    if (hashtags.includes(value)) {
-      alert("중복된 해시태그 입니다!");
-    } else {
-      console.log("dasdf", value);
-      setHashtags([...hashtags, value]);
-    }
-    setHashtagInputWidth(8.827);
+    hashtags.includes(value) ? alert("중복된 해시태그 입니다!") : setHashtags([...hashtags, value]);
     enteredHashtag.current!.value = "";
   }
 
@@ -152,8 +143,6 @@ export default function UploadInfo() {
       enteredHashtag.current!.value = "";
     }
   }
-
-  console.log(hashtags);
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = e.target.value.split("\n").length;
