@@ -142,7 +142,6 @@ export default function UploadInfo() {
   function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
     if (hashtags.length < 3) {
       addHastag();
-      console.log(enteredHashtag.current!.value);
       enteredHashtag.current!.value = "";
     }
   }
@@ -164,7 +163,7 @@ export default function UploadInfo() {
       setDescriptionLength(e.target.value.length);
       setDeiscription(descriptionTextarea.current!.value);
     } else {
-      enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
+      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
     }
   }
 
@@ -180,7 +179,7 @@ export default function UploadInfo() {
       setHashtagLength(e.target.value.length);
       setHashtagInputWidth(Number(e.target.value));
     } else {
-      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
+      enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
     }
     setHashtagLength(e.target.value.length);
     setHashtagInputWidth(Number(e.target.value));
@@ -577,10 +576,8 @@ const InputHashtagWrapper = styled.div`
 
 const Hashtag = styled.div`
   height: 3.8rem;
-  /* width: ${(props) => props.hashtagInputWidth}rem; */
 
-  /* background-color: ${({ theme }) => theme.colors.gray5}; */
-  background-color: blue;
+  background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
   margin-right: 1rem;
 `;
@@ -597,12 +594,10 @@ const HashtagSharp = styled.p`
 `;
 
 const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
-  width: 100%;
-  /* width: ${(props) => props.hashtagInputWidth}rem; */
+  width: ${(props) => props.hashtagInputWidth}rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
   margin-right: 0.5rem;
-  background-color: orange;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
