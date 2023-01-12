@@ -66,6 +66,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     return hoverId === 0;
   }
 
+  console.log(isMe, "isMe좀나와라")
+
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
