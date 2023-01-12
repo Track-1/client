@@ -167,12 +167,12 @@ export default function TrackSearchPage() {
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
-      <Fuck ref={targetRef}></Fuck>
+      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
     </>
   );
 }
 
-const Fuck = styled.div`
+const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
 `;
