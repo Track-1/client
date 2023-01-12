@@ -75,15 +75,15 @@ export default function ProducerPortFolioList(props: PropsType) {
       setClickedIndex(id);
     }
   }
-
+  
   return (
     <>
       <ProfileListContainer>
         {portfolioData.map((portfolio, index) => {
           return (
             <PortfolioBox
-              key={portfolio.id}
-              isLarge={index === 0 || clickedIndex === index}
+            key={portfolio.id}
+            isLarge={index === 0 || clickedIndex === index}
               onMouseEnter={() => hoverPortfolio(index)}
               onMouseLeave={hoverOutPortfolio}
               index={index}
@@ -102,11 +102,11 @@ export default function ProducerPortFolioList(props: PropsType) {
 
                 {hoveredIndex === index && hoveredIndex !== -1 && (
                   <ProducerPorfolioBlur
-                    index={index}
-                    producerPortfolioClickBool={clickedIndex === index}
-                    profileState={profileState}
+                  index={index}
+                  producerPortfolioClickBool={clickedIndex === index}
+                  profileState={profileState}
                   />
-                )}
+                  )}
 
                 <PortfolioImage
                   src={portfolio.jacketImage}
@@ -140,12 +140,13 @@ export default function ProducerPortFolioList(props: PropsType) {
             clickId={clickedIndex}
             portfolios={portfolioData}
             profileState={profileState}
-          />
+            />
         </InformWrapper>
       )}
     </>
   );
 }
+
 
 const TitleWrapper = styled.div`
   width: 14rem;

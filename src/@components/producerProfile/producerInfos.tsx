@@ -45,6 +45,8 @@ export default function ProducerInfos(props: PropsType) {
 const InfoContainer = styled.section`
   width: 61rem;
 
+  position: fixed;
+
   display: flex;
   flex-direction: column;
   align-items: center;
