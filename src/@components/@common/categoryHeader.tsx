@@ -13,12 +13,14 @@ import {
   
 } from "../../assets";
 import profileImg from "../../assets/image/profileImg.png";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
+import { UserType } from '../../recoil/main';
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
+  const user=useRecoilValue(UserType)
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
@@ -32,6 +34,10 @@ export default function CategoryHeader() {
 
   function moveMainPage() {
     navigate("/");
+  }
+
+  function moveMypage(){
+    user==="vocal"?navigate("/vocal-profile/1", {state:1}):navigate("/producer-profile/2", {state:2})
   }
 
   return (
@@ -56,7 +62,7 @@ export default function CategoryHeader() {
       <HeaderContainer>
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
-          <ProfileWrapper>
+          <ProfileWrapper onClick={moveMypage}>
             <ProfileImg src={profileImg} alt="프로필이미지" />
             <ToggleIc />
           </ProfileWrapper>
@@ -145,6 +151,8 @@ const VocalsHeaderTextIcon = styled(VocalsHeaderTextIc)`
 const ProfileWrapper = styled.div`
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 const ProfileImg = styled.img`

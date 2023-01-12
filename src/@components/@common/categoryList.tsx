@@ -14,6 +14,7 @@ import { categorySelect, trackSearching } from "../../recoil/categorySelect";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { Category } from "../../core/common/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
+import { UserType } from '../../recoil/main';
 
 export default function CategoryList() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -25,6 +26,9 @@ export default function CategoryList() {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
+  const user=useRecoilValue(UserType)
+
+  console.log(user)
 
   function categoryClick(id: number) {
     setSelectedCategorys(
@@ -125,7 +129,7 @@ export default function CategoryList() {
             </CategoryTextBox>
           </CategoryTextBoxWrapper>
         ))}
-        {isTracksPage(tracksOrVocals) && (
+        {isTracksPage(tracksOrVocals) && user==="producer" &&(
           <UploadButton type="button" onClick={moveUploadPage}>
             <UploadTextIc />
           </UploadButton>
