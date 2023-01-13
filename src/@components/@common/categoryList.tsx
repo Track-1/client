@@ -57,7 +57,6 @@ export default function CategoryList() {
     tempSelectedCategors[id].selected
       ? (tempSelectedCategors[id].selected = false)
       : (tempSelectedCategors[id].selected = true);
-    console.log(tempSelectedCategors, "Dfa");
     setSelectedCategorys([...tempSelectedCategors]);
   }
 
