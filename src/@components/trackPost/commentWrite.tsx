@@ -64,7 +64,7 @@ export default function CommentWrite(props: PropsType) {
     //post
     <WriteContainer>
       <ProfileImage
-        src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user.png"}
+        src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
         alt="프로필 이미지"
       />
       <InfoBox>
@@ -75,7 +75,7 @@ export default function CommentWrite(props: PropsType) {
               <UploadIcon />
             </div>
           </label>
-          <FileInput type="file" id="userFile" onChange={getFile} ref={commentFile} />
+          <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
           <CountWrapper>
             <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
           </CountWrapper>
