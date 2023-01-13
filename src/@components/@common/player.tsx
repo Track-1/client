@@ -163,8 +163,9 @@ const Playbar = styled.div<{ progress: number; tracksOrVocals: string; isActive:
 
   background-color: transparent;
 
-  border: 0.3rem solid
+  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid
     ${({ tracksOrVocals, theme }) => (tracksOrVocals === "Tracks" ? theme.colors.sub1 : theme.colors.sub2)};
+
   pointer-events: auto;
   z-index: 1000;
 `;
