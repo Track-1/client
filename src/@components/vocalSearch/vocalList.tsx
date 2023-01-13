@@ -24,7 +24,6 @@ export default function VocalList(props: PropsType) {
 
   const [beatId, setBeatId] = useState<number>(-1);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-
   useEffect(() => {
     playAudio();
   }, [currentFile]);

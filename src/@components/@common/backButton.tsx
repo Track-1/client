@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { BackBtnIc } from "../../assets";
+import { useNavigate } from "react-router-dom";
 
 export default function BackButton() {
+  const navigate = useNavigate();
+
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
   return (
-    <ButtonContainer>
+    <ButtonContainer onClick={movePreviousPage}>
       <BackBtnIc />
       <ButtonText>Back</ButtonText>
     </ButtonContainer>

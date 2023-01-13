@@ -26,9 +26,9 @@ import Player from "../@components/@common/player";
 import ditto from "../assets/audio/ditto.mp3";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getTrackInfo } from "../core/api/trackPost";
-import { TrackInfoDataType } from "../type/tracksDataType";
+import { useLocation } from "react-router-dom";
+import { getTrackInfo, getAudioFile } from "../core/api/trackPost";
+import { TrackInfoDataType, AudioFileDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/common/categoryHeader";
@@ -37,15 +37,14 @@ import { setEmitFlags } from "typescript";
 export default function TrackPostPage() {
   const audio = useMemo(() => new Audio(), []);
 
-  const navigate = useNavigate();
-
   const [isMe, setIsMe] = useState<boolean>(false);
-  const [isEnd, setIsEnd] = useState<boolean>(true);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
+  const [audioFileData, setAudioFileData] = useState<AudioFileDataType>();
   const [duration, setCurrentDuration] = useState<number>(0);
   const [isPlay, setIsPlay] = useState<boolean>(false);
 
@@ -120,8 +119,12 @@ export default function TrackPostPage() {
     setIsCommentOpen(false);
   }
 
-  function movePreviousPage() {
-    navigate(-1);
+  function endmyTrack() {
+    setIsEnd(true);
+  }
+
+  function notEndmyTrack() {
+    setIsEnd(false);
   }
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
@@ -132,6 +135,13 @@ export default function TrackPostPage() {
         // console.log(data);
         // console.log("성공");
         setTrackInfoData(data?.data.data);
+        console.log(data?.data.data);
+        //   const download = document.createElement('a');
+        //  download.href = data?.data.data.beatWavFile;
+        //   download.setAttribute('download', data?.data.data.beatWavFile);
+        // download.setAttribute('type', 'application/json');
+        //  download.click();
+
       }
     },
     onError: (error) => {
@@ -148,7 +158,7 @@ export default function TrackPostPage() {
         {trackInfoData && (
           <PostSection>
             <TitleContainer>
-              <BackButtonWrapper onClick={movePreviousPage}>
+              <BackButtonWrapper>
                 <BackButton />
               </BackButtonWrapper>
               <AudioTitle>{trackInfoData.title}</AudioTitle>
@@ -159,8 +169,9 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+                {trackInfoData.isMe &&
+                  (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
+                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
@@ -389,3 +400,10 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
   float: right;
 `;
+function axios(arg0: {
+  url: string; // 파일 다운로드 요청 URL
+  method: string; // 혹은 'POST'
+  responseType: string;
+}) {
+  throw new Error("Function not implemented.");
+}

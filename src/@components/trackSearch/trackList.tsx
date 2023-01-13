@@ -108,7 +108,7 @@ export default function TrackList(props: PropsType) {
   }
 
   function moveProducerProfilePage(id: number) {
-    navigate("/producer-profile", { state: id });
+    navigate(`/producer-profile/${id}`, { state: id });
   }
 
   return (
@@ -143,7 +143,9 @@ export default function TrackList(props: PropsType) {
               <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.beatId)}>
                 {track.producerName}
               </TrackText>
-              <TrackText width={20.5} isHover={false}>{track.category}</TrackText>
+              <TrackText width={20.5} isHover={false}>
+                {track.category}
+              </TrackText>
             </TrackBox>
             {track.keyword.map((tag, idx) => (
               <Tag key={idx}>#{tag}</Tag>
@@ -238,11 +240,11 @@ const Thumbnail = styled.img`
   border-radius: 6.55rem;
 `;
 
-const TrackText = styled.div<{ width: number, isHover:boolean }>`
+const TrackText = styled.div<{ width: number; isHover: boolean }>`
   width: ${(props) => props.width}rem;
   ${({ theme }) => theme.fonts.body1};
-  :hover{
-    color: ${({isHover, theme})=>isHover&&theme.colors.sub1};
+  :hover {
+    color: ${({ isHover, theme }) => isHover && theme.colors.sub1};
     cursor: pointer;
   }
 `;
@@ -255,7 +257,7 @@ const Tag = styled.span`
 
   padding: 0.9rem 1.5rem;
   margin: 0 0.8rem 0 0;
-  
+
   ${({ theme }) => theme.fonts.body1};
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
