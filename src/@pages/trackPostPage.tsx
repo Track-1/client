@@ -141,6 +141,7 @@ export default function TrackPostPage() {
         //   download.setAttribute('download', data?.data.data.beatWavFile);
         // download.setAttribute('type', 'application/json');
         //  download.click();
+
       }
     },
     onError: (error) => {
@@ -170,7 +171,6 @@ export default function TrackPostPage() {
               <ButtonWrapper>
                 {trackInfoData.isMe &&
                   (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
-                {/* 아래코드의 trackInfoData.isMe가 ! 여야함. */}
                 {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 

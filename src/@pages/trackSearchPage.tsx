@@ -22,7 +22,8 @@ import { useQuery, useInfiniteQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
 import { trackListinfiniteScroll } from "../recoil/infiniteScroll";
-
+import {TracksData} from "../recoil/categorySelect"
+ 
 export default function TrackSearchPage() {
   const [progress, setProgress] = useState<number>(0);
 
@@ -30,27 +31,32 @@ export default function TrackSearchPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-  const [tracksData, setTracksData] = useState<TracksDataType[]>();
-
+  const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
   const [duration, setCurrentDuration] = useState<number>(0);
-
   const audio = useMemo(() => new Audio(), []);
-  // const [currentAudio, setCurrentAudio] = useRecoilState<AudioTypes>(audioState);
-
   const filteredUrlApi = useRecoilValue(categorySelect);
 
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
-  // const [page, setPage] = useState<any>(1);
-  const page = useRef<any>(1);
+  const page = useRef<number>(1);
 
-  const { data } = useQuery(["filteredUrlApi", filteredUrlApi], () => getTracksData(filteredUrlApi), {
+  useEffect(()=>{
+    console.log(tracksData)
+    console.log(page.current)
+  },[tracksData])
+
+  useEffect(()=>{
+    setTracksData([])
+    page.current=1
+  },[filteredUrlApi])
+
+  const { data } = useQuery(["filteredUrlApi", filteredUrlApi, tracksData], () => getTracksData(filteredUrlApi), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-      if (data?.status === 200) {
+      if (data?.status === 200&&page.current===2) {
         setTracksData(data?.data.data.trackList);
       }
     },
@@ -59,7 +65,7 @@ export default function TrackSearchPage() {
     },
   });
 
-  const fetch = useCallback(async (filteredUrlApi: any) => {
+  const fetch = useCallback(async (filteredUrlApi: string) => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page.current}&limit=6${filteredUrlApi}`,
@@ -69,8 +75,8 @@ export default function TrackSearchPage() {
           },
         },
       );
-      setTracksData((prev) => prev && [...prev, ...data?.data?.trackList]);
-      console.log(page);
+
+      setTracksData(prev=>[...prev, ...data?.data?.trackList]);
       setHasNextPage(data?.data.trackList.length === 6);
       if (data?.data.trackList.length) {
         page.current += 1;
@@ -81,10 +87,12 @@ export default function TrackSearchPage() {
   }, []);
 
   useEffect(() => {
-    // if (!targetRef.current || !hasNextPage) return;
+    console.log("4",filteredUrlApi)
+
     const io = new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
-     //   fetch();
+        console.log("5",filteredUrlApi)
+
         fetch(filteredUrlApi);
       }
     });
@@ -93,34 +101,10 @@ export default function TrackSearchPage() {
     return () => {
       io.disconnect();
     };
-  }, [fetch, hasNextPage]);
+  }, [fetch, hasNextPage,filteredUrlApi]);
 
-  //end
-  // useEffect(() => {
-  //   console.log(filteredUrlApi);
-  // }, [filteredUrlApi]);
 
-  // const { data } = useQuery(["filteredUrlApi", filteredUrlApi], () => getTracksData(filteredUrlApi), {
-  //   refetchOnWindowFocus: false,
-  //   retry: 0,
-  //   onSuccess: (data) => {
-  //     if (data?.status === 200) {
-  //       setTracksData(data?.data.data.trackList);
-  //       console.log(data?.data);
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.log("실패");
-  //   },
-  // });
-
- // useEffect(() => {
- //   setWhom(Category.TRACKS);
-
-  useEffect(() => {
-    console.log(filteredUrlApi);
-  }, [filteredUrlApi]);
-
+  
   useEffect(() => {
     setWhom(Category.TRACKS);
   }, []);
@@ -183,12 +167,12 @@ export default function TrackSearchPage() {
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
-      <Fuck ref={targetRef}></Fuck>
+      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
     </>
   );
 }
 
-const Fuck = styled.div`
+const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
 `;
