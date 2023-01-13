@@ -54,7 +54,7 @@ const CommentContainer = styled.article`
   }
 `;
 
-const ProfileImage = styled.div<{img:string}>`
+const ProfileImage = styled.div<{ img: string }>`
   height: 9rem;
   width: 9rem;
 
@@ -63,7 +63,7 @@ const ProfileImage = styled.div<{img:string}>`
 
   border-radius: 9rem;
 
-  background-image: url(${({img})=>img});
+  background-image: url(${({ img }) => img});
   background-repeat: no-repeat;
   background-size: contain;
 `;
@@ -74,6 +74,7 @@ const PlayerBlur = styled.div`
 
   background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
+  border-radius: 50%;
 
   display: flex;
   justify-content: center;

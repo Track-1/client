@@ -204,7 +204,7 @@ export default function TrackPostPage() {
           </PostSection>
         )}
       </>
-      <CommentBtnIcon onClick={openComment} />
+      <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
