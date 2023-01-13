@@ -33,12 +33,24 @@ export default function TrackUpload() {
 
       if (e.target.files !== null) {
         const fileUrl = URL.createObjectURL(e.target.files[0]);
-        setTrackUploadImg(fileUrl);
-        setTrackJacketImage(e.target.files[0]);
-        setDefaultState(false);
+        const imageSize = e.target.files[0].size;
+        if (checImageSize(imageSize)) {
+          setTrackUploadImg(fileUrl);
+          setTrackJacketImage(e.target.files[0]);
+          setDefaultState(false);
+        }
       }
     } else {
       alert("확장자 명을 확인 해주세요!");
+    }
+  }
+
+  function checImageSize(imageSize: number): boolean {
+    if (imageSize > 5 * 1024 * 1024) {
+      alert("이미지 용량제한은 5MB 이하 입니다.");
+      return false;
+    } else {
+      return true;
     }
   }
 
