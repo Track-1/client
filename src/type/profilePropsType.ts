@@ -17,3 +17,10 @@ export interface PortfolioPropsType {
   portfolios: PortfolioType[];
   profileState: string;
 }
+
+export interface PortfolioDetailPropsType {
+  isMe:boolean;
+  id: number;
+  profileState: string;
+  portfolios: PortfolioType[];
+}

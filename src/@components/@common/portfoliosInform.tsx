@@ -27,7 +27,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [meId, setMeId] = useState<boolean>(false);
+  const [id, setId] = useState<number>(-1);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
   useEffect(() => {
@@ -63,17 +63,34 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function checkIsTitle() {
-    return hoverId === 0;
+    return (clickId===-1&&hoverId===0)||(clickId===0&&(isHoveredNClicked()||hoverId===-1))
   }
 
-  console.log(isMe, "isMe좀나와라")
+  function isNotHovered(){
+    return hoverId === -1
+  }
+
+  function isClicked(){
+    return clickId!==-1
+  }
+
+  function checkisEllipsis(){
+    return isMe && (isHoveredNClicked()||isNotHovered())
+  }
+
+  useEffect(()=>{
+    !isNotHovered()&&setId(hoverId)
+    isClicked()&&isNotHovered()&&setId(clickId)
+  },[hoverId, clickId])
+
+  console.log("vocal", checkIsPortfolio())
 
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
-      {portfolios[hoverId] && (
-        <>
+      {portfolios[id] && (
+        <InformContainer>
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
@@ -82,28 +99,32 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
-              {isMe && isHoveredNClicked() && <EllipsisIcon onClick={clickEllipsis} />}
+              {checkisEllipsis()&& <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkIsTitle() && (
                 <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
               )}
             </InformTitleWrapper>
-            <InformTitle>{portfolios[hoverId].title}</InformTitle>
-            <InformCategory>{portfolios[hoverId].category}</InformCategory>
+            <InformTitle>{portfolios[id].title}</InformTitle>
+            <InformCategory>{portfolios[id].category}</InformCategory>
           </InformWrapper>
 
-          <InformContent>{portfolios[hoverId].content}</InformContent>
+          <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>
-            {portfolios[hoverId].keyword.map((tag, idx) => (
+            {portfolios[id].keyword.map((tag, idx) => (
               <InformTag key={idx} textLength={tag.length}>
                 #{tag}
               </InformTag>
             ))}
           </InformTagWrapper>
-        </>
+        </InformContainer>
       )}
     </PortfolioInformWrapper>
   );
 }
+
+const InformContainer=styled.div`
+  
+`
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   margin-top: 5.9rem;
