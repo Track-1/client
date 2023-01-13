@@ -75,7 +75,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function checkisEllipsis(){
-    return isMe && (isHoveredNClicked()||(isClicked()&&isNotHovered()))
+    return isMe && isClicked()&&(isHoveredNClicked()||isNotHovered())
   }
 
   useEffect(()=>{
@@ -188,10 +188,12 @@ const InformTag = styled.div<{ textLength: number }>`
   align-items: center;
 
   height: 3.8rem;
-  /* width: ${({ textLength }) => textLength+6}rem; */
+  width: ${({ textLength }) => (7>textLength&&textLength>2)?textLength+5:textLength+7}rem;
+  /* width: ${({ textLength }) => textLength>=7&&textLength+10}rem; */
 
   margin-bottom: 1rem;
-  padding: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right:2rem;
 
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 2.1rem;
@@ -201,11 +203,9 @@ const InformTag = styled.div<{ textLength: number }>`
 `;
 
 const InformTagWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  column-gap: 1rem;
-  /* display: flex;
-  flex-direction:column; */
+  position: absolute;
+  display: flex;
+  flex-direction: column;
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`
