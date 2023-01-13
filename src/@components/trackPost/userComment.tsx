@@ -117,15 +117,16 @@ export default function UserComment(props: CommentPropsType) {
 const CommentContainer = styled.section`
   width: 107.7rem;
   float: right;
-
+  
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
-
+  
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;
-
+  
   position: absolute;
+  z-index: 1;
   top: 0;
   right: 0;
 `;

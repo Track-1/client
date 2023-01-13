@@ -48,7 +48,7 @@ export default function VocalsPage() {
   const loadMoreCommentData = async () => {
     if (isIntersect) {
       const data = await getVocalsData(filteredUrlApi, isSelected, page);
-      setVocalList([...vocalList, ...data?.data.data.vocalList]);
+      setVocalList((prev: any) => prev && [...prev, ...data?.data.data.vocalList]);
       setPage((prev) => prev + 1);
     }
   };
@@ -65,13 +65,9 @@ export default function VocalsPage() {
       retry: 0,
       onSuccess: (data) => {
         if (data?.status === 200) {
-          console.log(data);
-          console.log("성공");
         }
       },
-      onError: (error) => {
-        console.log("실패");
-      },
+      onError: (error) => {},
     },
   );
 
@@ -100,7 +96,6 @@ export default function VocalsPage() {
   function goProgress() {
     if (audio.duration) {
       const currentDuration = (audio.currentTime / audio.duration) * 100;
-      console.log(audio.currentTime, audio.duration);
       setProgress(currentDuration);
     }
   }

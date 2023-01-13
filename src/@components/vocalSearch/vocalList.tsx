@@ -24,16 +24,15 @@ export default function VocalList(props: PropsType) {
 
   const [beatId, setBeatId] = useState<number>(-1);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-
   useEffect(() => {
-    playAudio();
+    audio.play();
   }, [currentFile]);
 
   useEffect(() => {
-    setCurrentFile(vocalData[clickVocal]?.vocalTitleFile);
-    audio.src = vocalData[clickVocal]?.vocalTitleFile;
+    setCurrentFile(vocalData[clickVocal]?.vocalTitleFile && vocalData[clickVocal]?.vocalTitleFile);
+    audio.src = vocalData[clickVocal]?.vocalTitleFile && vocalData[clickVocal]?.vocalTitleFile;
+    vocalData[clickVocal]?.vocalTitleFile && console.log(vocalData[clickVocal]?.vocalTitleFile);
     getDuration(vocalData[clickVocal]?.wavFileLength);
-    // console.log(clickVocal);
   }, [clickVocal]);
 
   const navigate = useNavigate();
@@ -46,42 +45,36 @@ export default function VocalList(props: PropsType) {
     setHoverVocal(-1);
   }
 
-  // function onClickPlayVocal(id: number) {
-  //   setShowPlayer(true);
-  //   setPlay(true);
-  //   setBeatId(id);
-  //   setClickVocal(id);
-  // }
-
-  function playAudioOnTrack(id: number) {
-    if (clickVocal === id) {
-      audio.play().then((_) => {}).catch((error) => {});
+  function playAudioOnTrack(index: number, id: number) {
+    if (clickVocal === index) {
+      audio.play();
       setPlay(true);
     } else {
+      console.log(clickVocal, index, "not same");
       setPlay(true);
 
       setShowPlayer(true);
       setBeatId(id);
-      setClickVocal(id);
+      setClickVocal(index);
     }
   }
 
   function onClickPauseVocal(id: number) {
-    if (play && id === beatId) {
-      audio.pause();
-      setPlay(false);
-    }
+    // if (play && id === beatId) {
+    audio.pause();
+    setPlay(false);
+    // }
   }
 
   function clickVocalName(id: number) {
-    navigate(`/vocal-profile/${id}`, { state:id });
+    navigate(`/vocal-profile/${id}`, { state: id });
   }
 
   return (
     <VocalListContainer>
       {vocalData &&
-        vocalData.map((vocal) => (
-          <VocalContainer key={vocal.vocalId}>
+        vocalData.map((vocal, index) => (
+          <VocalContainer key={index}>
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
               {!vocal.isSelected && <VocalSleepIcon />}
@@ -94,34 +87,32 @@ export default function VocalList(props: PropsType) {
 
             <MusicProfileWrapper
               onMouseLeave={mouseOutPlayVocal}
-              onMouseEnter={() => mouseOverPlayVocal(vocal.vocalId)}
-              onClick={() => {
-                playAudioOnTrack(vocal.vocalId);
-                onClickPauseVocal(vocal.vocalId);
-              }}
+              onMouseEnter={() => mouseOverPlayVocal(index)}
               showPlayer={showPlayer}
-              isHoverVocal={hoverVocal === vocal.vocalId}
-              isClickVocal={clickVocal === vocal.vocalId}
+              isHoverVocal={hoverVocal === index}
+              isClickVocal={clickVocal === index}
               clickVocal={clickVocal}>
               <GradientLine>
-                <AlbumCoverImg              
-                  src={vocal.vocalProfileImage}
-                  alt="앨범자켓사진"
-                />
+                <AlbumCoverImg src={vocal.vocalProfileImage} alt="앨범자켓사진" />
               </GradientLine>
               <GradientProfile
-                isHoverVocal={hoverVocal === vocal.vocalId}
-                isClickVocal={clickVocal === vocal.vocalId}
+                isHoverVocal={hoverVocal === index}
+                isClickVocal={clickVocal === index}
                 clickVocal={clickVocal}></GradientProfile>
-              {play && clickVocal === vocal.vocalId && clickVocal !== -1 && (
+              {play && clickVocal === index && clickVocal !== -1 && (
                 <VocalHoverPauseIcon
-                  isHoverVocal={hoverVocal === vocal.vocalId}
-                  isClickVocal={clickVocal === vocal.vocalId}
+                  isHoverVocal={hoverVocal === index}
+                  isClickVocal={clickVocal === index}
                   clickVocal={clickVocal}
+                  onClick={() => {
+                    onClickPauseVocal(index);
+                  }}
                 />
               )}
-              {((clickVocal !== vocal.vocalId && hoverVocal === vocal.vocalId && hoverVocal !== -1) ||
-                (!play && clickVocal === vocal.vocalId && clickVocal !== -1)) && <VocalHoverPlayIcon />}
+              {((clickVocal !== index && hoverVocal === index && hoverVocal !== -1) ||
+                (!play && clickVocal === index && clickVocal !== -1)) && (
+                <VocalHoverPlayIcon onClick={() => playAudioOnTrack(index, vocal.vocalId)} />
+              )}
             </MusicProfileWrapper>
 
             <HashtagUl>
@@ -190,7 +181,6 @@ const CategoryNum = styled.span`
 
   ${({ theme }) => theme.fonts.description};
 
-
   padding: 0.5rem 0.6rem 0.6rem 0.4rem;
   color: ${({ theme }) => theme.colors.gray2};
   background-color: ${({ theme }) => theme.colors.gray5};
@@ -199,7 +189,7 @@ const CategoryNum = styled.span`
 const AlbumCoverImg = styled.img`
   position: relative;
   transform: rotate(-45deg);
-  object-fit:cover;
+  object-fit: cover;
 
   width: 130%;
   height: 130%;

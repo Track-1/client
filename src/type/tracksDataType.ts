@@ -24,3 +24,9 @@ export interface TrackInfoDataType {
   wavFileLength: number;
   isClosed: boolean; // 마감여부 -> 마감 안함=False
 }
+
+export interface AudioFileDataType {
+  wavFile: string;
+  wavFileLength: number;
+  beatId: number;
+}
