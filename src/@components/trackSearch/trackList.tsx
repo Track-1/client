@@ -23,10 +23,11 @@ interface PropsType {
   duration: number;
   getDuration: (durationTime: number) => void;
   // targetRef: any;
+  getAudioInfos: (title: string, name: string, image: string) => void;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, playAudio, pauseAudio, tracksData, duration, getDuration } = props;
+  const { audio, playAudio, pauseAudio, tracksData, duration, getDuration, getAudioInfos } = props;
   const [trackHover, setTrackHover] = useState<number>(-1);
 
   const [trackClick, setTrackClick] = useState<number>(-1);
@@ -65,7 +66,11 @@ export default function TrackList(props: PropsType) {
     audio.src = tracksData[trackClick]?.wavFile;
     getDuration(tracksData[trackClick]?.wavFileLength);
 
-    console.log(trackClick);
+    getAudioInfos(
+      tracksData[trackClick]?.title,
+      tracksData[trackClick]?.producerName,
+      tracksData[trackClick]?.jacketImage,
+    );
   }, [trackClick]);
 
   const navigate = useNavigate();
@@ -79,6 +84,7 @@ export default function TrackList(props: PropsType) {
   }
 
   function playAudioOnTrack(id: number) {
+    setShowPlayer(true);
     if (trackClick === id) {
       audio.play();
       setPlay(true);

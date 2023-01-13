@@ -39,6 +39,53 @@ export default function VocalProfilePage() {
 
   const userType = useRecoilValue(UserType);
 
+  const fetch = useCallback(async () => {
+    const accessToken =
+      userType === "producer"
+        ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
+        : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
+      console.log(page.current);
+      console.log(portfolioData);
+
+      setHasNextPage(data?.data.producerPortfolio.length === 4);
+      if (data?.data.producerPortfolio.length) {
+        page.current += 1;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    // if (!targetRef.current || !hasNextPage) return;
+    const io = new IntersectionObserver((entries, observer) => {
+      if (entries[0].isIntersecting) {
+        fetch();
+      }
+    });
+    io.observe(targetRef.current);
+
+    return () => {
+      io.disconnect();
+    };
+  }, [fetch, hasNextPage]);
+
+  //end
+
+  useEffect(() => {
+    setWhom(Category.VOCALS);
+  }, []);
+
   const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -149,7 +196,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>{profileData&&<ProducerInfos profileData={profileData}/>}</VocalProfile>
+      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} />}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
           {portfolioData && (
@@ -169,9 +216,9 @@ export default function VocalProfilePage() {
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
 
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </Wrap>
   );
 }

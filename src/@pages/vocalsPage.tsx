@@ -206,9 +206,9 @@ export default function VocalsPage() {
       <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </>
   );
 }

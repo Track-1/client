@@ -13,20 +13,24 @@ interface PropsType {
   pauseAudio: () => void;
   progress: number;
   duration: number;
+  title: string;
+  name: string;
+  image: string;
 }
 
 export default function Player(props: PropsType) {
-  const { audio, playAudio, pauseAudio, progress, duration } = props;
+  const { audio, playAudio, pauseAudio, progress, duration, title, name, image } = props;
   // const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   const playBar = useRef<HTMLDivElement>(null);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [title, setTitle] = useState<string>();
+  // const [title, setTitle] = useState<string>();
   const [producerName, setProducerName] = useState<string>();
   const [barWidth, setBarWidth] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -68,6 +72,14 @@ export default function Player(props: PropsType) {
     setDown(false);
   }
 
+  function hoverPlaybar() {
+    setIsHovered(true);
+  }
+
+  function detachPlyabar() {
+    setIsHovered(false);
+  }
+
   function moveAudio(e: React.MouseEvent<HTMLDivElement>) {
     if (down) {
       const mousePoint = Math.round((e.nativeEvent.offsetX / barWidth) * 100);
@@ -79,23 +91,22 @@ export default function Player(props: PropsType) {
   return (
     <PlayerContainer>
       <PlayerWrapper>
+        <Pointer progress={progress} isActive={isHovered}></Pointer>
         <PlayerBarWrapper
           ref={playBar}
           onClick={controlAudio}
           onMouseDown={downMouse}
           onMouseUp={upMouse}
-          onMouseMove={moveAudio}>
-          <Playbar progress={progress} tracksOrVocals={tracksOrVocals} />
+          onMouseMove={moveAudio}
+          onMouseEnter={hoverPlaybar}
+          onMouseOut={detachPlyabar}>
+          <Playbar progress={progress} tracksOrVocals={tracksOrVocals} isActive={isHovered} />
         </PlayerBarWrapper>
 
         <PlayerInformWrapper>
-          <Thumbnail src={jacketImage} alt="썸네일 이미지" />
-          <PlayerInformText width={74} whiteText={true}>
-            {title}
-          </PlayerInformText>
-          <PlayerInformText width={16} whiteText={false}>
-            {producerName}
-          </PlayerInformText>
+          <Thumbnail src={image} alt="썸네일 이미지" />
+          <PlayerTitleText>{title}</PlayerTitleText>
+          <PlayerNameText>{name}</PlayerNameText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
             {createTimeText(Math.round(audio.currentTime))}
@@ -129,6 +140,8 @@ const PlayerWrapper = styled.article`
 
   cursor: pointer;
   z-index: 1000;
+
+  position: relative;
 `;
 
 const PlayerInformWrapper = styled.div`
@@ -141,17 +154,38 @@ const PlayerInformWrapper = styled.div`
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
   z-index: 1000;
+  position: relative;
 `;
 
-const Playbar = styled.div<{ progress: number; tracksOrVocals: string }>`
+const Playbar = styled.div<{ progress: number; tracksOrVocals: string; isActive: boolean }>`
   width: ${(props) => props.progress}%;
   height: 3rem;
 
   background-color: transparent;
-  border-bottom: 0.3rem solid
+
+  border: 0.3rem solid
     ${({ tracksOrVocals, theme }) => (tracksOrVocals === "Tracks" ? theme.colors.sub1 : theme.colors.sub2)};
   pointer-events: auto;
   z-index: 1000;
+`;
+
+const Pointer = styled.div<{ progress: number; isActive: boolean }>`
+  width: 2.3rem;
+  height: 2.3rem;
+
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(0.3rem);
+  border-radius: 1rem;
+
+  position: absolute;
+  top: 1.8rem;
+  left: ${({ progress }) => progress}%;
+  z-index: 1001;
+
+  pointer-events: none;
+
+  display: ${({ isActive }) => !isActive && "none"};
 `;
 
 const PlayerBarWrapper = styled.div`
@@ -180,6 +214,24 @@ const PlayerInformText = styled.div<{ width: number; whiteText: boolean }>`
 
   ${({ theme }) => theme.fonts.player_title};
   color: ${({ whiteText, theme }) => (whiteText ? theme.colors.white : theme.colors.gray2)};
+  pointer-events: auto;
+  z-index: 1000;
+`;
+
+const PlayerTitleText = styled.div`
+  width: 74rem;
+
+  ${({ theme }) => theme.fonts.player_title};
+  color: ${({ theme }) => theme.colors.white};
+  pointer-events: auto;
+  z-index: 1000;
+`;
+
+const PlayerNameText = styled.div`
+  width: 16rem;
+
+  ${({ theme }) => theme.fonts.id};
+  color: ${({ theme }) => theme.colors.gray2};
   pointer-events: auto;
   z-index: 1000;
 `;

@@ -287,9 +287,9 @@ export default function TrackPostPage() {
         )}
       </TrackPostPageWrapper>
       <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </>
   );
 }

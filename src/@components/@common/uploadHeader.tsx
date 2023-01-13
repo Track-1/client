@@ -55,7 +55,7 @@ export default function UploadHeader(props: PropsType) {
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      console.log(postData);
+      navigate(-1);
       resetTitle();
       resetCategory();
       resetWavFile();
