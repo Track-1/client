@@ -83,8 +83,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     isClicked()&&isNotHovered()&&setId(clickId)
   },[hoverId, clickId])
 
-  console.log("vocal", checkIsPortfolio())
-
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
@@ -100,8 +98,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
               {checkisEllipsis()&& <EllipsisIcon onClick={clickEllipsis} />}
-              {openEllipsisModal && checkIsTitle() && (
-                <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
+              {openEllipsisModal&& checkisEllipsis()&&(
+                <PortfolioUpdateModal isTitle={checkIsTitle()} ref={ellipsisModalRef} profileState={profileState} />
               )}
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>
