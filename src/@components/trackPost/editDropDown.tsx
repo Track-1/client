@@ -21,6 +21,10 @@ const DropDownContainer = styled.ul`
   height: 11.2rem;
   width: 20.1rem;
 
+  position: absolute;
+  left: 14.8rem;
+  top: 64.7rem;
+
   background-color: ${({ theme }) => theme.colors.gray4};
 
   color: ${({ theme }) => theme.colors.white};
