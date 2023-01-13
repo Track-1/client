@@ -38,6 +38,7 @@ export default function EachUserComment(props: dataType) {
 }
 
 const CommentContainer = styled.article`
+  position: relative;
   height: 14.2rem;
 
   display: flex;

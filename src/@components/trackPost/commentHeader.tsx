@@ -23,7 +23,7 @@ export default function CommentHeader() {
 }
 
 const CategoryHeaderContainer = styled.header`
-  /* position: absolute; */
+  /* position: sticky; */
   top: 0;
 
   width: 192rem;
@@ -53,4 +53,6 @@ const HeaderWrapper = styled.div`
 
 const TrackOneIcon = styled(Track1Ic)`
   margin-top: 4.1rem;
+  margin-left: -0.3rem;
+  position: fixed;
 `;

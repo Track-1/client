@@ -285,16 +285,18 @@ export default function TrackPostPage() {
             </InfoContainer>
           </PostSection>
         )}
-      </TrackPostPageWrapper>
+      
       <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
       {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )} */}
+      </TrackPostPageWrapper>
     </>
   );
 }
 
 const TrackPostPageWrapper=styled.div`
+  position: fixed;
 `
 
 const RotateImage = keyframes`
