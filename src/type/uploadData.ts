@@ -4,5 +4,5 @@ export interface UploadData {
   wavFile: File | null;
   introduce: string;
   keyword: string[];
-  jacketImage: File | FormData;
+  jacketImage: File | Blob | FormData;
 }

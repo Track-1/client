@@ -189,11 +189,16 @@ const VocalPortfolioTitle = styled.div`
 
   width: 14rem;
   height: 5rem;
-  margin-top: -5.5rem;
+  margin-top: -6rem;
 
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: normal;
+  text-align: center;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2 ;
+  -webkit-box-orient: vertical;
 
   ${({ theme }) => theme.fonts.id};
   color: ${({ theme }) => theme.colors.gray2};
@@ -271,7 +276,7 @@ const VocalPortfolioImg = styled.img<{
   width: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 150 : 135)}%;
   height: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 150 : 135)}%;
   bottom: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 9 : 3)}rem;
-  right: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 9 : 3)}rem;
+  right: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 7.5 : 3)}rem;
 
   margin-bottom: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 12 : 8.5)}rem;
   margin-top: ${({ vocalPortfolioClickBool, idx }) => idx !== 0 && vocalPortfolioClickBool && 3.5}rem;

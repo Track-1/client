@@ -27,7 +27,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [meId, setMeId] = useState<boolean>(false);
+  const [id, setId] = useState<number>(-1);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   function clickUploadButton() {
     isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
-    isVocalsPage(tracksOrVocals) && navigate("/upload-vocal");
+    isVocalsPage(tracksOrVocals) && navigate("/upload/Portfolio");
   }
 
   function checkIsVocalSearching() {
@@ -63,17 +63,32 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function checkIsTitle() {
-    return hoverId === 0;
+    return (clickId===-1&&hoverId===0)||(clickId===0&&(isHoveredNClicked()||hoverId===-1))
   }
 
-  console.log(isMe, "isMe좀나와라")
+  function isNotHovered(){
+    return hoverId === -1
+  }
+
+  function isClicked(){
+    return clickId!==-1
+  }
+
+  function checkisEllipsis(){
+    return isMe && isClicked()&&(isHoveredNClicked()||isNotHovered())
+  }
+
+  useEffect(()=>{
+    !isNotHovered()&&setId(hoverId)
+    isClicked()&&isNotHovered()&&setId(clickId)
+  },[hoverId, clickId])
 
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
 
-      {portfolios[hoverId] && (
-        <>
+      {portfolios[id] && (
+        <InformContainer>
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
@@ -82,28 +97,32 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
-              {isMe && isHoveredNClicked() && <EllipsisIcon onClick={clickEllipsis} />}
-              {openEllipsisModal && checkIsTitle() && (
-                <PortfolioUpdateModal isTitle={hoverId === 0} ref={ellipsisModalRef} profileState={profileState} />
+              {checkisEllipsis()&& <EllipsisIcon onClick={clickEllipsis} />}
+              {openEllipsisModal&& checkisEllipsis()&&(
+                <PortfolioUpdateModal isTitle={checkIsTitle()} ref={ellipsisModalRef} profileState={profileState} />
               )}
             </InformTitleWrapper>
-            <InformTitle>{portfolios[hoverId].title}</InformTitle>
-            <InformCategory>{portfolios[hoverId].category}</InformCategory>
+            <InformTitle>{portfolios[id].title}</InformTitle>
+            <InformCategory>{portfolios[id].category}</InformCategory>
           </InformWrapper>
 
-          <InformContent>{portfolios[hoverId].content}</InformContent>
+          <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>
-            {portfolios[hoverId].keyword.map((tag, idx) => (
+            {portfolios[id].keyword.map((tag, idx) => (
               <InformTag key={idx} textLength={tag.length}>
                 #{tag}
               </InformTag>
             ))}
           </InformTagWrapper>
-        </>
+        </InformContainer>
       )}
     </PortfolioInformWrapper>
   );
 }
+
+const InformContainer=styled.div`
+  
+`
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   margin-top: 5.9rem;
@@ -161,15 +180,23 @@ const InformContent = styled.p`
   margin-bottom: 2.4rem;
 `;
 
-const InformTag = styled.span<{ textLength: number }>`
+const InformTag = styled.div<{ textLength: number }>`
+  /* position: absolute; */
+
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 
   height: 3.8rem;
-  width: ${({ textLength }) => textLength + 6}rem;
+  /* width: 10rem; */
+  /* width: ${({ textLength }) => textLength*13}%; */
+
+  /* width: ${({ textLength }) => (7>textLength&&textLength>2)?textLength+5:textLength+7}rem;
+  width: ${({ textLength }) => textLength>=7&&textLength+10}rem; */
 
   margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right:2rem;
 
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 2.1rem;
@@ -179,9 +206,9 @@ const InformTag = styled.span<{ textLength: number }>`
 `;
 
 const InformTagWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  column-gap: 1rem;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`

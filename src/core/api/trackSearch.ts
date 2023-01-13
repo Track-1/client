@@ -4,7 +4,8 @@ import { useRecoilValue } from "recoil";
 import { categorySelect } from "../../recoil/categorySelect";
 
 export async function getTracksData(props: string) {
-  const filteredUrlApi = props;  console.log(props);
+  const filteredUrlApi = props;  
+  console.log("api입니다",props);
 
   try {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/filter?page=1&limit=6${filteredUrlApi}`, {

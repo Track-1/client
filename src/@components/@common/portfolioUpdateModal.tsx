@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
+import { profileCategory } from "../../core/constants/pageCategory";
 
 interface PropsType {
   isTitle: boolean;
@@ -10,13 +11,21 @@ interface PropsType {
 export default function PortfolioUpdateModal(props: PropsType) {
   const { isTitle, profileState } = props;
 
+  function checkIsVocalSearching() {
+    return profileState === profileCategory.VOCAL_SEARCHING;
+  }
+
+  function checkIsPortfolio() {
+    return profileState === profileCategory.PORTFOLIO;
+  }
+
   return (
-    <ModalWrapper isTitle={isTitle} profileState={profileState}>
+    <ModalWrapper isTitle={isTitle} checkIsPortfolio={checkIsPortfolio()} checkIsVocalSearching={checkIsVocalSearching()}>
       <ModalBox underline={true}>
         수정하기
         <PencilUpdateIc />
       </ModalBox>
-      {profileState !== "Vocal Searching" ? (
+      {!checkIsVocalSearching() ? (
         <ModalBox underline={!isTitle}>
           삭제하기
           <TrashDeleteIc />
@@ -27,7 +36,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
           <TrashDeleteIc />
         </ModalBox>
       )}
-      {!isTitle && profileState !== "Vocal Searching" && (
+      {!isTitle && !checkIsVocalSearching() && (
         <ModalBox underline={false}>
           타이틀 설정
           <SetIsTitleIc />
@@ -37,15 +46,15 @@ export default function PortfolioUpdateModal(props: PropsType) {
   );
 }
 
-const ModalWrapper = styled.div<{ isTitle: boolean; profileState: string }>`
+const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean, checkIsVocalSearching:boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   position: absolute;
   left: 17.2rem;
-  margin-top: ${({ isTitle, profileState }) => (isTitle || profileState === "Vocal Searching") && 16}rem;
-  margin-top: ${({ isTitle, profileState }) => !isTitle && profileState === "Portfolio" && 21}rem;
+  margin-top: ${({ isTitle, checkIsVocalSearching }) => (isTitle || checkIsVocalSearching) && 16}rem;
+  margin-top: ${({ isTitle, checkIsPortfolio }) => (!isTitle && checkIsPortfolio) && 21}rem;
 
   width: 20.1rem;
 

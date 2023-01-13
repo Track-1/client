@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
-import { uploadTrackJacketImage } from "../../recoil/upload";
+import { uploadTrackJacketImage, defaultImageState } from "../../recoil/upload";
 import { useRecoilState } from "recoil";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import { FileChangeIc } from "../../assets";
 
 export default function TrackUpload() {
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
-  const [tarckJacketImage, setTrackJacketImage] = useRecoilState<File>(uploadTrackJacketImage);
+  const [tarckJacketImage, setTrackJacketImage] = useRecoilState<File | Blob>(uploadTrackJacketImage);
+  const [defaultstate, setDefaultState] = useRecoilState<boolean>(defaultImageState);
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -31,6 +32,7 @@ export default function TrackUpload() {
       const fileUrl = URL.createObjectURL(e.target.files[0]);
       setTrackUploadImg(fileUrl);
       setTrackJacketImage(e.target.files[0]);
+      setDefaultState(false);
     }
   }
 
