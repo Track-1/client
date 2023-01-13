@@ -234,7 +234,7 @@ export default function TrackPostPage() {
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
-      <>
+      <TrackPostPageWrapper>
         {trackInfoData && (
           <PostSection>
             <TitleContainer>
@@ -285,7 +285,7 @@ export default function TrackPostPage() {
             </InfoContainer>
           </PostSection>
         )}
-      </>
+      </TrackPostPageWrapper>
       <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
@@ -293,6 +293,9 @@ export default function TrackPostPage() {
     </>
   );
 }
+
+const TrackPostPageWrapper=styled.div`
+`
 
 const RotateImage = keyframes`
     100% {transform: rotate(360deg)};

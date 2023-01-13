@@ -74,7 +74,7 @@ export default function VocalsPage() {
   //   },
   // );
 
-  //여기부터 찐이야
+
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
@@ -91,70 +91,65 @@ export default function VocalsPage() {
   //   page.current=1
   // },[filteredUrlApi])
 
-  const { data } = useQuery(
-    ["filteredUrlApi", filteredUrlApi, isSelected, vocalsData],
-    () => getVocalsData(filteredUrlApi, isSelected),
-    {
-      refetchOnWindowFocus: false,
-      retry: 0,
-      onSuccess: (data) => {
-        if (data?.status === 200 && page.current === 2) {
-          setVocalsData(data?.data.data.vocalList);
-        }
-      },
-      onError: (error) => {
-        console.log("실패");
-      },
+  const { data } = useQuery(["filteredUrlApi", filteredUrlApi, isSelected, vocalsData], () => getVocalsData(filteredUrlApi, isSelected), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      // if (data?.status === 200&&page.current===2) {
+      if (data?.status === 200) {
+        setVocalsData(data?.data.data.vocalList);
+      }
     },
-  );
+    onError: (error) => {
+      console.log("실패");
+    },
+  });
+  
+  // const fetch = useCallback(async (filteredUrlApi: string) => {
+  //   try {
+  //     const { data } = await axios.get(
+  //     `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=${page.current}&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
+  //         },
+  //       },
+  //     );
+  //     setHasNextPage(data?.data.vocalList.length === 8);
 
-  console.log(vocalsData);
-  const fetch = useCallback(async (filteredUrlApi: string) => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=${page.current}&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
-          },
-        },
-      );
-      setHasNextPage(data?.data.vocalList.length === 8);
+  //     setVocalsData(prev=>[...prev, ...data?.data?.vocalList]);
 
-      setVocalsData((prev) => [...prev, ...data?.data?.vocalList]);
+  //     if (data?.data.vocalList.length) {
+  //       page.current += 1;
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }, []);
 
-      console.log(data?.data.vocalList.length);
+  // useEffect(() => {
+  //   console.log("4",filteredUrlApi)
 
-      if (data?.data.vocalList.length) {
-        page.current += 1;
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
+  //   const io = new IntersectionObserver((entries, observer) => {
+  //     console.log(entries[0].isIntersecting)
+  //     if (entries[0].isIntersecting) {
+  //       console.log("5",filteredUrlApi)
+  //       fetch(filteredUrlApi);
+  //     }
+  //   });
+  //   io.observe(targetRef.current);
 
-  useEffect(() => {
-    console.log("4", filteredUrlApi);
-
-    const io = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        console.log("5", filteredUrlApi);
-
-        fetch(filteredUrlApi);
-      }
-    });
-    io.observe(targetRef.current);
-
-    return () => {
-      io.disconnect();
-    };
-  }, [fetch, hasNextPage, filteredUrlApi]);
-
+  //   return () => {
+  //     io.disconnect();
+  //   };
+  // }, [fetch, hasNextPage,filteredUrlApi]);
+  
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
-  //여기까지야
+//end
+
   function playAudio() {
     audio.play();
     setPlay(true);
@@ -188,8 +183,6 @@ export default function VocalsPage() {
     setCurrentDuration(durationTime);
   }
 
-  console.log("페이지", page.current);
-
   return (
     <>
       <CategoryHeader />
@@ -210,7 +203,7 @@ export default function VocalsPage() {
               getDuration={getDuration}
             />
           )}
-          <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
+      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
       {showPlayer && (
@@ -233,5 +226,6 @@ const VocalListWrapper = styled.div`
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
-  background-color: pink;
+
 `;
+
