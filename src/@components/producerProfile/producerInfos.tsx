@@ -6,15 +6,25 @@ import { theme } from "../../style/theme";
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
+import { useRecoilValue } from "recoil";
+import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   profileData: ProducerProfileType;
 }
 
 export default function ProducerInfos(props: PropsType) {
+  const navigate = useNavigate();
   const { profileData } = props;
+  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
-  console.log(profileData.category);
+  function moveMypage() {
+    tracksOrVocals === "vocal"
+      ? navigate("/vocal-profile/1", { state: 1 })
+      : navigate("/producer-profile/2", { state: 2 });
+  }
+  console.log(tracksOrVocals);
 
   return (
     <InfoContainer>
@@ -22,7 +32,18 @@ export default function ProducerInfos(props: PropsType) {
         <BackButton />
         <Blank />
       </InfoHeader>
-      <ProfileImage />
+      {tracksOrVocals === "Vocals" ? (
+        <VocalProfileImageContainer>
+          <VocalProfileImage>
+            <VocalProfileImg src={profileData.profileImge} alt="프로필이미지" />
+          </VocalProfileImage>
+        </VocalProfileImageContainer>
+      ) : (
+        <ProfileImage>
+          <ProfileImg src={profileData.profileImge} alt="프로필이미지" />
+        </ProfileImage>
+      )}
+
       <ProducerName>{profileData.name}</ProducerName>
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
@@ -89,15 +110,48 @@ const InfoHeader = styled.div`
 const Blank = styled.div`
   width: 2rem;
 `;
-const ProfileImage = styled.div`
-  height: 25.9rem;
-  width: 25.9rem;
+
+const ProfileImg = styled.img`
+  height: 25.8rem;
+  width: 26.1rem;
 
   border-radius: 50%;
-
-  background-image: url(${thumbnailImg});
+`;
+const ProfileImage = styled.div`
   background-repeat: no-repeat;
   background-size: contain;
+
+  margin-top: 2rem;
+`;
+
+const VocalProfileImageContainer = styled.div`
+  margin-top: 5rem;
+  margin-bottom: 2.1rem;
+
+  height: 19.3rem;
+  width: 19.3rem;
+
+  border-radius: 3rem;
+  transform: rotate(45deg);
+
+  overflow: hidden;
+`;
+
+const VocalProfileImg = styled.img`
+  height: 26.8rem;
+  width: 26.7rem;
+
+  position: relative;
+
+  top: -2rem;
+  left: -0.5rem;
+  right: 0;
+  bottom: 0;
+`;
+const VocalProfileImage = styled.div`
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: rotate(-45deg);
 `;
 
 const ProducerName = styled.h1`

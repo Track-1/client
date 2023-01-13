@@ -11,6 +11,7 @@ export interface VocalPortfolioType {
 
 export interface VocalProfileType {
   profileImage: string;
+  profileImge: string;
   name: string;
   contact: string;
   category: string[];
