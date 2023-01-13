@@ -63,7 +63,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function checkIsTitle() {
-    return (clickId===-1&&hoverId===0)||(clickId===0&&(isHoveredNClicked()||hoverId===-1))
+    return (clickId===-1&&hoverId===0)||(clickId===0&&(isHoveredNClicked()||hoverId===-1)||(hoverId===0))
   }
 
   function isNotHovered(){
@@ -81,6 +81,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   useEffect(()=>{
     !isNotHovered()&&setId(hoverId)
     isClicked()&&isNotHovered()&&setId(clickId)
+    !isClicked()&&isNotHovered()&&setId(clickId)
   },[hoverId, clickId])
 
   return (
@@ -101,10 +102,11 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {openEllipsisModal&& checkisEllipsis()&&(
                 <PortfolioUpdateModal isTitle={checkIsTitle()} ref={ellipsisModalRef} profileState={profileState} />
               )}
+
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>
             <InformCategory>{portfolios[id].category}</InformCategory>
-          </InformWrapper>
+        </InformWrapper>
 
           <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>

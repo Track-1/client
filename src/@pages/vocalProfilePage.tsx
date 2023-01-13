@@ -39,60 +39,11 @@ export default function VocalProfilePage() {
 
   const userType = useRecoilValue(UserType);
 
-  const fetch = useCallback(async () => {
-    const accessToken =
-    userType === "producer"
-      ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
-      : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
-      console.log(page.current);
-      console.log(portfolioData);
-
-      setHasNextPage(data?.data.producerPortfolio.length === 4);
-      if (data?.data.producerPortfolio.length) {
-        page.current += 1;
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    // if (!targetRef.current || !hasNextPage) return;
-    const io = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        fetch();
-      }
-    });
-    io.observe(targetRef.current);
-
-    return () => {
-      io.disconnect();
-    };
-  }, [fetch, hasNextPage]);
-
-  //end
-
-
-  useEffect(() => {
-    setWhom(Category.VOCALS);
-  }, []);
-
-
   const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-      if (data?.status === 200) {
+      if (data?.status === 200 &&page.current===1) {
         setIsMe(data?.data.data.isMe);
         setProfileData(data?.data.data.vocalProfile);
         setPortfolioData(data?.data.data.vocalPortfolio);
@@ -102,6 +53,53 @@ export default function VocalProfilePage() {
       console.log("실패");
     },
   });
+
+  // const fetch = useCallback(async () => {
+  //   const accessToken =
+  //   userType === "producer"
+  //     ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
+  //     : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
+  //   try {
+  //     const { data } = await axios.get(  
+  //       `${process.env.REACT_APP_BASE_URL}/profile/vocal/${state}?page=${page.current}&limit=3`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       },
+  //     );
+  //     setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
+
+  //     setHasNextPage(data?.data.producerPortfolio.length === 4);
+  //     if (data?.data.producerPortfolio.length) {
+  //       page.current += 1;
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   // if (!targetRef.current || !hasNextPage) return;
+  //   const io = new IntersectionObserver((entries, observer) => {
+  //     if (entries[0].isIntersecting) {
+  //       fetch();
+  //     }
+  //   });
+  //   io.observe(targetRef.current);
+
+  //   return () => {
+  //     io.disconnect();
+  //   };
+  // }, [fetch, hasNextPage]);
+
+  //end
+
+
+  useEffect(() => {
+    setWhom(Category.VOCALS);
+  }, []);
+
 
   // useEffect(()=>{
   //   console.log("isMe입력", isMe)
