@@ -135,8 +135,6 @@ export default function TrackPostPage() {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        // console.log(data);
-        // console.log("성공");
         setTrackInfoData(data?.data.data);
         setFileLink(data?.data.data.beatWavFile);
         //   const download = document.createElement('a');
@@ -144,7 +142,6 @@ export default function TrackPostPage() {
         //   download.setAttribute('download', data?.data.data.beatWavFile);
         // download.setAttribute('type', 'application/json');
         //  download.click();
-
       }
     },
     onError: (error) => {
