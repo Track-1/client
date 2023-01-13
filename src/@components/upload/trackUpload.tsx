@@ -20,20 +20,45 @@ export default function TrackUpload() {
   }
 
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length === 0) {
-      if (trackUploadImg === TrackUploadDefaultImg) {
-        setTrackUploadImg(TrackUploadDefaultImg);
-      } else {
-        return;
-      }
-    }
+    const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
 
-    if (e.target.files !== null) {
-      const fileUrl = URL.createObjectURL(e.target.files[0]);
-      setTrackUploadImg(fileUrl);
-      setTrackJacketImage(e.target.files[0]);
-      setDefaultState(false);
+    if (isImageType(uploadName)) {
+      if (e.target.value.length === 0) {
+        if (trackUploadImg === TrackUploadDefaultImg) {
+          setTrackUploadImg(TrackUploadDefaultImg);
+        } else {
+          return;
+        }
+      }
+
+      if (e.target.files !== null) {
+        const fileUrl = URL.createObjectURL(e.target.files[0]);
+        const imageSize = e.target.files[0].size;
+        if (checImageSize(imageSize)) {
+          setTrackUploadImg(fileUrl);
+          setTrackJacketImage(e.target.files[0]);
+          setDefaultState(false);
+        }
+      }
+    } else {
+      alert("확장자 명을 확인 해주세요!");
     }
+  }
+
+  function checImageSize(imageSize: number): boolean {
+    if (imageSize > 5 * 1024 * 1024) {
+      alert("이미지 용량제한은 5MB 이하 입니다.");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function isImageType(uploadName: string) {
+    const fileType = uploadName.substring(uploadName.length - 4);
+    let isImageType;
+    fileType === ".jpg" || fileType === "jpeg" || fileType === ".png" ? (isImageType = true) : (isImageType = false);
+    return isImageType;
   }
 
   async function convertURLtoFile(url: string) {

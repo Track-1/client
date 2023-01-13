@@ -1,17 +1,30 @@
 import styled from "styled-components";
 import { BackBtnIc, CategoryIc, DescriptionIc, HashtagIc } from "../../assets";
+import { useState } from "react";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
 import { theme } from "../../style/theme";
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
+import { useRecoilValue } from "recoil";
+import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   profileData: ProducerProfileType;
 }
 
 export default function ProducerInfos(props: PropsType) {
+  const navigate = useNavigate();
   const { profileData } = props;
+  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+
+  function moveMypage() {
+    tracksOrVocals === "vocal"
+      ? navigate("/vocal-profile/1", { state: 1 })
+      : navigate("/producer-profile/2", { state: 2 });
+  }
+  console.log(tracksOrVocals);
 
   return (
     <InfoContainer>
@@ -19,13 +32,44 @@ export default function ProducerInfos(props: PropsType) {
         <BackButton />
         <Blank />
       </InfoHeader>
-      <ProfileImage />
+      {tracksOrVocals === "Vocals" ? (
+        <VocalProfileImageContainer>
+          <VocalProfileImage>
+            <VocalProfileImg src={profileData.profileImge} alt="프로필이미지" />
+          </VocalProfileImage>
+        </VocalProfileImageContainer>
+      ) : (
+        <ProfileImage>
+          <ProfileImg src={profileData.profileImge} alt="프로필이미지" />
+        </ProfileImage>
+      )}
+
       <ProducerName>{profileData.name}</ProducerName>
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
           <CategoryIc />
           {/* //로직 수정 필요 */}
+          <CategoryArray>
+            {/* {profileData.category } */}
+            {profileData.category.indexOf("R&B") > -1 ? <Category>R&B</Category> : <NotCategory>R&B</NotCategory>}
+            {profileData.category.indexOf("Hiphop") > -1 ? (
+              <Category>Hiphop</Category>
+            ) : (
+              <NotCategory>Hiphop</NotCategory>
+            )}
+            {profileData.category.indexOf("Ballad") > -1 ? (
+              <Category>Ballad</Category>
+            ) : (
+              <NotCategory>Ballad</NotCategory>
+            )}
+            {profileData.category.indexOf("Pop") > -1 ? <Category>Pop</Category> : <NotCategory>Pop</NotCategory>}
+            {profileData.category.indexOf("Rock") > -1 ? <Category>Rock</Category> : <NotCategory>Rock</NotCategory>}
+            {profileData.category.indexOf("EDM") > -1 ? <Category>EDM</Category> : <NotCategory>EDM</NotCategory>}
+            {profileData.category.indexOf("JAZZ") > -1 ? <Category>JAZZ</Category> : <NotCategory>JAZZ</NotCategory>}
+            {profileData.category.indexOf("House") > -1 ? <Category>House</Category> : <NotCategory>House</NotCategory>}
+            {profileData.category.indexOf("Funk") > -1 ? <Category>Funk</Category> : <NotCategory>Funk</NotCategory>}
+          </CategoryArray>
         </CategoryBox>
         <HashtagBox>
           <HashtagIcon />
@@ -35,7 +79,7 @@ export default function ProducerInfos(props: PropsType) {
         </HashtagBox>
       </DetailInfoContainer>
       <DescriptionBox>
-        <DescriptionIc />
+        <DescriptionIcon />
         <Inroduce>{profileData.introduce}</Inroduce>
       </DescriptionBox>
     </InfoContainer>
@@ -66,15 +110,48 @@ const InfoHeader = styled.div`
 const Blank = styled.div`
   width: 2rem;
 `;
-const ProfileImage = styled.div`
-  height: 25.9rem;
-  width: 25.9rem;
+
+const ProfileImg = styled.img`
+  height: 25.8rem;
+  width: 26.1rem;
 
   border-radius: 50%;
-
-  background-image: url(${thumbnailImg});
+`;
+const ProfileImage = styled.div`
   background-repeat: no-repeat;
   background-size: contain;
+
+  margin-top: 2rem;
+`;
+
+const VocalProfileImageContainer = styled.div`
+  margin-top: 5rem;
+  margin-bottom: 2.1rem;
+
+  height: 19.3rem;
+  width: 19.3rem;
+
+  border-radius: 3rem;
+  transform: rotate(45deg);
+
+  overflow: hidden;
+`;
+
+const VocalProfileImg = styled.img`
+  height: 26.8rem;
+  width: 26.7rem;
+
+  position: relative;
+
+  top: -2rem;
+  left: -0.5rem;
+  right: 0;
+  bottom: 0;
+`;
+const VocalProfileImage = styled.div`
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: rotate(-45deg);
 `;
 
 const ProducerName = styled.h1`
@@ -94,7 +171,7 @@ const ProducerEmail = styled.h2`
 `;
 
 const DetailInfoContainer = styled.section`
-  width: 37rem;
+  width: 43.5rem;
 
   display: flex;
   justify-content: space-between;
@@ -102,18 +179,32 @@ const DetailInfoContainer = styled.section`
   margin-top: 4.6rem;
 `;
 
-const CategoryBox = styled.div<{ isSelected: boolean }>`
-  color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray4)};
+const NotCategory = styled.li`
+  color: ${({ theme }) => theme.colors.gray4};
+
+  ${({ theme }) => theme.fonts.hashtag};
+
+  margin-bottom: 1.1rem;
+  margin-right: 3.2rem;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+`;
+
+const CategoryBox = styled.div<{ isSelected: boolean }>`
+  color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => theme.fonts.hashtag};
+
+  display: flex;
+  flex-direction: column;
 `;
 
 const HashtagBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+
+  margin-right: 3.59rem;
 `;
 
 const HashtagIcon = styled(HashtagIc)`
@@ -133,5 +224,24 @@ const DescriptionBox = styled.div`
 `;
 
 const Inroduce = styled.div`
+  width: 28.5rem;
+
+  word-break: keep-all;
+
   float: left;
+`;
+
+const DescriptionIcon = styled(DescriptionIc)`
+  margin-top: 0.7rem;
+  margin-right: 2.9rem;
+`;
+
+const CategoryArray = styled.ul`
+  height: 14.4rem;
+  column-count: 2;
+  margin-top: 2.5rem;
+`;
+const Category = styled.li`
+  //padding-bottom: 1.1rem;
+  margin-bottom: 1.1rem;
 `;

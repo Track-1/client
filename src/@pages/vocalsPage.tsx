@@ -13,13 +13,15 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
 import TrackListHeader from "../@components/trackSearch/trackListHeader";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { getVocalsData } from "../core/api/vocalSearch";
 import { playMusic } from "../recoil/player";
 import { categorySelect, trackSearching } from "../recoil/categorySelect";
 import { vocalListinfiniteScroll } from "../recoil/infiniteScroll";
 import { useQuery, useInfiniteQuery } from "react-query";
 import useIntersectObserver from "../utils/hooks/useIntersectObserver";
+import axios from "axios";
+import { VocalsDataType } from "../type/vocalsDataType";
 
 export default function VocalsPage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
@@ -32,44 +34,121 @@ export default function VocalsPage() {
   const pageNum = useRecoilValue(vocalListinfiniteScroll);
 
   const audio = useMemo(() => new Audio(), []);
+
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);
 
-  const [page, setPage] = useState(1);
-  const [vocalList, setVocalList] = useState<any>([]);
+  // const [page, setPage] = useState(1);
+  const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
   const intersectRef = useRef(null);
   const [isLastPage, setIsLastPage] = useState(false);
-  const { isIntersect } = useIntersectObserver(intersectRef, {
-    rootMargin: "200px",
-    threshold: 0.05,
-  });
+  // const { isIntersect } = useIntersectObserver(intersectRef, {
+  //   rootMargin: "200px",
+  //   threshold: 0.05,
+  // });
 
-  const loadMoreCommentData = async () => {
-    if (isIntersect) {
-      const data = await getVocalsData(filteredUrlApi, isSelected, page);
-      setVocalList((prev: any) => prev && [...prev, ...data?.data.data.vocalList]);
-      setPage((prev) => prev + 1);
-    }
-  };
+  // const loadMoreCommentData = async () => {
+  //   if (isIntersect) {
+  //     const data = await getVocalsData(filteredUrlApi, isSelected, page);
+  //     setVocalList((prev: any) => prev && [...prev, ...data?.data.data.vocalList]);
+  //     setPage((prev) => prev + 1);
+  //   }
+  // };
 
-  useEffect(() => {
-    loadMoreCommentData();
-  }, [isIntersect, isLastPage]);
+  // useEffect(() => {
+  //   loadMoreCommentData();
+  // }, [isIntersect, isLastPage]);
 
-  const { data } = useQuery(
-    ["changeVocal", filteredUrlApi, isSelected, pageNum],
-    () => getVocalsData(filteredUrlApi, isSelected, pageNum),
-    {
-      refetchOnWindowFocus: false,
-      retry: 0,
-      onSuccess: (data) => {
-        if (data?.status === 200) {
-        }
-      },
-      onError: (error) => {},
+  // const { data } = useQuery(
+  //   ["changeVocal", filteredUrlApi, isSelected, pageNum],
+  //   () => getVocalsData(filteredUrlApi, isSelected, pageNum),
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     retry: 0,
+  //     onSuccess: (data) => {
+  //       if (data?.status === 200) {
+  //       }
+  //     },
+  //     onError: (error) => {},
+  //   },
+  // );
+
+
+  const targetRef = useRef<any>();
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+
+  const page = useRef<number>(1);
+
+  // useEffect(()=>{
+  //   console.log("데이터",vocalsData)
+  //   console.log("페이지",page.current)
+  // },[vocalsData])
+
+  //dfdfdfdfd
+  // useEffect(()=>{
+  //   setVocalsData([])
+  //   page.current=1
+  // },[filteredUrlApi])
+
+  const { data } = useQuery(["filteredUrlApi", filteredUrlApi, isSelected, vocalsData], () => getVocalsData(filteredUrlApi, isSelected), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      // if (data?.status === 200&&page.current===2) {
+      if (data?.status === 200) {
+        setVocalsData(data?.data.data.vocalList);
+      }
     },
-  );
+    onError: (error) => {
+      console.log("실패");
+    },
+  });
+  
+  // const fetch = useCallback(async (filteredUrlApi: string) => {
+  //   try {
+  //     const { data } = await axios.get(
+  //     `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=${page.current}&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
+  //         },
+  //       },
+  //     );
+  //     setHasNextPage(data?.data.vocalList.length === 8);
+
+  //     setVocalsData(prev=>[...prev, ...data?.data?.vocalList]);
+
+  //     if (data?.data.vocalList.length) {
+  //       page.current += 1;
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log("4",filteredUrlApi)
+
+  //   const io = new IntersectionObserver((entries, observer) => {
+  //     console.log(entries[0].isIntersecting)
+  //     if (entries[0].isIntersecting) {
+  //       console.log("5",filteredUrlApi)
+  //       fetch(filteredUrlApi);
+  //     }
+  //   });
+  //   io.observe(targetRef.current);
+
+  //   return () => {
+  //     io.disconnect();
+  //   };
+  // }, [fetch, hasNextPage,filteredUrlApi]);
+  
+  useEffect(() => {
+    setWhom(Category.VOCALS);
+  }, []);
+
+//end
 
   function playAudio() {
     audio.play();
@@ -116,7 +195,7 @@ export default function VocalsPage() {
           <VocalListHeader />
           {data && (
             <VocalList
-              vocalData={vocalList}
+              vocalData={vocalsData}
               audio={audio}
               playAudio={playAudio}
               pauseAudio={pauseAudio}
@@ -124,7 +203,7 @@ export default function VocalsPage() {
               getDuration={getDuration}
             />
           )}
-          {!isLastPage && <IntersectDiv ref={intersectRef}>O</IntersectDiv>}
+      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
       {/* {showPlayer && (
@@ -144,7 +223,9 @@ const VocalListWrapper = styled.div`
   width: 159.9rem;
 `;
 
-const IntersectDiv = styled.div`
+const InfiniteWrapper = styled.div`
   width: 100%;
-  height: 100px;
+  height: 2rem;
+
 `;
+

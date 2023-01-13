@@ -17,7 +17,7 @@ import profileDummyImg from "../assets/image/profileDummyImg.png";
 import playImg from "../assets/image/playImg.png";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState } from "recoil";
@@ -51,6 +51,8 @@ export default function TrackPostPage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [beatId, setBeatId] = useState<number>(-1);
+  const [fileLink,setFileLink]=useState<string>()
+  const [title, setTile]=useState<string>()
 
   const { state } = useLocation();
 
@@ -59,6 +61,7 @@ export default function TrackPostPage() {
   }, []);
 
   useEffect(() => {
+    trackInfoData&&setTile(trackInfoData.title)
     if (trackInfoData?.beatWavFile !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
       setCurrentDuration(trackInfoData?.wavFileLength);
@@ -132,10 +135,8 @@ export default function TrackPostPage() {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        // console.log(data);
-        // console.log("성공");
         setTrackInfoData(data?.data.data);
-        console.log(data?.data.data);
+        setFileLink(data?.data.data.beatWavFile);
         //   const download = document.createElement('a');
         //  download.href = data?.data.data.beatWavFile;
         //   download.setAttribute('download', data?.data.data.beatWavFile);
@@ -148,12 +149,92 @@ export default function TrackPostPage() {
     },
   });
 
+
+	// const downloadFile = () => {
+	// 	if (fileLink) {
+	// 		fetch(fileLink, { method: 'GET' })
+	// 			.then(res => {
+	// 				return res.blob();
+	// 			})
+	// 			.then(blob => {
+	// 				const url = window.URL.createObjectURL(blob);
+	// 				const a = document.createElement('a');
+	// 				a.href = url;
+	// 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
+	// 				document.body.appendChild(a);
+	// 				a.click();
+	// 				setTimeout(_ => {
+	// 					window.URL.revokeObjectURL(url);
+	// 				}, 60000);
+	// 				a.remove();
+	// 				// setOpen(false);
+	// 			})
+	// 			.catch(err => {
+	// 				console.error('err: ', err);
+	// 			});
+	// 	} else {
+	// 		alert(
+	// 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
+	// 		);
+	// 	}
+	// };
+
+  // function downloadFile(){
+  //   fetch(`${fileLink}`, {method: 'GET'})
+  //   .then(res => {
+  //     return res.blob();
+  //   })
+  //   .then(blob => {
+  //     var url = window.URL.createObjectURL(blob);
+  //     var a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = 'myItem.extension';
+  //     document.body.appendChild(a); 
+  //     a.click();  
+  //     setTimeout(
+  //       _ => { window.URL.revokeObjectURL(url); }, 
+  //       60000); 
+  //     a.remove(); 
+  //   })
+  //   .catch(err => {
+  //     console.error('err: ', err);
+  //   })
+  // }
+
+//   function downloadFile (){
+//     console.log("dfdfd")
+//     const url = fileLink
+//     const download = document.createElement('a');
+
+//     download.href = url?url:"";
+//     download.setAttribute('download',title?title:"");
+//     download.setAttribute('type', 'application/json');
+//     download.click();
+// }
+  const downloadFile = useCallback((fileName:string, fileLink:string) => {
+    // console.log("eee", title)
+    // console.log("url", fileLink)
+
+    // let fileName = `${title}`;
+    const blob = new Blob([fileLink], {type: 'audio/mp3'})
+    const url=window.URL.createObjectURL(blob)
+
+    const element = document.createElement('a');
+    element.href =url
+    element.download = fileName;
+    // document.body.appendChild(element); // FireFox
+    element.click();
+
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(blob);
+  },[])
+
   return (
     <>
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
-      <>
+      <TrackPostPageWrapper>
         {trackInfoData && (
           <PostSection>
             <TitleContainer>
@@ -170,7 +251,9 @@ export default function TrackPostPage() {
               <ButtonWrapper>
                 {trackInfoData.isMe &&
                   (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
+                  {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
+                  {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>)}
+                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
@@ -202,7 +285,7 @@ export default function TrackPostPage() {
             </InfoContainer>
           </PostSection>
         )}
-      </>
+      </TrackPostPageWrapper>
       <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
       {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
@@ -210,6 +293,9 @@ export default function TrackPostPage() {
     </>
   );
 }
+
+const TrackPostPageWrapper=styled.div`
+`
 
 const RotateImage = keyframes`
     100% {transform: rotate(360deg)};

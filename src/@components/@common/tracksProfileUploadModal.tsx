@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import {
   VocalSearchingIc,
   PortfolioIc,
@@ -10,7 +11,16 @@ import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 import { useRecoilState } from "recoil";
 
 export default function TracksProfileUploadModal() {
+  const navigate = useNavigate();
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
+
+  function moveVocalSearching() {
+    navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
+  }
+
+  function movePortfolio() {
+    navigate("/upload/Portfoilo", { state: "Portfoilo" });
+  }
 
   function clickOutside() {
     setVisible(false);
@@ -20,14 +30,14 @@ export default function TracksProfileUploadModal() {
     <>
       <UploadButtonModalWrapper>
         <ModalWrapper>
-          <VocalSearchingWrapper>
+          <VocalSearchingWrapper onClick={moveVocalSearching}>
             <VocalSearchingIcon />
             <TextWrapper marginTop={2.7}>
               <VocalSearchingTextIc />
               <Explain>보컬이 필요한 스케치곡</Explain>
             </TextWrapper>
           </VocalSearchingWrapper>
-          <PortfolioWrapper>
+          <PortfolioWrapper onClick={movePortfolio}>
             <PortfolioIcon />
             <TextWrapper marginTop={13}>
               <PortfolioTextIc />

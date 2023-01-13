@@ -113,8 +113,8 @@ export default function TrackList(props: PropsType) {
     setShowPlayer(false);
   }
 
-  function moveProducerProfilePage(id: number) {
-    navigate(`/producer-profile/${id}`, { state: id });
+  function moveProducerProfilePage(producdrId: number) {
+    navigate(`/producer-profile/${producdrId}`, { state: producdrId });
   }
 
   return (
@@ -146,7 +146,7 @@ export default function TrackList(props: PropsType) {
               <TrackText width={36.8} isHover={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.beatId)}>
+              <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.producerId)}>
                 {track.producerName}
               </TrackText>
               <TrackText width={20.5} isHover={false}>
