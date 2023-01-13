@@ -18,7 +18,6 @@ import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 
 export default function VocalProfilePage() {
-  const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
@@ -27,10 +26,16 @@ export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
   const [portfolioData, setPortfolioData] = useState<VocalPortfolioType[]>([]);
+  const [title, setTitle] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const audio = useMemo(() => new Audio(), []);
 
   const { state } = useLocation();
+  useEffect(() => {
+    setShowPlayer(false);
+  });
 
   // infinite
   const targetRef = useRef<any>();
@@ -90,7 +95,7 @@ export default function VocalProfilePage() {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-      if (data?.status === 200 &&page.current===1) {
+      if (data?.status === 200 && page.current === 1) {
         setIsMe(data?.data.data.isMe);
         setProfileData(data?.data.data.vocalProfile);
         setPortfolioData(data?.data.data.vocalPortfolio);
@@ -107,7 +112,7 @@ export default function VocalProfilePage() {
   //     ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
   //     : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
   //   try {
-  //     const { data } = await axios.get(  
+  //     const { data } = await axios.get(
   //       `${process.env.REACT_APP_BASE_URL}/profile/vocal/${state}?page=${page.current}&limit=3`,
   //       {
   //         headers: {
@@ -142,11 +147,9 @@ export default function VocalProfilePage() {
 
   //end
 
-
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
-
 
   // useEffect(()=>{
   //   console.log("isMe입력", isMe)
@@ -155,6 +158,7 @@ export default function VocalProfilePage() {
   function playAudio() {
     audio.play();
     setPlay(true);
+    setShowPlayer(true);
   }
 
   // function playAudio() {
@@ -186,11 +190,21 @@ export default function VocalProfilePage() {
       const currentDuration = (audio.currentTime / audio.duration) * 100;
       console.log(audio.currentTime, audio.duration);
       setProgress(currentDuration);
+      checkAudioQuit();
     }
+  }
+
+  function checkAudioQuit() {
+    audio.duration === audio.currentTime && setPlay(false);
   }
 
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
+  }
+
+  function getAudioInfos(title: string, image: string) {
+    setTitle(title);
+    setImage(image);
   }
 
   return (
@@ -209,6 +223,7 @@ export default function VocalProfilePage() {
               duration={duration}
               getDuration={getDuration}
               infiniteRef={targetRef}
+              getAudioInfos={getAudioInfos}
             />
           )}
           <VocalProfileShadow />
@@ -216,9 +231,18 @@ export default function VocalProfilePage() {
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
 
-      {/* {showPlayer && (
-        <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )} */}
+      {showPlayer && profileData && (
+        <Player
+          audio={audio}
+          playAudio={playAudio}
+          pauseAudio={pauseAudio}
+          progress={progress}
+          duration={duration}
+          title={title}
+          name={profileData?.name}
+          image={image}
+        />
+      )}
     </Wrap>
   );
 }

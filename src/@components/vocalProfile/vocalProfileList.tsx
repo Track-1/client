@@ -11,7 +11,8 @@ import { VocalProfileType, VocalPortfolioType } from "../../type/vocalProfile";
 import Player from "../@common/player";
 
 export default function VocalProfileList(props: any) {
-  const { audio, isMe, portfolioData, playAudio, pauseAudio, duration, getDuration, infiniteRef } = props;
+  const { audio, isMe, portfolioData, playAudio, pauseAudio, duration, getDuration, infiniteRef, getAudioInfos } =
+    props;
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   // const [vocalPortfolioData, setVocalPortfolioData] = useState<VocalPortfolioType[]>();
@@ -46,11 +47,13 @@ export default function VocalProfileList(props: any) {
     setCurrentFile(portfolioData[vocalPortfolioClick]?.beatWavFile);
     audio.src = portfolioData[vocalPortfolioClick]?.beatWavFile;
     getDuration(portfolioData[vocalPortfolioClick]?.wavFileLength);
+    getAudioInfos(portfolioData[vocalPortfolioClick]?.title, portfolioData[vocalPortfolioClick]?.jacketImage);
 
     console.log(vocalPortfolioClick);
   }, [vocalPortfolioClick]);
 
   function playAudioOnTrack(id: number) {
+    console.log("dddfdasdfadkfjasdlfjadsjfldksfjskl");
     if (vocalPortfolioClick === id) {
       audio.play();
       setPlay(true);
@@ -92,15 +95,14 @@ export default function VocalProfileList(props: any) {
               <VocalPortfolioWrapper
                 idx={index}
                 vocalPortfolioHoverBool={vocalPortfolioHover === index}
-                vocalPortfolioClickBool={vocalPortfolioClick === index}              
-              >
-              <VocalPortfolioImg
-                src={vocal.jacketImage}
-                alt="보컬 포트폴리오이미지"
-                idx={index}
-                vocalPortfolioHoverBool={vocalPortfolioHover === index}
-                vocalPortfolioClickBool={vocalPortfolioClick === index}
-              />
+                vocalPortfolioClickBool={vocalPortfolioClick === index}>
+                <VocalPortfolioImg
+                  src={vocal.jacketImage}
+                  alt="보컬 포트폴리오이미지"
+                  idx={index}
+                  vocalPortfolioHoverBool={vocalPortfolioHover === index}
+                  vocalPortfolioClickBool={vocalPortfolioClick === index}
+                />
               </VocalPortfolioWrapper>
             </VocalPortfolio>
           ))}
@@ -197,7 +199,7 @@ const VocalPortfolioTitle = styled.div`
   text-align: center;
   word-wrap: break-word;
   display: -webkit-box;
-  -webkit-line-clamp: 2 ;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 
   ${({ theme }) => theme.fonts.id};
@@ -240,7 +242,7 @@ const VocalPorfolioBlur = styled.div<{ idx: number; vocalPortfolioClickBool: boo
   backdrop-filter: blur(2rem);
 `;
 
-const VocalPortfolioWrapper=styled.div<{
+const VocalPortfolioWrapper = styled.div<{
   idx: number;
   vocalPortfolioHoverBool: boolean;
   vocalPortfolioClickBool: boolean;
@@ -260,7 +262,7 @@ const VocalPortfolioWrapper=styled.div<{
   box-shadow: 0 0 4rem
     ${({ vocalPortfolioHoverBool, vocalPortfolioClickBool, theme }) =>
       vocalPortfolioHoverBool && !vocalPortfolioClickBool && theme.colors.sub2};
-`
+`;
 
 const VocalPortfolioImg = styled.img<{
   idx: number;
@@ -270,7 +272,7 @@ const VocalPortfolioImg = styled.img<{
   border-radius: 3rem;
 
   transform: rotate(45deg);
-  object-fit:cover;
+  object-fit: cover;
 
   position: relative;
   width: ${({ vocalPortfolioClickBool, idx }) => (idx === 0 || vocalPortfolioClickBool ? 150 : 135)}%;

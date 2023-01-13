@@ -29,7 +29,6 @@ export default function ProducerProfilePage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<string>("");
-  const [name, setName] = useState<string>("");
 
   const { producerId } = useParams();
 
