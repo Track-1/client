@@ -41,9 +41,9 @@ export default function VocalProfilePage() {
 
   const fetch = useCallback(async () => {
     const accessToken =
-    userType === "producer"
-      ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
-      : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
+      userType === "producer"
+        ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
+        : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
@@ -82,11 +82,9 @@ export default function VocalProfilePage() {
 
   //end
 
-
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
-
 
   const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
     refetchOnWindowFocus: false,
@@ -151,7 +149,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>{profileData&&<ProducerInfos profileData={profileData}/>}</VocalProfile>
+      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} />}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
           {portfolioData && (
@@ -171,9 +169,9 @@ export default function VocalProfilePage() {
       </VocalProfilePageWrapper>
       <PlayerWrapper></PlayerWrapper>
 
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </Wrap>
   );
 }

@@ -171,9 +171,9 @@ export default function ProducerProfilePage() {
       </PageContainer>
       <InfiniteDiv ref={targetRef}> </InfiniteDiv>
 
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </>
   );
 }

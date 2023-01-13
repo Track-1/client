@@ -22,12 +22,12 @@ import { useQuery, useInfiniteQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
 import { trackListinfiniteScroll } from "../recoil/infiniteScroll";
-import {TracksData} from "../recoil/categorySelect"
- 
+import { TracksData } from "../recoil/categorySelect";
+
 export default function TrackSearchPage() {
   const [progress, setProgress] = useState<number>(0);
 
-  const showPlayer = useRecoilValue<boolean>(showPlayerBar);
+  // const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
@@ -35,34 +35,31 @@ export default function TrackSearchPage() {
   const [duration, setCurrentDuration] = useState<number>(0);
   const audio = useMemo(() => new Audio(), []);
   const filteredUrlApi = useRecoilValue(categorySelect);
+  const [title, setTitle] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const [image, setImage] = useState<string>("");
 
   const page = useRef<number>(1);
 
-  useEffect(()=>{
-    console.log(tracksData)
-    console.log(page.current)
-  },[tracksData])
-
-  useEffect(()=>{
-    setTracksData([])
-    page.current=1
-  },[filteredUrlApi])
+  useEffect(() => {
+    setTracksData([]);
+    page.current = 1;
+  }, [filteredUrlApi]);
 
   const { data } = useQuery(["filteredUrlApi", filteredUrlApi, tracksData], () => getTracksData(filteredUrlApi), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-      if (data?.status === 200&&page.current===2) {
+      if (data?.status === 200 && page.current === 2) {
         setTracksData(data?.data.data.trackList);
       }
     },
-    onError: (error) => {
-      console.log("실패");
-    },
+    onError: (error) => {},
   });
 
   const fetch = useCallback(async (filteredUrlApi: string) => {
@@ -76,7 +73,7 @@ export default function TrackSearchPage() {
         },
       );
 
-      setTracksData(prev=>[...prev, ...data?.data?.trackList]);
+      setTracksData((prev) => [...prev, ...data?.data?.trackList]);
       setHasNextPage(data?.data.trackList.length === 6);
       if (data?.data.trackList.length) {
         page.current += 1;
@@ -87,11 +84,9 @@ export default function TrackSearchPage() {
   }, []);
 
   useEffect(() => {
-    console.log("4",filteredUrlApi)
-
     const io = new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
-        console.log("5",filteredUrlApi)
+        console.log("5", filteredUrlApi);
 
         fetch(filteredUrlApi);
       }
@@ -101,10 +96,8 @@ export default function TrackSearchPage() {
     return () => {
       io.disconnect();
     };
-  }, [fetch, hasNextPage,filteredUrlApi]);
+  }, [fetch, hasNextPage, filteredUrlApi]);
 
-
-  
   useEffect(() => {
     setWhom(Category.TRACKS);
   }, []);
@@ -112,7 +105,13 @@ export default function TrackSearchPage() {
   function playAudio() {
     audio.play();
     setPlay(true);
+    // setShowPlayer(true);
   }
+
+  // useEffect(() => {
+  //   console.log(showPlayer, play);
+  //   console.log(duration);
+  // }, [showPlayer]);
 
   useEffect(() => {
     if (play) {
@@ -134,13 +133,23 @@ export default function TrackSearchPage() {
   function goProgress() {
     if (audio.duration) {
       const currentDuration = (audio.currentTime / audio.duration) * 100;
-      console.log(audio.currentTime, audio.duration);
       setProgress(currentDuration);
+      checkAudioQuit();
     }
+  }
+
+  function checkAudioQuit() {
+    audio.duration === audio.currentTime && setPlay(false);
   }
 
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
+  }
+
+  function getAudioInfos(title: string, name: string, image: string) {
+    setTitle(title);
+    setName(name);
+    setImage(image);
   }
 
   return (
@@ -160,12 +169,22 @@ export default function TrackSearchPage() {
               tracksData={tracksData}
               duration={duration}
               getDuration={getDuration}
+              getAudioInfos={getAudioInfos}
             />
           )}
         </TrackListWrapper>
       </TrackSearchPageWrapper>
       {showPlayer && (
-        <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
+        <Player
+          audio={audio}
+          playAudio={playAudio}
+          pauseAudio={pauseAudio}
+          progress={progress}
+          duration={duration}
+          title={title}
+          name={name}
+          image={image}
+        />
       )}
       <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
     </>

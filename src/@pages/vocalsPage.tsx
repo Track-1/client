@@ -127,9 +127,9 @@ export default function VocalsPage() {
           {!isLastPage && <IntersectDiv ref={intersectRef}>O</IntersectDiv>}
         </VocalListWrapper>
       </VocalSearchPageWrapper>
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </>
   );
 }

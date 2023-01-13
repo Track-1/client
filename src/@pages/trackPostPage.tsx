@@ -141,7 +141,6 @@ export default function TrackPostPage() {
         //   download.setAttribute('download', data?.data.data.beatWavFile);
         // download.setAttribute('type', 'application/json');
         //  download.click();
-
       }
     },
     onError: (error) => {
@@ -205,9 +204,9 @@ export default function TrackPostPage() {
         )}
       </>
       <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )}
+      )} */}
     </>
   );
 }
