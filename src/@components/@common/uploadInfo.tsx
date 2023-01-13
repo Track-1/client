@@ -18,6 +18,7 @@ import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
 export default function UploadInfo() {
+  const titleRef = useRef<HTMLInputElement>(null);
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   const dropBoxRef = useRef<HTMLDivElement>(null);
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
@@ -51,6 +52,7 @@ export default function UploadInfo() {
   const [categoryState, setCategoryState] = useState<boolean>(false);
   const [audioType, setAudioType] = useState<string>("");
 
+  const [descriptionHoverState, setDescriptionTitleHoverState] = useState<boolean>(false);
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
@@ -123,24 +125,30 @@ export default function UploadInfo() {
       ? setTitleHoverState(false)
       : setTitleHoverState(true);
   }
+  function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
+    e.type === "focus"
+      ? setDescriptionTitleHoverState(true)
+      : descriptionTextarea.current!.value.length === 0
+      ? setDescriptionTitleHoverState(false)
+      : setDescriptionTitleHoverState(true);
+  }
 
-  function addHastag() {
+  function addHashtag() {
     const value = enteredHashtag.current!.value;
     hashtags.includes(value) ? alert("중복된 해시태그 입니다!") : setHashtags([...hashtags, value]);
+    setHashtagInputWidth(8.827);
     enteredHashtag.current!.value = "";
   }
 
   function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
     if (hashtags.length < 3) {
-      addHastag();
-      enteredHashtag.current!.value = "";
+      addHashtag();
     }
   }
 
   function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      addHastag();
-      enteredHashtag.current!.value = "";
+      addHashtag();
     }
   }
 
@@ -157,8 +165,12 @@ export default function UploadInfo() {
   }
 
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
-    setTitleLength(e.target.value.length);
-    setTitle(e.target.value);
+    if (e.target.value.length < 37) {
+      setTitleLength(e.target.value.length);
+      setTitle(e.target.value);
+    } else {
+      titleRef.current!.value = titleRef.current!.value.slice(0, -1);
+    }
   }
 
   function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -170,8 +182,6 @@ export default function UploadInfo() {
     } else {
       enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
     }
-    setHashtagLength(e.target.value.length);
-    setHashtagInputWidth(Number(e.target.value));
   }
 
   function deleteHashtag(item: string) {
@@ -205,6 +215,7 @@ export default function UploadInfo() {
       }
     }
   }, [hashtagInputWidth]);
+  console.log();
 
   useEffect(() => {
     function clickOutside(e: any) {
@@ -217,7 +228,7 @@ export default function UploadInfo() {
       document.removeEventListener("click", clickOutside);
     };
   }, [hiddenDropBox]);
-
+  console.log(enteredHashtag.current?.scrollWidth);
   return (
     <Container>
       <TitleInput
@@ -227,7 +238,8 @@ export default function UploadInfo() {
         maxLength={36}
         onChange={changeTitleText}
         onFocus={hoverTitle}
-        onBlur={hoverTitle}></TitleInput>
+        onBlur={hoverTitle}
+        ref={titleRef}></TitleInput>
       <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
       <TextCount font={"body"} textareaMargin={textareaMargin}>
@@ -328,6 +340,8 @@ export default function UploadInfo() {
                       <HashtagSharp># </HashtagSharp>
                       <HashtagInput
                         placeholder="Hashtag"
+                        type="text"
+                        defaultValue=""
                         onKeyDown={completeHashtag}
                         onChange={changeHashtagText}
                         hashtagInputWidth={hashtagInputWidth}
@@ -376,6 +390,9 @@ export default function UploadInfo() {
               placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
               spellCheck={false}
               maxLength={250}
+              onFocus={hoverDescription}
+              onBlur={hoverDescription}
+              descriptionHoverState={descriptionHoverState}
               ref={descriptionTextarea}
               onChange={resizeTextarea}></InputDescriptionText>
           </InputBox>
@@ -517,7 +534,7 @@ const FileName = styled.input<{ isTextOverflow: boolean }>`
 
 const FileAttribute = styled.div<{ isTextOverflow: boolean }>`
   height: 2.5rem;
-  /* width: ${(props) => (props.isTextOverflow ? "100%" : 0)}; */
+  width: ${(props) => (props.isTextOverflow ? "100%" : 0)};
   width: 100%;
 
   display: flex;
@@ -586,8 +603,6 @@ const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
   width: ${(props) => props.hashtagInputWidth}rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
-  margin-right: 0.5rem;
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
@@ -600,7 +615,7 @@ const AddHashtagIconWrapper = styled.div`
   cursor: pointer;
 `;
 
-const InputDescriptionText = styled.textarea`
+const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>`
   width: 72rem;
   height: 4rem;
 
@@ -609,7 +624,8 @@ const InputDescriptionText = styled.textarea`
   background-color: transparent;
 
   border: none;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: 0.1rem solid
+    ${(props) => (props.descriptionHoverState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
