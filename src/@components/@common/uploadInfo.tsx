@@ -159,7 +159,7 @@ export default function UploadInfo() {
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = e.target.value.split("\n").length;
 
-    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200) {
+    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200 && e.target.value.length < 251) {
       setTextareaHeight(e.target.value);
       setDescriptionLength(e.target.value.length);
       setDeiscription(descriptionTextarea.current!.value);
