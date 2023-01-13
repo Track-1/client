@@ -97,12 +97,6 @@ export default function TrackList(props: PropsType) {
     }
   }
 
-  function pauseAudioOnTrack() {
-    pauseAudio();
-
-    setPlay(false);
-  }
-
   function movePostPage(id: number) {
     pauseAudio();
 

@@ -16,10 +16,22 @@ interface PropsType {
   pauseAudio: () => void;
   duration: number;
   getDuration: (durationTime: number) => void;
+  getAudioInfos: (title: string, image: string) => void;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState, stateChange, audio, playAudio, pauseAudio, duration, getDuration } = props;
+  const {
+    portfolioData,
+    isMe,
+    profileState,
+    stateChange,
+    audio,
+    playAudio,
+    pauseAudio,
+    duration,
+    getDuration,
+    getAudioInfos,
+  } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -59,8 +71,7 @@ export default function ProducerPortFolioList(props: PropsType) {
     setCurrentFile(portfolioData[clickedIndex]?.beatWavFile);
     audio.src = portfolioData[clickedIndex]?.beatWavFile;
     getDuration(portfolioData[clickedIndex]?.wavFileLength);
-
-    console.log(clickedIndex);
+    getAudioInfos(portfolioData[clickedIndex]?.title, portfolioData[clickedIndex]?.jacketImage);
   }, [clickedIndex]);
 
   function playAudioOnTrack(id: number) {
@@ -75,15 +86,15 @@ export default function ProducerPortFolioList(props: PropsType) {
       setClickedIndex(id);
     }
   }
-  
+
   return (
     <>
       <ProfileListContainer>
         {portfolioData.map((portfolio, index) => {
           return (
             <PortfolioBox
-            key={portfolio.id}
-            isLarge={index === 0 || clickedIndex === index}
+              key={portfolio.id}
+              isLarge={index === 0 || clickedIndex === index}
               onMouseEnter={() => hoverPortfolio(index)}
               onMouseLeave={() => hoverOutPortfolio(index)}
               index={index}
@@ -102,11 +113,11 @@ export default function ProducerPortFolioList(props: PropsType) {
 
                 {hoveredIndex === index && hoveredIndex !== -1 && (
                   <ProducerPorfolioBlur
-                  index={index}
-                  producerPortfolioClickBool={clickedIndex === index}
-                  profileState={profileState}
+                    index={index}
+                    producerPortfolioClickBool={clickedIndex === index}
+                    profileState={profileState}
                   />
-                  )}
+                )}
 
                 <PortfolioImage
                   src={portfolio.jacketImage}
@@ -140,13 +151,12 @@ export default function ProducerPortFolioList(props: PropsType) {
             clickId={clickedIndex}
             portfolios={portfolioData}
             profileState={profileState}
-            />
+          />
         </InformWrapper>
       )}
     </>
   );
 }
-
 
 const TitleWrapper = styled.div`
   width: 14rem;
