@@ -13,6 +13,7 @@ import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
@@ -25,8 +26,9 @@ export default function ProducerProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
-
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
+  const { producerId } = useParams();
 
   const audio = useMemo(() => new Audio(), []);
 
@@ -38,7 +40,7 @@ export default function ProducerProfilePage() {
   const fetch = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
+        `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page.current}&limit=3`,
         {
           headers: {
             Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
@@ -46,8 +48,6 @@ export default function ProducerProfilePage() {
         },
       );
       setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
-      console.log(page);
-      console.log(portfolioData);
 
       setHasNextPage(data?.data.producerPortfolio.length === 4);
       if (data?.data.producerPortfolio.length) {
@@ -76,7 +76,7 @@ export default function ProducerProfilePage() {
 
   useEffect(() => {
     async function getData() {
-      const data = await getProducerProfile();
+      const data = await getProducerProfile(Number(producerId));
       setProfileData(data?.data?.data.producerProfile);
       setIsMe(data?.data?.data.isMe);
     }
@@ -131,7 +131,7 @@ export default function ProducerProfilePage() {
   }
 
   async function getProfileData() {
-    const data = await getProducerProfile();
+    const data = await getProducerProfile(Number(producerId));
     setPortfolioData(data?.data.producerPortfolio);
   }
 

@@ -74,7 +74,7 @@ export default function VocalsPage() {
   //   },
   // );
 
-  //infinite scroll
+
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
@@ -149,6 +149,7 @@ export default function VocalsPage() {
   }, []);
 
 //end
+
   function playAudio() {
     audio.play();
     setPlay(true);
@@ -181,8 +182,6 @@ export default function VocalsPage() {
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
   }
-
-  console.log("페이지", page.current)
 
   return (
     <>
@@ -227,5 +226,6 @@ const VocalListWrapper = styled.div`
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
+
 `;
 
