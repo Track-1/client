@@ -77,16 +77,20 @@ export default function UploadInfo() {
     uploadName.substring(uploadName.length - 4) === ".wav" ? setAudioType(".wav") : setAudioType(".mp3");
     let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
 
-    if (str.length > 14) {
-      setIsTextOverflow(true);
-      setEditFileName(str);
-    } else {
-      setIsTextOverflow(false);
-      setEditFileName(uploadName);
-    }
+    if (audioType === ".mp3" || audioType === ".mp3") {
+      if (str.length > 14) {
+        setIsTextOverflow(true);
+        setEditFileName(str);
+      } else {
+        setIsTextOverflow(false);
+        setEditFileName(uploadName);
+      }
 
-    if (e.target.files !== null) {
-      setWavFile(e.target.files[0]);
+      if (e.target.files !== null) {
+        setWavFile(e.target.files[0]);
+      }
+    } else {
+      alert("확장자를 확인해 주세요!");
     }
   }
 
@@ -155,7 +159,7 @@ export default function UploadInfo() {
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = e.target.value.split("\n").length;
 
-    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200) {
+    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200 && e.target.value.length < 251) {
       setTextareaHeight(e.target.value);
       setDescriptionLength(e.target.value.length);
       setDeiscription(descriptionTextarea.current!.value);
