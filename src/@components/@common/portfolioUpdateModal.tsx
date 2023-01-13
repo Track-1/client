@@ -54,7 +54,7 @@ const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean, c
   position: absolute;
   left: 17.2rem;
   margin-top: ${({ isTitle, checkIsVocalSearching }) => (isTitle || checkIsVocalSearching) && 16}rem;
-  bottom: ${({ isTitle, checkIsPortfolio }) => (!isTitle && checkIsPortfolio) && 30.5}rem;
+  margin-top: ${({ isTitle, checkIsPortfolio }) => (!isTitle && checkIsPortfolio) && 21}rem;
 
   width: 20.1rem;
 
