@@ -169,6 +169,7 @@ const BlurSection = styled.div`
   width: 101.1rem;
 
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
+  border-radius: 50%;
 
   bottom: 0;
   right: 0;
