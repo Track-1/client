@@ -30,9 +30,9 @@ export default function CommentWrite(props: PropsType) {
 
     isCompleted && getUploadData(currentText, uploadedFile);
     console.log(isCompleted);
-    if (!isCompleted && !comment && commentFile) {
-      commentText.current!.value = "";
-    }
+    // if (!isCompleted && !comment && commentFile) {
+    //   commentText.current!.value = "";
+    // }
   }, [isCompleted]);
 
   useEffect(() => {
@@ -165,6 +165,8 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
+  ${({ theme }) => theme.fonts.description}
+
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
 `;
 
@@ -180,10 +182,12 @@ const InputBox = styled.textarea`
   vertical-align: top;
 
   color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => theme.fonts.description}
 
   overflow: auto;
 
   background-color: transparent;
   outline: none;
   border: none;
+  resize: none;
 `;
