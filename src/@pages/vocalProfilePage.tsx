@@ -15,6 +15,7 @@ import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { UserType } from "../recoil/main";
+import ProducerInfos from "../@components/producerProfile/producerInfos";
 
 export default function VocalProfilePage() {
   const showPlayer = useRecoilValue<boolean>(showPlayerBar);
@@ -150,7 +151,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>보컬프로필 부분넣어주세요</VocalProfile>
+      <VocalProfile>{profileData&&<ProducerInfos profileData={profileData}/>}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
           {portfolioData && (
