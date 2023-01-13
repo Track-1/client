@@ -1,4 +1,4 @@
 export enum profileCategory {
-  PORTFOLIO = "Porfolio",
+  PORTFOLIO = "Portfolio",
   VOCAL_SEARCHING = "Vocal Searching",
 }
