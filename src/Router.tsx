@@ -15,7 +15,7 @@ export default function Router() {
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalsPage />} />
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
-        <Route path="/producer-profile" element={<ProducerProfilePage />} />
+        <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         {/* <Route path="/upload" element={<UploadPage />} /> */}
         <Route path="/upload/:producerUploadType" element={<UploadPage />} />
