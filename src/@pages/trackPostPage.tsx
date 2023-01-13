@@ -51,6 +51,7 @@ export default function TrackPostPage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [beatId, setBeatId] = useState<number>(-1);
+  const [fileLink,setFileLink]=useState<string>()
 
   const { state } = useLocation();
 
@@ -135,7 +136,7 @@ export default function TrackPostPage() {
         // console.log(data);
         // console.log("성공");
         setTrackInfoData(data?.data.data);
-        console.log(data?.data.data);
+        setFileLink(data?.data.data.beatWavFile);
         //   const download = document.createElement('a');
         //  download.href = data?.data.data.beatWavFile;
         //   download.setAttribute('download', data?.data.data.beatWavFile);
@@ -148,6 +149,59 @@ export default function TrackPostPage() {
       console.log("실패");
     },
   });
+
+
+	// const downloadTrack = () => {
+	// 	if (fileLink) {
+	// 		fetch(fileLink, { method: 'GET' })
+	// 			.then(res => {
+	// 				return res.blob();
+	// 			})
+	// 			.then(blob => {
+	// 				const url = window.URL.createObjectURL(blob);
+	// 				const a = document.createElement('a');
+	// 				a.href = url;
+	// 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
+	// 				document.body.appendChild(a);
+	// 				a.click();
+	// 				setTimeout(_ => {
+	// 					window.URL.revokeObjectURL(url);
+	// 				}, 60000);
+	// 				a.remove();
+	// 				// setOpen(false);
+	// 			})
+	// 			.catch(err => {
+	// 				console.error('err: ', err);
+	// 			});
+	// 	} else {
+	// 		alert(
+	// 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
+	// 		);
+	// 	}
+	// };
+
+  function downloadFile(){
+    fetch(`${fileLink}`, {method: 'GET'})
+    .then(res => {
+      return res.blob();
+    })
+    .then(blob => {
+      var url = window.URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'myItem.extension';
+      document.body.appendChild(a); 
+      a.click();  
+      setTimeout(
+        _ => { window.URL.revokeObjectURL(url); }, 
+        60000); 
+      a.remove(); 
+    })
+    .catch(err => {
+      console.error('err: ', err);
+    })
+  }
+
 
   return (
     <>
@@ -171,7 +225,7 @@ export default function TrackPostPage() {
               <ButtonWrapper>
                 {trackInfoData.isMe &&
                   (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
+                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={fileLink} download='ITEM-NAME.extension'><DownloadBtnIcon onClick={downloadFile}/></a>)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
