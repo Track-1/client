@@ -50,14 +50,13 @@ export default function TrackPostPage() {
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [beatId, setBeatId]=useState<number>(-1)
+  const [beatId, setBeatId] = useState<number>(-1);
 
-  const {state}=useLocation()
+  const { state } = useLocation();
 
   useEffect(() => {
-    setWhom(Category.TRACKS); 
+    setWhom(Category.TRACKS);
   }, []);
-
 
   useEffect(() => {
     if (trackInfoData?.beatWavFile !== undefined) {
@@ -109,7 +108,7 @@ export default function TrackPostPage() {
 
   function openComment() {
     setIsCommentOpen(true);
-    setBeatId(state)
+    setBeatId(state);
   }
 
   function closeComment() {
@@ -120,75 +119,76 @@ export default function TrackPostPage() {
     navigate(-1);
   }
 
-  const { data } = useQuery(["state",state],()=>getTrackInfo(state)
-  , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
-    onSuccess: data => {
+  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
       if (data?.status === 200) {
         // console.log(data);
         // console.log("성공");
-        setTrackInfoData(data?.data.data)
-      }    
+        setTrackInfoData(data?.data.data);
+      }
     },
-    onError: error => {
+    onError: (error) => {
       console.log("실패");
-    }
+    },
   });
 
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId}/>}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <>
-      {trackInfoData&&
-        <PostSection>
-          <TitleContainer>
-            <BackButtonWrapper onClick={movePreviousPage}>
-              <BackButton />
-            </BackButtonWrapper>
-            <AudioTitle>{trackInfoData.title}</AudioTitle>
-            <ProducerBox>
-              <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지"></ProducerProfile>
-              <NickName>{trackInfoData.producerName}</NickName>
-            </ProducerBox>
-            <ButtonWrapper>
-              {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
-              {!trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
-              {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+        {trackInfoData && (
+          <PostSection>
+            <TitleContainer>
+              <BackButtonWrapper onClick={movePreviousPage}>
+                <BackButton />
+              </BackButtonWrapper>
+              <AudioTitle>{trackInfoData.title}</AudioTitle>
+              <ProducerBox>
+                <ProducerProfile
+                  src={trackInfoData.producerProfileImage}
+                  alt="프로듀서 프로필 이미지"></ProducerProfile>
+                <NickName>{trackInfoData.producerName}</NickName>
+              </ProducerBox>
+              <ButtonWrapper>
+                {trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <OpenedIcon />)}
+                {!trackInfoData.isMe && (isEnd ? <ClosedWithXIcon /> : <DownloadBtnIcon />)}
+                {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
-              {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
-            </ButtonWrapper>
-            {isEditOpen && <EditDropDown />}
-          </TitleContainer>
-          <InfoContainer>
-            <PlayImageWrapper>
-            <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
-            </PlayImageWrapper>
-            <DescriptionContainer>
-              <CategoryBox>
-                <CategoryIcon />
-                {trackInfoData.category}
-              </CategoryBox>
-              <HashTagBox>
-                <HashTagIcon />
-                <TagWrapper>
-                  {trackInfoData.keyword.map((tag:string)=>(<HashTag text={tag} />))}
-                </TagWrapper>
-              </HashTagBox>
-              <DescriptionBox>
-                <DescriptionIcon />
-                <TextBox>
-                {trackInfoData.introduce}
-                </TextBox>
-              </DescriptionBox>
-            </DescriptionContainer>
-          </InfoContainer>
-        </PostSection>
-      }
+                {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
+              </ButtonWrapper>
+              {isEditOpen && <EditDropDown />}
+            </TitleContainer>
+            <InfoContainer>
+              <PlayImageWrapper>
+                <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
+              </PlayImageWrapper>
+              <DescriptionContainer>
+                <CategoryBox>
+                  <CategoryIcon />
+                  {trackInfoData.category}
+                </CategoryBox>
+                <HashTagBox>
+                  <HashTagIcon />
+                  <TagWrapper>
+                    {trackInfoData.keyword.map((tag: string) => (
+                      <HashTag text={tag} />
+                    ))}
+                  </TagWrapper>
+                </HashTagBox>
+                <DescriptionBox>
+                  <DescriptionIcon />
+                  <TextBox>{trackInfoData.introduce}</TextBox>
+                </DescriptionBox>
+              </DescriptionContainer>
+            </InfoContainer>
+          </PostSection>
+        )}
       </>
-      <CommentBtnIcon onClick={openComment} />
+      <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
       {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )}
