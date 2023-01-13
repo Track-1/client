@@ -63,7 +63,7 @@ export default function UploadHeader(props: PropsType) {
       resetKeyword();
       resetJacketImage();
       resetDefaultState();
-      userType === "producer" ? navigate("/track-search") : navigate("/mypage");
+      userType === "producer" ? navigate(-1) : navigate("/mypage/vocal-profile/1");
     },
     onError: (error) => {
       console.log("에러!!", error);
