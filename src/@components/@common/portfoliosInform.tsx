@@ -188,8 +188,11 @@ const InformTag = styled.div<{ textLength: number }>`
   align-items: center;
 
   height: 3.8rem;
-  width: ${({ textLength }) => (7>textLength&&textLength>2)?textLength+5:textLength+7}rem;
-  /* width: ${({ textLength }) => textLength>=7&&textLength+10}rem; */
+  /* width: 10rem; */
+  /* width: ${({ textLength }) => textLength*13}%; */
+
+  /* width: ${({ textLength }) => (7>textLength&&textLength>2)?textLength+5:textLength+7}rem;
+  width: ${({ textLength }) => textLength>=7&&textLength+10}rem; */
 
   margin-bottom: 1rem;
   padding-left: 1.5rem;
