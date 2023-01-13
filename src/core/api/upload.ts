@@ -4,7 +4,6 @@ import { currentUser } from "../constants/userType";
 
 export async function UploadInfo(postData: Object, userType: string, producerUploadType: string | undefined) {
   try {
-
     switch (userType) {
       case currentUser.PRODUCER:
         const path = producerUploadType === currentUser.PRODUCER ? `${PATH.MYPAGE}/${PATH.PRODUCER}` : `${PATH.TRACKS}`;
@@ -25,6 +24,6 @@ export async function UploadInfo(postData: Object, userType: string, producerUpl
         break;
     }
   } catch (error) {
-    console.log(error);
+    alert('업로드 실패');
   }
 }
