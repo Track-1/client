@@ -74,26 +74,28 @@ export default function VocalsPage() {
   //   },
   // );
 
-  //여기부터 찐이야
+  //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
   const page = useRef<number>(1);
 
-  useEffect(()=>{
-    // console.log(vocalsData)
-    // console.log(page.current)
-  },[vocalsData])
+  // useEffect(()=>{
+  //   console.log("데이터",vocalsData)
+  //   console.log("페이지",page.current)
+  // },[vocalsData])
 
-  useEffect(()=>{
-    setVocalsData([])
-    page.current=1
-  },[filteredUrlApi])
+  //dfdfdfdfd
+  // useEffect(()=>{
+  //   setVocalsData([])
+  //   page.current=1
+  // },[filteredUrlApi])
 
   const { data } = useQuery(["filteredUrlApi", filteredUrlApi, isSelected, vocalsData], () => getVocalsData(filteredUrlApi, isSelected), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
+      // if (data?.status === 200&&page.current===2) {
       if (data?.status === 200) {
         setVocalsData(data?.data.data.vocalList);
       }
@@ -103,21 +105,21 @@ export default function VocalsPage() {
     },
   });
   
-
   // const fetch = useCallback(async (filteredUrlApi: string) => {
   //   try {
   //     const { data } = await axios.get(
-  //     `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=1&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
+  //     `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=${page.current}&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
   //       {
   //         headers: {
   //           Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
   //         },
   //       },
   //     );
+  //     setHasNextPage(data?.data.vocalList.length === 8);
 
   //     setVocalsData(prev=>[...prev, ...data?.data?.vocalList]);
-  //     setHasNextPage(data?.data.vocalsData.length === 8);
-  //     if (data?.data.vocalsData.length) {
+
+  //     if (data?.data.vocalList.length) {
   //       page.current += 1;
   //     }
   //   } catch (e) {
@@ -129,9 +131,9 @@ export default function VocalsPage() {
   //   console.log("4",filteredUrlApi)
 
   //   const io = new IntersectionObserver((entries, observer) => {
+  //     console.log(entries[0].isIntersecting)
   //     if (entries[0].isIntersecting) {
   //       console.log("5",filteredUrlApi)
-
   //       fetch(filteredUrlApi);
   //     }
   //   });
@@ -141,14 +143,12 @@ export default function VocalsPage() {
   //     io.disconnect();
   //   };
   // }, [fetch, hasNextPage,filteredUrlApi]);
-
-
   
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
-//여기까지야
+//end
   function playAudio() {
     audio.play();
     setPlay(true);
@@ -182,7 +182,7 @@ export default function VocalsPage() {
     setCurrentDuration(durationTime);
   }
 
-  // console.log("vocals", vocalsData)
+  console.log("페이지", page.current)
 
   return (
     <>
@@ -204,7 +204,7 @@ export default function VocalsPage() {
               getDuration={getDuration}
             />
           )}
-          {!isLastPage && <IntersectDiv ref={intersectRef}>O</IntersectDiv>}
+      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
       {showPlayer && (
@@ -224,9 +224,8 @@ const VocalListWrapper = styled.div`
   width: 159.9rem;
 `;
 
-const IntersectDiv = styled.div`
+const InfiniteWrapper = styled.div`
   width: 100%;
-  height: 100px;
-
-  background-color: pink;
+  height: 2rem;
 `;
+
