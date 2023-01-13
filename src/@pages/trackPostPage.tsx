@@ -17,7 +17,7 @@ import profileDummyImg from "../assets/image/profileDummyImg.png";
 import playImg from "../assets/image/playImg.png";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState } from "recoil";
@@ -52,6 +52,7 @@ export default function TrackPostPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [beatId, setBeatId] = useState<number>(-1);
   const [fileLink,setFileLink]=useState<string>()
+  const [title, setTile]=useState<string>()
 
   const { state } = useLocation();
 
@@ -60,6 +61,7 @@ export default function TrackPostPage() {
   }, []);
 
   useEffect(() => {
+    trackInfoData&&setTile(trackInfoData.title)
     if (trackInfoData?.beatWavFile !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
       setCurrentDuration(trackInfoData?.wavFileLength);
@@ -151,7 +153,7 @@ export default function TrackPostPage() {
   });
 
 
-	// const downloadTrack = () => {
+	// const downloadFile = () => {
 	// 	if (fileLink) {
 	// 		fetch(fileLink, { method: 'GET' })
 	// 			.then(res => {
@@ -180,28 +182,55 @@ export default function TrackPostPage() {
 	// 	}
 	// };
 
-  function downloadFile(){
-    fetch(`${fileLink}`, {method: 'GET'})
-    .then(res => {
-      return res.blob();
-    })
-    .then(blob => {
-      var url = window.URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'myItem.extension';
-      document.body.appendChild(a); 
-      a.click();  
-      setTimeout(
-        _ => { window.URL.revokeObjectURL(url); }, 
-        60000); 
-      a.remove(); 
-    })
-    .catch(err => {
-      console.error('err: ', err);
-    })
-  }
+  // function downloadFile(){
+  //   fetch(`${fileLink}`, {method: 'GET'})
+  //   .then(res => {
+  //     return res.blob();
+  //   })
+  //   .then(blob => {
+  //     var url = window.URL.createObjectURL(blob);
+  //     var a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = 'myItem.extension';
+  //     document.body.appendChild(a); 
+  //     a.click();  
+  //     setTimeout(
+  //       _ => { window.URL.revokeObjectURL(url); }, 
+  //       60000); 
+  //     a.remove(); 
+  //   })
+  //   .catch(err => {
+  //     console.error('err: ', err);
+  //   })
+  // }
 
+//   function downloadFile (){
+//     console.log("dfdfd")
+//     const url = fileLink
+//     const download = document.createElement('a');
+
+//     download.href = url?url:"";
+//     download.setAttribute('download',title?title:"");
+//     download.setAttribute('type', 'application/json');
+//     download.click();
+// }
+  const downloadFile = useCallback((fileName:string, fileLink:string) => {
+    // console.log("eee", title)
+    // console.log("url", fileLink)
+
+    // let fileName = `${title}`;
+    const blob = new Blob([fileLink], {type: 'audio/mp3'})
+    const url=window.URL.createObjectURL(blob)
+
+    const element = document.createElement('a');
+    element.href =url
+    element.download = fileName;
+    // document.body.appendChild(element); // FireFox
+    element.click();
+
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(blob);
+  },[])
 
   return (
     <>
@@ -225,7 +254,9 @@ export default function TrackPostPage() {
               <ButtonWrapper>
                 {trackInfoData.isMe &&
                   (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={fileLink} download='ITEM-NAME.extension'><DownloadBtnIcon onClick={downloadFile}/></a>)}
+                  {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
+                  {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>)}
+                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
