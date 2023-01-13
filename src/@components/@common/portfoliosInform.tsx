@@ -47,7 +47,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   function clickUploadButton() {
     isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
-    isVocalsPage(tracksOrVocals) && navigate("/upload-vocal");
+    isVocalsPage(tracksOrVocals) && navigate("/upload/Portfolio");
   }
 
   function checkIsVocalSearching() {

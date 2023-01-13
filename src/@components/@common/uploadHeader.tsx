@@ -58,7 +58,7 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function backPage(e: React.MouseEvent<SVGSVGElement>) {
-    navigate("/track-search");
+    navigate(-1);
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
