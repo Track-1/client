@@ -114,6 +114,7 @@ export default function ProducerPortFolioList(props: PropsType) {
                   index={index}
                   profileState={profileState}
                   clickBool={clickedIndex === index}
+                  hoverBool={hoveredIndex === index}
                 />
               </div>
               <TitleWrapper>
@@ -225,11 +226,14 @@ const PortfolioBox = styled.article<{
   }
 `;
 
-const PortfolioImage = styled.img<{ isLarge: boolean; index: number; profileState: string; clickBool: boolean }>`
+const PortfolioImage = styled.img<{ isLarge: boolean; index: number; profileState: string; clickBool: boolean, hoverBool:boolean }>`
   height: ${({ clickBool, index, profileState }) =>
     (index === 0 && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   width: ${({ clickBool, index, profileState }) =>
     (index === 0 && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
+
+  opacity: ${({ hoverBool, clickBool }) =>
+      !hoverBool && !clickBool && 0.2};
 `;
 
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
