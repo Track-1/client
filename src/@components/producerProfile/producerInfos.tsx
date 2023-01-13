@@ -13,8 +13,9 @@ interface PropsType {
 
 export default function ProducerInfos(props: PropsType) {
   const { profileData } = props;
-
-  console.log(profileData.category);
+  console.log(profileData.profileImge);
+  console.log(profileData.name);
+  console.log(profileData);
 
   return (
     <InfoContainer>
@@ -22,7 +23,10 @@ export default function ProducerInfos(props: PropsType) {
         <BackButton />
         <Blank />
       </InfoHeader>
-      <ProfileImage />
+      <ProfileImage>
+        <ProfileImg src={profileData.profileImge} alt="프로필이미지" />
+      </ProfileImage>
+
       <ProducerName>{profileData.name}</ProducerName>
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
@@ -89,13 +93,19 @@ const InfoHeader = styled.div`
 const Blank = styled.div`
   width: 2rem;
 `;
+
+const ProfileImg = styled.img`
+  height: 25.9rem;
+  width: 25.9rem;
+  border-radius: 50%;
+`;
 const ProfileImage = styled.div`
   height: 25.9rem;
   width: 25.9rem;
 
   border-radius: 50%;
 
-  background-image: url(${thumbnailImg});
+  // background-image: url(${thumbnailImg});
   background-repeat: no-repeat;
   background-size: contain;
 `;
