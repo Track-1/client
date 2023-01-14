@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BackBtnIc, CategoryIc, DescriptionIc, HashtagIc } from "../../assets";
+import { BackBtnIc, CategoryIc, DescriptionIc, HashtagIc, SleeperAccountIc } from "../../assets";
 import { useState } from "react";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
 import { theme } from "../../style/theme";
@@ -8,6 +8,7 @@ import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
+import { trackSearching } from "../../recoil/categorySelect";
 import { useNavigate } from "react-router-dom";
 
 interface PropsType {
@@ -18,14 +19,11 @@ export default function ProducerInfos(props: PropsType) {
   const navigate = useNavigate();
   const { profileData } = props;
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+  const trackSearch = useRecoilValue<boolean>(trackSearching);
 
-  function moveMypage() {
-    tracksOrVocals === "vocal"
-      ? navigate("/vocal-profile/1", { state: 1 })
-      : navigate("/producer-profile/2", { state: 2 });
-  }
-  console.log(tracksOrVocals);
-
+  
+  console.log(trackSearch);
+  
   return (
     <InfoContainer>
       <InfoHeader>
@@ -44,7 +42,11 @@ export default function ProducerInfos(props: PropsType) {
         </ProfileImage>
       )}
 
-      <ProducerName>{profileData.name}</ProducerName>
+      <ProducerNameContainer>
+        <ProducerName>{profileData.name}</ProducerName>
+      {/* /  {tracksOrVocals === "Vocals" && !trackSearch && <SleeperAccountIcon />} */}
+      </ProducerNameContainer>
+
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
@@ -154,12 +156,21 @@ const VocalProfileImage = styled.div`
   transform: rotate(-45deg);
 `;
 
+const ProducerNameContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+`;
+
 const ProducerName = styled.h1`
   ${({ theme }) => theme.fonts.caption_large}
 
   color: ${({ theme }) => theme.colors.white};
 
   margin-top: 2.4rem;
+`;
+
+const SleeperAccountIcon = styled(SleeperAccountIc)`
+  margin-left: 1.5rem;
 `;
 
 const ProducerEmail = styled.h2`
