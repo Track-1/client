@@ -100,7 +100,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
                 <PortfoiloViewMoreButton onClick={() => moveTrackPost(id)} />
               )}
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
-              {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
+              {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
               {checkisEllipsis()&& <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal&& checkisEllipsis()&&(

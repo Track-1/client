@@ -31,6 +31,11 @@ export default function VocalProfilePage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const audio = useMemo(() => new Audio(), []);
+  // const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck)
+
+  useEffect(()=>{
+    setWhom(Category.TRACKS)
+  },[])
 
   const { state } = useLocation();
   useEffect(() => {
@@ -99,6 +104,7 @@ export default function VocalProfilePage() {
         setIsMe(data?.data.data.isMe);
         setProfileData(data?.data.data.vocalProfile);
         setPortfolioData(data?.data.data.vocalPortfolio);
+        console.log(data?.data.data)
       }
     },
     onError: (error) => {

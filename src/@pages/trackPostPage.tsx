@@ -141,7 +141,12 @@ export default function TrackPostPage() {
     return user === "vocal";
   }
 
-  console.log(user);
+
+
+
+
+
+
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -150,6 +155,7 @@ export default function TrackPostPage() {
       if (data?.status === 200) {
         setTrackInfoData(data?.data.data);
         setFileLink(data?.data.data.beatWavFile);
+        console.log(data?.data.data);
         //   const download = document.createElement('a');
         //  download.href = data?.data.data.beatWavFile;
         //   download.setAttribute('download', data?.data.data.beatWavFile);
@@ -278,6 +284,7 @@ export default function TrackPostPage() {
                     <DownloadBtnIcon />
                   </button>
                 )}
+
                 {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
                 {!isProducer() && play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
@@ -330,6 +337,7 @@ export default function TrackPostPage() {
 }
 
 const TrackPostPageWrapper = styled.div`
+
   position: fixed;
 `;
 
