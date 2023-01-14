@@ -74,10 +74,11 @@ export default function UploadInfo() {
 
   function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-    uploadName.substring(uploadName.length - 4) === ".wav" ? setAudioType(".wav") : setAudioType(".mp3");
+    const type = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).substring(uploadName.length - 4);
+
     let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
 
-    if (audioType === ".mp3" || audioType === ".mp3") {
+    if (type === ".mp3" || type === ".wav") {
       if (str.length > 14) {
         setIsTextOverflow(true);
         setEditFileName(str);
@@ -85,6 +86,7 @@ export default function UploadInfo() {
         setIsTextOverflow(false);
         setEditFileName(uploadName);
       }
+      setAudioType(type);
 
       if (e.target.files !== null) {
         setWavFile(e.target.files[0]);
