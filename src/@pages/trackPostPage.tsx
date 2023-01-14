@@ -140,8 +140,6 @@ export default function TrackPostPage() {
     return user==="vocal"
   }
 
-  console.log(user)
-
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -149,6 +147,7 @@ export default function TrackPostPage() {
       if (data?.status === 200) {
         setTrackInfoData(data?.data.data);
         setFileLink(data?.data.data.beatWavFile);
+        console.log(data?.data.data);
         //   const download = document.createElement('a');
         //  download.href = data?.data.data.beatWavFile;
         //   download.setAttribute('download', data?.data.data.beatWavFile);
@@ -241,6 +240,8 @@ export default function TrackPostPage() {
     reader.readAsArrayBuffer(blob);
   },[])
 
+  console.log(trackInfoData&&trackInfoData.isMe)
+
   return (
     <>
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
@@ -261,10 +262,11 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {(trackInfoData.isMe && isProducer()&&isEnd)&&!isVocal() && <ClosedWithXIcon onClick={notEndmyTrack} /> }
-                 {!(trackInfoData.isMe && isProducer()&&isEnd)&&!isVocal()&& <OpenedIcon onClick={endmyTrack} />}
+                {(trackInfoData.isMe && isProducer()&&isEnd)&& <ClosedWithXIcon onClick={notEndmyTrack} /> }
+                 {(trackInfoData.isMe && isProducer()&&!isEnd)&& <OpenedIcon onClick={endmyTrack} />}
                   {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
-                  {(!trackInfoData.isMe &&isEnd) ? <ClosedBtnIcon />:(<button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>)}
+                  {((!trackInfoData.isMe&&isProducer() &&isEnd)||(isVocal() &&isEnd)) && <ClosedBtnIcon />}
+                  {((!trackInfoData.isMe &&isProducer()&&!isEnd)||(isVocal()&&!isEnd))&&<button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>}
                 {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
                 {!isProducer()&&play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
@@ -306,6 +308,7 @@ export default function TrackPostPage() {
     </>
   );
 }
+
 
 const TrackPostPageWrapper=styled.div`
   position: fixed;
