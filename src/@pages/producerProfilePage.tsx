@@ -39,10 +39,22 @@ export default function ProducerProfilePage() {
   const page = useRef<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
+  useEffect(() => {
+    async function getData() {
+      // const data = await getProducerProfile(Number(producerId));
+      const data = await getProducerProfile(Number(2));
+      setProfileData(data?.data?.data.producerProfile);
+      setIsMe(data?.data?.data.isMe);
+      console.log(data?.data?.data.producerProfile)
+    }
+    getData();
+  }, []);
+
   const fetch = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page.current}&limit=3`,
+        // `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page.current}&limit=3`,
+        `${process.env.REACT_APP_BASE_URL}/profile/producer/${2}?page=${page.current}&limit=3`,
         {
           headers: {
             Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
@@ -75,15 +87,6 @@ export default function ProducerProfilePage() {
   }, [fetch, hasNextPage]);
 
   //end
-
-  useEffect(() => {
-    async function getData() {
-      const data = await getProducerProfile(Number(producerId));
-      setProfileData(data?.data?.data.producerProfile);
-      setIsMe(data?.data?.data.isMe);
-    }
-    getData();
-  }, []);
 
   function playAudio() {
     audio.play();
@@ -150,6 +153,7 @@ export default function ProducerProfilePage() {
     setTitle(title);
     setImage(image);
   }
+
 
   return (
     <>
