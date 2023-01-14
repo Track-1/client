@@ -14,6 +14,8 @@ import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import {tracksOrVocalsCheck} from "../recoil/tracksOrVocalsCheck"
+import { Category } from "../core/common/categoryHeader";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
@@ -34,10 +36,16 @@ export default function ProducerProfilePage() {
 
   const audio = useMemo(() => new Audio(), []);
 
+  const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck)
+
   // infinite
   const targetRef = useRef<any>();
   const page = useRef<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+
+  useEffect(()=>{
+    setWhom(Category.TRACKS)
+  },[])
 
   useEffect(() => {
     async function getData() {
