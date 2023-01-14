@@ -141,13 +141,6 @@ export default function TrackPostPage() {
     return user === "vocal";
   }
 
-
-
-
-
-
-
-
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -272,21 +265,17 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe && isProducer() && isEnd && !isVocal() && (
-                  <ClosedWithXIcon onClick={notEndmyTrack} />
-                )}
-                {!(trackInfoData.isMe && isProducer() && isEnd) && !isVocal() && <OpenedIcon onClick={endmyTrack} />}
+                {trackInfoData.isMe && isProducer() && isEnd && <ClosedWithXIcon onClick={notEndmyTrack} />}
+                {trackInfoData.isMe && isProducer() && !isEnd && <OpenedIcon onClick={endmyTrack} />}
                 {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
-                {!trackInfoData.isMe && isEnd ? (
-                  <ClosedBtnIcon />
-                ) : (
+                {((!trackInfoData.isMe && isProducer() && isEnd) || (isVocal() && isEnd)) && <ClosedBtnIcon />}
+                {((!trackInfoData.isMe && isProducer() && !isEnd) || (isVocal() && !isEnd)) && (
                   <button onClick={() => downloadFile(trackInfoData.title, trackInfoData.beatWavFile)}>
                     <DownloadBtnIcon />
                   </button>
                 )}
-
                 {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
-                {!isProducer() && play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+                {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
@@ -337,7 +326,6 @@ export default function TrackPostPage() {
 }
 
 const TrackPostPageWrapper = styled.div`
-
   position: fixed;
 `;
 
