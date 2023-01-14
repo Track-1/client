@@ -100,12 +100,12 @@ export default function TrackSearchPage() {
 
   useEffect(() => {
     setWhom(Category.TRACKS);
+    setShowPlayer(false);
   }, []);
 
   function playAudio() {
     audio.play();
     setPlay(true);
-    setShowPlayer(true);
   }
 
   // useEffect(() => {
