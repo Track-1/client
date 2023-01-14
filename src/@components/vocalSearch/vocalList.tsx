@@ -13,10 +13,11 @@ interface PropsType {
   pauseAudio: () => void;
   duration: number;
   getDuration: (durationTime: number) => void;
+  getAudioInfos: (title: string, image: string) => void;
 }
 
 export default function VocalList(props: PropsType) {
-  const { vocalData, audio, playAudio, pauseAudio, duration, getDuration } = props;
+  const { vocalData, audio, playAudio, pauseAudio, duration, getDuration, getAudioInfos } = props;
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
   const [clickVocal, setClickVocal] = useState<number>(-1);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -33,6 +34,7 @@ export default function VocalList(props: PropsType) {
     audio.src = vocalData[clickVocal]?.vocalTitleFile && vocalData[clickVocal]?.vocalTitleFile;
     vocalData[clickVocal]?.vocalTitleFile && console.log(vocalData[clickVocal]?.vocalTitleFile);
     getDuration(vocalData[clickVocal]?.wavFileLength);
+    getAudioInfos("시간의 지평선", vocalData[clickVocal]?.vocalProfileImage);
   }, [clickVocal]);
 
   const navigate = useNavigate();
