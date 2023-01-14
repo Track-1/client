@@ -106,9 +106,8 @@ export default function TrackList(props: PropsType) {
     navigate(`/track-post/${id}`, { state: id });
     setShowPlayer(false);
   }
-
-  function moveProducerProfilePage(producdrId: number) {
-    navigate(`/producer-profile/${producdrId}`, { state: producdrId });
+  function moveProducerProfilePage(producerId: number) {
+    navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);
   }
 

@@ -15,6 +15,8 @@ import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import {tracksOrVocalsCheck} from "../recoil/tracksOrVocalsCheck"
+import { Category } from "../core/common/categoryHeader";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
@@ -37,15 +39,33 @@ export default function ProducerProfilePage() {
 
   const audio = useMemo(() => new Audio(), []);
 
+  const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck)
+
   // infinite
   const targetRef = useRef<any>();
   const page = useRef<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
+  useEffect(()=>{
+    setWhom(Category.TRACKS)
+  },[])
+
+  useEffect(() => {
+    async function getData() {
+      // const data = await getProducerProfile(Number(producerId));
+      const data = await getProducerProfile(Number(2));
+      setProfileData(data?.data?.data.producerProfile);
+      setIsMe(data?.data?.data.isMe);
+      console.log(data?.data?.data.producerProfile)
+    }
+    getData();
+  }, []);
+
   const fetch = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page.current}&limit=3`,
+        // `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page.current}&limit=3`,
+        `${process.env.REACT_APP_BASE_URL}/profile/producer/${2}?page=${page.current}&limit=3`,
         {
           headers: {
             Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
@@ -154,6 +174,7 @@ export default function ProducerProfilePage() {
     setTitle(title);
     setImage(image);
   }
+
 
   return (
     <>
