@@ -105,7 +105,7 @@ export default function TrackSearchPage() {
   function playAudio() {
     audio.play();
     setPlay(true);
-    // setShowPlayer(true);
+    setShowPlayer(true);
   }
 
   // useEffect(() => {

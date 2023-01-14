@@ -27,6 +27,8 @@ export default function ProducerProfilePage() {
   const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [title, setTitle] = useState<string>("");
+  const [image, setImage] = useState<string>("");
 
   const { producerId } = useParams();
 
@@ -112,7 +114,12 @@ export default function ProducerProfilePage() {
       const currentDuration = (audio.currentTime / audio.duration) * 100;
       console.log(audio.currentTime, audio.duration);
       setProgress(currentDuration);
+      checkAudioQuit();
     }
+  }
+
+  function checkAudioQuit() {
+    audio.duration === audio.currentTime && setPlay(false);
   }
 
   function changeToProfile() {
@@ -137,6 +144,11 @@ export default function ProducerProfilePage() {
 
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
+  }
+
+  function getAudioInfos(title: string, image: string) {
+    setTitle(title);
+    setImage(image);
   }
 
   return (
@@ -166,14 +178,24 @@ export default function ProducerProfilePage() {
             pauseAudio={pauseAudio}
             duration={duration}
             getDuration={getDuration}
+            getAudioInfos={getAudioInfos}
           />
         )}
       </PageContainer>
       <InfiniteDiv ref={targetRef}> </InfiniteDiv>
 
-      {/* {showPlayer && (
-        <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )} */}
+      {showPlayer && profileData && (
+        <Player
+          audio={audio}
+          playAudio={playAudio}
+          pauseAudio={pauseAudio}
+          progress={progress}
+          duration={duration}
+          title={title}
+          name={profileData?.name}
+          image={image}
+        />
+      )}
     </>
   );
 }
