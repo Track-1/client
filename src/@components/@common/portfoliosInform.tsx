@@ -84,6 +84,10 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
     !isClicked()&&isNotHovered()&&setId(clickId)
   },[hoverId, clickId])
 
+  function moveTrackPost(id:number){
+    navigate(`/track-post/${id}`)
+  }
+
   return (
     <PortfolioInformWrapper>
       {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
@@ -93,7 +97,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
-                <PortfoiloViewMoreButton onClick={() => navigate("/tracks/" + `${clickId}`)} />
+                <PortfoiloViewMoreButton onClick={() => moveTrackPost(id)} />
               )}
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}

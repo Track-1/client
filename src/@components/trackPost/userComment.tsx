@@ -94,6 +94,8 @@ export default function UserComment(props: CommentPropsType) {
 
   return (
     <CommentContainer>
+      
+
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
@@ -105,14 +107,21 @@ export default function UserComment(props: CommentPropsType) {
           <AddCommentIcon onClick={() => uploadComment(uploadData)} />
         </AddWrapper>
       </form>
+
+      <CommentWriteWrapper>
       {comments &&
         comments.map((data, index) => {
           return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
         })}
       <BlurSection />
+      </CommentWriteWrapper>
     </CommentContainer>
   );
 }
+
+const CommentWriteWrapper=styled.div`
+  /* position: fixed; */
+`
 
 const CommentContainer = styled.section`
   width: 107.7rem;
@@ -125,7 +134,7 @@ const CommentContainer = styled.section`
   padding-top: 6.1rem;
   padding-right: 7.5rem;
   
-  position: absolute;
+  position: sticky;
   z-index: 1;
   top: 0;
   right: 0;

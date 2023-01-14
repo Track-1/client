@@ -20,7 +20,7 @@ import BackButton from "../@components/@common/backButton";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import ditto from "../assets/audio/ditto.mp3";
@@ -33,6 +33,7 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/common/categoryHeader";
 import { setEmitFlags } from "typescript";
+import { UserType } from '../recoil/main';
 
 export default function TrackPostPage() {
   const audio = useMemo(() => new Audio(), []);
@@ -53,6 +54,7 @@ export default function TrackPostPage() {
   const [beatId, setBeatId] = useState<number>(-1);
   const [fileLink,setFileLink]=useState<string>()
   const [title, setTile]=useState<string>()
+  const user=useRecoilValue(UserType)
 
   const { state } = useLocation();
 
@@ -129,6 +131,16 @@ export default function TrackPostPage() {
   function notEndmyTrack() {
     setIsEnd(false);
   }
+
+  function isProducer(){
+    return user==="producer"
+  }
+
+  function isVocal(){
+    return user==="vocal"
+  }
+
+  console.log(user)
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -249,12 +261,12 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe &&
-                  (isEnd ? <ClosedWithXIcon onClick={notEndmyTrack} /> : <OpenedIcon onClick={endmyTrack} />)}
+                {(trackInfoData.isMe && isProducer()&&isEnd)&&!isVocal() && <ClosedWithXIcon onClick={notEndmyTrack} /> }
+                 {!(trackInfoData.isMe && isProducer()&&isEnd)&&!isVocal()&& <OpenedIcon onClick={endmyTrack} />}
                   {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
-                  {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>)}
+                  {(!trackInfoData.isMe &&isEnd) ? <ClosedBtnIcon />:(<button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>)}
                 {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
-                {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+                {!isProducer()&&play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
@@ -285,16 +297,18 @@ export default function TrackPostPage() {
             </InfoContainer>
           </PostSection>
         )}
-      </TrackPostPageWrapper>
+      
       <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
       {/* {showPlayer && (
         <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
       )} */}
+      </TrackPostPageWrapper>
     </>
   );
 }
 
 const TrackPostPageWrapper=styled.div`
+  position: fixed;
 `
 
 const RotateImage = keyframes`

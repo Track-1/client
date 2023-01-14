@@ -63,7 +63,7 @@ export default function CategoryHeader() {
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
           <ProfileWrapper onClick={moveMypage}>
-            <ProfileImg src={profileImg} alt="프로필이미지" />
+            <ProfileImg src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"} alt="프로필이미지" />
             <ToggleIc />
           </ProfileWrapper>
         </HeaderWrapper>
@@ -156,6 +156,9 @@ const ProfileWrapper = styled.div`
 `;
 
 const ProfileImg = styled.img`
+  width: 4.6rem;
+  height: 4.6rem;
+  
   margin-right: 1.29rem;
 
   border: 0.15rem solid white;

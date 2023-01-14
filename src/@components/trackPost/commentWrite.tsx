@@ -93,7 +93,7 @@ export default function CommentWrite(props: PropsType) {
   );
 }
 
-const WriteContainer = styled.article`
+const WriteContainer = styled.article`  
   height: 17.1rem;
 
   border: 0.2rem solid transparent;
