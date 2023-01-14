@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { getProducerProfile, getSelectingTracks } from "../core/api/producerProfile";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
+import { VocalProfileType } from "../type/vocalProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
@@ -16,6 +17,8 @@ import { useQuery } from "react-query";
 
 export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
+  const [vocalProfileData, setVocalProfileData] = useState<VocalProfileType>();
+
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -82,6 +85,7 @@ export default function ProducerProfilePage() {
     }
     getData();
   }, []);
+
 
   function playAudio() {
     audio.play();
