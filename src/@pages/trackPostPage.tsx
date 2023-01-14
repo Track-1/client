@@ -33,7 +33,7 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/common/categoryHeader";
 import { setEmitFlags } from "typescript";
-import { UserType } from '../recoil/main';
+import { UserType } from "../recoil/main";
 
 export default function TrackPostPage() {
   const audio = useMemo(() => new Audio(), []);
@@ -52,9 +52,10 @@ export default function TrackPostPage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [beatId, setBeatId] = useState<number>(-1);
-  const [fileLink,setFileLink]=useState<string>()
-  const [title, setTile]=useState<string>()
-  const user=useRecoilValue(UserType)
+  const [fileLink, setFileLink] = useState<string>();
+  const [title, setTitle] = useState<string>();
+  const user = useRecoilValue(UserType);
+  const [image, setImage] = useState<string>("");
 
   const { state } = useLocation();
 
@@ -63,7 +64,7 @@ export default function TrackPostPage() {
   }, []);
 
   useEffect(() => {
-    trackInfoData&&setTile(trackInfoData.title)
+    trackInfoData && setTitle(trackInfoData.title);
     if (trackInfoData?.beatWavFile !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
       setCurrentDuration(trackInfoData?.wavFileLength);
@@ -132,15 +133,15 @@ export default function TrackPostPage() {
     setIsEnd(false);
   }
 
-  function isProducer(){
-    return user==="producer"
+  function isProducer() {
+    return user === "producer";
   }
 
-  function isVocal(){
-    return user==="vocal"
+  function isVocal() {
+    return user === "vocal";
   }
 
-  console.log(user)
+  console.log(user);
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -161,35 +162,34 @@ export default function TrackPostPage() {
     },
   });
 
-
-	// const downloadFile = () => {
-	// 	if (fileLink) {
-	// 		fetch(fileLink, { method: 'GET' })
-	// 			.then(res => {
-	// 				return res.blob();
-	// 			})
-	// 			.then(blob => {
-	// 				const url = window.URL.createObjectURL(blob);
-	// 				const a = document.createElement('a');
-	// 				a.href = url;
-	// 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
-	// 				document.body.appendChild(a);
-	// 				a.click();
-	// 				setTimeout(_ => {
-	// 					window.URL.revokeObjectURL(url);
-	// 				}, 60000);
-	// 				a.remove();
-	// 				// setOpen(false);
-	// 			})
-	// 			.catch(err => {
-	// 				console.error('err: ', err);
-	// 			});
-	// 	} else {
-	// 		alert(
-	// 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
-	// 		);
-	// 	}
-	// };
+  // const downloadFile = () => {
+  // 	if (fileLink) {
+  // 		fetch(fileLink, { method: 'GET' })
+  // 			.then(res => {
+  // 				return res.blob();
+  // 			})
+  // 			.then(blob => {
+  // 				const url = window.URL.createObjectURL(blob);
+  // 				const a = document.createElement('a');
+  // 				a.href = url;
+  // 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
+  // 				document.body.appendChild(a);
+  // 				a.click();
+  // 				setTimeout(_ => {
+  // 					window.URL.revokeObjectURL(url);
+  // 				}, 60000);
+  // 				a.remove();
+  // 				// setOpen(false);
+  // 			})
+  // 			.catch(err => {
+  // 				console.error('err: ', err);
+  // 			});
+  // 	} else {
+  // 		alert(
+  // 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
+  // 		);
+  // 	}
+  // };
 
   // function downloadFile(){
   //   fetch(`${fileLink}`, {method: 'GET'})
@@ -201,45 +201,50 @@ export default function TrackPostPage() {
   //     var a = document.createElement('a');
   //     a.href = url;
   //     a.download = 'myItem.extension';
-  //     document.body.appendChild(a); 
-  //     a.click();  
+  //     document.body.appendChild(a);
+  //     a.click();
   //     setTimeout(
-  //       _ => { window.URL.revokeObjectURL(url); }, 
-  //       60000); 
-  //     a.remove(); 
+  //       _ => { window.URL.revokeObjectURL(url); },
+  //       60000);
+  //     a.remove();
   //   })
   //   .catch(err => {
   //     console.error('err: ', err);
   //   })
   // }
 
-//   function downloadFile (){
-//     console.log("dfdfd")
-//     const url = fileLink
-//     const download = document.createElement('a');
+  //   function downloadFile (){
+  //     console.log("dfdfd")
+  //     const url = fileLink
+  //     const download = document.createElement('a');
 
-//     download.href = url?url:"";
-//     download.setAttribute('download',title?title:"");
-//     download.setAttribute('type', 'application/json');
-//     download.click();
-// }
-  const downloadFile = useCallback((fileName:string, fileLink:string) => {
+  //     download.href = url?url:"";
+  //     download.setAttribute('download',title?title:"");
+  //     download.setAttribute('type', 'application/json');
+  //     download.click();
+  // }
+  const downloadFile = useCallback((fileName: string, fileLink: string) => {
     // console.log("eee", title)
     // console.log("url", fileLink)
 
     // let fileName = `${title}`;
-    const blob = new Blob([fileLink], {type: 'audio/mp3'})
-    const url=window.URL.createObjectURL(blob)
+    const blob = new Blob([fileLink], { type: "audio/mp3" });
+    const url = window.URL.createObjectURL(blob);
 
-    const element = document.createElement('a');
-    element.href =url
+    const element = document.createElement("a");
+    element.href = url;
     element.download = fileName;
     // document.body.appendChild(element); // FireFox
     element.click();
 
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
-  },[])
+  }, []);
+
+  function getAudioInfos(title: string, image: string) {
+    setTitle(title);
+    setImage(image);
+  }
 
   return (
     <>
@@ -261,12 +266,20 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {(trackInfoData.isMe && isProducer()&&isEnd)&&!isVocal() && <ClosedWithXIcon onClick={notEndmyTrack} /> }
-                 {!(trackInfoData.isMe && isProducer()&&isEnd)&&!isVocal()&& <OpenedIcon onClick={endmyTrack} />}
-                  {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
-                  {(!trackInfoData.isMe &&isEnd) ? <ClosedBtnIcon />:(<button onClick={()=>downloadFile(trackInfoData.title,trackInfoData.beatWavFile)}><DownloadBtnIcon /></button>)}
+                {trackInfoData.isMe && isProducer() && isEnd && !isVocal() && (
+                  <ClosedWithXIcon onClick={notEndmyTrack} />
+                )}
+                {!(trackInfoData.isMe && isProducer() && isEnd) && !isVocal() && <OpenedIcon onClick={endmyTrack} />}
+                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
+                {!trackInfoData.isMe && isEnd ? (
+                  <ClosedBtnIcon />
+                ) : (
+                  <button onClick={() => downloadFile(trackInfoData.title, trackInfoData.beatWavFile)}>
+                    <DownloadBtnIcon />
+                  </button>
+                )}
                 {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
-                {!isProducer()&&play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+                {!isProducer() && play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
 
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
@@ -297,19 +310,28 @@ export default function TrackPostPage() {
             </InfoContainer>
           </PostSection>
         )}
-      
-      <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
-      {/* {showPlayer && (
-        <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )} */}
+
+        <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
+        {showPlayer && trackInfoData && (
+          <Player
+            audio={audio}
+            playAudio={playAudio}
+            pauseAudio={pauseAudio}
+            progress={progress}
+            duration={duration}
+            title={trackInfoData?.title}
+            name={trackInfoData?.producerName}
+            image={image}
+          />
+        )}
       </TrackPostPageWrapper>
     </>
   );
 }
 
-const TrackPostPageWrapper=styled.div`
+const TrackPostPageWrapper = styled.div`
   position: fixed;
-`
+`;
 
 const RotateImage = keyframes`
     100% {transform: rotate(360deg)};

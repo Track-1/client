@@ -24,7 +24,7 @@ import axios from "axios";
 import { VocalsDataType } from "../type/vocalsDataType";
 
 export default function VocalsPage() {
-  const showPlayer = useRecoilValue<boolean>(showPlayerBar);
+  // const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [progress, setProgress] = useState<number>(0);
@@ -32,6 +32,7 @@ export default function VocalsPage() {
   const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
   const pageNum = useRecoilValue(vocalListinfiniteScroll);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const audio = useMemo(() => new Audio(), []);
 
@@ -43,6 +44,10 @@ export default function VocalsPage() {
   const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
   const intersectRef = useRef(null);
   const [isLastPage, setIsLastPage] = useState(false);
+  const [title, setTitle] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [name, setName] = useState<string>("");
+
   // const { isIntersect } = useIntersectObserver(intersectRef, {
   //   rootMargin: "200px",
   //   threshold: 0.05,
@@ -74,7 +79,6 @@ export default function VocalsPage() {
   //   },
   // );
 
-
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
@@ -91,20 +95,24 @@ export default function VocalsPage() {
   //   page.current=1
   // },[filteredUrlApi])
 
-  const { data } = useQuery(["filteredUrlApi", filteredUrlApi, isSelected, vocalsData], () => getVocalsData(filteredUrlApi, isSelected), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      // if (data?.status === 200&&page.current===2) {
-      if (data?.status === 200) {
-        setVocalsData(data?.data.data.vocalList);
-      }
+  const { data } = useQuery(
+    ["filteredUrlApi", filteredUrlApi, isSelected, vocalsData],
+    () => getVocalsData(filteredUrlApi, isSelected),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0,
+      onSuccess: (data) => {
+        // if (data?.status === 200&&page.current===2) {
+        if (data?.status === 200) {
+          setVocalsData(data?.data.data.vocalList);
+        }
+      },
+      onError: (error) => {
+        console.log("실패");
+      },
     },
-    onError: (error) => {
-      console.log("실패");
-    },
-  });
-  
+  );
+
   // const fetch = useCallback(async (filteredUrlApi: string) => {
   //   try {
   //     const { data } = await axios.get(
@@ -143,16 +151,17 @@ export default function VocalsPage() {
   //     io.disconnect();
   //   };
   // }, [fetch, hasNextPage,filteredUrlApi]);
-  
+
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
 
-//end
+  //end
 
   function playAudio() {
     audio.play();
     setPlay(true);
+    setShowPlayer(true);
   }
 
   function pauseAudio() {
@@ -183,6 +192,11 @@ export default function VocalsPage() {
     setCurrentDuration(durationTime);
   }
 
+  function getAudioInfos(title: string, image: string) {
+    setTitle(title);
+    setImage(image);
+  }
+
   return (
     <>
       <CategoryHeader />
@@ -201,14 +215,24 @@ export default function VocalsPage() {
               pauseAudio={pauseAudio}
               duration={duration}
               getDuration={getDuration}
+              getAudioInfos={getAudioInfos}
             />
           )}
-      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
+          <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
-      {/* {showPlayer && (
-        <Player audio={audio} playAudio={playAudio} pauseAudio={pauseAudio} progress={progress} duration={duration} />
-      )} */}
+      {showPlayer && vocalsData && (
+        <Player
+          audio={audio}
+          playAudio={playAudio}
+          pauseAudio={pauseAudio}
+          progress={progress}
+          duration={duration}
+          title={title}
+          name={name}
+          image={image}
+        />
+      )}
     </>
   );
 }
@@ -226,6 +250,4 @@ const VocalListWrapper = styled.div`
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
-
 `;
-

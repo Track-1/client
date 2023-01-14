@@ -3,7 +3,7 @@ import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
 // import comments from "../../core/trackPost/userComments";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -13,6 +13,7 @@ import axios from "axios";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { playMusic, showPlayerBar } from "../../recoil/player";
 
 interface CommentPropsType {
   closeComment: any;
@@ -32,6 +33,12 @@ export default function UserComment(props: CommentPropsType) {
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+
+  // const audio = useMemo(() => new Audio(), []);
+
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [progress, setProgress] = useState<number>(0);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -94,8 +101,6 @@ export default function UserComment(props: CommentPropsType) {
 
   return (
     <CommentContainer>
-      
-
       <CloseCommentBtn>
         <CloseBtnIc onClick={closeComment} />
       </CloseCommentBtn>
@@ -109,31 +114,31 @@ export default function UserComment(props: CommentPropsType) {
       </form>
 
       <CommentWriteWrapper>
-      {comments &&
-        comments.map((data, index) => {
-          return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
-        })}
-      <BlurSection />
+        {comments &&
+          comments.map((data, index) => {
+            return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
+          })}
+        <BlurSection />
       </CommentWriteWrapper>
     </CommentContainer>
   );
 }
 
-const CommentWriteWrapper=styled.div`
+const CommentWriteWrapper = styled.div`
   /* position: fixed; */
-`
+`;
 
 const CommentContainer = styled.section`
   width: 107.7rem;
   float: right;
-  
+
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
-  
+
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;
-  
+
   position: sticky;
   z-index: 1;
   top: 0;
