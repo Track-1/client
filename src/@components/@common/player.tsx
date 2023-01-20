@@ -98,8 +98,8 @@ export default function Player(props: PropsType) {
           onMouseDown={downMouse}
           onMouseUp={upMouse}
           onMouseMove={moveAudio}
-          onMouseEnter={hoverPlaybar}
-          onMouseOut={detachPlyabar}
+          onMouseOver={hoverPlaybar}
+          onMouseLeave={detachPlyabar}
           isActive={isHovered}>
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} isActive={isHovered} />
         </PlayerBarWrapper>
