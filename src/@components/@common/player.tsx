@@ -177,12 +177,11 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
 
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(0.3rem);
-  border-radius: 1rem;
+  border-radius: 50%;
 
   position: absolute;
-  top: 1.8rem;
-  left: ${({ progress }) => progress}%;
+  top: 1.6rem;
+  left: ${({ progress }) => progress - 0.5}%;
   z-index: 1001;
 
   pointer-events: none;
