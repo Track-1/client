@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { PlayBtnIc } from "../../assets";
 import profileDummyImg from "../../assets/image/profileDummyImg.png";
 import { UserCommentType } from "../../type/userCommentsType";
+import { useRecoilState } from "recoil";
+import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 
 interface dataType {
   data: UserCommentType;
+  audio: HTMLAudioElement;
+  clickedIndex: number;
+  hoveredIndex: number;
+  clickComment: (index: number) => void;
+  hoverComment: (index: number) => void;
+  index: number;
+  comment: any;
 }
 
 export default function EachUserComment(props: dataType) {
-  const { data } = props;
+  const { data, audio, clickedIndex, hoveredIndex, clickComment, hoverComment, index, comment } = props;
   const [isHover, setIsHover] = useState<boolean>(false);
+
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+  const [duration, setDuration] = useState<number>(0);
 
   function changeHoverTrue() {
     setIsHover(true);
@@ -20,12 +34,37 @@ export default function EachUserComment(props: dataType) {
     setIsHover(false);
   }
 
+  useEffect(() => {
+    audio.play();
+    setPlay(true);
+  }, [currentFile]);
+
+  useEffect(() => {
+    setCurrentFile(comment?.vocalWavFile);
+    audio.src = comment?.vocalWavFile;
+  }, [clickedIndex]);
+
+  function playAudioOnTrack(id: number) {
+    setShowPlayer(true);
+    if (clickedIndex === id) {
+      audio.play();
+      setPlay(true);
+    } else {
+      setPlay(true);
+
+      setShowPlayer(true);
+      // setBeatId(id);
+      // setTrackClick(id);
+      clickComment(index);
+    }
+  }
+
   return (
     <CommentContainer onMouseOver={changeHoverTrue} onMouseOut={changeHoverFalse}>
       <ProfileImage img={data.vocalProfileImage}>
         {isHover && (
           <PlayerBlur>
-            <PlayBtnIc />
+            <PlayBtnIc onClick={() => clickComment(index)} />
           </PlayerBlur>
         )}
       </ProfileImage>
@@ -80,6 +119,8 @@ const PlayerBlur = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  pointer-events: none;
 `;
 
 const InfoBox = styled.div`

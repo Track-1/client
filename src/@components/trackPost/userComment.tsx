@@ -14,6 +14,7 @@ import { postComment } from "../../core/api/trackPost";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
+import Player from "../@common/player";
 
 interface CommentPropsType {
   closeComment: any;
@@ -34,11 +35,14 @@ export default function UserComment(props: CommentPropsType) {
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
-  // const audio = useMemo(() => new Audio(), []);
+  const audio = useMemo(() => new Audio(), []);
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [progress, setProgress] = useState<number>(0);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [duration, setDuration] = useState<number>(0);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
+  const [hoveredIndex, setHoneredIndex] = useState<number>(-1);
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -99,28 +103,70 @@ export default function UserComment(props: CommentPropsType) {
     },
   });
 
+  function playAudio() {}
+
+  function pauseAudio() {}
+
+  function clickComment(index: number) {
+    setClickedIndex(index);
+  }
+
+  function hoverComment(index: number) {
+    setHoneredIndex(index);
+  }
+
+  function getDuration(durationTime: number) {
+    setDuration(durationTime);
+  }
+
   return (
-    <CommentContainer>
-      <CloseCommentBtn>
-        <CloseBtnIc onClick={closeComment} />
-      </CloseCommentBtn>
-      <form>
-        <CommentWrite getUploadData={getUploadData} />
-        <AddWrapper>
-          <div></div>
+    <>
+      <CommentContainer>
+        <CloseCommentBtn>
+          <CloseBtnIc onClick={closeComment} />
+        </CloseCommentBtn>
+        <form>
+          <CommentWrite getUploadData={getUploadData} />
+          <AddWrapper>
+            <div></div>
 
-          <AddCommentIcon onClick={() => uploadComment(uploadData)} />
-        </AddWrapper>
-      </form>
+            <AddCommentIcon onClick={() => uploadComment(uploadData)} />
+          </AddWrapper>
+        </form>
 
-      <CommentWriteWrapper>
-        {comments &&
-          comments.map((data, index) => {
-            return <EachUseComment key={index} data={comments[index]} />; //여기가 각각의 데이터
-          })}
-        <BlurSection />
-      </CommentWriteWrapper>
-    </CommentContainer>
+        <CommentWriteWrapper>
+          {comments &&
+            comments.map((data, index) => {
+              return (
+                <EachUseComment
+                  key={index}
+                  data={comments[index]}
+                  audio={audio}
+                  clickedIndex={clickedIndex}
+                  hoveredIndex={hoveredIndex}
+                  clickComment={clickComment}
+                  hoverComment={hoverComment}
+                  index={index}
+                  comment={data}
+                />
+              ); //여기가 각각의 데이터
+            })}
+          <BlurSection />
+        </CommentWriteWrapper>
+      </CommentContainer>
+      {comments && (
+        <Player
+          audio={audio}
+          playAudio={playAudio}
+          pauseAudio={pauseAudio}
+          progress={progress}
+          duration={duration}
+          title="경계의 저편으로"
+          name={comments[clickedIndex]?.vocalName}
+          image={comments[clickedIndex]?.vocalProfileImage}
+        />
+      )}
+    </>
   );
 }
 
