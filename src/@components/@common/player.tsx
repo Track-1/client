@@ -99,7 +99,8 @@ export default function Player(props: PropsType) {
           onMouseUp={upMouse}
           onMouseMove={moveAudio}
           onMouseEnter={hoverPlaybar}
-          onMouseOut={detachPlyabar}>
+          onMouseOut={detachPlyabar}
+          isActive={isHovered}>
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} isActive={isHovered} />
         </PlayerBarWrapper>
 
@@ -189,12 +190,12 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
   display: ${({ isActive }) => !isActive && "none"};
 `;
 
-const PlayerBarWrapper = styled.div`
+const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
   width: 192rem;
   height: 3rem;
 
   background-color: transparent;
-  border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto;
   z-index: 1000;
 `;
