@@ -77,6 +77,7 @@ export default function Player(props: PropsType) {
   }
 
   function detachPlyabar() {
+    setDown(false);
     setIsHovered(false);
   }
 
