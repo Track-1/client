@@ -34,15 +34,15 @@ export default function EachUserComment(props: dataType) {
     setIsHover(false);
   }
 
-  useEffect(() => {
-    audio.play();
-    setPlay(true);
-  }, [currentFile]);
+  // useEffect(() => {
+  //   audio.play();
+  //   setPlay(true);
+  // }, [currentFile]);
 
-  useEffect(() => {
-    setCurrentFile(comment?.vocalWavFile);
-    audio.src = comment?.vocalWavFile;
-  }, [clickedIndex]);
+  // useEffect(() => {
+  //   setCurrentFile(comment?.vocalWavFile);
+  //   audio.src = comment?.vocalWavFile;
+  // }, [clickedIndex]);
 
   function playAudioOnTrack(id: number) {
     setShowPlayer(true);

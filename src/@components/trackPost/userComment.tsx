@@ -37,9 +37,9 @@ export default function UserComment(props: CommentPropsType) {
 
   const audio = useMemo(() => new Audio(), []);
 
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [progress, setProgress] = useState<number>(0);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [progress, setProgress] = useState<number>(0);
+  // const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [hoveredIndex, setHoneredIndex] = useState<number>(-1);
@@ -90,7 +90,6 @@ export default function UserComment(props: CommentPropsType) {
 
   const { mutate } = useMutation(postComment, {
     onSuccess: () => {
-      console.log("3");
       queryClient.invalidateQueries("beatId");
       setUploadData({
         content: "",
@@ -102,10 +101,6 @@ export default function UserComment(props: CommentPropsType) {
       setIsEnd(false);
     },
   });
-
-  function playAudio() {}
-
-  function pauseAudio() {}
 
   function clickComment(index: number) {
     setClickedIndex(index);
@@ -154,18 +149,6 @@ export default function UserComment(props: CommentPropsType) {
           <BlurSection />
         </CommentWriteWrapper>
       </CommentContainer>
-      {comments && (
-        <Player
-          audio={audio}
-          playAudio={playAudio}
-          pauseAudio={pauseAudio}
-          progress={progress}
-          duration={duration}
-          title="경계의 저편으로"
-          name={comments[clickedIndex]?.vocalName}
-          image={comments[clickedIndex]?.vocalProfileImage}
-        />
-      )}
     </>
   );
 }
