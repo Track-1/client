@@ -12,7 +12,7 @@ import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
 import { categorySelect, trackSearching } from "../../recoil/categorySelect";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
-import { Category } from "../../core/common/categoryHeader";
+import { Category } from "../../core/constants/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { UserType } from "../../recoil/main";
 

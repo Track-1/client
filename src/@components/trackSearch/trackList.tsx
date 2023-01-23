@@ -8,7 +8,6 @@ import {
   HoverPauseIc,
   HoverPlayIc,
 } from "../../assets";
-import tracks from "../../mocks/tracksListDummy.json";
 import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
@@ -20,41 +19,32 @@ interface PropsType {
   playAudio: () => void;
   pauseAudio: () => void;
   tracksData: TracksDataType[];
-  duration: number;
   getDuration: (durationTime: number) => void;
-  // targetRef: any;
   getAudioInfos: (title: string, name: string, image: string) => void;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, playAudio, pauseAudio, tracksData, duration, getDuration, getAudioInfos } = props;
-  const [trackHover, setTrackHover] = useState<number>(-1);
+  const { audio, playAudio, pauseAudio, tracksData, getDuration, getAudioInfos } = props;
 
+  const target = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
+  const [trackHover, setTrackHover] = useState<number>(-1);
   const [trackClick, setTrackClick] = useState<number>(-1);
+  const [beatId, setBeatId] = useState<number>();
+
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [beatId, setBeatId] = useState<number>();
-  const [currentTime, setCurrentTime] = useState<number>();
-
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-
-  //무한 스크롤
   const [page, setPage] = useRecoilState(trackListinfiniteScroll);
-  const [loading, setLoading] = useState(false);
-  const loadMore = () => setPage((prev) => prev + 1);
-  const target = useRef<HTMLDivElement | null>(null);
-
-  //  console.log(vocalData);
 
   useEffect(() => {
-    //  if (!loading) {
     const observer = new IntersectionObserver((endDiv) => {
       if (endDiv[0].isIntersecting) {
         loadMore();
       }
     });
     observer.observe(target.current!);
-    // }
   }, []);
 
   useEffect(() => {
@@ -73,7 +63,9 @@ export default function TrackList(props: PropsType) {
     );
   }, [trackClick]);
 
-  const navigate = useNavigate();
+  function loadMore() {
+    setPage((prev) => prev + 1);
+  }
 
   function mouseOverTrack(id: number) {
     setTrackHover(id);
@@ -90,7 +82,6 @@ export default function TrackList(props: PropsType) {
       setPlay(true);
     } else {
       setPlay(true);
-
       setShowPlayer(true);
       setBeatId(id);
       setTrackClick(id);
@@ -106,6 +97,7 @@ export default function TrackList(props: PropsType) {
     navigate(`/track-post/${id}`, { state: id });
     setShowPlayer(false);
   }
+
   function moveProducerProfilePage(producerId: number) {
     navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);

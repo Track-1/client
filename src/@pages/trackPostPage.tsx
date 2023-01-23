@@ -13,8 +13,6 @@ import {
   SmallPlayBtnIc,
   CommentBtnIc,
 } from "../assets";
-import profileDummyImg from "../assets/image/profileDummyImg.png";
-import playImg from "../assets/image/playImg.png";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
 import { useEffect, useState, useMemo, useCallback } from "react";
@@ -23,41 +21,36 @@ import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
-import ditto from "../assets/audio/ditto.mp3";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useLocation } from "react-router-dom";
-import { getTrackInfo, getAudioFile } from "../core/api/trackPost";
-import { TrackInfoDataType, AudioFileDataType } from "../type/tracksDataType";
+import { getTrackInfo } from "../core/api/trackPost";
+import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
-import { Category } from "../core/common/categoryHeader";
-import { setEmitFlags } from "typescript";
+import { Category } from "../core/constants/categoryHeader";
 import { UserType } from "../recoil/main";
 
 export default function TrackPostPage() {
-  const audio = useMemo(() => new Audio(), []);
+  const { state } = useLocation();
 
-  const [isMe, setIsMe] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
-  const [audioFileData, setAudioFileData] = useState<AudioFileDataType>();
   const [duration, setCurrentDuration] = useState<number>(0);
-  const [isPlay, setIsPlay] = useState<boolean>(false);
-
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [beatId, setBeatId] = useState<number>(-1);
   const [fileLink, setFileLink] = useState<string>();
   const [title, setTitle] = useState<string>();
-  const user = useRecoilValue(UserType);
   const [image, setImage] = useState<string>("");
 
-  const { state } = useLocation();
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const user = useRecoilValue(UserType);
+
+  const audio = useMemo(() => new Audio(), []);
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -70,6 +63,18 @@ export default function TrackPostPage() {
       setCurrentDuration(trackInfoData?.wavFileLength);
     }
   }, [trackInfoData]);
+
+  useEffect(() => {
+    if (play) {
+      audio.addEventListener("timeupdate", () => {
+        goProgress();
+      });
+    } else {
+      audio.removeEventListener("timeupdate", () => {
+        goProgress();
+      });
+    }
+  }, [play]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
@@ -93,18 +98,6 @@ export default function TrackPostPage() {
     setPlay(false);
   }
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
-
   function goProgress() {
     if (audio.duration) {
       const currentDuration = (audio.currentTime / audio.duration) * 100;
@@ -116,7 +109,6 @@ export default function TrackPostPage() {
     setIsCommentOpen(true);
     setShowPlayer(false);
     setBeatId(state);
-    console.log(audio);
     audio.src = "";
   }
 
@@ -147,16 +139,10 @@ export default function TrackPostPage() {
       if (data?.status === 200) {
         setTrackInfoData(data?.data.data);
         setFileLink(data?.data.data.beatWavFile);
-        console.log(data?.data.data);
-        //   const download = document.createElement('a');
-        //  download.href = data?.data.data.beatWavFile;
-        //   download.setAttribute('download', data?.data.data.beatWavFile);
-        // download.setAttribute('type', 'application/json');
-        //  download.click();
       }
     },
     onError: (error) => {
-      console.log("실패");
+      console.log(error);
     },
   });
 
@@ -234,11 +220,6 @@ export default function TrackPostPage() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
   }, []);
-
-  function getAudioInfos(title: string, image: string) {
-    setTitle(title);
-    setImage(image);
-  }
 
   return (
     <>

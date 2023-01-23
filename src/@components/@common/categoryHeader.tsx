@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Category } from "../../core/common/categoryHeader";
+import { Category } from "../../core/constants/categoryHeader";
 
 import {
   ToggleIc,
@@ -10,17 +10,16 @@ import {
   TracksHeaderTextIc,
   VocalsHeaderTextIc,
   TrackOneMainLogoIc,
-  
 } from "../../assets";
 import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { UserType } from '../../recoil/main';
+import { UserType } from "../../recoil/main";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const user=useRecoilValue(UserType)
+  const user = useRecoilValue(UserType);
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
@@ -36,8 +35,8 @@ export default function CategoryHeader() {
     navigate("/");
   }
 
-  function moveMypage(){
-    user==="vocal"?navigate("/vocal-profile/1", {state:1}):navigate("/producer-profile/2", {state:2})
+  function moveMypage() {
+    user === "vocal" ? navigate("/vocal-profile/1", { state: 1 }) : navigate("/producer-profile/2", { state: 2 });
   }
 
   return (
@@ -63,7 +62,10 @@ export default function CategoryHeader() {
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
           <ProfileWrapper onClick={moveMypage}>
-            <ProfileImg src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"} alt="프로필이미지" />
+            <ProfileImg
+              src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
+              alt="프로필이미지"
+            />
             <ToggleIc />
           </ProfileWrapper>
         </HeaderWrapper>
@@ -158,7 +160,7 @@ const ProfileWrapper = styled.div`
 const ProfileImg = styled.img`
   width: 4.6rem;
   height: 4.6rem;
-  
+
   margin-right: 1.29rem;
 
   border: 0.15rem solid white;

@@ -1,43 +1,21 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import vocals from "../../mocks/vocalProfileDummy.json";
 import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
-import { getVocalProfile } from "../../core/api/vocalProfile";
-import { PortfolioType } from "../../type/profilePropsType";
-import { VocalProfileType, VocalPortfolioType } from "../../type/vocalProfile";
-import Player from "../@common/player";
 
 export default function VocalProfileList(props: any) {
-  const { audio, isMe, portfolioData, playAudio, pauseAudio, duration, getDuration, infiniteRef, getAudioInfos } =
-    props;
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  // const [vocalPortfolioData, setVocalPortfolioData] = useState<VocalPortfolioType[]>();
+  const { audio, isMe, portfolioData, playAudio, pauseAudio, getDuration, infiniteRef, getAudioInfos } = props;
+  const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
+
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
   const [vocalPortfolioClick, setVocalPortfolioClick] = useState<number>(-1);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [beatId, setBeatId] = useState<number>();
 
-  function mouseOverVocalPortfolio(id: number) {
-    setVocalPortfolioHover(id);
-  }
-
-  function mouseOutVocalPortfolio() {
-    setVocalPortfolioHover(-1);
-  }
-
-  function clickPauseIc(id: number) {
-    setShowPlayer(true);
-    setPlay(true);
-    setVocalPortfolioClick(id);
-  }
-
-  function clickPlayIc() {
-    setPlay(false);
-  }
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
   useEffect(() => {
     playAudio();
@@ -48,24 +26,27 @@ export default function VocalProfileList(props: any) {
     audio.src = portfolioData[vocalPortfolioClick]?.beatWavFile;
     getDuration(portfolioData[vocalPortfolioClick]?.wavFileLength);
     getAudioInfos(portfolioData[vocalPortfolioClick]?.title, portfolioData[vocalPortfolioClick]?.jacketImage);
-
-    console.log(vocalPortfolioClick);
   }, [vocalPortfolioClick]);
 
+  function mouseOverVocalPortfolio(id: number) {
+    setVocalPortfolioHover(id);
+  }
+
+  function mouseOutVocalPortfolio() {
+    setVocalPortfolioHover(-1);
+  }
+
   function playAudioOnTrack(id: number) {
-    console.log("dddfdasdfadkfjasdlfjadsjfldksfjskl");
     if (vocalPortfolioClick === id) {
       audio.play();
       setPlay(true);
     } else {
       setPlay(true);
-
       setShowPlayer(true);
       setBeatId(id);
       setVocalPortfolioClick(id);
     }
   }
-  const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
   return (
     <VocalProfileListWrapper>

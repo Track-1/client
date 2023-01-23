@@ -35,27 +35,11 @@ export default function ProducerPortFolioList(props: PropsType) {
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [beatId, setBeatId] = useState<number>();
 
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-
-  function hoverPortfolio(id: number) {
-    setHoveredIndex(id);
-  }
-
-  function hoverOutPortfolio(id: number) {
-    id !== clickedIndex && setHoveredIndex(-1);
-  }
-  // function clickPauseIc(id: number) {
-  //   setPlay(true);
-  //   setClickedIndex(id);
-  // }
-
-  // function clickPlayIc() {
-  //   setPlay(false);
-  // }
 
   useEffect(() => {
     setHoveredIndex(-1);
@@ -73,6 +57,14 @@ export default function ProducerPortFolioList(props: PropsType) {
     getDuration(portfolioData[clickedIndex]?.wavFileLength);
     getAudioInfos(portfolioData[clickedIndex]?.title, portfolioData[clickedIndex]?.jacketImage);
   }, [clickedIndex]);
+
+  function hoverPortfolio(id: number) {
+    setHoveredIndex(id);
+  }
+
+  function hoverOutPortfolio(id: number) {
+    id !== clickedIndex && setHoveredIndex(-1);
+  }
 
   function playAudioOnTrack(id: number) {
     if (clickedIndex === id) {
@@ -236,14 +228,19 @@ const PortfolioBox = styled.article<{
   }
 `;
 
-const PortfolioImage = styled.img<{ isLarge: boolean; index: number; profileState: string; clickBool: boolean, hoverBool:boolean }>`
+const PortfolioImage = styled.img<{
+  isLarge: boolean;
+  index: number;
+  profileState: string;
+  clickBool: boolean;
+  hoverBool: boolean;
+}>`
   height: ${({ clickBool, index, profileState }) =>
     (index === 0 && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   width: ${({ clickBool, index, profileState }) =>
     (index === 0 && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
 
-  opacity: ${({ hoverBool, clickBool }) =>
-      !hoverBool && !clickBool && 0.2};
+  opacity: ${({ hoverBool, clickBool }) => !hoverBool && !clickBool && 0.2};
 `;
 
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`

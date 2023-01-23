@@ -1,4 +1,4 @@
-import { Category } from "../../core/common/categoryHeader";
+import { Category } from "../../core/constants/categoryHeader";
 
 export function isTracksPage(tracksOrVocals: string) {
   return tracksOrVocals === Category.TRACKS;

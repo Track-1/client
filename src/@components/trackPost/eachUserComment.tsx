@@ -1,31 +1,25 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { PauseBtnIc, PlayBtnIc } from "../../assets";
-import profileDummyImg from "../../assets/image/profileDummyImg.png";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, playMusic } from "../../recoil/player";
 
 interface dataType {
   data: UserCommentType;
   audio: HTMLAudioElement;
   clickedIndex: number;
-  hoveredIndex: number;
   pauseAudio: () => void;
   clickComment: (index: number) => void;
-  hoverComment: (index: number) => void;
   index: number;
-  comment: any;
 }
 
 export default function EachUserComment(props: dataType) {
-  const { data, audio, clickedIndex, hoveredIndex, clickComment, hoverComment, index, comment, pauseAudio } = props;
+  const { data, audio, clickedIndex, clickComment, index, pauseAudio } = props;
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-  const [duration, setDuration] = useState<number>(0);
 
   function changeHoverTrue() {
     setIsHover(true);
@@ -37,15 +31,13 @@ export default function EachUserComment(props: dataType) {
 
   function playAudioOnTrack(id: number) {
     setShowPlayer(true);
+
     if (clickedIndex === id) {
       audio.play();
       setPlay(true);
     } else {
       setPlay(true);
-
       setShowPlayer(true);
-      // setBeatId(id);
-      // setTrackClick(id);
       clickComment(index);
     }
   }

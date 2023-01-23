@@ -5,48 +5,39 @@ import CategoryList from "../@components/@common/categoryList";
 import VocalListHeader from "../@components/vocalSearch/vocalListHeader";
 import VocalList from "../@components/vocalSearch/vocalList";
 import Player from "../@components/@common/player";
-import { VocalSearchType } from "../type/vocalSearchType";
 
-import { Category } from "../core/common/categoryHeader";
+import { Category } from "../core/constants/categoryHeader";
 import { showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import TrackListHeader from "../@components/trackSearch/trackListHeader";
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { getVocalsData } from "../core/api/vocalSearch";
 import { playMusic } from "../recoil/player";
 import { categorySelect, trackSearching } from "../recoil/categorySelect";
 import { vocalListinfiniteScroll } from "../recoil/infiniteScroll";
-import { useQuery, useInfiniteQuery } from "react-query";
-import useIntersectObserver from "../utils/hooks/useIntersectObserver";
-import axios from "axios";
+import { useQuery } from "react-query";
 import { VocalsDataType } from "../type/vocalsDataType";
 
 export default function VocalsPage() {
-  // const showPlayer = useRecoilValue<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [progress, setProgress] = useState<number>(0);
-  const [duration, setCurrentDuration] = useState<number>(0);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
-  const pageNum = useRecoilValue(vocalListinfiniteScroll);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
+  const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
+  const [title, setTitle] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [progress, setProgress] = useState<number>(0);
+  const [duration, setCurrentDuration] = useState<number>(0);
 
   const audio = useMemo(() => new Audio(), []);
 
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);
-
-  // const [page, setPage] = useState(1);
-  const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
-  const intersectRef = useRef(null);
-  const [isLastPage, setIsLastPage] = useState(false);
-  const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [name, setName] = useState<string>("");
 
   // const { isIntersect } = useIntersectObserver(intersectRef, {
   //   rootMargin: "200px",
@@ -80,16 +71,12 @@ export default function VocalsPage() {
   // );
 
   const targetRef = useRef<any>();
-  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-
-  const page = useRef<number>(1);
 
   // useEffect(()=>{
   //   console.log("데이터",vocalsData)
   //   console.log("페이지",page.current)
   // },[vocalsData])
 
-  //dfdfdfdfd
   // useEffect(()=>{
   //   setVocalsData([])
   //   page.current=1
@@ -208,15 +195,7 @@ export default function VocalsPage() {
         <VocalListWrapper>
           <VocalListHeader />
           {data && (
-            <VocalList
-              vocalData={vocalsData}
-              audio={audio}
-              playAudio={playAudio}
-              pauseAudio={pauseAudio}
-              duration={duration}
-              getDuration={getDuration}
-              getAudioInfos={getAudioInfos}
-            />
+            <VocalList vocalData={vocalsData} audio={audio} getDuration={getDuration} getAudioInfos={getAudioInfos} />
           )}
           <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
