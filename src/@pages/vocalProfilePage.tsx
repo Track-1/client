@@ -5,7 +5,7 @@ import Player from "../@components/@common/player";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
 import VocalProfileList from "../@components/vocalProfile/vocalProfileList";
 import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
-import { Category } from "../core/common/categoryHeader";
+import { Category } from "../core/constants/categoryHeader";
 import { showPlayerBar, playMusic } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
@@ -13,7 +13,7 @@ import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useQuery } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 
@@ -31,11 +31,10 @@ export default function VocalProfilePage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const audio = useMemo(() => new Audio(), []);
-  // const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck)
 
-  useEffect(()=>{
-    setWhom(Category.TRACKS)
-  },[])
+  useEffect(() => {
+    setWhom(Category.TRACKS);
+  }, []);
 
   const { state } = useLocation();
   useEffect(() => {
@@ -77,7 +76,6 @@ export default function VocalProfilePage() {
   }, []);
 
   useEffect(() => {
-    // if (!targetRef.current || !hasNextPage) return;
     const io = new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
         fetch();
@@ -104,7 +102,7 @@ export default function VocalProfilePage() {
         setIsMe(data?.data.data.isMe);
         setProfileData(data?.data.data.vocalProfile);
         setPortfolioData(data?.data.data.vocalPortfolio);
-        console.log(data?.data.data)
+        console.log(data?.data.data);
       }
     },
     onError: (error) => {
@@ -226,7 +224,6 @@ export default function VocalProfilePage() {
               audio={audio}
               playAudio={playAudio}
               pauseAudio={pauseAudio}
-              duration={duration}
               getDuration={getDuration}
               infiniteRef={targetRef}
               getAudioInfos={getAudioInfos}

@@ -2,55 +2,73 @@ import styled from "styled-components";
 import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
-// import comments from "../../core/trackPost/userComments";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
-import axios from "axios";
 import { postComment } from "../../core/api/trackPost";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
-import { playMusic, showPlayerBar, audioFile } from "../../recoil/player";
+import { useRecoilState } from "recoil";
+import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 
 interface CommentPropsType {
-  closeComment: any;
+  closeComment: () => void;
   beatId: number;
 }
 
 export default function UserComment(props: CommentPropsType) {
   const { closeComment, beatId } = props;
 
-  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [comments, setComments] = useState<UserCommentType[]>();
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     wavFile: null,
   });
-  const contentLength = useRecoilValue(postContentLength);
+
+  const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
+  const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
+
+  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const audio = useMemo(() => new Audio(), []);
 
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [progress, setProgress] = useState<number>(0);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [duration, setDuration] = useState<number>(0);
-  const [clickedIndex, setClickedIndex] = useState<number>(-1);
-  const [hoveredIndex, setHoneredIndex] = useState<number>(-1);
-  const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
+  useEffect(() => {
+    if (comments) {
+      audio.src = comments[clickedIndex].vocalWavFile;
+      setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
+      setDuration(comments[clickedIndex].vocalWavFileLength);
+      console.log(clickedIndex);
+    }
+  }, [clickedIndex]);
 
-  function getUploadData(text: string, audioFile: File | null) {
-    setUploadData({
-      content: text,
-      wavFile: audioFile,
-    });
-  }
+  useEffect(() => {
+    if (currentAudioFile) {
+      playAudio();
+      console.log(currentAudioFile);
+    }
+  }, [currentAudioFile]);
+
+  useEffect(() => {
+    if (play) {
+      audio.addEventListener("timeupdate", () => {
+        goProgress();
+      });
+    } else {
+      audio.removeEventListener("timeupdate", () => {
+        goProgress();
+      });
+    }
+  }, [play]);
 
   //get
   const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
@@ -75,8 +93,6 @@ export default function UserComment(props: CommentPropsType) {
 
   useEffect(() => {
     if (content && wavFile) {
-      // if(uploadData.content&&uploadData.wavFile){
-
       let formData = new FormData();
       formData.append("wavFile", wavFile);
       formData.append("content", content);
@@ -101,33 +117,16 @@ export default function UserComment(props: CommentPropsType) {
     },
   });
 
-  useEffect(() => {
-    if (comments) {
-      audio.src = comments[clickedIndex].vocalWavFile;
-      setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
-      setDuration(comments[clickedIndex].vocalWavFileLength);
-      console.log(clickedIndex);
-    }
-  }, [clickedIndex]);
-
-  useEffect(() => {
-    if (currentAudioFile) {
-      playAudio();
-      console.log(currentAudioFile);
-    }
-  }, [currentAudioFile]);
+  function getUploadData(text: string, audioFile: File | null) {
+    setUploadData({
+      content: text,
+      wavFile: audioFile,
+    });
+  }
 
   function clickComment(index: number) {
     setClickedIndex(index);
     console.log(index);
-  }
-
-  function hoverComment(index: number) {
-    setHoneredIndex(index);
-  }
-
-  function getDuration(durationTime: number) {
-    setDuration(durationTime);
   }
 
   function playAudio() {
@@ -140,18 +139,6 @@ export default function UserComment(props: CommentPropsType) {
     audio.pause();
     setPlay(false);
   }
-
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
 
   function goProgress() {
     if (audio.duration) {
@@ -184,12 +171,9 @@ export default function UserComment(props: CommentPropsType) {
                   data={comments[index]}
                   audio={audio}
                   clickedIndex={clickedIndex}
-                  hoveredIndex={hoveredIndex}
                   clickComment={clickComment}
-                  hoverComment={hoverComment}
                   pauseAudio={pauseAudio}
                   index={index}
-                  comment={data}
                 />
               ); //여기가 각각의 데이터
             })}

@@ -6,39 +6,30 @@ import { endPost, postContent, postContentLength, postIsCompleted, postWavFile }
 
 interface PropsType {
   getUploadData: (content: string, wavFile: File | null) => any;
-  // isCompleted: boolean;
 }
 
 export default function CommentWrite(props: PropsType) {
-  // const { getUploadData, isCompleted } = props;
   const { getUploadData } = props;
-  const isCompleted = useRecoilValue(postIsCompleted);
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<any>(null);
 
-  const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
+
+  const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
   const [comment, setComment] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState<any>(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const isCompleted = useRecoilValue(postIsCompleted);
 
   useEffect(() => {
     const currentText = commentText.current!.value;
-    console.log(commentFile.current!.files);
 
     isCompleted && getUploadData(currentText, uploadedFile);
-    console.log(isCompleted);
-    // if (!isCompleted && !comment && commentFile) {
-    //   commentText.current!.value = "";
-    // }
   }, [isCompleted]);
 
   useEffect(() => {
-    // console.log("텍스트",commentText.current!.value)
-    // console.log("파일",uploadedFile)
-
     setComment(commentText.current!.value);
     setWavFile(uploadedFile);
   }, [commentLength]);
@@ -61,7 +52,6 @@ export default function CommentWrite(props: PropsType) {
   }
 
   return (
-    //post
     <WriteContainer>
       <ProfileImage
         src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
@@ -93,7 +83,7 @@ export default function CommentWrite(props: PropsType) {
   );
 }
 
-const WriteContainer = styled.article`  
+const WriteContainer = styled.article`
   height: 17.1rem;
 
   border: 0.2rem solid transparent;

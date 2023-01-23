@@ -9,41 +9,36 @@ import Player from "../@components/@common/player";
 import { showPlayerBar, playMusic, audioFile } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { Category } from "../core/common/categoryHeader";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Category } from "../core/constants/categoryHeader";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 
-import ditto from "../assets/audio/ditto.mp3";
-import { AudioTypes } from "../type/audioTypes";
 import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
-import { useQuery, useInfiniteQuery } from "react-query";
+import { useQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
-import { trackListinfiniteScroll } from "../recoil/infiniteScroll";
-import { TracksData } from "../recoil/categorySelect";
 
 export default function TrackSearchPage() {
   const [progress, setProgress] = useState<number>(0);
-
-  // const showPlayer = useRecoilValue<boolean>(showPlayerBar);
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
   const [duration, setCurrentDuration] = useState<number>(0);
-  const audio = useMemo(() => new Audio(), []);
-  const filteredUrlApi = useRecoilValue(categorySelect);
   const [title, setTitle] = useState<string>("");
   const [name, setName] = useState<string>("");
+
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+  const filteredUrlApi = useRecoilValue(categorySelect);
+
+  const audio = useMemo(() => new Audio(), []);
 
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [image, setImage] = useState<string>("");
-
   const page = useRef<number>(1);
 
   useEffect(() => {
@@ -97,21 +92,12 @@ export default function TrackSearchPage() {
       io.disconnect();
     };
   }, [fetch, hasNextPage, filteredUrlApi]);
+  //infite scroll end
 
   useEffect(() => {
     setWhom(Category.TRACKS);
     setShowPlayer(false);
   }, []);
-
-  function playAudio() {
-    audio.play();
-    setPlay(true);
-  }
-
-  // useEffect(() => {
-  //   console.log(showPlayer, play);
-  //   console.log(duration);
-  // }, [showPlayer]);
 
   useEffect(() => {
     if (play) {
@@ -124,6 +110,11 @@ export default function TrackSearchPage() {
       });
     }
   }, [play]);
+
+  function playAudio() {
+    audio.play();
+    setPlay(true);
+  }
 
   function pauseAudio() {
     audio.pause();
@@ -167,7 +158,6 @@ export default function TrackSearchPage() {
               playAudio={playAudio}
               pauseAudio={pauseAudio}
               tracksData={tracksData}
-              duration={duration}
               getDuration={getDuration}
               getAudioInfos={getAudioInfos}
             />

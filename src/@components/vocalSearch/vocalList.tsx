@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -9,22 +9,22 @@ import { VocalSearchType } from "../../type/vocalSearchType";
 interface PropsType {
   vocalData: VocalSearchType[];
   audio: HTMLAudioElement;
-  playAudio: () => void;
-  pauseAudio: () => void;
-  duration: number;
   getDuration: (durationTime: number) => void;
   getAudioInfos: (title: string, image: string) => void;
 }
 
 export default function VocalList(props: PropsType) {
-  const { vocalData, audio, playAudio, pauseAudio, duration, getDuration, getAudioInfos } = props;
+  const { vocalData, audio, getDuration, getAudioInfos } = props;
+  const navigate = useNavigate();
+
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
   const [clickVocal, setClickVocal] = useState<number>(-1);
+  const [beatId, setBeatId] = useState<number>(-1);
+
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-
-  const [beatId, setBeatId] = useState<number>(-1);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+
   useEffect(() => {
     audio.play();
   }, [currentFile]);
@@ -36,8 +36,6 @@ export default function VocalList(props: PropsType) {
     getDuration(vocalData[clickVocal]?.wavFileLength);
     getAudioInfos("시간의 지평선", vocalData[clickVocal]?.vocalProfileImage);
   }, [clickVocal]);
-
-  const navigate = useNavigate();
 
   function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
@@ -62,10 +60,8 @@ export default function VocalList(props: PropsType) {
   }
 
   function onClickPauseVocal(id: number) {
-    // if (play && id === beatId) {
     audio.pause();
     setPlay(false);
-    // }
   }
 
   function clickVocalName(id: number) {
