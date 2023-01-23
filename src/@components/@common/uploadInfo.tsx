@@ -92,27 +92,23 @@ export default function UploadInfo() {
       : alert("확장자를 확인해 주세요!");
   }
 
-  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
-    const index = CATEGORY.indexOf(e.currentTarget.innerText);
-    setGenre(e.currentTarget.innerText);
-
+  function selectCategory(e: React.MouseEvent<HTMLLIElement>, index: number) {
     const temp = new Array(CATEGORY.length).fill(false);
     temp[index] = true;
     setCheckState([...temp]);
     setCheckStateIcon([...temp]);
     setCategoryState(true);
     setHiddenDropBox(true);
+    setGenre(e.currentTarget.innerText);
   }
 
-  function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
-    const index = CATEGORY.indexOf(e.currentTarget.innerText);
+  function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
+    const hoverMenu = new Array(CATEGORY.length).fill(false);
     if (e.type === "mouseenter") {
-      const temp = new Array(CATEGORY.length).fill(false);
-      temp[index] = true;
-      setCheckHoverState([...temp]);
+      hoverMenu[index] = true;
+      setCheckHoverState([...hoverMenu]);
     } else {
-      const temp = new Array(CATEGORY.length).fill(false);
-      setCheckHoverState([...temp]);
+      setCheckHoverState([...hoverMenu]);
     }
   }
 
@@ -410,9 +406,9 @@ export default function UploadInfo() {
             <DropMenuItem
               checkState={checkState[index]}
               checkHoverState={checkHoverState[index]}
-              onMouseEnter={hoverMenu}
-              onMouseLeave={hoverMenu}
-              onClick={selectCategory}
+              onMouseEnter={(e) => hoverCategoryMenu(e, index)}
+              onMouseLeave={(e) => hoverCategoryMenu(e, index)}
+              onClick={(e) => selectCategory(e, index)}
               ref={(element) => {
                 categoryRefs.current[index] = element;
               }}>
