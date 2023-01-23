@@ -13,7 +13,7 @@ import axios from "axios";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
-import { playMusic, showPlayerBar } from "../../recoil/player";
+import { playMusic, showPlayerBar, audioFile } from "../../recoil/player";
 import Player from "../@common/player";
 
 interface CommentPropsType {
@@ -43,6 +43,7 @@ export default function UserComment(props: CommentPropsType) {
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [hoveredIndex, setHoneredIndex] = useState<number>(-1);
+  const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -70,13 +71,11 @@ export default function UserComment(props: CommentPropsType) {
   //post
   function uploadComment(uploadData: UploadDataType) {
     setIsCompleted(true);
-    console.log("1");
   }
 
   useEffect(() => {
     if (content && wavFile) {
       // if(uploadData.content&&uploadData.wavFile){
-      console.log("2");
 
       let formData = new FormData();
       formData.append("wavFile", wavFile);
@@ -90,7 +89,6 @@ export default function UserComment(props: CommentPropsType) {
 
   const { mutate } = useMutation(postComment, {
     onSuccess: () => {
-      console.log("3");
       queryClient.invalidateQueries("beatId");
       setUploadData({
         content: "",
@@ -103,12 +101,25 @@ export default function UserComment(props: CommentPropsType) {
     },
   });
 
-  function playAudio() {}
+  useEffect(() => {
+    if (comments) {
+      audio.src = comments[clickedIndex].vocalWavFile;
+      setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
+      setDuration(comments[clickedIndex].vocalWavFileLength);
+      console.log(clickedIndex);
+    }
+  }, [clickedIndex]);
 
-  function pauseAudio() {}
+  useEffect(() => {
+    if (currentAudioFile) {
+      playAudio();
+      console.log(currentAudioFile);
+    }
+  }, [currentAudioFile]);
 
   function clickComment(index: number) {
     setClickedIndex(index);
+    console.log(index);
   }
 
   function hoverComment(index: number) {
@@ -117,6 +128,36 @@ export default function UserComment(props: CommentPropsType) {
 
   function getDuration(durationTime: number) {
     setDuration(durationTime);
+  }
+
+  function playAudio() {
+    audio.play();
+    setPlay(true);
+    setShowPlayer(true);
+  }
+
+  function pauseAudio() {
+    audio.pause();
+    setPlay(false);
+  }
+
+  useEffect(() => {
+    if (play) {
+      audio.addEventListener("timeupdate", () => {
+        goProgress();
+      });
+    } else {
+      audio.removeEventListener("timeupdate", () => {
+        goProgress();
+      });
+    }
+  }, [play]);
+
+  function goProgress() {
+    if (audio.duration) {
+      const currentDuration = (audio.currentTime / audio.duration) * 100;
+      setProgress(currentDuration);
+    }
   }
 
   return (
@@ -146,6 +187,7 @@ export default function UserComment(props: CommentPropsType) {
                   hoveredIndex={hoveredIndex}
                   clickComment={clickComment}
                   hoverComment={hoverComment}
+                  pauseAudio={pauseAudio}
                   index={index}
                   comment={data}
                 />
@@ -154,14 +196,14 @@ export default function UserComment(props: CommentPropsType) {
           <BlurSection />
         </CommentWriteWrapper>
       </CommentContainer>
-      {comments && (
+      {showPlayer && comments && (
         <Player
           audio={audio}
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
           duration={duration}
-          title="경계의 저편으로"
+          title={"댓글제목"}
           name={comments[clickedIndex]?.vocalName}
           image={comments[clickedIndex]?.vocalProfileImage}
         />

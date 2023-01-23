@@ -86,15 +86,11 @@ export default function TrackPostPage() {
     audio.play();
     setPlay(true);
     setShowPlayer(true);
-    setIsPlay(true);
-    console.log(isPlay);
   }
 
   function pauseAudio() {
     audio.pause();
     setPlay(false);
-    setIsPlay(false);
-    console.log(isPlay);
   }
 
   useEffect(() => {
@@ -118,7 +114,10 @@ export default function TrackPostPage() {
 
   function openComment() {
     setIsCommentOpen(true);
+    setShowPlayer(false);
     setBeatId(state);
+    console.log(audio);
+    audio.src = "";
   }
 
   function closeComment() {
@@ -222,18 +221,14 @@ export default function TrackPostPage() {
   //     download.setAttribute('type', 'application/json');
   //     download.click();
   // }
-  const downloadFile = useCallback((fileName: string, fileLink: string) => {
-    // console.log("eee", title)
-    // console.log("url", fileLink)
 
-    // let fileName = `${title}`;
+  const downloadFile = useCallback((fileName: string, fileLink: string) => {
     const blob = new Blob([fileLink], { type: "audio/mp3" });
     const url = window.URL.createObjectURL(blob);
 
     const element = document.createElement("a");
     element.href = url;
     element.download = fileName;
-    // document.body.appendChild(element); // FireFox
     element.click();
 
     let reader = new FileReader();
@@ -307,7 +302,7 @@ export default function TrackPostPage() {
           </PostSection>
         )}
 
-        <CommentBtnIcon onClick={openComment} style={{ cursor: "pointer" }} />
+        <CommentBtnIcon onClick={openComment} />
         {showPlayer && trackInfoData && (
           <Player
             audio={audio}
@@ -516,11 +511,6 @@ const CommentBtnIcon = styled(CommentBtnIc)`
   margin-right: 7.5rem;
 
   float: right;
+
+  cursor: pointer;
 `;
-function axios(arg0: {
-  url: string; // 파일 다운로드 요청 URL
-  method: string; // 혹은 'POST'
-  responseType: string;
-}) {
-  throw new Error("Function not implemented.");
-}

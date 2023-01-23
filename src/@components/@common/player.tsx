@@ -77,6 +77,7 @@ export default function Player(props: PropsType) {
   }
 
   function detachPlyabar() {
+    setDown(false);
     setIsHovered(false);
   }
 
@@ -98,8 +99,9 @@ export default function Player(props: PropsType) {
           onMouseDown={downMouse}
           onMouseUp={upMouse}
           onMouseMove={moveAudio}
-          onMouseEnter={hoverPlaybar}
-          onMouseOut={detachPlyabar}>
+          onMouseOver={hoverPlaybar}
+          onMouseLeave={detachPlyabar}
+          isActive={isHovered}>
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} isActive={isHovered} />
         </PlayerBarWrapper>
 
@@ -176,12 +178,11 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
 
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(0.3rem);
-  border-radius: 1rem;
+  border-radius: 50%;
 
   position: absolute;
-  top: 1.8rem;
-  left: ${({ progress }) => progress}%;
+  top: 1.6rem;
+  left: ${({ progress }) => progress - 0.5}%;
   z-index: 1001;
 
   pointer-events: none;
@@ -189,12 +190,12 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
   display: ${({ isActive }) => !isActive && "none"};
 `;
 
-const PlayerBarWrapper = styled.div`
+const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
   width: 192rem;
   height: 3rem;
 
   background-color: transparent;
-  border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto;
   z-index: 1000;
 `;
