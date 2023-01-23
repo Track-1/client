@@ -18,27 +18,18 @@ import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
 export default function UploadInfo() {
+  const CATEGORY: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "Jazz", "House", "Funk"];
+
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   const dropBoxRef = useRef<HTMLDivElement>(null);
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
   let categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
-  const [category, setCategory] = useState<string[]>([
-    "R&B",
-    "Hiphop",
-    "Ballad",
-    "Pop",
-    "Rock",
-    "EDM",
-    "Jazz",
-    "House",
-    "Funk",
-  ]);
 
-  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(category.length).fill(false));
-  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(category.length).fill(false));
-  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(category.length).fill(false));
+  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
+  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
+  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
 
   const [title, setTitle] = useRecoilState<string>(uploadTitle);
   const [description, setDeiscription] = useRecoilState<string>(uploadIntroduce);
@@ -97,10 +88,10 @@ export default function UploadInfo() {
   }
 
   function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
-    const index = category.indexOf(e.currentTarget.innerText);
+    const index = CATEGORY.indexOf(e.currentTarget.innerText);
     setGenre(e.currentTarget.innerText);
 
-    const temp = new Array(category.length).fill(false);
+    const temp = new Array(CATEGORY.length).fill(false);
     temp[index] = true;
     setCheckState([...temp]);
     setCheckStateIcon([...temp]);
@@ -109,13 +100,13 @@ export default function UploadInfo() {
   }
 
   function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
-    const index = category.indexOf(e.currentTarget.innerText);
+    const index = CATEGORY.indexOf(e.currentTarget.innerText);
     if (e.type === "mouseenter") {
-      const temp = new Array(category.length).fill(false);
+      const temp = new Array(CATEGORY.length).fill(false);
       temp[index] = true;
       setCheckHoverState([...temp]);
     } else {
-      const temp = new Array(category.length).fill(false);
+      const temp = new Array(CATEGORY.length).fill(false);
       setCheckHoverState([...temp]);
     }
   }
@@ -211,7 +202,6 @@ export default function UploadInfo() {
         if (enteredHashtag && enteredHashtag.current) {
           enteredHashtag.current.style.width = "0rem";
           const inputWidth = enteredHashtag.current.scrollWidth;
-          console.log(inputWidth);
           enteredHashtag.current.style.width = inputWidth / 10 + "rem";
           setHashtagInputWidth(inputWidth);
         }
@@ -221,7 +211,7 @@ export default function UploadInfo() {
       }
     }
   }, [hashtagInputWidth]);
-  console.log();
+
 
   useEffect(() => {
     function clickOutside(e: any) {
@@ -234,7 +224,7 @@ export default function UploadInfo() {
       document.removeEventListener("click", clickOutside);
     };
   }, [hiddenDropBox]);
-  console.log(enteredHashtag.current?.scrollWidth);
+  
   return (
     <Container>
       <TitleInput
@@ -412,7 +402,7 @@ export default function UploadInfo() {
       </TextCount>
       <DropMenuBox hiddenDropBox={hiddenDropBox} onClick={closeDropBox} ref={dropBoxRef}>
         <DropMenuWrapper>
-          {category.map((text: string, index: number) => (
+          {CATEGORY.map((text: string, index: number) => (
             <DropMenuItem
               checkState={checkState[index]}
               checkHoverState={checkHoverState[index]}
