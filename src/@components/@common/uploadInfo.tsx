@@ -26,7 +26,6 @@ export default function UploadInfo() {
   let enteredHashtag = useRef<HTMLInputElement | null>(null);
   let categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
-
   const [checkState, setCheckState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
   const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
   const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
@@ -38,7 +37,7 @@ export default function UploadInfo() {
   const [wavFile, setWavFile] = useRecoilState<File | null>(uploadWavFile);
 
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
-  const [editFileName, setEditFileName] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
   const [categoryState, setCategoryState] = useState<boolean>(false);
   const [audioType, setAudioType] = useState<string>("");
@@ -63,28 +62,34 @@ export default function UploadInfo() {
     setHiddenDropBox((prev) => !prev);
   }
 
-  function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-    const type = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).substring(uploadName.length - 4);
+  function checkAduioFileType(type: string) {
+    return type === ".mp3" || type === ".wav";
+  }
 
-    let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
-
-    if (type === ".mp3" || type === ".wav") {
-      if (str.length > 14) {
-        setIsTextOverflow(true);
-        setEditFileName(str);
-      } else {
-        setIsTextOverflow(false);
-        setEditFileName(uploadName);
-      }
-      setAudioType(type);
-
-      if (e.target.files !== null) {
-        setWavFile(e.target.files[0]);
-      }
+  function setAudioAttribute(name: string, type: string, editName: string) {
+    if (editName.length > 14) {
+      setIsTextOverflow(true);
+      setFileName(editName);
     } else {
-      alert("확장자를 확인해 주세요!");
+      setIsTextOverflow(false);
+      setFileName(name);
     }
+    setAudioType(type);
+  }
+
+  function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
+    const audioFileName: string = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    const audioFileType: string = e.target.value
+      .substring(e.target.value.lastIndexOf("\\") + 1)
+      .substring(audioFileName.length - 4);
+    const onlyFileName: string = e.target.value.substring(
+      e.target.value.lastIndexOf("\\") + 1,
+      e.target.value.length - 4,
+    );
+
+    checkAduioFileType(audioFileType)
+      ? setAudioAttribute(audioFileName, audioFileType, onlyFileName)
+      : alert("확장자를 확인해 주세요!");
   }
 
   function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
@@ -212,7 +217,6 @@ export default function UploadInfo() {
     }
   }, [hashtagInputWidth]);
 
-
   useEffect(() => {
     function clickOutside(e: any) {
       if (!hiddenDropBox && !dropBoxRef.current!.contains(e.target)) {
@@ -224,7 +228,7 @@ export default function UploadInfo() {
       document.removeEventListener("click", clickOutside);
     };
   }, [hiddenDropBox]);
-  
+
   return (
     <Container>
       <TitleInput
@@ -252,15 +256,15 @@ export default function UploadInfo() {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              <InputFileTextWrapper editFileName={editFileName}>
-                <FileName value={editFileName} isTextOverflow={isTextOverflow} disabled />
+              <InputFileTextWrapper fileName={fileName}>
+                <FileName value={fileName} isTextOverflow={isTextOverflow} disabled />
                 {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioType}</FileAttribute>}
                 <input
                   type="file"
                   id="wavFileUpload"
                   style={{ display: "none" }}
                   accept=".wav,.mp3"
-                  onChange={uploadFile}
+                  onChange={uploadAudiofile}
                   readOnly
                 />
               </InputFileTextWrapper>
@@ -540,14 +544,14 @@ const FileAttribute = styled.div<{ isTextOverflow: boolean }>`
   margin-top: 1.686rem;
 `;
 
-const InputFileTextWrapper = styled.div<{ editFileName: string }>`
+const InputFileTextWrapper = styled.div<{ fileName: string }>`
   height: 4.7rem;
   width: 20.8rem;
 
   display: flex;
   align-items: center;
   border-bottom: 1px solid
-    ${(props) => (props.editFileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+    ${(props) => (props.fileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
 const InputCategoryTextWrapper = styled.div<{ categoryState: boolean }>`
