@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { PlayBtnIc } from "../../assets";
+import { PauseBtnIc, PlayBtnIc } from "../../assets";
 import profileDummyImg from "../../assets/image/profileDummyImg.png";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
@@ -11,6 +11,7 @@ interface dataType {
   audio: HTMLAudioElement;
   clickedIndex: number;
   hoveredIndex: number;
+  pauseAudio: () => void;
   clickComment: (index: number) => void;
   hoverComment: (index: number) => void;
   index: number;
@@ -18,7 +19,7 @@ interface dataType {
 }
 
 export default function EachUserComment(props: dataType) {
-  const { data, audio, clickedIndex, hoveredIndex, clickComment, hoverComment, index, comment } = props;
+  const { data, audio, clickedIndex, hoveredIndex, clickComment, hoverComment, index, comment, pauseAudio } = props;
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -33,16 +34,6 @@ export default function EachUserComment(props: dataType) {
   function changeHoverFalse() {
     setIsHover(false);
   }
-
-  // useEffect(() => {
-  //   audio.play();
-  //   setPlay(true);
-  // }, [currentFile]);
-
-  // useEffect(() => {
-  //   setCurrentFile(comment?.vocalWavFile);
-  //   audio.src = comment?.vocalWavFile;
-  // }, [clickedIndex]);
 
   function playAudioOnTrack(id: number) {
     setShowPlayer(true);
@@ -62,9 +53,14 @@ export default function EachUserComment(props: dataType) {
   return (
     <CommentContainer onMouseOver={changeHoverTrue} onMouseOut={changeHoverFalse}>
       <ProfileImage img={data.vocalProfileImage}>
-        {isHover && (
-          <PlayerBlur>
-            <PlayBtnIc onClick={() => clickComment(index)} />
+        {isHover && (!play || clickedIndex !== index) && (
+          <PlayerBlur onClick={() => playAudioOnTrack(index)}>
+            <PlayBtnIc />
+          </PlayerBlur>
+        )}
+        {play && clickedIndex === index && (
+          <PlayerBlur onClick={pauseAudio}>
+            <PauseBtnIc />
           </PlayerBlur>
         )}
       </ProfileImage>
@@ -120,7 +116,7 @@ const PlayerBlur = styled.div`
   justify-content: center;
   align-items: center;
 
-  pointer-events: none;
+  /* pointer-events: none; */
 `;
 
 const InfoBox = styled.div`

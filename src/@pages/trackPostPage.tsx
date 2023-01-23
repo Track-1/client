@@ -117,6 +117,7 @@ export default function TrackPostPage() {
     setShowPlayer(false);
     setBeatId(state);
     console.log(audio);
+    audio.src = "";
   }
 
   function closeComment() {
