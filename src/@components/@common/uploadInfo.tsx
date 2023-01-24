@@ -16,15 +16,18 @@ import {
 } from "../../assets";
 import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
+import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
+import { isClickedOutside } from "../../utils/common/modal";
 
 export default function UploadInfo() {
   const CATEGORY: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "Jazz", "House", "Funk"];
+  const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
   const dropBoxRef = useRef<HTMLDivElement>(null);
-  let enteredHashtag = useRef<HTMLInputElement | null>(null);
-  let categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
+  const enteredHashtag = useRef<HTMLInputElement | null>(null);
+  const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
   const [checkState, setCheckState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
   const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
@@ -42,11 +45,11 @@ export default function UploadInfo() {
   const [categoryState, setCategoryState] = useState<boolean>(false);
   const [audioType, setAudioType] = useState<string>("");
 
-  const [descriptionHoverState, setDescriptionTitleHoverState] = useState<boolean>(false);
+  const [descriptionHoverState, setDescriptionHoverState] = useState<boolean>(false);
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
-  const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(8.827);
+  const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(HASHTAG_WIDTH);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
 
   const [titleLength, setTitleLength] = useState<number>(0);
@@ -54,53 +57,70 @@ export default function UploadInfo() {
 
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
 
-  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
-    isFocusType(e.type)
-      ? setTitleHoverState(true)
-      : titleLength === 0
-      ? setTitleHoverState(false)
-      : setTitleHoverState(true);
+  //타이틀
+  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputLength = e.target.value.length;
+    if (checkMaxInputLength(inputLength, 37)) {
+      setTitleLength(inputLength);
+      setTitle(e.target.value);
+    } else {
+      restrictInput(titleRef);
+    }
   }
 
-  function closeDropBox(e: React.MouseEvent<HTMLDivElement>) {
-    // console.dir(dropBoxRef.current);
+  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
+    if (isFocusType(e.type)) {
+      setTitleHoverState(true);
+    } else {
+      titleLength === 0 ? setTitleHoverState(false) : setTitleHoverState(true);
+    }
   }
 
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
     setHiddenDropBox((prev) => !prev);
   }
 
-  function checkAduioFileType(type: string) {
-    return type === ".mp3" || type === ".wav";
-  }
-
-  function setAudioAttribute(name: string, type: string, editName: string) {
-    if (editName.length > 14) {
-      setIsTextOverflow(true);
-      setFileName(editName);
-    } else {
-      setIsTextOverflow(false);
-      setFileName(name);
-    }
-    setAudioType(type);
-  }
-
+  //오디오 업로드
   function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
-    const audioFileName: string = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-    const audioFileType: string = e.target.value
-      .substring(e.target.value.lastIndexOf("\\") + 1)
-      .substring(audioFileName.length - 4);
-    const onlyFileName: string = e.target.value.substring(
-      e.target.value.lastIndexOf("\\") + 1,
-      e.target.value.length - 4,
-    );
+    const file = e.target.value;
+    const audioFileName: string = getAudioFileName(file);
+    const audioFileType: string = getAudioFileType(file, audioFileName.length);
+    const onlyFileName: string = getOnlyFileName(file);
 
     checkAduioFileType(audioFileType)
       ? setAudioAttribute(audioFileName, audioFileType, onlyFileName)
       : alert("확장자를 확인해 주세요!");
   }
 
-  function selectCategory(e: React.MouseEvent<HTMLLIElement>, index: number) {
+  function checkAduioFileType(type: string) {
+    return type === ".mp3" || type === ".wav";
+  }
+
+  function getAudioFileName(file: string): string {
+    return file.substring(file.lastIndexOf("\\") + 1);
+  }
+
+  function getAudioFileType(file: string, fileLength: number): string {
+    return file.substring(file.lastIndexOf("\\") + 1).substring(fileLength - 4);
+  }
+
+  function getOnlyFileName(file: string): string {
+    return file.substring(file.lastIndexOf("\\") + 1, file.length - 4);
+  }
+
+  function setAudioAttribute(name: string, type: string, editName: string) {
+    if (checkMaxInputLength(editName.length, 14)) {
+      setIsTextOverflow(false);
+      setFileName(name);
+    } else {
+      setIsTextOverflow(true);
+      setFileName(editName);
+    }
+    setAudioType(type);
+  }
+
+  // 카테고리
+  function selectedCategory(e: React.MouseEvent<HTMLLIElement>, index: number) {
     const temp = new Array(CATEGORY.length).fill(false);
     temp[index] = true;
     setCheckState([...temp]);
@@ -128,18 +148,7 @@ export default function UploadInfo() {
     return type === "focus";
   }
 
-  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    isMouseEnterType(e.type) ? setWarningHoverState(true) : setWarningHoverState(false);
-  }
-
-  function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
-    isFocusType(e.type)
-      ? setDescriptionTitleHoverState(true)
-      : descriptionTextarea.current!.value.length === 0
-      ? setDescriptionTitleHoverState(false)
-      : setDescriptionTitleHoverState(true);
-  }
-
+  //해시태그
   function appendHashtag(): void {
     const hashtag = getEnteredHashtag();
 
@@ -151,7 +160,7 @@ export default function UploadInfo() {
   }
 
   function resetHashtaInputWidth(): void {
-    setHashtagInputWidth(8.827);
+    setHashtagInputWidth(HASHTAG_WIDTH);
   }
 
   function resetHashtagCurrentValue(): void {
@@ -184,54 +193,58 @@ export default function UploadInfo() {
     checkEnterKey(e) && addHashtag();
   }
 
-  function getHashtagLength(e: React.ChangeEvent<HTMLInputElement>): number {
-    return e.target.value.length;
-  }
-
-  function isMaxHashtagLength(length: number): boolean {
-    return length < 11;
-  }
-
-  function restrictHashtagInput(): void {
-    enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
+  function restrictInput(ref: any): void {
+    ref.current!.value = ref.current!.value.slice(0, -1);
   }
 
   function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputLength = getHashtagLength(e);
+    const inputLength = e.target.value.length;
 
-    if (isMaxHashtagLength(inputLength)) {
-      setHashtagLength(e.target.value.length);
+    if (checkMaxInputLength(inputLength, 11)) {
+      setHashtagLength(inputLength);
       setHashtagInputWidth(Number(e.target.value));
     } else {
-      restrictHashtagInput();
+      restrictInput(enteredHashtag);
     }
   }
 
   function deleteHashtag(index: number) {
-    const deleteTag = [...hashtags];
-    deleteTag.splice(index, index + 1);
+    const deleteTag = [...hashtags].splice(index, index + 1);
     setHashtags([...deleteTag]);
     resetHashtaInputWidth();
   }
 
+  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
+    isMouseEnterType(e.type) ? setWarningHoverState(true) : setWarningHoverState(false);
+  }
+
+  //소개글
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = e.target.value.split("\n").length;
+    const inputLength = e.target.value.length;
+    const currentHeight = descriptionTextarea.current!.scrollHeight;
+    console.log(e.target.value);
 
-    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200 && e.target.value.length < 251) {
+    if (
+      checkMaxInputLength(enterCount, 8) &&
+      checkMaxInputLength(currentHeight, 201) &&
+      checkMaxInputLength(inputLength, 251)
+    ) {
       setTextareaHeight(e.target.value);
-      setDescriptionLength(e.target.value.length);
+      setDescriptionLength(inputLength);
       setDeiscription(descriptionTextarea.current!.value);
     } else {
-      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
+      restrictInput(descriptionTextarea);
     }
   }
 
-  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length < 37) {
-      setTitleLength(e.target.value.length);
-      setTitle(e.target.value);
+  function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
+    const inputLength = e.target.value.length;
+
+    if (isFocusType(e.type)) {
+      setDescriptionHoverState(true);
     } else {
-      titleRef.current!.value = titleRef.current!.value.slice(0, -1);
+      inputLength === 0 ? setDescriptionHoverState(false) : setDescriptionHoverState(true);
     }
   }
 
@@ -255,8 +268,8 @@ export default function UploadInfo() {
           setHashtagInputWidth(inputWidth);
         }
       } else {
-        enteredHashtag.current!.style.width = "8.827rem";
-        setHashtagInputWidth(8.827);
+        enteredHashtag.current!.style.width = HASHTAG_WIDTH + "rem";
+        setHashtagInputWidth(HASHTAG_WIDTH);
       }
     }
   }, [hashtagInputWidth]);
@@ -444,7 +457,7 @@ export default function UploadInfo() {
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
-      <DropMenuBox hiddenDropBox={hiddenDropBox} onClick={closeDropBox} ref={dropBoxRef}>
+      <DropMenuBox hiddenDropBox={hiddenDropBox}>
         <DropMenuWrapper>
           {CATEGORY.map((text: string, index: number) => (
             <DropMenuItem
@@ -452,7 +465,7 @@ export default function UploadInfo() {
               checkHoverState={checkHoverState[index]}
               onMouseEnter={(e) => hoverCategoryMenu(e, index)}
               onMouseLeave={(e) => hoverCategoryMenu(e, index)}
-              onClick={(e) => selectCategory(e, index)}
+              onClick={(e) => selectedCategory(e, index)}
               ref={(element) => {
                 categoryRefs.current[index] = element;
               }}>
