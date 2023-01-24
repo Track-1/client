@@ -55,7 +55,7 @@ export default function UploadInfo() {
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
 
   function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
-    e.type === "focus"
+    isFocusType(e.type)
       ? setTitleHoverState(true)
       : titleLength === 0
       ? setTitleHoverState(false)
@@ -112,7 +112,7 @@ export default function UploadInfo() {
 
   function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
     const hoverMenu = new Array(CATEGORY.length).fill(false);
-    if (checkMouseEnterType(e.type)) {
+    if (isMouseEnterType(e.type)) {
       hoverMenu[index] = true;
       setCheckHoverState([...hoverMenu]);
     } else {
@@ -120,16 +120,20 @@ export default function UploadInfo() {
     }
   }
 
-  function checkMouseEnterType(type : string): boolean {
+  function isMouseEnterType(type: string): boolean {
     return type === "mouseenter";
   }
 
+  function isFocusType(type: string): boolean {
+    return type === "focus";
+  }
+
   function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    checkMouseEnterType(e.type) ? setWarningHoverState(true) : setWarningHoverState(false);
+    isMouseEnterType(e.type) ? setWarningHoverState(true) : setWarningHoverState(false);
   }
 
   function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
-    e.type === "focus"
+    isFocusType(e.type)
       ? setDescriptionTitleHoverState(true)
       : descriptionTextarea.current!.value.length === 0
       ? setDescriptionTitleHoverState(false)
@@ -150,7 +154,7 @@ export default function UploadInfo() {
     setHashtagInputWidth(8.827);
   }
 
-  function resetHashtagCurrentValue(): void{
+  function resetHashtagCurrentValue(): void {
     enteredHashtag.current!.value = "";
   }
 
@@ -176,7 +180,7 @@ export default function UploadInfo() {
     return e.key === "Enter";
   }
 
-  function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>):void {
+  function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
     checkEnterKey(e) && addHashtag();
   }
 
@@ -205,7 +209,7 @@ export default function UploadInfo() {
 
   function deleteHashtag(index: number) {
     const deleteTag = [...hashtags];
-    deleteTag.splice(index,index+1);
+    deleteTag.splice(index, index + 1);
     setHashtags([...deleteTag]);
     resetHashtaInputWidth();
   }
