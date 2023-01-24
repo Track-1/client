@@ -54,6 +54,14 @@ export default function UploadInfo() {
 
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
 
+  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
+    e.type === "focus"
+      ? setTitleHoverState(true)
+      : titleLength === 0
+      ? setTitleHoverState(false)
+      : setTitleHoverState(true);
+  }
+
   function closeDropBox(e: React.MouseEvent<HTMLDivElement>) {
     // console.dir(dropBoxRef.current);
   }
@@ -104,7 +112,7 @@ export default function UploadInfo() {
 
   function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
     const hoverMenu = new Array(CATEGORY.length).fill(false);
-    if (e.type === "mouseenter") {
+    if (checkMouseEnterType(e.type)) {
       hoverMenu[index] = true;
       setCheckHoverState([...hoverMenu]);
     } else {
@@ -112,17 +120,14 @@ export default function UploadInfo() {
     }
   }
 
-  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    e.type === "mouseenter" ? setWarningHoverState(true) : setWarningHoverState(false);
+  function checkMouseEnterType(type : string): boolean {
+    return type === "mouseenter";
   }
 
-  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
-    e.type === "focus"
-      ? setTitleHoverState(true)
-      : titleLength === 0
-      ? setTitleHoverState(false)
-      : setTitleHoverState(true);
+  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
+    checkMouseEnterType(e.type) ? setWarningHoverState(true) : setWarningHoverState(false);
   }
+
   function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
     e.type === "focus"
       ? setDescriptionTitleHoverState(true)
@@ -131,23 +136,78 @@ export default function UploadInfo() {
       : setDescriptionTitleHoverState(true);
   }
 
-  function addHashtag() {
-    const value = enteredHashtag.current!.value;
-    hashtags.includes(value) ? alert("중복된 해시태그 입니다!") : setHashtags([...hashtags, value]);
+  function appendHashtag(): void {
+    const hashtag = getEnteredHashtag();
+
+    if (!isDuplicateHashtag(hashtag)) {
+      setHashtags([...hashtags, hashtag]);
+      resetHashtaInputWidth();
+      resetHashtagCurrentValue();
+    }
+  }
+
+  function resetHashtaInputWidth(): void {
     setHashtagInputWidth(8.827);
+  }
+
+  function resetHashtagCurrentValue(): void{
     enteredHashtag.current!.value = "";
   }
 
-  function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
-    if (hashtags.length < 3) {
-      addHashtag();
+  function getEnteredHashtag(): string {
+    return enteredHashtag.current!.value;
+  }
+
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = hashtags.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
+
+  function addHashtag(): void {
+    isMaxHashtags() && appendHashtag();
+  }
+
+  function isMaxHashtags(): boolean {
+    return hashtags.length < 3;
+  }
+
+  function checkEnterKey(e: React.KeyboardEvent<HTMLInputElement>): boolean {
+    return e.key === "Enter";
+  }
+
+  function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>):void {
+    checkEnterKey(e) && addHashtag();
+  }
+
+  function getHashtagLength(e: React.ChangeEvent<HTMLInputElement>): number {
+    return e.target.value.length;
+  }
+
+  function isMaxHashtagLength(length: number): boolean {
+    return length < 11;
+  }
+
+  function restrictHashtagInput(): void {
+    enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
+  }
+
+  function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputLength = getHashtagLength(e);
+
+    if (isMaxHashtagLength(inputLength)) {
+      setHashtagLength(e.target.value.length);
+      setHashtagInputWidth(Number(e.target.value));
+    } else {
+      restrictHashtagInput();
     }
   }
 
-  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      addHashtag();
-    }
+  function deleteHashtag(index: number) {
+    const deleteTag = [...hashtags];
+    deleteTag.splice(index,index+1);
+    setHashtags([...deleteTag]);
+    resetHashtaInputWidth();
   }
 
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -169,22 +229,6 @@ export default function UploadInfo() {
     } else {
       titleRef.current!.value = titleRef.current!.value.slice(0, -1);
     }
-  }
-
-  function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.target.value.length;
-
-    if (inputValue <= 10) {
-      setHashtagLength(e.target.value.length);
-      setHashtagInputWidth(Number(e.target.value));
-    } else {
-      enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
-    }
-  }
-
-  function deleteHashtag(item: string) {
-    setHashtags(hashtags.filter((hashtag) => hashtag !== item));
-    setHashtagInputWidth(8.827);
   }
 
   useEffect(() => {
@@ -295,13 +339,13 @@ export default function UploadInfo() {
             <InputWrapper>
               {hashtags.length > 0 ? (
                 <>
-                  {hashtags.map((item: string, idx: number) => {
+                  {hashtags.map((item: string, index: number) => {
                     return (
                       <InputHashtagWrapper>
-                        <Hashtag key={idx}>
+                        <Hashtag key={index}>
                           <HashtagWrapper>
                             <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                            <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
+                            <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                           </HashtagWrapper>
                         </Hashtag>
                       </InputHashtagWrapper>
@@ -316,8 +360,8 @@ export default function UploadInfo() {
                             placeholder="Hashtag"
                             type="text"
                             defaultValue=""
-                            onKeyDown={completeHashtag}
-                            onChange={changeHashtagText}
+                            onKeyDown={addHashtagEnterKey}
+                            onChange={changeHashtagTextWidth}
                             hashtagInputWidth={hashtagInputWidth}
                             maxLength={10}
                             ref={enteredHashtag}
@@ -338,8 +382,8 @@ export default function UploadInfo() {
                         placeholder="Hashtag"
                         type="text"
                         defaultValue=""
-                        onKeyDown={completeHashtag}
-                        onChange={changeHashtagText}
+                        onKeyDown={addHashtagEnterKey}
+                        onChange={changeHashtagTextWidth}
                         hashtagInputWidth={hashtagInputWidth}
                         maxLength={10}
                         ref={enteredHashtag}
@@ -348,11 +392,7 @@ export default function UploadInfo() {
                   </Hashtag>
                 </InputHashtagWrapper>
               )}
-              {hashtagLength > 0 && hashtags.length < 2 && (
-                <AddHashtagIconWrapper onClick={addHashtagInput}>
-                  <AddHashtagIcon />
-                </AddHashtagIconWrapper>
-              )}
+              {hashtagLength > 0 && hashtags.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
             </InputWrapper>
 
             <WarningIcon onMouseEnter={hoverWarningState} onMouseLeave={hoverWarningState}>
@@ -604,13 +644,6 @@ const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
   }
 `;
 
-const AddHashtagIconWrapper = styled.div`
-  height: 4rem;
-  width: 4rem;
-
-  cursor: pointer;
-`;
-
 const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>`
   width: 72rem;
   height: 4rem;
@@ -707,6 +740,8 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 const AddHashtagIcon = styled(AddHashtagIc)`
   margin-left: -0.2rem;
   margin-top: 1.3rem;
+
+  cursor: pointer;
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
