@@ -17,6 +17,7 @@ import {
 import { useRecoilState } from "recoil";
 import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
+import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { isClickedOutside } from "../../utils/common/modal";
 
 export default function UploadInfo() {
@@ -69,7 +70,7 @@ export default function UploadInfo() {
   }
 
   function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
-    if (isFocusType(e.type)) {
+    if (isFocus(e)) {
       setTitleHoverState(true);
     } else {
       titleLength === 0 ? setTitleHoverState(false) : setTitleHoverState(true);
@@ -132,20 +133,12 @@ export default function UploadInfo() {
 
   function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
     const hoverMenu = new Array(CATEGORY.length).fill(false);
-    if (isMouseEnterType(e.type)) {
+    if (isMouseEnter(e)) {
       hoverMenu[index] = true;
       setCheckHoverState([...hoverMenu]);
     } else {
       setCheckHoverState([...hoverMenu]);
     }
-  }
-
-  function isMouseEnterType(type: string): boolean {
-    return type === "mouseenter";
-  }
-
-  function isFocusType(type: string): boolean {
-    return type === "focus";
   }
 
   //해시태그
@@ -185,12 +178,8 @@ export default function UploadInfo() {
     return hashtags.length < 3;
   }
 
-  function checkEnterKey(e: React.KeyboardEvent<HTMLInputElement>): boolean {
-    return e.key === "Enter";
-  }
-
   function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
-    checkEnterKey(e) && addHashtag();
+    isEnterKey(e) && addHashtag();
   }
 
   function restrictInput(ref: any): void {
@@ -215,7 +204,7 @@ export default function UploadInfo() {
   }
 
   function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    isMouseEnterType(e.type) ? setWarningHoverState(true) : setWarningHoverState(false);
+    isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
   }
 
   //소개글
@@ -241,7 +230,7 @@ export default function UploadInfo() {
   function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
 
-    if (isFocusType(e.type)) {
+    if (isFocus(e)) {
       setDescriptionHoverState(true);
     } else {
       inputLength === 0 ? setDescriptionHoverState(false) : setDescriptionHoverState(true);
