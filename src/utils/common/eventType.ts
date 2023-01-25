@@ -3,7 +3,7 @@ export function isEnterKey(e: React.KeyboardEvent): boolean {
 }
 
 export function isMouseEnter(e: React.MouseEvent): boolean {
-  return e.type === "mouseentter";
+  return e.type === "mouseenter";
 }
 
 export function isFocus(e: React.FocusEvent): boolean {

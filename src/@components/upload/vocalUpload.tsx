@@ -6,11 +6,12 @@ import { useRecoilState } from "recoil";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
+import { uploadImage } from "../../utils/uploadPage/uploadImage";
 
 export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
   const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File | Blob>(uploadVocalJacketImage);
-  const [defaultstate, setDefaultState] = useRecoilState<boolean>(defaultImageState);
+  const [defaultState, setDefaultState] = useRecoilState<boolean>(defaultImageState);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
@@ -19,49 +20,9 @@ export default function VocalUpload() {
     }
   }
 
-  function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length === 0) {
-      if (vocalUploadImg === VocalUploadDefaultImg) {
-        setVocalUploadImg(VocalUploadDefaultImg);
-      } else {
-        return;
-      }
-    }
-
-    if (e.target.files !== null) {
-      const fileUrl = URL.createObjectURL(e.target.files[0]);
-      const imageSize = e.target.files[0].size;
-      if (checImageSize(imageSize)) {
-        setVocalUploadImg(fileUrl);
-        setVocalJacketImage(e.target.files[0]);
-        setDefaultState(false);
-      }
-    }
+  function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+    uploadImage(e, setVocalUploadImg, setVocalJacketImage, setDefaultState);
   }
-
-  function checImageSize(imageSize: number) : boolean {
-    if (imageSize > 5 * 1024 * 1024) {
-      alert("이미지 용량제한은 5MB 이하 입니다.");
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  async function convertURLtoFile(url: string) {
-    const response = await fetch(url);
-    const data = await response.blob();
-    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-    const metadata = { type: `image/${ext}` };
-    return new File([data], filename!, metadata);
-  }
-
-  useEffect(() => {
-    convertURLtoFile("../assets/image/vocalUploadDefaultImg.png").then((data) => {
-      setVocalJacketImage(data);
-    });
-  }, []);
 
   return (
     <Container>
@@ -81,7 +42,7 @@ export default function VocalUpload() {
           id="imageFileUpload"
           style={{ display: "none" }}
           accept=".jpg,.jpeg,.png"
-          onChange={uploadImage}
+          onChange={uploadImageFile}
           readOnly
         />
 
