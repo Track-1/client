@@ -11,10 +11,12 @@ interface PropsType {
   audio: HTMLAudioElement;
   getDuration: (durationTime: number) => void;
   getAudioInfos: (title: string, image: string) => void;
+  play: any;
+  setPlay: any;
 }
 
 export default function VocalList(props: PropsType) {
-  const { vocalData, audio, getDuration, getAudioInfos } = props;
+  const { vocalData, audio, getDuration, getAudioInfos, play, setPlay } = props;
   const navigate = useNavigate();
 
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
@@ -22,7 +24,7 @@ export default function VocalList(props: PropsType) {
   const [beatId, setBeatId] = useState<number>(-1);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
   useEffect(() => {

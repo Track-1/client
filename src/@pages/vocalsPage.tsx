@@ -18,10 +18,11 @@ import { categorySelect, trackSearching } from "../recoil/categorySelect";
 import { vocalListinfiniteScroll } from "../recoil/infiniteScroll";
 import { useQuery } from "react-query";
 import { VocalsDataType } from "../type/vocalsDataType";
+import usePlay from "../utils/hooks/usePlay";
 
 export default function VocalsPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
@@ -30,10 +31,12 @@ export default function VocalsPage() {
   const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
 
-  const audio = useMemo(() => new Audio(), []);
+  // const audio = useMemo(() => new Audio(), []);
+
+  const { play, setPlay, progress, setProgress, audio } = usePlay();
 
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
@@ -156,24 +159,24 @@ export default function VocalsPage() {
     setPlay(false);
   }
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
-  }
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     setProgress(currentDuration);
+  //   }
+  // }
 
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
@@ -195,12 +198,19 @@ export default function VocalsPage() {
         <VocalListWrapper>
           <VocalListHeader />
           {data && (
-            <VocalList vocalData={vocalsData} audio={audio} getDuration={getDuration} getAudioInfos={getAudioInfos} />
+            <VocalList
+              vocalData={vocalsData}
+              audio={audio}
+              getDuration={getDuration}
+              getAudioInfos={getAudioInfos}
+              play={play}
+              setPlay={setPlay}
+            />
           )}
           <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
-      {/* {showPlayer && vocalsData && (
+      {showPlayer && vocalsData && (
         <Player
           audio={audio}
           playAudio={playAudio}
@@ -210,8 +220,10 @@ export default function VocalsPage() {
           title={title}
           name={name}
           image={image}
+          play={play}
+          setPlay={setPlay}
         />
-      )} */}
+      )}
     </>
   );
 }
