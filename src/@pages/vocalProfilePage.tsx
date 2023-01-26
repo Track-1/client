@@ -16,12 +16,13 @@ import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
+import usePlay from "../utils/hooks/usePlay";
 
 export default function VocalProfilePage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [progress, setProgress] = useState<number>(0);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
   const [isMe, setIsMe] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
@@ -30,7 +31,9 @@ export default function VocalProfilePage() {
   const [image, setImage] = useState<string>("");
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const audio = useMemo(() => new Audio(), []);
+  // const audio = useMemo(() => new Audio(), []);
+
+  const { play, setPlay, progress, setProgress, audio } = usePlay();
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -227,6 +230,8 @@ export default function VocalProfilePage() {
               getDuration={getDuration}
               infiniteRef={targetRef}
               getAudioInfos={getAudioInfos}
+              play={play}
+              setPlay={setPlay}
             />
           )}
           <VocalProfileShadow />
@@ -244,6 +249,8 @@ export default function VocalProfilePage() {
           title={title}
           name={profileData?.name}
           image={image}
+          play={play}
+          setPlay={setPlay}
         />
       )}
     </Wrap>

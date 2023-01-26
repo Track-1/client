@@ -6,7 +6,8 @@ import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 
 export default function VocalProfileList(props: any) {
-  const { audio, isMe, portfolioData, playAudio, pauseAudio, getDuration, infiniteRef, getAudioInfos } = props;
+  const { audio, isMe, portfolioData, playAudio, pauseAudio, getDuration, infiniteRef, getAudioInfos, play, setPlay } =
+    props;
   const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
   const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
@@ -14,7 +15,7 @@ export default function VocalProfileList(props: any) {
   const [beatId, setBeatId] = useState<number>();
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
   useEffect(() => {
