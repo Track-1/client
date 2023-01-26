@@ -17,6 +17,8 @@ interface PropsType {
   duration: number;
   getDuration: (durationTime: number) => void;
   getAudioInfos: (title: string, image: string) => void;
+  play: any;
+  setPlay: any;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
@@ -31,6 +33,8 @@ export default function ProducerPortFolioList(props: PropsType) {
     duration,
     getDuration,
     getAudioInfos,
+    play,
+    setPlay,
   } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
@@ -39,7 +43,7 @@ export default function ProducerPortFolioList(props: PropsType) {
 
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   useEffect(() => {
     setHoveredIndex(-1);

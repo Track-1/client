@@ -15,6 +15,7 @@ import { playMusic, showPlayerBar } from "../recoil/player";
 import { useParams } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
+import usePlay from "../utils/hooks/usePlay";
 
 export default function ProducerProfilePage() {
   const { producerId } = useParams();
@@ -24,17 +25,19 @@ export default function ProducerProfilePage() {
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<string>("");
 
   const visible = useRecoilValue(uploadButtonClicked);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
 
-  const audio = useMemo(() => new Audio(), []);
+  // const audio = useMemo(() => new Audio(), []);
+
+  const { play, setPlay, progress, setProgress, audio } = usePlay();
 
   // infinite
   const targetRef = useRef<any>();
@@ -100,17 +103,17 @@ export default function ProducerProfilePage() {
     getData();
   }, []);
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
 
   function playAudio() {
     audio.play();
@@ -122,17 +125,17 @@ export default function ProducerProfilePage() {
     setPlay(false);
   }
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-      checkAudioQuit();
-    }
-  }
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     setProgress(currentDuration);
+  //     checkAudioQuit();
+  //   }
+  // }
 
-  function checkAudioQuit() {
-    audio.duration === audio.currentTime && setPlay(false);
-  }
+  // function checkAudioQuit() {
+  //   audio.duration === audio.currentTime && setPlay(false);
+  // }
 
   function changeToProfile() {
     setProfileState("Portfolio");
@@ -181,6 +184,8 @@ export default function ProducerProfilePage() {
             duration={duration}
             getDuration={getDuration}
             getAudioInfos={getAudioInfos}
+            play={play}
+            setPlay={setPlay}
           />
         )}
       </PageContainer>
@@ -196,6 +201,8 @@ export default function ProducerProfilePage() {
           title={title}
           name={profileData?.name}
           image={image}
+          play={play}
+          setPlay={setPlay}
         />
       )}
     </>
