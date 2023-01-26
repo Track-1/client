@@ -200,7 +200,7 @@ export default function VocalsPage() {
           <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
-      {showPlayer && vocalsData && (
+      {/* {showPlayer && vocalsData && (
         <Player
           audio={audio}
           playAudio={playAudio}
@@ -211,7 +211,7 @@ export default function VocalsPage() {
           name={name}
           image={image}
         />
-      )}
+      )} */}
     </>
   );
 }

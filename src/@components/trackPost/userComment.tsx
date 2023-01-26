@@ -61,17 +61,17 @@ export default function UserComment(props: CommentPropsType) {
     }
   }, [currentAudioFile]);
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
 
   //get
   const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
@@ -143,12 +143,12 @@ export default function UserComment(props: CommentPropsType) {
     setPlay(false);
   }
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
-  }
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     setProgress(currentDuration);
+  //   }
+  // }
 
   return (
     <>

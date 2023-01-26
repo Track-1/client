@@ -67,17 +67,17 @@ export default function TrackPostPage() {
     }
   }, [trackInfoData]);
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
@@ -101,12 +101,12 @@ export default function TrackPostPage() {
     setPlay(false);
   }
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
-  }
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     setProgress(currentDuration);
+  //   }
+  // }
 
   function openComment() {
     setIsCommentOpen(true);
