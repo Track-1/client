@@ -30,13 +30,14 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import { UserType } from "../recoil/main";
+import usePlay from "../utils/hooks/usePlay";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
 
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
   const [duration, setCurrentDuration] = useState<number>(0);
@@ -46,11 +47,13 @@ export default function TrackPostPage() {
   const [image, setImage] = useState<string>("");
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const user = useRecoilValue(UserType);
 
-  const audio = useMemo(() => new Audio(), []);
+  // const audio = useMemo(() => new Audio(), []);
+
+  const { play, setPlay, progress, setProgress, audio } = usePlay();
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -294,6 +297,8 @@ export default function TrackPostPage() {
             title={trackInfoData?.title}
             name={trackInfoData?.producerName}
             image={image}
+            play={play}
+            setPlay={setPlay}
           />
         )}
       </TrackPostPageWrapper>
