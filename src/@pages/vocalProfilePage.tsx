@@ -180,30 +180,30 @@ export default function VocalProfilePage() {
     setPlay(false);
   }
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      console.log(audio.currentTime, audio.duration);
-      setProgress(currentDuration);
-      checkAudioQuit();
-    }
-  }
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     console.log(audio.currentTime, audio.duration);
+  //     setProgress(currentDuration);
+  //     checkAudioQuit();
+  //   }
+  // }
 
-  function checkAudioQuit() {
-    audio.duration === audio.currentTime && setPlay(false);
-  }
+  // function checkAudioQuit() {
+  //   audio.duration === audio.currentTime && setPlay(false);
+  // }
 
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
