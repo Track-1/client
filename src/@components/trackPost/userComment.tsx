@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
+import usePlay from "../../utils/hooks/usePlay";
 
 interface CommentPropsType {
   closeComment: () => void;
@@ -28,7 +29,7 @@ export default function UserComment(props: CommentPropsType) {
     wavFile: null,
   });
 
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
@@ -37,10 +38,12 @@ export default function UserComment(props: CommentPropsType) {
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const audio = useMemo(() => new Audio(), []);
+  // const audio = useMemo(() => new Audio(), []);
+
+  const { play, setPlay, progress, setProgress, audio } = usePlay();
 
   useEffect(() => {
     if (comments) {
@@ -174,6 +177,8 @@ export default function UserComment(props: CommentPropsType) {
                   clickComment={clickComment}
                   pauseAudio={pauseAudio}
                   index={index}
+                  play={play}
+                  setPlay={setPlay}
                 />
               ); //여기가 각각의 데이터
             })}
@@ -190,6 +195,8 @@ export default function UserComment(props: CommentPropsType) {
           title={"댓글제목"}
           name={comments[clickedIndex]?.vocalName}
           image={comments[clickedIndex]?.vocalProfileImage}
+          play={play}
+          setPlay={setPlay}
         />
       )}
     </>

@@ -12,14 +12,16 @@ interface dataType {
   pauseAudio: () => void;
   clickComment: (index: number) => void;
   index: number;
+  play: any;
+  setPlay: any;
 }
 
 export default function EachUserComment(props: dataType) {
-  const { data, audio, clickedIndex, clickComment, index, pauseAudio } = props;
+  const { data, audio, clickedIndex, clickComment, index, pauseAudio, play, setPlay } = props;
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function changeHoverTrue() {
     setIsHover(true);
