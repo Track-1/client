@@ -16,10 +16,12 @@ interface PropsType {
   title: string;
   name: string;
   image: string;
+  play: any;
+  setPlay: any;
 }
 
 export default function Player(props: PropsType) {
-  const { audio, playAudio, pauseAudio, progress, duration, title, name, image } = props;
+  const { audio, playAudio, pauseAudio, progress, duration, title, name, image, play, setPlay } = props;
   // const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
@@ -32,7 +34,7 @@ export default function Player(props: PropsType) {
   const [down, setDown] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   useLayoutEffect(() => {

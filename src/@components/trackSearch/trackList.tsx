@@ -21,10 +21,12 @@ interface PropsType {
   tracksData: TracksDataType[];
   getDuration: (durationTime: number) => void;
   getAudioInfos: (title: string, name: string, image: string) => void;
+  play: any;
+  setPlay: any;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, playAudio, pauseAudio, tracksData, getDuration, getAudioInfos } = props;
+  const { audio, playAudio, pauseAudio, tracksData, getDuration, getAudioInfos, play, setPlay } = props;
 
   const target = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ export default function TrackList(props: PropsType) {
   const [beatId, setBeatId] = useState<number>();
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [page, setPage] = useRecoilState(trackListinfiniteScroll);
 

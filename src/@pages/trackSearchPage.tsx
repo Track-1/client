@@ -19,9 +19,10 @@ import { TracksDataType } from "../type/tracksDataType";
 import { useQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
+import usePlay from "../utils/hooks/usePlay";
 
 export default function TrackSearchPage() {
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
   const [duration, setCurrentDuration] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
@@ -29,11 +30,12 @@ export default function TrackSearchPage() {
 
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const filteredUrlApi = useRecoilValue(categorySelect);
 
-  const audio = useMemo(() => new Audio(), []);
+  // const audio = useMemo(() => new Audio(), []);
+  const { play, setPlay, progress, setProgress, audio } = usePlay();
 
   //infinite scroll
   const targetRef = useRef<any>();
@@ -99,17 +101,17 @@ export default function TrackSearchPage() {
     setShowPlayer(false);
   }, []);
 
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
 
   function playAudio() {
     audio.play();
@@ -121,17 +123,17 @@ export default function TrackSearchPage() {
     setPlay(false);
   }
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-      checkAudioQuit();
-    }
-  }
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     setProgress(currentDuration);
+  //     checkAudioQuit();
+  //   }
+  // }
 
-  function checkAudioQuit() {
-    audio.duration === audio.currentTime && setPlay(false);
-  }
+  // function checkAudioQuit() {
+  //   audio.duration === audio.currentTime && setPlay(false);
+  // }
 
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
@@ -160,6 +162,8 @@ export default function TrackSearchPage() {
               tracksData={tracksData}
               getDuration={getDuration}
               getAudioInfos={getAudioInfos}
+              play={play}
+              setPlay={setPlay}
             />
           )}
         </TrackListWrapper>
@@ -174,6 +178,8 @@ export default function TrackSearchPage() {
           title={title}
           name={name}
           image={image}
+          play={play}
+          setPlay={setPlay}
         />
       )}
       <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
