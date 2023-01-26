@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, audioFile } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 
@@ -15,7 +15,6 @@ export default function VocalProfileList(props: any) {
   const [beatId, setBeatId] = useState<number>();
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
   useEffect(() => {

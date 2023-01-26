@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
-import { useState, useLayoutEffect, useRef, useEffect } from "react";
-import jacketImage from "../../assets/image/thumbnailImg.png";
+import { useState, useLayoutEffect, useRef } from "react";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import { playMusic, showPlayerBar } from "../../recoil/player";
+import { showPlayerBar } from "../../recoil/player";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -22,19 +21,14 @@ interface PropsType {
 
 export default function Player(props: PropsType) {
   const { audio, playAudio, pauseAudio, progress, duration, title, name, image, play, setPlay } = props;
-  // const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   const playBar = useRef<HTMLDivElement>(null);
 
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  // const [title, setTitle] = useState<string>();
-  const [producerName, setProducerName] = useState<string>();
   const [barWidth, setBarWidth] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   useLayoutEffect(() => {
@@ -134,7 +128,6 @@ const PlayerContainer = styled.section`
   display: flex;
 
   width: 192rem;
-  /* height: 108rem; */
 `;
 
 const PlayerWrapper = styled.article`

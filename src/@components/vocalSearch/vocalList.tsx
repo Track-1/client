@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { VocalSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, audioFile } from "../../recoil/player";
 import { VocalSearchType } from "../../type/vocalSearchType";
 
 interface PropsType {
@@ -24,7 +24,6 @@ export default function VocalList(props: PropsType) {
   const [beatId, setBeatId] = useState<number>(-1);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
   useEffect(() => {

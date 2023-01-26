@@ -15,11 +15,11 @@ import {
 } from "../assets";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { playMusic, showPlayerBar } from "../recoil/player";
+import { showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
@@ -37,7 +37,6 @@ export default function TrackPostPage() {
 
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  // const [progress, setProgress] = useState<number>(0);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
   const [duration, setCurrentDuration] = useState<number>(0);
@@ -47,11 +46,8 @@ export default function TrackPostPage() {
   const [image, setImage] = useState<string>("");
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const user = useRecoilValue(UserType);
-
-  // const audio = useMemo(() => new Audio(), []);
 
   const { play, setPlay, progress, setProgress, audio } = usePlay();
 
@@ -66,18 +62,6 @@ export default function TrackPostPage() {
       setCurrentDuration(trackInfoData?.wavFileLength);
     }
   }, [trackInfoData]);
-
-  // useEffect(() => {
-  //   if (play) {
-  //     audio.addEventListener("timeupdate", () => {
-  //       goProgress();
-  //     });
-  //   } else {
-  //     audio.removeEventListener("timeupdate", () => {
-  //       goProgress();
-  //     });
-  //   }
-  // }, [play]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
@@ -100,13 +84,6 @@ export default function TrackPostPage() {
     audio.pause();
     setPlay(false);
   }
-
-  // function goProgress() {
-  //   if (audio.duration) {
-  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
-  //     setProgress(currentDuration);
-  //   }
-  // }
 
   function openComment() {
     setIsCommentOpen(true);
@@ -148,68 +125,6 @@ export default function TrackPostPage() {
       console.log(error);
     },
   });
-
-  // const downloadFile = () => {
-  // 	if (fileLink) {
-  // 		fetch(fileLink, { method: 'GET' })
-  // 			.then(res => {
-  // 				return res.blob();
-  // 			})
-  // 			.then(blob => {
-  // 				const url = window.URL.createObjectURL(blob);
-  // 				const a = document.createElement('a');
-  // 				a.href = url;
-  // 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
-  // 				document.body.appendChild(a);
-  // 				a.click();
-  // 				setTimeout(_ => {
-  // 					window.URL.revokeObjectURL(url);
-  // 				}, 60000);
-  // 				a.remove();
-  // 				// setOpen(false);
-  // 			})
-  // 			.catch(err => {
-  // 				console.error('err: ', err);
-  // 			});
-  // 	} else {
-  // 		alert(
-  // 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
-  // 		);
-  // 	}
-  // };
-
-  // function downloadFile(){
-  //   fetch(`${fileLink}`, {method: 'GET'})
-  //   .then(res => {
-  //     return res.blob();
-  //   })
-  //   .then(blob => {
-  //     var url = window.URL.createObjectURL(blob);
-  //     var a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = 'myItem.extension';
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     setTimeout(
-  //       _ => { window.URL.revokeObjectURL(url); },
-  //       60000);
-  //     a.remove();
-  //   })
-  //   .catch(err => {
-  //     console.error('err: ', err);
-  //   })
-  // }
-
-  //   function downloadFile (){
-  //     console.log("dfdfd")
-  //     const url = fileLink
-  //     const download = document.createElement('a');
-
-  //     download.href = url?url:"";
-  //     download.setAttribute('download',title?title:"");
-  //     download.setAttribute('type', 'application/json');
-  //     download.click();
-  // }
 
   const downloadFile = useCallback((fileName: string, fileLink: string) => {
     const blob = new Blob([fileLink], { type: "audio/mp3" });

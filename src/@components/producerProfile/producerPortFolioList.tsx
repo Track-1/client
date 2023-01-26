@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { PauseBtnIc, PortfolioPlayBtnIc, ProducerProfilePauseIc, ProducerProfilePlayIc } from "../../assets";
-import { playMusic, showPlayerBar, audioFile } from "../../recoil/player";
+import { ProducerProfilePauseIc, ProducerProfilePlayIc } from "../../assets";
+import { showPlayerBar, audioFile } from "../../recoil/player";
 import { ProducerPortfolioType } from "../../type/producerProfile";
 import PortfoliosInform from "../@common/portfoliosInform";
 
@@ -43,7 +43,6 @@ export default function ProducerPortFolioList(props: PropsType) {
 
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   useEffect(() => {
     setHoveredIndex(-1);

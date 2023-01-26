@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PauseBtnIc, PlayBtnIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
-import { showPlayerBar, playMusic } from "../../recoil/player";
+import { showPlayerBar } from "../../recoil/player";
 
 interface dataType {
   data: UserCommentType;
@@ -21,7 +21,6 @@ export default function EachUserComment(props: dataType) {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function changeHoverTrue() {
     setIsHover(true);

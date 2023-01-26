@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { getProducerProfile } from "../core/api/producerProfile";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
@@ -11,7 +11,7 @@ import TracksProfileUploadModal from "../@components/@common/tracksProfileUpload
 import { useRecoilValue, useRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
-import { playMusic, showPlayerBar } from "../recoil/player";
+import { showPlayerBar } from "../recoil/player";
 import { useParams } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
@@ -25,17 +25,13 @@ export default function ProducerProfilePage() {
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
-  // const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<string>("");
 
   const visible = useRecoilValue(uploadButtonClicked);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-
-  // const audio = useMemo(() => new Audio(), []);
 
   const { play, setPlay, progress, setProgress, audio } = usePlay();
 
@@ -103,18 +99,6 @@ export default function ProducerProfilePage() {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   if (play) {
-  //     audio.addEventListener("timeupdate", () => {
-  //       goProgress();
-  //     });
-  //   } else {
-  //     audio.removeEventListener("timeupdate", () => {
-  //       goProgress();
-  //     });
-  //   }
-  // }, [play]);
-
   function playAudio() {
     audio.play();
     setPlay(true);
@@ -124,18 +108,6 @@ export default function ProducerProfilePage() {
     audio.pause();
     setPlay(false);
   }
-
-  // function goProgress() {
-  //   if (audio.duration) {
-  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
-  //     setProgress(currentDuration);
-  //     checkAudioQuit();
-  //   }
-  // }
-
-  // function checkAudioQuit() {
-  //   audio.duration === audio.currentTime && setPlay(false);
-  // }
 
   function changeToProfile() {
     setProfileState("Portfolio");

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -11,7 +11,7 @@ import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
 import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
-import { playMusic, showPlayerBar } from "../../recoil/player";
+import { showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 import usePlay from "../../utils/hooks/usePlay";
 
@@ -29,7 +29,6 @@ export default function UserComment(props: CommentPropsType) {
     wavFile: null,
   });
 
-  // const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
@@ -38,10 +37,7 @@ export default function UserComment(props: CommentPropsType) {
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
-  // const audio = useMemo(() => new Audio(), []);
 
   const { play, setPlay, progress, setProgress, audio } = usePlay();
 
@@ -61,26 +57,12 @@ export default function UserComment(props: CommentPropsType) {
     }
   }, [currentAudioFile]);
 
-  // useEffect(() => {
-  //   if (play) {
-  //     audio.addEventListener("timeupdate", () => {
-  //       goProgress();
-  //     });
-  //   } else {
-  //     audio.removeEventListener("timeupdate", () => {
-  //       goProgress();
-  //     });
-  //   }
-  // }, [play]);
-
   //get
   const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        // console.log(data);
-        // console.log("성공");
         setComments(data?.data.data.commentList);
       }
     },
@@ -142,13 +124,6 @@ export default function UserComment(props: CommentPropsType) {
     audio.pause();
     setPlay(false);
   }
-
-  // function goProgress() {
-  //   if (audio.duration) {
-  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
-  //     setProgress(currentDuration);
-  //   }
-  // }
 
   return (
     <>

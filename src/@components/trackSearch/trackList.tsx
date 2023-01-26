@@ -8,7 +8,7 @@ import {
   HoverPauseIc,
   HoverPlayIc,
 } from "../../assets";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, audioFile } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { TracksDataType } from "../../type/tracksDataType";
@@ -36,7 +36,6 @@ export default function TrackList(props: PropsType) {
   const [beatId, setBeatId] = useState<number>();
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [page, setPage] = useRecoilState(trackListinfiniteScroll);
 
