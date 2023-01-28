@@ -1,34 +1,29 @@
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { playMusic, showPlayerBar } from "../../recoil/player";
 
-export default function usePlay() {
-  const [play, setPlay] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
-
-  const audio = useMemo(() => new Audio(), []);
+export default function usePlay(audio: any, data: any) {
+  const [play, setPlay] = useRecoilState(playMusic);
+  const [showPlayer, setShowPlayer] = useRecoilState(showPlayerBar);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
+  const [currentFile, setCurrentFile] = useState<string>("");
 
   useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+    audio.play();
+    setPlay(true);
+  }, [currentFile]);
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-      checkAudioQuit();
-    }
+  useEffect(() => {
+    setCurrentFile(data[clickedIndex]?.wavFile);
+    audio.src = data[clickedIndex]?.wavFile;
+  }, [clickedIndex]);
+
+  function playAudio(currentIndex: number) {
+    setShowPlayer(true);
+    setPlay(true);
+
+    clickedIndex === currentIndex ? audio.play() : setClickedIndex(currentIndex);
   }
 
-  function checkAudioQuit() {
-    audio.duration === audio.currentTime && setPlay(false);
-  }
-
-  return { play, setPlay, progress, setProgress, audio };
+  return { clickedIndex, playAudio };
 }
