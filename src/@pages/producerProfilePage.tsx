@@ -11,11 +11,11 @@ import TracksProfileUploadModal from "../@components/@common/tracksProfileUpload
 import { useRecoilValue, useRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
-import { showPlayerBar } from "../recoil/player";
+import { playMusic, showPlayerBar } from "../recoil/player";
 import { useParams } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
-import usePlay from "../utils/hooks/usePlay";
+import useProgress from "../utils/hooks/useProgress";
 
 export default function ProducerProfilePage() {
   const { producerId } = useParams();
@@ -32,8 +32,17 @@ export default function ProducerProfilePage() {
   const visible = useRecoilValue(uploadButtonClicked);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  const { play, setPlay, progress, setProgress, audio } = usePlay();
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
+
+  const { progress, audio } = useProgress();
 
   // infinite
   const targetRef = useRef<any>();
@@ -123,9 +132,19 @@ export default function ProducerProfilePage() {
     setCurrentDuration(durationTime);
   }
 
-  function getAudioInfos(title: string, image: string) {
-    setTitle(title);
-    setImage(image);
+  // function getAudioInfos(title: string, image: string) {
+  //   setTitle(title);
+  //   setImage(image);
+  // }
+
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
   }
 
   return (
@@ -144,20 +163,18 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {portfolioData && (
+        {portfolioData && profileData && (
           <ProducerPortFolioList
             isMe={isMe}
             portfolioData={portfolioData}
             profileState={profileState}
             stateChange={stateChange}
             audio={audio}
-            playAudio={playAudio}
             pauseAudio={pauseAudio}
             duration={duration}
             getDuration={getDuration}
             getAudioInfos={getAudioInfos}
-            play={play}
-            setPlay={setPlay}
+            producerName={profileData?.name}
           />
         )}
       </PageContainer>
@@ -169,10 +186,7 @@ export default function ProducerProfilePage() {
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={title}
-          name={profileData?.name}
-          image={image}
+          audioInfos={audioInfos}
           play={play}
           setPlay={setPlay}
         />

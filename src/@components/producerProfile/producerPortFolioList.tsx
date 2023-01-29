@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProducerProfilePauseIc, ProducerProfilePlayIc } from "../../assets";
-import { showPlayerBar, audioFile } from "../../recoil/player";
+import { showPlayerBar, audioFile, playMusic } from "../../recoil/player";
 import { ProducerPortfolioType } from "../../type/producerProfile";
+import usePlay from "../../utils/hooks/usePlay";
 import PortfoliosInform from "../@common/portfoliosInform";
 
 interface PropsType {
@@ -12,13 +13,11 @@ interface PropsType {
   profileState: string;
   stateChange: boolean;
   audio: HTMLAudioElement;
-  playAudio: () => void;
   pauseAudio: () => void;
   duration: number;
   getDuration: (durationTime: number) => void;
-  getAudioInfos: (title: string, image: string) => void;
-  play: any;
-  setPlay: any;
+  getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
+  producerName: string;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
@@ -28,21 +27,22 @@ export default function ProducerPortFolioList(props: PropsType) {
     profileState,
     stateChange,
     audio,
-    playAudio,
     pauseAudio,
     duration,
     getDuration,
     getAudioInfos,
-    play,
-    setPlay,
+    producerName,
   } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
-  const [clickedIndex, setClickedIndex] = useState<number>(-1);
+  // const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [beatId, setBeatId] = useState<number>();
 
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
+  // const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState(playMusic);
+
+  const { clickedIndex, setClickedIndex, playAudio } = usePlay(audio, portfolioData, true);
 
   useEffect(() => {
     setHoveredIndex(-1);
@@ -50,16 +50,16 @@ export default function ProducerPortFolioList(props: PropsType) {
     setPlay(false);
   }, [stateChange]);
 
-  useEffect(() => {
-    playAudio();
-  }, [currentFile]);
+  // useEffect(() => {
+  //   audio.play()
+  // }, [currentFile]);
 
-  useEffect(() => {
-    setCurrentFile(portfolioData[clickedIndex]?.beatWavFile);
-    audio.src = portfolioData[clickedIndex]?.beatWavFile;
-    getDuration(portfolioData[clickedIndex]?.wavFileLength);
-    getAudioInfos(portfolioData[clickedIndex]?.title, portfolioData[clickedIndex]?.jacketImage);
-  }, [clickedIndex]);
+  // useEffect(() => {
+  //   setCurrentFile(portfolioData[clickedIndex]?.beatWavFile);
+  //   audio.src = portfolioData[clickedIndex]?.beatWavFile;
+  //   getDuration(portfolioData[clickedIndex]?.wavFileLength);
+  //   getAudioInfos(portfolioData[clickedIndex]?.title, portfolioData[clickedIndex]?.jacketImage);
+  // }, [clickedIndex]);
 
   function hoverPortfolio(id: number) {
     setHoveredIndex(id);
@@ -69,18 +69,27 @@ export default function ProducerPortFolioList(props: PropsType) {
     id !== clickedIndex && setHoveredIndex(-1);
   }
 
-  function playAudioOnTrack(id: number) {
-    if (clickedIndex === id) {
-      audio.play();
-      setPlay(true);
-    } else {
-      setPlay(true);
+  // function playAudioOnTrack(id: number) {
+  //   if (clickedIndex === id) {
+  //     audio.play();
+  //     setPlay(true);
+  //   } else {
+  //     setPlay(true);
 
-      setShowPlayer(true);
-      setBeatId(id);
-      setClickedIndex(id);
-    }
-  }
+  //     setShowPlayer(true);
+  //     setBeatId(id);
+  //     setClickedIndex(id);
+  //   }
+  // }
+
+  useEffect(() => {
+    getAudioInfos(
+      portfolioData[clickedIndex]?.title,
+      producerName,
+      portfolioData[clickedIndex]?.jacketImage,
+      portfolioData[clickedIndex]?.wavFileLength,
+    );
+  }, [clickedIndex]);
 
   return (
     <>
@@ -98,7 +107,7 @@ export default function ProducerPortFolioList(props: PropsType) {
               <div>
                 {((hoveredIndex === index && clickedIndex !== index && hoveredIndex !== -1) ||
                   (!play && hoveredIndex === index && clickedIndex === index && hoveredIndex !== -1)) && (
-                  <ProducerProfilePauseIcon onClick={() => playAudioOnTrack(index)} />
+                  <ProducerProfilePauseIcon onClick={() => playAudio(index)} />
                 )}
                 {play &&
                   clickedIndex === index &&
