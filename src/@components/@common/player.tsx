@@ -19,8 +19,9 @@ interface PropsType {
   setPlay: any;
 }
 
-export default function Player(props: PropsType) {
-  const { audio, playAudio, pauseAudio, progress, duration, title, name, image, play, setPlay } = props;
+export default function Player(props: any) {
+  // const { audio, playAudio, pauseAudio, progress, duration, title, name, image, play, setPlay } = props;
+  const { audio, playAudio, pauseAudio, progress, play, setPlay, audioInfos } = props;
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   const playBar = useRef<HTMLDivElement>(null);
@@ -102,15 +103,15 @@ export default function Player(props: PropsType) {
         </PlayerBarWrapper>
 
         <PlayerInformWrapper>
-          <Thumbnail src={image} alt="썸네일 이미지" />
-          <PlayerTitleText>{title}</PlayerTitleText>
-          <PlayerNameText>{name}</PlayerNameText>
+          <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
+          <PlayerTitleText>{audioInfos.title}</PlayerTitleText>
+          <PlayerNameText>{audioInfos.name}</PlayerNameText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
             {createTimeText(Math.round(audio.currentTime))}
           </PlayerInformText>
           <PlayerInformText width={30} whiteText={false}>
-            {createTimeText(Math.round(duration))}
+            {createTimeText(Math.round(audioInfos.duration))}
           </PlayerInformText>
           <QuitIcon onClick={quitAudio} />
         </PlayerInformWrapper>
