@@ -19,7 +19,7 @@ import { useEffect, useState, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { showPlayerBar } from "../recoil/player";
+import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
@@ -30,7 +30,7 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import { UserType } from "../recoil/main";
-import usePlay from "../utils/hooks/usePlay";
+import useProgress from "../utils/hooks/useProgress";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -49,7 +49,17 @@ export default function TrackPostPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const user = useRecoilValue(UserType);
 
-  const { play, setPlay, progress, setProgress, audio } = usePlay();
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+
+  const [audioInfos, setAudioInfos] = useState<any>({
+    title: "",
+    name: "",
+    progress: "",
+    duration: "",
+    image: "",
+  });
+
+  const { progress, audio } = useProgress();
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -57,9 +67,16 @@ export default function TrackPostPage() {
 
   useEffect(() => {
     trackInfoData && setTitle(trackInfoData.title);
-    if (trackInfoData?.beatWavFile !== undefined) {
+    if (trackInfoData !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
       setCurrentDuration(trackInfoData?.wavFileLength);
+
+      getAudioInfos(
+        trackInfoData?.title,
+        trackInfoData?.producerName,
+        trackInfoData?.jacketImage,
+        trackInfoData?.wavFileLength,
+      );
     }
   }, [trackInfoData]);
 
@@ -139,6 +156,16 @@ export default function TrackPostPage() {
     reader.readAsArrayBuffer(blob);
   }, []);
 
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
+  }
+
   return (
     <>
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
@@ -208,10 +235,11 @@ export default function TrackPostPage() {
             playAudio={playAudio}
             pauseAudio={pauseAudio}
             progress={progress}
-            duration={duration}
-            title={trackInfoData?.title}
-            name={trackInfoData?.producerName}
-            image={image}
+            // duration={duration}
+            // title={trackInfoData?.title}
+            // name={trackInfoData?.producerName}
+            // image={image}
+            audioInfos={audioInfos}
             play={play}
             setPlay={setPlay}
           />
