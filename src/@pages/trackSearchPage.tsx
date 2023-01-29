@@ -132,13 +132,7 @@ export default function TrackSearchPage() {
         <TrackListWrapper>
           <TrackListHeader />
           {tracksData && (
-            <TrackList
-              audio={audio}
-              playAudio={playAudio}
-              pauseAudio={pauseAudio}
-              tracksData={tracksData}
-              getAudioInfos={getAudioInfos}
-            />
+            <TrackList audio={audio} pauseAudio={pauseAudio} tracksData={tracksData} getAudioInfos={getAudioInfos} />
           )}
         </TrackListWrapper>
       </TrackSearchPageWrapper>

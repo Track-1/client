@@ -17,7 +17,6 @@ import usePlay from "../../utils/hooks/usePlay";
 
 interface PropsType {
   audio: HTMLAudioElement;
-  playAudio: () => void;
   pauseAudio: () => void;
   tracksData: TracksDataType[];
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
@@ -35,7 +34,7 @@ export default function TrackList(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [page, setPage] = useRecoilState(trackListinfiniteScroll);
 
-  const { clickedIndex, playAudio } = usePlay(audio, tracksData);
+  const { clickedIndex, playAudio } = usePlay(audio, tracksData, false);
 
   useEffect(() => {
     const observer = new IntersectionObserver((endDiv) => {
