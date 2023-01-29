@@ -6,7 +6,7 @@ import TracksProfileUploadModal from "../@components/@common/tracksProfileUpload
 import VocalProfileList from "../@components/vocalProfile/vocalProfileList";
 import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
 import { Category } from "../core/constants/categoryHeader";
-import { showPlayerBar } from "../recoil/player";
+import { playMusic, showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -16,7 +16,7 @@ import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
-import usePlay from "../utils/hooks/usePlay";
+import useProgress from "../utils/hooks/useProgress";
 
 export default function VocalProfilePage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
@@ -29,7 +29,16 @@ export default function VocalProfilePage() {
   const [image, setImage] = useState<string>("");
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const { play, setPlay, progress, setProgress, audio } = usePlay();
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
+
+  const { progress, audio } = useProgress();
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -38,7 +47,7 @@ export default function VocalProfilePage() {
   const { state } = useLocation();
   useEffect(() => {
     setShowPlayer(false);
-  });
+  }, []);
 
   // infinite
   const targetRef = useRef<any>();
@@ -118,7 +127,7 @@ export default function VocalProfilePage() {
   function playAudio() {
     audio.play();
     setPlay(true);
-    setShowPlayer(true);
+    // setShowPlayer(true);
   }
 
   function pauseAudio() {
@@ -130,9 +139,19 @@ export default function VocalProfilePage() {
     setCurrentDuration(durationTime);
   }
 
-  function getAudioInfos(title: string, image: string) {
-    setTitle(title);
-    setImage(image);
+  // function getAudioInfos(title: string, image: string) {
+  //   setTitle(title);
+  //   setImage(image);
+  // }
+
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
   }
 
   return (
@@ -146,30 +165,25 @@ export default function VocalProfilePage() {
               isMe={isMe}
               portfolioData={portfolioData}
               audio={audio}
-              playAudio={playAudio}
               pauseAudio={pauseAudio}
               getDuration={getDuration}
               infiniteRef={targetRef}
               getAudioInfos={getAudioInfos}
-              play={play}
-              setPlay={setPlay}
+              vocalName={profileData?.name}
             />
           )}
           <VocalProfileShadow />
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
-      <PlayerWrapper></PlayerWrapper>
+      {/* <PlayerWrapper></PlayerWrapper> */}
 
-      {showPlayer && profileData && (
+      {showPlayer && (
         <Player
           audio={audio}
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={title}
-          name={profileData?.name}
-          image={image}
+          audioInfos={audioInfos}
           play={play}
           setPlay={setPlay}
         />

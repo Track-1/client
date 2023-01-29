@@ -1,52 +1,66 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { showPlayerBar, audioFile } from "../../recoil/player";
+import { showPlayerBar, audioFile, playMusic } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
+import usePlay from "../../utils/hooks/usePlay";
 
 export default function VocalProfileList(props: any) {
-  const { audio, isMe, portfolioData, playAudio, pauseAudio, getDuration, infiniteRef, getAudioInfos, play, setPlay } =
-    props;
+  const { audio, isMe, portfolioData, pauseAudio, getDuration, infiniteRef, getAudioInfos, vocalName } = props;
   const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
-  const [vocalPortfolioHover, setVocalPortfolioHover] = useState<number>(-1);
-  const [vocalPortfolioClick, setVocalPortfolioClick] = useState<number>(-1);
+  const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
+  // const [vocalPortfolioClick, setVocalPortfolioClick] = useState<number>(-1);
   const [beatId, setBeatId] = useState<number>();
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
-  useEffect(() => {
-    playAudio();
-  }, [currentFile]);
+  const [play, setPlay] = useRecoilState(playMusic);
 
-  useEffect(() => {
-    setCurrentFile(portfolioData[vocalPortfolioClick]?.beatWavFile);
-    audio.src = portfolioData[vocalPortfolioClick]?.beatWavFile;
-    getDuration(portfolioData[vocalPortfolioClick]?.wavFileLength);
-    getAudioInfos(portfolioData[vocalPortfolioClick]?.title, portfolioData[vocalPortfolioClick]?.jacketImage);
-  }, [vocalPortfolioClick]);
+  const { clickedIndex, playAudio } = usePlay(audio, portfolioData, true);
+
+  // useEffect(() => {
+  //   playAudio();
+  // }, [currentFile]);
+
+  // useEffect(() => {
+  //   setCurrentFile(portfolioData[clickedIndex]?.beatWavFile);
+  //   audio.src = portfolioData[clickedIndex]?.beatWavFile;
+  //   getDuration(portfolioData[clickedIndex]?.wavFileLength);
+  //   getAudioInfos(portfolioData[clickedIndex]?.title, portfolioData[vocalPortfolioClick]?.jacketImage);
+  // }, [vocalPortfolioClick]);
 
   function mouseOverVocalPortfolio(id: number) {
-    setVocalPortfolioHover(id);
+    setHoveredIndex(id);
   }
 
   function mouseOutVocalPortfolio() {
-    setVocalPortfolioHover(-1);
+    setHoveredIndex(-1);
   }
 
-  function playAudioOnTrack(id: number) {
-    if (vocalPortfolioClick === id) {
-      audio.play();
-      setPlay(true);
-    } else {
-      setPlay(true);
-      setShowPlayer(true);
-      setBeatId(id);
-      setVocalPortfolioClick(id);
-    }
-  }
+  // function playAudioOnTrack(id: number) {
+  //   if (vocalPortfolioClick === id) {
+  //     audio.play();
+  //     setPlay(true);
+  //   } else {
+  //     setPlay(true);
+  //     setShowPlayer(true);
+  //     setBeatId(id);
+  //     setVocalPortfolioClick(id);
+  //   }
+  // }
+
+  useEffect(() => {
+    getAudioInfos(
+      portfolioData[clickedIndex]?.title,
+      vocalName,
+      portfolioData[clickedIndex]?.jacketImage,
+      portfolioData[clickedIndex]?.wavFileLength,
+    );
+    console.log(showPlayer);
+  }, [clickedIndex]);
 
   return (
     <VocalProfileListWrapper>
@@ -57,32 +71,31 @@ export default function VocalProfileList(props: any) {
               key={vocal.id}
               onMouseEnter={() => mouseOverVocalPortfolio(index)}
               onMouseLeave={mouseOutVocalPortfolio}>
-              {((vocalPortfolioHover === index && vocalPortfolioClick !== index && vocalPortfolioHover !== -1) ||
-                (!play &&
-                  vocalPortfolioHover === index &&
-                  vocalPortfolioClick === index &&
-                  vocalPortfolioHover !== -1)) && <VocalProfileBlurPauseIcon onClick={() => playAudioOnTrack(index)} />}
+              {((hoveredIndex === index && clickedIndex !== index && hoveredIndex !== -1) ||
+                (!play && hoveredIndex === index && clickedIndex === index && hoveredIndex !== -1)) && (
+                <VocalProfileBlurPauseIcon onClick={() => playAudio(index)} />
+              )}
               {play &&
-                vocalPortfolioClick === index &&
-                vocalPortfolioHover === index &&
-                vocalPortfolioHover !== -1 &&
-                vocalPortfolioClick !== -1 && <VocalProfileBlurPlayIcon onClick={pauseAudio} />}
+                clickedIndex === index &&
+                hoveredIndex === index &&
+                hoveredIndex !== -1 &&
+                clickedIndex !== -1 && <VocalProfileBlurPlayIcon onClick={pauseAudio} />}
               <VocalPortfolioTitle>
-                {vocalPortfolioClick !== index && vocalPortfolioHover !== index && vocal.title}
+                {clickedIndex !== index && hoveredIndex !== index && vocal.title}
               </VocalPortfolioTitle>
-              {vocalPortfolioHover === index && vocalPortfolioHover !== -1 && (
-                <VocalPorfolioBlur idx={index} vocalPortfolioClickBool={vocalPortfolioClick === index} />
+              {hoveredIndex === index && hoveredIndex !== -1 && (
+                <VocalPorfolioBlur idx={index} vocalPortfolioClickBool={clickedIndex === index} />
               )}
               <VocalPortfolioWrapper
                 idx={index}
-                vocalPortfolioHoverBool={vocalPortfolioHover === index}
-                vocalPortfolioClickBool={vocalPortfolioClick === index}>
+                vocalPortfolioHoverBool={hoveredIndex === index}
+                vocalPortfolioClickBool={clickedIndex === index}>
                 <VocalPortfolioImg
                   src={vocal.jacketImage}
                   alt="보컬 포트폴리오이미지"
                   idx={index}
-                  vocalPortfolioHoverBool={vocalPortfolioHover === index}
-                  vocalPortfolioClickBool={vocalPortfolioClick === index}
+                  vocalPortfolioHoverBool={hoveredIndex === index}
+                  vocalPortfolioClickBool={clickedIndex === index}
                 />
               </VocalPortfolioWrapper>
             </VocalPortfolio>
@@ -97,8 +110,8 @@ export default function VocalProfileList(props: any) {
       {portfolioData && (
         <PortfoliosInform
           isMe={isMe}
-          hoverId={vocalPortfolioHover}
-          clickId={vocalPortfolioClick}
+          hoverId={hoveredIndex}
+          clickId={clickedIndex}
           portfolios={portfolioData}
           profileState={"Porfolio"}
         />
