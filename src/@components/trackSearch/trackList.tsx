@@ -53,7 +53,7 @@ export default function TrackList(props: PropsType) {
       tracksData[clickedIndex]?.jacketImage,
       tracksData[clickedIndex]?.wavFileLength,
     );
-  });
+  }, [clickedIndex]);
 
   function loadMore() {
     setPage((prev) => prev + 1);
