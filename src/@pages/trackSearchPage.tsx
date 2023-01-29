@@ -6,7 +6,7 @@ import TrackListHeader from "../@components/trackSearch/trackListHeader";
 import TrackList from "../@components/trackSearch/trackList";
 import Player from "../@components/@common/player";
 
-import { showPlayerBar, audioFile } from "../recoil/player";
+import { showPlayerBar, audioFile, playMusic } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -19,24 +19,29 @@ import { TracksDataType } from "../type/tracksDataType";
 import { useQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
-import usePlay from "../utils/hooks/usePlay";
+import useProgress from "../utils/hooks/useProgress";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
-  const [duration, setCurrentDuration] = useState<number>(0);
-  const [title, setTitle] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const filteredUrlApi = useRecoilValue(categorySelect);
 
-  const { play, setPlay, progress, setProgress, audio } = usePlay();
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
+
+  const { progress, audio } = useProgress();
 
   //infinite scroll
   const targetRef = useRef<any>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-  const [image, setImage] = useState<string>("");
   const page = useRef<number>(1);
 
   useEffect(() => {
@@ -107,14 +112,14 @@ export default function TrackSearchPage() {
     setPlay(false);
   }
 
-  function getDuration(durationTime: number) {
-    setCurrentDuration(durationTime);
-  }
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
 
-  function getAudioInfos(title: string, name: string, image: string) {
-    setTitle(title);
-    setName(name);
-    setImage(image);
+    setAudioInfos(tempInfos);
   }
 
   return (
@@ -132,10 +137,7 @@ export default function TrackSearchPage() {
               playAudio={playAudio}
               pauseAudio={pauseAudio}
               tracksData={tracksData}
-              getDuration={getDuration}
               getAudioInfos={getAudioInfos}
-              play={play}
-              setPlay={setPlay}
             />
           )}
         </TrackListWrapper>
@@ -146,10 +148,7 @@ export default function TrackSearchPage() {
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={title}
-          name={name}
-          image={image}
+          audioInfos={audioInfos}
           play={play}
           setPlay={setPlay}
         />
