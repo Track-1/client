@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
-import { uploadTrackJacketImage, defaultImageState } from "../../recoil/upload";
-import { useRecoilState } from "recoil";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import { FileChangeIc } from "../../assets";
 import { isMouseEnter } from "../../utils/common/eventType";
 import { uploadImage, isDefaultImage } from "../../utils/uploadPage/uploadImage";
-export default function TrackUpload() {
+import UploadHeader from "../@common/uploadHeader";
+import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+
+interface propsType {
+  userType: string;
+  producerUploadType: string | undefined;
+  uploadData: UploadInfoDataType;
+  uploadDataRef: UploadInfoRefType;
+  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+}
+
+export default function TrackUpload(props: propsType) {
+  const { userType, producerUploadType, uploadData, uploadDataRef, setUploadData, setUploadDataRef } = props;
+
+  const jacketImageRef = useRef<HTMLInputElement>(null);
+
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
-  const [tarckJacketImage, setTrackJacketImage] = useRecoilState<File | Blob>(uploadTrackJacketImage);
-  const [defaultState, setDefaultState] = useRecoilState<boolean>(defaultImageState);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
@@ -20,36 +32,46 @@ export default function TrackUpload() {
   }
 
   function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
-    uploadImage(e, setTrackUploadImg, setTrackJacketImage, setDefaultState);
+    uploadImage(e, setTrackUploadImg, setUploadData);
   }
   return (
-    <Container>
-      <SectionWrapper>
-        <TrackImageBox>
-          <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-            <TrackUploadImage
-              src={trackUploadImg}
-              alt="트랙이미지"
-              onMouseEnter={setHover}
-              onMouseLeave={setHover}
-              isHover={isHover}
-            />
-          </label>
-          <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-            {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
-          </label>
-        </TrackImageBox>
-        <input
-          type="file"
-          id="imageFileUpload"
-          style={{ display: "none" }}
-          accept=".jpg,.jpeg,.png"
-          onChange={uploadImageFile}
-          readOnly
-        />
-        <UploadInfo />
-      </SectionWrapper>
-    </Container>
+    <>
+      <UploadHeader
+        userType={userType}
+        producerUploadType={producerUploadType}
+        uploadData={uploadData}
+        setUploadData={setUploadData}
+        uploadDataRef={uploadDataRef}
+      />
+      <Container>
+        <SectionWrapper>
+          <TrackImageBox>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              <TrackUploadImage
+                src={trackUploadImg}
+                alt="트랙이미지"
+                onMouseEnter={setHover}
+                onMouseLeave={setHover}
+                isHover={isHover}
+              />
+            </label>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
+            </label>
+          </TrackImageBox>
+          <input
+            type="file"
+            id="imageFileUpload"
+            style={{ display: "none" }}
+            accept=".jpg,.jpeg,.png"
+            onChange={uploadImageFile}
+            readOnly
+            ref={jacketImageRef}
+          />
+          <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
+        </SectionWrapper>
+      </Container>
+    </>
   );
 }
 

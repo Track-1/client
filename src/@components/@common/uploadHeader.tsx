@@ -2,67 +2,34 @@ import styled from "styled-components";
 import { UploadInfo } from "../../core/api/upload";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
-import {
-  uploadTitle,
-  uploadCategory,
-  uploadIntroduce,
-  uploadKeyword,
-  uploadTrackJacketImage,
-  uploadVocalJacketImage,
-  uploadWavFile,
-  defaultImageState,
-} from "../../recoil/upload";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { UploadData } from "../../type/uploadData";
 import { currentUser } from "../../core/constants/userType";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
+import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
 
 interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
+  uploadData: UploadInfoDataType;
+  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+  uploadDataRef: UploadInfoRefType;
 }
 
 export default function UploadHeader(props: PropsType) {
-  const { userType, producerUploadType } = props;
-  const jacketImageKey = userType === currentUser.PRODUCER ? uploadTrackJacketImage : uploadVocalJacketImage;
+  const { userType, producerUploadType, uploadData, setUploadData, uploadDataRef } = props;
+
   const navigate = useNavigate();
+
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
-  const [image, setImage] = useRecoilState(jacketImageKey);
-
-  let formdata = new FormData();
-  formdata.append("defaultImage", image);
-
-  const postData: UploadData = {
-    title: useRecoilValue(uploadTitle),
-    category: useRecoilValue(uploadCategory),
-    wavFile: useRecoilValue(uploadWavFile),
-    introduce: useRecoilValue(uploadIntroduce),
-    keyword: useRecoilValue(uploadKeyword),
-    jacketImage: useRecoilValue(defaultImageState) ? formdata : image,
-  };
-
-  const resetTitle = useResetRecoilState(uploadTitle);
-  const resetCategory = useResetRecoilState(uploadCategory);
-  const resetWavFile = useResetRecoilState(uploadWavFile);
-  const resetIntroduce = useResetRecoilState(uploadIntroduce);
-  const resetKeyword = useResetRecoilState(uploadKeyword);
-  const resetJacketImage = useResetRecoilState(jacketImageKey);
-  const resetDefaultState = useResetRecoilState(defaultImageState);
 
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
       navigate(-1);
-      resetTitle();
-      resetCategory();
-      resetWavFile();
-      resetIntroduce();
-      resetKeyword();
-      resetJacketImage();
-      resetDefaultState();
       userType === "producer" ? navigate(-1) : navigate("/vocal-profile/1");
     },
     onError: (error) => {
@@ -71,11 +38,11 @@ export default function UploadHeader(props: PropsType) {
   });
 
   async function post() {
-    if (postData.wavFile !== null) {
-      console.log(postData);
-      const data = await UploadInfo(postData, userType, producerUploadType);
-      return data;
-    }
+    // if (postData.wavFile !== null) {
+    //   console.log(postData);
+    //   const data = await UploadInfo(postData, userType, producerUploadType);
+    //   return data;
+    // }
   }
 
   function backPage(e: React.MouseEvent<SVGSVGElement>) {
@@ -87,19 +54,36 @@ export default function UploadHeader(props: PropsType) {
     if (isUploadActive) {
       mutate();
     }
+    console.log(uploadData);
   }
-  useEffect(() => {
-    if (
-      postData.title !== "" &&
-      postData.category !== "" &&
-      postData.wavFile !== null &&
-      postData.keyword.length !== 0
-    ) {
+
+  function checkMeetConditions(): void {
+    if (!isEmptyTitle() && !isEmptyCategory() && !isEmptyWavFile() && !isEmptyKeyword()) {
       setIsUploadActive(true);
     } else {
       setIsUploadActive(false);
     }
-  }, [postData.title, postData.category, postData.wavFile, postData.introduce, postData.keyword]);
+  }
+
+  function isEmptyTitle(): boolean {
+    return uploadData.title === "";
+  }
+
+  function isEmptyCategory(): boolean {
+    return uploadData.category === "Select";
+  }
+
+  function isEmptyWavFile(): boolean {
+    return uploadData.wavFile === null;
+  }
+
+  function isEmptyKeyword(): boolean {
+    return uploadData.keyword.length === 0;
+  }
+
+  useEffect(() => {
+    checkMeetConditions();
+  }, [uploadData]);
 
   return (
     <Container>

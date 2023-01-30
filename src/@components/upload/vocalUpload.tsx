@@ -21,7 +21,7 @@ export default function VocalUpload() {
   }
 
   function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
-    uploadImage(e, setVocalUploadImg, setVocalJacketImage, setDefaultState);
+    // uploadImage(e, setVocalUploadImg, setVocalJacketImage, setDefaultState);
   }
 
   return (
@@ -46,7 +46,7 @@ export default function VocalUpload() {
           readOnly
         />
 
-        <UploadInfo />
+        {/* <UploadInfo /> */}
       </SectionWrapper>
     </Container>
   );

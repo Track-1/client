@@ -1,19 +1,58 @@
-import UploadHeader from "../@components/@common/uploadHeader";
 import TrackUpload from "../@components/upload/trackUpload";
 import VocalUpload from "../@components/upload/vocalUpload";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { useParams } from "react-router-dom";
+import { UploadInfoDataType, UploadInfoRefType } from "../type/uploadInfoDataType";
+import { useState } from "react";
+import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
+import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
 
 export default function UploadPage() {
   const userType = useRecoilValue(UserType);
-  const {producerUploadType}=useParams();
+  const { producerUploadType } = useParams();
+  const [uploadData, setUploadData] = useState<UploadInfoDataType>({
+    title: "",
+    category: "Select",
+    wavFile: null,
+    introduce: "",
+    keyword: [],
+    jacketImage: getDefaultImage(),
+  });
 
+  const [uploadDataRef, setUploadDataRef] = useState<UploadInfoRefType>({
+    introduceRef: null,
+  });
+
+  function checkUserType(userType: string): boolean {
+    return userType === "producer";
+  }
+
+  function getDefaultImage(): FormData {
+    let defaultImage = new FormData();
+
+    checkUserType(userType)
+      ? defaultImage.append("defaultImage", TrackUploadDefaultImg)
+      : defaultImage.append("defaultImage", VocalUploadDefaultImg);
+
+    return defaultImage;
+  }
 
   return (
     <>
-      <UploadHeader userType={userType} producerUploadType={producerUploadType} />
-      {userType === "producer" ? <TrackUpload /> : <VocalUpload />}
+      {/* <UploadHeader userType={userType} producerUploadType={producerUploadType} /> */}
+      {userType === "producer" ? (
+        <TrackUpload
+          userType={userType}
+          producerUploadType={producerUploadType}
+          uploadData={uploadData}
+          uploadDataRef={uploadDataRef}
+          setUploadData={setUploadData}
+          setUploadDataRef={setUploadDataRef}
+        />
+      ) : (
+        <VocalUpload />
+      )}
     </>
   );
 }

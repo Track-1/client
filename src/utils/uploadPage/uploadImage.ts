@@ -1,12 +1,12 @@
 import { fileSize } from "../../core/constants/fileSize";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 
 export function uploadImage(
   e: React.ChangeEvent<HTMLInputElement>,
   setUploadImg: React.Dispatch<React.SetStateAction<string>>,
-  setJacketImage: React.Dispatch<React.SetStateAction<File | Blob>>,
-  setDefaultState: React.Dispatch<React.SetStateAction<boolean>>,
+  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>,
 ): void {
   const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
   if (checkImageType(uploadName) && e.target.files) {
@@ -15,8 +15,9 @@ export function uploadImage(
     const imageSize: number = getFileSize(file);
     if (checkImageSize(imageSize)) {
       setUploadImg(fileUrl);
-      setJacketImage(e.target.files[0]);
-      setDefaultState(false);
+      setUploadData((prevState) => {
+        return { ...prevState, jacketImage: file };
+      });
     }
   }
 }
