@@ -74,6 +74,34 @@ export default function VocalList(props: PropsType) {
     }
   }
 
+  function checkHover(id: number) {
+    return hoverVocal === id ? true : false;
+  }
+
+  function checkClick(id: number) {
+    return clickVocal === id ? true : false;
+  }
+
+  function showPlayIcon(id: number, vocalId: number) {
+    if ((!play && checkHover(id)) || (!play && checkClick(id)) || (play && !checkClick(id) && checkHover(id))) {
+      return <VocalHoverPlayIcon onClick={() => playAudioOnTrack(id, vocalId)} />;
+    }
+  }
+
+  function showPauseIcon(id: number) {
+    if (play && checkClick(id)) {
+      return (
+        <VocalHoverPauseIcon
+          isHoverVocal={hoverVocal === id}
+          isClickVocal={clickVocal === id}
+          onClick={() => {
+            onClickPauseVocal(id);
+          }}
+        />
+      );
+    }
+  }
+
   return (
     <VocalListContainer>
       {vocalData &&
@@ -101,19 +129,9 @@ export default function VocalList(props: PropsType) {
               <GradientProfile
                 isHoverVocal={hoverVocal === index}
                 isClickVocal={clickVocal === index}></GradientProfile>
-              {play && clickVocal === index && clickVocal !== -1 && (
-                <VocalHoverPauseIcon
-                  isHoverVocal={hoverVocal === index}
-                  isClickVocal={clickVocal === index}
-                  onClick={() => {
-                    onClickPauseVocal(index);
-                  }}
-                />
-              )}
-              {((clickVocal !== index && hoverVocal === index && hoverVocal !== -1) ||
-                (!play && clickVocal === index && clickVocal !== -1)) && (
-                <VocalHoverPlayIcon onClick={() => playAudioOnTrack(index, vocal.vocalId)} />
-              )}
+
+              {showPauseIcon(index)}
+              {showPlayIcon(index, vocal.vocalId)}
             </MusicProfileWrapper>
 
             <HashtagUl>
