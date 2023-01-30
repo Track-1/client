@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUseComment from "./eachUserComment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -11,9 +11,8 @@ import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
 import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
-import { showPlayerBar } from "../../recoil/player";
+import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
-import usePlay from "../../utils/hooks/usePlay";
 
 interface CommentPropsType {
   closeComment: () => void;
@@ -29,6 +28,7 @@ export default function UserComment(props: CommentPropsType) {
     wavFile: null,
   });
 
+  const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
@@ -37,9 +37,18 @@ export default function UserComment(props: CommentPropsType) {
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const { play, setPlay, progress, setProgress, audio } = usePlay();
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
+
+  const audio = useMemo(() => new Audio(), []);
 
   useEffect(() => {
     if (comments) {
@@ -47,6 +56,13 @@ export default function UserComment(props: CommentPropsType) {
       setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
       setDuration(comments[clickedIndex].vocalWavFileLength);
       console.log(clickedIndex);
+
+      getAudioInfos(
+        "title",
+        comments[clickedIndex]?.vocalName,
+        comments[clickedIndex]?.vocalProfileImage,
+        comments[clickedIndex]?.vocalWavFileLength,
+      );
     }
   }, [clickedIndex]);
 
@@ -57,12 +73,26 @@ export default function UserComment(props: CommentPropsType) {
     }
   }, [currentAudioFile]);
 
+  useEffect(() => {
+    if (play) {
+      audio.addEventListener("timeupdate", () => {
+        goProgress();
+      });
+    } else {
+      audio.removeEventListener("timeupdate", () => {
+        goProgress();
+      });
+    }
+  }, [play]);
+
   //get
   const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
+        // console.log(data);
+        // console.log("성공");
         setComments(data?.data.data.commentList);
       }
     },
@@ -108,6 +138,15 @@ export default function UserComment(props: CommentPropsType) {
       wavFile: audioFile,
     });
   }
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
+  }
 
   function clickComment(index: number) {
     setClickedIndex(index);
@@ -123,6 +162,13 @@ export default function UserComment(props: CommentPropsType) {
   function pauseAudio() {
     audio.pause();
     setPlay(false);
+  }
+
+  function goProgress() {
+    if (audio.duration) {
+      const currentDuration = (audio.currentTime / audio.duration) * 100;
+      setProgress(currentDuration);
+    }
   }
 
   return (
@@ -152,24 +198,20 @@ export default function UserComment(props: CommentPropsType) {
                   clickComment={clickComment}
                   pauseAudio={pauseAudio}
                   index={index}
-                  play={play}
-                  setPlay={setPlay}
+                  getAudioInfos={getAudioInfos}
                 />
               ); //여기가 각각의 데이터
             })}
           <BlurSection />
         </CommentWriteWrapper>
       </CommentContainer>
-      {showPlayer && comments && (
+      {showPlayer && (
         <Player
           audio={audio}
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={"댓글제목"}
-          name={comments[clickedIndex]?.vocalName}
-          image={comments[clickedIndex]?.vocalProfileImage}
+          audioInfos={audioInfos}
           play={play}
           setPlay={setPlay}
         />
@@ -185,14 +227,11 @@ const CommentWriteWrapper = styled.div`
 const CommentContainer = styled.section`
   width: 107.7rem;
   float: right;
-
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
-
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;
-
   position: sticky;
   z-index: 1;
   top: 0;
@@ -201,18 +240,14 @@ const CommentContainer = styled.section`
 
 const CloseCommentBtn = styled.div`
   width: 19.8rem;
-
   display: flex;
   flex-direction: column;
-
   margin-bottom: 2.7rem;
 `;
 
 const CloseText = styled.strong`
   ${({ theme }) => theme.fonts.id};
-
   color: ${({ theme }) => theme.colors.white};
-
   margin-left: 0.5rem;
 `;
 
@@ -223,7 +258,6 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
 const AddWrapper = styled.div`
   width: 100%;
-
   display: flex;
   justify-content: space-between;
 `;
@@ -236,9 +270,7 @@ const AddCommentIcon = styled(AddCommentIc)`
 const BlurSection = styled.div`
   height: 32rem;
   width: 101.1rem;
-
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
-
   bottom: 0;
   right: 0;
   position: sticky;

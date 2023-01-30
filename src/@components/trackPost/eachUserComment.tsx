@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PauseBtnIc, PlayBtnIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
-import { showPlayerBar } from "../../recoil/player";
+import { showPlayerBar, playMusic } from "../../recoil/player";
 
 interface dataType {
   data: UserCommentType;
@@ -12,15 +12,15 @@ interface dataType {
   pauseAudio: () => void;
   clickComment: (index: number) => void;
   index: number;
-  play: any;
-  setPlay: any;
+  getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
 }
 
 export default function EachUserComment(props: dataType) {
-  const { data, audio, clickedIndex, clickComment, index, pauseAudio, play, setPlay } = props;
+  const { data, audio, clickedIndex, clickComment, index, pauseAudio, getAudioInfos } = props;
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function changeHoverTrue() {
     setIsHover(true);
@@ -68,10 +68,8 @@ export default function EachUserComment(props: dataType) {
 const CommentContainer = styled.article`
   position: relative;
   height: 14.2rem;
-
   display: flex;
   align-items: center;
-
   &:hover {
     border: 0.2rem solid transparent;
     border-top-left-radius: 11.7rem;
@@ -86,12 +84,9 @@ const CommentContainer = styled.article`
 const ProfileImage = styled.div<{ img: string }>`
   height: 9rem;
   width: 9rem;
-
   margin-right: 2rem;
   margin-left: 3.8rem;
-
   border-radius: 9rem;
-
   background-image: url(${({ img }) => img});
   background-repeat: no-repeat;
   background-size: contain;
@@ -100,15 +95,12 @@ const ProfileImage = styled.div<{ img: string }>`
 const PlayerBlur = styled.div`
   height: 9rem;
   width: 9rem;
-
   background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
   border-radius: 50%;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   /* pointer-events: none; */
 `;
 
@@ -119,14 +111,11 @@ const InfoBox = styled.div`
 
 const UserName = styled.strong`
   color: ${({ theme }) => theme.colors.white};
-
   ${({ theme }) => theme.fonts.hashtag}
 `;
 
 const CommentText = styled.strong`
   color: ${({ theme }) => theme.colors.white};
-
   ${({ theme }) => theme.fonts.description}
-
   margin-top: 1.2rem;
 `;
