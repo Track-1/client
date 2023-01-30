@@ -26,14 +26,6 @@ export default function ProducerProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
   const [duration, setCurrentDuration] = useState<number>(0);
-  const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-
-  const visible = useRecoilValue(uploadButtonClicked);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-
   const [audioInfos, setAudioInfos] = useState({
     title: "",
     name: "",
@@ -41,6 +33,11 @@ export default function ProducerProfilePage() {
     duration: 0,
     image: "",
   });
+
+  const visible = useRecoilValue(uploadButtonClicked);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { progress, audio } = useProgress();
 
@@ -96,7 +93,6 @@ export default function ProducerProfilePage() {
       io.disconnect();
     };
   }, [fetch, hasNextPage]);
-
   //end
 
   useEffect(() => {
@@ -127,15 +123,6 @@ export default function ProducerProfilePage() {
     setProfileState("Vocal Searching");
     setStateChange((prev) => !prev);
   }
-
-  function getDuration(durationTime: number) {
-    setCurrentDuration(durationTime);
-  }
-
-  // function getAudioInfos(title: string, image: string) {
-  //   setTitle(title);
-  //   setImage(image);
-  // }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
     const tempInfos = audioInfos;

@@ -6,7 +6,7 @@ import TrackListHeader from "../@components/trackSearch/trackListHeader";
 import TrackList from "../@components/trackSearch/trackList";
 import Player from "../@components/@common/player";
 
-import { showPlayerBar, audioFile, playMusic } from "../recoil/player";
+import { showPlayerBar, playMusic } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -23,12 +23,6 @@ import useProgress from "../utils/hooks/useProgress";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const filteredUrlApi = useRecoilValue(categorySelect);
-
   const [audioInfos, setAudioInfos] = useState({
     title: "",
     name: "",
@@ -36,6 +30,11 @@ export default function TrackSearchPage() {
     duration: 0,
     image: "",
   });
+
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const filteredUrlApi = useRecoilValue(categorySelect);
 
   const { progress, audio } = useProgress();
 

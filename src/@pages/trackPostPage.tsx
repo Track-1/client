@@ -43,7 +43,6 @@ export default function TrackPostPage() {
   const [beatId, setBeatId] = useState<number>(-1);
   const [fileLink, setFileLink] = useState<string>();
   const [title, setTitle] = useState<string>();
-  const [image, setImage] = useState<string>("");
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
@@ -70,7 +69,6 @@ export default function TrackPostPage() {
     if (trackInfoData !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
       setCurrentDuration(trackInfoData?.wavFileLength);
-
       getAudioInfos(
         trackInfoData?.title,
         trackInfoData?.producerName,
@@ -94,7 +92,6 @@ export default function TrackPostPage() {
   function playAudio() {
     audio.play();
     setPlay(true);
-    setShowPlayer(true);
   }
 
   function pauseAudio() {

@@ -14,32 +14,23 @@ import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 
-interface CommentPropsType {
+interface PropsType {
   closeComment: () => void;
   beatId: number;
 }
 
-export default function UserComment(props: CommentPropsType) {
+export default function UserComment(props: PropsType) {
   const { closeComment, beatId } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
-  const [uploadData, setUploadData] = useState<UploadDataType>({
-    content: "",
-    wavFile: null,
-  });
-
   const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
-
-  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
-  const [content, setContent] = useRecoilState<string>(postContent);
-  const [wavFile, setWavFile] = useRecoilState(postWavFile);
-  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
+  const [uploadData, setUploadData] = useState<UploadDataType>({
+    content: "",
+    wavFile: null,
+  });
   const [audioInfos, setAudioInfos] = useState({
     title: "",
     name: "",
@@ -48,6 +39,13 @@ export default function UserComment(props: CommentPropsType) {
     image: "",
   });
 
+  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
+  const [content, setContent] = useRecoilState<string>(postContent);
+  const [wavFile, setWavFile] = useRecoilState(postWavFile);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
   const audio = useMemo(() => new Audio(), []);
 
   useEffect(() => {
@@ -55,8 +53,6 @@ export default function UserComment(props: CommentPropsType) {
       audio.src = comments[clickedIndex].vocalWavFile;
       setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
       setDuration(comments[clickedIndex].vocalWavFileLength);
-      console.log(clickedIndex);
-
       getAudioInfos(
         "title",
         comments[clickedIndex]?.vocalName,
@@ -69,7 +65,6 @@ export default function UserComment(props: CommentPropsType) {
   useEffect(() => {
     if (currentAudioFile) {
       playAudio();
-      console.log(currentAudioFile);
     }
   }, [currentAudioFile]);
 
@@ -91,8 +86,6 @@ export default function UserComment(props: CommentPropsType) {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        // console.log(data);
-        // console.log("성공");
         setComments(data?.data.data.commentList);
       }
     },
@@ -100,18 +93,15 @@ export default function UserComment(props: CommentPropsType) {
       console.log("실패");
     },
   });
-
   //post
   function uploadComment(uploadData: UploadDataType) {
     setIsCompleted(true);
   }
-
   useEffect(() => {
     if (content && wavFile) {
       let formData = new FormData();
       formData.append("wavFile", wavFile);
       formData.append("content", content);
-
       mutate(formData);
     }
   }, [isCompleted]);
@@ -138,25 +128,23 @@ export default function UserComment(props: CommentPropsType) {
       wavFile: audioFile,
     });
   }
+
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
     const tempInfos = audioInfos;
     tempInfos.title = title;
     tempInfos.name = name;
     tempInfos.image = image;
     tempInfos.duration = duration;
-
     setAudioInfos(tempInfos);
   }
 
   function clickComment(index: number) {
     setClickedIndex(index);
-    console.log(index);
   }
 
   function playAudio() {
     audio.play();
     setPlay(true);
-    setShowPlayer(true);
   }
 
   function pauseAudio() {
@@ -198,7 +186,6 @@ export default function UserComment(props: CommentPropsType) {
                   clickComment={clickComment}
                   pauseAudio={pauseAudio}
                   index={index}
-                  getAudioInfos={getAudioInfos}
                 />
               ); //여기가 각각의 데이터
             })}

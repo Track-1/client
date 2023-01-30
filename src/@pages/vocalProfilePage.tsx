@@ -19,17 +19,10 @@ import ProducerInfos from "../@components/producerProfile/producerInfos";
 import useProgress from "../utils/hooks/useProgress";
 
 export default function VocalProfilePage() {
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [duration, setCurrentDuration] = useState<number>(0);
   const [isMe, setIsMe] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
   const [portfolioData, setPortfolioData] = useState<VocalPortfolioType[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [audioInfos, setAudioInfos] = useState({
     title: "",
     name: "",
@@ -37,6 +30,11 @@ export default function VocalProfilePage() {
     duration: 0,
     image: "",
   });
+
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { progress, audio } = useProgress();
 
@@ -120,29 +118,15 @@ export default function VocalProfilePage() {
 
   //end
 
-  useEffect(() => {
-    setWhom(Category.VOCALS);
-  }, []);
-
   function playAudio() {
     audio.play();
     setPlay(true);
-    // setShowPlayer(true);
   }
 
   function pauseAudio() {
     audio.pause();
     setPlay(false);
   }
-
-  function getDuration(durationTime: number) {
-    setCurrentDuration(durationTime);
-  }
-
-  // function getAudioInfos(title: string, image: string) {
-  //   setTitle(title);
-  //   setImage(image);
-  // }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
     const tempInfos = audioInfos;
@@ -160,13 +144,12 @@ export default function VocalProfilePage() {
       <VocalProfile>{profileData && <ProducerInfos profileData={profileData} />}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
-          {portfolioData && (
+          {portfolioData && profileData && (
             <VocalProfileList
               isMe={isMe}
               portfolioData={portfolioData}
               audio={audio}
               pauseAudio={pauseAudio}
-              getDuration={getDuration}
               infiniteRef={targetRef}
               getAudioInfos={getAudioInfos}
               vocalName={profileData?.name}
@@ -175,7 +158,6 @@ export default function VocalProfilePage() {
           <VocalProfileShadow />
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
-      {/* <PlayerWrapper></PlayerWrapper> */}
 
       {showPlayer && (
         <Player
@@ -191,13 +173,6 @@ export default function VocalProfilePage() {
     </Wrap>
   );
 }
-
-// infinite
-// const InfiniteDiv = styled.div`
-//   width: 100%;
-//   height: 6rem;
-//   background-color: pink;
-// `;
 
 const Wrap = styled.div`
   display: flex;

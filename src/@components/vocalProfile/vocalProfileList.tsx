@@ -5,32 +5,28 @@ import { showPlayerBar, audioFile, playMusic } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 import usePlay from "../../utils/hooks/usePlay";
+import { VocalPortfolioType } from "../../type/vocalProfile";
 
-export default function VocalProfileList(props: any) {
-  const { audio, isMe, portfolioData, pauseAudio, getDuration, infiniteRef, getAudioInfos, vocalName } = props;
+interface PropsType {
+  audio: HTMLAudioElement;
+  isMe: boolean;
+  portfolioData: VocalPortfolioType[];
+  pauseAudio: () => void;
+  infiniteRef: React.MutableRefObject<any>;
+  getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
+  vocalName: string;
+}
+
+export default function VocalProfileList(props: PropsType) {
+  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName } = props;
+
   const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
-  // const [vocalPortfolioClick, setVocalPortfolioClick] = useState<number>(-1);
-  const [beatId, setBeatId] = useState<number>();
-
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
 
   const [play, setPlay] = useRecoilState(playMusic);
 
   const { clickedIndex, playAudio } = usePlay(audio, portfolioData, "profile");
-
-  // useEffect(() => {
-  //   playAudio();
-  // }, [currentFile]);
-
-  // useEffect(() => {
-  //   setCurrentFile(portfolioData[clickedIndex]?.beatWavFile);
-  //   audio.src = portfolioData[clickedIndex]?.beatWavFile;
-  //   getDuration(portfolioData[clickedIndex]?.wavFileLength);
-  //   getAudioInfos(portfolioData[clickedIndex]?.title, portfolioData[vocalPortfolioClick]?.jacketImage);
-  // }, [vocalPortfolioClick]);
 
   function mouseOverVocalPortfolio(id: number) {
     setHoveredIndex(id);
@@ -40,18 +36,6 @@ export default function VocalProfileList(props: any) {
     setHoveredIndex(-1);
   }
 
-  // function playAudioOnTrack(id: number) {
-  //   if (vocalPortfolioClick === id) {
-  //     audio.play();
-  //     setPlay(true);
-  //   } else {
-  //     setPlay(true);
-  //     setShowPlayer(true);
-  //     setBeatId(id);
-  //     setVocalPortfolioClick(id);
-  //   }
-  // }
-
   useEffect(() => {
     getAudioInfos(
       portfolioData[clickedIndex]?.title,
@@ -59,7 +43,6 @@ export default function VocalProfileList(props: any) {
       portfolioData[clickedIndex]?.jacketImage,
       portfolioData[clickedIndex]?.wavFileLength,
     );
-    console.log(showPlayer);
   }, [clickedIndex]);
 
   return (

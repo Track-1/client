@@ -5,18 +5,18 @@ import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
 
-interface dataType {
+interface PropsType {
   data: UserCommentType;
   audio: HTMLAudioElement;
   clickedIndex: number;
   pauseAudio: () => void;
   clickComment: (index: number) => void;
   index: number;
-  getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
 }
 
-export default function EachUserComment(props: dataType) {
-  const { data, audio, clickedIndex, clickComment, index, pauseAudio, getAudioInfos } = props;
+export default function EachUserComment(props: PropsType) {
+  const { data, audio, clickedIndex, clickComment, index, pauseAudio } = props;
+
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -32,15 +32,8 @@ export default function EachUserComment(props: dataType) {
 
   function playAudioOnTrack(id: number) {
     setShowPlayer(true);
-
-    if (clickedIndex === id) {
-      audio.play();
-      setPlay(true);
-    } else {
-      setPlay(true);
-      setShowPlayer(true);
-      clickComment(index);
-    }
+    setPlay(true);
+    clickedIndex === id ? audio.play() : clickComment(index);
   }
 
   return (
