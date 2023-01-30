@@ -34,7 +34,7 @@ export default function TrackList(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [page, setPage] = useRecoilState(trackListinfiniteScroll);
 
-  const { clickedIndex, playAudio } = usePlay(audio, tracksData, false);
+  const { clickedIndex, playAudio } = usePlay(audio, tracksData, "tracks");
 
   useEffect(() => {
     const observer = new IntersectionObserver((endDiv) => {

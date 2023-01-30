@@ -19,7 +19,7 @@ export default function VocalProfileList(props: any) {
 
   const [play, setPlay] = useRecoilState(playMusic);
 
-  const { clickedIndex, playAudio } = usePlay(audio, portfolioData, true);
+  const { clickedIndex, playAudio } = usePlay(audio, portfolioData, "profile");
 
   // useEffect(() => {
   //   playAudio();

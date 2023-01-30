@@ -15,24 +15,13 @@ interface PropsType {
   audio: HTMLAudioElement;
   pauseAudio: () => void;
   duration: number;
-  getDuration: (durationTime: number) => void;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   producerName: string;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const {
-    portfolioData,
-    isMe,
-    profileState,
-    stateChange,
-    audio,
-    pauseAudio,
-    duration,
-    getDuration,
-    getAudioInfos,
-    producerName,
-  } = props;
+  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, duration, getAudioInfos, producerName } =
+    props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   // const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -42,7 +31,7 @@ export default function ProducerPortFolioList(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState(playMusic);
 
-  const { clickedIndex, setClickedIndex, playAudio } = usePlay(audio, portfolioData, true);
+  const { clickedIndex, setClickedIndex, playAudio } = usePlay(audio, portfolioData, "profile");
 
   useEffect(() => {
     setHoveredIndex(-1);

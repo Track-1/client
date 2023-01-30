@@ -172,7 +172,6 @@ export default function ProducerProfilePage() {
             audio={audio}
             pauseAudio={pauseAudio}
             duration={duration}
-            getDuration={getDuration}
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
           />
