@@ -198,7 +198,6 @@ const GradientProfile = styled.div<{ isHoverVocal: boolean; isClickVocal: boolea
   height: 23.4rem;
   top: 2.5rem;
   right: 1.9rem;
-  cursor: pointer;
   background: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.sub3} 15.32%,
