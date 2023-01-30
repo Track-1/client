@@ -104,7 +104,7 @@ export default function VocalList(props: PropsType) {
     <VocalListContainer>
       {vocalData &&
         vocalData.map((vocal, index) => (
-          <VocalContainer key={index} >
+          <VocalContainer key={index} onMouseLeave={mouseOutPlayVocal} onMouseEnter={() => mouseOverPlayVocal(index)}>
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
               {checkActiveVocal(vocal.isSelected)}
@@ -115,12 +115,7 @@ export default function VocalList(props: PropsType) {
               <CategoryNum>+{vocal.totalCategNum}</CategoryNum>
             </CategoryTextWrapper>
 
-            <MusicProfileWrapper
-              onMouseLeave={mouseOutPlayVocal}
-              onMouseEnter={() => mouseOverPlayVocal(index)}
-              showPlayer={showPlayer}
-              checkHover={checkHover(index)}
-              checkClick={checkClick(index)}>
+            <MusicProfileWrapper showPlayer={showPlayer} checkHover={checkHover(index)} checkClick={checkClick(index)}>
               <GradientLine>
                 <AlbumCoverImg src={vocal.vocalProfileImage} alt="앨범자켓사진" />
               </GradientLine>
