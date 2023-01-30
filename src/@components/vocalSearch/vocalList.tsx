@@ -90,13 +90,7 @@ export default function VocalList(props: PropsType) {
 
   function showPauseIcon(id: number) {
     if (play && checkClick(id)) {
-      return (
-        <VocalHoverPauseIcon
-          onClick={() => {
-            onClickPauseVocal(id);
-          }}
-        />
-      );
+      return <VocalHoverPauseIcon onClick={() => onClickPauseVocal(id)} />;
     }
   }
 
