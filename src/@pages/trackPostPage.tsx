@@ -92,6 +92,7 @@ export default function TrackPostPage() {
   function playAudio() {
     audio.play();
     setPlay(true);
+    setShowPlayer(true);
   }
 
   function pauseAudio() {
