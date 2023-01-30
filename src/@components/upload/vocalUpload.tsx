@@ -1,73 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
+import { uploadVocalJacketImage, defaultImageState } from "../../recoil/upload";
+import { useRecoilState } from "recoil";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
-import { uploadImage, isDefaultImage } from "../../utils/uploadPage/uploadImage";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
-import { isMouseEnter } from "../../utils/common/eventType";
-import UploadHeader from "../@common/uploadHeader";
+import { uploadImage } from "../../utils/uploadPage/uploadImage";
 
-interface propsType {
-  userType: string;
-  producerUploadType: string | undefined;
-  uploadData: UploadInfoDataType;
-  uploadDataRef: UploadInfoRefType;
-  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
-}
-
-export default function VocalUpload(props: propsType) {
-  const { userType, producerUploadType, uploadData, uploadDataRef, setUploadData, setUploadDataRef } = props;
-
+export default function VocalUpload() {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
+  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File | Blob>(uploadVocalJacketImage);
+  const [defaultState, setDefaultState] = useRecoilState<boolean>(defaultImageState);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    if (!isDefaultImage(vocalUploadImg)) {
-      isMouseEnter(e) ? setIsHover(true) : setIsHover(false);
+    if (vocalUploadImg !== VocalUploadDefaultImg) {
+      e.type === "mouseenter" ? setIsHover(true) : setIsHover(false);
     }
   }
 
   function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
-    uploadImage(e, setVocalUploadImg, setUploadData);
+    // uploadImage(e, setVocalUploadImg, setVocalJacketImage, setDefaultState);
   }
 
   return (
-    <>
-      <UploadHeader
-        userType={userType}
-        producerUploadType={producerUploadType}
-        uploadData={uploadData}
-        setUploadData={setUploadData}
-        uploadDataRef={uploadDataRef}
-      />
-      <Container>
-        <SectionWrapper>
-          <VocalImageBox>
-            <VocalImageFrame onMouseEnter={setHover} onMouseLeave={setHover}>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
-              </label>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
-              </label>
-            </VocalImageFrame>
-          </VocalImageBox>
-          <input
-            type="file"
-            id="imageFileUpload"
-            style={{ display: "none" }}
-            accept=".jpg,.jpeg,.png"
-            onChange={uploadImageFile}
-            readOnly
-          />
+    <Container>
+      <SectionWrapper>
+        <VocalImageBox>
+          <VocalImageFrame onMouseEnter={setHover} onMouseLeave={setHover}>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
+            </label>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
+            </label>
+          </VocalImageFrame>
+        </VocalImageBox>
+        <input
+          type="file"
+          id="imageFileUpload"
+          style={{ display: "none" }}
+          accept=".jpg,.jpeg,.png"
+          onChange={uploadImageFile}
+          readOnly
+        />
 
-          <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
-        </SectionWrapper>
-      </Container>
-    </>
+        {/* <UploadInfo /> */}
+      </SectionWrapper>
+    </Container>
   );
 }
 
