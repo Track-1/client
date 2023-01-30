@@ -169,12 +169,12 @@ export default function UploadInfo(props: propsType) {
       setUploadData((prevState) => {
         return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
       });
-      resetHashtaInputWidth();
+      resetHashtagInputWidth();
       resetHashtagCurrentValue();
     }
   }
 
-  function resetHashtaInputWidth(): void {
+  function resetHashtagInputWidth(): void {
     setHashtagInputWidth(HASHTAG_WIDTH);
   }
 
@@ -222,7 +222,7 @@ export default function UploadInfo(props: propsType) {
   function deleteHashtag(index: number) {
     const deleteTag = [...hashtags].splice(index, 1);
     setHashtags([...deleteTag]);
-    resetHashtaInputWidth();
+    resetHashtagInputWidth();
   }
 
   console.log(uploadData.keyword);
@@ -275,20 +275,28 @@ export default function UploadInfo(props: propsType) {
     }
   }, [textareaHeight]);
 
+  function isEmptyHashtagInput(): boolean {
+    return enteredHashtag.current!.value.length === 0;
+  }
+
+  function changeHashtagInputWidth(inputWidth: number): void {
+    enteredHashtag.current!.style.width = inputWidth / 10 + "rem";
+  }
+
+  function makeZeroInputWidth(width: number): void {
+    enteredHashtag.current!.style.width = width + "rem";
+  }
+
   //존나빠르게 치면 이슈생김...
   useEffect(() => {
-    if (hashtags.length < 3) {
-      if (enteredHashtag.current!.value.length > 0) {
-        if (enteredHashtag && enteredHashtag.current) {
-          enteredHashtag.current.style.width = "0rem";
-          const inputWidth = enteredHashtag.current.scrollWidth;
-          enteredHashtag.current.style.width = inputWidth / 10 + "rem";
-          setHashtagInputWidth(inputWidth);
-        }
-      } else {
-        enteredHashtag.current!.style.width = HASHTAG_WIDTH + "rem";
-        setHashtagInputWidth(HASHTAG_WIDTH);
-      }
+    if (checkMaxInputLength(hashtags.length, 2) && !isEmptyHashtagInput()) {
+      makeZeroInputWidth(0);
+      const inputWidth = enteredHashtag.current!.scrollWidth;
+      changeHashtagInputWidth(inputWidth);
+      setHashtagInputWidth(inputWidth);
+    } else {
+      makeZeroInputWidth(HASHTAG_WIDTH);
+      setHashtagInputWidth(HASHTAG_WIDTH);
     }
   }, [hashtagInputWidth]);
 
