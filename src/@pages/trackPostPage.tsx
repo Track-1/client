@@ -15,7 +15,7 @@ import {
 } from "../assets";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -30,27 +30,35 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import { UserType } from "../recoil/main";
+import useProgress from "../utils/hooks/useProgress";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
 
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
   const [duration, setCurrentDuration] = useState<number>(0);
   const [beatId, setBeatId] = useState<number>(-1);
   const [fileLink, setFileLink] = useState<string>();
   const [title, setTitle] = useState<string>();
-  const [image, setImage] = useState<string>("");
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const user = useRecoilValue(UserType);
 
-  const audio = useMemo(() => new Audio(), []);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+
+  const [audioInfos, setAudioInfos] = useState<any>({
+    title: "",
+    name: "",
+    progress: "",
+    duration: "",
+    image: "",
+  });
+
+  const { progress, audio } = useProgress();
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -58,23 +66,17 @@ export default function TrackPostPage() {
 
   useEffect(() => {
     trackInfoData && setTitle(trackInfoData.title);
-    if (trackInfoData?.beatWavFile !== undefined) {
+    if (trackInfoData !== undefined) {
       audio.src = trackInfoData?.beatWavFile;
       setCurrentDuration(trackInfoData?.wavFileLength);
+      getAudioInfos(
+        trackInfoData?.title,
+        trackInfoData?.producerName,
+        trackInfoData?.jacketImage,
+        trackInfoData?.wavFileLength,
+      );
     }
   }, [trackInfoData]);
-
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
@@ -96,13 +98,6 @@ export default function TrackPostPage() {
   function pauseAudio() {
     audio.pause();
     setPlay(false);
-  }
-
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
   }
 
   function openComment() {
@@ -146,68 +141,6 @@ export default function TrackPostPage() {
     },
   });
 
-  // const downloadFile = () => {
-  // 	if (fileLink) {
-  // 		fetch(fileLink, { method: 'GET' })
-  // 			.then(res => {
-  // 				return res.blob();
-  // 			})
-  // 			.then(blob => {
-  // 				const url = window.URL.createObjectURL(blob);
-  // 				const a = document.createElement('a');
-  // 				a.href = url;
-  // 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
-  // 				document.body.appendChild(a);
-  // 				a.click();
-  // 				setTimeout(_ => {
-  // 					window.URL.revokeObjectURL(url);
-  // 				}, 60000);
-  // 				a.remove();
-  // 				// setOpen(false);
-  // 			})
-  // 			.catch(err => {
-  // 				console.error('err: ', err);
-  // 			});
-  // 	} else {
-  // 		alert(
-  // 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
-  // 		);
-  // 	}
-  // };
-
-  // function downloadFile(){
-  //   fetch(`${fileLink}`, {method: 'GET'})
-  //   .then(res => {
-  //     return res.blob();
-  //   })
-  //   .then(blob => {
-  //     var url = window.URL.createObjectURL(blob);
-  //     var a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = 'myItem.extension';
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     setTimeout(
-  //       _ => { window.URL.revokeObjectURL(url); },
-  //       60000);
-  //     a.remove();
-  //   })
-  //   .catch(err => {
-  //     console.error('err: ', err);
-  //   })
-  // }
-
-  //   function downloadFile (){
-  //     console.log("dfdfd")
-  //     const url = fileLink
-  //     const download = document.createElement('a');
-
-  //     download.href = url?url:"";
-  //     download.setAttribute('download',title?title:"");
-  //     download.setAttribute('type', 'application/json');
-  //     download.click();
-  // }
-
   const downloadFile = useCallback((fileName: string, fileLink: string) => {
     const blob = new Blob([fileLink], { type: "audio/mp3" });
     const url = window.URL.createObjectURL(blob);
@@ -220,6 +153,16 @@ export default function TrackPostPage() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
   }, []);
+
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
+  }
 
   return (
     <>
@@ -290,10 +233,13 @@ export default function TrackPostPage() {
             playAudio={playAudio}
             pauseAudio={pauseAudio}
             progress={progress}
-            duration={duration}
-            title={trackInfoData?.title}
-            name={trackInfoData?.producerName}
-            image={image}
+            // duration={duration}
+            // title={trackInfoData?.title}
+            // name={trackInfoData?.producerName}
+            // image={image}
+            audioInfos={audioInfos}
+            play={play}
+            setPlay={setPlay}
           />
         )}
       </TrackPostPageWrapper>

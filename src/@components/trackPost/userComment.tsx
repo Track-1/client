@@ -14,24 +14,30 @@ import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 
-interface CommentPropsType {
+interface PropsType {
   closeComment: () => void;
   beatId: number;
 }
 
-export default function UserComment(props: CommentPropsType) {
+export default function UserComment(props: PropsType) {
   const { closeComment, beatId } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
-  const [uploadData, setUploadData] = useState<UploadDataType>({
-    content: "",
-    wavFile: null,
-  });
-
   const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
+  const [uploadData, setUploadData] = useState<UploadDataType>({
+    content: "",
+    wavFile: null,
+  });
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
 
   const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [content, setContent] = useRecoilState<string>(postContent);
@@ -47,14 +53,18 @@ export default function UserComment(props: CommentPropsType) {
       audio.src = comments[clickedIndex].vocalWavFile;
       setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
       setDuration(comments[clickedIndex].vocalWavFileLength);
-      console.log(clickedIndex);
+      getAudioInfos(
+        "title",
+        comments[clickedIndex]?.vocalName,
+        comments[clickedIndex]?.vocalProfileImage,
+        comments[clickedIndex]?.vocalWavFileLength,
+      );
     }
   }, [clickedIndex]);
 
   useEffect(() => {
     if (currentAudioFile) {
       playAudio();
-      console.log(currentAudioFile);
     }
   }, [currentAudioFile]);
 
@@ -76,8 +86,6 @@ export default function UserComment(props: CommentPropsType) {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        // console.log(data);
-        // console.log("성공");
         setComments(data?.data.data.commentList);
       }
     },
@@ -85,18 +93,15 @@ export default function UserComment(props: CommentPropsType) {
       console.log("실패");
     },
   });
-
   //post
   function uploadComment(uploadData: UploadDataType) {
     setIsCompleted(true);
   }
-
   useEffect(() => {
     if (content && wavFile) {
       let formData = new FormData();
       formData.append("wavFile", wavFile);
       formData.append("content", content);
-
       mutate(formData);
     }
   }, [isCompleted]);
@@ -124,15 +129,22 @@ export default function UserComment(props: CommentPropsType) {
     });
   }
 
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+    setAudioInfos(tempInfos);
+  }
+
   function clickComment(index: number) {
     setClickedIndex(index);
-    console.log(index);
   }
 
   function playAudio() {
     audio.play();
     setPlay(true);
-    setShowPlayer(true);
   }
 
   function pauseAudio() {
@@ -180,16 +192,15 @@ export default function UserComment(props: CommentPropsType) {
           <BlurSection />
         </CommentWriteWrapper>
       </CommentContainer>
-      {showPlayer && comments && (
+      {showPlayer && (
         <Player
           audio={audio}
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={"댓글제목"}
-          name={comments[clickedIndex]?.vocalName}
-          image={comments[clickedIndex]?.vocalProfileImage}
+          audioInfos={audioInfos}
+          play={play}
+          setPlay={setPlay}
         />
       )}
     </>
@@ -203,14 +214,11 @@ const CommentWriteWrapper = styled.div`
 const CommentContainer = styled.section`
   width: 107.7rem;
   float: right;
-
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
-
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;
-
   position: sticky;
   z-index: 1;
   top: 0;
@@ -219,18 +227,14 @@ const CommentContainer = styled.section`
 
 const CloseCommentBtn = styled.div`
   width: 19.8rem;
-
   display: flex;
   flex-direction: column;
-
   margin-bottom: 2.7rem;
 `;
 
 const CloseText = styled.strong`
   ${({ theme }) => theme.fonts.id};
-
   color: ${({ theme }) => theme.colors.white};
-
   margin-left: 0.5rem;
 `;
 
@@ -241,7 +245,6 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
 const AddWrapper = styled.div`
   width: 100%;
-
   display: flex;
   justify-content: space-between;
 `;
@@ -254,9 +257,7 @@ const AddCommentIcon = styled(AddCommentIc)`
 const BlurSection = styled.div`
   height: 32rem;
   width: 101.1rem;
-
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
-
   bottom: 0;
   right: 0;
   position: sticky;
