@@ -11,15 +11,18 @@ import { showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { getVocalsData } from "../core/api/vocalSearch";
+import { playMusic } from "../recoil/player";
 import { categorySelect, trackSearching } from "../recoil/categorySelect";
+import { vocalListinfiniteScroll } from "../recoil/infiniteScroll";
 import { useQuery } from "react-query";
 import { VocalsDataType } from "../type/vocalsDataType";
-import usePlay from "../utils/hooks/usePlay";
+import useProgress from "../utils/hooks/useProgress";
 
 export default function VocalsPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
@@ -28,15 +31,67 @@ export default function VocalsPage() {
   const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [name, setName] = useState<string>("");
+  // const [progress, setProgress] = useState<number>(0);
   const [duration, setCurrentDuration] = useState<number>(0);
 
-  const { play, setPlay, progress, setProgress, audio } = usePlay();
+  // const audio = useMemo(() => new Audio(), []);
+
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
+
+  const { progress, audio } = useProgress();
 
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);
 
+  // const { isIntersect } = useIntersectObserver(intersectRef, {
+  //   rootMargin: "200px",
+  //   threshold: 0.05,
+  // });
+
+  // const loadMoreCommentData = async () => {
+  //   if (isIntersect) {
+  //     const data = await getVocalsData(filteredUrlApi, isSelected, page);
+  //     setVocalList((prev: any) => prev && [...prev, ...data?.data.data.vocalList]);
+  //     setPage((prev) => prev + 1);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   loadMoreCommentData();
+  // }, [isIntersect, isLastPage]);
+
+  // const { data } = useQuery(
+  //   ["changeVocal", filteredUrlApi, isSelected, pageNum],
+  //   () => getVocalsData(filteredUrlApi, isSelected, pageNum),
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     retry: 0,
+  //     onSuccess: (data) => {
+  //       if (data?.status === 200) {
+  //       }
+  //     },
+  //     onError: (error) => {},
+  //   },
+  // );
+
   const targetRef = useRef<any>();
+
+  // useEffect(()=>{
+  //   console.log("데이터",vocalsData)
+  //   console.log("페이지",page.current)
+  // },[vocalsData])
+
+  // useEffect(()=>{
+  //   setVocalsData([])
+  //   page.current=1
+  // },[filteredUrlApi])
 
   const { data } = useQuery(
     ["filteredUrlApi", filteredUrlApi, isSelected, vocalsData],
@@ -56,9 +111,50 @@ export default function VocalsPage() {
     },
   );
 
+  // const fetch = useCallback(async (filteredUrlApi: string) => {
+  //   try {
+  //     const { data } = await axios.get(
+  //     `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=${page.current}&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
+  //         },
+  //       },
+  //     );
+  //     setHasNextPage(data?.data.vocalList.length === 8);
+
+  //     setVocalsData(prev=>[...prev, ...data?.data?.vocalList]);
+
+  //     if (data?.data.vocalList.length) {
+  //       page.current += 1;
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log("4",filteredUrlApi)
+
+  //   const io = new IntersectionObserver((entries, observer) => {
+  //     console.log(entries[0].isIntersecting)
+  //     if (entries[0].isIntersecting) {
+  //       console.log("5",filteredUrlApi)
+  //       fetch(filteredUrlApi);
+  //     }
+  //   });
+  //   io.observe(targetRef.current);
+
+  //   return () => {
+  //     io.disconnect();
+  //   };
+  // }, [fetch, hasNextPage,filteredUrlApi]);
+
   useEffect(() => {
     setWhom(Category.VOCALS);
   }, []);
+
+  //end
 
   function playAudio() {
     audio.play();
@@ -71,13 +167,42 @@ export default function VocalsPage() {
     setPlay(false);
   }
 
+  // useEffect(() => {
+  //   if (play) {
+  //     audio.addEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   } else {
+  //     audio.removeEventListener("timeupdate", () => {
+  //       goProgress();
+  //     });
+  //   }
+  // }, [play]);
+
+  // function goProgress() {
+  //   if (audio.duration) {
+  //     const currentDuration = (audio.currentTime / audio.duration) * 100;
+  //     setProgress(currentDuration);
+  //   }
+  // }
+
   function getDuration(durationTime: number) {
     setCurrentDuration(durationTime);
   }
 
-  function getAudioInfos(title: string, image: string) {
-    setTitle(title);
-    setImage(image);
+  // function getAudioInfos(title: string, image: string) {
+  //   setTitle(title);
+  //   setImage(image);
+  // }
+
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
   }
 
   return (
@@ -91,28 +216,18 @@ export default function VocalsPage() {
         <VocalListWrapper>
           <VocalListHeader />
           {data && (
-            <VocalList
-              vocalData={vocalsData}
-              audio={audio}
-              getDuration={getDuration}
-              getAudioInfos={getAudioInfos}
-              play={play}
-              setPlay={setPlay}
-            />
+            <VocalList vocalData={vocalsData} audio={audio} getDuration={getDuration} getAudioInfos={getAudioInfos} />
           )}
           <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
-      {showPlayer && vocalsData && (
+      {showPlayer && (
         <Player
           audio={audio}
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={title}
-          name={name}
-          image={image}
+          audioInfos={audioInfos}
           play={play}
           setPlay={setPlay}
         />
