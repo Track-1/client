@@ -51,7 +51,14 @@ export default function UploadPage() {
           setUploadDataRef={setUploadDataRef}
         />
       ) : (
-        <VocalUpload />
+        <VocalUpload
+          userType={userType}
+          producerUploadType={producerUploadType}
+          uploadData={uploadData}
+          uploadDataRef={uploadDataRef}
+          setUploadData={setUploadData}
+          setUploadDataRef={setUploadDataRef}
+        />
       )}
     </>
   );
