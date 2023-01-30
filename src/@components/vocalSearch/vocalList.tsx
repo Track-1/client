@@ -92,8 +92,6 @@ export default function VocalList(props: PropsType) {
     if (play && checkClick(id)) {
       return (
         <VocalHoverPauseIcon
-          isHoverVocal={hoverVocal === id}
-          isClickVocal={clickVocal === id}
           onClick={() => {
             onClickPauseVocal(id);
           }}
@@ -106,7 +104,7 @@ export default function VocalList(props: PropsType) {
     <VocalListContainer>
       {vocalData &&
         vocalData.map((vocal, index) => (
-          <VocalContainer key={index}>
+          <VocalContainer key={index} >
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
               {checkActiveVocal(vocal.isSelected)}
@@ -121,14 +119,12 @@ export default function VocalList(props: PropsType) {
               onMouseLeave={mouseOutPlayVocal}
               onMouseEnter={() => mouseOverPlayVocal(index)}
               showPlayer={showPlayer}
-              isHoverVocal={hoverVocal === index}
-              isClickVocal={clickVocal === index}>
+              checkHover={checkHover(index)}
+              checkClick={checkClick(index)}>
               <GradientLine>
                 <AlbumCoverImg src={vocal.vocalProfileImage} alt="앨범자켓사진" />
               </GradientLine>
-              <GradientProfile
-                isHoverVocal={hoverVocal === index}
-                isClickVocal={clickVocal === index}></GradientProfile>
+              <GradientProfile checkHover={checkHover(index)} checkClick={checkClick(index)}></GradientProfile>
 
               {showPauseIcon(index)}
               {showPlayIcon(index, vocal.vocalId)}
@@ -216,7 +212,7 @@ const AlbumCoverImg = styled.img`
   right: 3rem;
 `;
 
-const GradientProfile = styled.div<{ isHoverVocal: boolean; isClickVocal: boolean }>`
+const GradientProfile = styled.div<{ checkHover: boolean; checkClick: boolean }>`
   position: absolute;
   width: 23.4rem;
   height: 23.4rem;
@@ -225,17 +221,13 @@ const GradientProfile = styled.div<{ isHoverVocal: boolean; isClickVocal: boolea
   background: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.sub3} 15.32%,
-    ${({ isHoverVocal, isClickVocal }) =>
-      isHoverVocal || isClickVocal ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%"},
+    ${({ checkHover, checkClick }) =>
+      checkHover || checkClick ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%"},
     ${({ theme }) => theme.colors.sub3} 92.93%
   );
 `;
 
-const VocalHoverPauseIcon = styled(VocalHoverPauseIc)<{
-  isHoverVocal: boolean;
-  isClickVocal: boolean;
-}>`
-  display: ${({ isHoverVocal, isClickVocal }) => (isHoverVocal || isClickVocal ? "" : "none")};
+const VocalHoverPauseIcon = styled(VocalHoverPauseIc)`
   position: absolute;
   top: 0;
   margin-left: 10rem;
@@ -254,9 +246,9 @@ const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
 `;
 
 const MusicProfileWrapper = styled.div<{
-  isHoverVocal: boolean;
-  isClickVocal: boolean;
   showPlayer: boolean;
+  checkHover: boolean;
+  checkClick: boolean;
 }>`
   position: relative;
   display: inline-block;
@@ -270,7 +262,7 @@ const MusicProfileWrapper = styled.div<{
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to top,
-      ${({ isHoverVocal, isClickVocal, theme }) => (isHoverVocal || isClickVocal) && theme.colors.sub2} 0%,
+      ${({ checkHover, checkClick, theme }) => (checkHover || checkClick) && theme.colors.sub2} 0%,
       ${({ theme }) => theme.colors.sub3} 50%,
       ${({ theme }) => theme.colors.sub3} 100%
     );
