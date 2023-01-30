@@ -20,13 +20,11 @@ interface propsType {
 export default function TrackUpload(props: propsType) {
   const { userType, producerUploadType, uploadData, uploadDataRef, setUploadData, setUploadDataRef } = props;
 
-  const jacketImageRef = useRef<HTMLInputElement>(null);
-
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    if (isDefaultImage(trackUploadImg)) {
+    if (!isDefaultImage(trackUploadImg)) {
       isMouseEnter(e) ? setIsHover(true) : setIsHover(false);
     }
   }
@@ -49,7 +47,7 @@ export default function TrackUpload(props: propsType) {
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               <TrackUploadImage
                 src={trackUploadImg}
-                alt="트랙이미지"
+                alt="썸네일이미지"
                 onMouseEnter={setHover}
                 onMouseLeave={setHover}
                 isHover={isHover}
@@ -66,7 +64,6 @@ export default function TrackUpload(props: propsType) {
             accept=".jpg,.jpeg,.png"
             onChange={uploadImageFile}
             readOnly
-            ref={jacketImageRef}
           />
           <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
         </SectionWrapper>

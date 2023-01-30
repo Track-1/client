@@ -23,7 +23,7 @@ export function uploadImage(
 }
 
 export function isDefaultImage(image: string): boolean {
-  return image !== (TrackUploadDefaultImg || VocalUploadDefaultImg);
+  return image === TrackUploadDefaultImg || image === VocalUploadDefaultImg;
 }
 
 function getFileURL(file: File): string {
