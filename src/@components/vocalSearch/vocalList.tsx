@@ -68,6 +68,12 @@ export default function VocalList(props: PropsType) {
     navigate(`/vocal-profile/${id}`, { state: id });
   }
 
+  function checkActiveVocal(isActive: boolean) {
+    if (!isActive) {
+      return <VocalSleepIcon />;
+    }
+  }
+
   return (
     <VocalListContainer>
       {vocalData &&
@@ -75,7 +81,7 @@ export default function VocalList(props: PropsType) {
           <VocalContainer key={index}>
             <UsernameInformWrapper>
               <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
-              {!vocal.isSelected && <VocalSleepIcon />}
+              {checkActiveVocal(vocal.isSelected)}
             </UsernameInformWrapper>
 
             <CategoryTextWrapper>
