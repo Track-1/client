@@ -4,66 +4,53 @@ import UploadInfo from "../@common/uploadInfo";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import { FileChangeIc } from "../../assets";
 import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
-import UploadHeader from "../@common/uploadHeader";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
 
 interface PropsType {
-  userType: string;
-  producerUploadType: string | undefined;
   uploadData: UploadInfoDataType;
-  uploadDataRef: UploadInfoRefType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
   setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
 }
 
 export default function TrackUpload(props: PropsType) {
-  const { userType, producerUploadType, uploadData, uploadDataRef, setUploadData, setUploadDataRef } = props;
+  const { uploadData, setUploadData, setUploadDataRef } = props;
 
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <>
-      <UploadHeader
-        userType={userType}
-        producerUploadType={producerUploadType}
-        uploadData={uploadData}
-        setUploadData={setUploadData}
-        uploadDataRef={uploadDataRef}
-      />
-      <Container>
-        <SectionWrapper>
-          <TrackImageBox>
-            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <TrackUploadImage
-                src={trackUploadImg}
-                alt="썸네일이미지"
+    <Container>
+      <SectionWrapper>
+        <TrackImageBox>
+          <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+            <TrackUploadImage
+              src={trackUploadImg}
+              alt="썸네일이미지"
+              onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
+              onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
+              isHover={isHover}
+            />
+          </label>
+          <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+            {isHover && (
+              <FileChangeIcon
                 onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
                 onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
-                isHover={isHover}
               />
-            </label>
-            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {isHover && (
-                <FileChangeIcon
-                  onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
-                  onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
-                />
-              )}
-            </label>
-          </TrackImageBox>
-          <input
-            type="file"
-            id="imageFileUpload"
-            style={{ display: "none" }}
-            accept=".jpg,.jpeg,.png"
-            onChange={(e) => uploadImage(e, setTrackUploadImg, setUploadData)}
-            readOnly
-          />
-          <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
-        </SectionWrapper>
-      </Container>
-    </>
+            )}
+          </label>
+        </TrackImageBox>
+        <input
+          type="file"
+          id="imageFileUpload"
+          style={{ display: "none" }}
+          accept=".jpg,.jpeg,.png"
+          onChange={(e) => uploadImage(e, setTrackUploadImg, setUploadData)}
+          readOnly
+        />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
+      </SectionWrapper>
+    </Container>
   );
 }
 

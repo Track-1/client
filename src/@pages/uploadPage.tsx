@@ -8,6 +8,7 @@ import { useState } from "react";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
 import { isMaker } from "../utils/common/userType";
+import UploadHeader from "../@components/@common/uploadHeader";
 
 export default function UploadPage() {
   const userType = useRecoilValue(UserType);
@@ -37,24 +38,17 @@ export default function UploadPage() {
 
   return (
     <>
+      <UploadHeader
+        userType={userType}
+        producerUploadType={producerUploadType}
+        uploadData={uploadData}
+        setUploadData={setUploadData}
+        uploadDataRef={uploadDataRef}
+      />
       {isMaker(userType) ? (
-        <TrackUpload
-          userType={userType}
-          producerUploadType={producerUploadType}
-          uploadData={uploadData}
-          uploadDataRef={uploadDataRef}
-          setUploadData={setUploadData}
-          setUploadDataRef={setUploadDataRef}
-        />
+        <TrackUpload uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
       ) : (
-        <VocalUpload
-          userType={userType}
-          producerUploadType={producerUploadType}
-          uploadData={uploadData}
-          uploadDataRef={uploadDataRef}
-          setUploadData={setUploadData}
-          setUploadDataRef={setUploadDataRef}
-        />
+        <VocalUpload uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
       )}
     </>
   );

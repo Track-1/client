@@ -6,64 +6,51 @@ import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
 import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
-import UploadHeader from "../@common/uploadHeader";
 
 interface propsType {
-  userType: string;
-  producerUploadType: string | undefined;
   uploadData: UploadInfoDataType;
-  uploadDataRef: UploadInfoRefType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
   setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
 }
 
 export default function VocalUpload(props: propsType) {
-  const { userType, producerUploadType, uploadData, uploadDataRef, setUploadData, setUploadDataRef } = props;
+  const { uploadData, setUploadData, setUploadDataRef } = props;
 
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <>
-      <UploadHeader
-        userType={userType}
-        producerUploadType={producerUploadType}
-        uploadData={uploadData}
-        setUploadData={setUploadData}
-        uploadDataRef={uploadDataRef}
-      />
-      <Container>
-        <SectionWrapper>
-          <VocalImageBox>
-            <VocalImageFrame
-              onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
-              onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
-              </label>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                {isHover && (
-                  <FileChangeIcon
-                    onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
-                    onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}
-                  />
-                )}
-              </label>
-            </VocalImageFrame>
-          </VocalImageBox>
-          <input
-            type="file"
-            id="imageFileUpload"
-            style={{ display: "none" }}
-            accept=".jpg,.jpeg,.png"
-            onChange={(e) => uploadImage(e, setVocalUploadImg, setUploadData)}
-            readOnly
-          />
+    <Container>
+      <SectionWrapper>
+        <VocalImageBox>
+          <VocalImageFrame
+            onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
+            onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
+            </label>
+            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              {isHover && (
+                <FileChangeIcon
+                  onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                  onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                />
+              )}
+            </label>
+          </VocalImageFrame>
+        </VocalImageBox>
+        <input
+          type="file"
+          id="imageFileUpload"
+          style={{ display: "none" }}
+          accept=".jpg,.jpeg,.png"
+          onChange={(e) => uploadImage(e, setVocalUploadImg, setUploadData)}
+          readOnly
+        />
 
-          <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
-        </SectionWrapper>
-      </Container>
-    </>
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
+      </SectionWrapper>
+    </Container>
   );
 }
 
