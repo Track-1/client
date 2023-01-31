@@ -225,8 +225,6 @@ export default function UploadInfo(props: propsType) {
     resetHashtagInputWidth();
   }
 
-  console.log(uploadData.keyword);
-
   function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
     isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
   }
