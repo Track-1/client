@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { UploadData } from "../../type/uploadData";
-import { currentUser } from "../../core/constants/userType";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { isMaker } from "../../utils/common/userType";
 
 interface PropsType {
   userType: string;
@@ -24,13 +23,11 @@ export default function UploadHeader(props: PropsType) {
   const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
-
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      navigate(-1);
-      userType === "producer" ? navigate(-1) : navigate("/vocal-profile/1");
+      isMaker(userType) ? navigate(-1) : navigate("/vocal-profile/1");
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -38,11 +35,7 @@ export default function UploadHeader(props: PropsType) {
   });
 
   async function post() {
-    // if (postData.wavFile !== null) {
-    //   console.log(postData);
-    //   const data = await UploadInfo(postData, userType, producerUploadType);
-    //   return data;
-    // }
+    return await UploadInfo(uploadData, userType, producerUploadType);
   }
 
   function backPage(e: React.MouseEvent<SVGSVGElement>) {
@@ -51,10 +44,13 @@ export default function UploadHeader(props: PropsType) {
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     setOpenModal(false);
+
+    setUploadData((prevState) => {
+      return { ...prevState, introduce: uploadDataRef.introduceRef?.current!.value };
+    });
     if (isUploadActive) {
       mutate();
     }
-    console.log(uploadData);
   }
 
   function checkMeetConditions(): void {

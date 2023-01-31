@@ -7,10 +7,12 @@ import { UploadInfoDataType, UploadInfoRefType } from "../type/uploadInfoDataTyp
 import { useState } from "react";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
+import { isMaker } from "../utils/common/userType";
 
 export default function UploadPage() {
   const userType = useRecoilValue(UserType);
   const { producerUploadType } = useParams();
+
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
     title: "",
     category: "Select",
@@ -24,14 +26,9 @@ export default function UploadPage() {
     introduceRef: null,
   });
 
-  function checkUserType(userType: string): boolean {
-    return userType === "producer";
-  }
-
   function getDefaultImage(): FormData {
     let defaultImage = new FormData();
-
-    checkUserType(userType)
+    isMaker(userType)
       ? defaultImage.append("defaultImage", TrackUploadDefaultImg)
       : defaultImage.append("defaultImage", VocalUploadDefaultImg);
 
@@ -40,8 +37,7 @@ export default function UploadPage() {
 
   return (
     <>
-      {/* <UploadHeader userType={userType} producerUploadType={producerUploadType} /> */}
-      {userType === "producer" ? (
+      {isMaker(userType) ? (
         <TrackUpload
           userType={userType}
           producerUploadType={producerUploadType}
