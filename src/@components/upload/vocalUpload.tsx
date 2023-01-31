@@ -4,9 +4,8 @@ import UploadInfo from "../@common/uploadInfo";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
-import { uploadImage, isDefaultImage } from "../../utils/uploadPage/uploadImage";
+import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
-import { isMouseEnter } from "../../utils/common/eventType";
 import UploadHeader from "../@common/uploadHeader";
 
 interface propsType {
@@ -24,16 +23,6 @@ export default function VocalUpload(props: propsType) {
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
   const [isHover, setIsHover] = useState<boolean>(false);
 
-  function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    if (!isDefaultImage(vocalUploadImg)) {
-      isMouseEnter(e) ? setIsHover(true) : setIsHover(false);
-    }
-  }
-
-  function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
-    uploadImage(e, setVocalUploadImg, setUploadData);
-  }
-
   return (
     <>
       <UploadHeader
@@ -46,12 +35,19 @@ export default function VocalUpload(props: propsType) {
       <Container>
         <SectionWrapper>
           <VocalImageBox>
-            <VocalImageFrame onMouseEnter={setHover} onMouseLeave={setHover}>
+            <VocalImageFrame
+              onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
+              onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}>
               <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                 <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
               </label>
               <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
+                {isHover && (
+                  <FileChangeIcon
+                    onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                    onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                  />
+                )}
               </label>
             </VocalImageFrame>
           </VocalImageBox>
@@ -60,7 +56,7 @@ export default function VocalUpload(props: propsType) {
             id="imageFileUpload"
             style={{ display: "none" }}
             accept=".jpg,.jpeg,.png"
-            onChange={uploadImageFile}
+            onChange={(e) => uploadImage(e, setVocalUploadImg, setUploadData)}
             readOnly
           />
 

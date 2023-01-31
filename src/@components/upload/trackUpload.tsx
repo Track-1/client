@@ -1,14 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import { FileChangeIc } from "../../assets";
-import { isMouseEnter } from "../../utils/common/eventType";
-import { uploadImage, isDefaultImage } from "../../utils/uploadPage/uploadImage";
+import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
 import UploadHeader from "../@common/uploadHeader";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
 
-interface propsType {
+interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
   uploadData: UploadInfoDataType;
@@ -17,21 +16,12 @@ interface propsType {
   setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
 }
 
-export default function TrackUpload(props: propsType) {
+export default function TrackUpload(props: PropsType) {
   const { userType, producerUploadType, uploadData, uploadDataRef, setUploadData, setUploadDataRef } = props;
 
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
   const [isHover, setIsHover] = useState<boolean>(false);
 
-  function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    if (!isDefaultImage(trackUploadImg)) {
-      isMouseEnter(e) ? setIsHover(true) : setIsHover(false);
-    }
-  }
-
-  function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
-    uploadImage(e, setTrackUploadImg, setUploadData);
-  }
   return (
     <>
       <UploadHeader
@@ -48,13 +38,18 @@ export default function TrackUpload(props: propsType) {
               <TrackUploadImage
                 src={trackUploadImg}
                 alt="썸네일이미지"
-                onMouseEnter={setHover}
-                onMouseLeave={setHover}
+                onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
+                onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
                 isHover={isHover}
               />
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
+              {isHover && (
+                <FileChangeIcon
+                  onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
+                  onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
+                />
+              )}
             </label>
           </TrackImageBox>
           <input
@@ -62,7 +57,7 @@ export default function TrackUpload(props: propsType) {
             id="imageFileUpload"
             style={{ display: "none" }}
             accept=".jpg,.jpeg,.png"
-            onChange={uploadImageFile}
+            onChange={(e) => uploadImage(e, setTrackUploadImg, setUploadData)}
             readOnly
           />
           <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
