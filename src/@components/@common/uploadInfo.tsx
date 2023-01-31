@@ -41,8 +41,6 @@ export default function UploadInfo(props: propsType) {
   const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
   const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
 
-  const [hashtags, setHashtags] = useState<Array<string>>([]);
-
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [fileName, setFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
@@ -64,7 +62,7 @@ export default function UploadInfo(props: propsType) {
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
     const inputLength = e.target.value.length;
-    if (checkMaxInputLength(inputLength, 37)) {
+    if (checkMaxInputLength(inputLength, 36)) {
       setTitleLength(inputLength);
       setUploadData((prevState) => {
         return { ...prevState, title: e.target.value };
@@ -127,7 +125,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function setAudioAttribute(name: string, type: string, editName: string) {
-    if (checkMaxInputLength(editName.length, 14)) {
+    if (checkMaxInputLength(editName.length, 13)) {
       setIsTextOverflow(false);
       setFileName(name);
     } else {
@@ -163,9 +161,7 @@ export default function UploadInfo(props: propsType) {
   //해시태그
   function appendHashtag(): void {
     const hashtag = getEnteredHashtag();
-
     if (!isDuplicateHashtag(hashtag)) {
-      setHashtags([...hashtags, hashtag]);
       setUploadData((prevState) => {
         return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
       });
@@ -187,7 +183,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function isDuplicateHashtag(value: string): boolean {
-    const isDuplicate = hashtags.includes(value);
+    const isDuplicate = uploadData.keyword.includes(value);
     isDuplicate && alert("중복된 해시태그 입니다!");
     return isDuplicate;
   }
@@ -197,7 +193,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function isMaxHashtags(): boolean {
-    return hashtags.length < 3;
+    return uploadData.keyword.length < 3;
   }
 
   function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
@@ -211,7 +207,7 @@ export default function UploadInfo(props: propsType) {
   function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
     const inputLength = e.target.value.length;
 
-    if (checkMaxInputLength(inputLength, 11)) {
+    if (checkMaxInputLength(inputLength, 10)) {
       setHashtagLength(inputLength);
       setHashtagInputWidth(Number(e.target.value));
     } else {
@@ -220,8 +216,12 @@ export default function UploadInfo(props: propsType) {
   }
 
   function deleteHashtag(index: number) {
-    const deleteTag = [...hashtags].splice(index, 1);
-    setHashtags([...deleteTag]);
+    const deleteTag = uploadData.keyword;
+    deleteTag.splice(index, 1);
+
+    setUploadData((prevState) => {
+      return { ...prevState, keyword: deleteTag };
+    });
     resetHashtagInputWidth();
   }
 
@@ -229,17 +229,28 @@ export default function UploadInfo(props: propsType) {
     isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
   }
 
+  function isEmptyHashtagInput(): boolean {
+    return enteredHashtag.current!.value.length === 0;
+  }
+
+  function changeHashtagInputWidth(inputWidth: number): void {
+    enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
+  }
+
+  function makeZeroInputWidth(width: number): void {
+    enteredHashtag!.current!.style.width = width + "rem";
+  }
+
   //소개글
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = e.target.value.split("\n").length;
     const inputLength = e.target.value.length;
     const currentHeight = introduceRef.current!.scrollHeight;
-    console.log(e.target.value);
 
     if (
-      checkMaxInputLength(enterCount, 8) &&
-      checkMaxInputLength(currentHeight, 201) &&
-      checkMaxInputLength(inputLength, 251)
+      checkMaxInputLength(enterCount, 7) &&
+      checkMaxInputLength(currentHeight, 200) &&
+      checkMaxInputLength(inputLength, 250)
     ) {
       setTextareaHeight(e.target.value);
       setDescriptionLength(inputLength);
@@ -258,36 +269,22 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-  useEffect(() => {
-    setUploadData((prevState) => {
-      return { ...prevState, keyword: hashtags };
-    });
-  }, [hashtags]);
+  function changeIntroduceInputHeight(scrollHeight: number): void {
+    introduceRef.current!.style.height = scrollHeight / 10 + "rem";
+  }
 
+  console.log(uploadData.keyword);
   useEffect(() => {
     if (introduceRef && introduceRef.current) {
-      introduceRef.current.style.height = "0rem";
+      introduceRef.current.style.height = 0 + "rem";
       const scrollHeight = introduceRef.current.scrollHeight;
-      introduceRef.current.style.height = scrollHeight / 10 + "rem";
+      changeIntroduceInputHeight(scrollHeight);
       setTextareaMargin(scrollHeight);
     }
   }, [textareaHeight]);
 
-  function isEmptyHashtagInput(): boolean {
-    return enteredHashtag.current!.value.length === 0;
-  }
-
-  function changeHashtagInputWidth(inputWidth: number): void {
-    enteredHashtag.current!.style.width = inputWidth / 10 + "rem";
-  }
-
-  function makeZeroInputWidth(width: number): void {
-    enteredHashtag.current!.style.width = width + "rem";
-  }
-
-  //존나빠르게 치면 이슈생김...
   useEffect(() => {
-    if (checkMaxInputLength(hashtags.length, 2) && !isEmptyHashtagInput()) {
+    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
       makeZeroInputWidth(0);
       const inputWidth = enteredHashtag.current!.scrollWidth;
       changeHashtagInputWidth(inputWidth);
@@ -375,9 +372,9 @@ export default function UploadInfo(props: propsType) {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              {hashtags.length > 0 ? (
+              {uploadData.keyword.length > 0 ? (
                 <>
-                  {hashtags.map((item: string, index: number) => {
+                  {uploadData.keyword.map((item: string, index: number) => {
                     return (
                       <InputHashtagWrapper>
                         <Hashtag key={index}>
@@ -389,7 +386,7 @@ export default function UploadInfo(props: propsType) {
                       </InputHashtagWrapper>
                     );
                   })}
-                  {hashtags.length < 3 && (
+                  {isMaxHashtags() && (
                     <InputHashtagWrapper>
                       <Hashtag>
                         <HashtagWrapper>
