@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { ToggleIc, Track1Ic } from "../../assets";
-import profileImg from "../../assets/image/profileImg.png";
+import { Track1Ic } from "../../assets";
 
 export default function CommentHeader() {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ export default function CommentHeader() {
 }
 
 const CategoryHeaderContainer = styled.header`
-  /* position: sticky; */
   top: 0;
 
   width: 192rem;
