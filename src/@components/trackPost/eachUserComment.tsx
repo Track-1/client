@@ -6,53 +6,57 @@ import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
 
 interface PropsType {
-  data: UserCommentType;
+  commentInfo: UserCommentType;
   audio: HTMLAudioElement;
   clickedIndex: number;
   pauseAudio: () => void;
   clickComment: (index: number) => void;
-  index: number;
+  currentIndex: number;
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { data, audio, clickedIndex, clickComment, index, pauseAudio } = props;
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  function changeHoverTrue() {
+  function hoverComment() {
     setIsHover(true);
   }
 
-  function changeHoverFalse() {
+  function detachComment() {
     setIsHover(false);
   }
 
-  function playAudioOnTrack(id: number) {
+  function checkIsPlayingAudioClicked() {
+    return clickedIndex === currentIndex;
+  }
+
+  function playAudio(id: number) {
     setShowPlayer(true);
     setPlay(true);
-    clickedIndex === id ? audio.play() : clickComment(index);
+    clickedIndex === id ? audio.play() : clickComment(currentIndex);
   }
 
   return (
-    <CommentContainer onMouseOver={changeHoverTrue} onMouseOut={changeHoverFalse}>
-      <ProfileImage img={data.vocalProfileImage}>
-        {isHover && (!play || clickedIndex !== index) && (
-          <PlayerBlur onClick={() => playAudioOnTrack(index)}>
+    <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
+      <ProfileImage img={commentInfo.vocalProfileImage}>
+        {isHover && !(play && checkIsPlayingAudioClicked()) && (
+          <PlayerBlur onClick={() => playAudio(currentIndex)}>
             <PlayBtnIc />
           </PlayerBlur>
         )}
-        {play && clickedIndex === index && (
+        {play && checkIsPlayingAudioClicked() && (
           <PlayerBlur onClick={pauseAudio}>
             <PauseBtnIc />
           </PlayerBlur>
         )}
       </ProfileImage>
       <InfoBox>
-        <UserName>{data.vocalName}</UserName>
-        <CommentText>{data.comment}</CommentText>
+        <UserName>{commentInfo.vocalName}</UserName>
+        <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
     </CommentContainer>
   );
