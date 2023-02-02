@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
-import EachUseComment from "./eachUserComment";
+import EachUserComment from "./eachUserComment";
 import { useEffect, useState, useMemo } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
@@ -24,7 +24,6 @@ export default function UserComment(props: PropsType) {
 
   const [comments, setComments] = useState<UserCommentType[]>();
   const [progress, setProgress] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
@@ -52,7 +51,6 @@ export default function UserComment(props: PropsType) {
     if (comments) {
       audio.src = comments[clickedIndex].vocalWavFile;
       setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
-      setDuration(comments[clickedIndex].vocalWavFileLength);
       getAudioInfos(
         "title",
         comments[clickedIndex]?.vocalName,
@@ -178,16 +176,16 @@ export default function UserComment(props: PropsType) {
           {comments &&
             comments.map((data, index) => {
               return (
-                <EachUseComment
+                <EachUserComment
                   key={index}
-                  data={comments[index]}
+                  commentInfo={data}
                   audio={audio}
                   clickedIndex={clickedIndex}
                   clickComment={clickComment}
                   pauseAudio={pauseAudio}
-                  index={index}
+                  currentIndex={index}
                 />
-              ); //여기가 각각의 데이터
+              );
             })}
           <BlurSection />
         </CommentWriteWrapper>

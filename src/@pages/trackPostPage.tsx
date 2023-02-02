@@ -209,10 +209,6 @@ export default function TrackPostPage() {
             playAudio={playAudio}
             pauseAudio={pauseAudio}
             progress={progress}
-            // duration={duration}
-            // title={trackInfoData?.title}
-            // name={trackInfoData?.producerName}
-            // image={image}
             audioInfos={audioInfos}
             play={play}
             setPlay={setPlay}
