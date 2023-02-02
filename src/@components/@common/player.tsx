@@ -20,7 +20,6 @@ interface PropsType {
 }
 
 export default function Player(props: any) {
-  // const { audio, playAudio, pauseAudio, progress, duration, title, name, image, play, setPlay } = props;
   const { audio, playAudio, pauseAudio, progress, play, setPlay, audioInfos } = props;
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
