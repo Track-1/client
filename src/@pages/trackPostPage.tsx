@@ -34,22 +34,13 @@ import useProgress from "../utils/hooks/useProgress";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
+  const { progress, audio } = useProgress();
 
-  const [isEnd, setIsEnd] = useState<boolean>(false);
+  const [isEnd, setIsEnd] = useState<boolean>(true);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
-  const [duration, setCurrentDuration] = useState<number>(0);
   const [beatId, setBeatId] = useState<number>(-1);
-  const [fileLink, setFileLink] = useState<string>();
-  const [title, setTitle] = useState<string>();
-
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const user = useRecoilValue(UserType);
-
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-
   const [audioInfos, setAudioInfos] = useState<any>({
     title: "",
     name: "",
@@ -58,17 +49,31 @@ export default function TrackPostPage() {
     image: "",
   });
 
-  const { progress, audio } = useProgress();
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const user = useRecoilValue(UserType);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+
+  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      if (data?.status === 200) {
+        setTrackInfoData(data?.data.data);
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   useEffect(() => {
     setWhom(Category.TRACKS);
   }, []);
 
   useEffect(() => {
-    trackInfoData && setTitle(trackInfoData.title);
-    if (trackInfoData !== undefined) {
+    if (trackInfoData) {
       audio.src = trackInfoData?.beatWavFile;
-      setCurrentDuration(trackInfoData?.wavFileLength);
       getAudioInfos(
         trackInfoData?.title,
         trackInfoData?.producerName,
@@ -81,6 +86,7 @@ export default function TrackPostPage() {
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
   }
+
   function openEdit() {
     setIsEditOpen(true);
   }
@@ -111,35 +117,23 @@ export default function TrackPostPage() {
     setIsCommentOpen(false);
   }
 
-  function endmyTrack() {
+  function closeTrackPost() {
     setIsEnd(true);
   }
 
-  function notEndmyTrack() {
+  function openTrackPost() {
     setIsEnd(false);
   }
 
-  function isProducer() {
-    return user === "producer";
-  }
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
 
-  function isVocal() {
-    return user === "vocal";
+    setAudioInfos(tempInfos);
   }
-
-  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      if (data?.status === 200) {
-        setTrackInfoData(data?.data.data);
-        setFileLink(data?.data.data.beatWavFile);
-      }
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
 
   const downloadFile = useCallback((fileName: string, fileLink: string) => {
     const blob = new Blob([fileLink], { type: "audio/mp3" });
@@ -153,16 +147,6 @@ export default function TrackPostPage() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
   }, []);
-
-  function getAudioInfos(title: string, name: string, image: string, duration: number) {
-    const tempInfos = audioInfos;
-    tempInfos.title = title;
-    tempInfos.name = name;
-    tempInfos.image = image;
-    tempInfos.duration = duration;
-
-    setAudioInfos(tempInfos);
-  }
 
   return (
     <>
@@ -184,18 +168,10 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe && isProducer() && isEnd && <ClosedWithXIcon onClick={notEndmyTrack} />}
-                {trackInfoData.isMe && isProducer() && !isEnd && <OpenedIcon onClick={endmyTrack} />}
-                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
-                {((!trackInfoData.isMe && isProducer() && isEnd) || (isVocal() && isEnd)) && <ClosedBtnIcon />}
-                {((!trackInfoData.isMe && isProducer() && !isEnd) || (isVocal() && !isEnd)) && (
-                  <button onClick={() => downloadFile(trackInfoData.title, trackInfoData.beatWavFile)}>
-                    <DownloadBtnIcon />
-                  </button>
-                )}
-                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
+                {trackInfoData.isMe &&
+                  (isEnd ? <ClosedWithXIcon onClick={openTrackPost} /> : <OpenedIcon onClick={closeTrackPost} />)}
+                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
-
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
