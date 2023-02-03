@@ -8,11 +8,11 @@ import {
   ProducerProfileUploadeModalIc,
 } from "../../assets";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
-  const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
+  const setVisible = useSetRecoilState<boolean>(uploadButtonClicked);
 
   function moveVocalSearching() {
     navigate("/upload/Vocal Searching", { state: "Vocal Searching" });

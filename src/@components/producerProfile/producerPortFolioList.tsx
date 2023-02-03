@@ -15,7 +15,6 @@ interface PropsType {
   stateChange: boolean;
   audio: HTMLAudioElement;
   pauseAudio: () => void;
-  duration: number;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   producerName: string;
 }
