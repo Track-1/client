@@ -24,5 +24,5 @@ export default function usePlayerInfos(dependency: any, infoDatas: any) {
     getAudioInfos(infoDatas?.title, infoDatas?.producerName, infoDatas?.jacketImage, infoDatas?.wavFileLength);
   }, [dependency]);
 
-  return { audioInfos };
+  return { audioInfos, getAudioInfos };
 }
