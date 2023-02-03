@@ -16,7 +16,7 @@ import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
-import useProgress from "../utils/hooks/useProgress";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalProfilePage() {
   const [duration, setCurrentDuration] = useState<number>(0);
@@ -36,7 +36,7 @@ export default function VocalProfilePage() {
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  const { progress, audio } = useProgress();
+  const { progress, audio } = usePlayer();
 
   useEffect(() => {
     setWhom(Category.TRACKS);

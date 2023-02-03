@@ -17,7 +17,7 @@ import { playMusic } from "../recoil/player";
 import { categorySelect, trackSearching } from "../recoil/categorySelect";
 import { useQuery } from "react-query";
 import { VocalsDataType } from "../type/vocalsDataType";
-import useProgress from "../utils/hooks/useProgress";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalsPage() {
   const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
@@ -35,7 +35,7 @@ export default function VocalsPage() {
   const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
 
-  const { progress, audio } = useProgress();
+  const { progress, audio } = usePlayer();
 
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요

@@ -30,11 +30,11 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import { UserType } from "../recoil/main";
-import useProgress from "../utils/hooks/useProgress";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
-  const { progress, audio } = useProgress();
+  const { progress, audio } = usePlayer();
 
   const [isEnd, setIsEnd] = useState<boolean>(true);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
