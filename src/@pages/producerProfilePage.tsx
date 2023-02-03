@@ -8,7 +8,7 @@ import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
@@ -25,7 +25,7 @@ export default function ProducerProfilePage() {
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
-  const [duration, setCurrentDuration] = useState<number>(0);
+
   const [audioInfos, setAudioInfos] = useState({
     title: "",
     name: "",
@@ -35,8 +35,8 @@ export default function ProducerProfilePage() {
   });
 
   const visible = useRecoilValue(uploadButtonClicked);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
+  const showPlayer = useRecoilValue(showPlayerBar);
+  const setWhom = useSetRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { progress, audio } = useProgress();
@@ -55,7 +55,6 @@ export default function ProducerProfilePage() {
       const data = await getProducerProfile(Number(2));
       setProfileData(data?.data?.data.producerProfile);
       setIsMe(data?.data?.data.isMe);
-      console.log(data?.data?.data.producerProfile);
     }
     getData();
   }, []);
@@ -158,7 +157,6 @@ export default function ProducerProfilePage() {
             stateChange={stateChange}
             audio={audio}
             pauseAudio={pauseAudio}
-            duration={duration}
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
           />
