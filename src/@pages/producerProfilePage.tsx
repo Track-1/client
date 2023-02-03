@@ -16,7 +16,6 @@ import { useParams } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
 import useProgress from "../utils/hooks/useProgress";
-import { isPortfolioType } from "../utils/common/profileType";
 
 export default function ProducerProfilePage() {
   const { producerId } = useParams();
@@ -37,7 +36,7 @@ export default function ProducerProfilePage() {
 
   const visible = useRecoilValue(uploadButtonClicked);
   const showPlayer = useRecoilValue(showPlayerBar);
-  const setWhom = useSetRecoilState(tracksOrVocalsCheck)
+  const setWhom = useSetRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { progress, audio } = useProgress();
