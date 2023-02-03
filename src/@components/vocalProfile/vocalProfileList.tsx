@@ -6,6 +6,7 @@ import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 import usePlay from "../../utils/hooks/usePlay";
 import { VocalPortfolioType } from "../../type/vocalProfile";
+import { VocalsDataType } from "../../type/vocalsDataType";
 
 interface PropsType {
   audio: HTMLAudioElement;

@@ -15,7 +15,7 @@ import { playMusic, showPlayerBar } from "../recoil/player";
 import { useParams } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
-import useProgress from "../utils/hooks/useProgress";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function ProducerProfilePage() {
   const { producerId } = useParams();
@@ -39,7 +39,7 @@ export default function ProducerProfilePage() {
   const setWhom = useSetRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  const { progress, audio } = useProgress();
+  const { progress, audio } = usePlayer();
 
   // infinite
   const targetRef = useRef<any>();

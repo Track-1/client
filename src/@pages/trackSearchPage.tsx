@@ -19,24 +19,19 @@ import { TracksDataType } from "../type/tracksDataType";
 import { useQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
-import useProgress from "../utils/hooks/useProgress";
+import usePlayer from "../utils/hooks/usePlayer";
+import { AudioInfosType } from "../type/audioTypes";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
-  const [audioInfos, setAudioInfos] = useState({
-    title: "",
-    name: "",
-    progress: "",
-    duration: 0,
-    image: "",
-  });
+  const [audioInfos, setAudioInfos] = useState({});
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const filteredUrlApi = useRecoilValue(categorySelect);
 
-  const { progress, audio } = useProgress();
+  const { progress, audio, playAudio, pauseAudio } = usePlayer();
 
   //infinite scroll
   const targetRef = useRef<any>();
@@ -101,24 +96,8 @@ export default function TrackSearchPage() {
     setShowPlayer(false);
   }, []);
 
-  function playAudio() {
-    audio.play();
-    setPlay(true);
-  }
-
-  function pauseAudio() {
-    audio.pause();
-    setPlay(false);
-  }
-
-  function getAudioInfos(title: string, name: string, image: string, duration: number) {
-    const tempInfos = audioInfos;
-    tempInfos.title = title;
-    tempInfos.name = name;
-    tempInfos.image = image;
-    tempInfos.duration = duration;
-
-    setAudioInfos(tempInfos);
+  function getInfos(currentInfos: AudioInfosType) {
+    setAudioInfos(currentInfos);
   }
 
   return (
@@ -131,7 +110,7 @@ export default function TrackSearchPage() {
         <TrackListWrapper>
           <TrackListHeader />
           {tracksData && (
-            <TrackList audio={audio} pauseAudio={pauseAudio} tracksData={tracksData} getAudioInfos={getAudioInfos} />
+            <TrackList audio={audio} pauseAudio={pauseAudio} tracksData={tracksData} getInfos={getInfos} />
           )}
         </TrackListWrapper>
       </TrackSearchPageWrapper>

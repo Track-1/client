@@ -19,11 +19,11 @@ interface PropsType {
   audio: HTMLAudioElement;
   pauseAudio: () => void;
   tracksData: TracksDataType[];
-  getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
+  getInfos: any;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, pauseAudio, tracksData, getAudioInfos } = props;
+  const { audio, pauseAudio, tracksData, getInfos } = props;
 
   const target = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function TrackList(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [page, setPage] = useRecoilState(trackListinfiniteScroll);
 
-  const { clickedIndex, playAudio } = usePlay(audio, tracksData, "tracks");
+  const { clickedIndex, playAudio, audioInfos } = usePlay(audio, tracksData, "tracks");
 
   useEffect(() => {
     const observer = new IntersectionObserver((endDiv) => {
@@ -46,12 +46,7 @@ export default function TrackList(props: PropsType) {
   }, []);
 
   useEffect(() => {
-    getAudioInfos(
-      tracksData[clickedIndex]?.title,
-      tracksData[clickedIndex]?.producerName,
-      tracksData[clickedIndex]?.jacketImage,
-      tracksData[clickedIndex]?.wavFileLength,
-    );
+    getInfos(audioInfos);
   }, [clickedIndex]);
 
   function loadMore() {

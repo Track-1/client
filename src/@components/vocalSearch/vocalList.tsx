@@ -6,6 +6,7 @@ import { VocalSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets"
 import { showPlayerBar, playMusic } from "../../recoil/player";
 import { VocalSearchType } from "../../type/vocalSearchType";
 import usePlay from "../../utils/hooks/usePlay";
+import { VocalsDataType } from "../../type/vocalsDataType";
 
 interface PropsType {
   vocalData: VocalSearchType[];
