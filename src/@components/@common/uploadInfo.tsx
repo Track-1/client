@@ -14,49 +14,44 @@ import {
   DeleteHashtagIc,
   CheckCategoryIc,
 } from "../../assets";
-import { useRecoilState } from "recoil";
-import { uploadTitle, uploadCategory, uploadIntroduce, uploadKeyword, uploadWavFile } from "../../recoil/upload";
 
-export default function UploadInfo() {
+import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
+import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
+import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+
+interface propsType {
+  uploadData: UploadInfoDataType;
+  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+}
+
+export default function UploadInfo(props: propsType) {
+  const { uploadData, setUploadData, setUploadDataRef } = props;
+  const CATEGORY: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "Jazz", "House", "Funk"];
+  const HASHTAG_WIDTH: number = 8.827;
+
   const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionTextarea = useRef<HTMLTextAreaElement | null>(null);
-  const dropBoxRef = useRef<HTMLDivElement>(null);
-  let enteredHashtag = useRef<HTMLInputElement | null>(null);
-  let categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
+  const categoryRef = useRef<HTMLDivElement | null>(null);
+  const introduceRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const [category, setCategory] = useState<string[]>([
-    "R&B",
-    "Hiphop",
-    "Ballad",
-    "Pop",
-    "Rock",
-    "EDM",
-    "Jazz",
-    "House",
-    "Funk",
-  ]);
+  const enteredHashtag = useRef<HTMLInputElement | null>(null);
+  const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
-  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(category.length).fill(false));
-  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(category.length).fill(false));
-  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(category.length).fill(false));
-
-  const [title, setTitle] = useRecoilState<string>(uploadTitle);
-  const [description, setDeiscription] = useRecoilState<string>(uploadIntroduce);
-  const [genre, setGenre] = useRecoilState<string>(uploadCategory);
-  const [hashtags, setHashtags] = useRecoilState<Array<string>>(uploadKeyword);
-  const [wavFile, setWavFile] = useRecoilState<File | null>(uploadWavFile);
+  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
+  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
+  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
 
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
-  const [editFileName, setEditFileName] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
   const [categoryState, setCategoryState] = useState<boolean>(false);
   const [audioType, setAudioType] = useState<string>("");
 
-  const [descriptionHoverState, setDescriptionTitleHoverState] = useState<boolean>(false);
+  const [descriptionHoverState, setDescriptionHoverState] = useState<boolean>(false);
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
-  const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(8.827);
+  const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(HASHTAG_WIDTH);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
 
   const [titleLength, setTitleLength] = useState<number>(0);
@@ -64,177 +59,251 @@ export default function UploadInfo() {
 
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
 
-  function closeDropBox(e: React.MouseEvent<HTMLDivElement>) {
-    // console.dir(dropBoxRef.current);
+  //타이틀
+  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputLength = e.target.value.length;
+    if (checkMaxInputLength(inputLength, 36)) {
+      setTitleLength(inputLength);
+      setUploadData((prevState) => {
+        return { ...prevState, title: e.target.value };
+      });
+    } else {
+      restrictInput(titleRef);
+    }
+  }
+
+  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
+    if (isFocus(e)) {
+      setTitleHoverState(true);
+    } else {
+      isTitleEmpty() ? setTitleHoverState(false) : setTitleHoverState(true);
+    }
+  }
+
+  function isTitleEmpty(): boolean {
+    return titleRef.current!.value.length === 0;
   }
 
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
     setHiddenDropBox((prev) => !prev);
   }
 
-  function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-    const type = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).substring(uploadName.length - 4);
+  //오디오 업로드
+  function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files !== null) {
+      const file = e.target.value;
+      const audioFile = e.target!.files[0];
+      const audioFileName: string = getAudioFileName(file);
+      const audioFileType: string = getAudioFileType(file, audioFileName.length);
+      const onlyFileName: string = getOnlyFileName(file);
 
-    let str = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1, e.target.value.length - 4);
-
-    if (type === ".mp3" || type === ".wav") {
-      if (str.length > 14) {
-        setIsTextOverflow(true);
-        setEditFileName(str);
+      if (checkAduioFileType(audioFileType)) {
+        setAudioAttribute(audioFileName, audioFileType, onlyFileName);
+        setUploadData((prevState) => {
+          return { ...prevState, wavFile: audioFile };
+        });
       } else {
-        setIsTextOverflow(false);
-        setEditFileName(uploadName);
+        alert("확장자를 확인해 주세요!");
       }
-      setAudioType(type);
-
-      if (e.target.files !== null) {
-        setWavFile(e.target.files[0]);
-      }
-    } else {
-      alert("확장자를 확인해 주세요!");
     }
   }
 
-  function selectCategory(e: React.MouseEvent<HTMLLIElement>) {
-    const index = category.indexOf(e.currentTarget.innerText);
-    setGenre(e.currentTarget.innerText);
+  function checkAduioFileType(type: string) {
+    return type === ".mp3" || type === ".wav";
+  }
 
-    const temp = new Array(category.length).fill(false);
+  function getAudioFileName(file: string): string {
+    return file.substring(file.lastIndexOf("\\") + 1);
+  }
+
+  function getAudioFileType(file: string, fileLength: number): string {
+    return file.substring(file.lastIndexOf("\\") + 1).substring(fileLength - 4);
+  }
+
+  function getOnlyFileName(file: string): string {
+    return file.substring(file.lastIndexOf("\\") + 1, file.length - 4);
+  }
+
+  function setAudioAttribute(name: string, type: string, editName: string) {
+    if (checkMaxInputLength(editName.length, 13)) {
+      setIsTextOverflow(false);
+      setFileName(name);
+    } else {
+      setIsTextOverflow(true);
+      setFileName(editName);
+    }
+    setAudioType(type);
+  }
+
+  // 카테고리
+  function selectedCategory(e: React.MouseEvent<HTMLLIElement>, index: number) {
+    const temp = new Array(CATEGORY.length).fill(false);
     temp[index] = true;
     setCheckState([...temp]);
     setCheckStateIcon([...temp]);
     setCategoryState(true);
     setHiddenDropBox(true);
+    setUploadData((prevState) => {
+      return { ...prevState, category: e.currentTarget.innerText };
+    });
   }
 
-  function hoverMenu(e: React.MouseEvent<HTMLLIElement>) {
-    const index = category.indexOf(e.currentTarget.innerText);
-    if (e.type === "mouseenter") {
-      const temp = new Array(category.length).fill(false);
-      temp[index] = true;
-      setCheckHoverState([...temp]);
+  function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
+    const hoverMenu = new Array(CATEGORY.length).fill(false);
+    if (isMouseEnter(e)) {
+      hoverMenu[index] = true;
+      setCheckHoverState([...hoverMenu]);
     } else {
-      const temp = new Array(category.length).fill(false);
-      setCheckHoverState([...temp]);
+      setCheckHoverState([...hoverMenu]);
     }
   }
 
-  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    e.type === "mouseenter" ? setWarningHoverState(true) : setWarningHoverState(false);
+  //해시태그
+  function appendHashtag(): void {
+    const hashtag = getEnteredHashtag();
+    if (!isDuplicateHashtag(hashtag)) {
+      setUploadData((prevState) => {
+        return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
+      });
+      resetHashtagInputWidth();
+      resetHashtagCurrentValue();
+    }
   }
 
-  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
-    e.type === "focus"
-      ? setTitleHoverState(true)
-      : titleLength === 0
-      ? setTitleHoverState(false)
-      : setTitleHoverState(true);
-  }
-  function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
-    e.type === "focus"
-      ? setDescriptionTitleHoverState(true)
-      : descriptionTextarea.current!.value.length === 0
-      ? setDescriptionTitleHoverState(false)
-      : setDescriptionTitleHoverState(true);
+  function resetHashtagInputWidth(): void {
+    setHashtagInputWidth(HASHTAG_WIDTH);
   }
 
-  function addHashtag() {
-    const value = enteredHashtag.current!.value;
-    hashtags.includes(value) ? alert("중복된 해시태그 입니다!") : setHashtags([...hashtags, value]);
-    setHashtagInputWidth(8.827);
+  function resetHashtagCurrentValue(): void {
     enteredHashtag.current!.value = "";
   }
 
-  function addHashtagInput(e: React.MouseEvent<HTMLInputElement>) {
-    if (hashtags.length < 3) {
-      addHashtag();
-    }
+  function getEnteredHashtag(): string {
+    return enteredHashtag.current!.value;
   }
 
-  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      addHashtag();
-    }
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = uploadData.keyword.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
   }
 
-  function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const enterCount = e.target.value.split("\n").length;
-
-    if (enterCount < 8 && descriptionTextarea.current!.scrollHeight <= 200 && e.target.value.length < 251) {
-      setTextareaHeight(e.target.value);
-      setDescriptionLength(e.target.value.length);
-      setDeiscription(descriptionTextarea.current!.value);
-    } else {
-      descriptionTextarea.current!.value = descriptionTextarea.current!.value.slice(0, -1);
-    }
+  function addHashtag(): void {
+    isMaxHashtags() && appendHashtag();
   }
 
-  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length < 37) {
-      setTitleLength(e.target.value.length);
-      setTitle(e.target.value);
-    } else {
-      titleRef.current!.value = titleRef.current!.value.slice(0, -1);
-    }
+  function isMaxHashtags(): boolean {
+    return uploadData.keyword.length < 3;
   }
 
-  function changeHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.target.value.length;
+  function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
+    isEnterKey(e) && addHashtag();
+  }
 
-    if (inputValue <= 10) {
-      setHashtagLength(e.target.value.length);
+  function restrictInput(ref: any): void {
+    ref.current!.value = ref.current!.value.slice(0, -1);
+  }
+
+  function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputLength = e.target.value.length;
+
+    if (checkMaxInputLength(inputLength, 10)) {
+      setHashtagLength(inputLength);
       setHashtagInputWidth(Number(e.target.value));
     } else {
-      enteredHashtag.current!.value = enteredHashtag.current!.value.slice(0, -1);
+      restrictInput(enteredHashtag);
     }
   }
 
-  function deleteHashtag(item: string) {
-    setHashtags(hashtags.filter((hashtag) => hashtag !== item));
-    setHashtagInputWidth(8.827);
+  function deleteHashtag(index: number) {
+    const deleteTag = uploadData.keyword;
+    deleteTag.splice(index, 1);
+
+    setUploadData((prevState) => {
+      return { ...prevState, keyword: deleteTag };
+    });
+    resetHashtagInputWidth();
   }
 
+  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
+    isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
+  }
+
+  function isEmptyHashtagInput(): boolean {
+    return enteredHashtag.current!.value.length === 0;
+  }
+
+  function changeHashtagInputWidth(inputWidth: number): void {
+    enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
+  }
+
+  function makeZeroInputWidth(width: number): void {
+    enteredHashtag!.current!.style.width = width + "rem";
+  }
+
+  //소개글
+  function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const enterCount = e.target.value.split("\n").length;
+    const inputLength = e.target.value.length;
+    const currentHeight = introduceRef.current!.scrollHeight;
+
+    if (
+      checkMaxInputLength(enterCount, 7) &&
+      checkMaxInputLength(currentHeight, 200) &&
+      checkMaxInputLength(inputLength, 250)
+    ) {
+      setTextareaHeight(e.target.value);
+      setDescriptionLength(inputLength);
+    } else {
+      restrictInput(introduceRef);
+    }
+  }
+
+  function hoverDescription(e: React.FocusEvent<HTMLTextAreaElement>) {
+    const inputLength = e.target.value.length;
+
+    if (isFocus(e)) {
+      setDescriptionHoverState(true);
+    } else {
+      inputLength === 0 ? setDescriptionHoverState(false) : setDescriptionHoverState(true);
+    }
+  }
+
+  function changeIntroduceInputHeight(scrollHeight: number): void {
+    introduceRef.current!.style.height = scrollHeight / 10 + "rem";
+  }
+
+  console.log(uploadData.keyword);
   useEffect(() => {
-    if (descriptionTextarea && descriptionTextarea.current) {
-      descriptionTextarea.current.style.height = "0rem";
-      const scrollHeight = descriptionTextarea.current.scrollHeight;
-      descriptionTextarea.current.style.height = scrollHeight / 10 + "rem";
+    if (introduceRef && introduceRef.current) {
+      introduceRef.current.style.height = 0 + "rem";
+      const scrollHeight = introduceRef.current.scrollHeight;
+      changeIntroduceInputHeight(scrollHeight);
       setTextareaMargin(scrollHeight);
     }
   }, [textareaHeight]);
 
-  //존나빠르게 치면 이슈생김...
   useEffect(() => {
-    if (hashtags.length < 3) {
-      if (enteredHashtag.current!.value.length > 0) {
-        if (enteredHashtag && enteredHashtag.current) {
-          enteredHashtag.current.style.width = "0rem";
-          const inputWidth = enteredHashtag.current.scrollWidth;
-          console.log(inputWidth);
-          enteredHashtag.current.style.width = inputWidth / 10 + "rem";
-          setHashtagInputWidth(inputWidth);
-        }
-      } else {
-        enteredHashtag.current!.style.width = "8.827rem";
-        setHashtagInputWidth(8.827);
-      }
+    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
+      makeZeroInputWidth(0);
+      const inputWidth = enteredHashtag.current!.scrollWidth;
+      changeHashtagInputWidth(inputWidth);
+      setHashtagInputWidth(inputWidth);
+    } else {
+      makeZeroInputWidth(HASHTAG_WIDTH);
+      setHashtagInputWidth(HASHTAG_WIDTH);
     }
   }, [hashtagInputWidth]);
-  console.log();
 
   useEffect(() => {
-    function clickOutside(e: any) {
-      if (!hiddenDropBox && !dropBoxRef.current!.contains(e.target)) {
-        setHiddenDropBox((prev) => prev);
-      }
-    }
-    document.addEventListener("click", clickOutside);
-    return () => {
-      document.removeEventListener("click", clickOutside);
-    };
-  }, [hiddenDropBox]);
-  console.log(enteredHashtag.current?.scrollWidth);
+    setUploadDataRef((prevState) => {
+      return {
+        ...prevState,
+        introduceRef: introduceRef,
+      };
+    });
+  }, []);
+
   return (
     <Container>
       <TitleInput
@@ -262,15 +331,15 @@ export default function UploadInfo() {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              <InputFileTextWrapper editFileName={editFileName}>
-                <FileName value={editFileName} isTextOverflow={isTextOverflow} disabled />
+              <InputFileTextWrapper fileName={fileName}>
+                <FileName value={fileName} isTextOverflow={isTextOverflow} disabled />
                 {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioType}</FileAttribute>}
                 <input
                   type="file"
                   id="wavFileUpload"
                   style={{ display: "none" }}
                   accept=".wav,.mp3"
-                  onChange={uploadFile}
+                  onChange={uploadAudiofile}
                   readOnly
                 />
               </InputFileTextWrapper>
@@ -288,8 +357,8 @@ export default function UploadInfo() {
           <InputBox>
             <InputWrapper>
               <InputCategoryTextWrapper categoryState={categoryState}>
-                <InputCategoryText categoryState={categoryState} onClick={showDropBox}>
-                  {categoryState ? `${genre}` : "Select"}
+                <InputCategoryText categoryState={categoryState} onClick={showDropBox} ref={categoryRef}>
+                  {uploadData.category}
                 </InputCategoryText>
               </InputCategoryTextWrapper>
               <CategoryDropDownIcon onClick={showDropBox} />
@@ -303,21 +372,21 @@ export default function UploadInfo() {
           </NameBox>
           <InputBox>
             <InputWrapper>
-              {hashtags.length > 0 ? (
+              {uploadData.keyword.length > 0 ? (
                 <>
-                  {hashtags.map((item: string, idx: number) => {
+                  {uploadData.keyword.map((item: string, index: number) => {
                     return (
                       <InputHashtagWrapper>
-                        <Hashtag key={idx}>
+                        <Hashtag key={index}>
                           <HashtagWrapper>
                             <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                            <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
+                            <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                           </HashtagWrapper>
                         </Hashtag>
                       </InputHashtagWrapper>
                     );
                   })}
-                  {hashtags.length < 3 && (
+                  {isMaxHashtags() && (
                     <InputHashtagWrapper>
                       <Hashtag>
                         <HashtagWrapper>
@@ -326,8 +395,8 @@ export default function UploadInfo() {
                             placeholder="Hashtag"
                             type="text"
                             defaultValue=""
-                            onKeyDown={completeHashtag}
-                            onChange={changeHashtagText}
+                            onKeyDown={addHashtagEnterKey}
+                            onChange={changeHashtagTextWidth}
                             hashtagInputWidth={hashtagInputWidth}
                             maxLength={10}
                             ref={enteredHashtag}
@@ -348,8 +417,8 @@ export default function UploadInfo() {
                         placeholder="Hashtag"
                         type="text"
                         defaultValue=""
-                        onKeyDown={completeHashtag}
-                        onChange={changeHashtagText}
+                        onKeyDown={addHashtagEnterKey}
+                        onChange={changeHashtagTextWidth}
                         hashtagInputWidth={hashtagInputWidth}
                         maxLength={10}
                         ref={enteredHashtag}
@@ -358,11 +427,7 @@ export default function UploadInfo() {
                   </Hashtag>
                 </InputHashtagWrapper>
               )}
-              {hashtagLength > 0 && hashtags.length < 2 && (
-                <AddHashtagIconWrapper onClick={addHashtagInput}>
-                  <AddHashtagIcon />
-                </AddHashtagIconWrapper>
-              )}
+              {hashtagLength > 0 && uploadData.keyword.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
             </InputWrapper>
 
             <WarningIcon onMouseEnter={hoverWarningState} onMouseLeave={hoverWarningState}>
@@ -399,7 +464,7 @@ export default function UploadInfo() {
               onFocus={hoverDescription}
               onBlur={hoverDescription}
               descriptionHoverState={descriptionHoverState}
-              ref={descriptionTextarea}
+              ref={introduceRef}
               onChange={resizeTextarea}></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
@@ -410,15 +475,15 @@ export default function UploadInfo() {
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
-      <DropMenuBox hiddenDropBox={hiddenDropBox} onClick={closeDropBox} ref={dropBoxRef}>
+      <DropMenuBox hiddenDropBox={hiddenDropBox}>
         <DropMenuWrapper>
-          {category.map((text: string, index: number) => (
+          {CATEGORY.map((text: string, index: number) => (
             <DropMenuItem
               checkState={checkState[index]}
               checkHoverState={checkHoverState[index]}
-              onMouseEnter={hoverMenu}
-              onMouseLeave={hoverMenu}
-              onClick={selectCategory}
+              onMouseEnter={(e) => hoverCategoryMenu(e, index)}
+              onMouseLeave={(e) => hoverCategoryMenu(e, index)}
+              onClick={(e) => selectedCategory(e, index)}
               ref={(element) => {
                 categoryRefs.current[index] = element;
               }}>
@@ -550,14 +615,14 @@ const FileAttribute = styled.div<{ isTextOverflow: boolean }>`
   margin-top: 1.686rem;
 `;
 
-const InputFileTextWrapper = styled.div<{ editFileName: string }>`
+const InputFileTextWrapper = styled.div<{ fileName: string }>`
   height: 4.7rem;
   width: 20.8rem;
 
   display: flex;
   align-items: center;
   border-bottom: 1px solid
-    ${(props) => (props.editFileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+    ${(props) => (props.fileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
 const InputCategoryTextWrapper = styled.div<{ categoryState: boolean }>`
@@ -612,13 +677,6 @@ const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
-`;
-
-const AddHashtagIconWrapper = styled.div`
-  height: 4rem;
-  width: 4rem;
-
-  cursor: pointer;
 `;
 
 const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>`
@@ -717,6 +775,8 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 const AddHashtagIcon = styled(AddHashtagIc)`
   margin-left: -0.2rem;
   margin-top: 1.3rem;
+
+  cursor: pointer;
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`

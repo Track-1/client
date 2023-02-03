@@ -1,78 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
-import { uploadVocalJacketImage, defaultImageState } from "../../recoil/upload";
-import { useRecoilState } from "recoil";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
+import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
+import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
 
-export default function VocalUpload() {
+interface propsType {
+  uploadData: UploadInfoDataType;
+  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+}
+
+export default function VocalUpload(props: propsType) {
+  const { uploadData, setUploadData, setUploadDataRef } = props;
+
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
-  const [vocalJacketImage, setVocalJacketImage] = useRecoilState<File | Blob>(uploadVocalJacketImage);
-  const [defaultstate, setDefaultState] = useRecoilState<boolean>(defaultImageState);
   const [isHover, setIsHover] = useState<boolean>(false);
-
-  function setHover(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    if (vocalUploadImg !== VocalUploadDefaultImg) {
-      e.type === "mouseenter" ? setIsHover(true) : setIsHover(false);
-    }
-  }
-
-  function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length === 0) {
-      if (vocalUploadImg === VocalUploadDefaultImg) {
-        setVocalUploadImg(VocalUploadDefaultImg);
-      } else {
-        return;
-      }
-    }
-
-    if (e.target.files !== null) {
-      const fileUrl = URL.createObjectURL(e.target.files[0]);
-      const imageSize = e.target.files[0].size;
-      if (checImageSize(imageSize)) {
-        setVocalUploadImg(fileUrl);
-        setVocalJacketImage(e.target.files[0]);
-        setDefaultState(false);
-      }
-    }
-  }
-
-  function checImageSize(imageSize: number) : boolean {
-    if (imageSize > 5 * 1024 * 1024) {
-      alert("이미지 용량제한은 5MB 이하 입니다.");
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  async function convertURLtoFile(url: string) {
-    const response = await fetch(url);
-    const data = await response.blob();
-    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-    const metadata = { type: `image/${ext}` };
-    return new File([data], filename!, metadata);
-  }
-
-  useEffect(() => {
-    convertURLtoFile("../assets/image/vocalUploadDefaultImg.png").then((data) => {
-      setVocalJacketImage(data);
-    });
-  }, []);
 
   return (
     <Container>
       <SectionWrapper>
         <VocalImageBox>
-          <VocalImageFrame onMouseEnter={setHover} onMouseLeave={setHover}>
+          <VocalImageFrame
+            onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
+            onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {isHover && <FileChangeIcon onMouseEnter={setHover} onMouseLeave={setHover} />}
+              {isHover && (
+                <FileChangeIcon
+                  onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                  onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                />
+              )}
             </label>
           </VocalImageFrame>
         </VocalImageBox>
@@ -81,11 +44,11 @@ export default function VocalUpload() {
           id="imageFileUpload"
           style={{ display: "none" }}
           accept=".jpg,.jpeg,.png"
-          onChange={uploadImage}
+          onChange={(e) => uploadImage(e, setVocalUploadImg, setUploadData)}
           readOnly
         />
 
-        <UploadInfo />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
       </SectionWrapper>
     </Container>
   );
