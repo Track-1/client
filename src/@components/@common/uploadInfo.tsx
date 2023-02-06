@@ -37,9 +37,9 @@ export default function UploadInfo(props: propsType) {
   const enteredHashtag = useRef<HTMLInputElement | null>(null);
   const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
-  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
-  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
-  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
+  const [checkState, setCheckState] = useState<boolean[]>([]);
+  const [checkHoverState, setCheckHoverState] = useState<boolean[]>([]);
+  const [checkStateIcon, setCheckStateIcon] = useState<boolean[]>([]);
 
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [fileName, setFileName] = useState<string>("");
@@ -58,6 +58,53 @@ export default function UploadInfo(props: propsType) {
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
 
   const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (introduceRef && introduceRef.current) {
+      introduceRef.current.style.height = 0 + "rem";
+      const scrollHeight = introduceRef.current.scrollHeight;
+      changeIntroduceInputHeight(scrollHeight);
+      setTextareaMargin(scrollHeight);
+    }
+  }, [textareaHeight]);
+
+  useEffect(() => {
+    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
+      makeZeroInputWidth(0);
+      const inputWidth = enteredHashtag.current!.scrollWidth;
+      changeHashtagInputWidth(inputWidth);
+      setHashtagInputWidth(inputWidth);
+    } else {
+      makeZeroInputWidth(HASHTAG_WIDTH);
+      setHashtagInputWidth(HASHTAG_WIDTH);
+    }
+  }, [hashtagInputWidth]);
+
+  useEffect(() => {
+    setUploadDataRef((prevState) => {
+      return {
+        ...prevState,
+        introduceRef: introduceRef,
+      };
+    });
+
+    const initArray = getInitFalseArray();
+    initArrayState(initArray);
+  }, []);
+
+  function getInitFalseArray(): boolean[] {
+    const initArray: boolean[] = [];
+    Object.values(Categories).forEach(() => {
+      initArray.push(false);
+    });
+    return initArray;
+  }
+
+  function initArrayState(initArray: boolean[]): void {
+    setCheckState(initArray);
+    setCheckHoverState(initArray);
+    setCheckStateIcon(initArray);
+  }
 
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -137,7 +184,8 @@ export default function UploadInfo(props: propsType) {
 
   // 카테고리
   function selectedCategory(e: React.MouseEvent<HTMLLIElement>, index: number) {
-    const temp = new Array(CATEGORY.length).fill(false);
+    const temp = getInitFalseArray();
+
     temp[index] = true;
     setCheckState([...temp]);
     setCheckStateIcon([...temp]);
@@ -149,7 +197,8 @@ export default function UploadInfo(props: propsType) {
   }
 
   function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
-    const hoverMenu = new Array(CATEGORY.length).fill(false);
+    const hoverMenu = getInitFalseArray();
+
     if (isMouseEnter(e)) {
       hoverMenu[index] = true;
       setCheckHoverState([...hoverMenu]);
@@ -272,37 +321,6 @@ export default function UploadInfo(props: propsType) {
   function changeIntroduceInputHeight(scrollHeight: number): void {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
-
-  console.log(uploadData.keyword);
-  useEffect(() => {
-    if (introduceRef && introduceRef.current) {
-      introduceRef.current.style.height = 0 + "rem";
-      const scrollHeight = introduceRef.current.scrollHeight;
-      changeIntroduceInputHeight(scrollHeight);
-      setTextareaMargin(scrollHeight);
-    }
-  }, [textareaHeight]);
-
-  useEffect(() => {
-    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
-      makeZeroInputWidth(0);
-      const inputWidth = enteredHashtag.current!.scrollWidth;
-      changeHashtagInputWidth(inputWidth);
-      setHashtagInputWidth(inputWidth);
-    } else {
-      makeZeroInputWidth(HASHTAG_WIDTH);
-      setHashtagInputWidth(HASHTAG_WIDTH);
-    }
-  }, [hashtagInputWidth]);
-
-  useEffect(() => {
-    setUploadDataRef((prevState) => {
-      return {
-        ...prevState,
-        introduceRef: introduceRef,
-      };
-    });
-  }, []);
 
   return (
     <Container>
