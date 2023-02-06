@@ -1,23 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
-import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
-import { isClickedOutside } from "../../utils/common/modal";
+import useModal from "../../utils/hooks/useModal";
 
 export default function UploadButtonModal() {
   const navigate = useNavigate();
 
-  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [openModal]);
+  const { modalRef } = useModal();
 
   function moveVocalSearching() {
     navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
@@ -25,12 +14,6 @@ export default function UploadButtonModal() {
 
   function movePortfolio() {
     navigate("/upload/Portfoilo", { state: "Portfoilo" });
-  }
-
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e, modalRef, openModal)) {
-      setOpenModal(false);
-    }
   }
 
   return (
