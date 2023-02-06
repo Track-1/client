@@ -16,11 +16,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
-import { useQuery } from "react-query";
+import { useQuery, useInfiniteQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
 import axios from "axios";
 import usePlayer from "../utils/hooks/usePlayer";
 import { AudioInfosType } from "../type/audioTypes";
+import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
@@ -33,63 +34,28 @@ export default function TrackSearchPage() {
 
   const { progress, audio, playAudio, pauseAudio } = usePlayer();
 
-  //infinite scroll
-  const targetRef = useRef<any>();
-  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-  const page = useRef<number>(1);
-
-  useEffect(() => {
-    setTracksData([]);
-    page.current = 1;
-  }, [filteredUrlApi]);
-
-  const { data } = useQuery(["filteredUrlApi", filteredUrlApi, tracksData], () => getTracksData(filteredUrlApi), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      if (data?.status === 200 && page.current === 2) {
-        setTracksData(data?.data.data.trackList);
-      }
-    },
-    onError: (error) => {},
-  });
-
-  const fetch = useCallback(async (filteredUrlApi: string) => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page.current}&limit=6${filteredUrlApi}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
-          },
-        },
-      );
-
-      setTracksData((prev) => [...prev, ...data?.data?.trackList]);
-      setHasNextPage(data?.data.trackList.length === 6);
-      if (data?.data.trackList.length) {
-        page.current += 1;
-      }
-    } catch (e) {
-      console.error(e);
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getTracksData(filteredUrlApi, page);
+      setTracksData((prev) => [...prev, ...response]);
+      return {
+        response,
+        nextPage: page + 1,
+      };
     }
-  }, []);
+  }
 
-  useEffect(() => {
-    const io = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        console.log("5", filteredUrlApi);
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "trackSearch",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
+      },
+    },
+  );
 
-        fetch(filteredUrlApi);
-      }
-    });
-    io.observe(targetRef.current);
-
-    return () => {
-      io.disconnect();
-    };
-  }, [fetch, hasNextPage, filteredUrlApi]);
-  //infite scroll end
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   useEffect(() => {
     setWhom(Category.TRACKS);
@@ -125,7 +91,7 @@ export default function TrackSearchPage() {
           setPlay={setPlay}
         />
       )}
-      <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
+      <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
     </>
   );
 }

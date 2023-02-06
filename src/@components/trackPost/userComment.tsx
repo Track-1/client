@@ -5,7 +5,7 @@ import EachUserComment from "./eachUserComment";
 import { useEffect, useState, useMemo } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from "react-query";
 import { getComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
+import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
 
 interface PropsType {
   closeComment: () => void;
@@ -78,19 +79,26 @@ export default function UserComment(props: PropsType) {
     }
   }, [play]);
 
-  //get
-  const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      if (data?.status === 200) {
-        setComments(data?.data.data.commentList);
-      }
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getComment(page, 8);
+      setComments((prev) => (prev ? [...prev, ...response?.commentList] : [...response?.commentList]));
+      return { response, nextPage: page + 1 };
+    }
+  }
+
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "comments",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.commentList.length !== 0 ? lastPage?.nextPage : undefined;
+      },
     },
-    onError: (error) => {
-      console.log("실패");
-    },
-  });
+  );
+
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
   //post
   function uploadComment(uploadData: UploadDataType) {
     setIsCompleted(true);
@@ -189,6 +197,7 @@ export default function UserComment(props: PropsType) {
             })}
           <BlurSection />
         </CommentWriteWrapper>
+        <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
       </CommentContainer>
       {showPlayer && (
         <Player
@@ -259,4 +268,9 @@ const BlurSection = styled.div`
   bottom: 0;
   right: 0;
   position: sticky;
+`;
+
+const InfiniteWrapper = styled.div`
+  width: 100%;
+  height: 2rem;
 `;

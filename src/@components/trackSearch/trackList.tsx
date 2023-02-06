@@ -37,15 +37,6 @@ export default function TrackList(props: PropsType) {
   const { clickedIndex, playAudio, audioInfos } = usePlay(audio, tracksData, "tracks");
 
   useEffect(() => {
-    const observer = new IntersectionObserver((endDiv) => {
-      if (endDiv[0].isIntersecting) {
-        loadMore();
-      }
-    });
-    observer.observe(target.current!);
-  }, []);
-
-  useEffect(() => {
     getInfos(audioInfos);
   }, [clickedIndex]);
 
@@ -111,7 +102,7 @@ export default function TrackList(props: PropsType) {
                 {track.category}
               </TrackText>
             </TrackBox>
-            {track.keyword.map((tag, idx) => (
+            {track?.keyword?.map((tag, idx) => (
               <Tag key={idx}>#{tag}</Tag>
             ))}
           </Tracks>
