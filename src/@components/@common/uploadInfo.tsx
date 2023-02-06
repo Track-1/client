@@ -18,12 +18,12 @@ import {
 import { Categories } from "../../core/constants/categories";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function UploadInfo(props: propsType) {
@@ -81,13 +81,7 @@ export default function UploadInfo(props: propsType) {
   }, [hashtagInputWidth]);
 
   useEffect(() => {
-    setUploadDataRef((prevState) => {
-      return {
-        ...prevState,
-        introduceRef: introduceRef,
-      };
-    });
-
+    setUploadDataRef(introduceRef);
     const initArray = getInitFalseArray();
     initArrayState(initArray);
   }, []);

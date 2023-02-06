@@ -3,7 +3,7 @@ import VocalUpload from "../@components/upload/vocalUpload";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { useParams } from "react-router-dom";
-import { UploadInfoDataType, UploadInfoRefType } from "../type/uploadInfoDataType";
+import { UploadInfoDataType } from "../type/uploadInfoDataType";
 import { useState } from "react";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
@@ -23,9 +23,7 @@ export default function UploadPage() {
     jacketImage: getDefaultImage(),
   });
 
-  const [uploadDataRef, setUploadDataRef] = useState<UploadInfoRefType>({
-    introduceRef: null,
-  });
+  const [uploadDataRef, setUploadDataRef] = useState<React.MutableRefObject<HTMLTextAreaElement | null> | null> (null);
 
   function getDefaultImage(): FormData {
     let defaultImage = new FormData();

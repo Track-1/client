@@ -6,11 +6,15 @@ import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
 import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { uploadImage } from "../../utils/uploadPage/uploadImage";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
+import useHover from "../../utils/hooks/useHover";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
   setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function VocalUpload(props: propsType) {

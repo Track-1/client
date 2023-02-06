@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
 
 interface PropsType {
@@ -14,7 +14,7 @@ interface PropsType {
   producerUploadType: string | undefined;
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  uploadDataRef: UploadInfoRefType;
+  uploadDataRef: React.MutableRefObject<HTMLTextAreaElement | null> | null;
 }
 
 export default function UploadHeader(props: PropsType) {
@@ -44,8 +44,8 @@ export default function UploadHeader(props: PropsType) {
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     setOpenModal(false);
-    const introduce = uploadDataRef.introduceRef?.current!.value;
-
+    const introduce = uploadDataRef?.current?.value;
+  
     setUploadData((prevState) => {
       return { ...prevState, introduce: introduce };
     });

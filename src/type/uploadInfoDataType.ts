@@ -6,7 +6,3 @@ export interface UploadInfoDataType {
   keyword: Array<string>;
   jacketImage: File | Blob | FormData;
 }
-
-export interface UploadInfoRefType {
-  introduceRef: React.MutableRefObject<HTMLTextAreaElement | null> | null;
-}
