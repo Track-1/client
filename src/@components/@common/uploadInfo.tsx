@@ -15,6 +15,7 @@ import {
   CheckCategoryIc,
 } from "../../assets";
 
+import { Categories } from "../../core/constants/categories";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
@@ -27,7 +28,6 @@ interface propsType {
 
 export default function UploadInfo(props: propsType) {
   const { uploadData, setUploadData, setUploadDataRef } = props;
-  const CATEGORY: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "Jazz", "House", "Funk"];
   const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -477,7 +477,7 @@ export default function UploadInfo(props: propsType) {
       </TextCount>
       <DropMenuBox hiddenDropBox={hiddenDropBox}>
         <DropMenuWrapper>
-          {CATEGORY.map((text: string, index: number) => (
+          {Object.values(Categories).map((text: string, index: number) => (
             <DropMenuItem
               checkState={checkState[index]}
               checkHoverState={checkHoverState[index]}
