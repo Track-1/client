@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   TitleTextIc,
@@ -12,8 +12,8 @@ import { showPlayerBar, playMusic } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { TracksDataType } from "../../type/tracksDataType";
-import { trackListinfiniteScroll } from "../../recoil/infiniteScroll";
 import usePlay from "../../utils/hooks/usePlay";
+import { isSameIndex } from "../../utils/common/checkIndex";
 
 interface PropsType {
   audio: HTMLAudioElement;
@@ -25,24 +25,18 @@ interface PropsType {
 export default function TrackList(props: PropsType) {
   const { audio, pauseAudio, tracksData, getInfos } = props;
 
-  const target = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
 
   const [play, setPlay] = useRecoilState(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [page, setPage] = useRecoilState(trackListinfiniteScroll);
 
   const { clickedIndex, playAudio, audioInfos } = usePlay(audio, tracksData, "tracks");
 
   useEffect(() => {
     getInfos(audioInfos);
   }, [clickedIndex]);
-
-  function loadMore() {
-    setPage((prev) => prev + 1);
-  }
 
   function mouseOverTrack(id: number) {
     setHoveredIndex(id);
@@ -53,17 +47,36 @@ export default function TrackList(props: PropsType) {
   }
 
   function movePostPage(id: number) {
-    pauseAudio();
-
-    setPlay(false);
-
+    resetPlayer();
     navigate(`/track-post/${id}`, { state: id });
+  }
+
+  function resetPlayer() {
+    pauseAudio();
+    audio.currentTime = 0;
+    setPlay(false);
     setShowPlayer(false);
   }
 
   function moveProducerProfilePage(producerId: number) {
     navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);
+  }
+
+  function isClickedTrack(index: number) {
+    return isSameIndex(clickedIndex, index);
+  }
+
+  function isHoveredTrack(index: number) {
+    return isSameIndex(hoveredIndex, index);
+  }
+
+  function isInitPlay(targetIndex: number) {
+    return !isClickedTrack(targetIndex) && isHoveredTrack(targetIndex);
+  }
+
+  function isPlayAgain(targetIndex: number) {
+    return isSameIndex(clickedIndex, targetIndex);
   }
 
   return (
@@ -86,19 +99,17 @@ export default function TrackList(props: PropsType) {
             trackClickBool={clickedIndex === index}
             trackClick={clickedIndex}>
             <TrackBox>
-              {((clickedIndex !== index && hoveredIndex === index && hoveredIndex !== -1) ||
-                (!play && clickedIndex === index && clickedIndex !== -1)) && (
-                <HoverPauseIcon onClick={() => playAudio(index)} />
-              )}
-              {play && clickedIndex === index && clickedIndex !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
+              {isInitPlay(index) && <HoverPauseIcon onClick={() => playAudio(index)} />}
+              {isPlayAgain(index) &&
+                (play ? <HoverPlayIcon onClick={pauseAudio} /> : <HoverPauseIcon onClick={() => playAudio(index)} />)}
               <Thumbnail src={track.jacketImage} alt="썸네일" />
-              <TrackText width={36.8} isHover={true} onClick={() => movePostPage(track.beatId)}>
+              <TrackText width={36.8} isHoverActive={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.producerId)}>
+              <TrackText width={21.3} isHoverActive={true} onClick={() => moveProducerProfilePage(track.producerId)}>
                 {track.producerName}
               </TrackText>
-              <TrackText width={20.5} isHover={false}>
+              <TrackText width={20.5} isHoverActive={false}>
                 {track.category}
               </TrackText>
             </TrackBox>
@@ -108,7 +119,6 @@ export default function TrackList(props: PropsType) {
           </Tracks>
         ))}
       </TracksWrapper>
-      <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
     </TrackListContainer>
   );
 }
@@ -195,11 +205,11 @@ const Thumbnail = styled.img`
   border-radius: 6.55rem;
 `;
 
-const TrackText = styled.div<{ width: number; isHover: boolean }>`
+const TrackText = styled.div<{ width: number; isHoverActive: boolean }>`
   width: ${(props) => props.width}rem;
   ${({ theme }) => theme.fonts.body1};
   :hover {
-    color: ${({ isHover, theme }) => isHover && theme.colors.sub1};
+    color: ${({ isHoverActive, theme }) => isHoverActive && theme.colors.sub1};
     cursor: pointer;
   }
 `;
