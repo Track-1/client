@@ -30,7 +30,7 @@ export default function usePlay(audio: HTMLAudioElement, data: any, pageCategory
   useEffect(() => {
     switch (pageCategory) {
       case "tracks":
-        setCurrentFile(data[clickedIndex].wavFile);
+        setCurrentFile(data[clickedIndex]?.wavFile);
         audio.src = data[clickedIndex]?.wavFile;
         break;
       case "vocals":
