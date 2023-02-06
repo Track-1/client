@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
-import { isMaker } from "../../utils/common/userType";
+import { checkUserType } from "../../utils/common/userType";
 
 interface PropsType {
   userType: string;
@@ -27,7 +27,7 @@ export default function UploadHeader(props: PropsType) {
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      isMaker(userType) ? navigate(-1) : navigate("/vocal-profile/1");
+      checkUserType(userType) ? navigate(-1) : navigate("/vocal-profile/1");
     },
     onError: (error) => {
       console.log("에러!!", error);

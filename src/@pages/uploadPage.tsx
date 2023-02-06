@@ -7,7 +7,7 @@ import { UploadInfoDataType, UploadInfoRefType } from "../type/uploadInfoDataTyp
 import { useState } from "react";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
-import { isMaker } from "../utils/common/userType";
+import { checkUserType } from "../utils/common/userType";
 import UploadHeader from "../@components/@common/uploadHeader";
 
 export default function UploadPage() {
@@ -29,7 +29,7 @@ export default function UploadPage() {
 
   function getDefaultImage(): FormData {
     let defaultImage = new FormData();
-    isMaker(userType)
+    checkUserType(userType)
       ? defaultImage.append("defaultImage", TrackUploadDefaultImg)
       : defaultImage.append("defaultImage", VocalUploadDefaultImg);
 
@@ -45,7 +45,7 @@ export default function UploadPage() {
         setUploadData={setUploadData}
         uploadDataRef={uploadDataRef}
       />
-      {isMaker(userType) ? (
+      {checkUserType(userType) ? (
         <TrackUpload uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
       ) : (
         <VocalUpload uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />

@@ -1,5 +1,5 @@
 import { currentUser } from "../../core/constants/userType";
 
-export function isMaker(userType: string): boolean {
+export function checkUserType(userType: string): boolean {
   return userType === currentUser.PRODUCER;
 }
