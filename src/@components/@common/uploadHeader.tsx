@@ -44,9 +44,10 @@ export default function UploadHeader(props: PropsType) {
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     setOpenModal(false);
+    const introduce = uploadDataRef.introduceRef?.current!.value;
 
     setUploadData((prevState) => {
-      return { ...prevState, introduce: uploadDataRef.introduceRef?.current!.value };
+      return { ...prevState, introduce: introduce };
     });
     if (isUploadActive) {
       mutate();
