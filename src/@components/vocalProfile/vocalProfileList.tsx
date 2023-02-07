@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { showPlayerBar, audioFile, playMusic } from "../../recoil/player";
+import { playMusic } from "../../recoil/player";
 import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 import usePlay from "../../utils/hooks/usePlay";
 import { VocalPortfolioType } from "../../type/vocalProfile";
-import { VocalsDataType } from "../../type/vocalsDataType";
 
 interface PropsType {
   audio: HTMLAudioElement;
@@ -29,14 +28,6 @@ export default function VocalProfileList(props: PropsType) {
 
   const { clickedIndex, playAudio } = usePlay(audio, portfolioData, "profile");
 
-  function mouseOverVocalPortfolio(id: number) {
-    setHoveredIndex(id);
-  }
-
-  function mouseOutVocalPortfolio() {
-    setHoveredIndex(-1);
-  }
-
   useEffect(() => {
     getAudioInfos(
       portfolioData[clickedIndex]?.title,
@@ -45,6 +36,14 @@ export default function VocalProfileList(props: PropsType) {
       portfolioData[clickedIndex]?.wavFileLength,
     );
   }, [clickedIndex]);
+
+  function mouseOverVocalPortfolio(id: number) {
+    setHoveredIndex(id);
+  }
+
+  function mouseOutVocalPortfolio() {
+    setHoveredIndex(-1);
+  }
 
   return (
     <VocalProfileListWrapper>

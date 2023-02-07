@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import axios from "axios";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useState, useRef } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
-import { getProducerProfile } from "../core/api/producerProfile";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
@@ -12,20 +10,21 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
-import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
+import { useInfiniteQuery } from "react-query";
+import { getProducerPortfolio, getSelectingTracks } from "../core/api/producerProfile";
+import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function ProducerProfilePage() {
-  const { producerId } = useParams();
+  const { state } = useLocation();
 
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
-
   const [audioInfos, setAudioInfos] = useState({
     title: "",
     name: "",
@@ -36,72 +35,39 @@ export default function ProducerProfilePage() {
 
   const visible = useRecoilValue(uploadButtonClicked);
   const showPlayer = useRecoilValue(showPlayerBar);
-  const setWhom = useSetRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { progress, audio } = usePlayer();
 
-  // infinite
-  const targetRef = useRef<any>();
-  const page = useRef<number>(1);
-  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-
-  useEffect(() => {
-    setWhom(Category.TRACKS);
-  }, []);
-
-  useEffect(() => {
-    async function getData() {
-      const data = await getProducerProfile(Number(2));
-      setProfileData(data?.data?.data.producerProfile);
-      setIsMe(data?.data?.data.isMe);
-    }
-    getData();
-  }, []);
-
-  const fetch = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/profile/producer/${2}?page=${page.current}&limit=3`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
-          },
-        },
-      );
-      setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
-
-      setHasNextPage(data?.data.producerPortfolio.length === 4);
-      if (data?.data.producerPortfolio.length) {
-        page.current += 1;
+  async function getData(page: number) {
+    let response: any;
+    if (hasNextPage !== false) {
+      switch (profileState) {
+        case "Portfolio":
+          response = await getProducerPortfolio(2, page);
+          break;
+        case "Vocal Searching":
+          response = await getSelectingTracks(2, page);
+          break;
       }
-    } catch (e) {
-      console.error(e);
+      setIsMe(response?.isMe);
+      setProfileData(response?.producerProfile);
+      setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
+      return { response, nextPage: page + 1 };
     }
-  }, []);
+  }
 
-  useEffect(() => {
-    const io = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        fetch();
-      }
-    });
-    io.observe(targetRef.current);
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "vocalPortFolio",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+      },
+    },
+  );
 
-    return () => {
-      io.disconnect();
-    };
-  }, [fetch, hasNextPage]);
-  //end
-
-  useEffect(() => {
-    async function getData() {
-      const data = await getProducerProfile(Number(producerId));
-      setProfileData(data?.data?.data.producerProfile);
-      setIsMe(data?.data?.data.isMe);
-    }
-    getData();
-  }, []);
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   function playAudio() {
     audio.play();
@@ -162,7 +128,7 @@ export default function ProducerProfilePage() {
           />
         )}
       </PageContainer>
-      <InfiniteDiv ref={targetRef}> </InfiniteDiv>
+      <InfiniteDiv ref={observerRef}> </InfiniteDiv>
 
       {showPlayer && profileData && (
         <Player

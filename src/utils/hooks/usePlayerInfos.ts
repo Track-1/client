@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AudioInfosType } from "../../type/audioTypes";
 
-export default function usePlayerInfos(dependency: any, infoDatas: any) {
+export default function usePlayerInfos(clickedIndex: number, infoDatas: any, pageCategory: string) {
   const [audioInfos, setAudioInfos] = useState<AudioInfosType>({
     title: "",
     name: "",
@@ -21,8 +21,17 @@ export default function usePlayerInfos(dependency: any, infoDatas: any) {
   }
 
   useEffect(() => {
-    getAudioInfos(infoDatas?.title, infoDatas?.producerName, infoDatas?.jacketImage, infoDatas?.wavFileLength);
-  }, [dependency]);
+    switch (pageCategory) {
+      case "comment":
+        getAudioInfos(
+          String(infoDatas?.vocalWavFile),
+          infoDatas?.vocalName,
+          infoDatas?.vocalProfileImage,
+          infoDatas?.vocalWavFileLength,
+        );
+        console.log(infoDatas?.vocalWavFileLength);
+    }
+  }, [clickedIndex]);
 
   return { audioInfos, getAudioInfos };
 }

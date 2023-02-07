@@ -6,7 +6,7 @@ import { playMusic } from "../../recoil/player";
 import { ProducerPortfolioType } from "../../type/producerProfile";
 import usePlay from "../../utils/hooks/usePlay";
 import PortfoliosInform from "../@common/portfoliosInform";
-import { isNotSameIndex, isSameIndex } from "../../utils/common/compareIndex";
+import { isNotSameIndex, isSameIndex } from "../../utils/common/checkIndex";
 
 interface PropsType {
   portfolioData: ProducerPortfolioType[];

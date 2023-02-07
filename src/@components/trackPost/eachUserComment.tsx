@@ -4,6 +4,7 @@ import { PauseBtnIc, PlayBtnIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
+import { isSameIndex } from "../../utils/common/checkIndex";
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -30,25 +31,29 @@ export default function EachUserComment(props: PropsType) {
     setIsHover(false);
   }
 
-  function checkIsPlayingAudioClicked() {
-    return clickedIndex === currentIndex;
-  }
-
   function playAudio(id: number) {
     setShowPlayer(true);
     setPlay(true);
     clickedIndex === id ? audio.play() : clickComment(currentIndex);
   }
 
+  function isClickedComment() {
+    return isSameIndex(clickedIndex, currentIndex);
+  }
+
+  function isClickedPlayingComment() {
+    return play && isClickedComment();
+  }
+
   return (
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
-        {isHover && !(play && checkIsPlayingAudioClicked()) && (
+        {isHover && !isClickedPlayingComment() && (
           <PlayerBlur onClick={() => playAudio(currentIndex)}>
             <PlayBtnIc />
           </PlayerBlur>
         )}
-        {play && checkIsPlayingAudioClicked() && (
+        {isClickedPlayingComment() && (
           <PlayerBlur onClick={pauseAudio}>
             <PauseBtnIc />
           </PlayerBlur>

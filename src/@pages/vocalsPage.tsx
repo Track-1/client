@@ -11,13 +11,14 @@ import { showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { getVocalsData } from "../core/api/vocalSearch";
 import { playMusic } from "../recoil/player";
 import { categorySelect, trackSearching } from "../recoil/categorySelect";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { VocalsDataType } from "../type/vocalsDataType";
 import usePlayer from "../utils/hooks/usePlayer";
+import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function VocalsPage() {
   const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
@@ -41,26 +42,25 @@ export default function VocalsPage() {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);
 
-  const targetRef = useRef<any>();
-
-  const { data } = useQuery(
-    ["filteredUrlApi", filteredUrlApi, isSelected, vocalsData],
-    () => getVocalsData(filteredUrlApi, isSelected),
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "vocalSearch",
+    ({ pageParam = 1 }) => getData(pageParam),
     {
-      refetchOnWindowFocus: false,
-      retry: 0,
-      onSuccess: (data) => {
-        if (data?.status === 200) {
-          setVocalsData(data?.data.data.vocalList);
-        }
-      },
-      onError: (error) => {
-        console.log("실패");
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.vocalList.length !== 0 ? lastPage?.nextPage : undefined;
       },
     },
   );
 
-  //end
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getVocalsData(filteredUrlApi, isSelected, page);
+      setVocalsData((prev) => [...prev, ...response?.vocalList]);
+      return { response, nextPage: page + 1 };
+    }
+  }
 
   function playAudio() {
     audio.play();
@@ -93,7 +93,7 @@ export default function VocalsPage() {
         <VocalListWrapper>
           <VocalListHeader />
           {data && <VocalList vocalData={vocalsData} audio={audio} getAudioInfos={getAudioInfos} />}
-          <InfiniteWrapper ref={targetRef}></InfiniteWrapper>
+          <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
         </VocalListWrapper>
       </VocalSearchPageWrapper>
       {showPlayer && (

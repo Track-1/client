@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
+import { AddCommentIc, CloseBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUserComment from "./eachUserComment";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useInfiniteQuery } from "react-query";
 import { getComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
@@ -13,6 +13,9 @@ import { useRecoilState } from "recoil";
 import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
+import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
+import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
+import usePlayer from "../../utils/hooks/usePlayer";
 
 interface PropsType {
   closeComment: () => void;
@@ -23,19 +26,11 @@ export default function UserComment(props: PropsType) {
   const { closeComment, beatId } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
-  const [progress, setProgress] = useState<number>(0);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     wavFile: null,
-  });
-  const [audioInfos, setAudioInfos] = useState({
-    title: "",
-    name: "",
-    progress: "",
-    duration: 0,
-    image: "",
   });
 
   const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
@@ -45,56 +40,36 @@ export default function UserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const audio = useMemo(() => new Audio(), []);
-
-  useEffect(() => {
-    if (comments) {
-      audio.src = comments[clickedIndex].vocalWavFile;
-      setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
-      getAudioInfos(
-        "title",
-        comments[clickedIndex]?.vocalName,
-        comments[clickedIndex]?.vocalProfileImage,
-        comments[clickedIndex]?.vocalWavFileLength,
-      );
-    }
-  }, [clickedIndex]);
-
-  useEffect(() => {
-    if (currentAudioFile) {
-      playAudio();
-    }
-  }, [currentAudioFile]);
-
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
+  const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
   //get
-  const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      if (data?.status === 200) {
-        setComments(data?.data.data.commentList);
-      }
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "comments",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.commentList.length !== 0 ? lastPage?.nextPage : undefined;
+      },
     },
-    onError: (error) => {
-      console.log("실패");
+  );
+  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response.commentList[clickedIndex], "comment");
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  // get end
+
+  //post
+  const { mutate } = useMutation(postComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("beatId");
+      setContent("");
+      setWavFile(null);
+      setIsCompleted(false);
+      setIsEnd(false);
     },
   });
-  //post
-  function uploadComment(uploadData: UploadDataType) {
-    setIsCompleted(true);
-  }
+
+  const queryClient = useQueryClient();
+  //post end
+
   useEffect(() => {
     if (content && wavFile) {
       let formData = new FormData();
@@ -104,21 +79,26 @@ export default function UserComment(props: PropsType) {
     }
   }, [isCompleted]);
 
-  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (comments) {
+      audio.src = comments[clickedIndex].vocalWavFile;
+      setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
+    }
+  }, [clickedIndex]);
 
-  const { mutate } = useMutation(postComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("beatId");
-      setUploadData({
-        content: "",
-        wavFile: null,
-      });
-      setContent("");
-      setWavFile(null);
-      setIsCompleted(false);
-      setIsEnd(false);
-    },
-  });
+  useEffect(() => {
+    if (currentAudioFile) {
+      playPlayerAudio();
+    }
+  }, [currentAudioFile]);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getComment(page, beatId);
+      setComments((prev) => (prev ? [...prev, ...response?.commentList] : [...response?.commentList]));
+      return { response, nextPage: page + 1 };
+    }
+  }
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -127,34 +107,12 @@ export default function UserComment(props: PropsType) {
     });
   }
 
-  function getAudioInfos(title: string, name: string, image: string, duration: number) {
-    const tempInfos = audioInfos;
-    tempInfos.title = title;
-    tempInfos.name = name;
-    tempInfos.image = image;
-    tempInfos.duration = duration;
-    setAudioInfos(tempInfos);
+  function uploadComment() {
+    setIsCompleted(true);
   }
 
   function clickComment(index: number) {
     setClickedIndex(index);
-  }
-
-  function playAudio() {
-    audio.play();
-    setPlay(true);
-  }
-
-  function pauseAudio() {
-    audio.pause();
-    setPlay(false);
-  }
-
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
   }
 
   return (
@@ -168,7 +126,7 @@ export default function UserComment(props: PropsType) {
           <AddWrapper>
             <div></div>
 
-            <AddCommentIcon onClick={() => uploadComment(uploadData)} />
+            <AddCommentIcon onClick={uploadComment} />
           </AddWrapper>
         </form>
 
@@ -182,19 +140,20 @@ export default function UserComment(props: PropsType) {
                   audio={audio}
                   clickedIndex={clickedIndex}
                   clickComment={clickComment}
-                  pauseAudio={pauseAudio}
+                  pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
                 />
               );
             })}
-          <BlurSection />
         </CommentWriteWrapper>
+        <BlurSection />
+        <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
       </CommentContainer>
       {showPlayer && (
         <Player
           audio={audio}
-          playAudio={playAudio}
-          pauseAudio={pauseAudio}
+          playAudio={playPlayerAudio}
+          pauseAudio={pausesPlayerAudio}
           progress={progress}
           audioInfos={audioInfos}
           play={play}
@@ -230,17 +189,6 @@ const CloseCommentBtn = styled.div`
   margin-bottom: 2.7rem;
 `;
 
-const CloseText = styled.strong`
-  ${({ theme }) => theme.fonts.id};
-  color: ${({ theme }) => theme.colors.white};
-  margin-left: 0.5rem;
-`;
-
-const CommentBtnIcon = styled(CommentBtnIc)`
-  height: 2rem;
-  width: 100%;
-`;
-
 const AddWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -254,9 +202,16 @@ const AddCommentIcon = styled(AddCommentIc)`
 
 const BlurSection = styled.div`
   height: 32rem;
-  width: 101.1rem;
+  width: 107.7rem;
+
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
   bottom: 0;
-  right: 0;
   position: sticky;
+
+  padding-left: 7.5rem;
+`;
+
+const InfiniteWrapper = styled.div`
+  width: 100%;
+  height: 2rem;
 `;

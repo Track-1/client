@@ -20,8 +20,6 @@ export default function usePlay(audio: HTMLAudioElement, data: any, pageCategory
     image: "",
   });
 
-  console.dir(data);
-
   useEffect(() => {
     audio.play();
     setPlay(true);
@@ -87,14 +85,6 @@ export default function usePlay(audio: HTMLAudioElement, data: any, pageCategory
           data[clickedIndex]?.title,
           "내놔라 서버들아",
           data[clickedIndex]?.jacketImage,
-          data[clickedIndex]?.wavFileLength,
-        );
-        break;
-      case "comments":
-        getAudioInfos(
-          String(data[clickedIndex]?.vocalWavFile),
-          data[clickedIndex]?.vocalName,
-          data[clickedIndex]?.vocalProfileImage,
           data[clickedIndex]?.wavFileLength,
         );
         break;
