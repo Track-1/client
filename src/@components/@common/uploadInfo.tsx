@@ -19,6 +19,7 @@ import { Categories } from "../../core/constants/categories";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
+import useHover from "../../utils/hooks/useHover";
 
 interface propsType {
   uploadData: UploadInfoDataType;
@@ -57,7 +58,8 @@ export default function UploadInfo(props: propsType) {
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
 
-  const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
+  // const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
+  const { hoverState, changeHoverState } = useHover();
 
   useEffect(() => {
     if (introduceRef && introduceRef.current) {
@@ -268,9 +270,9 @@ export default function UploadInfo(props: propsType) {
     resetHashtagInputWidth();
   }
 
-  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
-  }
+  // function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
+  //   isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
+  // }
 
   function isEmptyHashtagInput(): boolean {
     return enteredHashtag.current!.value.length === 0;
@@ -442,8 +444,8 @@ export default function UploadInfo(props: propsType) {
               {hashtagLength > 0 && uploadData.keyword.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
             </InputWrapper>
 
-            <WarningIcon onMouseEnter={hoverWarningState} onMouseLeave={hoverWarningState}>
-              {warningHoverState ? (
+            <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+              {hoverState ? (
                 <>
                   <HoverHashtagWarningIc />
                   <WarningTextWrapper>
