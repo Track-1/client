@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 
 interface PropsType {
   getUploadData: (content: string, wavFile: File | null) => any;
@@ -12,15 +12,12 @@ export default function CommentWrite(props: PropsType) {
   const { getUploadData } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
-  const commentFile = useRef<any>(null);
+  const commentFile = useRef<HTMLInputElement | null>(null);
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
 
   const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
-  const [comment, setComment] = useRecoilState<string>(postContent);
-  const [wavFile, setWavFile] = useRecoilState<any>(postWavFile);
-  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const isCompleted = useRecoilValue(postIsCompleted);
 
   useEffect(() => {
@@ -28,11 +25,6 @@ export default function CommentWrite(props: PropsType) {
 
     isCompleted && getUploadData(currentText, uploadedFile);
   }, [isCompleted]);
-
-  useEffect(() => {
-    setComment(commentText.current!.value);
-    setWavFile(uploadedFile);
-  }, [commentLength]);
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
@@ -42,9 +34,7 @@ export default function CommentWrite(props: PropsType) {
   function getFile(e: React.ChangeEvent<HTMLInputElement>) {
     const currentFile = e.target.files && e.target.files[0];
     currentFile && setUploadedFile(currentFile);
-
     currentFile && changeFileName(currentFile.name);
-    setIsEnd(true);
   }
 
   function changeFileName(fileName: string) {

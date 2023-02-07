@@ -1,12 +1,15 @@
+import { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
-import useModal from "../../utils/hooks/useModal";
+import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 
 export default function UploadButtonModal() {
   const navigate = useNavigate();
 
-  const { modalRef } = useModal();
+  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   function moveVocalSearching() {
     navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
@@ -15,6 +18,23 @@ export default function UploadButtonModal() {
   function movePortfolio() {
     navigate("/upload/Portfoilo", { state: "Portfoilo" });
   }
+
+  function isClickedOutside(e: MouseEvent) {
+    return openModal && !modalRef.current?.contains(e.target as Node);
+  }
+
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setOpenModal(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openModal]);
 
   return (
     <ModalBg>
@@ -46,28 +66,23 @@ export default function UploadButtonModal() {
 const ModalBg = styled.section`
   height: 100vh;
   width: 100vw;
-
   position: fixed;
   z-index: 10000;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
-
   background-color: rgba(0, 0, 0, 0.6);
 `;
 const UploadButtonModalWrapper = styled.section`
   position: sticky;
-
   margin-top: 75.5rem;
   margin-left: 34.2rem;
-
   pointer-events: none;
 `;
 
 const VocalSearchingWrapper = styled.article`
   position: fixed;
-
   display: flex;
 `;
 
@@ -78,7 +93,6 @@ const VocalSearchingIcon = styled(VocalSearchingIc)`
 
 const PortfolioWrapper = styled.article`
   position: fixed;
-
   display: flex;
 `;
 
@@ -90,9 +104,7 @@ const PortfolioIcon = styled(PortfolioIc)`
 const TextWrapper = styled.div<{ marginTop: number }>`
   margin-left: 1.4rem;
   margin-top: ${({ marginTop }) => marginTop}rem;
-
   pointer-events: auto;
-
   cursor: pointer;
 `;
 

@@ -40,7 +40,7 @@ export default function UserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const { progress, audio, playAudio, pauseAudio } = usePlayer();
+  const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
@@ -60,10 +60,6 @@ export default function UserComment(props: PropsType) {
   const { mutate } = useMutation(postComment, {
     onSuccess: () => {
       queryClient.invalidateQueries("beatId");
-      setUploadData({
-        content: "",
-        wavFile: null,
-      });
       setContent("");
       setWavFile(null);
       setIsCompleted(false);
@@ -92,13 +88,13 @@ export default function UserComment(props: PropsType) {
 
   useEffect(() => {
     if (currentAudioFile) {
-      playAudio();
+      playPlayerAudio();
     }
   }, [currentAudioFile]);
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
-      const response = await getComment(page, 8);
+      const response = await getComment(page, beatId);
       setComments((prev) => (prev ? [...prev, ...response?.commentList] : [...response?.commentList]));
       return { response, nextPage: page + 1 };
     }
@@ -144,7 +140,7 @@ export default function UserComment(props: PropsType) {
                   audio={audio}
                   clickedIndex={clickedIndex}
                   clickComment={clickComment}
-                  pauseAudio={pauseAudio}
+                  pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
                 />
               );
@@ -156,8 +152,8 @@ export default function UserComment(props: PropsType) {
       {showPlayer && (
         <Player
           audio={audio}
-          playAudio={playAudio}
-          pauseAudio={pauseAudio}
+          playAudio={playPlayerAudio}
+          pauseAudio={pausesPlayerAudio}
           progress={progress}
           audioInfos={audioInfos}
           play={play}

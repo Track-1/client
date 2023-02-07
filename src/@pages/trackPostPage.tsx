@@ -29,7 +29,6 @@ import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
-import { UserType } from "../recoil/main";
 import usePlayer from "../utils/hooks/usePlayer";
 
 export default function TrackPostPage() {
@@ -51,7 +50,6 @@ export default function TrackPostPage() {
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const user = useRecoilValue(UserType);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {

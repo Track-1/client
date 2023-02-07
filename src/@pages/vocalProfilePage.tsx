@@ -1,5 +1,4 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import axios from "axios";
 import styled from "styled-components";
 import Player from "../@components/@common/player";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
@@ -9,10 +8,10 @@ import { Category } from "../core/constants/categoryHeader";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
-import { useQuery, useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
@@ -20,7 +19,6 @@ import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function VocalProfilePage() {
-  const [duration, setCurrentDuration] = useState<number>(0);
   const [isMe, setIsMe] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
   const [portfolioData, setPortfolioData] = useState<VocalPortfolioType[]>([]);
@@ -36,99 +34,11 @@ export default function VocalProfilePage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const userType = useRecoilValue(UserType);
 
   const { progress, audio } = usePlayer();
 
-  useEffect(() => {
-    setWhom(Category.TRACKS);
-  }, []);
-
   const { state } = useLocation();
-  useEffect(() => {
-    setShowPlayer(false);
-  }, []);
-
-  // infinite
-  // const targetRef = useRef<any>();
-  // const page = useRef<number>(1);
-  // const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-
-  const userType = useRecoilValue(UserType);
-
-  // const fetch = useCallback(async () => {
-  //   const accessToken =
-  //     userType === "producer"
-  //       ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
-  //       : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
-  //   try {
-  //     const { data } = await axios.get(
-  //       `${process.env.REACT_APP_BASE_URL}/profile/producer/2?page=${page.current}&limit=3`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       },
-  //     );
-  //     setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
-  //     console.log(page.current);
-  //     console.log(portfolioData);
-
-  //     setHasNextPage(data?.data.producerPortfolio.length === 4);
-  //     if (data?.data.producerPortfolio.length) {
-  //       page.current += 1;
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   const io = new IntersectionObserver((entries, observer) => {
-  //     if (entries[0].isIntersecting) {
-  //       fetch();
-  //     }
-  //   });
-  //   io.observe(targetRef.current);
-
-  //   return () => {
-  //     io.disconnect();
-  //   };
-  // }, [fetch, hasNextPage]);
-
-  //end
-
-  useEffect(() => {
-    setWhom(Category.VOCALS);
-  }, []);
-
-  // const { data } = useQuery(["state", state, userType], () => getVocalProfile(state, userType), {
-  //   refetchOnWindowFocus: false,
-  //   retry: 0,
-  //   onSuccess: (data) => {
-  //     if (data?.status === 200 && page.current === 1) {
-  //       setIsMe(data?.data.data.isMe);
-  //       setProfileData(data?.data.data.vocalProfile);
-  //       setPortfolioData(data?.data.data.vocalPortfolio);
-  //       console.log(data?.data.data);
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.log("실패");
-  //   },
-  // });
-
-  //end
-
-  async function getData(page: number) {
-    if (hasNextPage !== false) {
-      const response = await getVocalProfile(state, userType, page);
-      setIsMe(response?.isMe);
-      setProfileData(response?.vocalProfile);
-      setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
-
-      return { response, nextPage: page + 1 };
-    }
-  }
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     "vocalPortFolio",
@@ -141,6 +51,22 @@ export default function VocalProfilePage() {
   );
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  useEffect(() => {
+    setWhom(Category.TRACKS);
+    setShowPlayer(false);
+  }, []);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getVocalProfile(state, userType, page);
+      setIsMe(response?.isMe);
+      setProfileData(response?.vocalProfile);
+      setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
+
+      return { response, nextPage: page + 1 };
+    }
+  }
 
   function playAudio() {
     audio.play();

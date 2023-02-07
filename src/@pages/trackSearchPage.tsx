@@ -11,14 +11,13 @@ import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Category } from "../core/constants/categoryHeader";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
-import { useQuery, useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { categorySelect } from "../recoil/categorySelect";
-import axios from "axios";
 import usePlayer from "../utils/hooks/usePlayer";
 import { AudioInfosType } from "../type/audioTypes";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
@@ -32,7 +31,7 @@ export default function TrackSearchPage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const filteredUrlApi = useRecoilValue(categorySelect);
 
-  const { progress, audio, playAudio, pauseAudio } = usePlayer();
+  const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
@@ -76,15 +75,15 @@ export default function TrackSearchPage() {
         <TrackListWrapper>
           <TrackListHeader />
           {tracksData && (
-            <TrackList audio={audio} pauseAudio={pauseAudio} tracksData={tracksData} getInfos={getInfos} />
+            <TrackList audio={audio} pauseAudio={pausesPlayerAudio} tracksData={tracksData} getInfos={getInfos} />
           )}
         </TrackListWrapper>
       </TrackSearchPageWrapper>
       {showPlayer && (
         <Player
           audio={audio}
-          playAudio={playAudio}
-          pauseAudio={pauseAudio}
+          playAudio={playPlayerAudio}
+          pauseAudio={pausesPlayerAudio}
           progress={progress}
           audioInfos={audioInfos}
           play={play}
