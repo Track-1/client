@@ -88,14 +88,6 @@ export default function usePlay(audio: HTMLAudioElement, data: any, pageCategory
           data[clickedIndex]?.wavFileLength,
         );
         break;
-      case "comments":
-        getAudioInfos(
-          String(data[clickedIndex]?.vocalWavFile),
-          data[clickedIndex]?.vocalName,
-          data[clickedIndex]?.vocalProfileImage,
-          data[clickedIndex]?.wavFileLength,
-        );
-        break;
     }
   }, [clickedIndex]);
 

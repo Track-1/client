@@ -8,12 +8,12 @@ export default function usePlayer() {
 
   const audio = useMemo(() => new Audio(), []);
 
-  function playAudio() {
+  function playPlayerAudio() {
     audio.play();
     setPlay(true);
   }
 
-  function pauseAudio() {
+  function pausesPlayerAudio() {
     audio.pause();
     setPlay(false);
   }
@@ -42,5 +42,5 @@ export default function usePlayer() {
     audio.duration === audio.currentTime && setPlay(false);
   }
 
-  return { progress, audio, playAudio, pauseAudio };
+  return { progress, audio, playPlayerAudio, pausesPlayerAudio };
 }
