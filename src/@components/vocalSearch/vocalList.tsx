@@ -1,43 +1,29 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { VocalSleepIc, VocalHoverPlayIc, VocalHoverPauseIc } from "../../assets";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, playMusic } from "../../recoil/player";
 import { VocalSearchType } from "../../type/vocalSearchType";
+import usePlay from "../../utils/hooks/usePlay";
+import { VocalsDataType } from "../../type/vocalsDataType";
 
 interface PropsType {
   vocalData: VocalSearchType[];
   audio: HTMLAudioElement;
-  playAudio: () => void;
-  pauseAudio: () => void;
-  duration: number;
-  getDuration: (durationTime: number) => void;
-  getAudioInfos: (title: string, image: string) => void;
+  getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
 }
 
 export default function VocalList(props: PropsType) {
-  const { vocalData, audio, playAudio, pauseAudio, duration, getDuration, getAudioInfos } = props;
+  const { vocalData, audio, getAudioInfos } = props;
+  const navigate = useNavigate();
+
   const [hoverVocal, setHoverVocal] = useState<number>(-1);
-  const [clickVocal, setClickVocal] = useState<number>(-1);
+
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  const [beatId, setBeatId] = useState<number>(-1);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-  useEffect(() => {
-    audio.play();
-  }, [currentFile]);
-
-  useEffect(() => {
-    setCurrentFile(vocalData[clickVocal]?.vocalTitleFile && vocalData[clickVocal]?.vocalTitleFile);
-    audio.src = vocalData[clickVocal]?.vocalTitleFile && vocalData[clickVocal]?.vocalTitleFile;
-    vocalData[clickVocal]?.vocalTitleFile && console.log(vocalData[clickVocal]?.vocalTitleFile);
-    getDuration(vocalData[clickVocal]?.wavFileLength);
-    getAudioInfos("시간의 지평선", vocalData[clickVocal]?.vocalProfileImage);
-  }, [clickVocal]);
-
-  const navigate = useNavigate();
+  const { clickedIndex, playAudio } = usePlay(audio, vocalData, "vocals");
 
   function mouseOverPlayVocal(id: number) {
     setHoverVocal(id);
@@ -47,25 +33,18 @@ export default function VocalList(props: PropsType) {
     setHoverVocal(-1);
   }
 
-  function playAudioOnTrack(index: number, id: number) {
-    if (clickVocal === index) {
-      audio.play();
-      setPlay(true);
-    } else {
-      console.log(clickVocal, index, "not same");
-      setPlay(true);
+  useEffect(() => {
+    getAudioInfos(
+      "이게 어떻게 된거냐 api에 없다",
+      vocalData[clickedIndex]?.vocalName,
+      vocalData[clickedIndex]?.vocalProfileImage,
+      vocalData[clickedIndex]?.wavFileLength,
+    );
+  }, [clickedIndex]);
 
-      setShowPlayer(true);
-      setBeatId(id);
-      setClickVocal(index);
-    }
-  }
-
-  function onClickPauseVocal(id: number) {
-    // if (play && id === beatId) {
+  function pauseAudio(id: number) {
     audio.pause();
     setPlay(false);
-    // }
   }
 
   function clickVocalName(id: number) {
@@ -92,28 +71,28 @@ export default function VocalList(props: PropsType) {
               onMouseEnter={() => mouseOverPlayVocal(index)}
               showPlayer={showPlayer}
               isHoverVocal={hoverVocal === index}
-              isClickVocal={clickVocal === index}
-              clickVocal={clickVocal}>
+              isClickVocal={clickedIndex === index}
+              clickVocal={clickedIndex}>
               <GradientLine>
                 <AlbumCoverImg src={vocal.vocalProfileImage} alt="앨범자켓사진" />
               </GradientLine>
               <GradientProfile
                 isHoverVocal={hoverVocal === index}
-                isClickVocal={clickVocal === index}
-                clickVocal={clickVocal}></GradientProfile>
-              {play && clickVocal === index && clickVocal !== -1 && (
+                isClickVocal={clickedIndex === index}
+                clickVocal={clickedIndex}></GradientProfile>
+              {play && clickedIndex === index && clickedIndex !== -1 && (
                 <VocalHoverPauseIcon
                   isHoverVocal={hoverVocal === index}
-                  isClickVocal={clickVocal === index}
-                  clickVocal={clickVocal}
+                  isClickVocal={clickedIndex === index}
+                  clickVocal={clickedIndex}
                   onClick={() => {
-                    onClickPauseVocal(index);
+                    pauseAudio(index);
                   }}
                 />
               )}
-              {((clickVocal !== index && hoverVocal === index && hoverVocal !== -1) ||
-                (!play && clickVocal === index && clickVocal !== -1)) && (
-                <VocalHoverPlayIcon onClick={() => playAudioOnTrack(index, vocal.vocalId)} />
+              {((clickedIndex !== index && hoverVocal === index && hoverVocal !== -1) ||
+                (!play && clickedIndex === index && clickedIndex !== -1)) && (
+                <VocalHoverPlayIcon onClick={() => playAudio(index)} />
               )}
             </MusicProfileWrapper>
 

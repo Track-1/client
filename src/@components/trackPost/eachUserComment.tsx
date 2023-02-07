@@ -1,76 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { PlayBtnIc } from "../../assets";
-import profileDummyImg from "../../assets/image/profileDummyImg.png";
+import { PauseBtnIc, PlayBtnIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, playMusic } from "../../recoil/player";
+import { isSameIndex } from "../../utils/common/checkIndex";
 
-interface dataType {
-  data: UserCommentType;
+interface PropsType {
+  commentInfo: UserCommentType;
   audio: HTMLAudioElement;
   clickedIndex: number;
-  hoveredIndex: number;
+  pauseAudio: () => void;
   clickComment: (index: number) => void;
-  hoverComment: (index: number) => void;
-  index: number;
-  comment: any;
+  currentIndex: number;
 }
 
-export default function EachUserComment(props: dataType) {
-  const { data, audio, clickedIndex, hoveredIndex, clickComment, hoverComment, index, comment } = props;
+export default function EachUserComment(props: PropsType) {
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio } = props;
+
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-  const [duration, setDuration] = useState<number>(0);
 
-  function changeHoverTrue() {
+  function hoverComment() {
     setIsHover(true);
   }
 
-  function changeHoverFalse() {
+  function detachComment() {
     setIsHover(false);
   }
 
-  useEffect(() => {
-    audio.play();
-    setPlay(true);
-  }, [currentFile]);
-
-  useEffect(() => {
-    setCurrentFile(comment?.vocalWavFile);
-    audio.src = comment?.vocalWavFile;
-  }, [clickedIndex]);
-
-  function playAudioOnTrack(id: number) {
+  function playAudio(id: number) {
     setShowPlayer(true);
-    if (clickedIndex === id) {
-      audio.play();
-      setPlay(true);
-    } else {
-      setPlay(true);
+    setPlay(true);
+    clickedIndex === id ? audio.play() : clickComment(currentIndex);
+  }
 
-      setShowPlayer(true);
-      // setBeatId(id);
-      // setTrackClick(id);
-      clickComment(index);
-    }
+  function isClickedComment() {
+    return isSameIndex(clickedIndex, currentIndex);
+  }
+
+  function isClickedPlayingComment() {
+    return play && isClickedComment();
   }
 
   return (
-    <CommentContainer onMouseOver={changeHoverTrue} onMouseOut={changeHoverFalse}>
-      <ProfileImage img={data.vocalProfileImage}>
-        {isHover && (
-          <PlayerBlur>
-            <PlayBtnIc onClick={() => clickComment(index)} />
+    <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
+      <ProfileImage img={commentInfo.vocalProfileImage}>
+        {isHover && !isClickedPlayingComment() && (
+          <PlayerBlur onClick={() => playAudio(currentIndex)}>
+            <PlayBtnIc />
+          </PlayerBlur>
+        )}
+        {isClickedPlayingComment() && (
+          <PlayerBlur onClick={pauseAudio}>
+            <PauseBtnIc />
           </PlayerBlur>
         )}
       </ProfileImage>
       <InfoBox>
-        <UserName>{data.vocalName}</UserName>
-        <CommentText>{data.comment}</CommentText>
+        <UserName>{commentInfo.vocalName}</UserName>
+        <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
     </CommentContainer>
   );
@@ -79,10 +70,8 @@ export default function EachUserComment(props: dataType) {
 const CommentContainer = styled.article`
   position: relative;
   height: 14.2rem;
-
   display: flex;
   align-items: center;
-
   &:hover {
     border: 0.2rem solid transparent;
     border-top-left-radius: 11.7rem;
@@ -97,12 +86,9 @@ const CommentContainer = styled.article`
 const ProfileImage = styled.div<{ img: string }>`
   height: 9rem;
   width: 9rem;
-
   margin-right: 2rem;
   margin-left: 3.8rem;
-
   border-radius: 9rem;
-
   background-image: url(${({ img }) => img});
   background-repeat: no-repeat;
   background-size: contain;
@@ -111,16 +97,13 @@ const ProfileImage = styled.div<{ img: string }>`
 const PlayerBlur = styled.div`
   height: 9rem;
   width: 9rem;
-
   background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
   border-radius: 50%;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  pointer-events: none;
+  /* pointer-events: none; */
 `;
 
 const InfoBox = styled.div`
@@ -130,14 +113,11 @@ const InfoBox = styled.div`
 
 const UserName = styled.strong`
   color: ${({ theme }) => theme.colors.white};
-
   ${({ theme }) => theme.fonts.hashtag}
 `;
 
 const CommentText = styled.strong`
   color: ${({ theme }) => theme.colors.white};
-
   ${({ theme }) => theme.fonts.description}
-
   margin-top: 1.2rem;
 `;

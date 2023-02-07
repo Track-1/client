@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
-import { useState, useLayoutEffect, useRef, useEffect } from "react";
-import jacketImage from "../../assets/image/thumbnailImg.png";
+import { useState, useLayoutEffect, useRef } from "react";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import { playMusic, showPlayerBar } from "../../recoil/player";
+import { showPlayerBar } from "../../recoil/player";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -16,23 +15,20 @@ interface PropsType {
   title: string;
   name: string;
   image: string;
+  play: any;
+  setPlay: any;
 }
 
-export default function Player(props: PropsType) {
-  const { audio, playAudio, pauseAudio, progress, duration, title, name, image } = props;
-  // const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
+export default function Player(props: any) {
+  const { audio, playAudio, pauseAudio, progress, play, setPlay, audioInfos } = props;
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   const playBar = useRef<HTMLDivElement>(null);
 
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  // const [title, setTitle] = useState<string>();
-  const [producerName, setProducerName] = useState<string>();
   const [barWidth, setBarWidth] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   useLayoutEffect(() => {
@@ -77,6 +73,7 @@ export default function Player(props: PropsType) {
   }
 
   function detachPlyabar() {
+    setDown(false);
     setIsHovered(false);
   }
 
@@ -98,21 +95,22 @@ export default function Player(props: PropsType) {
           onMouseDown={downMouse}
           onMouseUp={upMouse}
           onMouseMove={moveAudio}
-          onMouseEnter={hoverPlaybar}
-          onMouseOut={detachPlyabar}>
+          onMouseOver={hoverPlaybar}
+          onMouseLeave={detachPlyabar}
+          isActive={isHovered}>
           <Playbar progress={progress} tracksOrVocals={tracksOrVocals} isActive={isHovered} />
         </PlayerBarWrapper>
 
         <PlayerInformWrapper>
-          <Thumbnail src={image} alt="썸네일 이미지" />
-          <PlayerTitleText>{title}</PlayerTitleText>
-          <PlayerNameText>{name}</PlayerNameText>
+          <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
+          <PlayerTitleText>{audioInfos.title}</PlayerTitleText>
+          <PlayerNameText>{audioInfos.name}</PlayerNameText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
             {createTimeText(Math.round(audio.currentTime))}
           </PlayerInformText>
           <PlayerInformText width={30} whiteText={false}>
-            {createTimeText(Math.round(duration))}
+            {createTimeText(Math.round(audioInfos.duration))}
           </PlayerInformText>
           <QuitIcon onClick={quitAudio} />
         </PlayerInformWrapper>
@@ -130,7 +128,6 @@ const PlayerContainer = styled.section`
   display: flex;
 
   width: 192rem;
-  /* height: 108rem; */
 `;
 
 const PlayerWrapper = styled.article`
@@ -176,12 +173,11 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
 
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(0.3rem);
-  border-radius: 1rem;
+  border-radius: 50%;
 
   position: absolute;
-  top: 1.8rem;
-  left: ${({ progress }) => progress}%;
+  top: 1.6rem;
+  left: ${({ progress }) => progress - 0.5}%;
   z-index: 1001;
 
   pointer-events: none;
@@ -189,12 +185,12 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
   display: ${({ isActive }) => !isActive && "none"};
 `;
 
-const PlayerBarWrapper = styled.div`
+const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
   width: 192rem;
   height: 3rem;
 
   background-color: transparent;
-  border-bottom: 0.3rem solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto;
   z-index: 1000;
 `;

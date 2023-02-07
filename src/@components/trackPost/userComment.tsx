@@ -1,48 +1,104 @@
 import styled from "styled-components";
-import { AddCommentIc, CloseBtnIc, CommentBtnIc } from "../../assets";
+import { AddCommentIc, CloseBtnIc } from "../../assets";
 import CommentWrite from "./commentWrite";
-import EachUseComment from "./eachUserComment";
-// import comments from "../../core/trackPost/userComments";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import EachUserComment from "./eachUserComment";
+import { useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useInfiniteQuery } from "react-query";
 import { getComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
-import axios from "axios";
 import { postComment } from "../../core/api/trackPost";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { endPost, postContent, postContentLength, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { useRecoilState } from "recoil";
+import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
+import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
+import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
+import usePlayer from "../../utils/hooks/usePlayer";
 
-interface CommentPropsType {
-  closeComment: any;
+interface PropsType {
+  closeComment: () => void;
   beatId: number;
 }
 
-export default function UserComment(props: CommentPropsType) {
+export default function UserComment(props: PropsType) {
   const { closeComment, beatId } = props;
 
-  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [comments, setComments] = useState<UserCommentType[]>();
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
+  const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     wavFile: null,
   });
-  const contentLength = useRecoilValue(postContentLength);
+
+  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-
-  const audio = useMemo(() => new Audio(), []);
-
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [progress, setProgress] = useState<number>(0);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [duration, setDuration] = useState<number>(0);
-  const [clickedIndex, setClickedIndex] = useState<number>(-1);
-  const [hoveredIndex, setHoneredIndex] = useState<number>(-1);
+
+  const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+
+  //get
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "comments",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.commentList.length !== 0 ? lastPage?.nextPage : undefined;
+      },
+    },
+  );
+  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response.commentList[clickedIndex], "comment");
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  // get end
+
+  //post
+  const { mutate } = useMutation(postComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("beatId");
+      setContent("");
+      setWavFile(null);
+      setIsCompleted(false);
+      setIsEnd(false);
+    },
+  });
+
+  const queryClient = useQueryClient();
+  //post end
+
+  useEffect(() => {
+    if (content && wavFile) {
+      let formData = new FormData();
+      formData.append("wavFile", wavFile);
+      formData.append("content", content);
+      mutate(formData);
+    }
+  }, [isCompleted]);
+
+  useEffect(() => {
+    if (comments) {
+      audio.src = comments[clickedIndex].vocalWavFile;
+      setCurrentAudioFile(comments[clickedIndex].vocalWavFile);
+    }
+  }, [clickedIndex]);
+
+  useEffect(() => {
+    if (currentAudioFile) {
+      playPlayerAudio();
+    }
+  }, [currentAudioFile]);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getComment(page, beatId);
+      setComments((prev) => (prev ? [...prev, ...response?.commentList] : [...response?.commentList]));
+      return { response, nextPage: page + 1 };
+    }
+  }
 
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
@@ -51,72 +107,12 @@ export default function UserComment(props: CommentPropsType) {
     });
   }
 
-  //get
-  const { data } = useQuery(["beatId", beatId], () => getComment(beatId), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      if (data?.status === 200) {
-        // console.log(data);
-        // console.log("성공");
-        setComments(data?.data.data.commentList);
-      }
-    },
-    onError: (error) => {
-      console.log("실패");
-    },
-  });
-
-  //post
-  function uploadComment(uploadData: UploadDataType) {
+  function uploadComment() {
     setIsCompleted(true);
-    console.log("1");
   }
-
-  useEffect(() => {
-    if (content && wavFile) {
-      // if(uploadData.content&&uploadData.wavFile){
-      console.log("2");
-
-      let formData = new FormData();
-      formData.append("wavFile", wavFile);
-      formData.append("content", content);
-
-      mutate(formData);
-    }
-  }, [isCompleted]);
-
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation(postComment, {
-    onSuccess: () => {
-      console.log("3");
-      queryClient.invalidateQueries("beatId");
-      setUploadData({
-        content: "",
-        wavFile: null,
-      });
-      setContent("");
-      setWavFile(null);
-      setIsCompleted(false);
-      setIsEnd(false);
-    },
-  });
-
-  function playAudio() {}
-
-  function pauseAudio() {}
 
   function clickComment(index: number) {
     setClickedIndex(index);
-  }
-
-  function hoverComment(index: number) {
-    setHoneredIndex(index);
-  }
-
-  function getDuration(durationTime: number) {
-    setDuration(durationTime);
   }
 
   return (
@@ -130,7 +126,7 @@ export default function UserComment(props: CommentPropsType) {
           <AddWrapper>
             <div></div>
 
-            <AddCommentIcon onClick={() => uploadComment(uploadData)} />
+            <AddCommentIcon onClick={uploadComment} />
           </AddWrapper>
         </form>
 
@@ -138,32 +134,30 @@ export default function UserComment(props: CommentPropsType) {
           {comments &&
             comments.map((data, index) => {
               return (
-                <EachUseComment
+                <EachUserComment
                   key={index}
-                  data={comments[index]}
+                  commentInfo={data}
                   audio={audio}
                   clickedIndex={clickedIndex}
-                  hoveredIndex={hoveredIndex}
                   clickComment={clickComment}
-                  hoverComment={hoverComment}
-                  index={index}
-                  comment={data}
+                  pauseAudio={pausesPlayerAudio}
+                  currentIndex={index}
                 />
-              ); //여기가 각각의 데이터
+              );
             })}
-          <BlurSection />
         </CommentWriteWrapper>
+        <BlurSection />
+        <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
       </CommentContainer>
-      {comments && (
+      {showPlayer && (
         <Player
           audio={audio}
-          playAudio={playAudio}
-          pauseAudio={pauseAudio}
+          playAudio={playPlayerAudio}
+          pauseAudio={pausesPlayerAudio}
           progress={progress}
-          duration={duration}
-          title="경계의 저편으로"
-          name={comments[clickedIndex]?.vocalName}
-          image={comments[clickedIndex]?.vocalProfileImage}
+          audioInfos={audioInfos}
+          play={play}
+          setPlay={setPlay}
         />
       )}
     </>
@@ -177,14 +171,11 @@ const CommentWriteWrapper = styled.div`
 const CommentContainer = styled.section`
   width: 107.7rem;
   float: right;
-
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
-
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;
-
   position: sticky;
   z-index: 1;
   top: 0;
@@ -193,29 +184,13 @@ const CommentContainer = styled.section`
 
 const CloseCommentBtn = styled.div`
   width: 19.8rem;
-
   display: flex;
   flex-direction: column;
-
   margin-bottom: 2.7rem;
-`;
-
-const CloseText = styled.strong`
-  ${({ theme }) => theme.fonts.id};
-
-  color: ${({ theme }) => theme.colors.white};
-
-  margin-left: 0.5rem;
-`;
-
-const CommentBtnIcon = styled(CommentBtnIc)`
-  height: 2rem;
-  width: 100%;
 `;
 
 const AddWrapper = styled.div`
   width: 100%;
-
   display: flex;
   justify-content: space-between;
 `;
@@ -227,11 +202,16 @@ const AddCommentIcon = styled(AddCommentIc)`
 
 const BlurSection = styled.div`
   height: 32rem;
-  width: 101.1rem;
+  width: 107.7rem;
 
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
-
   bottom: 0;
-  right: 0;
   position: sticky;
+
+  padding-left: 7.5rem;
+`;
+
+const InfiniteWrapper = styled.div`
+  width: 100%;
+  height: 2rem;
 `;

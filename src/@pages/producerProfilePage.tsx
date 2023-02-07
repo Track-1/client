@@ -1,149 +1,82 @@
 import styled from "styled-components";
-import axios from "axios";
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useState, useRef } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
-import { getProducerProfile, getSelectingTracks } from "../core/api/producerProfile";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
-import { VocalProfileType } from "../type/vocalProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import {tracksOrVocalsCheck} from "../recoil/tracksOrVocalsCheck"
-import { Category } from "../core/common/categoryHeader";
+import { useLocation } from "react-router-dom";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import usePlayer from "../utils/hooks/usePlayer";
+import { useInfiniteQuery } from "react-query";
+import { getProducerPortfolio, getSelectingTracks } from "../core/api/producerProfile";
+import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function ProducerProfilePage() {
-  const [profileData, setProfileData] = useState<ProducerProfileType>();
-  const [vocalProfileData, setVocalProfileData] = useState<VocalProfileType>();
+  const { state } = useLocation();
 
+  const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(false);
   const [stateChange, setStateChange] = useState<boolean>(false);
+  const [audioInfos, setAudioInfos] = useState({
+    title: "",
+    name: "",
+    progress: "",
+    duration: 0,
+    image: "",
+  });
+
   const visible = useRecoilValue(uploadButtonClicked);
-
+  const showPlayer = useRecoilValue(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [progress, setProgress] = useState<number>(0);
-  const [duration, setCurrentDuration] = useState<number>(0);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string>("");
 
-  const { producerId } = useParams();
+  const { progress, audio } = usePlayer();
 
-  const audio = useMemo(() => new Audio(), []);
-
-  const [whom, setWhom]=useRecoilState(tracksOrVocalsCheck)
-
-  // infinite
-  const targetRef = useRef<any>();
-  const page = useRef<number>(1);
-  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-
-  useEffect(()=>{
-    setWhom(Category.TRACKS)
-  },[])
-
-  useEffect(() => {
-    async function getData() {
-      // const data = await getProducerProfile(Number(producerId));
-      const data = await getProducerProfile(Number(2));
-      setProfileData(data?.data?.data.producerProfile);
-      setIsMe(data?.data?.data.isMe);
-      console.log(data?.data?.data.producerProfile)
-    }
-    getData();
-  }, []);
-
-  const fetch = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        // `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page.current}&limit=3`,
-        `${process.env.REACT_APP_BASE_URL}/profile/producer/${2}?page=${page.current}&limit=3`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
-          },
-        },
-      );
-      setPortfolioData((prev) => prev && [...prev, ...data?.data?.producerPortfolio]);
-
-      setHasNextPage(data?.data.producerPortfolio.length === 4);
-      if (data?.data.producerPortfolio.length) {
-        page.current += 1;
+  async function getData(page: number) {
+    let response: any;
+    if (hasNextPage !== false) {
+      switch (profileState) {
+        case "Portfolio":
+          response = await getProducerPortfolio(2, page);
+          break;
+        case "Vocal Searching":
+          response = await getSelectingTracks(2, page);
+          break;
       }
-    } catch (e) {
-      console.error(e);
+      setIsMe(response?.isMe);
+      setProfileData(response?.producerProfile);
+      setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
+      return { response, nextPage: page + 1 };
     }
-  }, []);
+  }
 
-  useEffect(() => {
-    // if (!targetRef.current || !hasNextPage) return;
-    const io = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        fetch();
-      }
-    });
-    io.observe(targetRef.current);
+  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "vocalPortFolio",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+      },
+    },
+  );
 
-    return () => {
-      io.disconnect();
-    };
-  }, [fetch, hasNextPage]);
-
-  //end
-
-  useEffect(() => {
-    async function getData() {
-      const data = await getProducerProfile(Number(producerId));
-      setProfileData(data?.data?.data.producerProfile);
-      setIsMe(data?.data?.data.isMe);
-    }
-    getData();
-  }, []);
-
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   function playAudio() {
     audio.play();
     setPlay(true);
-
-    console.log(play);
   }
 
   function pauseAudio() {
     audio.pause();
     setPlay(false);
-  }
-
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
-
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      console.log(audio.currentTime, audio.duration);
-      setProgress(currentDuration);
-      checkAudioQuit();
-    }
-  }
-
-  function checkAudioQuit() {
-    audio.duration === audio.currentTime && setPlay(false);
   }
 
   function changeToProfile() {
@@ -156,25 +89,15 @@ export default function ProducerProfilePage() {
     setStateChange((prev) => !prev);
   }
 
-  async function getVocalSearchData() {
-    const data = await getSelectingTracks();
-    setPortfolioData(data?.data);
-  }
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
 
-  async function getProfileData() {
-    const data = await getProducerProfile(Number(producerId));
-    setPortfolioData(data?.data.producerPortfolio);
+    setAudioInfos(tempInfos);
   }
-
-  function getDuration(durationTime: number) {
-    setCurrentDuration(durationTime);
-  }
-
-  function getAudioInfos(title: string, image: string) {
-    setTitle(title);
-    setImage(image);
-  }
-
 
   return (
     <>
@@ -192,22 +115,20 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {portfolioData && (
+        {portfolioData && profileData && (
           <ProducerPortFolioList
             isMe={isMe}
             portfolioData={portfolioData}
             profileState={profileState}
             stateChange={stateChange}
             audio={audio}
-            playAudio={playAudio}
             pauseAudio={pauseAudio}
-            duration={duration}
-            getDuration={getDuration}
             getAudioInfos={getAudioInfos}
+            producerName={profileData?.name}
           />
         )}
       </PageContainer>
-      <InfiniteDiv ref={targetRef}> </InfiniteDiv>
+      <InfiniteDiv ref={observerRef}> </InfiniteDiv>
 
       {showPlayer && profileData && (
         <Player
@@ -215,10 +136,9 @@ export default function ProducerProfilePage() {
           playAudio={playAudio}
           pauseAudio={pauseAudio}
           progress={progress}
-          duration={duration}
-          title={title}
-          name={profileData?.name}
-          image={image}
+          audioInfos={audioInfos}
+          play={play}
+          setPlay={setPlay}
         />
       )}
     </>

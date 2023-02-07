@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   TitleTextIc,
@@ -8,107 +8,75 @@ import {
   HoverPauseIc,
   HoverPlayIc,
 } from "../../assets";
-import tracks from "../../mocks/tracksListDummy.json";
-import { showPlayerBar, playMusic, audioFile } from "../../recoil/player";
+import { showPlayerBar, playMusic } from "../../recoil/player";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { TracksDataType } from "../../type/tracksDataType";
-import { trackListinfiniteScroll } from "../../recoil/infiniteScroll";
+import usePlay from "../../utils/hooks/usePlay";
+import { isSameIndex } from "../../utils/common/checkIndex";
 
 interface PropsType {
   audio: HTMLAudioElement;
-  playAudio: () => void;
   pauseAudio: () => void;
   tracksData: TracksDataType[];
-  duration: number;
-  getDuration: (durationTime: number) => void;
-  // targetRef: any;
-  getAudioInfos: (title: string, name: string, image: string) => void;
+  getInfos: any;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, playAudio, pauseAudio, tracksData, duration, getDuration, getAudioInfos } = props;
-  const [trackHover, setTrackHover] = useState<number>(-1);
-
-  const [trackClick, setTrackClick] = useState<number>(-1);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [beatId, setBeatId] = useState<number>();
-  const [currentTime, setCurrentTime] = useState<number>();
-
-  const [currentFile, setCurrentFile] = useRecoilState<string>(audioFile);
-
-  //무한 스크롤
-  const [page, setPage] = useRecoilState(trackListinfiniteScroll);
-  const [loading, setLoading] = useState(false);
-  const loadMore = () => setPage((prev) => prev + 1);
-  const target = useRef<HTMLDivElement | null>(null);
-
-  //  console.log(vocalData);
-
-  useEffect(() => {
-    //  if (!loading) {
-    const observer = new IntersectionObserver((endDiv) => {
-      if (endDiv[0].isIntersecting) {
-        loadMore();
-      }
-    });
-    observer.observe(target.current!);
-    // }
-  }, []);
-
-  useEffect(() => {
-    playAudio();
-  }, [currentFile]);
-
-  useEffect(() => {
-    setCurrentFile(tracksData[trackClick]?.wavFile);
-    audio.src = tracksData[trackClick]?.wavFile;
-    getDuration(tracksData[trackClick]?.wavFileLength);
-
-    getAudioInfos(
-      tracksData[trackClick]?.title,
-      tracksData[trackClick]?.producerName,
-      tracksData[trackClick]?.jacketImage,
-    );
-  }, [trackClick]);
+  const { audio, pauseAudio, tracksData, getInfos } = props;
 
   const navigate = useNavigate();
 
+  const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
+
+  const [play, setPlay] = useRecoilState(playMusic);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
+  const { clickedIndex, playAudio, audioInfos } = usePlay(audio, tracksData, "tracks");
+
+  useEffect(() => {
+    getInfos(audioInfos);
+  }, [clickedIndex]);
+
   function mouseOverTrack(id: number) {
-    setTrackHover(id);
+    setHoveredIndex(id);
   }
 
   function mouseOutTrack() {
-    setTrackHover(-1);
-  }
-
-  function playAudioOnTrack(id: number) {
-    setShowPlayer(true);
-    if (trackClick === id) {
-      audio.play();
-      setPlay(true);
-    } else {
-      setPlay(true);
-
-      setShowPlayer(true);
-      setBeatId(id);
-      setTrackClick(id);
-    }
+    setHoveredIndex(-1);
   }
 
   function movePostPage(id: number) {
-    pauseAudio();
-
-    setPlay(false);
-    setBeatId(id);
-
+    resetPlayer();
     navigate(`/track-post/${id}`, { state: id });
+  }
+
+  function resetPlayer() {
+    pauseAudio();
+    audio.currentTime = 0;
+    setPlay(false);
     setShowPlayer(false);
   }
+
   function moveProducerProfilePage(producerId: number) {
     navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);
+  }
+
+  function isClickedTrack(index: number) {
+    return isSameIndex(clickedIndex, index);
+  }
+
+  function isHoveredTrack(index: number) {
+    return isSameIndex(hoveredIndex, index);
+  }
+
+  function isInitPlay(targetIndex: number) {
+    return !isClickedTrack(targetIndex) && isHoveredTrack(targetIndex);
+  }
+
+  function isPlayAgain(targetIndex: number) {
+    return isSameIndex(clickedIndex, targetIndex);
   }
 
   return (
@@ -127,33 +95,30 @@ export default function TrackList(props: PropsType) {
             onMouseEnter={() => mouseOverTrack(index)}
             onMouseLeave={mouseOutTrack}
             showPlayer={showPlayer}
-            trackHoverBool={trackHover === index}
-            trackClickBool={trackClick === index}
-            trackClick={trackClick}>
+            trackHoverBool={hoveredIndex === index}
+            trackClickBool={clickedIndex === index}
+            trackClick={clickedIndex}>
             <TrackBox>
-              {((trackClick !== index && trackHover === index && trackHover !== -1) ||
-                (!play && trackClick === index && trackClick !== -1)) && (
-                <HoverPauseIcon onClick={() => playAudioOnTrack(index)} />
-              )}
-              {play && trackClick === index && trackClick !== -1 && <HoverPlayIcon onClick={pauseAudio} />}
+              {isInitPlay(index) && <HoverPauseIcon onClick={() => playAudio(index)} />}
+              {isPlayAgain(index) &&
+                (play ? <HoverPlayIcon onClick={pauseAudio} /> : <HoverPauseIcon onClick={() => playAudio(index)} />)}
               <Thumbnail src={track.jacketImage} alt="썸네일" />
-              <TrackText width={36.8} isHover={true} onClick={() => movePostPage(track.beatId)}>
+              <TrackText width={36.8} isHoverActive={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
-              <TrackText width={21.3} isHover={true} onClick={() => moveProducerProfilePage(track.producerId)}>
+              <TrackText width={21.3} isHoverActive={true} onClick={() => moveProducerProfilePage(track.producerId)}>
                 {track.producerName}
               </TrackText>
-              <TrackText width={20.5} isHover={false}>
+              <TrackText width={20.5} isHoverActive={false}>
                 {track.category}
               </TrackText>
             </TrackBox>
-            {track.keyword.map((tag, idx) => (
+            {track?.keyword?.map((tag, idx) => (
               <Tag key={idx}>#{tag}</Tag>
             ))}
           </Tracks>
         ))}
       </TracksWrapper>
-      <InfiniteDiv ref={target}> 아아 </InfiniteDiv>
     </TrackListContainer>
   );
 }
@@ -240,11 +205,11 @@ const Thumbnail = styled.img`
   border-radius: 6.55rem;
 `;
 
-const TrackText = styled.div<{ width: number; isHover: boolean }>`
+const TrackText = styled.div<{ width: number; isHoverActive: boolean }>`
   width: ${(props) => props.width}rem;
   ${({ theme }) => theme.fonts.body1};
   :hover {
-    color: ${({ isHover, theme }) => isHover && theme.colors.sub1};
+    color: ${({ isHoverActive, theme }) => isHoverActive && theme.colors.sub1};
     cursor: pointer;
   }
 `;

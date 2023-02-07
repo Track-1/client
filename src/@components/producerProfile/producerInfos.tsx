@@ -1,29 +1,21 @@
 import styled from "styled-components";
-import { BackBtnIc, CategoryIc, DescriptionIc, HashtagIc, SleeperAccountIc } from "../../assets";
-import { useState } from "react";
-import thumbnailImg from "../../assets/image/thumbnailImg.png";
-import { theme } from "../../style/theme";
+import { CategoryIc, DescriptionIc, HashtagIc, SleeperAccountIc } from "../../assets";
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { trackSearching } from "../../recoil/categorySelect";
-import { useNavigate } from "react-router-dom";
+import { Categories } from "../../core/constants/categories";
 
 interface PropsType {
   profileData: ProducerProfileType;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const navigate = useNavigate();
   const { profileData } = props;
-  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  const trackSearch = useRecoilValue<boolean>(trackSearching);
 
-  
-  console.log(trackSearch);
-  
+  const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+
   return (
     <InfoContainer>
       <InfoHeader>
@@ -44,33 +36,16 @@ export default function ProducerInfos(props: PropsType) {
 
       <ProducerNameContainer>
         <ProducerName>{profileData.name}</ProducerName>
-      {/* /  {tracksOrVocals === "Vocals" && !trackSearch && <SleeperAccountIcon />} */}
       </ProducerNameContainer>
 
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
           <CategoryIc />
-          {/* //로직 수정 필요 */}
           <CategoryArray>
-            {/* {profileData.category } */}
-            {profileData.category.indexOf("R&B") > -1 ? <Category>R&B</Category> : <NotCategory>R&B</NotCategory>}
-            {profileData.category.indexOf("Hiphop") > -1 ? (
-              <Category>Hiphop</Category>
-            ) : (
-              <NotCategory>Hiphop</NotCategory>
+            {Object.values(Categories).map((value) =>
+              profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
             )}
-            {profileData.category.indexOf("Ballad") > -1 ? (
-              <Category>Ballad</Category>
-            ) : (
-              <NotCategory>Ballad</NotCategory>
-            )}
-            {profileData.category.indexOf("Pop") > -1 ? <Category>Pop</Category> : <NotCategory>Pop</NotCategory>}
-            {profileData.category.indexOf("Rock") > -1 ? <Category>Rock</Category> : <NotCategory>Rock</NotCategory>}
-            {profileData.category.indexOf("EDM") > -1 ? <Category>EDM</Category> : <NotCategory>EDM</NotCategory>}
-            {profileData.category.indexOf("JAZZ") > -1 ? <Category>JAZZ</Category> : <NotCategory>JAZZ</NotCategory>}
-            {profileData.category.indexOf("House") > -1 ? <Category>House</Category> : <NotCategory>House</NotCategory>}
-            {profileData.category.indexOf("Funk") > -1 ? <Category>Funk</Category> : <NotCategory>Funk</NotCategory>}
           </CategoryArray>
         </CategoryBox>
         <HashtagBox>
