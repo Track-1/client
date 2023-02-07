@@ -3,11 +3,11 @@ import VocalUpload from "../@components/upload/vocalUpload";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { useParams } from "react-router-dom";
-import { UploadInfoDataType, UploadInfoRefType } from "../type/uploadInfoDataType";
+import { UploadInfoDataType } from "../type/uploadInfoDataType";
 import { useState } from "react";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
-import { isMaker } from "../utils/common/userType";
+import { checkUserType } from "../utils/common/userType";
 import UploadHeader from "../@components/@common/uploadHeader";
 
 export default function UploadPage() {
@@ -23,13 +23,11 @@ export default function UploadPage() {
     jacketImage: getDefaultImage(),
   });
 
-  const [uploadDataRef, setUploadDataRef] = useState<UploadInfoRefType>({
-    introduceRef: null,
-  });
+  const [uploadDataRef, setUploadDataRef] = useState<React.MutableRefObject<HTMLTextAreaElement | null> | null> (null);
 
   function getDefaultImage(): FormData {
     let defaultImage = new FormData();
-    isMaker(userType)
+    checkUserType(userType)
       ? defaultImage.append("defaultImage", TrackUploadDefaultImg)
       : defaultImage.append("defaultImage", VocalUploadDefaultImg);
 
@@ -45,7 +43,7 @@ export default function UploadPage() {
         setUploadData={setUploadData}
         uploadDataRef={uploadDataRef}
       />
-      {isMaker(userType) ? (
+      {checkUserType(userType) ? (
         <TrackUpload uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
       ) : (
         <VocalUpload uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />

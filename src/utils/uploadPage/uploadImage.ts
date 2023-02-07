@@ -2,7 +2,6 @@ import { fileSize } from "../../core/constants/fileSize";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
-import { isMouseEnter } from "../../utils/common/eventType";
 
 export function uploadImage(
   e: React.ChangeEvent<HTMLInputElement>,
@@ -20,16 +19,6 @@ export function uploadImage(
         return { ...prevState, jacketImage: file };
       });
     }
-  }
-}
-
-export function setHover(
-  e: React.MouseEvent<HTMLDivElement | SVGSVGElement>,
-  defaultImage: string,
-  setIsHover: React.Dispatch<React.SetStateAction<boolean>>,
-) {
-  if (!isDefaultImage(defaultImage)) {
-    isMouseEnter(e) ? setIsHover(true) : setIsHover(false);
   }
 }
 

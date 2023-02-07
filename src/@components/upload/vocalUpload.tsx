@@ -4,36 +4,37 @@ import UploadInfo from "../@common/uploadInfo";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
-import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { uploadImage } from "../../utils/uploadPage/uploadImage";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
+import useHover from "../../utils/hooks/useHover";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function VocalUpload(props: propsType) {
   const { uploadData, setUploadData, setUploadDataRef } = props;
 
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { hoverState, changeHoverState } = useHover();
 
   return (
     <Container>
       <SectionWrapper>
         <VocalImageBox>
           <VocalImageFrame
-            onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
-            onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}>
+            onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
+            onMouseLeave={(e) => changeHoverState(e, vocalUploadImg)}>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" isHover={isHover} />
+              <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" hoverState={hoverState} />
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {isHover && (
+              {hoverState && (
                 <FileChangeIcon
-                  onMouseEnter={(e) => setHover(e, vocalUploadImg, setIsHover)}
-                  onMouseLeave={(e) => setHover(e, vocalUploadImg, setIsHover)}
+                  onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
+                  onMouseLeave={(e) => changeHoverState(e, vocalUploadImg)}
                 />
               )}
             </label>
@@ -92,7 +93,7 @@ const VocalImageFrame = styled.div`
   object-fit: cover;
 `;
 
-const VocalUploadImage = styled.img<{ isHover: boolean }>`
+const VocalUploadImage = styled.img<{ hoverState: boolean }>`
   width: 59.8rem;
   height: 59.8rem;
   transform: rotate(-45deg);
@@ -100,7 +101,7 @@ const VocalUploadImage = styled.img<{ isHover: boolean }>`
   margin-top: -7.4rem;
   object-fit: cover;
   ${(props) =>
-    props.isHover
+    props.hoverState
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

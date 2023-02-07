@@ -6,15 +6,15 @@ import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
-import { isMaker } from "../../utils/common/userType";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
+import { checkUserType } from "../../utils/common/userType";
 
 interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  uploadDataRef: UploadInfoRefType;
+  uploadDataRef: React.MutableRefObject<HTMLTextAreaElement | null> | null;
 }
 
 export default function UploadHeader(props: PropsType) {
@@ -27,7 +27,7 @@ export default function UploadHeader(props: PropsType) {
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      isMaker(userType) ? navigate(-1) : navigate("/vocal-profile/1");
+      checkUserType(userType) ? navigate(-1) : navigate("/vocal-profile/1");
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -44,9 +44,10 @@ export default function UploadHeader(props: PropsType) {
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     setOpenModal(false);
-
+    const introduce = uploadDataRef?.current?.value;
+  
     setUploadData((prevState) => {
-      return { ...prevState, introduce: uploadDataRef.introduceRef?.current!.value };
+      return { ...prevState, introduce: introduce };
     });
     if (isUploadActive) {
       mutate();

@@ -3,20 +3,21 @@ import styled, { css } from "styled-components";
 import UploadInfo from "../@common/uploadInfo";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import { FileChangeIc } from "../../assets";
-import { uploadImage, setHover } from "../../utils/uploadPage/uploadImage";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { uploadImage } from "../../utils/uploadPage/uploadImage";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
+import useHover from "../../utils/hooks/useHover";
 
 interface PropsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function TrackUpload(props: PropsType) {
   const { uploadData, setUploadData, setUploadDataRef } = props;
 
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { hoverState, changeHoverState } = useHover();
 
   return (
     <Container>
@@ -25,17 +26,17 @@ export default function TrackUpload(props: PropsType) {
           <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
             <TrackUploadImage
               src={trackUploadImg}
-              alt="썸네일이미지"
-              onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
-              onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
-              isHover={isHover}
+              alt="썸네일 이미지"
+              onMouseEnter={(e) => changeHoverState(e, trackUploadImg)}
+              onMouseLeave={(e) => changeHoverState(e, trackUploadImg)}
+              hoverState={hoverState}
             />
           </label>
           <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-            {isHover && (
+            {hoverState && (
               <FileChangeIcon
-                onMouseEnter={(e) => setHover(e, trackUploadImg, setIsHover)}
-                onMouseLeave={(e) => setHover(e, trackUploadImg, setIsHover)}
+                onMouseEnter={(e) => changeHoverState(e, trackUploadImg)}
+                onMouseLeave={(e) => changeHoverState(e, trackUploadImg)}
               />
             )}
           </label>
@@ -87,12 +88,13 @@ const TrackImageBox = styled.div`
   cursor: pointer;
 `;
 
-const TrackUploadImage = styled.img<{ isHover: boolean }>`
+const TrackUploadImage = styled.img<{ hoverState: boolean }>`
   width: 60.4rem;
   height: 60.4rem;
   object-fit: cover;
+  border-radius: 50%;
   ${(props) =>
-    props.isHover
+    props.hoverState
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

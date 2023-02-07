@@ -15,19 +15,20 @@ import {
   CheckCategoryIc,
 } from "../../assets";
 
+import { Categories } from "../../core/constants/categories";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
-import { UploadInfoDataType, UploadInfoRefType } from "../../type/uploadInfoDataType";
+import { UploadInfoDataType } from "../../type/uploadInfoDataType";
+import useHover from "../../utils/hooks/useHover";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<UploadInfoRefType>>;
+  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function UploadInfo(props: propsType) {
   const { uploadData, setUploadData, setUploadDataRef } = props;
-  const CATEGORY: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "Jazz", "House", "Funk"];
   const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -37,9 +38,9 @@ export default function UploadInfo(props: propsType) {
   const enteredHashtag = useRef<HTMLInputElement | null>(null);
   const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
 
-  const [checkState, setCheckState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
-  const [checkHoverState, setCheckHoverState] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
-  const [checkStateIcon, setCheckStateIcon] = useState<Array<boolean>>(new Array(CATEGORY.length).fill(false));
+  const [checkState, setCheckState] = useState<boolean[]>([]);
+  const [checkHoverState, setCheckHoverState] = useState<boolean[]>([]);
+  const [checkStateIcon, setCheckStateIcon] = useState<boolean[]>([]);
 
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [fileName, setFileName] = useState<string>("");
@@ -57,7 +58,49 @@ export default function UploadInfo(props: propsType) {
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
 
-  const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
+  // const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
+  const { hoverState, changeHoverState } = useHover();
+
+  useEffect(() => {
+    if (introduceRef && introduceRef.current) {
+      introduceRef.current.style.height = 0 + "rem";
+      const scrollHeight = introduceRef.current.scrollHeight;
+      changeIntroduceInputHeight(scrollHeight);
+      setTextareaMargin(scrollHeight);
+    }
+  }, [textareaHeight]);
+
+  useEffect(() => {
+    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
+      makeZeroInputWidth(0);
+      const inputWidth = enteredHashtag.current!.scrollWidth;
+      changeHashtagInputWidth(inputWidth);
+      setHashtagInputWidth(inputWidth);
+    } else {
+      makeZeroInputWidth(HASHTAG_WIDTH);
+      setHashtagInputWidth(HASHTAG_WIDTH);
+    }
+  }, [hashtagInputWidth]);
+
+  useEffect(() => {
+    setUploadDataRef(introduceRef);
+    const initArray = getInitFalseArray();
+    initArrayState(initArray);
+  }, []);
+
+  function getInitFalseArray(): boolean[] {
+    const initArray: boolean[] = [];
+    Object.values(Categories).forEach(() => {
+      initArray.push(false);
+    });
+    return initArray;
+  }
+
+  function initArrayState(initArray: boolean[]): void {
+    setCheckState(initArray);
+    setCheckHoverState(initArray);
+    setCheckStateIcon(initArray);
+  }
 
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -137,7 +180,8 @@ export default function UploadInfo(props: propsType) {
 
   // 카테고리
   function selectedCategory(e: React.MouseEvent<HTMLLIElement>, index: number) {
-    const temp = new Array(CATEGORY.length).fill(false);
+    const temp = getInitFalseArray();
+
     temp[index] = true;
     setCheckState([...temp]);
     setCheckStateIcon([...temp]);
@@ -149,7 +193,8 @@ export default function UploadInfo(props: propsType) {
   }
 
   function hoverCategoryMenu(e: React.MouseEvent<HTMLLIElement>, index: number) {
-    const hoverMenu = new Array(CATEGORY.length).fill(false);
+    const hoverMenu = getInitFalseArray();
+
     if (isMouseEnter(e)) {
       hoverMenu[index] = true;
       setCheckHoverState([...hoverMenu]);
@@ -225,9 +270,9 @@ export default function UploadInfo(props: propsType) {
     resetHashtagInputWidth();
   }
 
-  function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-    isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
-  }
+  // function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
+  //   isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
+  // }
 
   function isEmptyHashtagInput(): boolean {
     return enteredHashtag.current!.value.length === 0;
@@ -272,37 +317,6 @@ export default function UploadInfo(props: propsType) {
   function changeIntroduceInputHeight(scrollHeight: number): void {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
-
-  console.log(uploadData.keyword);
-  useEffect(() => {
-    if (introduceRef && introduceRef.current) {
-      introduceRef.current.style.height = 0 + "rem";
-      const scrollHeight = introduceRef.current.scrollHeight;
-      changeIntroduceInputHeight(scrollHeight);
-      setTextareaMargin(scrollHeight);
-    }
-  }, [textareaHeight]);
-
-  useEffect(() => {
-    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
-      makeZeroInputWidth(0);
-      const inputWidth = enteredHashtag.current!.scrollWidth;
-      changeHashtagInputWidth(inputWidth);
-      setHashtagInputWidth(inputWidth);
-    } else {
-      makeZeroInputWidth(HASHTAG_WIDTH);
-      setHashtagInputWidth(HASHTAG_WIDTH);
-    }
-  }, [hashtagInputWidth]);
-
-  useEffect(() => {
-    setUploadDataRef((prevState) => {
-      return {
-        ...prevState,
-        introduceRef: introduceRef,
-      };
-    });
-  }, []);
 
   return (
     <Container>
@@ -430,8 +444,8 @@ export default function UploadInfo(props: propsType) {
               {hashtagLength > 0 && uploadData.keyword.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
             </InputWrapper>
 
-            <WarningIcon onMouseEnter={hoverWarningState} onMouseLeave={hoverWarningState}>
-              {warningHoverState ? (
+            <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+              {hoverState ? (
                 <>
                   <HoverHashtagWarningIc />
                   <WarningTextWrapper>
@@ -477,7 +491,7 @@ export default function UploadInfo(props: propsType) {
       </TextCount>
       <DropMenuBox hiddenDropBox={hiddenDropBox}>
         <DropMenuWrapper>
-          {CATEGORY.map((text: string, index: number) => (
+          {Object.values(Categories).map((text: string, index: number) => (
             <DropMenuItem
               checkState={checkState[index]}
               checkHoverState={checkHoverState[index]}
