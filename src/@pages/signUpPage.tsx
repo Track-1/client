@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import BackButton from '../@components/@common/backButton';
 import { SignBackgroundIc } from '../assets';
+import Footer from '../@components/@common/footer';
 
 export default function signUpPage() {
   return (
@@ -9,6 +10,7 @@ export default function signUpPage() {
             <BackButton/>
         </BackButtonWrapper>
         <SignBackgroundIcon/>
+        <Footer/>
     </>
   )
 }
