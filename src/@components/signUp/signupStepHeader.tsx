@@ -1,4 +1,4 @@
-import React from 'react'
+import styled from 'styled-components';
 import { LoginHereMessageIc, SignUpStep1Ic, SignUpStep2Ic, SignUpStep3Ic, SignUpStepBlanckIc } from '../../assets';
 import { StepPropsType } from '../../type/signUpStepTypes'
 import { chaeckStepType } from '../../utils/signUp/stepType';
@@ -15,9 +15,11 @@ export default function SignupStepHeader(props:StepPropsType) {
 
   return (
     <>
-        {chaeckStepType(step)===1?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
-        {chaeckStepType(step)===2?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
-        {chaeckStepType(step)===3?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
+        <StepsWrapper>
+            {chaeckStepType(step)===1?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
+            {chaeckStepType(step)===2?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
+            {chaeckStepType(step)===3?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
+        </StepsWrapper>
         <LoginHereMessageIcon onClick={moveLoginPage}/>
     </>
   )
@@ -25,4 +27,11 @@ export default function SignupStepHeader(props:StepPropsType) {
 
 const LoginHereMessageIcon=styled(LoginHereMessageIc)`
     cursor: pointer;
+`
+
+const StepsWrapper=styled.section`
+    display: flex;
+    justify-content: space-between;
+
+    width: 11.2rem;
 `

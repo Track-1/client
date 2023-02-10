@@ -138,5 +138,4 @@ export { ReactComponent as LoginHereMessageIc } from "./icon/loginHereMessageIc.
 export { ReactComponent as SignUpStep1Ic } from "./icon/signUpStep1Ic.svg";
 export { ReactComponent as SignUpStep2Ic } from "./icon/signUpStep2Ic.svg";
 export { ReactComponent as SignUpStep3Ic } from "./icon/signUpStep3Ic.svg";
-export { ReactComponent as SignUpStep4Ic } from "./icon/signUpStep4Ic.svg";
-export { ReactComponent as SignUpStepBlanckIc } from "./icon/signUpStepBlackIc.svg";
+export { ReactComponent as SignUpStepBlanckIc } from "./icon/signUpStepBlanckIc.svg";
