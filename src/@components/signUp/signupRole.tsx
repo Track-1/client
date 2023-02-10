@@ -33,7 +33,7 @@ export default function SignupRole(props:SetStepPropsType) {
 
   return (
     <RoleWrapper>
-      <SignUpSelectRoleTitleIc/>
+      <SignUpSelectRoleTitleIcon/>
 
       {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>:<SignupNotSelectedProducerIcon onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>}
       {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>:<SignupNotSelectedVocalIcon onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>}    
@@ -49,22 +49,30 @@ const RoleWrapper=styled.section`
   margin-top: 7.7rem;
 `
 
+const SignUpSelectRoleTitleIcon=styled(SignUpSelectRoleTitleIc)`
+  margin-left:14.4rem;
+`
+
 const SignupSelectedProducerIcon=styled(SignupSelectedProducerIc)`
-  margin:3.3rem 0 1.4rem 0;
+  margin:3.3rem 0 1.4rem 11.2rem;
 
   cursor: pointer;
 `
 
 const SignupNotSelectedProducerIcon=styled(SignupNotSelectedProducerIc)`
-  margin:3.3rem 0 1.4rem 0;
+  margin:3.3rem 0 1.4rem 11.2rem;
 
   cursor: pointer;
 `
 
 const SignupSelectedVocalIcon=styled(SignupSelectedVocalIc)`
+  margin-left: 6.3rem;
+
   cursor: pointer;
 `
 
 const SignupNotSelectedVocalIcon=styled(SignupNotSelectedVocalIc)`
+  margin-left: 6.3rem;
+
   cursor: pointer;
 `
