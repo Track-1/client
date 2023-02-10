@@ -132,3 +132,4 @@ export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHe
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
 export { ReactComponent as SignBackgroundIc } from "./icon/signBackgroundIc.svg";
+export { ReactComponent as SignBgLogoIc } from "./icon/signBgLogoIc.svg";
