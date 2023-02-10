@@ -1,7 +1,30 @@
 import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
+import { deleteTrack } from "../../core/api/delete";
+import { useMutation } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditDropDown() {
+  const navigate = useNavigate();
+  const { beatId } = useParams();
+
+  const { mutate } = useMutation(deleteTrackAPI, {
+    onSuccess: () => {
+      navigate(-1);
+    },
+    onError: (error) => {
+      console.log("에러!!", error);
+    },
+  });
+
+  async function deleteTrackAPI() {
+    return await deleteTrack(beatId);
+  }
+
+  function deleteOwnTrack(): void {
+    mutate();
+  }
+
   return (
     <DropDownContainer>
       <EditWrapper>
@@ -9,7 +32,7 @@ export default function EditDropDown() {
         <EditIc />
       </EditWrapper>
       <DivisionBar />
-      <DeleteWrapper>
+      <DeleteWrapper onClick={deleteOwnTrack}>
         <DeleteText>삭제하기</DeleteText>
         <DeleteIc />
       </DeleteWrapper>
@@ -28,6 +51,8 @@ const DropDownContainer = styled.ul`
   border-radius: 0.5rem;
 
   margin-left: 25rem;
+
+  cursor: pointer;
 `;
 
 const EditWrapper = styled.li`
