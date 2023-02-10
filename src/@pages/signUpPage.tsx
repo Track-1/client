@@ -3,11 +3,12 @@ import BackButton from '../@components/@common/backButton';
 import { SignBackgroundIc } from '../assets';
 import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { signUpStep } from '../core/signUp/signupStepType';
 
 export default function signUpPage() {
     // type step= 'SIGNUP_ROLE' | 'SIGNUP_EMAIL' | 'SIGNUP_PASSWORD' | 'SIGNUP_NICKNAME' | 'SIGNUP_PROFILE' | 'SIGNUP_SUCCESS'
-  const [step, setStep] = useState<string>('SIGNUP_ROLE');
+  const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
 
     function endSignUp(){
         if (window.confirm('회원가입을 종료하겠습니까?'))
@@ -35,3 +36,7 @@ const BackButtonWrapper=styled.div`
 const SignBackgroundIcon=styled(SignBackgroundIc)`
     margin-top: 26.6rem;
 `
+
+function useState<T>(arg0: string): [any, any] {
+    throw new Error('Function not implemented.');
+}
