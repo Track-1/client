@@ -23,8 +23,10 @@ export default function SignUpPage() {
     <>
         <SignUpStepWrapper>
             <SignupMessage step={step}/>
+            <div>
             <SignupStepHeader step={step}/>
             <SignUpStepRenderer step={step} setStep={setStep} />
+            </div>
         </SignUpStepWrapper>
         <BackButtonWrapper onClick={endSignUp}>
             <BackButton/>
