@@ -3,7 +3,7 @@ import { signUpStep } from '../../core/signUp/signupStepType';
 import { StepPropsTypes } from '../../type/signUpStepTypes';
 import SignupRole from './signupRole';
 
-export default function signUpStepRenderer(props:StepPropsTypes) {
+export default function SignUpStepRenderer(props:StepPropsTypes) {
   const { step,setStep } = props;
 
     switch (step) {

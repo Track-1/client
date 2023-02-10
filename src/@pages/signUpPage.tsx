@@ -1,12 +1,12 @@
+import { useState } from "react";
 import styled from 'styled-components';
 import BackButton from '../@components/@common/backButton';
 import { SignBackgroundIc } from '../assets';
 import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
-import { useState } from 'react';
 import { signUpStep } from '../core/signUp/signupStepType';
 
-export default function signUpPage() {
+export default function SignUpPage() {
     // type step= 'SIGNUP_ROLE' | 'SIGNUP_EMAIL' | 'SIGNUP_PASSWORD' | 'SIGNUP_NICKNAME' | 'SIGNUP_PROFILE' | 'SIGNUP_SUCCESS'
   const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
 
@@ -36,7 +36,3 @@ const BackButtonWrapper=styled.div`
 const SignBackgroundIcon=styled(SignBackgroundIc)`
     margin-top: 26.6rem;
 `
-
-function useState<T>(arg0: string): [any, any] {
-    throw new Error('Function not implemented.');
-}
