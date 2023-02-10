@@ -5,6 +5,7 @@ import { SignBackgroundIc } from '../assets';
 import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
 import { signUpStep } from '../core/signUp/signupStepType';
+import SignupMessage from "../@components/signUp/signupMessage";
 
 export default function SignUpPage() {
     // type step= 'SIGNUP_ROLE' | 'SIGNUP_EMAIL' | 'SIGNUP_PASSWORD' | 'SIGNUP_NICKNAME' | 'SIGNUP_PROFILE' | 'SIGNUP_SUCCESS'
@@ -19,7 +20,10 @@ export default function SignUpPage() {
 
   return (
     <>
-        <SignUpStepRenderer step={step} setStep={setStep} />
+        <SignUpStepWrapper>
+            <SignupMessage step={step}/>
+            <SignUpStepRenderer step={step} setStep={setStep} />
+        </SignUpStepWrapper>
         <BackButtonWrapper onClick={endSignUp}>
             <BackButton/>
         </BackButtonWrapper>
@@ -35,4 +39,9 @@ const BackButtonWrapper=styled.div`
 
 const SignBackgroundIcon=styled(SignBackgroundIc)`
     margin-top: 26.6rem;
+`
+
+const SignUpStepWrapper=styled.div`
+    display: flex;
+    position: absolute;
 `

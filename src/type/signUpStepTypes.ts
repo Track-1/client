@@ -7,3 +7,6 @@ export interface SetStepPropsType {
     setStep:React.Dispatch<React.SetStateAction<string>>;  
 }
   
+export interface StepPropsType {
+  step:string;
+}
