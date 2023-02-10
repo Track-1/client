@@ -14,7 +14,7 @@ export default function SignupRole(props:SetStepPropsType) {
     }
 
     function hoverOut(){
-      setHoveredRole("not")
+      setHoveredRole('')
     }
 
     function selectRole(role:string){
