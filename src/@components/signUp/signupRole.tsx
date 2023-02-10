@@ -21,11 +21,11 @@ export default function SignupRole(props:SetStepPropsType) {
       setSelectedRole(role)
     }
 
-    function checkHoveredRole(role:string){
+    function checkHovered(role:string){
       return hoveredRole===role
     }
 
-    function checkSelectedRole(role:string){
+    function checkSelected(role:string){
       return selectedRole===role
     }
 
@@ -35,8 +35,8 @@ export default function SignupRole(props:SetStepPropsType) {
     <RoleWrapper>
       <SignUpSelectRoleTitleIc/>
 
-      {checkHoveredRole(currentUser.PRODUCER)||checkSelectedRole(currentUser.PRODUCER)?<SignupSelectedProducerIcon onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>:<SignupNotSelectedProducerIcon onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>}
-      {checkHoveredRole(currentUser.VOCAL)||checkSelectedRole(currentUser.VOCAL)?<SignupSelectedVocalIcon onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>:<SignupNotSelectedVocalIcon onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>}    
+      {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>:<SignupNotSelectedProducerIcon onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>}
+      {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>:<SignupNotSelectedVocalIcon onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>}    
     
     </RoleWrapper>
   )
