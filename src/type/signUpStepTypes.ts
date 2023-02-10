@@ -10,3 +10,8 @@ export interface SetStepPropsType {
 export interface StepPropsType {
   step:string;
 }
+
+export interface ContinueButtonPropsTypes{
+  answer:string;
+  setStep:React.Dispatch<React.SetStateAction<string>>;  
+}
