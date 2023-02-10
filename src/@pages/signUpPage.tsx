@@ -4,9 +4,16 @@ import { SignBackgroundIc } from '../assets';
 import Footer from '../@components/@common/footer';
 
 export default function signUpPage() {
+    function endSignUp(){
+        if (window.confirm('회원가입을 종료하겠습니까?'))
+        {
+            // clicked Yes
+        }
+    }
+
   return (
     <>
-        <BackButtonWrapper>
+        <BackButtonWrapper onClick={endSignUp}>
             <BackButton/>
         </BackButtonWrapper>
         <SignBackgroundIcon/>
