@@ -16,8 +16,8 @@ export default function ContinueButton(props:ContinueButtonPropsTypes) {
     }
 
   return (
-    <ContinueButtonWrapper type="button" isNotNull={isNotNull(answer)}>
-        <SignUpContinueButtonIc onClick={moveNextStep}/>
+    <ContinueButtonWrapper type="button" isNotNull={isNotNull(answer)} onClick={moveNextStep}>
+        <SignUpContinueButtonIc/>
     </ContinueButtonWrapper>
   )
 }

@@ -145,3 +145,4 @@ export { ReactComponent as SignupNotSelectedVocalIc } from "./icon/signupNotSele
 export { ReactComponent as SignupSelectedProducerIc } from "./icon/signupSelectedProducerIc.svg";
 export { ReactComponent as SignupSelectedVocalIc } from "./icon/signupSelectedVocalIc.svg";
 export { ReactComponent as SignUpContinueButtonIc } from "./icon/signUpContinueButtonIc.svg";
+export { ReactComponent as WhatsYourEmailIc } from "./icon/what'sYourEmailIc.svg";
