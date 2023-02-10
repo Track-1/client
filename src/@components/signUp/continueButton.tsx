@@ -5,19 +5,19 @@ import { signUpStep } from '../../core/signUp/signupStepType'
 import { ContinueButtonPropsTypes } from '../../type/signUpStepTypes'
 
 export default function ContinueButton(props:ContinueButtonPropsTypes) {
-    const {answer, setStep}=props
+    const {answer, step, setStep}=props
 
     function isNotNull(answer:string){
         return answer!==''
     }
 
-    function moveSignUpEmail(){
-        isNotNull(answer)&&setStep(signUpStep.SIGNUP_EMAIL)
+    function moveNextStep(){
+        isNotNull(answer)&&setStep(step)
     }
 
   return (
     <ContinueButtonWrapper type="button" isNotNull={isNotNull(answer)}>
-        <SignUpContinueButtonIc onClick={moveSignUpEmail}/>
+        <SignUpContinueButtonIc onClick={moveNextStep}/>
     </ContinueButtonWrapper>
   )
 }
