@@ -6,6 +6,7 @@ import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
 import { signUpStep } from '../core/signUp/signupStepType';
 import SignupMessage from "../@components/signUp/signupMessage";
+import SignupStepHeader from "../@components/signUp/signupStepHeader";
 
 export default function SignUpPage() {
     // type step= 'SIGNUP_ROLE' | 'SIGNUP_EMAIL' | 'SIGNUP_PASSWORD' | 'SIGNUP_NICKNAME' | 'SIGNUP_PROFILE' | 'SIGNUP_SUCCESS'
@@ -22,6 +23,7 @@ export default function SignUpPage() {
     <>
         <SignUpStepWrapper>
             <SignupMessage step={step}/>
+            <SignupStepHeader step={step}/>
             <SignUpStepRenderer step={step} setStep={setStep} />
         </SignUpStepWrapper>
         <BackButtonWrapper onClick={endSignUp}>
