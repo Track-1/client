@@ -139,3 +139,8 @@ export { ReactComponent as SignUpStep1Ic } from "./icon/signUpStep1Ic.svg";
 export { ReactComponent as SignUpStep2Ic } from "./icon/signUpStep2Ic.svg";
 export { ReactComponent as SignUpStep3Ic } from "./icon/signUpStep3Ic.svg";
 export { ReactComponent as SignUpStepBlanckIc } from "./icon/signUpStepBlanckIc.svg";
+export { ReactComponent as SignUpSelectRoleTitleIc } from "./icon/signUpSelectRoleTitleIc.svg";
+export { ReactComponent as SignupNotSelectedProducerIc } from "./icon/signupNotSelectedProducerIc.svg";
+export { ReactComponent as SignupNotSelectedVocalIc } from "./icon/signupNotSelectedVocalIc.svg";
+export { ReactComponent as SignupSelectedProducerIc } from "./icon/signupSelectedProducerIc.svg";
+export { ReactComponent as SignupSelectedVocalIc } from "./icon/signupSelectedVocalIc.svg";
