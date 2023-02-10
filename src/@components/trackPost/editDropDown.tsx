@@ -47,6 +47,7 @@ const DropDownContainer = styled.ul`
   background-color: ${({ theme }) => theme.colors.gray4};
 
   color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => theme.fonts.comment}
 
   border-radius: 0.5rem;
 
