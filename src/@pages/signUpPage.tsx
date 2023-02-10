@@ -24,8 +24,6 @@ export default function signUpPage() {
 
 const BackButtonWrapper=styled.div`
     margin: 5.9rem 0 0 7.9rem;
-
-    cursor: pointer;
 `
 
 const SignBackgroundIcon=styled(SignBackgroundIc)`
