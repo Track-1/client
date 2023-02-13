@@ -7,6 +7,7 @@ export interface VocalPortfolioType {
   keyword: string[];
   category: string;
   wavFileLength: number;
+  vocalPortfolioId: number;
 }
 
 export interface VocalProfileType {

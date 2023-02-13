@@ -109,7 +109,12 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
               {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
-                <PortfolioUpdateModal isTitle={checkIsTitle()} ref={modalRef} profileState={profileState} />
+                <PortfolioUpdateModal
+                  isTitle={checkIsTitle()}
+                  ref={modalRef}
+                  profileState={profileState}
+                  portfolioId={portfolios[id].vocalPortfolioId}
+                />
               )}
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>

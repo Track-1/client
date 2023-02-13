@@ -19,7 +19,7 @@ import { UserType } from "../../recoil/main";
 export default function CategoryHeader() {
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const user = useRecoilValue(UserType);
+  const userType = useRecoilValue(UserType);
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
@@ -36,7 +36,7 @@ export default function CategoryHeader() {
   }
 
   function moveMypage() {
-    user === "vocal" ? navigate("/vocal-profile/1", { state: 1 }) : navigate("/producer-profile/2", { state: 2 });
+    userType === "vocal" ? navigate("/vocal-profile/1", { state: 1 }) : navigate("/producer-profile/2", { state: 2 });
   }
 
   return (
