@@ -22,9 +22,9 @@ export default function SignupEmail(props:SetStepPropsType) {
         <SignUpEmailTitleIcon/>
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
-            <input type="email" placeholder="Enter your email address" onChange={writeEmail}/>
+            <Input type="email" placeholder="Enter your email address" onChange={writeEmail}/>
             <SignUpPasswordIcon/>
-            <input type="email" placeholder="Create a password" onChange={writePassword}/>
+            <Input type="email" placeholder="Create a password" onChange={writePassword}/>
         </SignupEmailWrapper>
     </>
   )
@@ -49,3 +49,8 @@ const SignupEmailWrapper=styled.div`
     margin-left:11rem;
 `
 
+const Input=styled.input`
+    color: ${({ theme }) => theme.colors.white};
+
+    ${({ theme }) => theme.fonts.input};
+`
