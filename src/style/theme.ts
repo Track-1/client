@@ -45,6 +45,7 @@ const fonts = {
   id: FONT({ family: true, weight: 300, size: 2, lineHeight: 2.6 }),
   caption_large: FONT({ family: true, weight: 300, size: 3, lineHeight: 3.9 }),
   title: FONT({ family: true, weight: 300, size: 5, lineHeight: 6.5 }),
+  input: FONT({ family: true, weight: 400, size: 2, lineHeight: 3.4 }),
 };
 
 export type FontsTypes = typeof fonts;
