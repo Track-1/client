@@ -7,15 +7,31 @@ export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
 
   return (
-    <SignupEmailWrapper>
-    <SignUpEmailTitleIc/>
-    <WhatsYourEmailIc/>
-    <SignUpPasswordIc/>
-    </SignupEmailWrapper>
+    <>
+        <SignUpEmailTitleIcon/>
+        <SignupEmailWrapper>
+            <WhatsYourEmailIcon/>
+            <SignUpPasswordIcon/>
+        </SignupEmailWrapper>
+    </>
   )
 }
 
-const SignupEmailWrapper=styled.section`
+const SignUpEmailTitleIcon=styled(SignUpEmailTitleIc)`
+    margin:7.65rem 0 0 14.43rem;
+`
+
+const WhatsYourEmailIcon=styled(WhatsYourEmailIc)`
+    margin-top: 13.45rem;
+`
+
+const SignUpPasswordIcon=styled(SignUpPasswordIc)`
+    margin-top: 6.2rem;
+`
+
+const SignupEmailWrapper=styled.div`
     display: flex;
     flex-direction: column;
+
+    margin-left:11rem;
 `
