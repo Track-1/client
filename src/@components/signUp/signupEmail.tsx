@@ -14,10 +14,16 @@ export default function SignupEmail(props:SetStepPropsType) {
     const [emailErrorMessage, setEmailErrorMessage]=useState<string>(emailInvalidMessage.NULL)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
-        if (checkEmailForm(e.target.value)){
+        console.log(e.target.value)
+        if(!e.target.value){
+            setEmailErrorMessage(emailInvalidMessage.NULL)
+        }
+
+        else if (checkEmailForm(e.target.value)){
             setEmailErrorMessage(emailInvalidMessage.SUCCESS)
         }
-        else if(!e.target.value && !checkEmailForm(e.target.value)){
+        
+        else if(!checkEmailForm(e.target.value)){
             setEmailErrorMessage(emailInvalidMessage.FORM)
         }
 
@@ -28,7 +34,6 @@ export default function SignupEmail(props:SetStepPropsType) {
         setPassword(e.target.value)
     }
 
-    console.log(emailErrorMessage)
 
   return (
     <>
@@ -38,10 +43,10 @@ export default function SignupEmail(props:SetStepPropsType) {
             <EmailInputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} onChange={writeEmail}/>
                 <SendCodeButton/>
-                <MessageWrapper>
-                {emailErrorMessage}
-                </MessageWrapper>
             </EmailInputWrapper>
+            <MessageWrapper>
+                {emailErrorMessage}
+            </MessageWrapper>
             <SignUpPasswordIcon/>
             <Input type="password" placeholder="Create a password" width={56} onChange={writePassword}/>
         </SignupEmailWrapper>
@@ -92,6 +97,9 @@ const EmailInputWrapper=styled.div`
 `
 
 const MessageWrapper=styled.p`
+    margin-top: 1.1rem;
+
     color: #FF4F4F;
-    ${({ theme }) => theme.fonts.cations};
+
+    ${({ theme }) => theme.fonts.error_message};
 `
