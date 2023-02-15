@@ -131,3 +131,9 @@ export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHe
 export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
+export { ReactComponent as ProducerModeToggleIc } from "./icon/producerModeToggleIc.svg";
+export { ReactComponent as ProducerDefaultModeToggleIc } from "./icon/producerDefaultModeToggleIc.svg";
+export { ReactComponent as EyeIc } from "./icon/eyeIc.svg";
+export { ReactComponent as ProducerLoginBtnIc } from "./icon/producerLoginBtnIc.svg";
+export { ReactComponent as VocalLoginBtnIc } from "./icon/vocalLoginBtnIc.svg";
+export { ReactComponent as DefaultLoginBtnIc } from "./icon/defaultLoginBtnIc.svg";
