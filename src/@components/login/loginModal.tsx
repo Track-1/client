@@ -6,7 +6,7 @@ import {
   ProducerLoginBtnIc,
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
-} from "../../../assets";
+} from "../../assets";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -19,8 +19,11 @@ export default function LoginModal() {
   const [passwordDefaultState, setPasswordDefaultState] = useState<boolean>(true);
 
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+
+  const FOCUS = "focus";
+  const BLUR = "blur";
+  const WARNING = "warning";
 
   function producerToggleType() {
     return isProducerMode ? (
@@ -37,12 +40,12 @@ export default function LoginModal() {
   ): void {
     const input = e.target.value;
 
-    if (!RULE.test(input) && !isInputEmpty(input)) setInputState("warning");
+    if (!RULE.test(input) && !isInputEmpty(input)) setInputState(WARNING);
     if (RULE.test(input)) {
-      e.type === "focus" ? setInputState("focus") : setInputState("blur");
+      e.type === "focus" ? setInputState("focus") : setInputState(BLUR);
     }
     if (isInputEmpty(input)) {
-      e.type === "focus" ? setInputState("focus") : setInputState("blur");
+      e.type === FOCUS ? setInputState(FOCUS) : setInputState(BLUR);
     }
   }
 
@@ -50,7 +53,7 @@ export default function LoginModal() {
     const email = e.target.value;
 
     isInputEmpty(email) ? setEmailDefaultState(true) : setEmailDefaultState(false);
-    EMAIL_RULE.test(email) || isInputEmpty(email) ? setEmailInputState("focus") : setEmailInputState("warning");
+    EMAIL_RULE.test(email) || isInputEmpty(email) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
   }
 
   function passwordValidation(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -58,8 +61,8 @@ export default function LoginModal() {
 
     isInputEmpty(password) ? setPasswordDefaultState(true) : setPasswordDefaultState(false);
     PASSWORD_RULE.test(password) || isInputEmpty(password)
-      ? setPasswordInputState("focus")
-      : setPasswordInputState("warning");
+      ? setPasswordInputState(FOCUS)
+      : setPasswordInputState(WARNING);
   }
 
   function loginBtnType() {
@@ -80,7 +83,7 @@ export default function LoginModal() {
   }
 
   function isWarningState(state: string): boolean {
-    return state === "warning";
+    return state === WARNING;
   }
 
   return (
