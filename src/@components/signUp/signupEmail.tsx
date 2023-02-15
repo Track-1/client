@@ -4,19 +4,31 @@ import { SignUpEmailTitleIc, SignUpPasswordIc, WhatsYourEmailIc } from '../../as
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
+import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailErrorMessage';
+import { checkEmailForm } from '../../utils/errorMessage/checkEmailValidation';
 
 export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
     const [email, setEmail]=useState<string>('')
     const [password, setPassword]=useState<string>('')
+    const [emailErrorMessage, setEmailErrorMessage]=useState<string>(emailInvalidMessage.NULL)
 
-    function writeEmail(e:any){
+    function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
+        if (checkEmailForm(e.target.value)){
+            setEmailErrorMessage(emailInvalidMessage.SUCCESS)
+        }
+        else if(!e.target.value && !checkEmailForm(e.target.value)){
+            setEmailErrorMessage(emailInvalidMessage.FORM)
+        }
+
         setEmail(e.target.value)
     }
 
-    function writePassword(e:any){
+    function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         setPassword(e.target.value)
     }
+
+    console.log(emailErrorMessage)
 
   return (
     <>
@@ -26,6 +38,9 @@ export default function SignupEmail(props:SetStepPropsType) {
             <EmailInputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} onChange={writeEmail}/>
                 <SendCodeButton/>
+                <MessageWrapper>
+                {emailErrorMessage}
+                </MessageWrapper>
             </EmailInputWrapper>
             <SignUpPasswordIcon/>
             <Input type="password" placeholder="Create a password" width={56} onChange={writePassword}/>
@@ -74,4 +89,9 @@ const Input=styled.input<{width:number}>`
 
 const EmailInputWrapper=styled.div`
     display: flex;
+`
+
+const MessageWrapper=styled.p`
+    color: #FF4F4F;
+    ${({ theme }) => theme.fonts.cations};
 `

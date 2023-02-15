@@ -1,6 +1,6 @@
 export const emailInvalidMessage = {
     NULL: "",
-    form: "This email is invalid.",
-    duplicaton: "This email is already taken.",
+    FORM: "This email is invalid.",
+    DUPLICATION: "This email is already taken.",
     SUCCESS: "success",
   };
