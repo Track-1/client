@@ -6,12 +6,13 @@ import TrackSearchPage from "./@pages/trackSearchPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalsPage from "./@pages/vocalsPage";
 import UploadPage from "./@pages/uploadPage";
-
+import LoginPage from "./@pages/loginPage";
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalsPage />} />
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
