@@ -148,3 +148,4 @@ export { ReactComponent as SignUpContinueButtonIc } from "./icon/signUpContinueB
 export { ReactComponent as SignUpEmailTitleIc } from "./icon/signUpEmailTitleIc.svg";
 export { ReactComponent as WhatsYourEmailIc } from "./icon/what'sYourEmailIc.svg";
 export { ReactComponent as SignUpPasswordIc } from "./icon/signUpPasswordIc.svg";
+export { ReactComponent as SignupSendcodeTextIc } from "./icon/signupSendcodeTextIc.svg";

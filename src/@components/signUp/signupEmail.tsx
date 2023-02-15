@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { SignUpEmailTitleIc, SignUpPasswordIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
+import SendCodeButton from './sendCodeButton';
 
 export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
@@ -22,7 +23,10 @@ export default function SignupEmail(props:SetStepPropsType) {
         <SignUpEmailTitleIcon/>
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
-            <Input type="email" placeholder="Enter your email address" width={42.2} onChange={writeEmail}/>
+            <EmailInputWrapper>
+                <Input type="email" placeholder="Enter your email address" width={42.2} onChange={writeEmail}/>
+                <SendCodeButton/>
+            </EmailInputWrapper>
             <SignUpPasswordIcon/>
             <Input type="password" placeholder="Create a password" width={56} onChange={writePassword}/>
         </SignupEmailWrapper>
@@ -66,4 +70,8 @@ const Input=styled.input<{width:number}>`
     &::placeholder{
         color: ${({ theme }) => theme.colors.gray4};
     }
+`
+
+const EmailInputWrapper=styled.div`
+    display: flex;
 `
