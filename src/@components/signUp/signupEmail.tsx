@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
 import ContinueButton from './continueButton';
+import { signUpStep } from '../../core/signUp/signupStepType';
 
 export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
@@ -103,6 +104,10 @@ export default function SignupEmail(props:SetStepPropsType) {
         //post함수 추가
     }
 
+    function backToRole(){
+        setStep(signUpStep.SIGNUP_ROLE)
+    }
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -152,7 +157,7 @@ export default function SignupEmail(props:SetStepPropsType) {
             <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/>
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
-            <SignUpBackArrowIcon/>
+            <SignUpBackArrowIcon onClick={backToRole}/>
             <ContinueButton answer={''} step={''} setStep={setStep}/>
         </ArrowButtonWrapper>
     </>
@@ -221,6 +226,8 @@ const VerificationCodeTextIcon=styled(VerificationCodeTextIc)`
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
     position: absolute;
     margin-left:11rem;
+
+    cursor: pointer;
 `
 
 const ArrowButtonWrapper=styled.div`
