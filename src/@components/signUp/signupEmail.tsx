@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -37,29 +37,29 @@ export default function SignupEmail(props:SetStepPropsType) {
         setPassword(e.target.value)
     }
 
-    function setInputUnderline(){ //이메일에러가 존재하는 경우
+    function setInputUnderline(){ 
         switch (emailErrorMessage) {
             case emailInvalidMessage.NULL:
-              return "${({ theme }) => theme.colors.gray3}";
+              return "#535559"
             case emailInvalidMessage.FORM:
                 return "#FF4F4F";
                 case emailInvalidMessage.DUPLICATION:
               return "#FF4F4F";
-            case emailInvalidMessage.SUCCESS:
-                return "${({ theme }) => theme.colors.gray3}";
+            case emailInvalidMessage.VERIFY:
+                return "#5200FF";
             default:
-                return "${({ theme }) => theme.colors.gray3}";
-        }
+                return "#535559"
+            }
     }
 
-    function setErrorIcon(){ //이메일에러가 존재하는 경우
+    function setErrorIcon(){ 
         switch (emailErrorMessage) {
             case emailInvalidMessage.FORM:
                 return <SignUpErrorIc/>;
             case emailInvalidMessage.DUPLICATION:
                 return <SignUpErrorIc/>;
-            case emailInvalidMessage.SUCCESS:
-                return "${({ theme }) => theme.colors.gray3}";
+            case emailInvalidMessage.VERIFY:
+                return <SignUpVerifyIc/>;
             default:
                 return ;
         }
@@ -95,7 +95,7 @@ export default function SignupEmail(props:SetStepPropsType) {
             <EmailInputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline()} onChange={writeEmail}/>
                 <IconWrapper>
-                    {setInputUnderline()}
+                    {setErrorIcon()}
                 </IconWrapper>
                 <SendCodeButton/>
             </EmailInputWrapper>
