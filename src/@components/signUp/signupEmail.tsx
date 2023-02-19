@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpEmailTitleIc, SignUpPasswordIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -32,6 +32,24 @@ export default function SignupEmail(props:SetStepPropsType) {
         setPassword(e.target.value)
     }
 
+    function isEmailError(){ //이메일에러가 존재하는 경우
+        if(emailErrorMessage!==emailInvalidMessage.NULL){
+            return emailErrorMessage!==emailInvalidMessage.SUCCESS
+        }
+        else{
+            return false
+        }
+    }
+
+    function isPasswordError(){ //패스워드에러가 존재하는 경우 임시로 만듦
+        if(emailErrorMessage!==emailInvalidMessage.NULL){
+            return emailErrorMessage!==emailInvalidMessage.SUCCESS
+        }
+        else{
+            return false
+        }    
+    }
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -59,14 +77,15 @@ export default function SignupEmail(props:SetStepPropsType) {
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
             <EmailInputWrapper>
-                <Input type="email" placeholder="Enter your email address" width={42.2} onChange={writeEmail}/>
+                <Input type="email" placeholder="Enter your email address" width={42.2} isError={isEmailError()} onChange={writeEmail}/>
+                {isEmailError()&&<SignUpErrorIcon/>}
                 <SendCodeButton/>
             </EmailInputWrapper>
             <MessageWrapper>
                 {emailErrorMessage}
             </MessageWrapper>
             <SignUpPasswordIcon/>
-            <Input type="password" placeholder="Create a password" width={56} onChange={writePassword}/>
+            <Input type="password" placeholder="Create a password" width={56} isError={isPasswordError()} onChange={writePassword}/>
         </SignupEmailWrapper>
     </>
   )
@@ -91,7 +110,7 @@ const SignupEmailWrapper=styled.div`
     margin-left:11rem;
 `
 
-const Input=styled.input<{width:number}>`
+const Input=styled.input<{width:number, isError:boolean}>`
     display: flex;
     align-items: center;
 
@@ -99,7 +118,7 @@ const Input=styled.input<{width:number}>`
 
     width: ${({width})=>width}rem;
     
-    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
+    border-bottom: 0.1rem solid ${({ theme, isError }) => isError?"#FF4F4F":theme.colors.gray3};
 
     color: ${({ theme }) => theme.colors.white};
 
@@ -112,6 +131,7 @@ const Input=styled.input<{width:number}>`
 
 const EmailInputWrapper=styled.div`
     display: flex;
+    align-items: center;
 `
 
 const MessageWrapper=styled.p`
@@ -120,4 +140,8 @@ const MessageWrapper=styled.p`
     color: #FF4F4F;
 
     ${({ theme }) => theme.fonts.error_message};
+`
+
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    margin: 1.4rem 0 0 -3.9rem;
 `
