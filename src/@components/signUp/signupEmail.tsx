@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpBackArrowIc, SignUpContinueButtonIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -10,6 +10,7 @@ import { authEmail } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
+import ContinueButton from './continueButton';
 
 export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
@@ -150,6 +151,10 @@ export default function SignupEmail(props:SetStepPropsType) {
             <SignUpPasswordIcon/>
             <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/>
         </SignupEmailWrapper>
+        <ArrowButtonWrapper>
+            <SignUpBackArrowIcon/>
+            <ContinueButton answer={''} step={''} setStep={setStep}/>
+        </ArrowButtonWrapper>
     </>
   )
 }
@@ -211,4 +216,13 @@ const IconWrapper=styled.div`
 
 const VerificationCodeTextIcon=styled(VerificationCodeTextIc)`
     margin-top: 3.2rem;
+`
+
+const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
+    position: absolute;
+    margin-left:11rem;
+`
+
+const ArrowButtonWrapper=styled.div`
+    margin-top:2.8rem;
 `

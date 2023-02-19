@@ -4,17 +4,18 @@ import { SignUpVerifyButtonIc } from '../../assets'
 
 interface VerifyPropsType{
     verificationCode:string
+    onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export default function VerifyButton(props:VerifyPropsType) {
-    const {verificationCode}=props;
+    const {verificationCode, onClick}=props;
 
     function isActive(){
         return verificationCode!=="";
     }
     
   return (
-    <ButtonWrapper isActive={isActive()}>
+    <ButtonWrapper isActive={isActive()} onClick={onClick}>
         <SignUpVerifyButtonIc/>
     </ButtonWrapper>
   )
