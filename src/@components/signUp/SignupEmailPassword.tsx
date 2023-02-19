@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpBackArrowIc, SignUpContinueButtonIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -13,7 +13,7 @@ import VerifyButton from './verifyButton';
 import ContinueButton from './continueButton';
 import { signUpStep } from '../../core/signUp/signupStepType';
 
-export default function SignupEmail(props:SetStepPropsType) {
+export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
     const [email, setEmail]=useState<string>('')
     const [password, setPassword]=useState<string>('')

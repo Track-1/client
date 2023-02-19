@@ -39,7 +39,7 @@ export default function SignupRole(props:SetStepPropsType) {
 
       {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>:<SignupNotSelectedProducerIcon onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>}
       {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>:<SignupNotSelectedVocalIcon onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>}    
-      <ContinueButton answer={selectedRole} step={signUpStep.SIGNUP_EMAIL} setStep={setStep}/>
+      <ContinueButton answer={selectedRole} step={signUpStep.SIGNUP_EMAIL_PASSWORD} setStep={setStep}/>
     </RoleWrapper>
   )
 }
