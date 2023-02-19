@@ -6,6 +6,9 @@ import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailErrorMessage';
 import { checkEmailForm } from '../../utils/errorMessage/checkEmailValidation';
+import { authEmail } from '../../core/api/signUp';
+import { useEffect } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
@@ -18,10 +21,6 @@ export default function SignupEmail(props:SetStepPropsType) {
             setEmailErrorMessage(emailInvalidMessage.NULL)
         }
 
-        else if (checkEmailForm(e.target.value)){
-            setEmailErrorMessage(emailInvalidMessage.SUCCESS)
-        }
-
         else if(!checkEmailForm(e.target.value)){
             setEmailErrorMessage(emailInvalidMessage.FORM)
         }
@@ -32,6 +31,26 @@ export default function SignupEmail(props:SetStepPropsType) {
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         setPassword(e.target.value)
     }
+
+    //post
+  const { mutate } = useMutation(authEmail, {
+    onSuccess: () => {
+        console.log("성공")      
+    },
+    onError: (error) => { //400에러인 경우, 중복된 이메일
+        console.log(error);
+    }
+  });
+
+  const queryClient = useQueryClient();
+  //post end
+
+  useEffect(() => {
+      let formData = new FormData();
+      formData.append("tableName", "producer");
+      formData.append("userEmail", email);
+      mutate(formData);
+  }, [email]);
 
 
   return (

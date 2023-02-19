@@ -1,22 +1,16 @@
 import axios from "axios";
 
-interface EmailPropsType{
-  tableName:string;
-  userEmail:string;
-}
-
-export async function authEmail(props:EmailPropsType) {
-  const {tableName, userEmail}=props;
+export async function authEmail(props:FormData) {
+  const formData=props;
 
   try {
-    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`,{
-      "tableName": tableName,
-      "userEmail": userEmail
-    },{
+    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`,formData,{
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+    data && console.log(data);
+    return data
   } catch (e) {
     console.log(e);
   }
