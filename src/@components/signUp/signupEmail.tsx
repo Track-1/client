@@ -65,7 +65,6 @@ export default function SignupEmail(props:SetStepPropsType) {
         }
     }
 
-
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -94,9 +93,13 @@ export default function SignupEmail(props:SetStepPropsType) {
             <WhatsYourEmailIcon/>
             <EmailInputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline()} onChange={writeEmail}/>
-                <IconWrapper>
-                    {setErrorIcon()}
-                </IconWrapper>
+                {
+                    setErrorIcon()&&(
+                    <IconWrapper>
+                        {setErrorIcon()}
+                    </IconWrapper>
+                    )
+                }
                 <SendCodeButton/>
             </EmailInputWrapper>
             <MessageWrapper>
@@ -136,7 +139,7 @@ const Input=styled.input<{width:number, underline:string}>`
 
     width: ${({width})=>width}rem;
     
-    border-bottom: 0.1rem solid underline;
+    border-bottom: 0.1rem solid ${({underline})=>underline};
 
     color: ${({ theme }) => theme.colors.white};
 
