@@ -1,16 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SignupSendcodeTextIc } from '../../assets'
+import { SignUpResendButtonIc, SignupSendcodeTextIc } from '../../assets'
 
-export default function SendCodeButton() {
+interface ButtonPropsType{
+  isEmailSuccess:boolean;
+  onClick: () => void;
+  isSendCode:boolean;
+}
+
+export default function SendCodeButton(props:ButtonPropsType) {
+  const {isEmailSuccess, isSendCode}=props;
+
   return (
-    <ButtonWrapper>
-        <SignupSendcodeTextIc/>
+    <ButtonWrapper isEmailSuccess={isEmailSuccess}>
+        {isSendCode?<SignUpResendButtonIc/>:<SignupSendcodeTextIc/>}
     </ButtonWrapper>
   )
 }
 
-const ButtonWrapper=styled.button`
+const ButtonWrapper=styled.button<{isEmailSuccess:boolean}>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,6 +29,5 @@ const ButtonWrapper=styled.button`
     margin: 2.4rem 0 0 1rem;
 
     border-radius: 5rem;
-    background-color: ${({ theme }) => theme.colors.gray4};
-    /* background-color: ${({ theme }) => theme.colors.main}; */
+    background-color: ${({ theme,isEmailSuccess }) => isEmailSuccess?theme.colors.main:theme.colors.gray4};
 `

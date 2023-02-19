@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -15,6 +15,7 @@ export default function SignupEmail(props:SetStepPropsType) {
     const [email, setEmail]=useState<string>('')
     const [password, setPassword]=useState<string>('')
     const [emailErrorMessage, setEmailErrorMessage]=useState<string>(emailInvalidMessage.NULL)
+    const [isSendCode, setIsSendCode]=useState<boolean>(false)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -65,6 +66,15 @@ export default function SignupEmail(props:SetStepPropsType) {
         }
     }
 
+    function isEmailSuccess(){
+        return emailErrorMessage===emailInvalidMessage.SUCCESS
+    }
+
+    function sendCode(){
+        //post함수 추가
+        setIsSendCode(true)
+    }
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -100,7 +110,7 @@ export default function SignupEmail(props:SetStepPropsType) {
                     </IconWrapper>
                     )
                 }
-                <SendCodeButton/>
+                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={sendCode} isSendCode={isSendCode}/>
             </EmailInputWrapper>
             <MessageWrapper>
                 {emailErrorMessage}
