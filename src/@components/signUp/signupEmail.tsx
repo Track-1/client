@@ -25,6 +25,11 @@ export default function SignupEmail(props:SetStepPropsType) {
             setEmailErrorMessage(emailInvalidMessage.FORM)
         }
 
+        //임시
+        else if(checkEmailForm(e.target.value)){
+            setEmailErrorMessage(emailInvalidMessage.SUCCESS)
+        }
+
         setEmail(e.target.value)
     }
 
@@ -32,22 +37,19 @@ export default function SignupEmail(props:SetStepPropsType) {
         setPassword(e.target.value)
     }
 
-    function isEmailError(){ //이메일에러가 존재하는 경우
-        if(emailErrorMessage!==emailInvalidMessage.NULL){
-            return emailErrorMessage!==emailInvalidMessage.SUCCESS
+    function setInputUnderline(){ //이메일에러가 존재하는 경우
+        switch (emailErrorMessage) {
+            case emailInvalidMessage.NULL:
+              return "${({ theme }) => theme.colors.gray3}";
+            case emailInvalidMessage.FORM:
+                return "#FF4F4F";
+                case emailInvalidMessage.DUPLICATION:
+              return "#FF4F4F";
+            case emailInvalidMessage.SUCCESS:
+                return "${({ theme }) => theme.colors.gray3}";
+            default:
+                return "${({ theme }) => theme.colors.gray3}";
         }
-        else{
-            return false
-        }
-    }
-
-    function isPasswordError(){ //패스워드에러가 존재하는 경우 임시로 만듦
-        if(emailErrorMessage!==emailInvalidMessage.NULL){
-            return emailErrorMessage!==emailInvalidMessage.SUCCESS
-        }
-        else{
-            return false
-        }    
     }
 
     //post
@@ -77,15 +79,17 @@ export default function SignupEmail(props:SetStepPropsType) {
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
             <EmailInputWrapper>
-                <Input type="email" placeholder="Enter your email address" width={42.2} isError={isEmailError()} onChange={writeEmail}/>
-                {isEmailError()&&<SignUpErrorIcon/>}
+                <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline()} onChange={writeEmail}/>
+                <IconWrapper>
+                    {setInputUnderline()}
+                </IconWrapper>
                 <SendCodeButton/>
             </EmailInputWrapper>
             <MessageWrapper>
                 {emailErrorMessage}
             </MessageWrapper>
             <SignUpPasswordIcon/>
-            <Input type="password" placeholder="Create a password" width={56} isError={isPasswordError()} onChange={writePassword}/>
+            <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/>
         </SignupEmailWrapper>
     </>
   )
@@ -110,7 +114,7 @@ const SignupEmailWrapper=styled.div`
     margin-left:11rem;
 `
 
-const Input=styled.input<{width:number, isError:boolean}>`
+const Input=styled.input<{width:number, underline:string}>`
     display: flex;
     align-items: center;
 
@@ -118,7 +122,7 @@ const Input=styled.input<{width:number, isError:boolean}>`
 
     width: ${({width})=>width}rem;
     
-    border-bottom: 0.1rem solid ${({ theme, isError }) => isError?"#FF4F4F":theme.colors.gray3};
+    border-bottom: 0.1rem solid underline;
 
     color: ${({ theme }) => theme.colors.white};
 
@@ -142,6 +146,6 @@ const MessageWrapper=styled.p`
     ${({ theme }) => theme.fonts.error_message};
 `
 
-const SignUpErrorIcon=styled(SignUpErrorIc)`
+const IconWrapper=styled.div`
     margin: 1.4rem 0 0 -3.9rem;
 `
