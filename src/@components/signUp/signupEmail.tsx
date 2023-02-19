@@ -14,7 +14,6 @@ export default function SignupEmail(props:SetStepPropsType) {
     const [emailErrorMessage, setEmailErrorMessage]=useState<string>(emailInvalidMessage.NULL)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
-        console.log(e.target.value)
         if(!e.target.value){
             setEmailErrorMessage(emailInvalidMessage.NULL)
         }
@@ -22,7 +21,7 @@ export default function SignupEmail(props:SetStepPropsType) {
         else if (checkEmailForm(e.target.value)){
             setEmailErrorMessage(emailInvalidMessage.SUCCESS)
         }
-        
+
         else if(!checkEmailForm(e.target.value)){
             setEmailErrorMessage(emailInvalidMessage.FORM)
         }
