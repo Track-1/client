@@ -52,6 +52,20 @@ export default function SignupEmail(props:SetStepPropsType) {
         }
     }
 
+    function setErrorIcon(){ //이메일에러가 존재하는 경우
+        switch (emailErrorMessage) {
+            case emailInvalidMessage.FORM:
+                return <SignUpErrorIc/>;
+            case emailInvalidMessage.DUPLICATION:
+                return <SignUpErrorIc/>;
+            case emailInvalidMessage.SUCCESS:
+                return "${({ theme }) => theme.colors.gray3}";
+            default:
+                return ;
+        }
+    }
+
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
