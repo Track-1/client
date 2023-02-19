@@ -53,6 +53,21 @@ export default function SignupEmail(props:SetStepPropsType) {
             }
     }
 
+    function setMessageColor(){ 
+        switch (emailErrorMessage) {
+            case emailInvalidMessage.NULL:
+              return "transparent"
+            case emailInvalidMessage.FORM:
+                return "#FF4F4F";
+                case emailInvalidMessage.DUPLICATION:
+              return "#FF4F4F";
+            case emailInvalidMessage.TIME:
+                return "#5200FF";
+            default:
+                return "#transparent"
+            }
+    }
+
     function setErrorIcon(){ 
         switch (emailErrorMessage) {
             case emailInvalidMessage.FORM:
@@ -114,7 +129,7 @@ export default function SignupEmail(props:SetStepPropsType) {
                 }
                 <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode}/>
             </EmailInputWrapper>
-            <MessageWrapper>
+            <MessageWrapper textColor={setMessageColor()}>
                 {emailErrorMessage}
             </MessageWrapper>
             <VerificationCodeTextIcon/>
@@ -169,10 +184,10 @@ const EmailInputWrapper=styled.div`
     align-items: center;
 `
 
-const MessageWrapper=styled.p`
+const MessageWrapper=styled.p<{textColor:string}>`
     margin-top: 1.1rem;
 
-    color: #FF4F4F;
+    color: ${({textColor})=>textColor};
 
     ${({ theme }) => theme.fonts.error_message};
 `
