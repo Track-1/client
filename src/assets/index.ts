@@ -153,3 +153,4 @@ export { ReactComponent as SignUpErrorIc } from "./icon/signUpErrorIc.svg";
 export { ReactComponent as SignUpVerifyIc } from "./icon/signupVerifyIc.svg";
 export { ReactComponent as VerificationCodeTextIc } from "./icon/verificationCodeTextIc.svg";
 export { ReactComponent as SignUpResendButtonIc } from "./icon/signupResendButtonIc.svg";
+export { ReactComponent as SignUpVerifyButtonIc } from "./icon/signUpVerifyButtonIc.svg";

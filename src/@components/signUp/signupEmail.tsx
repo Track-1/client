@@ -9,6 +9,7 @@ import { checkEmailForm } from '../../utils/errorMessage/checkEmailValidation';
 import { authEmail } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import VerifyButton from './verifyButton';
 
 export default function SignupEmail(props:SetStepPropsType) {
     const {setStep}=props;
@@ -16,6 +17,7 @@ export default function SignupEmail(props:SetStepPropsType) {
     const [password, setPassword]=useState<string>('')
     const [emailErrorMessage, setEmailErrorMessage]=useState<string>(emailInvalidMessage.NULL)
     const [isSendCode, setIsSendCode]=useState<boolean>(false)
+    const [verificationCode, setVerificationCode]=useState<string>('')
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -38,6 +40,10 @@ export default function SignupEmail(props:SetStepPropsType) {
         setPassword(e.target.value)
     }
 
+    function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
+        setVerificationCode(e.target.value)
+    }
+
     function setInputUnderline(){ 
         switch (emailErrorMessage) {
             case emailInvalidMessage.NULL:
@@ -49,7 +55,7 @@ export default function SignupEmail(props:SetStepPropsType) {
             case emailInvalidMessage.VERIFY:
                 return "#5200FF";
             default:
-                return "#535559"
+                return "white"
             }
     }
 
@@ -64,7 +70,7 @@ export default function SignupEmail(props:SetStepPropsType) {
             case emailInvalidMessage.TIME:
                 return "#5200FF";
             default:
-                return "#transparent"
+                return "transparent"
             }
     }
 
@@ -90,6 +96,10 @@ export default function SignupEmail(props:SetStepPropsType) {
         //post함수 추가
         setIsSendCode(true)
         setEmailErrorMessage(emailInvalidMessage.TIME)
+    }
+
+    function verifyCode(e: React.MouseEvent){
+        //post함수 추가
     }
 
     //post
@@ -118,7 +128,7 @@ export default function SignupEmail(props:SetStepPropsType) {
         <SignUpEmailTitleIcon/>
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
-            <EmailInputWrapper>
+            <InputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline()} onChange={writeEmail}/>
                 {
                     setErrorIcon()&&(
@@ -128,12 +138,15 @@ export default function SignupEmail(props:SetStepPropsType) {
                     )
                 }
                 <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode}/>
-            </EmailInputWrapper>
+            </InputWrapper>
             <MessageWrapper textColor={setMessageColor()}>
                 {emailErrorMessage}
             </MessageWrapper>
             <VerificationCodeTextIcon/>
-            <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline()} onChange={writeEmail}/>
+            <InputWrapper>
+                <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline()} onChange={writeVerificationCode}/>
+                <VerifyButton verificationCode={verificationCode} onClick={(e: React.MouseEvent<HTMLElement>) => verifyCode(e)}/>
+            </InputWrapper>
             <SignUpPasswordIcon/>
             <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/>
         </SignupEmailWrapper>
@@ -179,7 +192,7 @@ const Input=styled.input<{width:number, underline:string}>`
     }
 `
 
-const EmailInputWrapper=styled.div`
+const InputWrapper=styled.div`
     display: flex;
     align-items: center;
 `
