@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpBackArrowIc, SignUpContinueButtonIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpBackArrowIc, SignUpContinueButtonIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -131,7 +131,9 @@ export default function SignupEmail(props:SetStepPropsType) {
 
   return (
     <>
-        <SignUpEmailTitleIcon/>
+        <TitleWrapper>
+            {isSendCode?<WeSentYouACodeTextIc/>:<SignUpEmailTitleIc/>}
+        </TitleWrapper>
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
             <InputWrapper>
@@ -164,12 +166,15 @@ export default function SignupEmail(props:SetStepPropsType) {
   )
 }
 
-const SignUpEmailTitleIcon=styled(SignUpEmailTitleIc)`
-    margin:7.65rem 0 0 14.43rem;
+const TitleWrapper=styled.section`
+    display: flex;
+    justify-content: center;
+
+    margin-top:7.65rem;
 `
 
 const WhatsYourEmailIcon=styled(WhatsYourEmailIc)`
-    margin-top: 13.45rem;
+    margin-top: 5.96rem;
 `
 
 const SignUpPasswordIcon=styled(SignUpPasswordIc)`
