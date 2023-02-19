@@ -70,9 +70,11 @@ export default function SignupEmail(props:SetStepPropsType) {
         return emailErrorMessage===emailInvalidMessage.SUCCESS
     }
 
-    function sendCode(){
+    function sendCode(e: React.MouseEvent){
+        console.log("클릭")
         //post함수 추가
         setIsSendCode(true)
+        setEmailErrorMessage(emailInvalidMessage.TIME)
     }
 
     //post
@@ -110,11 +112,13 @@ export default function SignupEmail(props:SetStepPropsType) {
                     </IconWrapper>
                     )
                 }
-                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={sendCode} isSendCode={isSendCode}/>
+                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode}/>
             </EmailInputWrapper>
             <MessageWrapper>
                 {emailErrorMessage}
             </MessageWrapper>
+            <VerificationCodeTextIcon/>
+            <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline()} onChange={writeEmail}/>
             <SignUpPasswordIcon/>
             <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/>
         </SignupEmailWrapper>
@@ -175,4 +179,8 @@ const MessageWrapper=styled.p`
 
 const IconWrapper=styled.div`
     margin: 1.4rem 0 0 -3.9rem;
+`
+
+const VerificationCodeTextIcon=styled(VerificationCodeTextIc)`
+    margin-top: 3.2rem;
 `
