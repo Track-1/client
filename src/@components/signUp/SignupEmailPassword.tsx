@@ -146,6 +146,12 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         )
     }
 
+    function successNextStep(){
+        return (
+            passwordConfirmMessage===passwordInvalidMessage.SUCCESS?"success":""
+        )
+    }
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -239,7 +245,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
-            <ContinueButton answer={''} step={''} setStep={setStep}/>
+            <ContinueButton answer={successNextStep()} step={signUpStep.SIGNUP_NICKNAME_CONVENTION} setStep={setStep}/>
         </ArrowButtonWrapper>
     </>
   )
