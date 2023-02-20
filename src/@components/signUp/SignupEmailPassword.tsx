@@ -117,9 +117,19 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
 
     function setErrorIcon(message:string){ 
         switch (message) {
-            case emailInvalidMessage.FORM || emailInvalidMessage.DUPLICATION || verificationCodeInvalidMessage.ERROR || passwordInvalidMessage.FORM || passwordInvalidMessage.MATCH:
+            case emailInvalidMessage.FORM:
                 return <SignUpErrorIc/>;
-            case emailInvalidMessage.VERIFY || passwordInvalidMessage.SUCCESS:
+            case emailInvalidMessage.DUPLICATION:
+                return <SignUpErrorIc/>;
+            case verificationCodeInvalidMessage.ERROR:
+                return <SignUpErrorIc/>;
+            case passwordInvalidMessage.FORM:
+                return <SignUpErrorIc/>;
+            case passwordInvalidMessage.MATCH:
+                return <SignUpErrorIc/>;
+            case emailInvalidMessage.VERIFY:
+                return <SignUpVerifyIc/>; 
+            case passwordInvalidMessage.SUCCESS:
                 return <SignUpVerifyIc/>; 
             case emailInvalidMessage.SUCCESS:
                 return ;    
