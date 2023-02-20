@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { ConfirmPasswordTextIc, SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpEyeXIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { ConfirmPasswordTextIc, CreateAPasswordForYourAccountTitleIc, SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpEyeXIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -152,6 +152,20 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         )
     }
 
+    function showTitle(){
+        if(isSendCode&&!isVerify){
+            return <WeSentYouACodeTextIc/>
+        }
+
+        else if(isVerify){
+            return <CreateAPasswordForYourAccountTitleIc/>
+        }
+        
+        else{
+            return <SignUpEmailTitleIc/>
+        }
+    }
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -175,7 +189,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
   return (
     <>
         <TitleWrapper>
-            {isSendCode?<WeSentYouACodeTextIc/>:<SignUpEmailTitleIc/>}
+            {showTitle()}
         </TitleWrapper>
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
