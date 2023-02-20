@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
 import ContinueButton from './continueButton';
 import { signUpStep } from '../../core/signUp/signupStepType';
-import { verificationCodeMessage } from '../../core/userInfoErrorMessage/verificationCodeMessage';
+import { verificationCodeInvalidMessage } from '../../core/userInfoErrorMessage/verificationCodeInvalidMessage';
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
 
 export default function SignupEmailPassword(props:SetStepPropsType) {
@@ -22,7 +22,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [password, setPassword]=useState<string>('')
     const [isSendCode, setIsSendCode]=useState<boolean>(false)
     const [verificationCode, setVerificationCode]=useState<string>('')
-    const [verificationCodeErrorMessage, setVerificationCodeErrorMessage]=useState<string>(verificationCodeMessage.NULL)
+    const [verificationCodeErrorMessage, setVerificationCodeErrorMessage]=useState<string>(verificationCodeInvalidMessage.NULL)
 
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
@@ -81,7 +81,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 return <SignUpErrorIc/>;
             case emailInvalidMessage.VERIFY:
                 return <SignUpVerifyIc/>;
-            case verificationCodeMessage.ERROR:
+            case verificationCodeInvalidMessage.ERROR:
                 return <SignUpErrorIc/>;    
             default:
                 return ;

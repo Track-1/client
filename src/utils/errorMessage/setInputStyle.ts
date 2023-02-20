@@ -1,5 +1,5 @@
 import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
-import { verificationCodeMessage } from "../../core/userInfoErrorMessage/verificationCodeMessage";
+import { verificationCodeInvalidMessage } from "../../core/userInfoErrorMessage/verificationCodeInvalidMessage";
 
 export function setInputUnderline(message:string){ 
     switch (message) {
@@ -11,7 +11,7 @@ export function setInputUnderline(message:string){
           return "#FF4F4F";
         case emailInvalidMessage.VERIFY:
             return "#5200FF";
-        case verificationCodeMessage.ERROR:
+        case verificationCodeInvalidMessage.ERROR:
             return "#FF4F4F";    
         default:
             return "white"
@@ -28,7 +28,7 @@ export function setMessageColor(message:string){
           return "#FF4F4F";
         case emailInvalidMessage.TIME:
             return "#5200FF";
-        case verificationCodeMessage.ERROR:
+        case verificationCodeInvalidMessage.ERROR:
             return "#FF4F4F";
         default:
             return "transparent"
