@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -26,7 +26,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [isSendCode, setIsSendCode]=useState<boolean>(false)
     const [verificationCode, setVerificationCode]=useState<string>('')
     const [verificationCodeMessage, setVerificationCodeMessage]=useState<string>(verificationCodeInvalidMessage.NULL)
-
+    const [isVerify, setIsVerify]=useState<boolean>(false)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -82,6 +82,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         //post함수 추가 -> 
         // if(맞으면){}
         setIsSendCode(false)
+        setIsVerify(true)
     }
 
     function backToRole(){
@@ -136,7 +137,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             <InputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline(emailMessage)} onChange={writeEmail}/>
                 {setErrorIcon(emailMessage)&&(
-                    <IconWrapper>
+                    <IconWrapper marginLeft={-3.9}>
                         {setErrorIcon(emailMessage)}
                     </IconWrapper>
                 )}
@@ -151,11 +152,10 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 <InputWrapper>
                     <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline(verificationCodeMessage)} onChange={writeVerificationCode}/>
                     {setErrorIcon(verificationCodeMessage)&&(
-                        <IconWrapper>
+                        <IconWrapper marginLeft={-3.9}>
                             {setErrorIcon(verificationCodeMessage)}
                         </IconWrapper>
                     )}
-                    
                     <VerifyButton verificationCode={verificationCode} onClick={(e: React.MouseEvent<HTMLElement>) => verifyCode(e)}/>
                 </InputWrapper>
                 <MessageWrapper textColor={setMessageColor(verificationCodeMessage)}>
@@ -167,10 +167,11 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             <InputWrapper>
                 <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
                 {setErrorIcon(passwordMessage)&&(
-                    <IconWrapper>
+                    <IconWrapper marginLeft={-8.4}>
                         {setErrorIcon(passwordMessage)}
                     </IconWrapper>
                 )}
+                <SignUpEyeIcon/>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
                 {passwordMessage}
@@ -196,7 +197,7 @@ const WhatsYourEmailIcon=styled(WhatsYourEmailIc)`
 `
 
 const SignUpPasswordIcon=styled(SignUpPasswordIc)`
-    margin-top: 6.2rem;
+    margin-top: 3.2rem;
 `
 
 const SignupEmailWrapper=styled.div`
@@ -238,8 +239,8 @@ const MessageWrapper=styled.p<{textColor:string}>`
     ${({ theme }) => theme.fonts.error_message};
 `
 
-const IconWrapper=styled.div`
-    margin: 1.4rem 0 0 -3.9rem;
+const IconWrapper=styled.div<{marginLeft:number}>`
+    margin: 2rem 0 0 ${({marginLeft})=>marginLeft}rem;
 `
 
 const VerificationCodeTextIcon=styled(VerificationCodeTextIc)`
@@ -255,4 +256,8 @@ const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
 
 const ArrowButtonWrapper=styled.div`
     margin-top:2.8rem;
+`
+
+const SignUpEyeIcon=styled(SignUpEyeIc)`
+    margin: 1.9rem 0 0 0.5rem;
 `

@@ -156,3 +156,4 @@ export { ReactComponent as SignUpResendButtonIc } from "./icon/signupResendButto
 export { ReactComponent as SignUpVerifyButtonIc } from "./icon/signUpVerifyButtonIc.svg";
 export { ReactComponent as SignUpBackArrowIc } from "./icon/signUpBackArrowIc.svg";
 export { ReactComponent as WeSentYouACodeTextIc } from "./icon/weSentYouACodeTextIc.svg";
+export { ReactComponent as SignUpEyeIc } from "./icon/signUpEyeIc.svg";
