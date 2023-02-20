@@ -17,6 +17,7 @@ import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/set
 import { passwordInvalidMessage } from '../../core/userInfoErrorMessage/passwordInvalidMessage';
 import { checkPasswordForm } from '../../utils/errorMessage/checkPasswordForm';
 import { passwordConfirmType } from '../../core/signUp/passwordConfirm';
+import { continueType } from '../../core/signUp/continueType';
 
 export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
@@ -144,7 +145,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
 
     function successNextStep(){
         return (
-            passwordConfirmMessage===passwordInvalidMessage.SUCCESS?"success":""
+            passwordConfirmMessage===passwordInvalidMessage.SUCCESS?continueType.SUCCESS:continueType.FAIL
         )
     }
 
@@ -261,7 +262,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
-            <ContinueButton answer={successNextStep()} step={signUpStep.SIGNUP_NICKNAME_CONVENTION} setStep={setStep}/>
+            <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_NICKNAME_CONVENTION} setStep={setStep}/>
         </ArrowButtonWrapper>
     </>
   )
