@@ -1,8 +1,8 @@
 export const emailInvalidMessage = {
-    NULL: "null",
+    NULL: "email null",
     FORM: "This email is invalid.",
     DUPLICATION: "This email is already taken.",
-    SUCCESS: "success",
+    SUCCESS: "email success",
     TIME:"Valid time is 30 minutes.",
-    VERIFY:"verify"
+    VERIFY:"email verify"
   };

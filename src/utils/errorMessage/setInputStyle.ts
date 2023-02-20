@@ -21,9 +21,9 @@ export function setInputUnderline(message:string){
         case passwordInvalidMessage.MATCH:
             return "#FF4F4F";   
         case passwordInvalidMessage.SUCCESS:
-            return "5200FF";    
+            return "#5200FF";    
         default:
-            return "white"
+            return "white";
         }
 }
 

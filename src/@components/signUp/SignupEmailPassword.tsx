@@ -193,6 +193,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
       mutate(formData);
   }, [email]);
 
+  console.log(setInputUnderline(passwordMessage))
+
   return (
     <>
         <TitleWrapper>

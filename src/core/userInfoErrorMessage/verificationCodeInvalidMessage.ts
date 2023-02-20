@@ -1,5 +1,5 @@
 export const verificationCodeInvalidMessage = {
-    NULL: "null",
+    NULL: "verification code null",
     ERROR:"You need to check the code.",
-    SUCCESS: "success"
+    SUCCESS: "verification code success"
   };
