@@ -100,6 +100,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         //post함수 추가
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
+        setIsVerify(false)
     }
 
     function verifyCode(e: React.MouseEvent){
