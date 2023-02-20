@@ -97,7 +97,6 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
 
     function sendCode(e: React.MouseEvent){
-        console.log("클릭")
         //post함수 추가
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
@@ -165,10 +164,10 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
-        console.log("성공")      
+        //성공한 경우      
     },
     onError: (error) => { //400에러인 경우, 중복된 이메일
-        console.log(error);
+        //성공한 경우
     }
   });
 
