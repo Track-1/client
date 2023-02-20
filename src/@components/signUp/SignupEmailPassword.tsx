@@ -4,7 +4,7 @@ import { SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpPasswordIc,
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
-import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailErrorMessage';
+import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
 import { checkEmailForm } from '../../utils/errorMessage/checkEmailValidation';
 import { authEmail } from '../../core/api/signUp';
 import { useEffect } from 'react';

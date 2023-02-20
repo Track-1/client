@@ -1,4 +1,4 @@
-import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailErrorMessage";
+import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
 import { verificationCodeMessage } from "../../core/userInfoErrorMessage/verificationCodeMessage";
 
 export function setInputUnderline(message:string){ 
