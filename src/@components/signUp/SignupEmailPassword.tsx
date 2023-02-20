@@ -121,6 +121,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 return <SignUpErrorIc/>;        
             case passwordInvalidMessage.MATCH:
                 return <SignUpErrorIc/>;  
+            case passwordInvalidMessage.SUCCESS:
+                return <SignUpVerifyIc/>; 
             default:
                 return ;
         }
@@ -145,8 +147,6 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
       formData.append("userEmail", email);
       mutate(formData);
   }, [email]);
-
-  console.log(passwordConfirmMessage)
 
   return (
     <>
@@ -201,7 +201,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 <>
                 <ConfirmPasswordTextIcon/>
                 <InputWrapper>
-                    <Input type="password" placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePasswordConfirm}/>
+                    <Input type="password" placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm}/>
                     {setErrorIcon(passwordConfirmMessage)&&(
                         <IconWrapper marginLeft={-8.4}>
                             {setErrorIcon(passwordConfirmMessage)}

@@ -17,7 +17,9 @@ export function setInputUnderline(message:string){
         case passwordInvalidMessage.FORM:
             return "#FF4F4F";    
         case passwordInvalidMessage.MATCH:
-            return "#FF4F4F";            
+            return "#FF4F4F";   
+        case passwordInvalidMessage.SUCCESS:
+            return "#5200FF";    
         default:
             return "white"
         }
@@ -38,7 +40,7 @@ export function setMessageColor(message:string){
         case passwordInvalidMessage.FORM:
             return "#FF4F4F";      
         case passwordInvalidMessage.MATCH:
-            return "#FF4F4F";                      
+            return "#FF4F4F";     
         default:
             return "transparent"
         }
