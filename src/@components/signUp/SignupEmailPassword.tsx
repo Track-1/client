@@ -5,15 +5,15 @@ import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailErrorMessage';
-import { checkEmailForm, setEmailInputUnderline, setEmailMessageColor } from '../../utils/errorMessage/checkEmailValidation';
+import { checkEmailForm } from '../../utils/errorMessage/checkEmailValidation';
 import { authEmail } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
 import ContinueButton from './continueButton';
 import { signUpStep } from '../../core/signUp/signupStepType';
-import { setVerificationCodeInputUnderline, setVerificationCodeMessageColor } from '../../utils/errorMessage/checkVerificationCode';
 import { verificationCodeMessage } from '../../core/userInfoErrorMessage/verificationCodeMessage';
+import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
 
 export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
@@ -73,28 +73,20 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setStep(signUpStep.SIGNUP_ROLE)
     }
 
-    function setEmailErrorIcon(emailErrorMessage:string){ 
-        switch (emailErrorMessage) {
+    function setErrorIcon(message:string){ 
+        switch (message) {
             case emailInvalidMessage.FORM:
                 return <SignUpErrorIc/>;
             case emailInvalidMessage.DUPLICATION:
                 return <SignUpErrorIc/>;
             case emailInvalidMessage.VERIFY:
                 return <SignUpVerifyIc/>;
-            default:
-                return ;
-        }
-    }
-
-    function setVerificationCodeErrorIcon(verificationCodeErrorMessage:string){ 
-        switch (verificationCodeErrorMessage) {
             case verificationCodeMessage.ERROR:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIc/>;    
             default:
                 return ;
         }
     }
-
 
     //post
   const { mutate } = useMutation(authEmail, {
@@ -125,36 +117,38 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
             <InputWrapper>
-                <Input type="email" placeholder="Enter your email address" width={42.2} underline={setEmailInputUnderline(emailErrorMessage)} onChange={writeEmail}/>
-                {setEmailErrorIcon(emailErrorMessage)&&(
+                <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline(emailErrorMessage)} onChange={writeEmail}/>
+                {setErrorIcon(emailErrorMessage)&&(
                     <IconWrapper>
-                        {setEmailErrorIcon(emailErrorMessage)}
+                        {setErrorIcon(emailErrorMessage)}
                     </IconWrapper>
                 )}
                 <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode}/>
             </InputWrapper>
-            <MessageWrapper textColor={setEmailMessageColor(emailErrorMessage)}>
+            <MessageWrapper textColor={setMessageColor(emailErrorMessage)}>
                 {emailErrorMessage}
             </MessageWrapper>
             {isSendCode&&(
                 <>
                 <VerificationCodeTextIcon/>
                 <InputWrapper>
-                    <Input type="text" placeholder="Verify your email address" width={42.2} underline={setVerificationCodeInputUnderline(verificationCodeErrorMessage)} onChange={writeVerificationCode}/>
-                    {setVerificationCodeErrorIcon(verificationCodeErrorMessage)&&(
+                    <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline(verificationCodeErrorMessage)} onChange={writeVerificationCode}/>
+                    {setErrorIcon(verificationCodeErrorMessage)&&(
                         <IconWrapper>
-                            {setVerificationCodeErrorIcon(verificationCodeErrorMessage)}
+                            {setErrorIcon(verificationCodeErrorMessage)}
                         </IconWrapper>
                     )}
                     <VerifyButton verificationCode={verificationCode} onClick={(e: React.MouseEvent<HTMLElement>) => verifyCode(e)}/>
                 </InputWrapper>
-                <MessageWrapper textColor={setVerificationCodeMessageColor(verificationCodeErrorMessage)}>
+                <MessageWrapper textColor={setMessageColor(verificationCodeErrorMessage)}>
                     {verificationCodeErrorMessage}
                 </MessageWrapper>
                 </>
             )}
             <SignUpPasswordIcon/>
-            {/* <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/> */}
+            <InputWrapper>
+                {/* <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/> */}
+            </InputWrapper>
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
