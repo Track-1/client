@@ -215,7 +215,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 {emailMessage}
             </MessageWrapper>
 
-            {!isVerify&&(
+            {isSendCode&&!isVerify&&(
                 <>
                 <VerificationCodeTextIcon/>
                 <InputWrapper>
