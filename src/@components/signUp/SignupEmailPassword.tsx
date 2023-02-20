@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { ConfirmPasswordTextIc, SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { ConfirmPasswordTextIc, SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpEyeXIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -16,6 +16,7 @@ import { verificationCodeInvalidMessage } from '../../core/userInfoErrorMessage/
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
 import { passwordInvalidMessage } from '../../core/userInfoErrorMessage/passwordInvalidMessage';
 import { checkPasswordForm } from '../../utils/errorMessage/checkPasswordForm';
+import { passwordConfirmType } from '../../core/signUp/passwordConfirm';
 
 export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
@@ -29,6 +30,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [isVerify, setIsVerify]=useState<boolean>(false)
     const [passwordConfirm, setPasswordConfirm]=useState<string>('')
     const [passwordConfirmMessage, setPasswordConfirmMessage]=useState<string>(passwordInvalidMessage.NULL)
+    const [isShowPassword, setIsShowPassword]=useState<boolean>(false)
+    const [isShowPasswordConfirm, setIsShowPasswordConfirm]=useState<boolean>(false)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -128,6 +131,21 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         }
     }
 
+    function showPassword(type:string){
+        if(type===passwordConfirmType.PASSWORD){
+            setIsShowPassword(prev=>!prev)
+        }
+        else if(type===passwordConfirmType.PASSWORD_CONFIRM){
+            setIsShowPasswordConfirm(prev=>!prev)
+        }
+    }
+
+    function setPasswordInputType(isShow:boolean){
+        return(
+            isShow?"text":"password"
+        )
+    }
+
     //post
   const { mutate } = useMutation(authEmail, {
     onSuccess: () => {
@@ -186,13 +204,15 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             )}
             <SignUpPasswordIcon/>
             <InputWrapper>
-                <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
+                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
                 {setErrorIcon(passwordMessage)&&(
                     <IconWrapper marginLeft={-8.4}>
                         {setErrorIcon(passwordMessage)}
                     </IconWrapper>
                 )}
-                <SignUpEyeIcon/>
+                <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD)}>
+                    {isShowPassword?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                </EyeIcWrapper>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
                 {passwordMessage}
@@ -201,13 +221,15 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 <>
                 <ConfirmPasswordTextIcon/>
                 <InputWrapper>
-                    <Input type="password" placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm}/>
+                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm}/>
                     {setErrorIcon(passwordConfirmMessage)&&(
                         <IconWrapper marginLeft={-8.4}>
                             {setErrorIcon(passwordConfirmMessage)}
                         </IconWrapper>
                     )}
-                    <SignUpEyeIcon/>
+                    <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD_CONFIRM)}>
+                        {isShowPasswordConfirm?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                    </EyeIcWrapper>
                 </InputWrapper>
                 <MessageWrapper textColor={setMessageColor(passwordConfirmMessage)}>
                     {passwordConfirmMessage}
@@ -300,8 +322,10 @@ const ArrowButtonWrapper=styled.div`
     margin-top:2.8rem;
 `
 
-const SignUpEyeIcon=styled(SignUpEyeIc)`
+const EyeIcWrapper=styled.div`
     position: absolute;
     
     margin: 1.9rem 0 0 52rem;
+
+    cursor: pointer;;
 `
