@@ -167,7 +167,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         //성공한 경우      
     },
     onError: (error) => { //400에러인 경우, 중복된 이메일
-        //성공한 경우
+        //에러난 경우
     }
   });
 
