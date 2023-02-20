@@ -14,8 +14,12 @@ export function setInputUnderline(message:string){
             return "white"  
         case emailInvalidMessage.VERIFY:
             return "#5200FF";
+        case verificationCodeInvalidMessage.NULL:
+            return "#535559"      
         case verificationCodeInvalidMessage.ERROR:
             return "#FF4F4F";    
+        case passwordInvalidMessage.NULL:
+            return "#535559"      
         case passwordInvalidMessage.FORM:
             return "#FF4F4F";    
         case passwordInvalidMessage.MATCH:
