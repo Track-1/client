@@ -83,10 +83,14 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
+        if(!e.target.value){
+            setVerificationCodeMessage(passwordInvalidMessage.NULL)
+        }
+        
+        // else if()
+
         setVerificationCode(e.target.value)
     }
-
-
 
     function isEmailSuccess(){
         return emailMessage===emailInvalidMessage.SUCCESS
@@ -112,22 +116,12 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
 
     function setErrorIcon(message:string){ 
         switch (message) {
-            case emailInvalidMessage.FORM:
+            case emailInvalidMessage.FORM || emailInvalidMessage.DUPLICATION || verificationCodeInvalidMessage.ERROR || passwordInvalidMessage.FORM || passwordInvalidMessage.MATCH:
                 return <SignUpErrorIc/>;
-            case emailInvalidMessage.DUPLICATION:
-                return <SignUpErrorIc/>;
-            case emailInvalidMessage.SUCCESS:
-                return ;
-            case emailInvalidMessage.VERIFY:
-                return <SignUpVerifyIc/>;
-            case verificationCodeInvalidMessage.ERROR:
-                return <SignUpErrorIc/>;    
-            case passwordInvalidMessage.FORM:
-                return <SignUpErrorIc/>;        
-            case passwordInvalidMessage.MATCH:
-                return <SignUpErrorIc/>;  
-            case passwordInvalidMessage.SUCCESS:
+            case emailInvalidMessage.VERIFY || passwordInvalidMessage.SUCCESS:
                 return <SignUpVerifyIc/>; 
+            case emailInvalidMessage.SUCCESS:
+                return ;    
             default:
                 return ;
         }
@@ -193,7 +187,9 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         <TitleWrapper>
             {showTitle()}
         </TitleWrapper>
+
         <SignupEmailWrapper>
+
             <WhatsYourEmailIcon/>
             <InputWrapper>
                 <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline(emailMessage)} onChange={writeEmail}/>
@@ -207,6 +203,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             <MessageWrapper textColor={setMessageColor(emailMessage)}>
                 {emailMessage}
             </MessageWrapper>
+
             {!isVerify&&(
                 <>
                 <VerificationCodeTextIcon/>
@@ -224,6 +221,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 </MessageWrapper>
                 </>
             )}
+
             <SignUpPasswordIcon/>
             <InputWrapper>
                 <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
@@ -239,6 +237,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
                 {passwordMessage}
             </MessageWrapper>
+
             {isVerify&&(
                 <>
                 <ConfirmPasswordTextIcon/>
@@ -258,6 +257,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 </MessageWrapper>  
                 </>              
             )}
+
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
