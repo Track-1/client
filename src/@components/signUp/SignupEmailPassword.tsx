@@ -102,8 +102,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     function verifyCode(e: React.MouseEvent){
         //post함수 추가 -> 
         // if(맞으면){}
-        setIsSendCode(false)
         setIsVerify(true)
+        setEmailMessage(emailInvalidMessage.VERIFY)
     }
 
     function backToRole(){
@@ -116,6 +116,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 return <SignUpErrorIc/>;
             case emailInvalidMessage.DUPLICATION:
                 return <SignUpErrorIc/>;
+            case emailInvalidMessage.SUCCESS:
+                return ;
             case emailInvalidMessage.VERIFY:
                 return <SignUpVerifyIc/>;
             case verificationCodeInvalidMessage.ERROR:
@@ -205,7 +207,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             <MessageWrapper textColor={setMessageColor(emailMessage)}>
                 {emailMessage}
             </MessageWrapper>
-            {isSendCode&&(
+            {!isVerify&&(
                 <>
                 <VerificationCodeTextIcon/>
                 <InputWrapper>

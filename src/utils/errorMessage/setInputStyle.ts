@@ -8,8 +8,10 @@ export function setInputUnderline(message:string){
           return "#535559"
         case emailInvalidMessage.FORM:
             return "#FF4F4F";
-            case emailInvalidMessage.DUPLICATION:
+        case emailInvalidMessage.DUPLICATION:
           return "#FF4F4F";
+        case emailInvalidMessage.SUCCESS:
+            return "white"  
         case emailInvalidMessage.VERIFY:
             return "#5200FF";
         case verificationCodeInvalidMessage.ERROR:

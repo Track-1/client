@@ -1,7 +1,7 @@
 import React from 'react'
 import { signUpStep } from '../../core/signUp/signupStepType';
 import { StepPropsTypes } from '../../type/signUpStepTypes';
-import SignupEmailPassword from './SignupEmailPassword';
+import SignupEmailPassword from './signupEmailPassword';
 import SignupRole from './signupRole';
 
 export default function SignUpStepRenderer(props:StepPropsTypes) {
