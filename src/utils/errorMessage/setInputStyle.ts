@@ -1,4 +1,5 @@
 import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
+import { passwordInvalidMessage } from "../../core/userInfoErrorMessage/passwordInvalidMessage";
 import { verificationCodeInvalidMessage } from "../../core/userInfoErrorMessage/verificationCodeInvalidMessage";
 
 export function setInputUnderline(message:string){ 
@@ -13,6 +14,8 @@ export function setInputUnderline(message:string){
             return "#5200FF";
         case verificationCodeInvalidMessage.ERROR:
             return "#FF4F4F";    
+        case passwordInvalidMessage.FORM:
+            return "#FF4F4F";        
         default:
             return "white"
         }
@@ -30,6 +33,8 @@ export function setMessageColor(message:string){
             return "#5200FF";
         case verificationCodeInvalidMessage.ERROR:
             return "#FF4F4F";
+        case passwordInvalidMessage.FORM:
+            return "#FF4F4F";            
         default:
             return "transparent"
         }

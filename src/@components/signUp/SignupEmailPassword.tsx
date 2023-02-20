@@ -5,7 +5,7 @@ import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
-import { checkEmailForm } from '../../utils/errorMessage/checkEmailValidation';
+import { checkEmailForm } from '../../utils/errorMessage/checkEmailForm';
 import { authEmail } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
@@ -14,35 +14,50 @@ import ContinueButton from './continueButton';
 import { signUpStep } from '../../core/signUp/signupStepType';
 import { verificationCodeInvalidMessage } from '../../core/userInfoErrorMessage/verificationCodeInvalidMessage';
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
+import { passwordInvalidMessage } from '../../core/userInfoErrorMessage/passwordInvalidMessage';
+import { checkPasswordForm } from '../../utils/errorMessage/checkPasswordForm';
 
 export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
     const [email, setEmail]=useState<string>('')
-    const [emailErrorMessage, setEmailErrorMessage]=useState<string>(emailInvalidMessage.NULL)
+    const [emailMessage, setEmailMessage]=useState<string>(emailInvalidMessage.NULL)
     const [password, setPassword]=useState<string>('')
+    const [passwordMessage, setPasswordMessage]=useState<string>(passwordInvalidMessage.NULL)
     const [isSendCode, setIsSendCode]=useState<boolean>(false)
     const [verificationCode, setVerificationCode]=useState<string>('')
-    const [verificationCodeErrorMessage, setVerificationCodeErrorMessage]=useState<string>(verificationCodeInvalidMessage.NULL)
+    const [verificationCodeMessage, setVerificationCodeMessage]=useState<string>(verificationCodeInvalidMessage.NULL)
 
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
-            setEmailErrorMessage(emailInvalidMessage.NULL)
+            setEmailMessage(emailInvalidMessage.NULL)
         }
 
         else if(!checkEmailForm(e.target.value)){
-            setEmailErrorMessage(emailInvalidMessage.FORM)
+            setEmailMessage(emailInvalidMessage.FORM)
         }
 
         //임시
         else if(checkEmailForm(e.target.value)){
-            setEmailErrorMessage(emailInvalidMessage.SUCCESS)
+            setEmailMessage(emailInvalidMessage.SUCCESS)
         }
 
         setEmail(e.target.value)
     }
 
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
+        if(!e.target.value){
+            setPasswordMessage(passwordInvalidMessage.NULL)
+        }
+
+        else if(!checkPasswordForm(e.target.value)){
+            setPasswordMessage(passwordInvalidMessage.FORM)
+        }
+
+        else if(checkPasswordForm(e.target.value)){
+            setPasswordMessage(passwordInvalidMessage.SUCCESS)
+        }
+
         setPassword(e.target.value)
     }
 
@@ -53,14 +68,14 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
 
 
     function isEmailSuccess(){
-        return emailErrorMessage===emailInvalidMessage.SUCCESS
+        return emailMessage===emailInvalidMessage.SUCCESS
     }
 
     function sendCode(e: React.MouseEvent){
         console.log("클릭")
         //post함수 추가
         setIsSendCode(true)
-        setEmailErrorMessage(emailInvalidMessage.TIME)
+        setEmailMessage(emailInvalidMessage.TIME)
     }
 
     function verifyCode(e: React.MouseEvent){
@@ -83,6 +98,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 return <SignUpVerifyIc/>;
             case verificationCodeInvalidMessage.ERROR:
                 return <SignUpErrorIc/>;    
+            case passwordInvalidMessage.FORM:
+                return <SignUpErrorIc/>;        
             default:
                 return ;
         }
@@ -117,38 +134,47 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         <SignupEmailWrapper>
             <WhatsYourEmailIcon/>
             <InputWrapper>
-                <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline(emailErrorMessage)} onChange={writeEmail}/>
-                {setErrorIcon(emailErrorMessage)&&(
+                <Input type="email" placeholder="Enter your email address" width={42.2} underline={setInputUnderline(emailMessage)} onChange={writeEmail}/>
+                {setErrorIcon(emailMessage)&&(
                     <IconWrapper>
-                        {setErrorIcon(emailErrorMessage)}
+                        {setErrorIcon(emailMessage)}
                     </IconWrapper>
                 )}
                 <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode}/>
             </InputWrapper>
-            <MessageWrapper textColor={setMessageColor(emailErrorMessage)}>
-                {emailErrorMessage}
+            <MessageWrapper textColor={setMessageColor(emailMessage)}>
+                {emailMessage}
             </MessageWrapper>
             {isSendCode&&(
                 <>
                 <VerificationCodeTextIcon/>
                 <InputWrapper>
-                    <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline(verificationCodeErrorMessage)} onChange={writeVerificationCode}/>
-                    {setErrorIcon(verificationCodeErrorMessage)&&(
+                    <Input type="text" placeholder="Verify your email address" width={42.2} underline={setInputUnderline(verificationCodeMessage)} onChange={writeVerificationCode}/>
+                    {setErrorIcon(verificationCodeMessage)&&(
                         <IconWrapper>
-                            {setErrorIcon(verificationCodeErrorMessage)}
+                            {setErrorIcon(verificationCodeMessage)}
                         </IconWrapper>
                     )}
+                    
                     <VerifyButton verificationCode={verificationCode} onClick={(e: React.MouseEvent<HTMLElement>) => verifyCode(e)}/>
                 </InputWrapper>
-                <MessageWrapper textColor={setMessageColor(verificationCodeErrorMessage)}>
-                    {verificationCodeErrorMessage}
+                <MessageWrapper textColor={setMessageColor(verificationCodeMessage)}>
+                    {verificationCodeMessage}
                 </MessageWrapper>
                 </>
             )}
             <SignUpPasswordIcon/>
             <InputWrapper>
-                {/* <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline()} onChange={writePassword}/> */}
+                <Input type="password" placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
+                {setErrorIcon(passwordMessage)&&(
+                    <IconWrapper>
+                        {setErrorIcon(passwordMessage)}
+                    </IconWrapper>
+                )}
             </InputWrapper>
+            <MessageWrapper textColor={setMessageColor(passwordMessage)}>
+                {passwordMessage}
+            </MessageWrapper>
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
