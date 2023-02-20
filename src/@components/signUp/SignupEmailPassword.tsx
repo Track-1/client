@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
+import { ConfirmPasswordTextIc, SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
@@ -27,6 +27,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [verificationCode, setVerificationCode]=useState<string>('')
     const [verificationCodeMessage, setVerificationCodeMessage]=useState<string>(verificationCodeInvalidMessage.NULL)
     const [isVerify, setIsVerify]=useState<boolean>(false)
+    const [passwordConfirm, setPasswordConfirm]=useState<string>('')
+    const [passwordConfirmMessage, setPasswordConfirmMessage]=useState<string>(passwordInvalidMessage.NULL)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -59,6 +61,22 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         }
 
         setPassword(e.target.value)
+    }
+
+    function writePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>){
+        if(!e.target.value){
+            setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+        }
+
+        else if(e.target.value!==password){
+            setPasswordConfirmMessage(passwordInvalidMessage.MATCH)
+        }
+
+        else if(e.target.value===password){
+            setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS)
+        }
+
+        setPasswordConfirm(e.target.value)
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
@@ -101,6 +119,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                 return <SignUpErrorIc/>;    
             case passwordInvalidMessage.FORM:
                 return <SignUpErrorIc/>;        
+            case passwordInvalidMessage.MATCH:
+                return <SignUpErrorIc/>;  
             default:
                 return ;
         }
@@ -126,6 +146,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
       mutate(formData);
   }, [email]);
 
+  console.log(passwordConfirmMessage)
 
   return (
     <>
@@ -176,6 +197,23 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
                 {passwordMessage}
             </MessageWrapper>
+            {isVerify&&(
+                <>
+                <ConfirmPasswordTextIcon/>
+                <InputWrapper>
+                    <Input type="password" placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePasswordConfirm}/>
+                    {setErrorIcon(passwordConfirmMessage)&&(
+                        <IconWrapper marginLeft={-8.4}>
+                            {setErrorIcon(passwordConfirmMessage)}
+                        </IconWrapper>
+                    )}
+                    <SignUpEyeIcon/>
+                </InputWrapper>
+                <MessageWrapper textColor={setMessageColor(passwordConfirmMessage)}>
+                    {passwordConfirmMessage}
+                </MessageWrapper>  
+                </>              
+            )}
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
@@ -247,6 +285,10 @@ const VerificationCodeTextIcon=styled(VerificationCodeTextIc)`
     margin-top: 3.2rem;
 `
 
+const ConfirmPasswordTextIcon=styled(ConfirmPasswordTextIc)`
+    margin-top: 3.2rem;
+`
+
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
     position: absolute;
     margin-left:11rem;
@@ -259,5 +301,7 @@ const ArrowButtonWrapper=styled.div`
 `
 
 const SignUpEyeIcon=styled(SignUpEyeIc)`
-    margin: 1.9rem 0 0 0.5rem;
+    position: absolute;
+    
+    margin: 1.9rem 0 0 52rem;
 `
