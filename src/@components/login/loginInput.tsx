@@ -8,18 +8,21 @@ import {
   DefaultLoginBtnIc,
 } from "../../assets";
 import { useState } from "react";
+import { signIn } from "../../core/api/login";
 import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
 
-export default function LoginModal() {
+export default function LoginInput() {
   const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
   const [emailInputState, setEmailInputState] = useState<string>("");
   const [passwordInputState, setPasswordInputState] = useState<string>("");
-  const [isPasswordType, setIsPasswordType] = useState<boolean>(true);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [emailDefaultState, setEmailDefaultState] = useState<boolean>(true);
   const [passwordDefaultState, setPasswordDefaultState] = useState<boolean>(true);
+  const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-  const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+  const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{10,25}$/;
 
   const FOCUS = "focus";
   const BLUR = "blur";
@@ -27,36 +30,47 @@ export default function LoginModal() {
 
   function producerToggleType() {
     return isProducerMode ? (
-      <ProducerModeToggleIc onClick={() => setIsProducerMode((prev) => !prev)} style={{ cursor: "pointer" }} />
+      <ProducerModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
     ) : (
-      <ProducerDefaultModeToggleIc onClick={() => setIsProducerMode((prev) => !prev)} style={{ cursor: "pointer" }} />
+      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
     );
   }
 
-  function changeHoverState(
-    e: React.FocusEvent<HTMLInputElement>,
-    setInputState: React.Dispatch<React.SetStateAction<string>>,
-    RULE: RegExp,
-  ): void {
+  function changeHoverEmailState(e: React.FocusEvent<HTMLInputElement>): void {
     const input = e.target.value;
 
-    if (!RULE.test(input) && !isInputEmpty(input)) setInputState(WARNING);
-    if (RULE.test(input)) {
-      e.type === "focus" ? setInputState("focus") : setInputState(BLUR);
+    if (!EMAIL_RULE.test(input) && !isInputEmpty(input)) {
+      setEmailInputState(WARNING);
+      return;
     }
-    if (isInputEmpty(input)) {
-      e.type === FOCUS ? setInputState(FOCUS) : setInputState(BLUR);
-    }
+
+    e.type === FOCUS ? setEmailInputState(FOCUS) : setEmailInputState(BLUR);
   }
 
-  function emailValidation(e: React.ChangeEvent<HTMLInputElement>) {
+  function changeHoverPasswordState(e: React.FocusEvent<HTMLInputElement>): void {
+    const input = e.target.value;
+
+    if (!PASSWORD_RULE.test(input) && !isInputEmpty(input)) {
+      setPasswordInputState(WARNING);
+      return;
+    }
+
+    e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
+  }
+
+  function validateEmail(e: React.ChangeEvent<HTMLInputElement>): void {
     const email = e.target.value;
 
-    isInputEmpty(email) ? setEmailDefaultState(true) : setEmailDefaultState(false);
-    EMAIL_RULE.test(email) || isInputEmpty(email) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
+    if (isInputEmpty(email)) {
+      setEmailDefaultState(true);
+      setEmailInputState(FOCUS);
+    } else {
+      setEmailDefaultState(false);
+      EMAIL_RULE.test(email) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
+    }
   }
 
-  function passwordValidation(e: React.ChangeEvent<HTMLInputElement>): void {
+  function validatePassword(e: React.ChangeEvent<HTMLInputElement>): void {
     const password = e.target.value;
 
     isInputEmpty(password) ? setPasswordDefaultState(true) : setPasswordDefaultState(false);
@@ -64,6 +78,34 @@ export default function LoginModal() {
       ? setPasswordInputState(FOCUS)
       : setPasswordInputState(WARNING);
   }
+
+  const { mutate } = useMutation(login, {
+    onSuccess: () => {
+      console.log("로그인 성공~~~~헤헤헤헿");
+    },
+    onError: (error) => {
+      console.log("에러!!", error);
+      switch (error) {
+        case "존재하지 않는 아이디입니다.":
+          setEmailInputState(WARNING);
+          setEmailWarningMessage("We don't have an account with that email address");
+          break;
+
+        case "잘못된 비밀번호입니다.":
+          setPasswordInputState(WARNING);
+          break;
+
+        default:
+          break;
+      }
+    },
+  });
+
+  async function login() {
+    return await signIn("id", "pw");
+  }
+
+  function requestLogin() {}
 
   function loginBtnType() {
     if (
@@ -73,9 +115,9 @@ export default function LoginModal() {
       passwordDefaultState
     ) {
       return <DefaultLoginBtnIc />;
-    } else {
-      return isProducerMode ? <ProducerLoginBtnIc /> : <VocalLoginBtnIc />;
     }
+
+    return isProducerMode ? <ProducerLoginBtnIc onClick={requestLogin} /> : <VocalLoginBtnIc onClick={requestLogin} />;
   }
 
   function isInputEmpty(input: string): boolean {
@@ -100,27 +142,27 @@ export default function LoginModal() {
             <Input
               type="text"
               placeholder="Enter your email address"
-              onFocus={(e) => changeHoverState(e, setEmailInputState, EMAIL_RULE)}
-              onBlur={(e) => changeHoverState(e, setEmailInputState, EMAIL_RULE)}
-              onChange={emailValidation}
+              onFocus={changeHoverEmailState}
+              onBlur={changeHoverEmailState}
+              onChange={validateEmail}
             />
           </InputWrapper>
           <UnderLine inputState={emailInputState} />
-          {isWarningState(emailInputState) && <WarningMessage>Enter a valid email</WarningMessage>}
+          {isWarningState(emailInputState) && <WarningMessage>{emailWarningMessage}</WarningMessage>}
         </InputBox>
         <InputBox>
           <InputTitle>Password</InputTitle>
           <InputWrapper>
             <Input
-              type={isPasswordType ? "password" : "text"}
+              type={showPassword ? "text" : "password"}
               autoComplete="new-password"
               placeholder="Enter your password"
-              onFocus={(e) => changeHoverState(e, setPasswordInputState, PASSWORD_RULE)}
-              onBlur={(e) => changeHoverState(e, setEmailInputState, PASSWORD_RULE)}
-              onChange={passwordValidation}
+              onFocus={changeHoverPasswordState}
+              onBlur={changeHoverPasswordState}
+              onChange={validatePassword}
             />
 
-            <EyeIcon onClick={() => setIsPasswordType((prev) => !prev)} />
+            <EyeIcon onClick={() => setShowPassword((prev) => !prev)} />
           </InputWrapper>
           <UnderLine inputState={passwordInputState} />
           {isWarningState(passwordInputState) && (
@@ -261,5 +303,13 @@ const ForgotMessage = styled(Link)`
 `;
 
 const EyeIcon = styled(EyeIc)`
+  cursor: pointer;
+`;
+
+const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
+  cursor: pointer;
+`;
+
+const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
   cursor: pointer;
 `;

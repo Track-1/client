@@ -1,13 +1,13 @@
 import Footer from "../@components/@common/footer";
 import backgroundImg from "../assets/image/backgroundImg.png";
-import LoginModal from "../@components/login/loginModal";
+import LoginInput from "../@components/login/loginInput";
 
 export default function LoginPage() {
   return (
     <>
-      <LoginModal />
-      <img src={backgroundImg} />
-      <Footer />
+      <LoginInput />
+      <img src={backgroundImg} alt="배경사진" />
+      {/* <Footer /> */}
     </>
   );
 }
