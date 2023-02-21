@@ -105,8 +105,6 @@ export default function LoginInput() {
     return await signIn("id", "pw");
   }
 
-  function requestLogin() {}
-
   function loginBtnType() {
     if (
       isWarningState(emailInputState) ||
@@ -115,9 +113,13 @@ export default function LoginInput() {
       passwordDefaultState
     ) {
       return <DefaultLoginBtnIc />;
+    } else {
+      return isProducerMode ? (
+        <ProducerLoginBtnIc onClick={() => mutate()} />
+      ) : (
+        <VocalLoginBtnIc onClick={() => mutate()} />
+      );
     }
-
-    return isProducerMode ? <ProducerLoginBtnIc onClick={requestLogin} /> : <VocalLoginBtnIc onClick={requestLogin} />;
   }
 
   function isInputEmpty(input: string): boolean {
