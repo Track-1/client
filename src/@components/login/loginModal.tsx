@@ -9,6 +9,8 @@ import {
 } from "../../assets";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import { signIn } from "../../core/api/login";
 
 export default function LoginModal() {
   const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
@@ -24,6 +26,19 @@ export default function LoginModal() {
   const FOCUS = "focus";
   const BLUR = "blur";
   const WARNING = "warning";
+
+  const { mutate } = useMutation(LogIn, {
+    onSuccess: () => {
+      console.log("성공!!");
+    },
+    onError: (error) => {
+      console.log("에러!!", error);
+    },
+  });
+
+  async function LogIn() {
+    return await signIn("id", "password");
+  }
 
   function producerToggleType() {
     return isProducerMode ? (
@@ -74,7 +89,11 @@ export default function LoginModal() {
     ) {
       return <DefaultLoginBtnIc />;
     } else {
-      return isProducerMode ? <ProducerLoginBtnIc /> : <VocalLoginBtnIc />;
+      return isProducerMode ? (
+        <ProducerLoginBtnIc onClick={() => mutate()} />
+      ) : (
+        <VocalLoginBtnIc onClick={() => mutate()} />
+      );
     }
   }
 
