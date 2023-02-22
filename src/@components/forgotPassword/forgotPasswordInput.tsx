@@ -1,12 +1,5 @@
 import styled, { css } from "styled-components";
-import {
-  RequestResetPasswordDefaultBtnIc,
-  ForgotPasswordTitleIc,
-  RequestResetPasswordProducerBtnIc,
-  RequestResetPasswordVocalBtnIc,
-  ResendPasswordProducerBtnIc,
-  ResendPasswordVocalBtnIc,
-} from "../../assets";
+import { RequestResetPasswordDefaultBtnIc, ForgotPasswordTitleIc } from "../../assets";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { postNewPassword } from "../../core/api/newPassword";
@@ -36,11 +29,11 @@ export default function ForgotPasswordInput() {
       return <RequestResetPasswordDefaultBtnIcon onClick={() => mutate()} />;
     }
 
-    return isProducerMode ? (
-      <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
-    ) : (
-      <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
-    );
+    // return isProducerMode ? (
+    //   <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
+    // ) : (
+    //   <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
+    // );
   }
 
   return (
@@ -122,13 +115,5 @@ const RequestBtnWrapper = styled.div`
 `;
 
 const RequestResetPasswordDefaultBtnIcon = styled(RequestResetPasswordDefaultBtnIc)`
-  cursor: pointer;
-`;
-
-const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
-  cursor: pointer;
-`;
-
-const RequestResetPasswordVocalBtnIcon = styled(RequestResetPasswordVocalBtnIc)`
   cursor: pointer;
 `;
