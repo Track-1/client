@@ -1,5 +1,14 @@
 import styled, { css } from "styled-components";
-import { RequestResetPasswordDefaultBtnIc, ForgotPasswordTitleIc } from "../../assets";
+import {
+  RequestResetPasswordDefaultBtnIc,
+  ForgotPasswordTitleIc,
+  RequestResetPasswordProducerBtnIc,
+  RequestResetPasswordVocalBtnIc,
+  ResendPasswordProducerBtnIc,
+  ResendPasswordVocalBtnIc,
+  ProducerModeToggleIc,
+  ProducerDefaultModeToggleIc,
+} from "../../assets";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { postNewPassword } from "../../core/api/newPassword";
@@ -24,16 +33,24 @@ export default function ForgotPasswordInput() {
     setEmail(email);
   }
 
+  function producerToggleType() {
+    return isProducerMode ? (
+      <ProducerModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
+    ) : (
+      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
+    );
+  }
+
   function requestBtnType() {
     if (true) {
       return <RequestResetPasswordDefaultBtnIcon onClick={() => mutate()} />;
     }
 
-    // return isProducerMode ? (
-    //   <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
-    // ) : (
-    //   <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
-    // );
+    return isProducerMode ? (
+      <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
+    ) : (
+      <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
+    );
   }
 
   return (
@@ -47,6 +64,10 @@ export default function ForgotPasswordInput() {
           <Input placeholder="Enter your email address" onChange={validateEmail} />
           <UnderLine />
         </InputWrapper>
+        <ModeWrapper>
+          <ModeText>Producer Mode</ModeText>
+          {producerToggleType()}
+        </ModeWrapper>
         <RequestBtnWrapper>{requestBtnType()}</RequestBtnWrapper>
       </Wrapper>
     </Container>
@@ -110,10 +131,39 @@ const UnderLine = styled.hr`
   border-color: ${({ theme }) => theme.colors.gray3};
 `;
 
+const ModeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  float: right;
+  margin: 4.2rem 0 3.1rem;
+`;
+
+const ModeText = styled.div`
+  ${({ theme }) => theme.fonts.body1};
+  color: ${({ theme }) => theme.colors.gray1};
+  margin: 0 1.2rem;
+`;
+
 const RequestBtnWrapper = styled.div`
   margin-top: 2.2rem;
 `;
 
 const RequestResetPasswordDefaultBtnIcon = styled(RequestResetPasswordDefaultBtnIc)`
+  cursor: pointer;
+`;
+
+const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
+  cursor: pointer;
+`;
+
+const RequestResetPasswordVocalBtnIcon = styled(RequestResetPasswordVocalBtnIc)`
+  cursor: pointer;
+`;
+
+const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
+  cursor: pointer;
+`;
+
+const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
   cursor: pointer;
 `;

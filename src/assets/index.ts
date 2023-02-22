@@ -131,3 +131,11 @@ export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHe
 export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
+export { ReactComponent as ForgotPasswordTitleIc } from "./icon/forgotPasswordTitleIc.svg";
+export { ReactComponent as RequestResetPasswordDefaultBtnIc } from "./icon/requestResetPasswordDefaultBtnIc.svg";
+export { ReactComponent as RequestResetPasswordProducerBtnIc } from "./icon/requestResetPasswordProducerBtnIc.svg";
+export { ReactComponent as RequestResetPasswordVocalBtnIc } from "./icon/requestResetPasswordVocalBtnIc.svg";
+export { ReactComponent as ResendPasswordProducerBtnIc } from "./icon/resendPasswordProducerBtnIc.svg";
+export { ReactComponent as ResendPasswordVocalBtnIc } from "./icon/resendPasswordVocalBtnIc.svg";
+export { ReactComponent as ProducerDefaultModeToggleIc } from "./icon/producerDefaultModeToggleIc.svg";
+export { ReactComponent as ProducerModeToggleIc } from "./icon/producerModeToggleIc.svg";
