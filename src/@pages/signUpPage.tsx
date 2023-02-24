@@ -23,7 +23,7 @@ export default function SignUpPage() {
 
   return (
     <>
-            {/* <ConventionModal/> */}
+        <ConventionModal/>
 
         <BackButtonWrapper onClick={endSignUp}>
             <BackButton/>

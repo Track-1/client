@@ -6,14 +6,22 @@ import { PersonalInformationProcessingPolicy } from '../../core/constants/conven
 export default function ConventionModal() {
   return (
     <ModalBackground>
-        <Modal>
-            <ModalHeader>
-                <SignUpModalXIc/>
-                <Title>
+        <ModalContainer>
+            <ModalWrapper>
+                <ModalHeader>
+                    <SignUpModalXIc/>
+                    <Title>
+                        {PersonalInformationProcessingPolicy.TITLE}
+                    </Title>
+                </ModalHeader>
+                <Intro>
+                    {PersonalInformationProcessingPolicy.INTRO}
+                </Intro>
+                <Contents>
                     {PersonalInformationProcessingPolicy.CONTENTS}
-                </Title>
-            </ModalHeader>
-        </Modal>
+                </Contents>
+            </ModalWrapper>
+        </ModalContainer>
     </ModalBackground>
   )
 }
@@ -24,19 +32,20 @@ const ModalBackground=styled.div`
     align-items: center;
 
     position: absolute;
+    z-index: 2;
 
     width: 192rem;
     height: 108rem;
 
+    margin-top: -5.9rem;
+
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(0.5rem);
 `
 
-const Modal=styled.div`
+const ModalContainer=styled.div`
     width: 77.7rem;
     height: 88.8rem;
-
-    padding: 6.2rem 5.8rem;
 
     backdrop-filter: blur(1rem);
 
@@ -48,9 +57,14 @@ const Modal=styled.div`
     background-origin: border-box;
     background-clip: content-box, border-box;
 `
+const ModalWrapper=styled.div`
+    padding: 6.2rem 5.8rem;
+`
 
 const ModalHeader=styled.header`
     display: flex;
+
+    padding-bottom: 5.3rem;
 `
 
 const Title=styled.h1`
@@ -59,7 +73,24 @@ const Title=styled.h1`
     align-items: center;
 
     width: 61.5rem;
-    height: 2.2rem;
+    height: 4rem;
 
-    ${({theme})=>theme.fonts.typography}
+    ${({theme})=>theme.fonts.typography_title}
+    color: ${({theme})=>theme.colors.white};
+`
+
+const Intro=styled.p`
+    padding-bottom: 2.4rem;
+    border-bottom: 0.1rem solid ${({theme})=>theme.colors.gray3};
+
+    ${({theme})=>theme.fonts.typography_intro}
+    color: ${({theme})=>theme.colors.white};
+`
+
+const Contents=styled.p`
+    padding-top: 2.4rem;
+    white-space:pre-wrap;
+
+    ${({theme})=>theme.fonts.typography_content}
+    color: ${({theme})=>theme.colors.gray2};
 `
