@@ -6,6 +6,7 @@ import TrackSearchPage from "./@pages/trackSearchPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalsPage from "./@pages/vocalsPage";
 import UploadPage from "./@pages/uploadPage";
+import ResetPasswordPage from "./@pages/resetPasswordPage";
 
 export default function Router() {
   return (
@@ -19,6 +20,7 @@ export default function Router() {
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         {/* <Route path="/upload" element={<UploadPage />} /> */}
         <Route path="/upload/:producerUploadType" element={<UploadPage />} />
+        <Route path="/resetPassword" element={<ResetPasswordPage />} />
       </Routes>
     </BrowserRouter>
   );
