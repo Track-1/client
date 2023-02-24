@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { SignUpModalXIc } from '../../assets';
+import { PersonalInformationProcessingPolicy } from '../../core/constants/convention';
 
 export default function ConventionModal() {
   return (
@@ -9,7 +10,7 @@ export default function ConventionModal() {
             <ModalHeader>
                 <SignUpModalXIc/>
                 <Title>
-                    
+                    {PersonalInformationProcessingPolicy.CONTENTS}
                 </Title>
             </ModalHeader>
         </Modal>

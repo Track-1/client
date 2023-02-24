@@ -5,6 +5,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
     const {setStep}=props;
 
   return (
-    <div>signupNicknameConvention</div>
+    <>
+    </>
   )
 }
