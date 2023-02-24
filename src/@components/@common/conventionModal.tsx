@@ -18,7 +18,7 @@ export default function ConventionModal() {
                     {PersonalInformationProcessingPolicy.INTRO}
                 </Intro>
                 <Contents>
-                    {PersonalInformationProcessingPolicy.CONTENTS.map((content, index)=>(<>{content}</>))}
+                    {PersonalInformationProcessingPolicy.CONTENTS.map((content, index)=>(<>{content}<br/></>))}
                 </Contents>
             </ModalWrapper>
         </ModalContainer>
