@@ -160,3 +160,4 @@ export { ReactComponent as SignUpEyeIc } from "./icon/signUpEyeIc.svg";
 export { ReactComponent as SignUpEyeXIc } from "./icon/signUpEyeXIc.svg";
 export { ReactComponent as ConfirmPasswordTextIc } from "./icon/confirmPasswordTextIc.svg";
 export { ReactComponent as CreateAPasswordForYourAccountTitleIc } from "./icon/createAPasswordForYourAccountTitleIc.svg";
+export { ReactComponent as SignUpModalXIc } from "./icon/signUpModalXIc.svg";

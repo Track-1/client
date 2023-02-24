@@ -1,11 +1,15 @@
 import React from 'react'
 import styled from 'styled-components';
+import { SignUpModalXIc } from '../../assets';
 
 export default function ConventionModal() {
   return (
     <ModalBackground>
         <Modal>
+            <SignUpModalXIc/>
+            <Title>
 
+            </Title>
         </Modal>
     </ModalBackground>
   )
@@ -40,4 +44,8 @@ const Modal=styled.div`
 
     background-origin: border-box;
     background-clip: content-box, border-box;
+`
+
+const Title=styled.h1`
+    
 `
