@@ -6,10 +6,12 @@ export default function ConventionModal() {
   return (
     <ModalBackground>
         <Modal>
-            <SignUpModalXIc/>
-            <Title>
-
-            </Title>
+            <ModalHeader>
+                <SignUpModalXIc/>
+                <Title>
+                    
+                </Title>
+            </ModalHeader>
         </Modal>
     </ModalBackground>
   )
@@ -46,6 +48,17 @@ const Modal=styled.div`
     background-clip: content-box, border-box;
 `
 
+const ModalHeader=styled.header`
+    display: flex;
+`
+
 const Title=styled.h1`
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 61.5rem;
+    height: 2.2rem;
+
+    ${({theme})=>theme.fonts.typography}
 `
