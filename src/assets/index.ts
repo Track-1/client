@@ -131,3 +131,10 @@ export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHe
 export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
+export { ReactComponent as ResetPasswordTitleIc } from "./icon/resetPasswordTitleIc.svg";
+export { ReactComponent as ShowPasswordIc } from "./icon/showPasswordIc.svg";
+export { ReactComponent as HiddenPasswordIc } from "./icon/hiddenPasswordIc.svg";
+export { ReactComponent as DefaultSaveBtnIc } from "./icon/defaultSaveBtnIc.svg";
+export { ReactComponent as SaveBtnIc } from "./icon/saveBtnIc.svg";
+export { ReactComponent as InputSuccessIc } from "./icon/inputSuccessIc.svg";
+export { ReactComponent as InputWarningIc } from "./icon/inputWarningIc.svg";
