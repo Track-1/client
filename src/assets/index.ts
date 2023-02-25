@@ -131,3 +131,9 @@ export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHe
 export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
+
+export { ReactComponent as ProfileEditCategoryIc } from "./icon/profileEditCategoryIc.svg";
+export { ReactComponent as ProfileEditContactIc } from "./icon/profileEditContactIc.svg";
+export { ReactComponent as ProfileEditDescriptionIc } from "./icon/profileEditDescriptionIc.svg";
+export { ReactComponent as ProfileEditHashtagIc } from "./icon/profileEditHashtagIc.svg";
+export { ReactComponent as ProfileEditSaveButtonIc } from "./icon/profileEditSaveButtonIc.svg";
