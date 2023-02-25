@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
+  AddHashtagIc,
   ProfileEditCategoryIc,
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
@@ -44,8 +45,8 @@ export default function ProfileEditInfo(props: PropsType) {
     setHashtagInput(e.target.value);
   }
 
-  function completeHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && hashtagRef.current) {
+  function completeHashtag() {
+    if (hashtagRef.current) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
     }
@@ -118,7 +119,9 @@ export default function ProfileEditInfo(props: PropsType) {
                 <HashtagSharp># </HashtagSharp>
                 <HashtagInput
                   onChange={getInputText}
-                  onKeyPress={completeHashtag}
+                  onKeyPress={(e) => {
+                    e.key === "Enter" && completeHashtag();
+                  }}
                   inputWidth={hashtagInput.length}
                   ref={hashtagRef}
                   placeholder="HashTag"
@@ -135,6 +138,7 @@ export default function ProfileEditInfo(props: PropsType) {
                 </Hashtag>
               );
             })}
+            <AddHashtagIcon onClick={completeHashtag} />
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
@@ -280,6 +284,10 @@ const CompletedHashtag = styled.article`
   color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.fonts.hashtag}
+`;
+
+const AddHashtagIcon = styled(AddHashtagIc)`
+  margin-top: 2.8rem;
 `;
 
 const DescriptionContainer = styled.article`
