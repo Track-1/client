@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { SignUpUploadImageIc } from '../../assets';
+import { SignUpChangeImageIc, SignUpUploadImageIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import { UploadInfoDataType } from '../../type/uploadInfoDataType';
 import { uploadImage } from '../../utils/uploadPage/uploadImage';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 export default function SignupNicknameConvention(props:SetStepPropsType) {
     const {setStep}=props;
     const [imageSrc, setImageSrc] = useState<string>("");
+    const [isHover, setIsHover]=useState<boolean>(false);
 
     const uploadImage = (e: React.ChangeEvent) => {
       const targetFiles = (e.target as HTMLInputElement).files as FileList;
@@ -18,24 +19,32 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
       setImageSrc(selectedFiles[0]);
     }
 
+    function checkImageHover(){
+      setIsHover(prev=>!prev)
+    }
+
   return (
     <>
     <ImageContainer>
-      <ImgWrapper>
-          {imageSrc && <Img src={imageSrc} alt="preview-img" />}
-        </ImgWrapper>
-
-      <label htmlFor="profile-img">
-        <SignUpUploadImageIcon/>
-      </label>
+      <Label htmlFor='profile-img' onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
+        {imageSrc&&isHover&&<SignUpChangeImageIcon/>}
+        {imageSrc ? (
+          <ImgWrapper>
+              <Img src={imageSrc} alt="preview-img" />
+          </ImgWrapper>
+        ):(
+          <SignUpUploadImageIcon/>
+        )}
+      </Label>
         <input type="file" id="profile-img" style={{ visibility: "hidden" }} onChange={(e) => {uploadImage(e)}} />
     </ImageContainer>
+    
     </>
   );
 
 }
 
-const SignUpUploadImageIcon=styled(SignUpUploadImageIc)`
+const Label=styled.label`
   cursor: pointer;
 `
 
@@ -55,4 +64,16 @@ const ImgWrapper=styled.div`
 
 const Img=styled.img`
   width: 100%;
+`
+
+const SignUpChangeImageIcon=styled(SignUpChangeImageIc)`
+  width: 21.7rem;
+  height: 21.7rem;
+
+  position: absolute;
+  z-index: 2;
+`
+
+const SignUpUploadImageIcon=styled(SignUpUploadImageIc)`
+  position: absolute;
 `

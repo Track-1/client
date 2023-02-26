@@ -163,3 +163,4 @@ export { ReactComponent as CreateAPasswordForYourAccountTitleIc } from "./icon/c
 export { ReactComponent as SignUpModalXIc } from "./icon/signUpModalXIc.svg";
 export { ReactComponent as SignUpBackgroundIc } from "./icon/signUpBackgroundIc.svg";
 export { ReactComponent as SignUpUploadImageIc } from "./icon/signUpUploadImageIc.svg";
+export { ReactComponent as SignUpChangeImageIc } from "./icon/signUpChangeImageIc.svg";
