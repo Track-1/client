@@ -56,25 +56,12 @@ export function setMessageColor(message:string){
         case passwordInvalidMessage.MATCH:
             return color.RED;    
         case nicknameValidMessage.NULL:
-            return color.GRAY;   
+            return color.TRANSPARENT;   
         case nicknameValidMessage.ERROR:
             return color.RED;   
         case nicknameValidMessage.SUCCESS:
-            return color.VIOLET;   
+            return color.TRANSPARENT;   
         default:
             return color.TRANSPARENT
         }
 }
-
-// export function setErrorIcon(message:string){ 
-//     switch (message) {
-//         case emailInvalidMessage.FORM:
-//             return typeof SignUpVerifyIc;
-//         case emailInvalidMessage.DUPLICATION:
-//             return typeof SignUpVerifyIc;
-//         case emailInvalidMessage.VERIFY:
-//             return typeof SignUpVerifyIc;
-//         default:
-//             return ;
-//     }
-// }
