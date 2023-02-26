@@ -1,10 +1,16 @@
 import { signUpStep } from "../../core/signUp/signupStepType";
 
 export function isMessageLogo(stepType: string):boolean {
-  console.log(stepType)
-  return(
-    (stepType === signUpStep.SIGNUP_ROLE||signUpStep.SIGNUP_EMAIL_PASSWORD||signUpStep.SIGNUP_NICKNAME_CONVENTION)?true:false
-  )
+  switch(stepType){
+    case signUpStep.SIGNUP_ROLE:
+      return true;
+    case signUpStep.SIGNUP_EMAIL_PASSWORD:
+      return true;
+    case signUpStep.SIGNUP_NICKNAME_CONVENTION:
+      return true;
+    default:
+      return false;
+  }
 }
 
 export function isMessageWelcome(stepType: string): boolean {

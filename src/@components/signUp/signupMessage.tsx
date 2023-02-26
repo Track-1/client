@@ -5,7 +5,8 @@ import { isMessageLogo,isMessageWelcome } from '../../utils/signUp/checkMessageT
 
 export default function SignupMessage(props:StepPropsType) {
     const {step}=props;
-    
+    console.log(isMessageLogo(step))
+    console.log(step)
   return (
     <>
     {isMessageLogo(step)&&<SignBgLogoIcon/>}
