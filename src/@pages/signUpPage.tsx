@@ -14,7 +14,7 @@ import { conventionType } from "../core/convention/conventionType";
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
-    const [showModal, setShowModal]=useState<boolean>(false);
+    const [showModal, setShowModal]=useState<boolean>(true);
 
     function endSignUp(){
         if (window.confirm('회원가입을 종료하겠습니까?'))
@@ -64,6 +64,9 @@ const SignUpStepWrapper=styled.div`
 const StepBox=styled.div`
     width: 77.9rem;
     height: 88.8rem;
+
+    position: absolute;
+    right: 18.1rem;
 
     backdrop-filter: blur(1rem);
 
