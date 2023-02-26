@@ -14,43 +14,62 @@ export default function ConventionCheckBox() {
           ),
         );
       }
+
+    function checkFirstIndex(id:number){
+        return id===0
+    }
     
   return (
-    <>
-    {checkedConventions.map(({id, selected, text})=>(
-        <ConventionCheckBoxWrapper>
+    <ConventionCheckBoxContainer>
+    {checkedConventions.map(({id, selected, text}:ConventionChecksType)=>(
+        <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
             <article onClick={()=>categoryClick(id)}>
                 {selected?<ConventionFullBoxIc/>:<ConventionBlanckBoxIc/>}
             </article>
-            <Title>{text}</Title>
-            <FullConvention>전체보기</FullConvention>
+            <TextWrapper>
+                <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
+                <FullConvention checkFirstIndex={checkFirstIndex(id)}>전체보기</FullConvention>
+            </TextWrapper>
         </ConventionCheckBoxWrapper>
     ))}
-    </>
+    </ConventionCheckBoxContainer>
   )
 }
 
-const ConventionCheckBoxWrapper=styled.section`
+const ConventionCheckBoxContainer=styled.section`
+    margin-top: 2.6rem;
+`
+
+const ConventionCheckBoxWrapper=styled.section<{checkFirstIndex:boolean}>`
     display: flex;
     align-items: center;
 
     width: 56rem;
-    height: 4rem;
+    height: ${({checkFirstIndex})=>checkFirstIndex?4.4:3.5}rem;
+
+    padding-bottom: ${({checkFirstIndex})=>checkFirstIndex&&0.4}rem;
+    margin-bottom: ${({checkFirstIndex})=>checkFirstIndex&&0.9}rem;
+
+    border-bottom: 0.1rem solid ${({theme, checkFirstIndex})=>checkFirstIndex?theme.colors.gray4:"transparent"};
 
     margin-left: 10rem;
 `
 
-// const Title=styled.h1<{id:number}>`
-//     color:${({theme, id})=>id===0?theme.colors.gray1:2};
-// `
+const TextWrapper=styled.div`
+    display: flex;
+    justify-content: space-between;
 
-// const FullConvention=styled.p<{id:number}>`
-//     color:${({theme, id})=>id===0?"transparent":theme.colors.gray3}
-// `
-const Title=styled.h1`
-    color:${({theme})=>theme.colors.gray1};
+    width: 100%;
 `
 
-const FullConvention=styled.p`
-    color:${({theme})=>theme.colors.gray3}
+const Title=styled.h1<{checkFirstIndex:boolean}>`
+    color:${({theme, checkFirstIndex})=>checkFirstIndex?theme.colors.gray1:theme.colors.gray2};
+    ${({theme})=>theme.fonts.checkbox};
+`
+
+const FullConvention=styled.p<{checkFirstIndex:boolean}>`
+    border-bottom: 0.1rem solid ${({theme, checkFirstIndex})=>checkFirstIndex?"transparent":theme.colors.gray3};
+
+    color:${({theme, checkFirstIndex})=>checkFirstIndex?"transparent":theme.colors.gray3};
+    ${({theme})=>theme.fonts.checkbox};
 `
