@@ -165,3 +165,5 @@ export { ReactComponent as SignUpBackgroundIc } from "./icon/signUpBackgroundIc.
 export { ReactComponent as SignUpUploadImageIc } from "./icon/signUpUploadImageIc.svg";
 export { ReactComponent as SignUpChangeImageIc } from "./icon/signUpChangeImageIc.svg";
 export { ReactComponent as WhatsYourNameTextIc } from "./icon/whatsYourNameTextIc.svg";
+export { ReactComponent as ConventionBlanckBoxIc } from "./icon/conventionBlanckBoxIc.svg";
+export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";

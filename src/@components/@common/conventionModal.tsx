@@ -51,13 +51,10 @@ const ModalBackground=styled.div`
     justify-content: center;
     align-items: center;
 
-    position: absolute;
-    z-index: 2;
+    position: relative;
 
     width: 192rem;
     height: 108rem;
-
-    margin-top: -5.9rem;
 
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(0.5rem);

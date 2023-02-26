@@ -14,7 +14,7 @@ import { conventionType } from "../core/convention/conventionType";
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
-    const [showModal, setShowModal]=useState<boolean>(false);
+    const [showModal, setShowModal]=useState<boolean>(true);
 
     function endSignUp(){
         if (window.confirm('회원가입을 종료하겠습니까?'))
@@ -25,30 +25,36 @@ export default function SignUpPage() {
 
   return (
     <>
-        {showModal&&<ConventionModal policy={conventionType.USINGSITE} setShowModal={setShowModal}/>}
+        <SignUpPageWrapper>
+            <BackButtonWrapper onClick={endSignUp}>
+                <BackButton/>
+            </BackButtonWrapper>
+            <SignUpContainer background={background}>
+                <SignUpStepWrapper>
+                    <SignupMessage step={step}/>
+                    <StepBox>
+                        <SignupStepHeader step={step}/>
+                        <SignUpStepRenderer step={step} setStep={setStep} />
+                    </StepBox>
+                </SignUpStepWrapper>
+            </SignUpContainer>
+            <Footer/>
+        </SignUpPageWrapper>
 
-        <BackButtonWrapper onClick={endSignUp}>
-            <BackButton/>
-        </BackButtonWrapper>
-        <SignUpContainer background={background}>
-            <SignUpStepWrapper>
-                <SignupMessage step={step}/>
-                <StepBox>
-                    <SignupStepHeader step={step}/>
-                    <SignUpStepRenderer step={step} setStep={setStep} />
-                </StepBox>
-            </SignUpStepWrapper>
-        </SignUpContainer>
 
-        <Footer/>
+        {showModal&&(<ConventionModal policy={conventionType.USINGSITE} setShowModal={setShowModal}/>)}
+
     </>
   )
 }
 
+const SignUpPageWrapper=styled.div`
+    position: absolute;
+`
+
 const BackButtonWrapper=styled.div`
     margin: 5.9rem 0 0 7.9rem;
 `
-
 
 const SignUpContainer=styled.div<{background:string}>`
     width: 192rem;
@@ -65,7 +71,6 @@ const StepBox=styled.div`
     width: 77.9rem;
     height: 88.8rem;
 
-    position: absolute;
     right: 18.1rem;
 
     backdrop-filter: blur(1rem);
