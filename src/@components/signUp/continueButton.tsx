@@ -30,7 +30,7 @@ const ContinueButtonWrapper=styled.button<{isNotNull:boolean}>`
     width: 17rem;
     height: 4.6rem;
 
-    margin: 10.8rem 0 0 49.8rem;
+    /* margin: 10.8rem 0 0 49.8rem; */
 
     border-radius: 2.5rem;
     border: 0.1rem solid ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};
