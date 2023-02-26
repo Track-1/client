@@ -7,16 +7,16 @@ import { ContinueButtonPropsTypes } from '../../type/signUpStepTypes'
 export default function ContinueButton(props:ContinueButtonPropsTypes) {
     const {successNextStep, step, setStep}=props
 
-    function isNotNull(answer:string){
-        return answer!==''
+    function isNull(answer:string){
+        return answer===''
     }
 
     function moveNextStep(){
-        isNotNull(successNextStep)&&setStep(step)
+        !isNull(successNextStep)&&setStep(step)
     }
 
   return (
-    <ContinueButtonWrapper type="button" isNotNull={isNotNull(successNextStep)} onClick={moveNextStep}>
+    <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={moveNextStep}>
         <SignUpContinueButtonIc/>
     </ContinueButtonWrapper>
   )
