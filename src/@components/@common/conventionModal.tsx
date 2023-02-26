@@ -32,7 +32,7 @@ export default function ConventionModal(props:PropsType) {
                 <Intro intro={isIntroNotNull()}>
                     {checkConventionType(policy)?.INTRO}
                 </Intro>
-                <Contents>
+                <Contents intro={isIntroNotNull()}>
                     {checkConventionType(policy)?.CONTENTS.map((content, index)=>(
                         <div>
                             <p dangerouslySetInnerHTML={{ __html: content }}></p>
@@ -104,8 +104,8 @@ const Intro=styled.p<{intro:boolean}>`
     color: ${({theme})=>theme.colors.white};
 `
 
-const Contents=styled.p`
-    height: 55.5rem;
+const Contents=styled.p<{intro:boolean}>`
+    height: ${({intro})=>intro?55.5:67}rem;
     overflow: scroll;
 
     padding-top: 2.4rem;
