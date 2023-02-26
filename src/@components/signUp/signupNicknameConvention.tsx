@@ -15,7 +15,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
     const [imageSrc, setImageSrc] = useState<string>("");
     const [isHover, setIsHover]=useState<boolean>(false);
     const [nickname, setNickname]=useState<string>("")
-    const [nicknameMessage, setNicknameMessage]=useState<string>("")
+    const [nicknameMessage, setNicknameMessage]=useState<string>(nicknameValidMessage.NULL)
     const [completeCheck, setCompleteCheck]=useState<boolean>(false)
 
     const uploadImage = (e: React.ChangeEvent) => {
