@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { SignUpModalXIc } from '../../assets';
 import { PersonalInformationProcessingPolicy } from '../../core/constants/convention';
+import ConventionContent from './conventionContent';
 
 export default function ConventionModal() {
   return (
@@ -18,7 +19,12 @@ export default function ConventionModal() {
                     {PersonalInformationProcessingPolicy.INTRO}
                 </Intro>
                 <Contents>
-                    {PersonalInformationProcessingPolicy.CONTENTS.map((content, index)=>(<>{content}<br/></>))}
+                    {PersonalInformationProcessingPolicy.CONTENTS.map((content, index)=>(
+                        <div>
+                            <p dangerouslySetInnerHTML={{ __html: content }}></p>
+                            <br/>
+                        </div>                    
+                    ))}
                 </Contents>
             </ModalWrapper>
         </ModalContainer>
@@ -88,6 +94,9 @@ const Intro=styled.p`
 `
 
 const Contents=styled.p`
+    height: 55.5rem;
+    overflow: scroll;
+
     padding-top: 2.4rem;
     white-space:pre-wrap;
 
