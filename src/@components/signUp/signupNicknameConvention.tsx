@@ -7,6 +7,7 @@ import { signUpStep } from '../../core/signUp/signupStepType';
 import ContinueButton from './continueButton';
 import { nicknameValidMessage } from '../../core/userInfoErrorMessage/nicknameMessage';
 import { checkNicknameForm } from '../../utils/errorMessage/checkNicknameForm';
+import ConventionCheckBox from './conventionCheckBox';
 
 export default function SignupNicknameConvention(props:SetStepPropsType) {
     const {setStep}=props;
@@ -96,7 +97,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
           {nicknameMessage}
       </MessageWrapper>
     </NicknameWrapper>
-
+    <ConventionCheckBox/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
       <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
@@ -119,7 +120,7 @@ const ImageContainer=styled.section`
 
 const ImgWrapper=styled.div`
   width: 100%;
-  
+
   border-radius: 25rem;
 
   position: absolute;
