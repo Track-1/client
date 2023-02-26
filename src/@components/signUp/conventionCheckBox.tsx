@@ -8,6 +8,7 @@ export default function ConventionCheckBox() {
     const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
     const [checkedCount, setCheckedCount]=useState<number>(0);
 
+
     function categoryClick(id: number) {
         setCheckedConventions(
             checkedConventions.map((checkedConvention) =>
@@ -31,49 +32,25 @@ export default function ConventionCheckBox() {
       }
     
     useEffect(() => {
-        // checkedConventions[0].selected?
-        // setCheckedConventions(
-        //     checkedConventions.map((checkedConvention) =>
-        //     ({ ...checkedConvention, selected: true })
-        //   ),
-        // ):setCheckedConventions(
-        //     checkedConventions.map((checkedConvention) =>
-        //     ({ ...checkedConvention, selected: false })
-        // ))    
+        checkedConventions.forEach((checkedConvention) => {
+            (!checkFirstIndex(checkedConvention.id))&&checkedConvention.selected?setCheckedCount(prev=>prev+1):setCheckedCount(prev=>prev-1)
+        });
 
-        // checkedConventions.forEach((checkedConvention) => {
-        //     (!checkFirstIndex(checkedConvention.id))&&checkedConvention.selected?setCheckedCount(prev=>prev+1):setCheckedCount(prev=>prev-1)
-        // });
-        
-        // if (checkFullChecked()){ //전체 다 참
-        //     setCheckedConventions(
-        //         checkedConventions.map((checkedConvention) =>
-        //         checkedConvention.id === 0 ? { ...checkedConvention, selected: true } : checkedConvention
-        //       )
-        //     )
-        // }
-        // else{
-        //     setCheckedConventions( //한개라도 빔
-        //         checkedConventions.map((checkedConvention) =>
-        //         checkedConvention.id === 0 ? { ...checkedConvention, selected: false } : checkedConvention
-        //       )
-        //     )
-        // }
+        let count = 0;
 
-        // if (checkFirstIndex(id)){
-        //     checkedConventions[id].selected?
-        //     setCheckedConventions(
-        //         checkedConventions.map((checkedConvention) =>
-        //         ({ ...checkedConvention, selected: true })
-        //       ),
-        //     ):setCheckedConventions(
-        //         checkedConventions.map((checkedConvention) =>
-        //         ({ ...checkedConvention, selected: false })
-        //     ))    
-        
+        checkedConventions.forEach((checkedConvention) => {
+          if (!checkFirstIndex(checkedConvention.id)&&checkedConvention.selected) {
+            count += 1;
+          }
+        });
 
-        
+        setCheckedCount(count)
     }, [checkedConventions])
+
+    useEffect(() => {
+        checkFullChecked()?changeTotalAgree(true):changeTotalAgree(false)
+    }, [checkFullChecked()])
+    
 
 
     function checkFirstIndex(id:number){
@@ -84,6 +61,12 @@ export default function ConventionCheckBox() {
         return checkedCount===3
     }
     
+    function changeTotalAgree(bool:boolean){
+        const tempCheckedConventions = checkedConventions;
+        tempCheckedConventions[0].selected = bool;
+        console.log(tempCheckedConventions[0].selected)
+        setCheckedConventions([...tempCheckedConventions]);
+    }
   return (
     <ConventionCheckBoxContainer>
     {checkedConventions.map(({id, selected, text}:ConventionChecksType)=>(
