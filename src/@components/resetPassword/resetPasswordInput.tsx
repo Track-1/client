@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { passwordInvalidMessage } from "../../core/userInfoErrorMessage/passwordInvalidMessage";
 
 import { checkPasswordForm } from "../../utils/errorMessage/checkPasswordForm";
+import { useMutation } from "react-query";
+import { patchResetPassword } from "../../core/api/resetPassword";
 
 export default function ResetPasswordInput() {
   const [password, setPassword] = useState<string>("");
@@ -23,7 +25,28 @@ export default function ResetPasswordInput() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  const [btnCondition, setBtnCondition] = useState<boolean>(false);
+  const { mutate } = useMutation(requestResetPassword, {
+    onSuccess: () => {
+      console.log("비밀번호 변경 성공");
+    },
+    onError: (error) => {
+      console.log("에러!!", error);
+    },
+  });
+
+  useEffect(() => {
+    if (!confirmPassword) {
+      setConfirmPasswordMessage(passwordInvalidMessage.NULL);
+    } else {
+      password === confirmPassword && checkPasswordForm(confirmPassword)
+        ? setConfirmPasswordMessage(passwordInvalidMessage.SUCCESS)
+        : setConfirmPasswordMessage(passwordInvalidMessage.MATCH);
+    }
+  }, [password]);
+
+  async function requestResetPassword() {
+    return await patchResetPassword(password);
+  }
 
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
@@ -67,16 +90,6 @@ export default function ResetPasswordInput() {
         return;
     }
   }
-
-  useEffect(() => {
-    if (!confirmPassword) {
-      setConfirmPasswordMessage(passwordInvalidMessage.NULL);
-    } else {
-      password === confirmPassword && checkPasswordForm(confirmPassword)
-        ? setConfirmPasswordMessage(passwordInvalidMessage.SUCCESS)
-        : setConfirmPasswordMessage(passwordInvalidMessage.MATCH);
-    }
-  }, [password]);
 
   return (
     <Container>
@@ -122,6 +135,7 @@ export default function ResetPasswordInput() {
               <ShowPasswordIcon onClick={() => setShowConfirmPassword((prev) => !prev)} />
             )}
           </InputWrapper>
+          {/* 밑줄 상태 변경해야된다. */}
           <UnderLine inputState={confirmPasswordMessage} />
           {confirmPasswordMessage !== passwordInvalidMessage.NULL &&
             confirmPasswordMessage !== passwordInvalidMessage.SUCCESS && (
@@ -129,13 +143,18 @@ export default function ResetPasswordInput() {
             )}
         </InputBox>
         <SentenceWrapper>
+          {/* 줄간격 조정해야된다 */}
           <Sentence>
             If you save your new password, <br />
             your account will be signed out everywhere
           </Sentence>
         </SentenceWrapper>
         <SaveBtnWrapper>
-          {checkPasswordForm(password) && password === confirmPassword ? <SaveBtnIcon /> : <DefaultSaveBtnIcon />}
+          {checkPasswordForm(password) && password === confirmPassword ? (
+            <SaveBtnIcon onClick={() => mutate()} />
+          ) : (
+            <DefaultSaveBtnIcon />
+          )}
         </SaveBtnWrapper>
       </Wrapper>
     </Container>
