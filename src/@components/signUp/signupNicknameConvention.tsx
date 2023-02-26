@@ -8,6 +8,7 @@ import ContinueButton from './continueButton';
 import { nicknameValidMessage } from '../../core/userInfoErrorMessage/nicknameMessage';
 import { checkNicknameForm } from '../../utils/errorMessage/checkNicknameForm';
 import ConventionCheckBox from './conventionCheckBox';
+import { continueType } from '../../core/signUp/continueType';
 
 export default function SignupNicknameConvention(props:SetStepPropsType) {
     const {setStep}=props;
@@ -15,6 +16,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
     const [isHover, setIsHover]=useState<boolean>(false);
     const [nickname, setNickname]=useState<string>("")
     const [nicknameMessage, setNicknameMessage]=useState<string>("")
+    const [completeCheck, setCompleteCheck]=useState<boolean>(false)
 
     const uploadImage = (e: React.ChangeEvent) => {
       const targetFiles = (e.target as HTMLInputElement).files as FileList;
@@ -46,7 +48,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
 
   function successNextStep(){
     return (
-      "true"
+      nicknameMessage===nicknameValidMessage.SUCCESS&&completeCheck?continueType.SUCCESS:continueType.FAIL
     )
   }
 
@@ -66,7 +68,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
 
     setNickname(e.target.value)
   }
-
+console.log(successNextStep())
   return (
     <>
     <ImageContainer>
@@ -97,7 +99,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
           {nicknameMessage}
       </MessageWrapper>
     </NicknameWrapper>
-    <ConventionCheckBox/>
+    <ConventionCheckBox setCompleteCheck={setCompleteCheck}/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
       <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>

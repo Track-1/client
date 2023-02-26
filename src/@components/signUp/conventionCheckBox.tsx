@@ -4,7 +4,12 @@ import { conventionSelectedCheck } from '../../core/signUp/conventionSelectedChe
 import { ConventionChecksType } from '../../type/conventionChecksType';
 import styled from 'styled-components';
 
-export default function ConventionCheckBox() {
+interface PropsType{
+    setCompleteCheck: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function ConventionCheckBox(props:PropsType) {
+    const {setCompleteCheck}=props
     const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
     const [checkedCount, setCheckedCount]=useState<number>(0);
 
@@ -37,16 +42,24 @@ export default function ConventionCheckBox() {
         });
 
         let count = 0;
-
         checkedConventions.forEach((checkedConvention) => {
           if (!checkFirstIndex(checkedConvention.id)&&checkedConvention.selected) {
             count += 1;
           }
         });
-
         setCheckedCount(count)
+
+        let essentialCheck=0;
+        checkedConventions.forEach((checkedConvention) => {
+            if (!checkFirstIndex(checkedConvention.id)&&!checkLastIndex(checkedConvention.id)&&checkedConvention.selected) {
+                essentialCheck += 1;
+            }
+          });
+        setCompleteCheck(checkEssentialAgreeDone(essentialCheck))
+  
     }, [checkedConventions])
 
+    
     useEffect(() => {
         checkFullChecked()?changeTotalAgree(true):changeTotalAgree(false)
     }, [checkFullChecked()])
@@ -57,6 +70,10 @@ export default function ConventionCheckBox() {
         return id===0
     }
 
+    function checkLastIndex(id:number){
+        return id===3
+    }
+
     function checkFullChecked(){
         return checkedCount===3
     }
@@ -64,8 +81,11 @@ export default function ConventionCheckBox() {
     function changeTotalAgree(bool:boolean){
         const tempCheckedConventions = checkedConventions;
         tempCheckedConventions[0].selected = bool;
-        console.log(tempCheckedConventions[0].selected)
         setCheckedConventions([...tempCheckedConventions]);
+    }
+
+    function checkEssentialAgreeDone(essentialCheck:number){
+        return essentialCheck===2
     }
   return (
     <ConventionCheckBoxContainer>
