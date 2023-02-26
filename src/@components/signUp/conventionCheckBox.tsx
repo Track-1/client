@@ -9,30 +9,24 @@ export default function ConventionCheckBox() {
     const [checkedCount, setCheckedCount]=useState<number>(0);
 
     function categoryClick(id: number) {
-        if (checkFirstIndex(id)){
-            setCheckedConventions(
-                checkedConventions.map((checkedConvention) =>
-                checkedConvention.id === id ? { ...checkedConvention, selected: !checkedConvention.selected } : checkedConvention,
-              ),
-            );    
+        setCheckedConventions(
+            checkedConventions.map((checkedConvention) =>
+            checkedConvention.id === id ? { ...checkedConvention, selected: !checkedConvention.selected } : checkedConvention,
+          ),
+        );    
 
+        if (checkFirstIndex(id)){
             checkedConventions[id].selected?
             setCheckedConventions(
                 checkedConventions.map((checkedConvention) =>
-                checkedConvention.id === id ? { ...checkedConvention, selected: true }:{ ...checkedConvention, selected: true }
-              ),
-            ):setCheckedConventions(
-                checkedConventions.map((checkedConvention) =>
                 checkedConvention.id === id ? { ...checkedConvention, selected: false }:{ ...checkedConvention, selected: false }
+              ),
+            )
+            :setCheckedConventions(
+                checkedConventions.map((checkedConvention) =>
+                checkedConvention.id === id ? { ...checkedConvention, selected: true }:{ ...checkedConvention, selected: true }
             ))    
             
-        }
-        else{
-            setCheckedConventions(
-                checkedConventions.map((checkedConvention) =>
-                checkedConvention.id === id ? { ...checkedConvention, selected: !checkedConvention.selected } : checkedConvention,
-              ),
-            );    
         }
       }
     
