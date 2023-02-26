@@ -6,3 +6,4 @@ export const conventionSelectedCheck: ConventionChecksType[] = [
   { id: 2, selected: false, text: "(필수) 사이트 이용약관 동의" },
   { id: 3, selected: false, text: "(선택) 마케팅 정보 수신 동의" }
 ];
+
