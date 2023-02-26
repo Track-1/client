@@ -14,6 +14,7 @@ import { conventionType } from "../core/convention/conventionType";
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
+    const [showModal, setShowModal]=useState<boolean>(false);
 
     function endSignUp(){
         if (window.confirm('회원가입을 종료하겠습니까?'))
@@ -24,7 +25,7 @@ export default function SignUpPage() {
 
   return (
     <>
-        <ConventionModal policy={conventionType.USINGSITE}/>
+        {showModal&&<ConventionModal policy={conventionType.USINGSITE} setShowModal={setShowModal}/>}
 
         <BackButtonWrapper onClick={endSignUp}>
             <BackButton/>

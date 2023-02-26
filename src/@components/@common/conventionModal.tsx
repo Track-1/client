@@ -5,13 +5,18 @@ import { checkConventionType } from '../../utils/convention/checkConventionType'
 
 interface PropsType{
     policy:string
+    setShowModal:React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function ConventionModal(props:PropsType) {
-    const {policy}=props
+    const {policy, setShowModal}=props
 
     function isIntroNotNull(){
         return checkConventionType(policy)?.INTRO!=="";
+    }
+
+    function closeModal(){
+        setShowModal(false)
     }
 
   return (
@@ -19,7 +24,7 @@ export default function ConventionModal(props:PropsType) {
         <ModalContainer>
             <ModalWrapper>
                 <ModalHeader>
-                    <SignUpModalXIc/>
+                    <SignUpModalXIcon onClick={closeModal}/>
                     <Title>
                         {checkConventionType(policy)?.TITLE}
                     </Title>
@@ -111,4 +116,8 @@ const Contents=styled.p`
 
     ${({theme})=>theme.fonts.typography_content}
     color: ${({theme})=>theme.colors.gray2};
+`
+
+const SignUpModalXIcon=styled(SignUpModalXIc)`
+    cursor: pointer;
 `
