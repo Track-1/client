@@ -55,6 +55,12 @@ export function setMessageColor(message:string){
             return color.RED;      
         case passwordInvalidMessage.MATCH:
             return color.RED;    
+        case nicknameValidMessage.NULL:
+            return color.GRAY;   
+        case nicknameValidMessage.ERROR:
+            return color.RED;   
+        case nicknameValidMessage.SUCCESS:
+            return color.VIOLET;   
         default:
             return color.TRANSPARENT
         }
