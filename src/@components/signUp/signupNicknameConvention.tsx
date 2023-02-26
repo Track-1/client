@@ -31,7 +31,7 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
               <Img src={imageSrc} alt="preview-img" />
           </ImgWrapper>
         ):(
-          <SignUpUploadImageIcon/>
+          <SignUpUploadImageIc/>
         )}
       </Label>
         <input type="file" id="profile-img" style={{ visibility: "hidden" }} onChange={(e) => {uploadImage(e)}} />
@@ -70,8 +70,4 @@ const SignUpChangeImageIcon=styled(SignUpChangeImageIc)`
 
   position: absolute;
   z-index: 2;
-`
-
-const SignUpUploadImageIcon=styled(SignUpUploadImageIc)`
-  position: absolute;
 `
