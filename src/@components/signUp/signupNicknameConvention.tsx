@@ -81,19 +81,21 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
       </Label>
         <input type="file" id="profile-img" style={{ visibility: "hidden" }} onChange={(e) => {uploadImage(e)}} />
     </ImageContainer>
-
-    <WhatsYourNameTextIc/>
-    <InputWrapper>
-        <Input type="text" placeholder="Enter your user name" width={56} underline={setInputUnderline(nicknameMessage)} onChange={writeNickname}/>
-        {setErrorIcon(nicknameMessage)&&(
-            <IconWrapper marginLeft={-3.9}>
-                {setErrorIcon(nicknameMessage)}
-            </IconWrapper>
-        )}
-    </InputWrapper>
-    <MessageWrapper textColor={setMessageColor(nicknameMessage)}>
-        {nicknameMessage}
-    </MessageWrapper>
+    
+    <NicknameWrapper>
+      <WhatsYourNameTextIc/>
+      <InputWrapper>
+          <Input type="text" placeholder="Enter your user name" width={56} underline={setInputUnderline(nicknameMessage)} onChange={writeNickname}/>
+          {setErrorIcon(nicknameMessage)&&(
+              <IconWrapper marginLeft={-3.9}>
+                  {setErrorIcon(nicknameMessage)}
+              </IconWrapper>
+          )}
+      </InputWrapper>
+      <MessageWrapper textColor={setMessageColor(nicknameMessage)}>
+          {nicknameMessage}
+      </MessageWrapper>
+    </NicknameWrapper>
 
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
@@ -111,11 +113,13 @@ const Label=styled.label`
 
 const ImageContainer=styled.section`
   margin: 6.4rem 28.1rem 4.1rem 28.1rem;
+  width: 21.7rem;
+  height: 21.7rem;
 `
 
 const ImgWrapper=styled.div`
-  width: 21.7rem;
-  height: 21.7rem;
+  width: 100%;
+  
   border-radius: 25rem;
 
   position: absolute;
@@ -189,4 +193,8 @@ const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
 
 const ArrowButtonWrapper=styled.div`
     margin-top:2.8rem;
+`
+
+const NicknameWrapper=styled.section`
+    margin: 0rem 11rem;
 `
