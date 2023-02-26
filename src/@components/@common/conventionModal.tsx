@@ -1,9 +1,19 @@
 import React from 'react'
 import styled from 'styled-components';
 import { SignUpModalXIc } from '../../assets';
-import { PersonalInformationProcessingPolicy } from '../../core/convention/personalInformationProcessingPolicy';
+import { checkConventionType } from '../../utils/convention/checkConventionType';
 
-export default function ConventionModal() {
+interface PropsType{
+    policy:string
+}
+
+export default function ConventionModal(props:PropsType) {
+    const {policy}=props
+
+    function isIntroNotNull(){
+        return checkConventionType(policy)?.INTRO!=="";
+    }
+
   return (
     <ModalBackground>
         <ModalContainer>
@@ -11,14 +21,14 @@ export default function ConventionModal() {
                 <ModalHeader>
                     <SignUpModalXIc/>
                     <Title>
-                        {PersonalInformationProcessingPolicy.TITLE}
+                        {checkConventionType(policy)?.TITLE}
                     </Title>
                 </ModalHeader>
-                <Intro>
-                    {PersonalInformationProcessingPolicy.INTRO}
+                <Intro intro={isIntroNotNull()}>
+                    {checkConventionType(policy)?.INTRO}
                 </Intro>
                 <Contents>
-                    {PersonalInformationProcessingPolicy.CONTENTS.map((content, index)=>(
+                    {checkConventionType(policy)?.CONTENTS.map((content, index)=>(
                         <div>
                             <p dangerouslySetInnerHTML={{ __html: content }}></p>
                             <br/>
@@ -84,9 +94,9 @@ const Title=styled.h1`
     color: ${({theme})=>theme.colors.white};
 `
 
-const Intro=styled.p`
-    padding-bottom: 2.4rem;
-    border-bottom: 0.1rem solid ${({theme})=>theme.colors.gray3};
+const Intro=styled.p<{intro:boolean}>`
+    padding-bottom: ${({intro})=>intro?2.4:0}rem;
+    border-bottom: 0.1rem solid ${({theme, intro})=>intro?theme.colors.gray3:"transparent"};
 
     ${({theme})=>theme.fonts.typography_intro}
     color: ${({theme})=>theme.colors.white};

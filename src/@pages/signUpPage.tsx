@@ -9,6 +9,7 @@ import SignupMessage from "../@components/signUp/signupMessage";
 import SignupStepHeader from "../@components/signUp/signupStepHeader";
 import ConventionModal from "../@components/@common/conventionModal";
 import SignBackground from "../assets/icon/signUpBackgroundIc.svg";
+import { conventionType } from "../core/convention/conventionType";
 
 export default function SignUpPage() {
     const background=SignBackground
@@ -23,7 +24,7 @@ export default function SignUpPage() {
 
   return (
     <>
-        <ConventionModal/>
+        <ConventionModal policy={conventionType.USINGSITE}/>
 
         <BackButtonWrapper onClick={endSignUp}>
             <BackButton/>
