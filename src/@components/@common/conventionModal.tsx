@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components';
 import { SignUpModalXIc } from '../../assets';
 import { PersonalInformationProcessingPolicy } from '../../core/constants/convention';
-import ConventionContent from './conventionContent';
 
 export default function ConventionModal() {
   return (
