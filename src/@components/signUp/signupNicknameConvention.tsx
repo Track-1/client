@@ -68,7 +68,6 @@ export default function SignupNicknameConvention(props:SetStepPropsType) {
 
     setNickname(e.target.value)
   }
-console.log(successNextStep())
   return (
     <>
     <ImageContainer>
