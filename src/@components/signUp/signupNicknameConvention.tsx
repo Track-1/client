@@ -1,8 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { SignUpChangeImageIc, SignUpUploadImageIc } from '../../assets';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
-import { UploadInfoDataType } from '../../type/uploadInfoDataType';
-import { uploadImage } from '../../utils/uploadPage/uploadImage';
 import styled from 'styled-components';
 
 export default function SignupNicknameConvention(props:SetStepPropsType) {
