@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BackBtnIc, ProfileEditSaveButtonActiveIc, ProfileEditSaveButtonIc } from "../../assets";
 
@@ -7,11 +8,16 @@ interface PropsType {
 }
 export default function ProfileEditHeader(props: PropsType) {
   const { saveEditDatas, isMeetRequired } = props;
+  const navigate = useNavigate();
+
+  function moveBackPage() {
+    navigate(-1);
+  }
 
   return (
     <HeaderContainer>
       <BackButtonWrapper>
-        <BackBtnIcon />
+        <BackBtnIcon onClick={moveBackPage} />
         <ButtonText>Back</ButtonText>
       </BackButtonWrapper>
       {isMeetRequired ? <ProfileEditSaveButtonActiveIcon onClick={saveEditDatas} /> : <ProfileEditSaveButtonIcon />}
