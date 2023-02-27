@@ -140,3 +140,7 @@ export { ReactComponent as ProfileEditSaveButtonIc } from "./icon/profileEditSav
 export { ReactComponent as ProfileEditCheckIc } from "./icon/profileEditCheckIc.svg";
 export { ReactComponent as ProfileEditWarningIc } from "./icon/profileEditWarningIc.svg";
 export { ReactComponent as ProfileEditSaveButtonActiveIc } from "./icon/profileEditSaveButtonActiveIc.svg";
+export { ReactComponent as ProfileEditSleepAcountTitleIc } from "./icon/profileEditSleepAcountTitleIc.svg";
+export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
+export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEditSleeperButtonIc.svg";
+export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
