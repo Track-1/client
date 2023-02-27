@@ -139,3 +139,4 @@ export { ReactComponent as ProfileEditHashtagIc } from "./icon/profileEditHashta
 export { ReactComponent as ProfileEditSaveButtonIc } from "./icon/profileEditSaveButtonIc.svg";
 export { ReactComponent as ProfileEditCheckIc } from "./icon/profileEditCheckIc.svg";
 export { ReactComponent as ProfileEditWarningIc } from "./icon/profileEditWarningIc.svg";
+export { ReactComponent as ProfileEditSaveButtonActiveIc } from "./icon/profileEditSaveButtonActiveIc.svg";
