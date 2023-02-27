@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { BackBtnIc, ProfileEditSaveButtonIc } from "../../assets";
+import { BackBtnIc, ProfileEditSaveButtonActiveIc, ProfileEditSaveButtonIc } from "../../assets";
 
 interface PropsType {
   saveEditDatas: () => void;
+  isMeetRequired: boolean;
 }
 export default function ProfileEditHeader(props: PropsType) {
-  const { saveEditDatas } = props;
+  const { saveEditDatas, isMeetRequired } = props;
 
   return (
     <HeaderContainer>
@@ -13,7 +14,7 @@ export default function ProfileEditHeader(props: PropsType) {
         <BackBtnIcon />
         <ButtonText>Back</ButtonText>
       </BackButtonWrapper>
-      <ProfileEditSaveButtonIcon onClick={saveEditDatas} />
+      {isMeetRequired ? <ProfileEditSaveButtonActiveIcon onClick={saveEditDatas} /> : <ProfileEditSaveButtonIcon />}
     </HeaderContainer>
   );
 }
@@ -44,5 +45,9 @@ const ButtonText = styled.div`
 `;
 
 const ProfileEditSaveButtonIcon = styled(ProfileEditSaveButtonIc)`
+  margin: 5rem 6.9rem 0 0;
+`;
+
+const ProfileEditSaveButtonActiveIcon = styled(ProfileEditSaveButtonActiveIc)`
   margin: 5rem 6.9rem 0 0;
 `;

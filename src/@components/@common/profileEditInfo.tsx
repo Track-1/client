@@ -114,20 +114,22 @@ export default function ProfileEditInfo(props: PropsType) {
         <HashtagContainer>
           <ProfileEditHashtagIc />
           <InputHashtagWrapper>
-            <Hashtag>
-              <HashtagWrapper>
-                <HashtagSharp># </HashtagSharp>
-                <HashtagInput
-                  onChange={getInputText}
-                  onKeyPress={(e) => {
-                    e.key === "Enter" && completeHashtag();
-                  }}
-                  inputWidth={hashtagInput.length}
-                  ref={hashtagRef}
-                  placeholder="HashTag"
-                />
-              </HashtagWrapper>
-            </Hashtag>
+            {hashtags.length < 3 && (
+              <Hashtag>
+                <HashtagWrapper>
+                  <HashtagSharp># </HashtagSharp>
+                  <HashtagInput
+                    onChange={getInputText}
+                    onKeyPress={(e) => {
+                      e.key === "Enter" && completeHashtag();
+                    }}
+                    inputWidth={hashtagInput.length}
+                    ref={hashtagRef}
+                    placeholder="HashTag"
+                  />
+                </HashtagWrapper>
+              </Hashtag>
+            )}
             {hashtags.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
@@ -138,7 +140,7 @@ export default function ProfileEditInfo(props: PropsType) {
                 </Hashtag>
               );
             })}
-            <AddHashtagIcon onClick={completeHashtag} />
+            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
