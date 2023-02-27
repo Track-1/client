@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ProfileEditCheckIc, ProfileEditWarningIc } from "../../assets";
+import {
+  ProfileEditActiveButtonIc,
+  ProfileEditCheckIc,
+  ProfileEditSleepAcountTextIc,
+  ProfileEditSleepAcountTitleIc,
+  ProfileEditWarningIc,
+} from "../../assets";
 import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
 
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
 }
 
-export default function ProfileEditTitle(props: PropsType) {
+export default function ProducerProfileEditTitle(props: PropsType) {
   const { activeSaveButton } = props;
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
 
