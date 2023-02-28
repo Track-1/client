@@ -1,7 +1,5 @@
 import { useState } from "react";
 import styled from 'styled-components';
-import BackButton from '../@components/@common/backButton';
-import { SignBackgroundIc } from '../assets';
 import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
 import { signUpHeader, signUpStep } from '../core/signUp/signupStepType';
@@ -12,18 +10,19 @@ import SignBackground from "../assets/icon/signUpBackgroundIc.svg";
 import { conventionType } from "../core/convention/conventionType";
 import { checkStepType } from "../utils/signUp/stepType";
 import SignupSuccess from "../@components/signUp/signupSuccess";
+import SignUpBackButton from "../@components/signUp/signUpBackButton";
 
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
     const [showModal, setShowModal]=useState<boolean>(true);
 
-    function endSignUp(){
-        if (window.confirm('회원가입을 종료하겠습니까?'))
-        {
-            // clicked Yes
-        }
-    }
+    // function endSignUp(){
+    //     if (window.confirm('회원가입을 종료하겠습니까?'))
+    //     {
+    //         // clicked Yes
+    //     }
+    // }
 
     function isSignupSuccess(){
         return checkStepType(step)===signUpHeader.FIVE
@@ -33,8 +32,8 @@ export default function SignUpPage() {
     <>
     {isSignupSuccess()?<SignupSuccess/>:(
         <SignUpPageWrapper>
-            <BackButtonWrapper onClick={endSignUp}>
-                <BackButton/>
+            <BackButtonWrapper>
+                <SignUpBackButton/>
             </BackButtonWrapper>
             <SignUpContainer background={background}>
                 <SignUpStepWrapper>
