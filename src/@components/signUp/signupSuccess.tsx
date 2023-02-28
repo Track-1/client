@@ -7,6 +7,7 @@ import { UserType } from '../../recoil/main';
 import { currentUser } from '../../core/constants/userType';
 import { profileCategory } from '../../core/constants/pageCategory';
 import { useState } from 'react';
+import { isProducer, isVocal } from '../../utils/common/userType';
 
 export default function SignupSuccess() {
     const userType=useRecoilValue<string>(UserType)
@@ -15,14 +16,6 @@ export default function SignupSuccess() {
 
     function moveToHome(){
         navigate('/')
-    }
-
-    function isVocal(){
-        return userType===currentUser.VOCAL
-    }
-
-    function isProducer(){
-        return userType===currentUser.PRODUCER
     }
 
     function moveToVocalUpload(){
@@ -44,7 +37,7 @@ export default function SignupSuccess() {
     <SuccessPageWrapper>
     <SignUpGetStartedButtonIcon onClick={moveToHome}/>
 
-        {isVocal()&&(
+        {isVocal(userType)&&(
             <UploadButtonWrapper>
                 <SignUpVocalQIc/>
                 <UploadButton>
@@ -52,7 +45,7 @@ export default function SignupSuccess() {
                 </UploadButton>
             </UploadButtonWrapper>
         )}
-        {isProducer()&&(
+        {isProducer(userType)&&(
             <UploadButtonWrapper>
                 <SignUpProducerQIc/>
                 <UploadButton>
