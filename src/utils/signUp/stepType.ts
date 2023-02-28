@@ -1,16 +1,16 @@
-import { signUpStep } from "../../core/signUp/signupStepType";
+import { signUpHeader, signUpStep } from "../../core/signUp/signupStepType";
 
 export function checkStepType(stepType: string) {
     if(stepType === signUpStep.SIGNUP_ROLE){
-        return 1
+        return signUpHeader.ONE
     }
     else if(stepType === signUpStep.SIGNUP_EMAIL_PASSWORD){
-        return 2
+        return signUpHeader.TWO
     }
     else if(stepType === signUpStep.SIGNUP_NICKNAME_CONVENTION){
-        return 3
+        return signUpHeader.THREE
     }
     else{
-        return 4
+        return signUpHeader.FOUR
     }
 }

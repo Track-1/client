@@ -3,6 +3,7 @@ import { LoginHereMessageIc, SignUpStep1Ic, SignUpStep2Ic, SignUpStep3Ic, SignUp
 import { StepPropsType } from '../../type/signUpStepTypes'
 import { checkStepType } from '../../utils/signUp/stepType';
 import { useNavigate } from 'react-router-dom';
+import { signUpHeader } from '../../core/signUp/signupStepType';
 
 
 export default function SignupStepHeader(props:StepPropsType) {
@@ -13,15 +14,23 @@ export default function SignupStepHeader(props:StepPropsType) {
         navigate('/log-in')
     }
 
+    function isHeaderExist(){
+        return checkStepType(step)!==signUpHeader.FOUR
+    }
+
   return (
+    <>
+    {isHeaderExist()&&
     <StepHeaderWrapper>
         <StepsWrapper>
-            {checkStepType(step)===1?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
-            {checkStepType(step)===2?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
-            {checkStepType(step)===3?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
+            {checkStepType(step)===signUpHeader.ONE?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
+            {checkStepType(step)===signUpHeader.TWO?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
+            {checkStepType(step)===signUpHeader.THREE?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
         </StepsWrapper>
         <LoginHereMessageIcon onClick={moveLoginPage}/>
     </StepHeaderWrapper>
+    }
+    </>
   )
 }
 
