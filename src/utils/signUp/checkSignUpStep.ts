@@ -21,3 +21,8 @@ export function isStepThree(props:StepPropsType){
     const {step}=props;
     return checkStepType(step)===signUpHeader.THREE
 }
+
+export function isSignupSuccess(props:StepPropsType){
+    const {step}=props;
+    return checkStepType(step)===signUpHeader.FIVE
+}

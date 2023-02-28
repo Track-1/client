@@ -11,19 +11,16 @@ import { conventionType } from "../core/convention/conventionType";
 import { checkStepType } from "../utils/signUp/stepType";
 import SignupSuccess from "../@components/signUp/signupSuccess";
 import SignUpBackButton from "../@components/signUp/signUpBackButton";
+import { isSignupSuccess } from "../utils/signUp/checkSignUpStep";
 
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
     const [showModal, setShowModal]=useState<boolean>(true);
-    
-    function isSignupSuccess(){
-        return checkStepType(step)===signUpHeader.FIVE
-    }
 
   return (
     <>
-    {isSignupSuccess()?<SignupSuccess/>:(
+    {isSignupSuccess({step})?<SignupSuccess/>:(
         <SignUpPageWrapper>
             <BackButtonWrapper>
                 <SignUpBackButton/>
