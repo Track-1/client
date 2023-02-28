@@ -16,7 +16,9 @@ export default function VocalBriefInfo() {
   return (
     <>
       <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
-        <ProfileImage src={thumbnailImg} />
+        <ProfileImageWrapper>
+          <ProfileImage src={thumbnailImg} />
+        </ProfileImageWrapper>
         <UserName>_Bepore</UserName>
       </InfoContainer>
       {isHovered && (
@@ -55,12 +57,32 @@ const InfoContainer = styled.article`
   border-radius: 3rem;
 `;
 
+const ProfileImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+
+  height: 2.8rem;
+  width: 2.8rem;
+
+  transform: rotate(45deg);
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 0.1rem solid ${({ theme }) => theme.colors.black};
+`;
+
 const ProfileImage = styled.img`
-  height: 3.2rem;
-  width: 3.2rem;
+  height: 6rem;
+  width: 6rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;
+
+  transform: rotate(-45deg);
 `;
 
 const UserName = styled.strong`
