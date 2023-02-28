@@ -31,7 +31,7 @@ export default function SignUpPage() {
             </BackButtonWrapper>
             <SignUpContainer background={background}>
                 <SignUpStepWrapper>
-                    <SignupMessage step={step}/>
+                    <SignupMessage step={step} setStep={setStep}/>
                     <StepBox>
                         <SignupStepHeader step={step}/>
                         <SignUpStepRenderer step={step} setStep={setStep} />
