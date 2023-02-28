@@ -12,11 +12,16 @@ import { checkStepType } from "../utils/signUp/stepType";
 import SignupSuccess from "../@components/signUp/signupSuccess";
 import SignUpBackButton from "../@components/signUp/signUpBackButton";
 import { isSignupSuccess } from "../utils/signUp/checkSignUpStep";
+import { useRecoilValue } from 'recoil';
+import { openConventionModal } from "../recoil/conventionModal";
 
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
-    const [showModal, setShowModal]=useState<boolean>(true);
+    // const [showModal, setShowModal]=useState<boolean>(false);
+    const [policy, setPolicy]=useState<string>('');
+    const showModal=useRecoilValue(openConventionModal)
+    console.log(showModal)
 
   return (
     <>
@@ -39,8 +44,9 @@ export default function SignUpPage() {
     )}
 
 
-    {showModal&&(<ConventionModal policy={conventionType.USINGSITE} setShowModal={setShowModal}/>)}
-
+    {/* {showModal&&(<ConventionModal policy={policy} setPolicy={setPolicy} setShowModal={setShowModal}/>)} */}
+    {/* {showModal&&(<ConventionModal setShowModal={setShowModal}/>)} */}
+    {showModal&&(<ConventionModal/>)}
     </>
   )
 }

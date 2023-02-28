@@ -2,14 +2,22 @@ import React from 'react'
 import styled from 'styled-components';
 import { SignUpModalXIc } from '../../assets';
 import { checkConventionType } from '../../utils/convention/checkConventionType';
+import { useRecoilState } from 'recoil';
+import { openConventionModal, openConventionPolicy } from '../../recoil/conventionModal';
+import { useRecoilValue } from 'recoil';
 
 interface PropsType{
-    policy:string
+    // policy:string
+    // setPolicy: React.Dispatch<React.SetStateAction<string>>
     setShowModal:React.Dispatch<React.SetStateAction<boolean>>
 }
+//conventionType.USINGSITE
+export default function ConventionModal() {
+    // const {policy, setShowModal}=props
+    // const {setShowModal}=props
 
-export default function ConventionModal(props:PropsType) {
-    const {policy, setShowModal}=props
+    const [showModal, setShowModal]=useRecoilState<boolean>(openConventionModal)
+    const policy=useRecoilValue<string>(openConventionPolicy)
 
     function isIntroNotNull(){
         return checkConventionType(policy)?.INTRO!=="";
