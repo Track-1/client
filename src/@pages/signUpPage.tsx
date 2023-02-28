@@ -4,12 +4,14 @@ import BackButton from '../@components/@common/backButton';
 import { SignBackgroundIc } from '../assets';
 import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
-import { signUpStep } from '../core/signUp/signupStepType';
+import { signUpHeader, signUpStep } from '../core/signUp/signupStepType';
 import SignupMessage from "../@components/signUp/signupMessage";
 import SignupStepHeader from "../@components/signUp/signupStepHeader";
 import ConventionModal from "../@components/@common/conventionModal";
 import SignBackground from "../assets/icon/signUpBackgroundIc.svg";
 import { conventionType } from "../core/convention/conventionType";
+import { checkStepType } from "../utils/signUp/stepType";
+import SignupSuccess from "../@components/signUp/signupSuccess";
 
 export default function SignUpPage() {
     const background=SignBackground
@@ -22,9 +24,14 @@ export default function SignUpPage() {
             // clicked Yes
         }
     }
-    
+
+    function isSignupSuccess(){
+        return checkStepType(step)===signUpHeader.FIVE
+    }
+
   return (
     <>
+    {isSignupSuccess()?<SignupSuccess/>:(
         <SignUpPageWrapper>
             <BackButtonWrapper onClick={endSignUp}>
                 <BackButton/>
@@ -40,9 +47,10 @@ export default function SignUpPage() {
             </SignUpContainer>
             <Footer/>
         </SignUpPageWrapper>
+    )}
 
 
-        {showModal&&(<ConventionModal policy={conventionType.USINGSITE} setShowModal={setShowModal}/>)}
+    {showModal&&(<ConventionModal policy={conventionType.USINGSITE} setShowModal={setShowModal}/>)}
 
     </>
   )
