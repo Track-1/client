@@ -18,7 +18,6 @@ import { openConventionModal } from "../recoil/conventionModal";
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
-    // const [showModal, setShowModal]=useState<boolean>(false);
     const [policy, setPolicy]=useState<string>('');
     const showModal=useRecoilValue(openConventionModal)
     console.log(showModal)
@@ -43,9 +42,6 @@ export default function SignUpPage() {
         </SignUpPageWrapper>
     )}
 
-
-    {/* {showModal&&(<ConventionModal policy={policy} setPolicy={setPolicy} setShowModal={setShowModal}/>)} */}
-    {/* {showModal&&(<ConventionModal setShowModal={setShowModal}/>)} */}
     {showModal&&(<ConventionModal/>)}
     </>
   )
