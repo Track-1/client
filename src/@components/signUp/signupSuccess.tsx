@@ -6,7 +6,6 @@ import { useRecoilValue } from 'recoil';
 import { UserType } from '../../recoil/main';
 import { currentUser } from '../../core/constants/userType';
 import { profileCategory } from '../../core/constants/pageCategory';
-import TracksProfileUploadModal from '../@common/tracksProfileUploadModal';
 import { useState } from 'react';
 
 export default function SignupSuccess() {

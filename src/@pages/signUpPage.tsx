@@ -16,14 +16,7 @@ export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
     const [showModal, setShowModal]=useState<boolean>(true);
-
-    // function endSignUp(){
-    //     if (window.confirm('회원가입을 종료하겠습니까?'))
-    //     {
-    //         // clicked Yes
-    //     }
-    // }
-
+    
     function isSignupSuccess(){
         return checkStepType(step)===signUpHeader.FIVE
     }
