@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { LoginHereMessageIc, SignUpStep1Ic, SignUpStep2Ic, SignUpStep3Ic, SignUpStepBlanckIc } from '../../assets';
 import { StepPropsType } from '../../type/signUpStepTypes'
-import { chaeckStepType } from '../../utils/signUp/stepType';
+import { checkStepType } from '../../utils/signUp/stepType';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -16,9 +16,9 @@ export default function SignupStepHeader(props:StepPropsType) {
   return (
     <StepHeaderWrapper>
         <StepsWrapper>
-            {chaeckStepType(step)===1?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
-            {chaeckStepType(step)===2?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
-            {chaeckStepType(step)===3?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
+            {checkStepType(step)===1?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
+            {checkStepType(step)===2?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
+            {checkStepType(step)===3?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
         </StepsWrapper>
         <LoginHereMessageIcon onClick={moveLoginPage}/>
     </StepHeaderWrapper>

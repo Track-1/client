@@ -1,6 +1,6 @@
 import { signUpStep } from "../../core/signUp/signupStepType";
 
-export function chaeckStepType(stepType: string) {
+export function checkStepType(stepType: string) {
     if(stepType === signUpStep.SIGNUP_ROLE){
         return 1
     }
@@ -9,5 +9,8 @@ export function chaeckStepType(stepType: string) {
     }
     else if(stepType === signUpStep.SIGNUP_NICKNAME_CONVENTION){
         return 3
+    }
+    else{
+        return 4
     }
 }
