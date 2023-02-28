@@ -18,14 +18,26 @@ export default function SignupStepHeader(props:StepPropsType) {
         return checkStepType(step)!==signUpHeader.FOUR
     }
 
+    function isStepOne(){
+        return checkStepType(step)===signUpHeader.ONE
+    }
+
+    function isStepTwo(){
+        return checkStepType(step)===signUpHeader.TWO
+    }
+
+    function isStepThree(){
+        return checkStepType(step)===signUpHeader.THREE
+    }
+
   return (
     <>
     {isHeaderExist()&&
     <StepHeaderWrapper>
         <StepsWrapper>
-            {checkStepType(step)===signUpHeader.ONE?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
-            {checkStepType(step)===signUpHeader.TWO?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
-            {checkStepType(step)===signUpHeader.THREE?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
+            {isStepOne()?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
+            {isStepTwo()?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
+            {isStepThree()?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
         </StepsWrapper>
         <LoginHereMessageIcon onClick={moveLoginPage}/>
     </StepHeaderWrapper>
