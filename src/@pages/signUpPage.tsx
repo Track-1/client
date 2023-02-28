@@ -22,7 +22,7 @@ export default function SignUpPage() {
             // clicked Yes
         }
     }
-
+    
   return (
     <>
         <SignUpPageWrapper>
