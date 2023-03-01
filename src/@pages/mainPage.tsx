@@ -64,6 +64,8 @@ export default function MainPage() {
 }
 
 const MainPageWrapper = styled.div`
+  position: absolute;
+
   background-color: black;
 `;
 
