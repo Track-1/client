@@ -1,13 +1,16 @@
 import styled, { keyframes } from "styled-components";
 import bannerImg from "../../assets/image/bannerImg.png";
-import {FooterTextsIc} from "../../assets"
 
 export default function Footer() {
   return (
     <FooterContainer>
       <Banner />
       <FooterTextWrap>
-        <FooterTextsIc/>
+        <p>개인정보처리방침</p>
+        <p>서비스 이용약관</p>
+        <p>Email</p>
+        <p>track-1@track-1.link</p>
+        
       </FooterTextWrap>
     </FooterContainer>
   );
