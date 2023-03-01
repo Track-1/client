@@ -79,7 +79,10 @@ const LogoWrapper=styled.div`
 
 const Text=styled.p<{isGray:boolean, isStrong:boolean, marginRight:number}>`
   margin-right:${({marginRight})=>marginRight}rem;
+  
   color: ${({ theme, isGray }) => isGray?theme.colors.gray3:theme.colors.white};
   ${({ theme }) => theme.fonts.message};
   font-weight: ${({isStrong})=>isStrong?700:400};
+
+  cursor: pointer;
 `
