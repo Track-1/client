@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import { FacebookLogoIc, InstagramLogoIc } from "../../assets";
 import bannerImg from "../../assets/image/bannerImg.png";
 
 export default function Footer() {
@@ -10,7 +11,8 @@ export default function Footer() {
         <p>서비스 이용약관</p>
         <p>Email</p>
         <p>track-1@track-1.link</p>
-        
+        <InstagramLogoIc/>
+        <FacebookLogoIc/>
       </FooterTextWrap>
     </FooterContainer>
   );
