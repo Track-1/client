@@ -1,20 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  ProfileEditActiveButtonIc,
-  ProfileEditCheckIc,
-  ProfileEditSleepAcountTextIc,
-  ProfileEditSleepAcountTitleIc,
-  ProfileEditWarningIc,
-} from "../../assets";
+import { ProfileEditCheckIc, ProfileEditWarningIc } from "../../assets";
 import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
-
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
+  id: number;
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
-  const { activeSaveButton } = props;
+  const { activeSaveButton, id } = props;
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
 
   const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
@@ -42,6 +36,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
       resultImage && setPrevImage(resultImage);
     };
   }
+
   function checkInputName(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) return;
 
