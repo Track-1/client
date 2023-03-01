@@ -29,7 +29,7 @@ export default function Footer() {
       <a href="https://www.instagram.com/track1_official/">
         <InstagramLogoIc/>
       </a>
-      <a href="https://www.instagram.com/track1_official/">
+      <a href="https://www.facebook.com/people/Track-1/100088269640316/">
         <FacebookLogoIc/>
       </a>
       </LogoWrapper>
