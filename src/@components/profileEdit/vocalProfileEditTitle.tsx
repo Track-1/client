@@ -46,6 +46,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
       resultImage && setPrevImage(resultImage);
     };
   }
+
   function checkInputName(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) return;
 
