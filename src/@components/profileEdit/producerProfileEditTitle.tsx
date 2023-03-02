@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProfileEditCheckIc, ProfileEditWarningIc } from "../../assets";
 import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
+import { nickName } from "../../type/editDataType";
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
   id: number;
@@ -14,7 +15,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
   const [isUploaded, setIsUploaded] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<any>();
-  const [inputState, setInputState] = useState<string>("nothing");
+  const [inputState, setInputState] = useState<string>(nickName.NOTHING);
 
   useEffect(() => {
     activeSaveButton(inputState);
@@ -40,7 +41,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   function checkInputName(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) return;
 
-    NICK_NAME.test(e.target.value) ? setInputState("correct") : setInputState("error");
+    NICK_NAME.test(e.target.value) ? setInputState(nickName.CORRECT) : setInputState(nickName.ERROR);
   }
 
   return (
@@ -48,7 +49,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
       <ProfileImageContainer htmlFor="profileImg">
         {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={profileEditUploadDefaultImg} />}
       </ProfileImageContainer>
-      <input type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
+      <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
@@ -56,7 +57,8 @@ export default function ProducerProfileEditTitle(props: PropsType) {
         </NameTitleWrapper>
         <InputWrapper inputState={inputState}>
           <NameInput onChange={checkInputName} />
-          {inputState !== "nothing" && (inputState === "correct" ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
+          {inputState !== nickName.NOTHING &&
+            (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
         </InputWrapper>
       </NameContainer>
     </TitleContainer>
@@ -95,6 +97,10 @@ const ProfileImage = styled.img`
   width: 36.8rem;
 
   border-radius: 50%;
+`;
+
+const FileInput = styled.input`
+  display: none;
 `;
 
 const UploadedImage = styled.img`

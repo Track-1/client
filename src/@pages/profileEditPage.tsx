@@ -4,15 +4,18 @@ import ProfileEditInfo from "../@components/@common/profileEditInfo";
 import ProfileEditHeader from "../@components/profileEdit/profileEditHeader";
 import ProducerProfileEditTitle from "../@components/profileEdit/producerProfileEditTitle";
 import { editInputDatas } from "../core/editProfile/editData";
-import { EditDataType } from "../type/editDataType";
+import { EditDataType, nickName } from "../type/editDataType";
 import VocalProfileEditTitle from "../@components/profileEdit/vocalProfileEditTitle";
 import { currentUser } from "../core/constants/userType";
+import { useLocation } from "react-router-dom";
 
 export default function ProfileEditPage() {
   const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
   const [isSave, setIsSave] = useState<boolean>(false);
   const [isMeetRequired, setIsMeetRequired] = useState<boolean>(false);
-  const [user, setUser] = useState<string>(currentUser.VOCAL);
+  const [user, setUser] = useState<string>(currentUser.PRODUCER);
+  const { state } = useLocation();
+
   function editDats(datas: any) {
     setEditDatas(datas);
   }
@@ -22,15 +25,15 @@ export default function ProfileEditPage() {
   }
 
   function activeSaveButton(inputState: string) {
-    inputState === "correct" ? setIsMeetRequired(true) : setIsMeetRequired(false);
+    inputState === nickName.CORRECT ? setIsMeetRequired(true) : setIsMeetRequired(false);
   }
 
   return (
     <>
       <ProfileEditHeader saveEditDatas={saveEditDatas} isMeetRequired={isMeetRequired} />
       <EditContainer>
-        {user === currentUser.PRODUCER && <ProducerProfileEditTitle activeSaveButton={activeSaveButton} />}
-        {user === currentUser.VOCAL && <VocalProfileEditTitle activeSaveButton={activeSaveButton} />}
+        {user === currentUser.PRODUCER && <ProducerProfileEditTitle activeSaveButton={activeSaveButton} id={state} />}
+        {user === currentUser.VOCAL && <VocalProfileEditTitle activeSaveButton={activeSaveButton} id={state} />}
         <ProfileEditInfo isSave={isSave} editDatas={editDats} />
       </EditContainer>
     </>

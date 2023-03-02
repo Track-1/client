@@ -4,3 +4,9 @@ export interface EditDataType {
   keyword: string[];
   introduce: string;
 }
+
+export enum nickName {
+  NOTHING = "nothing",
+  CORRECT = "correct",
+  ERROR = "error",
+}

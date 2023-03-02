@@ -9,19 +9,21 @@ import {
   ProfileEditWarningIc,
 } from "../../assets";
 import profileEditVocalDefaultImg from "../../assets/image/profileEditVocalDefaultImg.png";
+import { nickName } from "../../type/editDataType";
 
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
+  id: number;
 }
 
 export default function VocalProfileEditTitle(props: PropsType) {
-  const { activeSaveButton } = props;
+  const { activeSaveButton, id } = props;
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
 
   const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
   const [isUploaded, setIsUploaded] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<any>();
-  const [inputState, setInputState] = useState<string>("nothing");
+  const [inputState, setInputState] = useState<string>(nickName.NOTHING);
   const [isSleep, setIsSleep] = useState<boolean>(false);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
   function checkInputName(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.length === 0) return;
 
-    NICK_NAME.test(e.target.value) ? setInputState("correct") : setInputState("error");
+    NICK_NAME.test(e.target.value) ? setInputState(nickName.CORRECT) : setInputState(nickName.ERROR);
   }
 
   function changeSleepState() {
@@ -65,7 +67,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
           <ProfileImage src={profileEditVocalDefaultImg} />
         )}
       </ProfileImageContainer>
-      <input type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
+      <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
@@ -73,7 +75,8 @@ export default function VocalProfileEditTitle(props: PropsType) {
         </NameTitleWrapper>
         <InputWrapper inputState={inputState}>
           <NameInput onChange={checkInputName} />
-          {inputState !== "nothing" && (inputState === "correct" ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
+          {inputState !== nickName.NOTHING &&
+            (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
         </InputWrapper>
       </NameContainer>
       <SleepAcountContainer>
@@ -123,6 +126,10 @@ const ProfileImage = styled.img`
   width: 36.8rem;
 
   border-radius: 50%;
+`;
+
+const FileInput = styled.input`
+  display: none;
 `;
 
 const UploadedImage = styled.img`
