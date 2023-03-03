@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { ProfileEditCheckIc, ProfileEditWarningIc } from "../../assets";
 import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
+import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
   id: number;
+  prevProfileImage: string;
+  prevName: string;
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
-  const { activeSaveButton, id } = props;
+  const { activeSaveButton, id, prevProfileImage, prevName } = props;
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
 
   const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
@@ -47,7 +51,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   return (
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg">
-        {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={profileEditUploadDefaultImg} />}
+        {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={prevProfileImage} />}
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>
@@ -56,7 +60,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           <PointIcon />
         </NameTitleWrapper>
         <InputWrapper inputState={inputState}>
-          <NameInput onChange={checkInputName} />
+          <NameInput onChange={checkInputName} defaultValue={prevName} />
           {inputState !== nickName.NOTHING &&
             (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
         </InputWrapper>
