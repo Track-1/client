@@ -4,7 +4,7 @@ import { validTime } from "../constants/accessTokenValidTime";
 import { Cookies } from "react-cookie";
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "refreshToken";
-axios.defaults.xsrfHeaderName = "AxiosHeadersTest";
+axios.defaults.xsrfHeaderName = "AxiosHeaders";
 
 export async function onLogin(id: string, password: string) {
   const body = {
@@ -15,6 +15,7 @@ export async function onLogin(id: string, password: string) {
   const data = await axios
     .post(`${process.env.REACT_APP_BASE_URL}/user/auth/login`, JSON.stringify(body), {
       headers: {
+        "X-Requested-With": "XMLHttpRequest",
         "Content-Type": "application/json",
         credentials: "include",
       },
@@ -26,7 +27,7 @@ export async function onLogin(id: string, password: string) {
 
       if (response.status === 200) {
         const accessToken = response.data.data.accessToken;
-        // setCookie("accessToken", accessToken, {});
+        setCookie("accessToken", accessToken, {});
         onLoginSuccess(accessToken);
       }
     })
@@ -41,6 +42,7 @@ export async function onSilentRefresh() {
   axios
     .get(`${process.env.REACT_APP_BASE_URL}/user/etc/refresh`, {
       headers: {
+        "X-Requested-With": "XMLHttpRequest",
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
         credentials: "include",
@@ -63,5 +65,5 @@ export async function onLoginSuccess(accessToken: string) {
   setTimeout(() => {
     console.log("1분 지났다!!");
     onSilentRefresh();
-  }, 30 * 1000);
+  }, 10 * 1000);
 }
