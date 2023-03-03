@@ -22,8 +22,6 @@ export async function onLogin(id: string, password: string) {
       withCredentials: true,
     })
     .then((response) => {
-      const [cookies, setCookies] = useCookies(["refreshToken"]);
-      console.log(cookies);
       console.log(response);
       console.log(response.headers["set-cookie"]);
       console.log(document.cookie);
@@ -35,8 +33,8 @@ export async function onLogin(id: string, password: string) {
 
       if (response.status === 200) {
         const accessToken = response.data.data.accessToken;
-        setCookies("refreshToken", response.headers.cookies);
-        // setCookie("accessToken", accessToken, {});
+        setCookie("refreshToken", response.headers.cookies, {});
+        setCookie("accessToken", accessToken, {});
         onLoginSuccess(accessToken);
       }
     })
@@ -53,8 +51,8 @@ export async function onSilentRefresh() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        withCredentials: true,
       },
+      withCredentials: true,
     })
     .then((response) => {
       if (response.data.status === 201) {
