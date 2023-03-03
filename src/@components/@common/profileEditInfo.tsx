@@ -15,10 +15,11 @@ import { EditDataType } from "../../type/editDataType";
 interface PropsType {
   isSave: boolean;
   editDatas: (datas: EditDataType) => void;
+  prevDatas: any;
 }
 
 export default function ProfileEditInfo(props: PropsType) {
-  const { isSave, editDatas } = props;
+  const { isSave, editDatas, prevDatas } = props;
   const contactInputRef = useRef<HTMLInputElement | null>(null);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
@@ -38,8 +39,23 @@ export default function ProfileEditInfo(props: PropsType) {
   });
 
   useEffect(() => {
+    selectPrevCategory(prevDatas?.cagetory);
+    inputPrevHashtags(prevDatas?.keyword);
+  }, []);
+
+  useEffect(() => {
     editDatas(getEditDatas());
   }, [isSave]);
+
+  function selectPrevCategory(prevCategories: string[]) {
+    prevCategories?.forEach((category) => {
+      selectCategory(category);
+    });
+  }
+
+  function inputPrevHashtags(prevHashtags: string[]) {
+    prevHashtags?.forEach((hashtag) => setHashtags((prev) => [...prev, hashtag]));
+  }
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
@@ -92,7 +108,11 @@ export default function ProfileEditInfo(props: PropsType) {
       <InfoContainer>
         <ContactContainer>
           <ProfileEditContactIc />
-          <ContactInput ref={contactInputRef} placeholder="Enter your phone number or SNS account" />
+          <ContactInput
+            ref={contactInputRef}
+            placeholder="Enter your phone number or SNS account"
+            defaultValue={prevDatas?.contact}
+          />
         </ContactContainer>
         <CategoryContainer>
           <ProfileEditCategoryIc />
@@ -145,7 +165,11 @@ export default function ProfileEditInfo(props: PropsType) {
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIc />
-          <DesciprtionInput onChange={countDescriptionText} placeholder="What kind of work do you do?" />
+          <DesciprtionInput
+            onChange={countDescriptionText}
+            placeholder="What kind of work do you do?"
+            defaultValue={prevDatas?.introduce}
+          />
           <TextCount onChange={countDescriptionText}>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
           </TextCount>
