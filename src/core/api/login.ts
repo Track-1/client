@@ -3,8 +3,6 @@ import { setCookie, getCookie } from "../../utils/cookie";
 import { validTime } from "../constants/accessTokenValidTime";
 import { Cookies } from "react-cookie";
 axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = "refreshToken";
-axios.defaults.xsrfHeaderName = "AxiosHeaders";
 
 export async function onLogin(id: string, password: string) {
   const body = {
@@ -17,7 +15,7 @@ export async function onLogin(id: string, password: string) {
       headers: {
         "X-Requested-With": "XMLHttpRequest",
         "Content-Type": "application/json",
-        credentials: "include",
+        credentials: "same-origin",
       },
       withCredentials: true,
     })
@@ -45,7 +43,7 @@ export async function onSilentRefresh() {
         "X-Requested-With": "XMLHttpRequest",
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        credentials: "include",
+        credentials: "same-origin",
       },
       withCredentials: true,
     })
