@@ -16,7 +16,6 @@ export async function onLogin(id: string, password: string) {
     .post(`${process.env.REACT_APP_BASE_URL}/user/auth/login`, JSON.stringify(body), {
       headers: {
         "Content-Type": "application/json",
-        credentials: "include",
       },
       withCredentials: true,
     })
@@ -26,7 +25,7 @@ export async function onLogin(id: string, password: string) {
 
       if (response.status === 200) {
         const accessToken = response.data.data.accessToken;
-        setCookie("accessToken", accessToken, {});
+        // setCookie("accessToken", accessToken, {});
         onLoginSuccess(accessToken);
       }
     })
@@ -43,7 +42,6 @@ export async function onSilentRefresh() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        credentials: "include",
       },
       withCredentials: true,
     })
@@ -63,5 +61,5 @@ export async function onLoginSuccess(accessToken: string) {
   setTimeout(() => {
     console.log("1분 지났다!!");
     onSilentRefresh();
-  }, 60 * 1000);
+  }, 30 * 1000);
 }
