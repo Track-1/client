@@ -14,10 +14,12 @@ import { nickName } from "../../type/editDataType";
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
   id: number;
+  prevProfileImage: string;
+  prevName: string;
 }
 
 export default function VocalProfileEditTitle(props: PropsType) {
-  const { activeSaveButton, id } = props;
+  const { activeSaveButton, id, prevProfileImage, prevName } = props;
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
 
   const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
@@ -65,7 +67,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
             <UploadedImage src={String(prevImage)} />
           </ImageWrapper>
         ) : (
-          <ProfileImage src={profileEditVocalDefaultImg} />
+          <ProfileImage src={prevProfileImage} />
         )}
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
@@ -75,7 +77,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
           <PointIcon />
         </NameTitleWrapper>
         <InputWrapper inputState={inputState}>
-          <NameInput onChange={checkInputName} />
+          <NameInput onChange={checkInputName} defaultValue={prevName} />
           {inputState !== nickName.NOTHING &&
             (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
         </InputWrapper>
