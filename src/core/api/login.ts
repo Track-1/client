@@ -55,7 +55,6 @@ export async function onSilentRefresh() {
         Authorization: `Bearer ${getCookie("accessToken")}`,
         withCredentials: true,
       },
-      cookies,
     })
     .then((response) => {
       if (response.data.status === 201) {
