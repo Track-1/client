@@ -8,17 +8,18 @@ import {
   DefaultLoginBtnIc,
 } from "../../assets";
 import { useState } from "react";
-import { signIn } from "../../core/api/login";
+import { onLogin } from "../../core/api/login";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 
 export default function LoginInput() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
   const [emailInputState, setEmailInputState] = useState<string>("");
   const [passwordInputState, setPasswordInputState] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [emailDefaultState, setEmailDefaultState] = useState<boolean>(true);
-  const [passwordDefaultState, setPasswordDefaultState] = useState<boolean>(true);
+
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -59,67 +60,51 @@ export default function LoginInput() {
   }
 
   function validateEmail(e: React.ChangeEvent<HTMLInputElement>): void {
-    const email = e.target.value;
+    const emailInput = e.target.value;
+    setEmail(emailInput);
 
-    if (isInputEmpty(email)) {
-      setEmailDefaultState(true);
+    if (isInputEmpty(emailInput)) {
       setEmailInputState(FOCUS);
     } else {
-      setEmailDefaultState(false);
-      EMAIL_RULE.test(email) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
+      EMAIL_RULE.test(emailInput) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
     }
   }
 
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>): void {
-    const password = e.target.value;
+    const passwordInput = e.target.value;
 
-    isInputEmpty(password) ? setPasswordDefaultState(true) : setPasswordDefaultState(false);
-    PASSWORD_RULE.test(password) || isInputEmpty(password)
+    setPassword(passwordInput);
+
+    PASSWORD_RULE.test(passwordInput) || isInputEmpty(passwordInput)
       ? setPasswordInputState(FOCUS)
       : setPasswordInputState(WARNING);
   }
 
-  const { mutate } = useMutation(login, {
-    onSuccess: () => {
-      console.log("로그인 성공~~~~헤헤헤헿");
-    },
+  const { mutate, data } = useMutation(login, {
+    onSuccess: () => {},
     onError: (error) => {
-      console.log("에러!!", error);
-      switch (error) {
-        case "존재하지 않는 아이디입니다.":
-          setEmailInputState(WARNING);
-          setEmailWarningMessage("We don't have an account with that email address");
-          break;
-
-        case "잘못된 비밀번호입니다.":
-          setPasswordInputState(WARNING);
-          break;
-
-        default:
-          break;
-      }
+      console.log(error);
     },
   });
 
   async function login() {
-    return await signIn("id", "pw");
+    return await onLogin(email, password);
   }
 
   function loginBtnType() {
     if (
-      isWarningState(emailInputState) ||
-      isWarningState(passwordInputState) ||
-      emailDefaultState ||
-      passwordDefaultState
+      !isWarningState(emailInputState) &&
+      !isWarningState(passwordInputState) &&
+      !isInputEmpty(email) &&
+      !isInputEmpty(password)
     ) {
-      return <DefaultLoginBtnIc />;
-    } else {
       return isProducerMode ? (
         <ProducerLoginBtnIc onClick={() => mutate()} />
       ) : (
         <VocalLoginBtnIc onClick={() => mutate()} />
       );
     }
+    return <DefaultLoginBtnIc />;
   }
 
   function isInputEmpty(input: string): boolean {
