@@ -24,7 +24,12 @@ export async function onLogin(id: string, password: string) {
     .then((response) => {
       console.log(response);
       console.log(response.headers["set-cookie"]);
+      console.log(document.cookie);
+      console.log(getCookie("set-cookie"));
+      console.log(getCookie("Set-Cookie"));
+      console.log(getCookie("refreshToken"));
       console.log(response.config);
+      console.log();
       if (response.status === 200) {
         const accessToken = response.data.data.accessToken;
         setCookie("accessToken", accessToken, {});
