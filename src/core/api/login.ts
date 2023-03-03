@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setCookie, getCookie } from "../../utils/cookie";
 import { validTime } from "../constants/accessTokenValidTime";
-import { Cookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "refreshToken";
 axios.defaults.xsrfHeaderName = "AxiosHeaders";
@@ -22,6 +22,8 @@ export async function onLogin(id: string, password: string) {
       withCredentials: true,
     })
     .then((response) => {
+      const [cookies, setCookies] = useCookies(["refreshToken"]);
+      console.log(cookies);
       console.log(response);
       console.log(response.headers["set-cookie"]);
       console.log(document.cookie);
@@ -29,10 +31,12 @@ export async function onLogin(id: string, password: string) {
       console.log(getCookie("Set-Cookie"));
       console.log(getCookie("refreshToken"));
       console.log(response.config);
-      console.log();
+      console.log(response.headers.cookies);
+
       if (response.status === 200) {
         const accessToken = response.data.data.accessToken;
-        setCookie("accessToken", accessToken, {});
+        setCookies("refreshToken", response.headers.cookies);
+        // setCookie("accessToken", accessToken, {});
         onLoginSuccess(accessToken);
       }
     })
@@ -51,6 +55,7 @@ export async function onSilentRefresh() {
         Authorization: `Bearer ${getCookie("accessToken")}`,
         withCredentials: true,
       },
+      cookies,
     })
     .then((response) => {
       if (response.data.status === 201) {
