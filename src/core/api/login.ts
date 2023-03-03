@@ -60,5 +60,8 @@ export async function onSilentRefresh() {
 
 export async function onLoginSuccess(accessToken: string) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-  setTimeout(onSilentRefresh, 60 * 1000);
+  setTimeout(() => {
+    console.log("1분 지났다!!");
+    onSilentRefresh();
+  }, 60 * 1000);
 }

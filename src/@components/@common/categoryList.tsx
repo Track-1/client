@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import { useState, useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-
 import categorys from "../../mocks/categoryDummy.json";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
 
