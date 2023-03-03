@@ -1,8 +1,7 @@
 import axios from "axios";
 import { setCookie, getCookie } from "../../utils/cookie";
 import { validTime } from "../constants/accessTokenValidTime";
-import { Cookies, cook } from "react-cookie";
-import cookieClient from "react-cookie";
+import { Cookies } from "react-cookie";
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "refreshToken";
 axios.defaults.xsrfHeaderName = "AxiosHeaders";
