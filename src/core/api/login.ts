@@ -60,5 +60,5 @@ export async function onSilentRefresh() {
 
 export async function onLoginSuccess(accessToken: string) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-  setTimeout(onSilentRefresh, validTime.JWT_EXPIRY_TIME - 60000);
+  setTimeout(onSilentRefresh, 60 * 1000);
 }
