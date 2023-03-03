@@ -1,7 +1,10 @@
 import axios from "axios";
 import { setCookie, getCookie } from "../../utils/cookie";
 import { validTime } from "../constants/accessTokenValidTime";
+import { Cookies } from "react-cookie";
 axios.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = "refreshToken";
+axios.defaults.xsrfHeaderName = "AxiosHeaders";
 
 export async function onLogin(id: string, password: string) {
   const body = {
@@ -12,13 +15,16 @@ export async function onLogin(id: string, password: string) {
   const data = await axios
     .post(`${process.env.REACT_APP_BASE_URL}/user/auth/login`, JSON.stringify(body), {
       headers: {
+        "Access-Control-Allow-Origin": "http://localhost:3000",
         "Content-Type": "application/json",
-        withCredentials: true,
         credentials: "include",
       },
+      withCredentials: true,
     })
     .then((response) => {
-      console.log(response.headers);
+      console.log(response);
+      console.log(response.headers["set-cookie"]);
+      console.log(response.config);
       if (response.status === 200) {
         const accessToken = response.data.data.accessToken;
         setCookie("accessToken", accessToken, {});
