@@ -51,6 +51,7 @@ export async function onSilentRefresh() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
+        credentials: "include",
       },
       withCredentials: true,
     })
