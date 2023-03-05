@@ -25,14 +25,7 @@ export default function ResetPasswordInput() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  const { mutate } = useMutation(requestResetPassword, {
-    onSuccess: () => {
-      console.log("비밀번호 변경 성공");
-    },
-    onError: (error) => {
-      console.log("에러!!", error);
-    },
-  });
+  const { mutate } = useMutation(() => patchResetPassword(password));
 
   useEffect(() => {
     if (!confirmPassword) {
@@ -43,10 +36,6 @@ export default function ResetPasswordInput() {
         : setConfirmPasswordMessage(passwordInvalidMessage.MATCH);
     }
   }, [password]);
-
-  async function requestResetPassword() {
-    return await patchResetPassword(password);
-  }
 
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
