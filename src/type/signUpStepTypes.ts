@@ -1,8 +1,7 @@
 export interface StepPropsType{
     step:string;
     setStep:React.Dispatch<React.SetStateAction<string>>;  
-    // userData:string[];
-    setUserData:React.Dispatch<React.SetStateAction<UserDataPropsType | undefined>>
+    setUserData:React.Dispatch<React.SetStateAction<UserDataPropsType>>
   }
   
 export interface SetStepPropsType {
@@ -11,7 +10,7 @@ export interface SetStepPropsType {
 
 export interface SetPropsType {
   setStep:React.Dispatch<React.SetStateAction<string>>;  
-  setUserData:React.Dispatch<React.SetStateAction<UserDataPropsType | undefined>>
+  setUserData:React.Dispatch<React.SetStateAction<UserDataPropsType>>
 }
 
 export interface OnlyStepPropsType {
@@ -25,7 +24,7 @@ export interface ContinueButtonPropsTypes{
 }
 
 export interface UserDataPropsType{
-  imageFile:File;
+  imageFile:string;
   ID:string;
   PW:string;
   name:string;

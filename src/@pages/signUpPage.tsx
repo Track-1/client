@@ -20,7 +20,12 @@ import { UserDataPropsType } from "../type/signUpStepTypes";
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
-    const [userData, setUserData]=useState<UserDataPropsType>();
+    const [userData, setUserData]=useState<UserDataPropsType>({
+            imageFile:"",
+            ID:"",
+            PW:"",
+            name:"",
+    });
     const showModal=useRecoilValue(openConventionModal)
 
   return (

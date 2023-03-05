@@ -5,7 +5,7 @@ import { StepPropsType } from '../../type/signUpStepTypes'
 import { isMessageLogo,isMessageWelcome } from '../../utils/signUp/checkMessageType';
 
 export default function SignupMessage(props:StepPropsType) {
-    const {step, setStep}=props;
+    const {step, setStep, setUserData}=props;
 
     function moveToSuccess(){
       setStep(signUpStep.SIGNUP_SUCCESS)

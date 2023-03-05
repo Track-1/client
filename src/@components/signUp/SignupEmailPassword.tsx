@@ -285,6 +285,10 @@ export default function SignupEmailPassword(props:SetPropsType) {
         }
     }
 
+    function saveUserData(){
+        successNextStep()&&setUserData((prev) => ({ ...prev, ID: email, PW:password }));
+    }
+
   return (
     <>
         <TitleWrapper>
@@ -364,7 +368,9 @@ export default function SignupEmailPassword(props:SetPropsType) {
         </SignupEmailWrapper>
         <ArrowButtonWrapper>
             <SignUpBackArrowIcon onClick={backToRole}/>
-            <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_NICKNAME_CONVENTION} setStep={setStep}/>
+            <div onClick={saveUserData}>
+                 <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_NICKNAME_CONVENTION} setStep={setStep}/>
+            </div>
         </ArrowButtonWrapper>
     </>
   )

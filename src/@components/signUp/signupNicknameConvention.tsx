@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { SignUpBackArrowIc, SignUpChangeImageIc, SignUpErrorIc, SignUpUploadImageIc, SignUpVerifyIc, WhatsYourNameTextIc } from '../../assets';
 import { SetPropsType } from '../../type/signUpStepTypes';
 import styled from 'styled-components';
@@ -17,14 +17,19 @@ export default function SignupNicknameConvention(props:SetPropsType) {
     const [nickname, setNickname]=useState<string>("")
     const [nicknameMessage, setNicknameMessage]=useState<string>(nicknameValidMessage.NULL)
     const [completeCheck, setCompleteCheck]=useState<boolean>(false)
+    // const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const uploadImage = (e: React.ChangeEvent) => {
+    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      
       const targetFiles = (e.target as HTMLInputElement).files as FileList;
       const targetFilesArray = Array.from(targetFiles);
       const selectedFiles: string[] = targetFilesArray.map((file) => {
         return URL.createObjectURL(file);
       });
       setImageSrc(selectedFiles[0]);
+      // if(e.target.files){
+      //   setImageSrc(e.target.files[0]);
+      // }
     }
 
     function checkImageHover(){
@@ -43,6 +48,7 @@ export default function SignupNicknameConvention(props:SetPropsType) {
   }
 
   function moveBackToEmailPassword(){
+    setUserData((prev) => ({ ...prev, ID: "", PW:"" }));
     setStep(signUpStep.SIGNUP_EMAIL_PASSWORD)
   }
 
@@ -68,6 +74,11 @@ export default function SignupNicknameConvention(props:SetPropsType) {
 
     setNickname(e.target.value)
   }
+
+  function saveUserData(){
+    successNextStep()&&setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname }));
+  }
+
   return (
     <>
     <ImageContainer>
@@ -101,7 +112,9 @@ export default function SignupNicknameConvention(props:SetPropsType) {
     <ConventionCheckBox setCompleteCheck={setCompleteCheck}/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
-      <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
+      <div onClick={saveUserData}>
+        <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
+      </div>
     </ArrowButtonWrapper>
     
     </>
