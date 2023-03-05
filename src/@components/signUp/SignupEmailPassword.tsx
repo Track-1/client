@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
 import { checkEmailForm } from '../../utils/errorMessage/checkEmailForm';
-import { authEmail, authEmailRepost, verifyCodePost } from '../../core/api/signUp';
+import { authEmail, authEmailRepost, checkEmailDuplication, verifyCodePost } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
@@ -50,14 +50,14 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         }
 
         else if(checkEmailForm(e.target.value)){
-            setEmailMessage(emailInvalidMessage.SUCCESS)
-            setIsValidForm(prev=>!prev);
             setEmail(e.target.value)
+            setIsValidForm(prev=>!prev);
         }
+
        
         setEmail(e.target.value)
     }
-    
+
     //auth-mail post
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
@@ -65,10 +65,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setEmailMessage(emailInvalidMessage.SUCCESS)
         setEmail(email)
         },
-        onError:()=>{
-            // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
-                setEmailMessage(emailInvalidMessage.DUPLICATION);
-            // }
+        onError:(error)=>{
+            console.log(error)
         }
     });
 
@@ -79,18 +77,42 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
         PostAuthMail.mutate(formData);
-    }, [isValidForm, isSendCode]);
+    }, [isSendCode]);
     //auth-mail post end
+
+    //mail duplicate post
+    const CheckDuplication = useMutation(checkEmailDuplication, {
+        onSuccess: () => {
+        queryClient.invalidateQueries("email-duplicate");
+        // console.log(CheckDuplication.data?.data.data.isDuplicate)
+        CheckDuplication.data?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
+        console.log(emailMessage)
+        },
+        onError:(error)=>{
+        }
+    });
+
+    useEffect(()=>{
+        // console.log(emailMessage);
+    }, [emailMessage])
+
+    useEffect(() => {
+        let formData = new FormData();
+        formData.append("tableName", tableName);
+        formData.append("userEmail", email);
+        CheckDuplication.mutate(formData);
+    }, [isValidForm]);
+    //mail duplicate end
 
     //auth-mail-repost
     const RepostAuthMail = useMutation(authEmailRepost, {
         onSuccess: () => {
-        queryClient.invalidateQueries("email");
+        queryClient.invalidateQueries("email-repost");
         setEmailMessage(emailInvalidMessage.SUCCESS)
         setEmail(email)
         },
         onError:()=>{
-            setEmailMessage(emailInvalidMessage.DUPLICATION)
+            // setEmailMessage(emailInvalidMessage.DUPLICATION)
         }
     });
 
@@ -135,8 +157,21 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
+        // setIsVerifyClicked(prev=>!prev)
         if(!e.target.value){
-            setVerificationCodeMessage(passwordInvalidMessage.NULL)
+            setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
+        }
+        else{
+            // setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
+            // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
+            //     setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
+            // }
+            if(!PostAuthMail.isError){
+                setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
+            }
+            else{
+                setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
+            }
         }
         setVerificationCode(e.target.value)
     }
@@ -154,19 +189,19 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
 
     function verifyCode(e: React.MouseEvent){
-        setIsVerifyClicked(prev=>!prev)
+        // setIsVerifyClicked(prev=>!prev)
+        setIsVerify(true);
     }
 
     //verifycode post
     const VerifyCode = useMutation(verifyCodePost, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
-        setIsVerify(true)
         setEmailMessage(emailInvalidMessage.VERIFY)
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
-        console.log("성공성공성공성공")
         },
-        onError:()=>{
+        onError:(error)=>{
+            console.log(error)
             // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
             //     console.log("asdfdsafdsa")
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
@@ -182,7 +217,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         formData.append("userEmail", email);
         formData.append("verificationCode", verificationCode);
         VerifyCode.mutate(formData);
-    }, [isVerifyClicked]);
+    }, [verificationCode]);
     //verifycode end
 
     function backToRole(){
@@ -279,7 +314,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                             {setErrorIcon(verificationCodeMessage)}
                         </IconWrapper>
                     )}
-                    <VerifyButton verificationCode={verificationCode} onClick={(e: React.MouseEvent<HTMLElement>) => verifyCode(e)}/>
+                    <VerifyButton verificationCodeMessage={verificationCodeMessage} onClick={(e: React.MouseEvent<HTMLElement>) => verifyCode(e)}/>
                 </InputWrapper>
                 <MessageWrapper textColor={setMessageColor(verificationCodeMessage)}>
                     {verificationCodeMessage}
