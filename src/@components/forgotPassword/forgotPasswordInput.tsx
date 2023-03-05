@@ -9,24 +9,26 @@ import {
   ProducerModeToggleIc,
   ProducerDefaultModeToggleIc,
 } from "../../assets";
-import { useState } from "react";
-import { useMutation } from "react-query";
+import { useEffect, useState } from "react";
 import { postNewPassword } from "../../core/api/newPassword";
+import { useSendNewPasswordEmail } from "../../utils/hooks/useSendNewPasswordEmail";
 
 export default function ForgotPasswordInput() {
   const [email, setEmail] = useState<string>("");
   const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
+  const [userType, setUserType] = useState<string>("vocal");
+  const [resendTrigger, setResendTrigger] = useState<boolean>(false);
 
-  const { mutate } = useMutation(requestNewPassword, {
-    onSuccess(data, variables, context) {
-      console.log("성공");
-    },
-    onError(error, variables, context) {},
-  });
+  const { mutate, isSuccess } = useSendNewPasswordEmail(userType, email);
+  console.log(isSuccess);
 
-  async function requestNewPassword() {
-    return await postNewPassword("producer", email);
-  }
+  useEffect(() => {
+    isProducerMode ? setUserType("producer") : setUserType("vocal");
+  }, [isProducerMode]);
+
+  useEffect(() => {
+    isSuccess && setResendTrigger(true);
+  }, [isSuccess]);
 
   function validateEmail(e: React.ChangeEvent<HTMLInputElement>) {
     const email = e.target.value;
@@ -42,15 +44,22 @@ export default function ForgotPasswordInput() {
   }
 
   function requestBtnType() {
-    if (true) {
-      return <RequestResetPasswordDefaultBtnIcon onClick={() => mutate()} />;
+    if (false) {
+      return <RequestResetPasswordDefaultBtnIcon onClick={() => console.log()} />;
     }
-
-    return isProducerMode ? (
-      <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
-    ) : (
-      <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
-    );
+    if (resendTrigger) {
+      return isProducerMode ? (
+        <ResendPasswordProducerBtnIcon onClick={() => mutate()} />
+      ) : (
+        <ResendPasswordVocalBtnIcon onClick={() => mutate()} />
+      );
+    } else {
+      return isProducerMode ? (
+        <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
+      ) : (
+        <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
+      );
+    }
   }
 
   return (
@@ -165,5 +174,13 @@ const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
 `;
 
 const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
+  cursor: pointer;
+`;
+
+const ResendPasswordProducerBtnIcon = styled(ResendPasswordProducerBtnIc)`
+  cursor: pointer;
+`;
+
+const ResendPasswordVocalBtnIcon = styled(ResendPasswordVocalBtnIc)`
   cursor: pointer;
 `;
