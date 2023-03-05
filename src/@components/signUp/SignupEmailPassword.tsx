@@ -25,6 +25,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
     const [email, setEmail]=useState<string>('')
     const [emailMessage, setEmailMessage]=useState<string>(emailInvalidMessage.NULL)
+    const [isValidForm, setIsValidForm]=useState<boolean>(false);
     const [password, setPassword]=useState<string>('')
     const [passwordMessage, setPasswordMessage]=useState<string>(passwordInvalidMessage.NULL)
     const [isSendCode, setIsSendCode]=useState<boolean>(false)
@@ -49,6 +50,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
 
         else if(checkEmailForm(e.target.value)){
             setEmailMessage(emailInvalidMessage.SUCCESS)
+            setIsValidForm(prev=>!prev);
+            setEmail(e.target.value)
         }
        
         setEmail(e.target.value)
@@ -61,8 +64,11 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setEmailMessage(emailInvalidMessage.SUCCESS)
         setEmail(email)
         },
-        onError:(error)=>{
-            setEmailMessage(emailInvalidMessage.DUPLICATION)
+        onError:()=>{
+            console.log("aaa")
+            if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
+                setEmailMessage(emailInvalidMessage.DUPLICATION);
+            }
         }
     });
 
@@ -73,7 +79,11 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
         PostAuthMail.mutate(formData);
-    }, [isSendCode]);
+    }, [isValidForm, isSendCode]);
+
+    // useEffect(()=>{
+    //     console.log("에러났음!")
+    // },[PostAuthMail.isError])
     //auth-mail post end
 
     //auth-mail-repost
@@ -83,7 +93,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setEmailMessage(emailInvalidMessage.SUCCESS)
         setEmail(email)
         },
-        onError:(error)=>{
+        onError:()=>{
             setEmailMessage(emailInvalidMessage.DUPLICATION)
         }
     });

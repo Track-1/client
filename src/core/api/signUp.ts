@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export async function authEmail(formData:any) {
-  try {
+  // try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`,formData,{
       headers: {
         "Content-Type": "application/json",
@@ -9,9 +9,10 @@ export async function authEmail(formData:any) {
     });
     data && console.log(data);
     return data
-  } catch (e) {
-    console.log(e);
-  }
+  // } catch (e) {
+  //   console.log(e);
+  //   console.log("삐용삐욧ㅇ")
+  // }
 }
 
 
