@@ -158,6 +158,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
         // setIsVerifyClicked(prev=>!prev)
+        // console.log(e.target.value)
         if(!e.target.value){
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
         }
@@ -184,6 +185,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         //post함수 추가
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
+        console.log(emailMessage)
         setIsVerify(false)
         setIsResendCode((prev)=>prev)
     }
@@ -191,13 +193,14 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     function verifyCode(e: React.MouseEvent){
         // setIsVerifyClicked(prev=>!prev)
         setIsVerify(true);
+        setEmailMessage(emailInvalidMessage.VERIFY)
     }
 
     //verifycode post
     const VerifyCode = useMutation(verifyCodePost, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
-        setEmailMessage(emailInvalidMessage.VERIFY)
+        
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
         },
         onError:(error)=>{
