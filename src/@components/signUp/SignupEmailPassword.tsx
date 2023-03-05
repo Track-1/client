@@ -18,6 +18,8 @@ import { passwordInvalidMessage } from '../../core/userInfoErrorMessage/password
 import { checkPasswordForm } from '../../utils/errorMessage/checkPasswordForm';
 import { passwordConfirmType } from '../../core/signUp/passwordConfirm';
 import { continueType } from '../../core/signUp/continueType';
+import { useRecoilValue } from 'recoil';
+import { UserType } from '../../recoil/main';
 
 export default function SignupEmailPassword(props:SetStepPropsType) {
     const {setStep}=props;
@@ -33,7 +35,8 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [passwordConfirmMessage, setPasswordConfirmMessage]=useState<string>(passwordInvalidMessage.NULL)
     const [isShowPassword, setIsShowPassword]=useState<boolean>(false)
     const [isShowPasswordConfirm, setIsShowPasswordConfirm]=useState<boolean>(false)
-
+    const tableName=useRecoilValue<string>(UserType)
+   
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setEmailMessage(emailInvalidMessage.NULL)
@@ -43,13 +46,34 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             setEmailMessage(emailInvalidMessage.FORM)
         }
 
-        //임시
         else if(checkEmailForm(e.target.value)){
             setEmailMessage(emailInvalidMessage.SUCCESS)
         }
-
+       
         setEmail(e.target.value)
     }
+    
+    //auth-mail post
+    const { mutate } = useMutation(authEmail, {
+        onSuccess: () => {
+        queryClient.invalidateQueries("email");
+        setEmailMessage(emailInvalidMessage.SUCCESS)
+        setEmail(email)
+        },
+        onError:(error)=>{
+            setEmailMessage(emailInvalidMessage.DUPLICATION)
+        }
+    });
+
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        let formData = new FormData();
+        formData.append("tableName", tableName);
+        formData.append("userEmail", email);
+        mutate(formData);
+    }, [isSendCode]);
+    //auth-mail post end
 
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -172,26 +196,6 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
             return <SignUpEmailTitleIc/>
         }
     }
-
-    //post
-  const { mutate } = useMutation(authEmail, {
-    onSuccess: () => {
-        //성공한 경우      
-    },
-    onError: (error) => { //400에러인 경우, 중복된 이메일
-        //에러난 경우
-    }
-  });
-
-  const queryClient = useQueryClient();
-  //post end
-
-  useEffect(() => {
-      let formData = new FormData();
-      formData.append("tableName", "producer");
-      formData.append("userEmail", email);
-      mutate(formData);
-  }, [email]);
 
   return (
     <>
