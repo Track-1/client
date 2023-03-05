@@ -20,7 +20,7 @@ export async function checkEmailDuplication(formData:any) {
     return data.data.data.isDuplicate
 }
 
-export async function authEmailRepost(formData:any) {
+export async function repostAuthEmail(formData:any) {
   try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`,formData,{
       headers: {
@@ -34,8 +34,7 @@ export async function authEmailRepost(formData:any) {
   }
 }
 
-
-export async function verifyCodePost(formData:any) {
+export async function postVerifyCode(formData:any) {
   // try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/verify`,formData,{
       headers: {
@@ -47,4 +46,24 @@ export async function verifyCodePost(formData:any) {
   // } catch (e) {
     // console.log(e);
   // }
+}
+
+export async function joinProducer(formData:any) {
+    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/producer`,formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    data && console.log(data);
+    return data
+}
+
+export async function joinVocal(formData:any) {
+  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/vocal`,formData,{
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  data && console.log(data);
+  return data
 }

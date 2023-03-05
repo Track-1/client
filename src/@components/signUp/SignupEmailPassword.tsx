@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
 import { checkEmailForm } from '../../utils/errorMessage/checkEmailForm';
-import { authEmail, authEmailRepost, checkEmailDuplication, verifyCodePost } from '../../core/api/signUp';
+import { authEmail, repostAuthEmail, checkEmailDuplication, postVerifyCode } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
@@ -105,7 +105,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     //mail duplicate end
 
     //auth-mail-repost
-    const RepostAuthMail = useMutation(authEmailRepost, {
+    const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
         setEmailMessage(emailInvalidMessage.SUCCESS)
@@ -197,7 +197,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
 
     //verifycode post
-    const VerifyCode = useMutation(verifyCodePost, {
+    const VerifyCode = useMutation(postVerifyCode, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
         
