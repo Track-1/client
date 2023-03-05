@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
 import { checkEmailForm } from '../../utils/errorMessage/checkEmailForm';
-import { authEmail } from '../../core/api/signUp';
+import { authEmail, authEmailRepost } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
@@ -28,6 +28,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [password, setPassword]=useState<string>('')
     const [passwordMessage, setPasswordMessage]=useState<string>(passwordInvalidMessage.NULL)
     const [isSendCode, setIsSendCode]=useState<boolean>(false)
+    const [isResendCode, setIsResendCode]=useState<boolean>(false)
     const [verificationCode, setVerificationCode]=useState<string>('')
     const [verificationCodeMessage, setVerificationCodeMessage]=useState<string>(verificationCodeInvalidMessage.NULL)
     const [isVerify, setIsVerify]=useState<boolean>(false)
@@ -54,7 +55,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
     
     //auth-mail post
-    const { mutate } = useMutation(authEmail, {
+    const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
         setEmailMessage(emailInvalidMessage.SUCCESS)
@@ -71,8 +72,28 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         let formData = new FormData();
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
-        mutate(formData);
+        PostAuthMail.mutate(formData);
     }, [isSendCode]);
+    //auth-mail post end
+
+    //auth-mail-repost
+    const RepostAuthMail = useMutation(authEmailRepost, {
+        onSuccess: () => {
+        queryClient.invalidateQueries("email");
+        setEmailMessage(emailInvalidMessage.SUCCESS)
+        setEmail(email)
+        },
+        onError:(error)=>{
+            setEmailMessage(emailInvalidMessage.DUPLICATION)
+        }
+    });
+
+    useEffect(() => {
+        let formData = new FormData();
+        formData.append("tableName", tableName);
+        formData.append("userEmail", email);
+        RepostAuthMail.mutate(formData);
+    }, [isResendCode]);
     //auth-mail post end
 
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
@@ -126,6 +147,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
         setIsVerify(false)
+        setIsResendCode((prev)=>prev)
     }
 
     function verifyCode(e: React.MouseEvent){
@@ -213,7 +235,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
                         {setErrorIcon(emailMessage)}
                     </IconWrapper>
                 )}
-                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode}/>
+                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode}/>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(emailMessage)}>
                 {emailMessage}
