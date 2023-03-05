@@ -80,10 +80,6 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         formData.append("userEmail", email);
         PostAuthMail.mutate(formData);
     }, [isValidForm, isSendCode]);
-
-    // useEffect(()=>{
-    //     console.log("에러났음!")
-    // },[PostAuthMail.isError])
     //auth-mail post end
 
     //auth-mail-repost
