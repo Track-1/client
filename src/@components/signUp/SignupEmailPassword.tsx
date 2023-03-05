@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
 import { checkEmailForm } from '../../utils/errorMessage/checkEmailForm';
-import { authEmail, authEmailRepost } from '../../core/api/signUp';
+import { authEmail, authEmailRepost, verifyCodePost } from '../../core/api/signUp';
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import VerifyButton from './verifyButton';
@@ -38,6 +38,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     const [isShowPassword, setIsShowPassword]=useState<boolean>(false)
     const [isShowPasswordConfirm, setIsShowPasswordConfirm]=useState<boolean>(false)
     const tableName=useRecoilValue<string>(UserType)
+    const [isVerifyClicked, setIsVerifyClicked]=useState<boolean>(false);
    
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -65,7 +66,6 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setEmail(email)
         },
         onError:()=>{
-            console.log("aaa")
             if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
                 setEmailMessage(emailInvalidMessage.DUPLICATION);
             }
@@ -138,9 +138,6 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         if(!e.target.value){
             setVerificationCodeMessage(passwordInvalidMessage.NULL)
         }
-        
-        // else if()
-
         setVerificationCode(e.target.value)
     }
 
@@ -159,9 +156,44 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     function verifyCode(e: React.MouseEvent){
         //post함수 추가 -> 
         // if(맞으면){}
+        // setIsVerify(true)
+        // setEmailMessage(emailInvalidMessage.VERIFY)
+        setIsVerifyClicked(prev=>!prev)
+
+        // let formData = new FormData();
+        // formData.append("tableName", tableName);
+        // formData.append("userEmail", email);
+        // formData.append("verificationCode", verificationCode);
+        // VerifyCode.mutate(formData);
+
+    }
+
+    //verifycode post
+    const VerifyCode = useMutation(verifyCodePost, {
+        onSuccess: () => {
+        queryClient.invalidateQueries("email");
         setIsVerify(true)
         setEmailMessage(emailInvalidMessage.VERIFY)
-    }
+        setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
+        console.log("성공성공성공성공")
+        },
+        onError:()=>{
+            if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
+                setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
+                alert("유효 인증 시간이 지났습니다");
+            }
+        }
+    });
+
+    useEffect(() => {
+        console.log("클릭완료")
+        let formData = new FormData();
+        formData.append("tableName", tableName);
+        formData.append("userEmail", email);
+        formData.append("verificationCode", verificationCode);
+        VerifyCode.mutate(formData);
+    }, [isVerifyClicked]);
+    //verifycode end
 
     function backToRole(){
         setStep(signUpStep.SIGNUP_ROLE)

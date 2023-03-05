@@ -27,8 +27,8 @@ export async function authEmailRepost(formData:any) {
 }
 
 
-export async function verifyCode(formData:any) {
-  try {
+export async function verifyCodePost(formData:any) {
+  // try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/verify`,formData,{
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export async function verifyCode(formData:any) {
     });
     data && console.log(data);
     return data
-  } catch (e) {
-    console.log(e);
-  }
+  // } catch (e) {
+    // console.log(e);
+  // }
 }
