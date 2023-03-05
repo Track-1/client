@@ -178,10 +178,11 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         console.log("성공성공성공성공")
         },
         onError:()=>{
-            if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
+            // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
+            //     console.log("asdfdsafdsa")
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
-                alert("유효 인증 시간이 지났습니다");
-            }
+                // alert("유효 인증 시간이 지났습니다");
+            // }
         }
     });
 
