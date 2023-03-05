@@ -40,7 +40,7 @@ export default function SignUpPage() {
                     <SignupMessage step={step} setStep={setStep} setUserData={setUserData}/>
                     <StepBox>
                         <SignupStepHeader step={step}/>
-                        <SignUpStepRenderer step={step} setStep={setStep} setUserData={setUserData}/>
+                        <SignUpStepRenderer step={step} setStep={setStep} userData={userData} setUserData={setUserData}/>
                     </StepBox>
                 </SignUpStepWrapper>
             </SignUpContainer>

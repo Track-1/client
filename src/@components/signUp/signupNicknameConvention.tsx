@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SignUpBackArrowIc, SignUpChangeImageIc, SignUpErrorIc, SignUpUploadImageIc, SignUpVerifyIc, WhatsYourNameTextIc } from '../../assets';
-import { SetPropsType } from '../../type/signUpStepTypes';
+import { SetUserPropsType } from '../../type/signUpStepTypes';
 import styled from 'styled-components';
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
 import { signUpStep } from '../../core/signUp/signupStepType';
@@ -9,14 +9,21 @@ import { nicknameValidMessage } from '../../core/userInfoErrorMessage/nicknameMe
 import { checkNicknameForm } from '../../utils/errorMessage/checkNicknameForm';
 import ConventionCheckBox from './conventionCheckBox';
 import { continueType } from '../../core/signUp/continueType';
+import { useRecoilValue } from 'recoil';
+import { UserType } from '../../recoil/main';
+import { useMutation, useQueryClient } from 'react-query';
+import { joinProducer, joinVocal } from '../../core/api/signUp';
+import { isVocal, isProducer } from '../../utils/common/userType';
 
-export default function SignupNicknameConvention(props:SetPropsType) {
-    const {setStep, setUserData}=props;
+export default function SignupNicknameConvention(props:SetUserPropsType) {
+    const {setStep, setUserData, userData}=props;
     const [imageSrc, setImageSrc] = useState<string>("");
     const [isHover, setIsHover]=useState<boolean>(false);
     const [nickname, setNickname]=useState<string>("")
     const [nicknameMessage, setNicknameMessage]=useState<string>(nicknameValidMessage.NULL)
     const [completeCheck, setCompleteCheck]=useState<boolean>(false)
+    const userType=useRecoilValue(UserType)
+    const [successNextStep, setSuccessNextStep]=useState<string>(continueType.FAIL)
     // const inputRef = useRef<HTMLInputElement | null>(null);
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,9 +59,10 @@ export default function SignupNicknameConvention(props:SetPropsType) {
     setStep(signUpStep.SIGNUP_EMAIL_PASSWORD)
   }
 
-  function successNextStep(){
+  function completeNicknameConventions(){
     return (
-      nicknameMessage===nicknameValidMessage.SUCCESS&&completeCheck?continueType.SUCCESS:continueType.FAIL
+      nicknameMessage===nicknameValidMessage.SUCCESS&&completeCheck
+      // ?continueType.SUCCESS:continueType.FAIL
     )
   }
 
@@ -76,8 +84,37 @@ export default function SignupNicknameConvention(props:SetPropsType) {
   }
 
   function saveUserData(){
-    successNextStep()&&setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname }));
+    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname }));
   }
+
+  //upload userData
+  const queryClient = useQueryClient();
+  
+  const JoinProducer = useMutation(joinProducer, {
+    onSuccess: () => {
+    queryClient.invalidateQueries("join-producer");
+    completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
+    console.log("성공")
+    },
+    onError:()=>{
+
+    }
+  });
+
+  const JoinVocal = useMutation(joinVocal, {
+    onSuccess: () => {
+    queryClient.invalidateQueries("join-vocal");
+    console.log("성공")
+    },
+    onError:()=>{
+     
+    }
+  });
+
+  useEffect(() => {
+      isVocal(userType)&&JoinVocal.mutate(userData);
+      isProducer(userType)&&JoinProducer.mutate(userData);
+  }, [userData]);
 
   return (
     <>
@@ -113,7 +150,7 @@ export default function SignupNicknameConvention(props:SetPropsType) {
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
       <div onClick={saveUserData}>
-        <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
+        <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
       </div>
     </ArrowButtonWrapper>
     
@@ -133,7 +170,8 @@ const ImageContainer=styled.section`
 `
 
 const ImgWrapper=styled.div`
-  width: 100%;
+  width: 21.7rem;
+  height: 21.7rem;
 
   border-radius: 25rem;
 
@@ -143,7 +181,7 @@ const ImgWrapper=styled.div`
 `
 
 const Img=styled.img`
-  width: 100%;
+  width: 101%;
   
 `
 
