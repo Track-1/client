@@ -66,9 +66,9 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
         setEmail(email)
         },
         onError:()=>{
-            if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
+            // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
                 setEmailMessage(emailInvalidMessage.DUPLICATION);
-            }
+            // }
         }
     });
 
@@ -154,18 +154,7 @@ export default function SignupEmailPassword(props:SetStepPropsType) {
     }
 
     function verifyCode(e: React.MouseEvent){
-        //post함수 추가 -> 
-        // if(맞으면){}
-        // setIsVerify(true)
-        // setEmailMessage(emailInvalidMessage.VERIFY)
         setIsVerifyClicked(prev=>!prev)
-
-        // let formData = new FormData();
-        // formData.append("tableName", tableName);
-        // formData.append("userEmail", email);
-        // formData.append("verificationCode", verificationCode);
-        // VerifyCode.mutate(formData);
-
     }
 
     //verifycode post
