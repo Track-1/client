@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { ConfirmPasswordTextIc, CreateAPasswordForYourAccountTitleIc, SignUpBackArrowIc, SignUpEmailTitleIc, SignUpErrorIc, SignUpEyeIc, SignUpEyeXIc, SignUpPasswordIc, SignUpVerifyIc, VerificationCodeTextIc, WeSentYouACodeTextIc, WhatsYourEmailIc } from '../../assets';
-import { SetStepPropsType } from '../../type/signUpStepTypes';
+import { SetPropsType } from '../../type/signUpStepTypes';
 import { useState } from 'react';
 import SendCodeButton from './sendCodeButton';
 import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
@@ -21,8 +21,8 @@ import { continueType } from '../../core/signUp/continueType';
 import { useRecoilValue } from 'recoil';
 import { UserType } from '../../recoil/main';
 
-export default function SignupEmailPassword(props:SetStepPropsType) {
-    const {setStep}=props;
+export default function SignupEmailPassword(props:SetPropsType) {
+    const {setStep, setUserData}=props;
     const [email, setEmail]=useState<string>('')
     const [emailMessage, setEmailMessage]=useState<string>(emailInvalidMessage.NULL)
     const [isValidForm, setIsValidForm]=useState<boolean>(false);

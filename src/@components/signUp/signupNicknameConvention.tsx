@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { SignUpBackArrowIc, SignUpChangeImageIc, SignUpErrorIc, SignUpUploadImageIc, SignUpVerifyIc, WhatsYourNameTextIc } from '../../assets';
-import { SetStepPropsType } from '../../type/signUpStepTypes';
+import { SetPropsType } from '../../type/signUpStepTypes';
 import styled from 'styled-components';
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
 import { signUpStep } from '../../core/signUp/signupStepType';
@@ -10,8 +10,8 @@ import { checkNicknameForm } from '../../utils/errorMessage/checkNicknameForm';
 import ConventionCheckBox from './conventionCheckBox';
 import { continueType } from '../../core/signUp/continueType';
 
-export default function SignupNicknameConvention(props:SetStepPropsType) {
-    const {setStep}=props;
+export default function SignupNicknameConvention(props:SetPropsType) {
+    const {setStep, setUserData}=props;
     const [imageSrc, setImageSrc] = useState<string>("");
     const [isHover, setIsHover]=useState<boolean>(false);
     const [nickname, setNickname]=useState<string>("")

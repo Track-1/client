@@ -14,13 +14,14 @@ import SignUpBackButton from "../@components/signUp/signUpBackButton";
 import { isSignupSuccess } from "../utils/signUp/checkSignUpStep";
 import { useRecoilValue } from 'recoil';
 import { openConventionModal } from "../recoil/conventionModal";
+import { UserDataPropsType } from "../type/signUpStepTypes";
+
 
 export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
-    const [policy, setPolicy]=useState<string>('');
+    const [userData, setUserData]=useState<UserDataPropsType>();
     const showModal=useRecoilValue(openConventionModal)
-    console.log(showModal)
 
   return (
     <>
@@ -31,10 +32,10 @@ export default function SignUpPage() {
             </BackButtonWrapper>
             <SignUpContainer background={background}>
                 <SignUpStepWrapper>
-                    <SignupMessage step={step} setStep={setStep}/>
+                    <SignupMessage step={step} setStep={setStep} setUserData={setUserData}/>
                     <StepBox>
                         <SignupStepHeader step={step}/>
-                        <SignUpStepRenderer step={step} setStep={setStep} />
+                        <SignUpStepRenderer step={step} setStep={setStep} setUserData={setUserData}/>
                     </StepBox>
                 </SignUpStepWrapper>
             </SignUpContainer>
