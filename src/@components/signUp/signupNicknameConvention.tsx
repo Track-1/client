@@ -24,19 +24,14 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const [completeCheck, setCompleteCheck]=useState<boolean>(false)
     const userType=useRecoilValue(UserType)
     const [successNextStep, setSuccessNextStep]=useState<string>(continueType.FAIL)
-    // const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-      
+    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {      
       const targetFiles = (e.target as HTMLInputElement).files as FileList;
       const targetFilesArray = Array.from(targetFiles);
       const selectedFiles: string[] = targetFilesArray.map((file) => {
         return URL.createObjectURL(file);
       });
       setImageSrc(selectedFiles[0]);
-      // if(e.target.files){
-      //   setImageSrc(e.target.files[0]);
-      // }
     }
 
     function checkImageHover(){
@@ -60,10 +55,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }
 
   function completeNicknameConventions(){
-    return (
-      nicknameMessage===nicknameValidMessage.SUCCESS&&completeCheck
-      // ?continueType.SUCCESS:continueType.FAIL
-    )
+    return nicknameMessage===nicknameValidMessage.SUCCESS&&completeCheck
   }
 
   function writeNickname(e: React.ChangeEvent<HTMLInputElement>){
@@ -75,7 +67,6 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       setNicknameMessage(nicknameValidMessage.ERROR)
     }
 
-    //임시
     else if(checkNicknameForm(e.target.value)){
       setNicknameMessage(nicknameValidMessage.SUCCESS)
     }
@@ -115,6 +106,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       isVocal(userType)&&JoinVocal.mutate(userData);
       isProducer(userType)&&JoinProducer.mutate(userData);
   }, [userData]);
+  //user data post end
 
   return (
     <>

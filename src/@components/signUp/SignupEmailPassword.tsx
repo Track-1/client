@@ -84,7 +84,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const CheckDuplication = useMutation(checkEmailDuplication, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-duplicate");
-        // console.log(CheckDuplication.data?.data.data.isDuplicate)
         CheckDuplication.data?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         console.log(emailMessage)
         },
@@ -93,7 +92,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     });
 
     useEffect(()=>{
-        // console.log(emailMessage);
     }, [emailMessage])
 
     useEffect(() => {
@@ -112,7 +110,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
         setEmail(email)
         },
         onError:()=>{
-            // setEmailMessage(emailInvalidMessage.DUPLICATION)
         }
     });
 
@@ -163,10 +160,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
         }
         else{
-            // setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
-            // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
-            //     setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
-            // }
             if(!PostAuthMail.isError){
                 setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
             }
@@ -191,7 +184,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
 
     function verifyCode(e: React.MouseEvent){
-        // setIsVerifyClicked(prev=>!prev)
         setIsVerify(true);
         setEmailMessage(emailInvalidMessage.VERIFY)
     }
@@ -208,7 +200,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
             // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
             //     console.log("asdfdsafdsa")
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
-                // alert("유효 인증 시간이 지났습니다");
             // }
         }
     });
