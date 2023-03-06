@@ -40,6 +40,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const tableName=useRecoilValue<string>(UserType)
     const [isVerifyClicked, setIsVerifyClicked]=useState<boolean>(false);
    
+
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setEmailMessage(emailInvalidMessage.NULL)
@@ -52,12 +53,12 @@ export default function SignupEmailPassword(props:SetPropsType) {
         else if(checkEmailForm(e.target.value)){
             setEmail(e.target.value)
             setIsValidForm(prev=>!prev);
+            
         }
-
-       
+ 
         setEmail(e.target.value)
     }
-
+ 
     //auth-mail post
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
@@ -80,31 +81,21 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }, [isSendCode]);
     //auth-mail post end
 
-    //mail duplicate post
-    const CheckDuplication = useMutation(checkEmailDuplication, {
-        onSuccess: () => {
+    const {mutate:CheckDuplication } = useMutation(checkEmailDuplication, {
+        onSuccess: (data) => {
         queryClient.invalidateQueries("email-duplicate");
 
-        console.log(CheckDuplication.data) //이값이 자꾸 반대로 나옴
-        CheckDuplication.data?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
+        data.isDuplicate?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         },
         onError:(error)=>{
         }
     });
 
-    useEffect(()=>{
-
-    },[isValidForm])
-    console.log(emailMessage)
-    useEffect(()=>{
-        console.log(emailMessage)
-    }, [emailMessage])
-
     useEffect(() => {
         let formData = new FormData();
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
-        CheckDuplication.mutate(formData);
+        CheckDuplication(formData);
     }, [isValidForm]);
     //mail duplicate end
 
@@ -173,7 +164,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
-        isSendCode&&setIsResendCode((prev)=>prev)
+        isSendCode&&setIsResendCode((prev)=>!prev)
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
         setIsVerify(false)
