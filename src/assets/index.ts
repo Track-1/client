@@ -131,3 +131,17 @@ export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHe
 export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
+export { ReactComponent as SignBackgroundIc } from "./icon/signBackgroundIc.svg";
+export { ReactComponent as SignBgLogoIc } from "./icon/signBgLogoIc.svg";
+export { ReactComponent as SignWelcomeIc } from "./icon/signWelcomeIc.svg";
+export { ReactComponent as LoginHereMessageIc } from "./icon/loginHereMessageIc.svg";
+export { ReactComponent as SignUpStep1Ic } from "./icon/signUpStep1Ic.svg";
+export { ReactComponent as SignUpStep2Ic } from "./icon/signUpStep2Ic.svg";
+export { ReactComponent as SignUpStep3Ic } from "./icon/signUpStep3Ic.svg";
+export { ReactComponent as SignUpStepBlanckIc } from "./icon/signUpStepBlanckIc.svg";
+export { ReactComponent as SignUpSelectRoleTitleIc } from "./icon/signUpSelectRoleTitleIc.svg";
+export { ReactComponent as SignupNotSelectedProducerIc } from "./icon/signupNotSelectedProducerIc.svg";
+export { ReactComponent as SignupNotSelectedVocalIc } from "./icon/signupNotSelectedVocalIc.svg";
+export { ReactComponent as SignupSelectedProducerIc } from "./icon/signupSelectedProducerIc.svg";
+export { ReactComponent as SignupSelectedVocalIc } from "./icon/signupSelectedVocalIc.svg";
+export { ReactComponent as SignUpContinueButtonIc } from "./icon/signUpContinueButtonIc.svg";
