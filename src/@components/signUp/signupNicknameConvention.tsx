@@ -14,6 +14,7 @@ import { UserType } from '../../recoil/main';
 import { useMutation, useQueryClient } from 'react-query';
 import { joinProducer, joinVocal } from '../../core/api/signUp';
 import { isVocal, isProducer } from '../../utils/common/userType';
+import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../utils/uploadPage/uploadImage';
 
 export default function SignupNicknameConvention(props:SetUserPropsType) {
     const {setStep, setUserData, userData}=props;
@@ -25,13 +26,16 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const userType=useRecoilValue(UserType)
     const [successNextStep, setSuccessNextStep]=useState<string>(continueType.FAIL)
 
-    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {      
-      const targetFiles = (e.target as HTMLInputElement).files as FileList;
-      const targetFilesArray = Array.from(targetFiles);
-      const selectedFiles: string[] = targetFilesArray.map((file) => {
-        return URL.createObjectURL(file);
-      });
-      setImageSrc(selectedFiles[0]);
+    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
+      const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+      if (checkImageType(uploadName) && e.target.files) {
+        const file = e.target.files[0];
+        const fileUrl: string = getFileURL(file);
+        const imageSize: number = getFileSize(file);
+        if (checkImageSize(imageSize)) {
+          setImageSrc(fileUrl);
+        }
+      }
     }
 
     function checkImageHover(){
