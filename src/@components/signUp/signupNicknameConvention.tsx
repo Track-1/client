@@ -166,19 +166,29 @@ const ImageContainer=styled.section`
 `
 
 const ImgWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   width: 21.7rem;
   height: 21.7rem;
 
   border-radius: 25rem;
 
   position: absolute;
-
   overflow: hidden;
+
 `
 
 const Img=styled.img`
-  width: 101%;
-  
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
 `
 
 const SignUpChangeImageIcon=styled(SignUpChangeImageIc)`
