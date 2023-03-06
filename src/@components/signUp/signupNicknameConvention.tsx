@@ -15,6 +15,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { joinProducer, joinVocal } from '../../core/api/signUp';
 import { isVocal, isProducer } from '../../utils/common/userType';
 import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../utils/uploadPage/uploadImage';
+import ProfilImageContainer from './profilImageContainer';
 
 export default function SignupNicknameConvention(props:SetUserPropsType) {
     const {setStep, setUserData, userData}=props;
@@ -114,7 +115,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
 
   return (
     <>
-    <ImageContainer>
+    {/* <ImageContainer>
       <Label htmlFor='profile-img' onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
         {imageSrc ? (
           <ImgWrapper>
@@ -126,7 +127,8 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
         {imageSrc&&isHover&&<SignUpChangeImageIcon/>}
       </Label>
         <input type="file" id="profile-img" style={{ visibility: "hidden" }} onChange={(e) => {uploadImage(e)}} />
-    </ImageContainer>
+    </ImageContainer> */}
+    <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
     
     <NicknameWrapper>
       <WhatsYourNameTextIc/>
