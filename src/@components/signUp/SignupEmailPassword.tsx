@@ -66,7 +66,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
         setEmail(email)
         },
         onError:(error)=>{
-            console.log(error)
+            // console.log(error)
         }
     });
 
@@ -85,7 +85,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
         onSuccess: () => {
         queryClient.invalidateQueries("email-duplicate");
         CheckDuplication.data?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
-        console.log(emailMessage)
         },
         onError:(error)=>{
         }
@@ -154,18 +153,10 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
-        // setIsVerifyClicked(prev=>!prev)
-        // console.log(e.target.value)
+        console.log(PostAuthMail.isError)
         if(!e.target.value){
+            console.log("null이다")
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
-        }
-        else{
-            if(!PostAuthMail.isError){
-                setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
-            }
-            else{
-                setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
-            }
         }
         setVerificationCode(e.target.value)
     }
@@ -174,38 +165,37 @@ export default function SignupEmailPassword(props:SetPropsType) {
         return emailMessage===emailInvalidMessage.SUCCESS
     }
 
+    // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
         //post함수 추가
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
-        console.log(emailMessage)
         setIsVerify(false)
         setIsResendCode((prev)=>prev)
     }
-
+    console.log("afdsafdfdsfdsfdsasdsfdsfdssaf"+verificationCodeMessage)
     function verifyCode(e: React.MouseEvent){
-        setIsVerify(true);
-        setEmailMessage(emailInvalidMessage.VERIFY)
+       if(verificationCodeMessage===verificationCodeInvalidMessage.SUCCESS){
+            setIsVerify(true)
+            setEmailMessage(emailInvalidMessage.VERIFY) 
+       }       
     }
 
     //verifycode post
     const VerifyCode = useMutation(postVerifyCode, {
         onSuccess: () => {
-        queryClient.invalidateQueries("email");
+        queryClient.invalidateQueries("verifycode");
+            console.log("성공성고성ㅅㅅㅅㄱㅅㄱㅅㄱㅅㄱㅅㄱㅅㄱ")
         
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
         },
         onError:(error)=>{
-            console.log(error)
-            // if("a"+PostAuthMail.error==="aAxiosError: Request failed with status code 400"){
-            //     console.log("asdfdsafdsa")
+            verificationCode&&
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
-            // }
         }
     });
 
     useEffect(() => {
-        console.log("클릭완료")
         let formData = new FormData();
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
