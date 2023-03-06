@@ -1,4 +1,4 @@
-import axios, { AxiosHeaders } from "axios";
+import axios from "axios";
 import { setCookie, getCookie } from "../../utils/cookie";
 import { validTime } from "../constants/accessTokenValidTime";
 
@@ -7,28 +7,13 @@ export async function onLogin(id: string, password: string) {
     ID: id,
     PW: password,
   };
-  const config = {
+
+  return await axios.post(`${process.env.REACT_APP_BASE_URL}/user/auth/login`, body, {
+    headers: {
+      "Content-Type": "application/json",
+    },
     withCredentials: true,
-    credentials: "include",
-  };
-
-  const data = await axios
-    .post(`${process.env.REACT_APP_BASE_URL}/user/auth/login`, body, config)
-    .then((response) => {
-      console.log(response);
-      console.log(response.config);
-      console.dir(AxiosHeaders.prototype);
-
-      if (response.status === 200) {
-        const accessToken = response.data.data.accessToken;
-        setCookie("accessToken", accessToken, {});
-        onLoginSuccess(accessToken);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return data;
+  });
 }
 
 //페이지마다 리로드 될때 추가해줘야한다!
@@ -52,10 +37,8 @@ export async function onSilentRefresh() {
     });
 }
 
-export async function onLoginSuccess(accessToken: string) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+export function onLoginSuccess(accessToken: string) {
   setTimeout(() => {
-    console.log("1분 지났다!!");
     onSilentRefresh();
-  }, 10 * 1000);
+  }, validTime.JWT_EXPIRY_TIME);
 }

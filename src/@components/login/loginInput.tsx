@@ -7,12 +7,14 @@ import {
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
 } from "../../assets";
-import { useState } from "react";
-import { onLogin } from "../../core/api/login";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { onLogin, onLoginSuccess } from "../../core/api/login";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import { setCookie } from "../../utils/cookie";
 
 export default function LoginInput() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
@@ -28,6 +30,23 @@ export default function LoginInput() {
   const FOCUS = "focus";
   const BLUR = "blur";
   const WARNING = "warning";
+
+  const { mutate, data, isSuccess } = useMutation(() => onLogin(email, password), {
+    onSuccess: () => {
+      if (data?.data.status === 200) {
+        const accessToken = data.data.data.accessToken;
+        setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+        onLoginSuccess(accessToken);
+      }
+    },
+    onError: (error: any) => {
+      alert(error?.response.data.message);
+    },
+  });
+
+  useEffect(() => {
+    isSuccess && navigate("/");
+  }, [isSuccess]);
 
   function producerToggleType() {
     return isProducerMode ? (
@@ -78,17 +97,6 @@ export default function LoginInput() {
     PASSWORD_RULE.test(passwordInput) || isInputEmpty(passwordInput)
       ? setPasswordInputState(FOCUS)
       : setPasswordInputState(WARNING);
-  }
-
-  const { mutate, data } = useMutation(login, {
-    onSuccess: () => {},
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  async function login() {
-    return await onLogin(email, password);
   }
 
   function loginBtnType() {
