@@ -10,7 +10,6 @@ import {
   ProducerDefaultModeToggleIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
-import { postNewPassword } from "../../core/api/newPassword";
 import { useSendNewPasswordEmail } from "../../utils/hooks/useSendNewPasswordEmail";
 
 export default function ForgotPasswordInput() {
@@ -20,7 +19,6 @@ export default function ForgotPasswordInput() {
   const [resendTrigger, setResendTrigger] = useState<boolean>(false);
 
   const { mutate, isSuccess } = useSendNewPasswordEmail(userType, email);
-  console.log(isSuccess);
 
   useEffect(() => {
     isProducerMode ? setUserType("producer") : setUserType("vocal");
