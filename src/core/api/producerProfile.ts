@@ -1,16 +1,13 @@
 import axios from "axios";
+import { client } from "./common/axios";
 
 export async function getProducerPortfolio(producerId: number, page: number) {
   try {
-    const data = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page}&limit=3`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
-          producerId: producerId,
-        },
+    const data = await client.get(`/profile/producer/${producerId}?page=${page}&limit=3`, {
+      headers: {
+        producerId: producerId,
       },
-    );
+    });
     return data?.data.data;
   } catch (e) {
     console.log(e);

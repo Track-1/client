@@ -131,3 +131,16 @@ export { ReactComponent as TrackListHeaderSloganNewIc } from "./icon/trackListHe
 export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHeaderSloganNewIc.svg";
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
+
+export { ReactComponent as ProfileEditCategoryIc } from "./icon/profileEditCategoryIc.svg";
+export { ReactComponent as ProfileEditContactIc } from "./icon/profileEditContactIc.svg";
+export { ReactComponent as ProfileEditDescriptionIc } from "./icon/profileEditDescriptionIc.svg";
+export { ReactComponent as ProfileEditHashtagIc } from "./icon/profileEditHashtagIc.svg";
+export { ReactComponent as ProfileEditSaveButtonIc } from "./icon/profileEditSaveButtonIc.svg";
+export { ReactComponent as ProfileEditCheckIc } from "./icon/profileEditCheckIc.svg";
+export { ReactComponent as ProfileEditWarningIc } from "./icon/profileEditWarningIc.svg";
+export { ReactComponent as ProfileEditSaveButtonActiveIc } from "./icon/profileEditSaveButtonActiveIc.svg";
+export { ReactComponent as ProfileEditSleepAcountTitleIc } from "./icon/profileEditSleepAcountTitleIc.svg";
+export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
+export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEditSleeperButtonIc.svg";
+export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
