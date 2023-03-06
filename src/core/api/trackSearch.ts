@@ -1,5 +1,5 @@
 import axios from "axios";
-import { server } from "./common/axios";
+// import { server } from "./common/axios";
 import { useRecoilValue } from "recoil";
 import { categorySelect } from "../../recoil/categorySelect";
 
