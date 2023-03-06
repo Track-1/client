@@ -132,6 +132,11 @@ export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHe
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
 
+export { ReactComponent as LoginIc } from "./icon/loginIc.svg";
+export { ReactComponent as SignupIc } from "./icon/signupIc.svg";
+export { ReactComponent as MainInfoVocalIc } from "./icon/mainInfoVocalIc.svg";
+export { ReactComponent as MainInfoProducerIc } from "./icon/mainInfoProducerIc.svg";
+export { ReactComponent as MainLogoutIc } from "./icon/mainLogoutIc.svg";
 export { ReactComponent as ProfileEditCategoryIc } from "./icon/profileEditCategoryIc.svg";
 export { ReactComponent as ProfileEditContactIc } from "./icon/profileEditContactIc.svg";
 export { ReactComponent as ProfileEditDescriptionIc } from "./icon/profileEditDescriptionIc.svg";

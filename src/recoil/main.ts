@@ -1,10 +1,10 @@
 import { atom } from "recoil";
-import {recoilPersist} from "recoil-persist";
+import { recoilPersist } from "recoil-persist";
 
-const {persistAtom}=recoilPersist();
+const { persistAtom } = recoilPersist();
 
 export const UserType = atom<string>({
   key: "UserType",
-  default: "producer",
-  effects_UNSTABLE:[persistAtom],
+  default: "vocal",
+  // effects_UNSTABLE: [persistAtom],
 });
