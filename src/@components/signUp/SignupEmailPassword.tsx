@@ -62,7 +62,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
-        setEmailMessage(emailInvalidMessage.SUCCESS)
+        setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:(error)=>{
@@ -79,11 +79,16 @@ export default function SignupEmailPassword(props:SetPropsType) {
         PostAuthMail.mutate(formData);
     }, [isSendCode]);
     //auth-mail post end
-
+    console.log("이메일은"+email)
+    console.log("메시지는"+emailMessage)
     //mail duplicate post
+
     const CheckDuplication = useMutation(checkEmailDuplication, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-duplicate");
+        // console.log("adsfkashjfdksahfdjkflhsjkafhdsjkflhdsjk")
+        // console.log(CheckDuplication)
+        console.log(CheckDuplication.data) //이값이 자꾸 반대로 나옴
         CheckDuplication.data?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         },
         onError:(error)=>{
@@ -91,6 +96,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
     });
 
     useEffect(()=>{
+
+    },[isValidForm])
+    console.log(emailMessage)
+    useEffect(()=>{
+        console.log(emailMessage)
     }, [emailMessage])
 
     useEffect(() => {
@@ -105,7 +115,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
-        setEmailMessage(emailInvalidMessage.SUCCESS)
+        setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:()=>{
@@ -165,15 +175,16 @@ export default function SignupEmailPassword(props:SetPropsType) {
         return emailMessage===emailInvalidMessage.SUCCESS
     }
 
+    console.log("emailMessage"+emailMessage)
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
         //post함수 추가
+        isSendCode&&setIsResendCode((prev)=>prev)
         setIsSendCode(true)
         setEmailMessage(emailInvalidMessage.TIME)
         setIsVerify(false)
-        setIsResendCode((prev)=>prev)
     }
-    console.log("afdsafdfdsfdsfdsasdsfdsfdssaf"+verificationCodeMessage)
+    
     function verifyCode(e: React.MouseEvent){
        if(verificationCodeMessage===verificationCodeInvalidMessage.SUCCESS){
             setIsVerify(true)
@@ -185,8 +196,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const VerifyCode = useMutation(postVerifyCode, {
         onSuccess: () => {
         queryClient.invalidateQueries("verifycode");
-            console.log("성공성고성ㅅㅅㅅㄱㅅㄱㅅㄱㅅㄱㅅㄱㅅㄱ")
-        
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
         },
         onError:(error)=>{

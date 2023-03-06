@@ -16,7 +16,7 @@ export async function checkEmailDuplication(formData:any) {
         "Content-Type": "application/json",
       },
     });
-    // data && console.log(data.data.data.isDuplicate);
+    data && console.log(data.data.data.isDuplicate);
     return data.data.data.isDuplicate
 }
 
