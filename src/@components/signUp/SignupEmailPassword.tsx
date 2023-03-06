@@ -58,12 +58,12 @@ export default function SignupEmailPassword(props:SetPropsType) {
  
         setEmail(e.target.value)
     }
- 
+ console.log(emailMessage)
     //auth-mail post
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
-        setEmailMessage(emailInvalidMessage.TIME)
+        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:(error)=>{
@@ -103,7 +103,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
-        setEmailMessage(emailInvalidMessage.TIME)
+        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:()=>{
