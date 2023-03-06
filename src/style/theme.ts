@@ -15,6 +15,7 @@ const colors = {
 
   white: "#FFFFFF",
   black: "#0D0E11",
+  red: "#FF4F4F",
 };
 
 export type ColorsTypes = typeof colors;
