@@ -31,8 +31,8 @@ export default function LoginInput() {
   const BLUR = "blur";
   const WARNING = "warning";
 
-  const { mutate, data, isSuccess } = useMutation(() => onLogin(email, password), {
-    onSuccess: () => {
+  const { mutate, isSuccess } = useMutation(() => onLogin(email, password), {
+    onSuccess: (data) => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
         setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
