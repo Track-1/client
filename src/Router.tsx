@@ -6,12 +6,16 @@ import TrackSearchPage from "./@pages/trackSearchPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalsPage from "./@pages/vocalsPage";
 import UploadPage from "./@pages/uploadPage";
+import SignUpPage from './@pages/signUpPage';
+import LoginPage from "./@pages/loginPage";
+import ProfileEditPage from "./@pages/profileEditPage";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalsPage />} />
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
@@ -19,6 +23,8 @@ export default function Router() {
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         {/* <Route path="/upload" element={<UploadPage />} /> */}
         <Route path="/upload/:producerUploadType" element={<UploadPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/profile-edit" element={<ProfileEditPage />} />
       </Routes>
     </BrowserRouter>
   );
