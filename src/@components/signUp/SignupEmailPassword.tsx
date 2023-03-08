@@ -58,7 +58,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
  
         setEmail(e.target.value)
     }
- console.log(emailMessage)
+ 
     //auth-mail post
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
