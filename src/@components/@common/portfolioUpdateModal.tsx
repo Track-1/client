@@ -2,11 +2,10 @@ import styled from "styled-components";
 import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { deleteProducerPortfolio, deleteVocalPortfolio } from "../../core/api/delete";
 import { useRecoilValue } from "recoil";
-import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { UserType } from "../../recoil/main";
+import { LoginUserType } from "../../recoil/loginUserData";
 
 interface PropsType {
   isTitle: boolean;
@@ -17,25 +16,23 @@ interface PropsType {
 
 export default function PortfolioUpdateModal(props: PropsType) {
   const { isTitle, profileState, portfolioId } = props;
-  const navigate = useNavigate();
 
-  const userType = useRecoilValue(UserType);
+  const loginUserType = useRecoilValue(LoginUserType);
 
-  const { mutate } = useMutation(deleteAPI, {
+  const { mutate } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
-      alert("성공!!");
-      navigate(-1);
+      //성공하고 업로드 다시 되어야하는거 구현해야돼!
     },
     onError: (error) => {
-      console.log("에러!!", error);
+      console.log(error);
     },
   });
 
-  async function deleteAPI() {
-    if (userType === "Tracks") {
-      return await deleteProducerPortfolio(portfolioId);
+  function deleteAPI() {
+    if (loginUserType === "producer") {
+      return deleteProducerPortfolio(portfolioId);
     } else {
-      return await deleteVocalPortfolio(portfolioId);
+      return deleteVocalPortfolio(portfolioId);
     }
   }
 
@@ -45,10 +42,6 @@ export default function PortfolioUpdateModal(props: PropsType) {
 
   function checkIsPortfolio() {
     return profileState === profileCategory.PORTFOLIO;
-  }
-
-  function requestDelete() {
-    mutate();
   }
 
   return (
@@ -61,12 +54,12 @@ export default function PortfolioUpdateModal(props: PropsType) {
         <PencilUpdateIc />
       </ModalBox>
       {!checkIsVocalSearching() ? (
-        <ModalBox underline={!isTitle} onClick={requestDelete}>
+        <ModalBox underline={!isTitle} onClick={() => mutate()}>
           삭제하기
           <TrashDeleteIc />
         </ModalBox>
       ) : (
-        <ModalBox underline={false} onClick={requestDelete}>
+        <ModalBox underline={false} onClick={() => mutate()}>
           삭제하기
           <TrashDeleteIc />
         </ModalBox>
