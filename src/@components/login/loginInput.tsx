@@ -21,6 +21,7 @@ export default function LoginInput() {
   const [emailInputState, setEmailInputState] = useState<string>("");
   const [passwordInputState, setPasswordInputState] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginType, setLoginType] = useState<string>("vocal");
 
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
@@ -31,7 +32,11 @@ export default function LoginInput() {
   const BLUR = "blur";
   const WARNING = "warning";
 
-  const { mutate, isSuccess } = useMutation(() => onLogin(email, password), {
+  useEffect(() => {
+    isProducerMode ? setLoginType("producer") : setLoginType("vocal");
+  }, [isProducerMode]);
+
+  const { mutate, isSuccess } = useMutation(() => onLogin(email, password, loginType), {
     onSuccess: (data) => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
