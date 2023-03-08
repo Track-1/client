@@ -9,11 +9,11 @@ export async function getTracksData(filteredUrlApi: string, page: number) {
       `${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page}&limit=6${filteredUrlApi}`,
       {
         headers: {
-          Authorization: `Bearer ${`${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`}`,
+          "Content-Type": "application/json",
         },
       },
     );
-    return data?.data.data.trackList;
+    return data?.data.data;
   } catch (e) {
     console.log(e);
   }
