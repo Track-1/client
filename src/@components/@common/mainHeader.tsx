@@ -1,41 +1,32 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import sloganImg from "../../assets/image/sloganImg.svg";
-import { LogoIc, ProducerMypageIc, ProducerToggleIc, VocalMypageIc, VocalToggleIc,TrackOneMainLogoIc } from "../../assets";
+import { TrackOneMainLogoIc, LoginIc, SignupIc } from "../../assets";
 import { useRecoilState } from "recoil";
 import { UserType } from "../../recoil/main";
+import { useState } from "react";
+import ProducerBriefInfo from "../main/produderBriefInfo";
+import VocalBriefInfo from "../main/vocalBriefInfo";
 
 export default function MainHeader() {
   const navigate = useNavigate();
 
   const [userType, setUserType] = useRecoilState(UserType);
-
-  function moveMyPage() {
-    userType === "producer" ? navigate("/producer-profile/2", {state:2}) : navigate("/vocal-profile/1", {state:1});
-  }
-
-  function changeUserType(e: React.MouseEvent<SVGSVGElement>) {
-    userType === "producer" ? setUserType("vocal") : setUserType("producer");
-  }
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
         <TrackOneMainLogoIc style={{ cursor: "pointer" }} />
         <img src={sloganImg} alt="슬로건" />
-        <BtnWrpper>
-          {userType === "producer" ? (
-            <>
-              <ProducerToggleIc style={{ cursor: "pointer" }} onClick={changeUserType} />
-              <ProducerMypageIc style={{ cursor: "pointer" }} onClick={moveMyPage} />
-            </>
-          ) : (
-            <>
-              <VocalToggleIc style={{ cursor: "pointer" }} onClick={changeUserType} />
-              <VocalMypageIc style={{ cursor: "pointer" }} onClick={moveMyPage} />
-            </>
-          )}
-        </BtnWrpper>
+        {!isLogin && (
+          <BtnWrpper>
+            <LoginIcon />
+            <SignupIc />
+          </BtnWrpper>
+        )}
+        {isLogin && userType === "producer" && <ProducerBriefInfo />}
+        {isLogin && userType === "vocal" && <VocalBriefInfo />}
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -63,4 +54,8 @@ const BtnWrpper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const LoginIcon = styled(LoginIc)`
+  margin-right: 2.2rem;
 `;

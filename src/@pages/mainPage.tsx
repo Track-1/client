@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Header from "../@components/@common/mainHeader";
+import MainHeader from "../@components/@common/mainHeader";
 import Footer from "../@components/@common/footer";
 
 import { MainTracksTextIc, MainVocalsTextIc } from "../assets";
@@ -46,7 +46,7 @@ export default function MainPage() {
   return (
     <>
     <MainPageWrapper>
-      <Header />
+      <MainHeader />
       <Main>
         <img src={background} alt="배경이미지" />
         <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
