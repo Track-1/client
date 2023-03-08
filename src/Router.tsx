@@ -7,8 +7,12 @@ import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalsPage from "./@pages/vocalsPage";
 import UploadPage from "./@pages/uploadPage";
 import SignUpPage from './@pages/signUpPage';
+
+import SignupSuccess from './@components/signUp/signupSuccess';
+
 import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
+
 
 export default function Router() {
   return (
