@@ -7,7 +7,7 @@ import {
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
 } from "../../assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
@@ -23,6 +23,7 @@ export default function LoginInput() {
   const [emailInputState, setEmailInputState] = useState<string>("");
   const [passwordInputState, setPasswordInputState] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginType, setLoginType] = useState<string>("vocal");
 
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
@@ -36,7 +37,11 @@ export default function LoginInput() {
   const setLoginUserType = useSetRecoilState(LoginUserType);
   const setLoginUserId = useSetRecoilState(LoginUserId);
 
-  const { mutate } = useMutation(() => onLogin(email, password), {
+  useEffect(() => {
+    isProducerMode ? setLoginType("producer") : setLoginType("vocal");
+  }, [isProducerMode]);
+
+  const { mutate } = useMutation(() => onLogin(email, password, loginType), {
     onSuccess: (data) => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
