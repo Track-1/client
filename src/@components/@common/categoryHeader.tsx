@@ -39,7 +39,7 @@ export default function CategoryHeader() {
   function moveMypage() {
     loginUserType === "vocal"
       ? navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId })
-      : navigate(`producer-profile/${loginUserId}`, { state: loginUserId });
+      : navigate(`/producer-profile/${loginUserId}`, { state: loginUserId });
   }
 
   return (
