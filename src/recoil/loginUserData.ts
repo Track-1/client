@@ -1,11 +1,14 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export const LoginUserType = atom<string>({
   key: "LoginUserType",
-  default: "",
+  effects_UNSTABLE: [persistAtom],
 });
 
-export const LoginUserId = atom<string>({
+export const LoginUserId = atom<number>({
   key: "LoginUserId",
-  default: "",
+  effects_UNSTABLE: [persistAtom],
 });
