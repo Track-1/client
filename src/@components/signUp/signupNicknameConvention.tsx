@@ -113,6 +113,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }, [userData]);
   //user data post end
 
+  console.log(completeCheck)
   return (
     <>
     <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
