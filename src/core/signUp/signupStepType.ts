@@ -1,9 +1,15 @@
 export enum signUpStep {
-    SIGNUP_ROLE='SIGNUP_ROLE', 
-    SIGNUP_EMAIL='SIGNUP_EMAIL',
-    SIGNUP_PASSWORD='SIGNUP_PASSWORD', 
-    SIGNUP_NICKNAME='SIGNUP_NICKNAME', 
-    SIGNUP_PROFILE='SIGNUP_PROFILE', 
-    SIGNUP_SUCCESS='SIGNUP_SUCCESS',
+    SIGNUP_ROLE='role', 
+    SIGNUP_EMAIL_PASSWORD='email password',
+    SIGNUP_NICKNAME_CONVENTION='nickname convention', 
+    SIGNUP_PROFILE='profile', 
+    SIGNUP_SUCCESS='signup success',
   }
   
+export enum signUpHeader {
+  ONE=1, 
+  TWO=2,
+  THREE=3, 
+  FOUR=4, 
+  FIVE=5
+}

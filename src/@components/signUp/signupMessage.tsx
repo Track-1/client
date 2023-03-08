@@ -1,23 +1,51 @@
 import styled from 'styled-components';
-import { SignBgLogoIc, SignWelcomeIc } from '../../assets'
+import { SignBgLogoIc, SignUpCompleteButtonIc, SignUpSkipButtonIc, SignWelcomeIc } from '../../assets'
+import { signUpStep } from '../../core/signUp/signupStepType';
 import { StepPropsType } from '../../type/signUpStepTypes'
 import { isMessageLogo,isMessageWelcome } from '../../utils/signUp/checkMessageType';
 
 export default function SignupMessage(props:StepPropsType) {
-    const {step}=props;
+    const {step, setStep, setUserData}=props;
 
-  return (
+    function moveToSuccess(){
+      setStep(signUpStep.SIGNUP_SUCCESS)
+    }
+
+    return (
     <>
     {isMessageLogo(step)&&<SignBgLogoIcon/>}
-    {isMessageWelcome(step)&&<SignWelcomeIcon/>}
+    {isMessageWelcome(step)&&(
+      <WelcomeMessageWrapper>
+      <SignUpSkipButtonIcon onClick={moveToSuccess}/>
+      <SignWelcomeIcon/>
+      <SignUpCompleteButtonIcon/>
+      </WelcomeMessageWrapper>
+    )}
     </>
   )
 }
 
 const SignBgLogoIcon=styled(SignBgLogoIc)`
-    margin: 53.4rem 24.9rem 0 23.3rem;
+    margin: 43.5rem 24.9rem 0 23.3rem;
 `
 
 const SignWelcomeIcon=styled(SignWelcomeIc)`
-    margin: 45.14rem 28.2rem 0 32.7rem;
+    margin: 1.2rem 28.2rem 0 32.7rem;
+`
+
+const WelcomeMessageWrapper=styled.section`
+  display: flex;
+  flex-direction: column;
+`
+
+const SignUpCompleteButtonIcon=styled(SignUpCompleteButtonIc)`
+  margin: 4rem 0 0 32rem;
+
+  cursor: pointer;
+`
+
+const SignUpSkipButtonIcon=styled(SignUpSkipButtonIc)`
+  margin: 27.5rem 0 0 47.7rem;
+
+  cursor: pointer;
 `

@@ -5,19 +5,19 @@ import { signUpStep } from '../../core/signUp/signupStepType'
 import { ContinueButtonPropsTypes } from '../../type/signUpStepTypes'
 
 export default function ContinueButton(props:ContinueButtonPropsTypes) {
-    const {answer, setStep}=props
+    const {successNextStep, step, setStep}=props
 
-    function isNotNull(answer:string){
-        return answer!==''
+    function isNull(answer:string){
+        return answer===''
     }
 
-    function moveSignUpEmail(){
-        isNotNull(answer)&&setStep(signUpStep.SIGNUP_EMAIL)
+    function moveNextStep(){
+        !isNull(successNextStep)&&setStep(step)
     }
 
   return (
-    <ContinueButtonWrapper type="button" isNotNull={isNotNull(answer)}>
-        <SignUpContinueButtonIc onClick={moveSignUpEmail}/>
+    <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={moveNextStep}>
+        <SignUpContinueButtonIc/>
     </ContinueButtonWrapper>
   )
 }
@@ -30,7 +30,7 @@ const ContinueButtonWrapper=styled.button<{isNotNull:boolean}>`
     width: 17rem;
     height: 4.6rem;
 
-    margin: 10.8rem 0 0 49.8rem;
+    /* margin: 10.8rem 0 0 49.8rem; */
 
     border-radius: 2.5rem;
     border: 0.1rem solid ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};
