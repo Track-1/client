@@ -55,7 +55,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }
 
   function moveBackToEmailPassword(){
-    setUserData((prev) => ({ ...prev, ID: "", PW:"" }));
+    setUserData((prev) => ({ ...prev, ID: "", PW:"", isAgree:"" }));
     setStep(signUpStep.SIGNUP_EMAIL_PASSWORD)
   }
 
@@ -115,19 +115,6 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
 
   return (
     <>
-    {/* <ImageContainer>
-      <Label htmlFor='profile-img' onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
-        {imageSrc ? (
-          <ImgWrapper>
-              <Img src={imageSrc} alt="preview-img" />
-          </ImgWrapper>
-        ):(
-          <SignUpUploadImageIcon/>
-        )}
-        {imageSrc&&isHover&&<SignUpChangeImageIcon/>}
-      </Label>
-        <input type="file" id="profile-img" style={{ visibility: "hidden" }} onChange={(e) => {uploadImage(e)}} />
-    </ImageContainer> */}
     <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
     
     <NicknameWrapper>
