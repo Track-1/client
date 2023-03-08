@@ -25,6 +25,7 @@ export default function SignUpPage() {
             ID:"",
             PW:"",
             name:"",
+            isAgree:"",
     });
     const showModal=useRecoilValue(openConventionModal)
 

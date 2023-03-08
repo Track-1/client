@@ -3,6 +3,7 @@ export interface UserDataPropsType{
   ID:string;
   PW:string;
   name:string;
+  isAgree:String;
 }
 
 export interface StepPropsType{
