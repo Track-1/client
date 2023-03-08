@@ -7,12 +7,12 @@ import {
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
 } from "../../assets";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 
 export default function LoginInput() {
