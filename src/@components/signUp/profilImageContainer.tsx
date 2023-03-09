@@ -61,7 +61,6 @@ const ImageContainer=styled.section<{isProducer:boolean}>`
   margin: 6.4rem 28.1rem 4.1rem 28.1rem;
   width: 21.7rem;
   height: 21.7rem;
-  /* transform: rotate(${({isProducer})=>!isProducer&&45}deg); */
 `
 
 const ImgWrapper=styled.div<{isProducer:boolean}>`
@@ -83,12 +82,15 @@ const ImgWrapper=styled.div<{isProducer:boolean}>`
 `
 
 const Img=styled.img<{isProducer:boolean}>`
-    position: absolute;
-    transform: translate(50, 50);
     width: ${({isProducer})=>isProducer?100:150}%;
     height: ${({isProducer})=>isProducer?100:135}%;
+
+    position: absolute;
+    transform: translate(50, 50);
+
     object-fit: cover;
     margin: auto;
+    
     transform: rotate(${({isProducer})=>!isProducer&&45}deg);
 `
 
