@@ -16,6 +16,8 @@ import { joinProducer, joinVocal } from '../../core/api/signUp';
 import { isVocal, isProducer } from '../../utils/common/userType';
 import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../utils/uploadPage/uploadImage';
 import ProfilImageContainer from './profilImageContainer';
+import { ConventionChecksType } from '../../type/conventionChecksType';
+import { conventionSelectedCheck } from '../../core/signUp/conventionSelectedCheck';
 
 export default function SignupNicknameConvention(props:SetUserPropsType) {
     const {setStep, setUserData, userData}=props;
@@ -26,6 +28,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const [completeCheck, setCompleteCheck]=useState<boolean>(false)
     const userType=useRecoilValue(UserType)
     const [successNextStep, setSuccessNextStep]=useState<string>(continueType.FAIL)
+    const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
@@ -80,7 +83,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }
 
   function saveUserData(){
-    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname }));
+    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
   }
 
   //upload userData
@@ -113,7 +116,6 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }, [userData]);
   //user data post end
 
-  console.log(completeCheck)
   return (
     <>
     <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
@@ -132,7 +134,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
           {nicknameMessage}
       </MessageWrapper>
     </NicknameWrapper>
-    <ConventionCheckBox setCompleteCheck={setCompleteCheck}/>
+    <ConventionCheckBox setCompleteCheck={setCompleteCheck} checkedConventions={checkedConventions} setCheckedConventions={setCheckedConventions}/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
       <div onClick={saveUserData}>
