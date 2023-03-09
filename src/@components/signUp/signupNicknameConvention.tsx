@@ -196,8 +196,6 @@ const ArrowButtonWrapper=styled.div`
     position: absolute;
     left:11rem;
     bottom: 7rem;
-
-    bottom: 7rem;
 `
 
 const NicknameWrapper=styled.section`
