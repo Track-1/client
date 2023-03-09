@@ -86,14 +86,18 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
   }
 
+  useEffect(()=>{
+    completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
+  },[nicknameMessage, completeCheck])
+
+  console.log("되나"+successNextStep)
+
   //upload userData
   const queryClient = useQueryClient();
   
   const JoinProducer = useMutation(joinProducer, {
     onSuccess: () => {
     queryClient.invalidateQueries("join-producer");
-    completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
-    console.log("성공")
     },
     onError:()=>{
 
@@ -103,7 +107,6 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   const JoinVocal = useMutation(joinVocal, {
     onSuccess: () => {
     queryClient.invalidateQueries("join-vocal");
-    console.log("성공")
     },
     onError:()=>{
      
