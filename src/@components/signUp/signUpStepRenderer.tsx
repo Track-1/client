@@ -22,6 +22,6 @@ export default function SignUpStepRenderer(props:StepUserPropsType) {
         case signUpStep.SIGNUP_SUCCESS:
             return <SignupSuccess />;  
         default:
-          return <SignupRole setStep={setStep} />;
+          return <></>;
       }
 }
