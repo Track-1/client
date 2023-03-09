@@ -1,6 +1,7 @@
 import React from 'react'
 import { signUpStep } from '../../core/signUp/signupStepType';
 import { StepUserPropsType } from '../../type/signUpStepTypes';
+import ProfileEditInfo from '../@common/profileEditInfo';
 import SignupEmailPassword from './signupEmailPassword';
 import SignupNicknameConvention from './signupNicknameConvention';
 import SignupProfile from './signupProfile';
@@ -18,6 +19,7 @@ export default function SignUpStepRenderer(props:StepUserPropsType) {
         case signUpStep.SIGNUP_NICKNAME_CONVENTION:
           return <SignupNicknameConvention setStep={setStep} userData={userData} setUserData={setUserData}/>;
         case signUpStep.SIGNUP_PROFILE:
+          // return <ProfileEditInfo setStep={setStep} />;
             return <SignupProfile setStep={setStep} />;
         case signUpStep.SIGNUP_SUCCESS:
             return <SignupSuccess />;  
