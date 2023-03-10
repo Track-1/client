@@ -18,6 +18,7 @@ import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../u
 import ProfilImageContainer from './profilImageContainer';
 import { ConventionChecksType } from '../../type/conventionChecksType';
 import { conventionSelectedCheck } from '../../core/signUp/conventionSelectedCheck';
+import { setCookie } from "../../utils/cookie";
 
 export default function SignupNicknameConvention(props:SetUserPropsType) {
     const {setStep, setUserData, userData}=props;
@@ -90,23 +91,25 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
   },[nicknameMessage, completeCheck])
 
-  console.log("되나"+successNextStep)
-
   //upload userData
   const queryClient = useQueryClient();
   
-  const JoinProducer = useMutation(joinProducer, {
-    onSuccess: () => {
+  const {mutate:JoinProducer} = useMutation(joinProducer, {
+    onSuccess: (data) => {
     queryClient.invalidateQueries("join-producer");
+    const accessToken = data.data.data.accessToken;
+    setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
     },
     onError:()=>{
 
     }
   });
 
-  const JoinVocal = useMutation(joinVocal, {
-    onSuccess: () => {
+  const {mutate:JoinVocal} = useMutation(joinVocal, {
+    onSuccess: (data) => {
     queryClient.invalidateQueries("join-vocal");
+    const accessToken = data.data.data.accessToken;
+    setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
     },
     onError:()=>{
      
@@ -114,8 +117,8 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   });
 
   useEffect(() => {
-      isVocal(userType)&&JoinVocal.mutate(userData);
-      isProducer(userType)&&JoinProducer.mutate(userData);
+      isVocal(userType)&&JoinVocal(userData);
+      isProducer(userType)&&JoinProducer(userData);
   }, [userData]);
   //user data post end
 
