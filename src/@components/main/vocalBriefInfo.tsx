@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainInfoVocalIc, MainLogoutIc } from "../../assets";
-import thumbnailImg from "../../assets/image/thumbnailImg.png";
+import thumbnailImg from "../../assets/image/vocalPortfolioList5.png";
 export default function VocalBriefInfo() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
