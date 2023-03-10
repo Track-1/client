@@ -31,17 +31,32 @@ export default function SignupMessage(props:SignupMessagePropsType) {
        
       }
     });
-
-    console.log(userProfile);
   
   function submit(){
     mutate(userProfile);
   }
 
+  console.log(isComplete)
+
     useEffect(() => {
-      if(!userProfile){
+      console.log("useEffect들어왔다네")
+      console.log(userProfile.contact==='');
+      console.log(userProfile.category.length===0)
+      console.log(userProfile.introduce==='')
+      console.log(userProfile.keyword.length===0)
+      // if(!userProfile.contact||userProfile.category.length!==0||!userProfile.introduce||userProfile.keyword.length!==0){
+      //   setIsComplete(true);
+      // }
+      // else{
+      //   setIsComplete(false);
+      // }
+      if(userProfile.contact===''&&userProfile.category.length===0&&userProfile.introduce===''&&userProfile.keyword.length===0){
+        setIsComplete(false);
+      }
+      else{
         setIsComplete(true);
       }
+      
     }, [userProfile]);
 
     return (
