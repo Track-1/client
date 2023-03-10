@@ -1,15 +1,43 @@
+import { useEffect } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { SignBgLogoIc, SignUpCompleteButtonIc, SignUpSkipButtonIc, SignWelcomeIc } from '../../assets'
+import { patchProfile } from '../../core/api/profile';
 import { signUpStep } from '../../core/signUp/signupStepType';
-import { StepPropsType } from '../../type/signUpStepTypes'
+import { SignupMessagePropsType } from '../../type/signUpStepTypes'
+import { setCookie } from '../../utils/cookie';
 import { isMessageLogo,isMessageWelcome } from '../../utils/signUp/checkMessageType';
+import { useSetRecoilState } from 'recoil';
+import { useState } from 'react';
 
-export default function SignupMessage(props:StepPropsType) {
-    const {step, setStep, setUserData}=props;
+export default function SignupMessage(props:SignupMessagePropsType) {
+    const {step, setStep, userProfile, setUserProfile}=props;
+    const [isComplete, setIsComplete]=useState<boolean>();
 
     function moveToSuccess(){
       setStep(signUpStep.SIGNUP_SUCCESS)
     }
+
+    const queryClient = useQueryClient();
+
+    const {mutate} = useMutation(patchProfile, {
+      onSuccess: (data) => {
+      queryClient.invalidateQueries("userProfile");
+      },
+      onError:()=>{
+       
+      }
+    });
+  
+  function submit(){
+    mutate(userProfile);
+  }
+  
+    useEffect(() => {
+      if(!userProfile){
+        setIsComplete(true);
+      }
+    }, [userProfile]);
 
     return (
     <>

@@ -9,7 +9,7 @@ import SignupRole from './signupRole';
 import SignupSuccess from './signupSuccess';
 
 export default function SignUpStepRenderer(props:StepUserPropsType) {
-  const { step,setStep, userData, setUserData } = props;
+  const { step,setStep, userData, setUserData, userProfile, setUserProfile } = props;
 
     switch (step) {
         case signUpStep.SIGNUP_ROLE:
@@ -20,7 +20,7 @@ export default function SignUpStepRenderer(props:StepUserPropsType) {
           return <SignupNicknameConvention setStep={setStep} userData={userData} setUserData={setUserData}/>;
         case signUpStep.SIGNUP_PROFILE:
           // return <ProfileEditInfo setStep={setStep} />;
-            return <SignupProfile setStep={setStep} />;
+            return <SignupProfile setStep={setStep} userProfile={userProfile} setUserProfile={setUserProfile} />;
         case signUpStep.SIGNUP_SUCCESS:
             return <SignupSuccess />;  
         default:

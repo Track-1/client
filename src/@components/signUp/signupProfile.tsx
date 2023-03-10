@@ -1,5 +1,5 @@
 import React from 'react'
-import { SetStepPropsType } from '../../type/signUpStepTypes';
+import { SetStepPropsType, SignupProfilePropsTye } from '../../type/signUpStepTypes';
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
@@ -14,8 +14,8 @@ import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 
-export default function SignupProfile(props:SetStepPropsType) {
-  const {setStep}=props;
+export default function SignupProfile(props:SignupProfilePropsTye) {
+  const {setStep, userProfile, setUserProfile}=props;
   const contactInputRef = useRef<HTMLInputElement | null>(null);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
@@ -46,15 +46,6 @@ export default function SignupProfile(props:SetStepPropsType) {
   //   editDatas(getEditDatas());
   // }, [isSave]);
 
-  function selectPrevCategory(prevCategories: string[]) {
-    prevCategories?.forEach((category) => {
-      selectCategory(category);
-    });
-  }
-
-  function inputPrevHashtags(prevHashtags: string[]) {
-    prevHashtags?.forEach((hashtag) => setHashtags((prev) => [...prev, hashtag]));
-  }
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
@@ -71,8 +62,8 @@ export default function SignupProfile(props:SetStepPropsType) {
     setDescriptionInput(e.target.value);
   }
 
-  function getEditDatas() {
-    if (contactInputRef.current !== null) {
+  function getEditDatas() { //patch 할 데이터
+    if (contactInputRef.current!=null) {
       return {
         contact: contactInputRef.current.value,
         category: Array.from(categories),
@@ -110,7 +101,6 @@ export default function SignupProfile(props:SetStepPropsType) {
           <ContactInput
             ref={contactInputRef}
             placeholder="Enter your phone number or SNS account"
-            // defaultValue={prevDatas?.contact}
           />
         </ContactContainer>
         <CategoryContainer>
@@ -167,7 +157,6 @@ export default function SignupProfile(props:SetStepPropsType) {
           <DesciprtionInput
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
-            // defaultValue={prevDatas?.introduce}
           />
           <TextCount onChange={countDescriptionText}>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
@@ -179,19 +168,6 @@ export default function SignupProfile(props:SetStepPropsType) {
 }
 
 const InfoContainer = styled.section`
-  /* height: 88.8rem;
-  width: 77.9rem;
-
-  backdrop-filter: blur(1rem);
-  background-color: rgba(20, 21, 23, 0.6);
-
-  border: 0.3rem solid transparent;
-  border-radius: 5rem;
-  background-image: linear-gradient(#141517, #141517), linear-gradient(to top, transparent 0%, #3e4045 100%);
-
-  background-origin: border-box;
-  background-clip: content-box, border-box; */
-
   display: flex;
   flex-direction: column;
   align-items: center;

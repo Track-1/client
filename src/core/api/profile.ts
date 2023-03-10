@@ -1,14 +1,16 @@
 import axios from "axios";
+import { getCookie } from "../../utils/cookie";
 
 export async function patchProfile(formData: any) {
-    try {
-      const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/profile`, formData, {
+    // try {
+      const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/user/join/profile`, formData, {
         headers: {
           "Content-Type": "amultipart/form-data",
-          Authorization: `Bearer ${`${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`}`,
+          Authorization: `Bearer ${getCookie("accessToken")}`,
         },
       });
-    } catch (e) {
-      console.log(e);
-    }
+      data&&console.log(data)
+    // } catch (e) {
+    //   console.log(e);
+    // }
 }
