@@ -33,6 +33,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     HOUSE: false,
     FUNK: false,
   });
+  const [contactInput, setContactInput]=useState<string>();
   // const [prevDatas, setPrevDatas]=useState<any>();
   // const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
   // const [isSave, setIsSave]=useState<boolean>(false);
@@ -62,16 +63,20 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     setDescriptionInput(e.target.value);
   }
 
-  function getEditDatas() { //patch 할 데이터
-    if (contactInputRef.current!=null) {
-      return {
-        contact: contactInputRef.current.value,
-        category: Array.from(categories),
-        keyword: hashtags,
-        introduce: descriptionInput,
-      };
-    }
-    return editInputDatas;
+  // function getEditDatas() { //patch 할 데이터
+  //   if (contactInputRef.current!=null) {
+  //     return {
+  //       contact: contactInputRef.current.value,
+  //       category: Array.from(categories),
+  //       keyword: hashtags,
+  //       introduce: descriptionInput,
+  //     };
+  //   }
+  //   return editInputDatas;
+  // }
+
+  function changeContact(e: React.ChangeEvent<HTMLInputElement>){
+    setContactInput(e.target.value)
   }
 
   function selectCategory(category: string) {
@@ -93,14 +98,26 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     setCategories(new Set(tempCatgorySet));
   }
 
+  useEffect(()=>{
+    if(contactInput!==undefined){
+      setUserProfile({
+        contact: contactInput,
+        category: Array.from(categories),
+        keyword: hashtags,
+        introduce: descriptionInput,
+      });
+    }
+    
+  },[contactInput,categories, isCategorySelected, hashtagRef, hashtags, descriptionInput])
+
   return (
     <>
       <InfoContainer>
         <ContactContainer>
           <ProfileEditContactIc />
           <ContactInput
-            ref={contactInputRef}
             placeholder="Enter your phone number or SNS account"
+            onChange={changeContact}
           />
         </ContactContainer>
         <CategoryContainer>

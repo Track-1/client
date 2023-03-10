@@ -31,6 +31,8 @@ export default function SignupMessage(props:SignupMessagePropsType) {
        
       }
     });
+
+    console.log(userProfile);
   
   function submit(){
     mutate(userProfile);
