@@ -49,8 +49,7 @@ export default function SignupMessage(props:SignupMessagePropsType) {
       <WelcomeMessageWrapper>
       <SignUpSkipButtonIcon onClick={moveToSuccess}/>
       <SignWelcomeIcon/>
-      {/* <SignUpCompleteButtonIcon/> */}
-      <MessageBox isComplete={isComplete}>
+      <MessageBox isComplete={isComplete} onClick={submit}>
       <SignupProfileCompleteIc/>
       </MessageBox>
      
@@ -73,12 +72,6 @@ const WelcomeMessageWrapper=styled.section`
   flex-direction: column;
 `
 
-// const SignUpCompleteButtonIcon=styled(SignUpCompleteButtonIc)`
-//   margin: 4rem 0 0 32rem;
-
-//   cursor: pointer;
-// `
-
 const SignUpSkipButtonIcon=styled(SignUpSkipButtonIc)`
   margin: 27.5rem 0 0 47.7rem;
 
@@ -88,7 +81,7 @@ const SignUpSkipButtonIcon=styled(SignUpSkipButtonIc)`
 const MessageBox=styled.button<{isComplete:boolean}>`
   display: flex;
   justify-content: center;
-  justify-content: center;
+  align-items: center;
 
   width: 35.2rem;
   height: 7rem;
@@ -97,5 +90,6 @@ const MessageBox=styled.button<{isComplete:boolean}>`
   cursor: pointer;
 
   border: 0.1rem solid transparent;
+  border-radius: 3.5rem;
   background-color: ${({theme,isComplete})=>isComplete?theme.colors.main:theme.colors.gray3};
 `
