@@ -12,6 +12,8 @@ import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
+import { useSetRecoilState } from "recoil";
+import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -32,6 +34,9 @@ export default function LoginInput() {
   const BLUR = "blur";
   const WARNING = "warning";
 
+  const setLoginUserType = useSetRecoilState(LoginUserType);
+  const setLoginUserId = useSetRecoilState(LoginUserId);
+
   useEffect(() => {
     isProducerMode ? setLoginType("producer") : setLoginType("vocal");
   }, [isProducerMode]);
@@ -40,6 +45,8 @@ export default function LoginInput() {
     onSuccess: (data) => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
+        setLoginUserType(data.data.data.tableName);
+        setLoginUserId(data.data.data.id);
         setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
         onLoginSuccess(accessToken);
       }
