@@ -1,20 +1,16 @@
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import { SignBgLogoIc, SignUpCompleteButtonIc, SignupProfileCompleteIc, SignUpSkipButtonIc, SignWelcomeIc } from '../../assets'
+import { SignBgLogoIc, SignupProfileCompleteIc, SignUpSkipButtonIc, SignWelcomeIc } from '../../assets'
 import { patchProfile } from '../../core/api/profile';
 import { signUpStep } from '../../core/signUp/signupStepType';
 import { SignupMessagePropsType } from '../../type/signUpStepTypes'
-import { setCookie } from '../../utils/cookie';
 import { isMessageLogo,isMessageWelcome } from '../../utils/signUp/checkMessageType';
-import { useSetRecoilState } from 'recoil';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function SignupMessage(props:SignupMessagePropsType) {
     const {step, setStep, userProfile, setUserProfile}=props;
     const [isComplete, setIsComplete]=useState<boolean>(false);
-    // const navigate=useNavigate();
 
     function moveToSuccess(){
       setStep(signUpStep.SIGNUP_SUCCESS)
@@ -39,17 +35,6 @@ export default function SignupMessage(props:SignupMessagePropsType) {
   console.log(isComplete)
 
     useEffect(() => {
-      console.log("useEffect들어왔다네")
-      console.log(userProfile.contact==='');
-      console.log(userProfile.category.length===0)
-      console.log(userProfile.introduce==='')
-      console.log(userProfile.keyword.length===0)
-      // if(!userProfile.contact||userProfile.category.length!==0||!userProfile.introduce||userProfile.keyword.length!==0){
-      //   setIsComplete(true);
-      // }
-      // else{
-      //   setIsComplete(false);
-      // }
       if(userProfile.contact===''&&userProfile.category.length===0&&userProfile.introduce===''&&userProfile.keyword.length===0){
         setIsComplete(false);
       }
