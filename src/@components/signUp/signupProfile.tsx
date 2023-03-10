@@ -34,20 +34,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     FUNK: false,
   });
   const [contactInput, setContactInput]=useState<string>();
-  // const [prevDatas, setPrevDatas]=useState<any>();
-  // const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
-  // const [isSave, setIsSave]=useState<boolean>(false);
-
-  // useEffect(() => {
-  //   selectPrevCategory(prevDatas?.cagetory);
-  //   inputPrevHashtags(prevDatas?.keyword);
-  // }, []);
-
-  // useEffect(() => {
-  //   editDatas(getEditDatas());
-  // }, [isSave]);
-
-
+  
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
   }
@@ -62,18 +49,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
     setDescriptionInput(e.target.value);
   }
-
-  // function getEditDatas() { //patch 할 데이터
-  //   if (contactInputRef.current!=null) {
-  //     return {
-  //       contact: contactInputRef.current.value,
-  //       category: Array.from(categories),
-  //       keyword: hashtags,
-  //       introduce: descriptionInput,
-  //     };
-  //   }
-  //   return editInputDatas;
-  // }
 
   function changeContact(e: React.ChangeEvent<HTMLInputElement>){
     setContactInput(e.target.value)
