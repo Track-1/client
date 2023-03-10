@@ -10,3 +10,5 @@ export interface CategoryIdType {
 export interface CategorySelectType {
   [key: string]: boolean;
 }
+
+export type CategoriesDropdownType = "r&b" | "hiphop" | "ballad" | "pop" | "rock" | "edm" | "jazz" | "house" | "funk";

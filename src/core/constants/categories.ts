@@ -23,3 +23,15 @@ export const CategoryId: CategoryIdType = {
   HOUSE: "7",
   FUNK: "8",
 };
+
+export const CategoryDropdown = {
+  "r&b": "R&B",
+  hiphop: "Hiphop",
+  ballad: "Ballad",
+  pop: "Pop",
+  rock: "Rock",
+  edm: "EDM",
+  jazz: "JAZZ",
+  house: "House",
+  funk: "Funk",
+};

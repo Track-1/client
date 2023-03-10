@@ -90,7 +90,9 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
-    navigate(`/track-post/${id}`);
+    navigate(`/track-post/${id}`, {
+      state: portfolios,
+    });
   }
 
   return (
@@ -107,10 +109,18 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
-              {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
+              {/* {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
                 <PortfolioUpdateModal isTitle={checkIsTitle()} ref={modalRef} profileState={profileState} />
-              )}
+              )} */}
+
+              <EllipsisIcon onClick={clickEllipsis} />
+              <PortfolioUpdateModal
+                isTitle={checkIsTitle()}
+                ref={modalRef}
+                profileState={profileState}
+                portfolios={portfolios[clickId]}
+              />
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>
             <InformCategory>{portfolios[id].category}</InformCategory>

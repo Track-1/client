@@ -12,6 +12,8 @@ import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
+import { useRecoilState } from "recoil";
+import { accessToken } from "../../recoil/token";
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -24,6 +26,8 @@ export default function LoginInput() {
 
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
+  const [token, setToken] = useRecoilState<string>(accessToken);
+
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{10,25}$/;
 
@@ -35,6 +39,7 @@ export default function LoginInput() {
     onSuccess: () => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
+        setToken(accessToken);
         setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
         onLoginSuccess(accessToken);
       }
