@@ -12,6 +12,9 @@ import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
+import { useRecoilState } from 'recoil';
+import { UserType } from '../../recoil/main';
+import { currentUser } from "../../core/constants/userType";
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -21,7 +24,7 @@ export default function LoginInput() {
   const [emailInputState, setEmailInputState] = useState<string>("");
   const [passwordInputState, setPasswordInputState] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loginType, setLoginType] = useState<string>("vocal");
+  const [loginType, setLoginType] = useRecoilState<string>(UserType);
 
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
@@ -32,8 +35,12 @@ export default function LoginInput() {
   const BLUR = "blur";
   const WARNING = "warning";
 
+  useEffect(()=>{
+    setLoginType(currentUser.VOCAL);
+  },[])
+
   useEffect(() => {
-    isProducerMode ? setLoginType("producer") : setLoginType("vocal");
+    isProducerMode ? setLoginType(currentUser.PRODUCER) : setLoginType(currentUser.VOCAL);
   }, [isProducerMode]);
 
   const { mutate, isSuccess } = useMutation(() => onLogin(email, password, loginType), {

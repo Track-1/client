@@ -4,15 +4,15 @@ import sloganImg from "../../assets/image/sloganImg.svg";
 import { TrackOneMainLogoIc, LoginIc, SignupIc } from "../../assets";
 import { useRecoilState } from "recoil";
 import { UserType } from "../../recoil/main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProducerBriefInfo from "../main/produderBriefInfo";
 import VocalBriefInfo from "../main/vocalBriefInfo";
+import { getCookie } from "../../utils/cookie";
 
 export default function MainHeader() {
   const navigate = useNavigate();
 
   const [userType, setUserType] = useRecoilState(UserType);
-  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   function moveToLogin(){
     navigate("/login");
@@ -22,20 +22,23 @@ export default function MainHeader() {
     navigate("/sign-up");
   }
 
+  function isLogin(){
+    return getCookie("accessToken")!=='';
+  }
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
         <TrackOneMainLogoIc style={{ cursor: "pointer" }} />
         <img src={sloganImg} alt="슬로건" />
-        {!isLogin && (
+        {!isLogin() && (
           <BtnWrpper>
             <LoginIcon onClick={moveToLogin}/>
             <SignupIc onClick={moveToSignup}/>
           </BtnWrpper>
         )}
-        {isLogin && userType === "producer" && <ProducerBriefInfo />}
-        {isLogin && userType === "vocal" && <VocalBriefInfo />}
+        {isLogin() && userType === "producer" && <ProducerBriefInfo />}
+        {isLogin() && userType === "vocal" && <VocalBriefInfo />}
       </HeaderWrapper>
     </HeaderContainer>
   );
