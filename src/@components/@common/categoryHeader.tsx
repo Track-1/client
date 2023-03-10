@@ -14,12 +14,13 @@ import {
 import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { UserType } from "../../recoil/main";
+import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const user = useRecoilValue(UserType);
+  const loginUserType = useRecoilValue(LoginUserType);
+  const loginUserId = useRecoilValue(LoginUserId);
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
@@ -36,7 +37,9 @@ export default function CategoryHeader() {
   }
 
   function moveMypage() {
-    user === "vocal" ? navigate("/vocal-profile/1", { state: 1 }) : navigate("/producer-profile/2", { state: 2 });
+    loginUserType === "vocal"
+      ? navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId })
+      : navigate(`/producer-profile/${loginUserId}`, { state: loginUserId });
   }
 
   return (

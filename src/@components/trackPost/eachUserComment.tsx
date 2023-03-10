@@ -1,10 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { PauseBtnIc, PlayBtnIc } from "../../assets";
+import { PauseBtnIc, PlayBtnIc, EllipsisIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
+
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -121,3 +122,8 @@ const CommentText = styled.strong`
   ${({ theme }) => theme.fonts.description}
   margin-top: 1.2rem;
 `;
+
+const EllipsisIcon = styled(EllipsisIc)`
+  cursor: pointer;
+`;
+
