@@ -209,4 +209,5 @@ export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEdit
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
 export { ReactComponent as SignUpVocalChangePhotoIc } from "./icon/signUpVocalChangePhotoIc.svg";
 export { ReactComponent as SignUpChangeImgIc } from "./icon/signUpChangeImgIc.svg";
+export { ReactComponent as SignupProfileCompleteIc } from "./icon/signupProfileCompleteIc.svg";
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import { SignBgLogoIc, SignUpCompleteButtonIc, SignUpSkipButtonIc, SignWelcomeIc } from '../../assets'
+import { SignBgLogoIc, SignUpCompleteButtonIc, SignupProfileCompleteIc, SignUpSkipButtonIc, SignWelcomeIc } from '../../assets'
 import { patchProfile } from '../../core/api/profile';
 import { signUpStep } from '../../core/signUp/signupStepType';
 import { SignupMessagePropsType } from '../../type/signUpStepTypes'
@@ -9,10 +9,12 @@ import { setCookie } from '../../utils/cookie';
 import { isMessageLogo,isMessageWelcome } from '../../utils/signUp/checkMessageType';
 import { useSetRecoilState } from 'recoil';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignupMessage(props:SignupMessagePropsType) {
     const {step, setStep, userProfile, setUserProfile}=props;
-    const [isComplete, setIsComplete]=useState<boolean>();
+    const [isComplete, setIsComplete]=useState<boolean>(false);
+    // const navigate=useNavigate();
 
     function moveToSuccess(){
       setStep(signUpStep.SIGNUP_SUCCESS)
@@ -23,6 +25,7 @@ export default function SignupMessage(props:SignupMessagePropsType) {
     const {mutate} = useMutation(patchProfile, {
       onSuccess: (data) => {
       queryClient.invalidateQueries("userProfile");
+      setStep(signUpStep.SIGNUP_SUCCESS);
       },
       onError:()=>{
        
@@ -32,7 +35,7 @@ export default function SignupMessage(props:SignupMessagePropsType) {
   function submit(){
     mutate(userProfile);
   }
-  
+
     useEffect(() => {
       if(!userProfile){
         setIsComplete(true);
@@ -46,7 +49,11 @@ export default function SignupMessage(props:SignupMessagePropsType) {
       <WelcomeMessageWrapper>
       <SignUpSkipButtonIcon onClick={moveToSuccess}/>
       <SignWelcomeIcon/>
-      <SignUpCompleteButtonIcon/>
+      {/* <SignUpCompleteButtonIcon/> */}
+      <MessageBox isComplete={isComplete}>
+      <SignupProfileCompleteIc/>
+      </MessageBox>
+     
       </WelcomeMessageWrapper>
     )}
     </>
@@ -66,14 +73,29 @@ const WelcomeMessageWrapper=styled.section`
   flex-direction: column;
 `
 
-const SignUpCompleteButtonIcon=styled(SignUpCompleteButtonIc)`
-  margin: 4rem 0 0 32rem;
+// const SignUpCompleteButtonIcon=styled(SignUpCompleteButtonIc)`
+//   margin: 4rem 0 0 32rem;
 
-  cursor: pointer;
-`
+//   cursor: pointer;
+// `
 
 const SignUpSkipButtonIcon=styled(SignUpSkipButtonIc)`
   margin: 27.5rem 0 0 47.7rem;
 
   cursor: pointer;
+`
+
+const MessageBox=styled.button<{isComplete:boolean}>`
+  display: flex;
+  justify-content: center;
+  justify-content: center;
+
+  width: 35.2rem;
+  height: 7rem;
+  margin: 4rem 0 0 32rem;
+
+  cursor: pointer;
+
+  border: 0.1rem solid transparent;
+  background-color: ${({theme,isComplete})=>isComplete?theme.colors.main:theme.colors.gray3};
 `
