@@ -12,7 +12,15 @@ export default function MainHeader() {
   const navigate = useNavigate();
 
   const [userType, setUserType] = useRecoilState(UserType);
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+
+  function moveToLogin(){
+    navigate('/login');
+  }
+
+  function moveToSignup(){
+    navigate('/sign-up');
+  }
 
   return (
     <HeaderContainer>
@@ -21,12 +29,16 @@ export default function MainHeader() {
         <img src={sloganImg} alt="슬로건" />
         {!isLogin && (
           <BtnWrpper>
-            <LoginIcon />
-            <SignupIc />
+            <LoginIcon onClick={moveToLogin}/>
+            <SignupIc onClick={moveToSignup}/>
           </BtnWrpper>
         )}
-        {isLogin && userType === "producer" && <ProducerBriefInfo />}
-        {isLogin && userType === "vocal" && <VocalBriefInfo />}
+        {isLogin && userType === "producer" && 
+        <ProducerBriefInfo />
+        }
+        {isLogin && userType === "vocal" && 
+        <VocalBriefInfo />
+        }
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -54,6 +66,8 @@ const BtnWrpper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 const LoginIcon = styled(LoginIc)`
