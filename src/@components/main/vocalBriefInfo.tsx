@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainInfoVocalIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/vocalPortfolioList5.png";
-export default function VocalBriefInfo() {
+import { getVocalProfile } from "../../core/api/vocalProfile";
+import { UserPropsType } from "../../type/userPropsType";
+import { VocalProfileType } from "../../type/vocalProfile";
+
+export default function VocalBriefInfo(props:UserPropsType) {
+  const {userId}=props;
+
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [profileData, setProfileData] = useState<VocalProfileType>();
 
   function hoverProfile() {
     setIsHovered(true);
@@ -13,24 +21,38 @@ export default function VocalBriefInfo() {
     setIsHovered(false);
   }
 
+  const { data } = useQuery(["profile",userId], ()=>getVocalProfile(userId, 1)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+      // console.log("ddd"+data)
+        setProfileData(data.vocalProfile)
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
+
+
   return (
     <>
       <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
         <ProfileImageWrapper>
-          <ProfileImage src={thumbnailImg} />
+          <ProfileImage src={profileData?.profileImage} />
         </ProfileImageWrapper>
-        <UserName>_Bepore</UserName>
+        <UserName>{profileData?.name}</UserName>
       </InfoContainer>
       {isHovered && (
         <UserInfoContainer>
           <InfoBox>
             <ImageWrapper>
-              <InfoProfileImage src={thumbnailImg} />
+              <InfoProfileImage src={profileData?.profileImage} />
             </ImageWrapper>
             <TextWrapper>
-              <InfoUserName>_Bepor</InfoUserName>
+              <InfoUserName>{profileData?.name}</InfoUserName>
               <MainInfoVocalIc />
-              <UserEmail>pianowell@gmail.com</UserEmail>
+              <UserEmail>{profileData?.contact}</UserEmail>
             </TextWrapper>
           </InfoBox>
           <LogoutBox>

@@ -108,6 +108,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   const {mutate:JoinVocal} = useMutation(joinVocal, {
     onSuccess: (data) => {
     queryClient.invalidateQueries("join-vocal");
+    console.log(data)
     const accessToken = data.data.data.accessToken;
     setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
     },

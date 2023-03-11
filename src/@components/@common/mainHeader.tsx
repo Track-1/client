@@ -2,17 +2,19 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import sloganImg from "../../assets/image/sloganImg.svg";
 import { TrackOneMainLogoIc, LoginIc, SignupIc } from "../../assets";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../../recoil/main";
 import { useEffect, useState } from "react";
 import ProducerBriefInfo from "../main/produderBriefInfo";
 import VocalBriefInfo from "../main/vocalBriefInfo";
 import { getCookie } from "../../utils/cookie";
+import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
+import { isProducer,isVocal } from '../../utils/common/userType';
 
 export default function MainHeader() {
   const navigate = useNavigate();
-
-  const [userType, setUserType] = useRecoilState(UserType);
+  const userType=useRecoilValue(LoginUserType);
+  const userId=useRecoilValue(LoginUserId);
 
   function moveToLogin(){
     navigate("/login");
@@ -37,8 +39,9 @@ export default function MainHeader() {
             <SignupIc onClick={moveToSignup}/>
           </BtnWrpper>
         )}
-        {isLogin() && userType === "producer" && <ProducerBriefInfo />}
-        {isLogin() && userType === "vocal" && <VocalBriefInfo />}
+        
+        {isLogin() && isProducer(userType) && <ProducerBriefInfo userId={userId} />}
+        {isLogin() && isVocal(userType) && <VocalBriefInfo userId={userId}/>}
       </HeaderWrapper>
     </HeaderContainer>
   );

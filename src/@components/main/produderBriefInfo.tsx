@@ -2,7 +2,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
-export default function ProducerBriefInfo() {
+import { UserPropsType } from "../../type/userPropsType";
+
+export default function ProducerBriefInfo(props:UserPropsType) {
+  const {userId}=props;
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   function hoverProfile() {
@@ -14,7 +17,7 @@ export default function ProducerBriefInfo() {
   }
 
   return (
-    <>
+    <div>
       <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
         <ProfileImage src={thumbnailImg} />
         <UserName>_Bepore</UserName>
@@ -35,7 +38,7 @@ export default function ProducerBriefInfo() {
           </LogoutBox>
         </UserInfoContainer>
       )}
-    </>
+    </div>
   );
 }
 
