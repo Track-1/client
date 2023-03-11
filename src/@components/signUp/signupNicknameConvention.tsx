@@ -30,6 +30,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const userType=useRecoilValue(UserType)
     const [successNextStep, setSuccessNextStep]=useState<string>(continueType.FAIL)
     const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
+    const [nextStep, setNextStep]=useState<string>(continueType.FAIL);
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
@@ -84,8 +85,13 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }
 
   function saveUserData(){
-    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+    // setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
   }
+
+  useEffect(()=>{
+    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  },[imageSrc, nickname, completeCheck])
+  
 
   useEffect(()=>{
     completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
@@ -96,24 +102,28 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   
   const {mutate:JoinProducer} = useMutation(joinProducer, {
     onSuccess: (data) => {
-    queryClient.invalidateQueries("join-producer");
-    const accessToken = data.data.data.accessToken;
-    setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      queryClient.invalidateQueries("join-producer");
+      const accessToken = data.data.data.accessToken;
+      setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      setNextStep(signUpStep.SIGNUP_PROFILE)
+      console.log(data)
     },
     onError:()=>{
-
+      
     }
   });
 
   const {mutate:JoinVocal} = useMutation(joinVocal, {
     onSuccess: (data) => {
-    queryClient.invalidateQueries("join-vocal");
-    console.log(data)
-    const accessToken = data.data.data.accessToken;
-    setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      queryClient.invalidateQueries("join-vocal");
+      console.log(data)
+      const accessToken = data.data.data.accessToken;
+      setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      setNextStep(signUpStep.SIGNUP_PROFILE)
+      console.log(data)
     },
     onError:()=>{
-     
+      
     }
   });
 
@@ -145,7 +155,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
       <div onClick={saveUserData}>
-        <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
+        <ContinueButton successNextStep={successNextStep} step={nextStep} setStep={setStep}/>
       </div>
     </ArrowButtonWrapper>
     
