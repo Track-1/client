@@ -65,10 +65,23 @@ export default function CategoryHeader() {
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
           <ProfileWrapper onClick={moveMypage}>
-            <ProfileImg
+            {/* <ProfileImg
               src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
               alt="프로필이미지"
-            />
+            /> */}
+             {
+              isProducer(loginUserType)?(
+              <ProducerProfileImg
+                src={loginUserImgSrc}
+                alt="프로필이미지"
+              />):(
+              <VocalProfileImageWrapper>
+              <VocalProfileImage
+                src={loginUserImgSrc}
+                alt="프로필이미지"
+              />
+              </VocalProfileImageWrapper>
+            )}
             <ToggleIc />
           </ProfileWrapper>
         </HeaderWrapper>
