@@ -39,16 +39,20 @@ export default function ProducerBriefInfo(props:UserPropsType) {
 
   function logout (){
     onLogout();
+    navigate('/')
   }
 
   function moveToMypage(){
     navigate(`/producer-profile/${userId}`);
   }
 
+  console.log(isHovered)
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
       <InfoContainer onClick={moveToMypage}>
+        <div>
         <ProfileImage src={profileData?.profileImage} />
+        </div>
         <UserName>{profileData?.name}</UserName>
       </InfoContainer>
       <Blank></Blank>
@@ -83,6 +87,8 @@ const InfoContainer = styled.article`
   background-color: ${({ theme }) => theme.colors.sub1};
 
   border-radius: 3rem;
+
+  cursor: pointer;
 `;
 
 const ProfileImage = styled.img`
@@ -109,6 +115,8 @@ const UserInfoContainer = styled.section`
 
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 0.5rem;
+
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`

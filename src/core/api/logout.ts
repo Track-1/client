@@ -15,6 +15,7 @@ export async function onLogout() {
         console.log(data)
         if(data.status===200){
           removeCookie("accessToken");
+          window.location.replace("/")
         }
     } catch (e) {
         console.log(e);
