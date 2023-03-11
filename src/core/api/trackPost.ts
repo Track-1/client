@@ -51,3 +51,21 @@ export async function getAudioFile() {
     console.log(e);
   }
 }
+
+export async function patchProfile(beatId: number) {
+  try{
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {
+      headers: {
+        "Content-Type": "amultipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+    data&&console.log(data)
+    if(data.status===200){
+      window.location.replace("/")
+    }
+  } catch (e) {
+    console.log("문제발생!!!!!!!!!!!")
+    console.log(e);
+  }
+}
