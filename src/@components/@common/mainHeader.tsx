@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import sloganImg from "../../assets/image/sloganImg.svg";
-import { TrackOneMainLogoIc, LoginIc, SignupIc } from "../../assets";
+import { TrackOneMainLogoIc, LoginIc, SignupIc, TrackheadersloganIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../../recoil/main";
 import { useEffect, useState } from "react";
@@ -32,7 +32,8 @@ export default function MainHeader() {
     <HeaderContainer>
       <HeaderWrapper>
         <TrackOneMainLogoIc style={{ cursor: "pointer" }} />
-        <img src={sloganImg} alt="슬로건" />
+        <TrackheadersloganIcon/>
+        {/* <Img src={sloganImg} alt="슬로건" /> */}
         {!isLogin() && (
           <BtnWrpper>
             <LoginIcon onClick={moveToLogin}/>
@@ -76,3 +77,8 @@ const BtnWrpper = styled.div`
 const LoginIcon = styled(LoginIc)`
   margin-right: 2.2rem;
 `;
+
+const TrackheadersloganIcon=styled(TrackheadersloganIc)`
+  position: absolute;
+  margin-left: 74rem;
+`

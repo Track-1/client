@@ -217,4 +217,4 @@ export { ReactComponent as SignuphereIc } from "./icon/signuphereIc.svg";
 export { ReactComponent as LoginforgotpasswordIc } from "./icon/loginforgotpasswordIc.svg";
 export { ReactComponent as LoginEmailIc } from "./icon/loginEmailIc.svg";
 export { ReactComponent as LoginPasswordIc } from "./icon/loginPasswordIc.svg";
-
+export { ReactComponent as TrackheadersloganIc } from "./icon/trackheadersloganIc.svg";
