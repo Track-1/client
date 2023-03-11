@@ -41,5 +41,6 @@ export async function onSilentRefresh() {
 export function onLoginSuccess() {
   setTimeout(() => {
     onSilentRefresh();
-  }, validTime.JWT_EXPIRY_TIME);
+    alert("accessToken갱신!!");
+  }, validTime.JWT_EXPIRY_TIME - 1);
 }

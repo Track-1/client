@@ -48,11 +48,11 @@ export default function UserComment(props: PropsType) {
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response.commentList.length !== 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
     },
   );
-  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response.commentList[clickedIndex], "comment");
+  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
   // get end
 
@@ -95,7 +95,7 @@ export default function UserComment(props: PropsType) {
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
-      setComments((prev) => (prev ? [...prev, ...response?.commentList] : [...response?.commentList]));
+      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
       return { response, nextPage: page + 1 };
     }
   }
@@ -114,6 +114,7 @@ export default function UserComment(props: PropsType) {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
+  console.log(comments);
 
   return (
     <>
@@ -142,6 +143,7 @@ export default function UserComment(props: PropsType) {
                   clickComment={clickComment}
                   pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
+                  isMe={comments[index].isMe}
                 />
               );
             })}

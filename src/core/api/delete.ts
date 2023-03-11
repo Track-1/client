@@ -11,8 +11,8 @@ export async function deleteTrack(beatId: string | undefined) {
   return data;
 }
 
-export async function deleteVocalPortfolio(portfolioId: number) {
-  const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/mypage/vocal/${portfolioId}`, {
+export async function deletePortfolio(portfolioId: number, loginUserType: string) {
+  const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/mypage/${loginUserType}/${portfolioId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -21,8 +21,8 @@ export async function deleteVocalPortfolio(portfolioId: number) {
   return data;
 }
 
-export async function deleteProducerPortfolio(portfolioId: number) {
-  const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/mypage/producer/${portfolioId}`, {
+export async function deleteTitlePortfolio(portfolioId: number, loginUserType: string) {
+  const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/mypage/${loginUserType}/${portfolioId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -31,11 +31,11 @@ export async function deleteProducerPortfolio(portfolioId: number) {
   return data;
 }
 
-export async function deleteTrackComment(commentId: string | undefined) {
-  const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/tracks/comment/${commentId}`, {
+export async function deleteTrackComment(commentId: number | undefined) {
+  const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, {
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${getCookie("accessToken")}`,
-      commentId: commentId,
     },
   });
   return data;

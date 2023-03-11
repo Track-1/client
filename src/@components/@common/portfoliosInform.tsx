@@ -117,6 +117,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
                   ref={modalRef}
                   profileState={profileState}
                   portfolioId={portfolios[id].id}
+                  portfoliosData={portfolios}
+                  clickedPortfolioId={id}
                 />
               )}
             </InformTitleWrapper>
