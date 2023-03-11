@@ -190,13 +190,21 @@ const Container = styled.article`
   top: 9.9rem;
   left: 96rem;
 
-  height: 88.8rem;
   width: 77.9rem;
+  height: 88.8rem;
 
-  background: rgba(20, 21, 23, 0.6);
+  right: 18.1rem;
+
   backdrop-filter: blur(1rem);
 
+  border: 0.3rem solid transparent;
   border-radius: 5rem;
+  background-image: linear-gradient(rgba(20, 21, 23, 0.6), rgba(20, 21, 23, 0.6)),
+  linear-gradient(to top, transparent, #3E4045);
+
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+
 `;
 
 const Wrapper = styled.div`
