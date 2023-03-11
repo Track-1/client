@@ -126,7 +126,6 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       setStep(signUpStep.SIGNUP_PROFILE);
       setLoginUserType(data.data.data.userResult.tableName);
       setLoginUserId(data.data.data.userResult.id);
-      console.log(data)
     },
     onError:(error)=>{
       alert(error)
@@ -139,11 +138,6 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       isProducer(userType)&&JoinProducer(userData);
   }, [isSave]);
   //user data post end
-
-  console.log("isSave", isSave)
-  console.log(LoginUserType)
-  console.log(LoginUserId)
-  console.log(nextStep)
 
   function isNull(answer:string){
     return answer===''
