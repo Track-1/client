@@ -14,7 +14,7 @@ import {
 import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { isProducer } from "../../utils/common/userType";
 
 export default function CategoryHeader() {
@@ -22,6 +22,7 @@ export default function CategoryHeader() {
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const loginUserType = useRecoilValue(LoginUserType);
   const loginUserId = useRecoilValue(LoginUserId);
+  const loginUserImg=useRecoilValue(LoginUserImg);
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
@@ -73,12 +74,12 @@ export default function CategoryHeader() {
              {
               isProducer(loginUserType)?(
               <ProducerProfileImg
-                src={profileImg}
+                src={loginUserImg}
                 alt="프로필이미지"
               />):(
               <VocalProfileImageWrapper>
               <VocalProfileImage
-                src={profileImg}
+                src={loginUserImg}
                 alt="프로필이미지"
               />
               </VocalProfileImageWrapper>

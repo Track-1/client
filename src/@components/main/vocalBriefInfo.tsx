@@ -10,12 +10,15 @@ import { UserPropsType } from "../../type/userPropsType";
 import { VocalProfileType } from "../../type/vocalProfile";
 import { getCookie, removeCookie } from "../../utils/cookie";
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from "recoil";
+import { LoginUserImg } from "../../recoil/loginUserData";
 
 export default function VocalBriefInfo(props:UserPropsType) {
   const {userId}=props;
   const navigate=useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
+  const [loginUserImg, setLoginUserImg]=useRecoilState(LoginUserImg)
 
   function hoverProfile() {
     setIsHovered(true);
@@ -31,6 +34,7 @@ export default function VocalBriefInfo(props:UserPropsType) {
     retry: 0, 
     onSuccess: data => {
         setProfileData(data.vocalProfile)
+        setLoginUserImg(data.producerProfile.profileImage);
     },
     onError: error => {
       console.log("실패");

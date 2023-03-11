@@ -13,7 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
 import { useSetRecoilState } from "recoil";
-import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 
 export default function LoginInput() {
   const navigate = useNavigate();

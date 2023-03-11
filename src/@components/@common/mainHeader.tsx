@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ProducerBriefInfo from "../main/produderBriefInfo";
 import VocalBriefInfo from "../main/vocalBriefInfo";
 import { getCookie } from "../../utils/cookie";
-import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { isProducer,isVocal } from '../../utils/common/userType';
 
 export default function MainHeader() {
