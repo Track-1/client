@@ -6,6 +6,9 @@ import {
   ProducerLoginBtnIc,
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
+  LoginTitleIc,
+  IfyourareanewuserIc,
+  SignuphereIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
@@ -135,10 +138,10 @@ export default function LoginInput() {
   return (
     <Container>
       <Wrapper>
-        <Title>Log in</Title>
+        <LoginTitleIc/>
         <SubTitleWrapper>
-          <span>If you are new user, </span>
-          <StLink to="sign-up">Sign up here</StLink>
+          <IfyourareanewuserIc/>
+          <Link to="sign-up"><SignuphereIc/></Link>
         </SubTitleWrapper>
         <InputBox>
           <InputTitle>Email</InputTitle>
@@ -152,7 +155,7 @@ export default function LoginInput() {
             />
           </InputWrapper>
           <UnderLine inputState={emailInputState} />
-          {isWarningState(emailInputState) && <WarningMessage>{emailWarningMessage}</WarningMessage>}
+          {isWarningState(emailInputState) ? <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>:<WarningMessage isWarning={false}>null</WarningMessage>}
         </InputBox>
         <InputBox>
           <InputTitle>Password</InputTitle>
@@ -169,8 +172,10 @@ export default function LoginInput() {
             <EyeIcon onClick={() => setShowPassword((prev) => !prev)} />
           </InputWrapper>
           <UnderLine inputState={passwordInputState} />
-          {isWarningState(passwordInputState) && (
-            <WarningMessage>Wrong password.Try again or click Forgot password to reset it.</WarningMessage>
+          {isWarningState(passwordInputState) ? (
+            <WarningMessage isWarning={true}>Wrong password.Try again or click Forgot password to reset it.</WarningMessage>
+          ):(
+            <WarningMessage isWarning={false}>null</WarningMessage>
           )}
         </InputBox>
         <ModeWrapper>
@@ -211,11 +216,6 @@ const Wrapper = styled.div`
   margin: 10.9rem 11rem;
 `;
 
-const Title = styled.strong`
-  ${({ theme }) => theme.fonts.title};
-  color: ${({ theme }) => theme.colors.white};
-`;
-
 const SubTitleWrapper = styled.div`
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
@@ -224,12 +224,9 @@ const SubTitleWrapper = styled.div`
   margin-bottom: 2.3rem;
 `;
 
-const StLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.main};
-`;
 
 const InputBox = styled.div`
-  margin-top: 5.9rem;
+  margin-top: 2.9rem;
 `;
 
 const InputTitle = styled.div`
@@ -258,8 +255,8 @@ const Input = styled.input`
   border: none;
 `;
 
-const WarningMessage = styled.span`
-  color: ${({ theme }) => theme.colors.red};
+const WarningMessage = styled.span<{isWarning:boolean}>`
+  color: ${({ theme,isWarning }) => isWarning?theme.colors.red:"transparent"};
   ${({ theme }) => theme.fonts.description};
   margin-top: 1.1rem;
 `;
@@ -290,7 +287,7 @@ const ModeWrapper = styled.div`
 
   float: right;
 
-  margin-top: 5.2rem;
+  margin-top: 3rem;
 `;
 
 const ModeText = styled.div`
@@ -300,7 +297,7 @@ const ModeText = styled.div`
 `;
 
 const LoginBtnWrapper = styled.div`
-  margin-top: 16rem;
+  margin-top: 13rem;
 
   cursor: pointer;
 `;
