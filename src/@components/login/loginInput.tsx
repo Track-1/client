@@ -9,6 +9,9 @@ import {
   LoginTitleIc,
   IfyourareanewuserIc,
   SignuphereIc,
+  LoginforgotpasswordIc,
+  LoginEmailIc,
+  LoginPasswordIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
@@ -143,8 +146,8 @@ export default function LoginInput() {
           <IfyourareanewuserIc/>
           <Link to="sign-up"><SignuphereIc/></Link>
         </SubTitleWrapper>
-        <InputBox>
-          <InputTitle>Email</InputTitle>
+        <InputBox marginTop={8}>
+          <LoginEmailIc/>
           <InputWrapper>
             <Input
               type="text"
@@ -157,8 +160,8 @@ export default function LoginInput() {
           <UnderLine inputState={emailInputState} />
           {isWarningState(emailInputState) ? <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>:<WarningMessage isWarning={false}>null</WarningMessage>}
         </InputBox>
-        <InputBox>
-          <InputTitle>Password</InputTitle>
+        <InputBox marginTop={2.9}>
+          <LoginPasswordIc/>
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
@@ -184,7 +187,7 @@ export default function LoginInput() {
         </ModeWrapper>
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
-        <ForgotMessage to="/">Forgot password</ForgotMessage>
+        <ForgotMessage to="/"><LoginforgotpasswordIc/></ForgotMessage>
       </Wrapper>
     </Container>
   );
@@ -225,13 +228,8 @@ const SubTitleWrapper = styled.div`
 `;
 
 
-const InputBox = styled.div`
-  margin-top: 2.9rem;
-`;
-
-const InputTitle = styled.div`
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.gray2};
+const InputBox = styled.div<{marginTop:number}>`
+  margin-top: ${({marginTop})=>marginTop}rem;
 `;
 
 const InputWrapper = styled.div`

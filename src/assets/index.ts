@@ -214,4 +214,7 @@ export { ReactComponent as ClosedAddCommentIc } from "./icon/closedAddCommentIc.
 export { ReactComponent as LoginTitleIc } from "./icon/loginTitleIc.svg";
 export { ReactComponent as IfyourareanewuserIc } from "./icon/ifyourareanewuserIc.svg";
 export { ReactComponent as SignuphereIc } from "./icon/signuphereIc.svg";
+export { ReactComponent as LoginforgotpasswordIc } from "./icon/loginforgotpasswordIc.svg";
+export { ReactComponent as LoginEmailIc } from "./icon/loginEmailIc.svg";
+export { ReactComponent as LoginPasswordIc } from "./icon/loginPasswordIc.svg";
 
