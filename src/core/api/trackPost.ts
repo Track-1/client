@@ -65,7 +65,7 @@ export async function patchProfile(beatId: number) {
       window.location.replace("/")
     }
   } catch (e) {
-    console.log("문제발생!!!!!!!!!!!")
+    console.log("문제발생")
     console.log(e);
   }
 }
