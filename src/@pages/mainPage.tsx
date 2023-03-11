@@ -12,7 +12,9 @@ import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
 import ConventionModal from "../@components/@common/conventionModal";
 import { openConventionModal } from "../recoil/conventionModal";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import { Category } from "../core/constants/categoryHeader";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -21,8 +23,8 @@ export default function MainPage() {
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
   const showModal=useRecoilValue(openConventionModal)
-
-
+  const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
+  
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
     setIsVocalsHover(!isVocalsHover);
@@ -41,6 +43,7 @@ export default function MainPage() {
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
     isTracksHover ? navigate("/track-search") : navigate("/vocal-search");
+    isTracksHover? setTracksOrVocals(Category.TRACKS):setTracksOrVocals(Category.VOCALS)
   }
 
   return (
