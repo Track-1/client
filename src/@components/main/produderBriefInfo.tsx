@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
@@ -10,6 +11,7 @@ import { UserPropsType } from "../../type/userPropsType";
 
 export default function ProducerBriefInfo(props:UserPropsType) {
   const {userId}=props;
+  const navigate=useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<ProducerProfileType>();
 
@@ -39,9 +41,13 @@ export default function ProducerBriefInfo(props:UserPropsType) {
     onLogout();
   }
 
+  function moveToMypage(){
+    navigate(`/producer-profile/${userId}`);
+  }
+
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
-      <InfoContainer>
+      <InfoContainer onClick={moveToMypage}>
         <ProfileImage src={profileData?.profileImage} />
         <UserName>{profileData?.name}</UserName>
       </InfoContainer>
@@ -158,7 +164,9 @@ const LogoutBox = styled.div`
 
 const Blank=styled.div`
   position: absolute;
-  width: 20rem;
+  width: 50rem;
   height: 3rem;
+
+  background-color: beige;
 `
 
