@@ -1,11 +1,14 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainInfoVocalIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/vocalPortfolioList5.png";
+import { onLogout } from "../../core/api/logout";
 import { getVocalProfile } from "../../core/api/vocalProfile";
 import { UserPropsType } from "../../type/userPropsType";
 import { VocalProfileType } from "../../type/vocalProfile";
+import { getCookie, removeCookie } from "../../utils/cookie";
 
 export default function VocalBriefInfo(props:UserPropsType) {
   const {userId}=props;
@@ -33,6 +36,11 @@ export default function VocalBriefInfo(props:UserPropsType) {
     }
   });
 
+  async function logout (){
+    onLogout();
+  }
+
+  console.log(getCookie("accessToken"))
 
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
@@ -55,7 +63,7 @@ export default function VocalBriefInfo(props:UserPropsType) {
               <UserEmail>{profileData?.contact}</UserEmail>
             </TextWrapper>
           </InfoBox>
-          <LogoutBox>
+          <LogoutBox onClick={logout}>
             Log out
             <MainLogoutIc />
           </LogoutBox>
@@ -197,6 +205,6 @@ const LogoutBox = styled.div`
 
 const Blank=styled.div`
   position: absolute;
-  width: 12rem;
+  width: 20rem;
   height: 3rem;
 `
