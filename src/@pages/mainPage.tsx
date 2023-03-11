@@ -46,8 +46,6 @@ export default function MainPage() {
     isTracksHover? setTracksOrVocals(Category.TRACKS):setTracksOrVocals(Category.VOCALS)
   }
 
-  console.log(isVocalsHover)
-
   return (
     <>
     <MainPageWrapper>

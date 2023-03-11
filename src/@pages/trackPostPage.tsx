@@ -148,7 +148,6 @@ export default function TrackPostPage() {
     reader.readAsArrayBuffer(blob);
   }, []);
   
- console.log(beatId)
   return (
     <>
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed}/>}
