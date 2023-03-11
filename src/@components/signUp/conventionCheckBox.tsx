@@ -15,7 +15,6 @@ interface PropsType{
 
 export default function ConventionCheckBox(props:PropsType) {
     const {setCompleteCheck, checkedConventions, setCheckedConventions}=props
-    // const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
     const [checkedCount, setCheckedCount]=useState<number>(0);
     const [policy, setPolicy]=useRecoilState<string>(openConventionPolicy)
     const [showModal, setShowModal]=useRecoilState<boolean>(openConventionModal)

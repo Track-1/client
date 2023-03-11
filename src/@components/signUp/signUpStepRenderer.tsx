@@ -19,7 +19,6 @@ export default function SignUpStepRenderer(props:StepUserPropsType) {
         case signUpStep.SIGNUP_NICKNAME_CONVENTION:
           return <SignupNicknameConvention setStep={setStep} userData={userData} setUserData={setUserData}/>;
         case signUpStep.SIGNUP_PROFILE:
-          // return <ProfileEditInfo setStep={setStep} />;
             return <SignupProfile setStep={setStep} userProfile={userProfile} setUserProfile={setUserProfile} />;
         case signUpStep.SIGNUP_SUCCESS:
             return <SignupSuccess />;  

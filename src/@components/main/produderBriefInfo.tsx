@@ -17,8 +17,6 @@ export default function ProducerBriefInfo(props:UserPropsType) {
 
   function hoverProfile() {
     setIsHovered(true);
-
-    console.log("호버")
   }
 
   function hoverOutProfile() {

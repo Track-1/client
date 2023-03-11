@@ -6,7 +6,7 @@ export async function authEmail(formData:any) {
         "Content-Type": "application/json",
       },
     });
-    data && console.log(data);
+    // data && console.log(data);
     return data
 }
 
@@ -16,7 +16,7 @@ export async function checkEmailDuplication(formData:any) {
         "Content-Type": "application/json",
       },
     });
-    data && console.log(data.data.data);
+    // data && console.log(data.data.data);
     return data.data.data
 }
 
@@ -27,7 +27,7 @@ export async function repostAuthEmail(formData:any) {
         "Content-Type": "application/json",
       },
     });
-    data && console.log(data);
+    // data && console.log(data);
     return data
   } catch (e) {
     console.log(e);
@@ -41,7 +41,7 @@ export async function postVerifyCode(formData:any) {
         "Content-Type": "application/json",
       },
     });
-    data && console.log(data);
+    // data && console.log(data);
     return data
   // } catch (e) {
     // console.log(e);
