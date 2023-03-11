@@ -116,11 +116,11 @@ export default function TrackPostPage() {
   }
 
   function closeTrackPost() {
-    setIsEnd(true);
+    // setIsEnd(true);
   }
 
   function openTrackPost() {
-    setIsEnd(false);
+    // setIsEnd(false);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
@@ -146,9 +146,10 @@ export default function TrackPostPage() {
     reader.readAsArrayBuffer(blob);
   }, []);
 
+  console.log(trackInfoData)
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed}/>}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <TrackPostPageWrapper>
@@ -167,8 +168,8 @@ export default function TrackPostPage() {
               </ProducerBox>
               <ButtonWrapper>
                 {trackInfoData.isMe &&
-                  (!trackInfoData?.isClosed ? <ClosedWithXIcon onClick={openTrackPost} /> : <OpenedIcon onClick={closeTrackPost} />)}
-                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
+                  (trackInfoData?.isClosed ? <ClosedWithXIcon onClick={openTrackPost} /> : <OpenedIcon onClick={closeTrackPost} />)}
+                {!trackInfoData.isMe && (trackInfoData?.isClosed ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
