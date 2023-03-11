@@ -175,6 +175,5 @@ const Blank=styled.div`
   width: 50rem;
   height: 3rem;
 
-  background-color: beige;
 `
 
