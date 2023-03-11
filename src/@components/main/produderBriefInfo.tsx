@@ -39,8 +39,6 @@ export default function ProducerBriefInfo(props:UserPropsType) {
     onLogout();
   }
 
-  console.log(profileData)
-  
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
       <InfoContainer>
@@ -74,7 +72,6 @@ const InfoContainer = styled.article`
   align-items: center;
 
   height: 5.2rem;
-  width: 19.5rem;
   padding: 0 2.2rem 0 1.3rem;
 
   background-color: ${({ theme }) => theme.colors.sub1};
@@ -85,6 +82,8 @@ const InfoContainer = styled.article`
 const ProfileImage = styled.img`
   height: 3.2rem;
   width: 3.2rem;
+
+  margin-right: 1.2rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;

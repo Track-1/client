@@ -78,7 +78,6 @@ const InfoContainer = styled.article`
   align-items: center;
 
   height: 5.2rem;
-  width: 19.5rem;
   padding: 0 2.2rem 0 1.3rem;
 
   background-color: ${({ theme }) => theme.colors.sub2};
@@ -96,6 +95,7 @@ const ProfileImageWrapper = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
+  margin-right: 1.2rem;
 
   height: 2.8rem;
   width: 2.8rem;
