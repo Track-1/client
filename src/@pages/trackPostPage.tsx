@@ -35,7 +35,7 @@ export default function TrackPostPage() {
   const { state } = useLocation();
   const { progress, audio } = usePlayer();
 
-  const [isEnd, setIsEnd] = useState<boolean>(true);
+  // const [isEnd, setIsEnd] = useState<boolean>(true);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
@@ -167,8 +167,8 @@ export default function TrackPostPage() {
               </ProducerBox>
               <ButtonWrapper>
                 {trackInfoData.isMe &&
-                  (isEnd ? <ClosedWithXIcon onClick={openTrackPost} /> : <OpenedIcon onClick={closeTrackPost} />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
+                  (!trackInfoData?.isClosed ? <ClosedWithXIcon onClick={openTrackPost} /> : <OpenedIcon onClick={closeTrackPost} />)}
+                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>

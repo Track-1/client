@@ -204,10 +204,10 @@ const VocalProfileImageWrapper = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
-  margin-right: 2rem;
+  margin-right: 2.7rem;
 
-  height: 2.8rem;
-  width: 2.8rem;
+  width: 4rem;
+  height: 4rem;
 
   transform: rotate(45deg);
   overflow: hidden;
