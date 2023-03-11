@@ -27,24 +27,26 @@ export default function MainPage() {
   
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
-    setIsVocalsHover(!isVocalsHover);
+    setIsVocalsHover(true);
   }
 
   function setTracksImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverTracksImg);
-    setIsTracksHover(!isTracksHover);
+    setIsTracksHover(true);
   }
 
   function setDefaultImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(mainBackgroundImg);
-
-    isTracksHover ? setIsTracksHover(!isTracksHover) : setIsVocalsHover(!isVocalsHover);
+    setIsTracksHover(false);
+    setIsVocalsHover(false);
   }
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
     isTracksHover ? navigate("/track-search") : navigate("/vocal-search");
     isTracksHover? setTracksOrVocals(Category.TRACKS):setTracksOrVocals(Category.VOCALS)
   }
+
+  console.log(isVocalsHover)
 
   return (
     <>
