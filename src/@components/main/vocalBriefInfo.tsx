@@ -26,7 +26,6 @@ export default function VocalBriefInfo(props:UserPropsType) {
     refetchOnWindowFocus: false, 
     retry: 0, 
     onSuccess: data => {
-      // console.log("ddd"+data)
         setProfileData(data.vocalProfile)
     },
     onError: error => {
