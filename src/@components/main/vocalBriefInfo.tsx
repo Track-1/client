@@ -35,13 +35,14 @@ export default function VocalBriefInfo(props:UserPropsType) {
 
 
   return (
-    <>
-      <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
+    <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
+      <InfoContainer>
         <ProfileImageWrapper>
           <ProfileImage src={profileData?.profileImage} />
         </ProfileImageWrapper>
         <UserName>{profileData?.name}</UserName>
       </InfoContainer>
+      <Blank></Blank>
       {isHovered && (
         <UserInfoContainer>
           <InfoBox>
@@ -60,7 +61,7 @@ export default function VocalBriefInfo(props:UserPropsType) {
           </LogoutBox>
         </UserInfoContainer>
       )}
-    </>
+    </div>
   );
 }
 
@@ -76,6 +77,8 @@ const InfoContainer = styled.article`
   background-color: ${({ theme }) => theme.colors.sub2};
 
   border-radius: 3rem;
+
+  cursor: pointer;
 `;
 
 const ProfileImageWrapper = styled.div`
@@ -120,6 +123,8 @@ const UserInfoContainer = styled.section`
 
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 0.5rem;
+
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`
@@ -189,3 +194,9 @@ const LogoutBox = styled.div`
   ${({ theme }) => theme.fonts.body1}
   color: ${({ theme }) => theme.colors.white};
 `;
+
+const Blank=styled.div`
+  position: absolute;
+  width: 12rem;
+  height: 3rem;
+`
