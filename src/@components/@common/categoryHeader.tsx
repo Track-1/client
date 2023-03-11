@@ -15,6 +15,7 @@ import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
+import { isProducer } from "../../utils/common/userType";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
@@ -72,12 +73,12 @@ export default function CategoryHeader() {
              {
               isProducer(loginUserType)?(
               <ProducerProfileImg
-                src={loginUserImgSrc}
+                src={profileImg}
                 alt="프로필이미지"
               />):(
               <VocalProfileImageWrapper>
               <VocalProfileImage
-                src={loginUserImgSrc}
+                src={profileImg}
                 alt="프로필이미지"
               />
               </VocalProfileImageWrapper>
@@ -181,4 +182,44 @@ const ProfileImg = styled.img`
 
   border: 0.15rem solid white;
   border-radius: 2.4rem;
+`;
+
+const ProducerProfileImg = styled.img`
+  width: 4.6rem;
+  height: 4.6rem;
+
+  margin-right: 1.29rem;
+
+  border: 0.15rem solid white;
+  border-radius: 2.4rem;
+  border: 0.15rem solid ${({ theme }) => theme.colors.white};
+`;
+
+const VocalProfileImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 2rem;
+
+  height: 2.8rem;
+  width: 2.8rem;
+
+  transform: rotate(45deg);
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 0.15rem solid ${({ theme }) => theme.colors.white};
+`;
+
+const VocalProfileImage = styled.img`
+  height: 6rem;
+  width: 6rem;
+
+  /* border: 0.1rem solid ${({ theme }) => theme.colors.black}; */
+  border-radius: 50%;
+
+  transform: rotate(-45deg);
 `;
