@@ -146,6 +146,43 @@ export { ReactComponent as SignupNotSelectedVocalIc } from "./icon/signupNotSele
 export { ReactComponent as SignupSelectedProducerIc } from "./icon/signupSelectedProducerIc.svg";
 export { ReactComponent as SignupSelectedVocalIc } from "./icon/signupSelectedVocalIc.svg";
 export { ReactComponent as SignUpContinueButtonIc } from "./icon/signUpContinueButtonIc.svg";
+
+export { ReactComponent as SignUpEmailTitleIc } from "./icon/signUpEmailTitleIc.svg";
+export { ReactComponent as WhatsYourEmailIc } from "./icon/what'sYourEmailIc.svg";
+export { ReactComponent as SignUpPasswordIc } from "./icon/signUpPasswordIc.svg";
+export { ReactComponent as SignupSendcodeTextIc } from "./icon/signupSendcodeTextIc.svg";
+export { ReactComponent as SignUpErrorIc } from "./icon/signUpErrorIc.svg";
+export { ReactComponent as SignUpVerifyIc } from "./icon/signupVerifyIc.svg";
+export { ReactComponent as VerificationCodeTextIc } from "./icon/verificationCodeTextIc.svg";
+export { ReactComponent as SignUpResendButtonIc } from "./icon/signupResendButtonIc.svg";
+export { ReactComponent as SignUpVerifyButtonIc } from "./icon/signUpVerifyButtonIc.svg";
+export { ReactComponent as SignUpBackArrowIc } from "./icon/signUpBackArrowIc.svg";
+export { ReactComponent as WeSentYouACodeTextIc } from "./icon/weSentYouACodeTextIc.svg";
+export { ReactComponent as SignUpEyeIc } from "./icon/signUpEyeIc.svg";
+export { ReactComponent as SignUpEyeXIc } from "./icon/signUpEyeXIc.svg";
+export { ReactComponent as ConfirmPasswordTextIc } from "./icon/confirmPasswordTextIc.svg";
+export { ReactComponent as CreateAPasswordForYourAccountTitleIc } from "./icon/createAPasswordForYourAccountTitleIc.svg";
+export { ReactComponent as SignUpModalXIc } from "./icon/signUpModalXIc.svg";
+export { ReactComponent as SignUpBackgroundIc } from "./icon/signUpBackgroundIc.svg";
+export { ReactComponent as SignUpUploadImageIc } from "./icon/signUpUploadImageIc.svg";
+export { ReactComponent as SignUpChangeImageIc } from "./icon/signUpChangeImageIc.svg";
+export { ReactComponent as WhatsYourNameTextIc } from "./icon/whatsYourNameTextIc.svg";
+export { ReactComponent as ConventionBlanckBoxIc } from "./icon/conventionBlanckBoxIc.svg";
+export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";
+export { ReactComponent as SignUpCompleteButtonIc } from "./icon/signUpCompleteButtonIc.svg";
+export { ReactComponent as SignUpSkipButtonIc } from "./icon/signUpSkipButtonIc.svg";
+export { ReactComponent as SignUpGetStartedButtonIc } from "./icon/signUpGetStartedButtonIc.svg";
+export { ReactComponent as SignUpVocalButtonIc } from "./icon/signUpVocalButtonIc.svg";
+export { ReactComponent as SignUpProducerQIc } from "./icon/signUpProducerQIc.svg";
+export { ReactComponent as SignUpSuccessBackgroundIc } from "./icon/signUpSuccessBackgroundIc.svg";
+export { ReactComponent as SignUpVocalQIc } from "./icon/signUpVocalQIc.svg";
+export { ReactComponent as SignUpProducerButtonIc } from "./icon/signUpProducerButtonIc.svg";
+export { ReactComponent as MoveTouploadVocalSearchingButtonIc } from "./icon/moveTouploadVocalSearchingButtonIc.svg";
+export { ReactComponent as MoveTouploadPortfolioButtonIc } from "./icon/moveTouploadPortfolioButtonIc.svg";
+export { ReactComponent as InstagramLogoIc } from "./icon/instagramLogoIc.svg";
+export { ReactComponent as FacebookLogoIc } from "./icon/facebookLogoIc.svg";
+export { ReactComponent as SignupVocalProfileImgIc } from "./icon/signupVocalProfileImgIc.svg";
+
 export { ReactComponent as ProducerModeToggleIc } from "./icon/producerModeToggleIc.svg";
 export { ReactComponent as ProducerDefaultModeToggleIc } from "./icon/producerDefaultModeToggleIc.svg";
 export { ReactComponent as EyeIc } from "./icon/eyeIc.svg";
@@ -170,3 +207,4 @@ export { ReactComponent as ProfileEditSleepAcountTitleIc } from "./icon/profileE
 export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
 export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEditSleeperButtonIc.svg";
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
+

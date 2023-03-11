@@ -11,4 +11,4 @@ export interface CategorySelectType {
   [key: string]: boolean;
 }
 
-export type CategoriesDropdownType = "r&b" | "hiphop" | "ballad" | "pop" | "rock" | "edm" | "jazz" | "house" | "funk";
+export type CategoriesDropdownType = "R&B" | "Hiphop" | "Ballad" | "Pop" | "Rock" | "EDM" | "JAZZ" | "House" | "Funk";

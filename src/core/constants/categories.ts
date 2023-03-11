@@ -1,16 +1,18 @@
 import { CategoryIdType } from "../../type/CategoryChecksType";
 
-export enum Categories {
-  "R&B" = "R&B",
-  HIPHOP = "Hiphop",
-  BALLAD = "Ballad",
-  POP = "Pop",
-  ROCK = "Rock",
-  EDM = "EDM",
-  JAZZ = "JAZZ",
-  HOUSE = "House",
-  FUNK = "Funk",
-}
+// export enum Categories {
+//   "R&B" = "R&B",
+//   HIPHOP = "Hiphop",
+//   BALLAD = "Ballad",
+//   POP = "Pop",
+//   ROCK = "Rock",
+//   EDM = "EDM",
+//   JAZZ = "JAZZ",
+//   HOUSE = "House",
+//   FUNK = "Funk",
+// }
+
+export const Categories: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
 
 export const CategoryId: CategoryIdType = {
   "R&B": "0",
@@ -24,7 +26,7 @@ export const CategoryId: CategoryIdType = {
   FUNK: "8",
 };
 
-export const CategoryDropdown = {
+export const CategoryDropdown: CategoryIdType = {
   "r&b": "R&B",
   hiphop: "Hiphop",
   ballad: "Ballad",

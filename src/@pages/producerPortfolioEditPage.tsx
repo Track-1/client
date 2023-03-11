@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../assets";
@@ -19,16 +19,24 @@ import { Categories, CategoryDropdown } from "../core/constants/categories";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CategoriesDropdownType, CategoryIdType } from "../type/CategoryChecksType";
+import { useMutation } from "react-query";
+import { patchProducerPortfolio } from "../core/api/producerProfile";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
   const prevData = useLocation().state;
-  const fileName = useRef<HTMLInputElement | null>(null);
+  const hashtagText = useRef<HTMLInputElement | null>(null);
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
+  const [image, setImage] = useState<string>(prevData?.jacketImage);
   const [title, setTitle] = useState<string>(prevData?.title);
   const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFile);
-  const [category, setCategory] = useState<CategoriesDropdownType>(prevData.category);
+  const [category, setCategory] = useState<string>(CategoryDropdown[prevData?.category]);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [hashtag, steHashtag] = useState<string[]>(prevData?.keyword);
+  const [hashtagInput, setHashtegInput] = useState<string>("");
+  const [description, setDescription] = useState<string>(prevData?.content);
+  const [complete, setComplete] = useState<boolean>(false);
+  const [editData, setEditdata] = useState<any>();
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
@@ -38,6 +46,16 @@ export default function ProducerPortfolioEditPage() {
     console.log(prevData);
   });
 
+  useEffect(() => {
+    hashtagText.current!.value = "";
+  }, [hashtag]);
+
+  const { mutate } = useMutation(() => patchProducerPortfolio(2, editData), {
+    onError: () => {
+      console.log(editData);
+    },
+  });
+
   function getFileName(e: any) {
     setAudioFile(e.target.files[0]);
   }
@@ -45,6 +63,47 @@ export default function ProducerPortfolioEditPage() {
   function toggleDropdown() {
     setShowDropdown(!showDropdown);
   }
+
+  function selectCategory(text: string) {
+    setCategory(CategoryDropdown[text.toLowerCase()]);
+    toggleDropdown();
+  }
+
+  function deleteHashtag(deleteTarget: string) {
+    const temp: string[] = [];
+    hashtag.forEach((keyword) => {
+      if (keyword !== deleteTarget) temp.push(keyword);
+    });
+    steHashtag(temp);
+  }
+
+  function changeHashtagWidth(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtegInput(e.target.value);
+  }
+
+  function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.code === "Enter" && hashtagText.current !== null) {
+      steHashtag((prev) => [...prev, hashtagText.current!.value]);
+    }
+  }
+
+  function checkDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setDescription(e.target.value);
+  }
+
+  function conpleteEdit() {
+    const formData = new FormData();
+    formData.append("audioFile", audioFile);
+    formData.append("jacketImage", image);
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("content", description);
+    formData.append("keyword", hashtag[0]);
+    setEditdata(formData);
+    mutate();
+    setComplete(true);
+  }
+
   return (
     <>
       <Container>
@@ -53,14 +112,14 @@ export default function ProducerPortfolioEditPage() {
             <UploadBackIcon />
             <UserClass> {}</UserClass>
           </LeftWrapper>
-          <CanUploadBtnIcon /> <UploadBtnIcon />
+          <CanUploadBtnIcon onClick={conpleteEdit} />
         </HeaderWrapper>
       </Container>
       <Container2>
         <SectionWrapper>
           <TrackImageBox>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <TrackUploadImage src="" alt="썸네일 이미지" />
+              <TrackUploadImage src={image} alt="썸네일 이미지" />
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               <FileChangeIcon />
@@ -116,7 +175,7 @@ export default function ProducerPortfolioEditPage() {
                 <InputBox>
                   <InputWrapper>
                     <InputCategoryTextWrapper>
-                      <InputCategoryText>{CategoryDropdown[category]}</InputCategoryText>
+                      <InputCategoryText>{category}</InputCategoryText>
                     </InputCategoryTextWrapper>
                     <CategoryDropDownIcon onClick={toggleDropdown} />
                   </InputWrapper>
@@ -130,41 +189,39 @@ export default function ProducerPortfolioEditPage() {
                 <InputBox>
                   <InputWrapper>
                     <>
-                      {/* {uploadData.keyword.map((item: string, index: number) => {
-                          return (
-                            <InputHashtagWrapper>
-                              <Hashtag key={index}>
-                                <HashtagWrapper>
-                                  <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                                  <DeleteHashtagIcon />
-                                </HashtagWrapper>
-                              </Hashtag>
-                            </InputHashtagWrapper>
-                          );
-                        })}
-
+                      {hashtag?.map((item: string, index: number) => {
+                        return (
+                          <InputHashtagWrapper>
+                            <Hashtag key={index}>
+                              <HashtagWrapper>
+                                <HashtagSharp>{`# ${item}`}</HashtagSharp>
+                                <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        );
+                      })}
+                      <>
                         <InputHashtagWrapper>
                           <Hashtag>
                             <HashtagWrapper>
                               <HashtagSharp># </HashtagSharp>
-                              <HashtagInput placeholder="Hashtag" type="text" defaultValue="" />
-
+                              <HashtagInput
+                                placeholder="Hashtag"
+                                type="text"
+                                defaultValue=""
+                                onChange={changeHashtagWidth}
+                                width={hashtagInput.length}
+                                onKeyUp={addHashtag}
+                                ref={hashtagText}
+                              />
                               <div style={{ width: "1" }}></div>
                             </HashtagWrapper>
                           </Hashtag>
-                        </InputHashtagWrapper> */}
+                        </InputHashtagWrapper>
+                        <AddHashtagIcon />
+                      </>
                     </>
-
-                    <InputHashtagWrapper>
-                      <Hashtag>
-                        <HashtagWrapper>
-                          <HashtagSharp># </HashtagSharp>
-                          <HashtagInput placeholder="Hashtag" type="text" defaultValue="" />
-                        </HashtagWrapper>
-                      </Hashtag>
-                    </InputHashtagWrapper>
-
-                    <AddHashtagIcon />
                   </InputWrapper>
 
                   <WarningIcon>
@@ -195,23 +252,25 @@ export default function ProducerPortfolioEditPage() {
                     typeof="text"
                     placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
                     spellCheck={false}
-                    maxLength={250}></InputDescriptionText>
+                    maxLength={250}
+                    defaultValue={description}
+                    onChange={checkDescription}></InputDescriptionText>
                 </InputBox>
               </InfoItemBox>
             </InfoContainer>
             <TextCount>
               <TextWrapper>
-                <InputCount>{}</InputCount>
+                <InputCount>{description?.length}</InputCount>
                 <LimitCount>/250</LimitCount>
               </TextWrapper>
             </TextCount>
             {showDropdown && (
               <DropMenuBox>
                 <DropMenuWrapper>
-                  {Object.values(Categories).map((text: string, index: number) => (
+                  {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
-                      <DropMenuText>{text}</DropMenuText>
-                      <CheckCategoryIc />
+                      <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
+                      {category === Categories[index] && <CheckCategoryIc />}
                     </DropMenuItem>
                   ))}
                 </DropMenuWrapper>
@@ -473,8 +532,8 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input`
-  width: 3rem;
+const HashtagInput = styled.input<{ width: number }>`
+  width: ${({ width }) => (width === 0 ? 3 : width)}rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
   ::placeholder {

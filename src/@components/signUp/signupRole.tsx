@@ -2,13 +2,17 @@ import { useState } from 'react';
 import styled from 'styled-components'
 import { SignupNotSelectedProducerIc, SignupNotSelectedVocalIc, SignupSelectedProducerIc, SignupSelectedVocalIc, SignUpSelectRoleTitleIc } from '../../assets'
 import { currentUser } from '../../core/constants/userType';
+import { continueType } from '../../core/signUp/continueType';
+import { signUpStep } from '../../core/signUp/signupStepType';
 import { SetStepPropsType } from '../../type/signUpStepTypes';
 import ContinueButton from './continueButton';
+import { useRecoilState } from 'recoil';
+import { UserType } from '../../recoil/main';
 
 export default function SignupRole(props:SetStepPropsType) {
     const {setStep}=props;
     const [hoveredRole, setHoveredRole] = useState<string>('')
-    const [selectedRole, setSelectedRole] = useState<string>('')
+    const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType)
 
     function hoverRole(role:string){
       setHoveredRole(role)
@@ -30,15 +34,26 @@ export default function SignupRole(props:SetStepPropsType) {
       return selectedRole===role
     }
 
-    console.log(hoveredRole)
+    function successNextStep(){
+      return (
+        selectedRole?continueType.SUCCESS:continueType.FAIL
+      )
+  }
+
+
 
   return (
     <RoleWrapper>
       <SignUpSelectRoleTitleIcon/>
-
-      {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>:<SignupNotSelectedProducerIcon onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}/>}
-      {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>:<SignupNotSelectedVocalIcon onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}/>}    
-      <ContinueButton answer={selectedRole} setStep={setStep}/>
+      <div onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}>
+        {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon/>:<SignupNotSelectedProducerIcon/>}
+      </div>
+      <div onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}>
+        {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon/>:<SignupNotSelectedVocalIcon/>}    
+      </div>
+      <ArrowButtonWrapper>
+        <ContinueButton successNextStep={successNextStep()} step={signUpStep.SIGNUP_EMAIL_PASSWORD} setStep={setStep}/>
+      </ArrowButtonWrapper>
     </RoleWrapper>
   )
 }
@@ -76,4 +91,19 @@ const SignupNotSelectedVocalIcon=styled(SignupNotSelectedVocalIc)`
   margin-left: 6.3rem;
 
   cursor: pointer;
+`
+
+const ArrowButtonWrapper=styled.div`
+    display: flex;
+    justify-content: right;
+    align-items: center;
+
+    width: 56rem;
+    height: 4.6rem;
+
+    position: absolute;
+    left:11rem;
+    bottom: 7rem;
+
+    bottom: 7rem;
 `
