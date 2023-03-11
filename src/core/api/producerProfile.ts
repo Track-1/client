@@ -12,7 +12,9 @@ export async function getProducerPortfolio(producerId: number, page: number) {
         },
       },
     );
+    // console.log(data);
     return data?.data.data;
+    
   } catch (e) {
     console.log(e);
   }

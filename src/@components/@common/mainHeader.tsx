@@ -25,7 +25,7 @@ export default function MainHeader() {
   }
 
   function isLogin(){
-    return getCookie("accessToken")!=='';
+    return getCookie("accessToken")!==undefined;
   }
 
   return (

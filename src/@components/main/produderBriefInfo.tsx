@@ -1,38 +1,64 @@
 import { useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
+import { onLogout } from "../../core/api/logout";
+import { getProducerPortfolio } from "../../core/api/producerProfile";
+import { ProducerProfileType } from "../../type/producerProfile";
 import { UserPropsType } from "../../type/userPropsType";
 
 export default function ProducerBriefInfo(props:UserPropsType) {
   const {userId}=props;
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [profileData, setProfileData] = useState<ProducerProfileType>();
 
   function hoverProfile() {
     setIsHovered(true);
+
+    console.log("호버")
   }
 
   function hoverOutProfile() {
     setIsHovered(false);
   }
 
+  const { data } = useQuery(["profile",userId], ()=>getProducerPortfolio(userId, 1)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+        setProfileData(data.producerProfile)
+    },
+    onError: error => {
+      console.log(error);
+    }
+  });
+
+  function logout (){
+    onLogout();
+  }
+
+  console.log(profileData)
+  
   return (
-    <div>
-      <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
-        <ProfileImage src={thumbnailImg} />
-        <UserName>_Bepore</UserName>
+    <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
+      <InfoContainer>
+        <ProfileImage src={profileData?.profileImage} />
+        <UserName>{profileData?.name}</UserName>
       </InfoContainer>
+      <Blank></Blank>
       {isHovered && (
         <UserInfoContainer>
           <InfoBox>
-            <InfoProfileImage src={thumbnailImg} />
+            <InfoProfileImage src={profileData?.profileImage} />
             <TextWrapper>
-              <InfoUserName>_Bepore_1223</InfoUserName>
+              <InfoUserName>{profileData?.name}</InfoUserName>
               <MainInfoProducerIc />
-              <UserEmail>pianowell@gmail.com</UserEmail>
+              <UserEmail>{profileData?.contact}</UserEmail>
             </TextWrapper>
           </InfoBox>
-          <LogoutBox>
+          <LogoutBox onClick={logout}>
             Log out
             <MainLogoutIc />
           </LogoutBox>
@@ -130,3 +156,10 @@ const LogoutBox = styled.div`
   ${({ theme }) => theme.fonts.body1}
   color: ${({ theme }) => theme.colors.white};
 `;
+
+const Blank=styled.div`
+  position: absolute;
+  width: 20rem;
+  height: 3rem;
+`
+
