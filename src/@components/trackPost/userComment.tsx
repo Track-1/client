@@ -114,7 +114,6 @@ export default function UserComment(props: PropsType) {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-  console.log(comments);
 
   return (
     <>
