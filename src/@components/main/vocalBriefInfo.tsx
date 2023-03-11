@@ -36,11 +36,10 @@ export default function VocalBriefInfo(props:UserPropsType) {
     }
   });
 
-  async function logout (){
+  function logout (){
     onLogout();
   }
 
-  console.log(getCookie("accessToken"))
 
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
