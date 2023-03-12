@@ -10,12 +10,13 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import usePlayer from "../utils/hooks/usePlayer";
 import { useInfiniteQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
+import { LoginUserId } from "../recoil/loginUserData";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -23,7 +24,7 @@ export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
-  const [isMe, setIsMe] = useState<boolean>(false);
+  const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
   const [audioInfos, setAudioInfos] = useState({
     title: "",
@@ -36,6 +37,7 @@ export default function ProducerProfilePage() {
   const visible = useRecoilValue(uploadButtonClicked);
   const showPlayer = useRecoilValue(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const loginUserId = useRecoilValue(LoginUserId);
 
   const { progress, audio } = usePlayer();
 
@@ -44,12 +46,13 @@ export default function ProducerProfilePage() {
     if (hasNextPage !== false) {
       switch (profileState) {
         case "Portfolio":
-          response = await getProducerPortfolio(2, page);
+          response = await getProducerPortfolio(loginUserId, page);
           break;
         case "Vocal Searching":
-          response = await getSelectingTracks(2, page);
+          response = await getSelectingTracks(loginUserId, page);
           break;
       }
+      console.log(response);
       setIsMe(response?.isMe);
       setProfileData(response?.producerProfile);
       setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
@@ -101,6 +104,7 @@ export default function ProducerProfilePage() {
 
   return (
     <>
+      <Outlet />
       {visible && <TracksProfileUploadModal />}
       {profileData && <ProducerInfos profileData={profileData} />}
       <PageContainer>

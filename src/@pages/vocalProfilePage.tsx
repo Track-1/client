@@ -13,10 +13,10 @@ import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useInfiniteQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import { UserType } from "../recoil/main";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
+import { LoginUserId } from "../recoil/loginUserData";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export default function VocalProfilePage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const userType = useRecoilValue(UserType);
+  const loginUserId = useRecoilValue(LoginUserId);
 
   const { progress, audio } = usePlayer();
 
@@ -59,7 +59,7 @@ export default function VocalProfilePage() {
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
-      const response = await getVocalProfile(state, userType, page);
+      const response = await getVocalProfile(loginUserId, page);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
       setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);

@@ -8,6 +8,7 @@ export interface PortfolioType {
   title: string;
   id: number;
   wavFileLength: number;
+  vocalPortfolioId: number;
 }
 
 export interface PortfolioPropsType {

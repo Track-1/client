@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../../utils/cookie";
 
 export async function getVocalsData(filteredUrlApi: string, isSelected: boolean, page: number) {
   try {
@@ -6,7 +7,7 @@ export async function getVocalsData(filteredUrlApi: string, isSelected: boolean,
       `${process.env.REACT_APP_BASE_URL}/vocals/filter?${filteredUrlApi}&isSelected=${isSelected}&page=${page}&limit=3`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`,
+          Authorization: `Bearer ${getCookie("accessToken")}`,
         },
       },
     );
