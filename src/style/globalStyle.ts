@@ -68,7 +68,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: sans-serif;
     /* font-size: 62.5%; */
     user-select: none;
-    @media (max-width:1800px){
+    @media (min-width:1800px){
       font-size: 62.5%;
     }
     @media (min-width:1200px) and (max-width:1799px){
