@@ -11,12 +11,12 @@ import { LoginUserImg } from "../../recoil/loginUserData";
 import { ProducerProfileType } from "../../type/producerProfile";
 import { UserPropsType } from "../../type/userPropsType";
 
-export default function ProducerBriefInfo(props:UserPropsType) {
-  const {userId}=props;
-  const navigate=useNavigate();
+export default function ProducerBriefInfo(props: UserPropsType) {
+  const { userId } = props;
+  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<ProducerProfileType>();
-  const [loginUserImg, setLoginUserImg]=useRecoilState(LoginUserImg)
+  const [loginUserImg, setLoginUserImg] = useRecoilState(LoginUserImg);
 
   function hoverProfile() {
     setIsHovered(true);
@@ -26,34 +26,32 @@ export default function ProducerBriefInfo(props:UserPropsType) {
     setIsHovered(false);
   }
 
-  const { data } = useQuery(["profile",userId], ()=>getProducerPortfolio(userId, 1)
-  , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
-    onSuccess: data => {
-        setProfileData(data.producerProfile)
-        setLoginUserImg(data.producerProfile.profileImage);
+  const { data } = useQuery(["profile", userId], () => getProducerPortfolio(userId, 1), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      setProfileData(data.producerProfile);
+      setLoginUserImg(data.producerProfile.profileImage);
     },
-    onError: error => {
+    onError: (error) => {
       console.log(error);
-    }
+    },
   });
 
-  function logout (){
+  function logout() {
     onLogout();
-    navigate('/')
+    navigate("/");
   }
 
-  function moveToMypage(){
+  function moveToMypage() {
     navigate(`/producer-profile/${userId}`);
   }
 
-  console.log(isHovered)
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
       <InfoContainer onClick={moveToMypage}>
         <div>
-        <ProfileImage src={profileData?.profileImage} />
+          <ProfileImage src={profileData?.profileImage} />
         </div>
         <UserName>{profileData?.name}</UserName>
       </InfoContainer>
@@ -172,10 +170,8 @@ const LogoutBox = styled.div`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const Blank=styled.div`
+const Blank = styled.div`
   position: absolute;
   width: 50rem;
   height: 3rem;
-
-`
-
+`;
