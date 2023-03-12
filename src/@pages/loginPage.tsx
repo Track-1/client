@@ -24,4 +24,5 @@ const BackButtonWrapper=styled.div`
 
 const BackgroundImg=styled.img`
   margin-top: 19.6rem;
+  width: 192rem;
 `
