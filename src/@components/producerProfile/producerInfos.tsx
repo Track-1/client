@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { CategoryIc, DescriptionIc, HashtagIc, SleeperAccountIc } from "../../assets";
+import { CategoryIc, DescriptionIc, HashtagIc, ProfileEditBtnIc, SleeperAccountIc } from "../../assets";
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
 import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { Categories } from "../../core/constants/categories";
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   profileData: ProducerProfileType;
@@ -13,13 +14,23 @@ interface PropsType {
 
 export default function ProducerInfos(props: PropsType) {
   const { profileData } = props;
+  const navigate = useNavigate();
+
+  console.log(profileData);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+
+  function moveProfileEditPage() {
+    navigate(`/profile-edit/${profileData.id}`, {
+      state: profileData,
+    });
+  }
 
   return (
     <InfoContainer>
       <InfoHeader>
         <BackButton />
+        <ProfileEditBtnIc onClick={moveProfileEditPage} />
         <Blank />
       </InfoHeader>
       {tracksOrVocals === "Vocals" ? (

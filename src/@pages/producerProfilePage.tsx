@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -13,8 +13,8 @@ import { playMusic, showPlayerBar } from "../recoil/player";
 import { Outlet, useLocation } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import usePlayer from "../utils/hooks/usePlayer";
-import { useInfiniteQuery } from "react-query";
-import { getProducerPortfolio, getSelectingTracks } from "../core/api/producerProfile";
+import { useInfiniteQuery, useMutation } from "react-query";
+import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { LoginUserId } from "../recoil/loginUserData";
 
