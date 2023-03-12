@@ -7,7 +7,7 @@ export default function TrackListHeader() {
     <TrackListHeaderWrapper>
       <TrackListHeaderSloganIcon />
       <StickerWrapper>
-        <VocalListHeaderTextIc />
+        <VocalListHeaderTextIcon />
       </StickerWrapper>
     </TrackListHeaderWrapper>
   );
@@ -27,3 +27,7 @@ const TrackListHeaderSloganIcon = styled(VocalListHeaderSloganIc)`
 const StickerWrapper = styled.article`
   display: inline-block;
 `;
+
+const VocalListHeaderTextIcon=styled(VocalListHeaderTextIc)`
+  width: 37.5rem;
+`

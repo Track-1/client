@@ -148,7 +148,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
     
     <NicknameWrapper>
-      <WhatsYourNameTextIc/>
+      <WhatsYourNameTextIcon/>
       <InputWrapper>
           <Input type="text" placeholder="Enter your user name" width={56} underline={setInputUnderline(nicknameMessage)} onChange={writeNickname}/>
           {setErrorIcon(nicknameMessage)&&(
@@ -246,4 +246,8 @@ const ArrowButtonWrapper=styled.div`
 
 const NicknameWrapper=styled.section`
     margin: 0rem 11rem;
+`
+
+const WhatsYourNameTextIcon=styled(WhatsYourNameTextIc)`
+  width: 21.2rem;
 `

@@ -66,8 +66,8 @@ export default function PortfolioUpdateModal(props: PropsType) {
   }
 
   function moveEditPage() {
-    navigate(`/portfolio-edit/${2}`, {
-      // state: portfolios,
+    navigate(`/portfolio-edit/${portfolioId}`, {
+      state: portfoliosData[clickedPortfolioId],
     });
   }
 

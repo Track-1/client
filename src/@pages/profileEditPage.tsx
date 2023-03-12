@@ -7,10 +7,10 @@ import { editInputDatas } from "../core/editProfile/editData";
 import { EditDataType, nickName } from "../type/editDataType";
 import VocalProfileEditTitle from "../@components/profileEdit/vocalProfileEditTitle";
 import { currentUser } from "../core/constants/userType";
-import { useLocation } from "react-router-dom";
-import { useQuery } from "react-query";
-import { getVocalProfile } from "../core/api/vocalProfile";
-import { getProducerPortfolio } from "../core/api/producerProfile";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { getVocalProfile, patchVocalrProfile } from "../core/api/vocalProfile";
+import { getProducerPortfolio, patchProducerProfile } from "../core/api/producerProfile";
 
 export default function ProfileEditPage() {
   const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
@@ -18,11 +18,29 @@ export default function ProfileEditPage() {
   const [isMeetRequired, setIsMeetRequired] = useState<boolean>(false);
   const [user, setUser] = useState<string>(currentUser.PRODUCER);
   const [prevDatas, setPrevDatas] = useState<any>();
+  const [patchData, setPatchData] = useState<any>();
   const { state } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const formData = new FormData();
+    formData.append("imgFile", prevDatas?.profileImage);
+    formData.append("name", prevDatas?.name);
+    formData.append("contact", editDatas.contact);
+    formData.append("category", editDatas.category[0]);
+    formData.append("keyword", editDatas.keyword[0]);
+    formData.append("introduce", editDatas.introduce);
+    user === currentUser.VOCAL && formData.append("isSelected", "true");
+    setPatchData(formData);
+  }, [isSave]);
+
+  useEffect(() => {
+    mutate();
+  }, [patchData]);
 
   const { data } = useQuery(
     ["userId", 1],
-    () => (user === currentUser.PRODUCER ? getProducerPortfolio(4, 1) : getVocalProfile(1, 1)),
+    () => (user === currentUser.PRODUCER ? getProducerPortfolio(state.id, 1) : getVocalProfile(state.id, 1)),
     {
       refetchOnWindowFocus: false,
       retry: 0,
@@ -32,6 +50,19 @@ export default function ProfileEditPage() {
       },
       onError: (error) => {
         console.log(error);
+      },
+    },
+  );
+
+  const { mutate } = useMutation(
+    () => (user === currentUser.PRODUCER ? patchProducerProfile(patchData) : patchVocalrProfile(patchData)),
+    {
+      onSuccess: () => {
+        console.log("ok");
+        navigate(-1);
+      },
+      onError: () => {
+        navigate(-1);
       },
     },
   );

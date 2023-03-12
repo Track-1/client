@@ -13,7 +13,6 @@ import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 
-
 export default function Router() {
   return (
     <BrowserRouter>
@@ -31,8 +30,7 @@ export default function Router() {
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/resetPassword" element={<ResetPasswordPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/profile-edit" element={<ProfileEditPage />} />
-
+        <Route path="/profile-edit/:id" element={<ProfileEditPage />} />
       </Routes>
     </BrowserRouter>
   );

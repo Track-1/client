@@ -86,3 +86,4 @@ const TrackheadersloganIcon = styled(TrackheadersloganIc)`
   position: absolute;
   margin-left: 74rem;
 `;
+

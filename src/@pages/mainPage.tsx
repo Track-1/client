@@ -51,7 +51,7 @@ export default function MainPage() {
     <MainPageWrapper>
       <MainHeader />
       <Main>
-        <img src={background} alt="배경이미지" />
+        <Img src={background} alt="배경이미지" />
         <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
         <VocalsTextIcon isVocalsHover={isVocalsHover} />
         <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
@@ -93,6 +93,8 @@ const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
   top: 77rem;
   left: 151.7rem;
 
+  width: 16rem;
+
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -126,6 +128,9 @@ const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
 
   top: 41rem;
   left: 110rem;
+
+  width: 16rem;
+
   background-repeat: no-repeat;
 
   ${(props) =>
@@ -143,4 +148,10 @@ const MainSlogan = styled.img`
   position: absolute;
   top: 50.6rem;
   left: 8.7rem;
+
+  width: 35rem;
 `;
+
+const Img=styled.img`
+  width: 192rem;
+`

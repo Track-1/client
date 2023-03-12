@@ -20,7 +20,7 @@ import { LoginUserId } from "../recoil/loginUserData";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
-  const [profileData, setProfileData] = useState<VocalProfileType>();
+  const [profileData, setProfileData] = useState<any>();
   const [portfolioData, setPortfolioData] = useState<VocalPortfolioType[]>([]);
   const [audioInfos, setAudioInfos] = useState({
     title: "",

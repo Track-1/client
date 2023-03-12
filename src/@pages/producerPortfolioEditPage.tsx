@@ -17,7 +17,7 @@ import {
 } from "../assets";
 import { Categories, CategoryDropdown } from "../core/constants/categories";
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CategoriesDropdownType, CategoryIdType } from "../type/CategoryChecksType";
 import { useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
@@ -37,6 +37,7 @@ export default function ProducerPortfolioEditPage() {
   const [description, setDescription] = useState<string>(prevData?.content);
   const [complete, setComplete] = useState<boolean>(false);
   const [editData, setEditdata] = useState<any>();
+  const navigate = useNavigate();
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
@@ -50,8 +51,12 @@ export default function ProducerPortfolioEditPage() {
     hashtagText.current!.value = "";
   }, [hashtag]);
 
-  const { mutate } = useMutation(() => patchProducerPortfolio(2, editData), {
+  const { mutate } = useMutation(() => patchProducerPortfolio(prevData.id, editData), {
+    onSuccess: () => {
+      navigate(-1);
+    },
     onError: () => {
+      navigate(-1);
       console.log(editData);
     },
   });

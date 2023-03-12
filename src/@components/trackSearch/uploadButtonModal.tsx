@@ -43,7 +43,7 @@ export default function UploadButtonModal() {
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
             <div onClick={moveVocalSearching}>
-              <VocalSearchingTextIc />
+              <VocalSearchingTextIcon />
               <Explain>보컬이 필요한 스케치곡</Explain>
             </div>
           </TextWrapper>
@@ -52,12 +52,12 @@ export default function UploadButtonModal() {
           <PortfolioIcon />
           <TextWrapper marginTop={10.7}>
             <div onClick={movePortfolio}>
-              <PortfolioTextIc />
+              <PortfolioTextIcon />
               <Explain>감각을 보여줄 수 있는 작업물</Explain>
             </div>
           </TextWrapper>
         </PortfolioWrapper>
-        <UnionIc />
+        <UnionIcon />
       </UploadButtonModalWrapper>
     </ModalBg>
   );
@@ -117,3 +117,22 @@ const Explain = styled.p`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray3};
 `;
+
+const UnionIcon=styled(UnionIc)`
+  width: 30.4rem;
+ 
+  @media (min-width:1200px) and (max-width:1799px){
+      margin-top: -2rem;
+    }
+
+`
+
+const VocalSearchingTextIcon=styled(VocalSearchingTextIc)`
+  width: 17.7rem;
+  height: 2.2rem;
+`
+
+const PortfolioTextIcon=styled(PortfolioTextIc)`
+  width: 8.9rem;
+  height: 2.2rem;
+`

@@ -14,7 +14,6 @@ export async function getProducerPortfolio(producerId: number, page: number) {
       },
     );
     return data?.data.data;
-
   } catch (e) {
     console.log(e);
   }
@@ -54,6 +53,20 @@ export async function patchProducerPortfolio(producerPortfolioId: number, editDa
       },
     });
     console.log(getCookie("accessToken"));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function patchProducerProfile(editData: any) {
+  try {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/profile/producer`, editData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+    console.log(data);
   } catch (e) {
     console.log(e);
   }

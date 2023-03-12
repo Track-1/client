@@ -18,7 +18,7 @@ import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
-import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 import { accessToken } from "../../recoil/token";
 import { useSetRecoilState } from "recoil";
 
@@ -125,12 +125,12 @@ export default function LoginInput() {
       !isInputEmpty(password)
     ) {
       return isProducerMode ? (
-        <ProducerLoginBtnIc onClick={() => mutate()} />
+        <ProducerLoginBtnIcon onClick={() => mutate()} />
       ) : (
-        <VocalLoginBtnIc onClick={() => mutate()} />
+        <VocalLoginBtnIcon onClick={() => mutate()} />
       );
     }
-    return <DefaultLoginBtnIc />;
+    return <DefaultLoginBtnIcon />;
   }
 
   function isInputEmpty(input: string): boolean {
@@ -144,15 +144,15 @@ export default function LoginInput() {
   return (
     <Container>
       <Wrapper>
-        <LoginTitleIc />
+        <LoginTitleIcon />
         <SubTitleWrapper>
-          <IfyourareanewuserIc />
+          <IfyourareanewuserIcon />
           <Link to="sign-up">
-            <SignuphereIc />
+            <SignuphereIcon />
           </Link>
         </SubTitleWrapper>
         <InputBox marginTop={8}>
-          <LoginEmailIc />
+          <LoginEmailIcon />
           <InputWrapper>
             <Input
               type="text"
@@ -170,7 +170,7 @@ export default function LoginInput() {
           )}
         </InputBox>
         <InputBox marginTop={2.9}>
-          <LoginPasswordIc />
+          <LoginPasswordIcon />
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
@@ -200,6 +200,7 @@ export default function LoginInput() {
 
         <ForgotMessage to="/forgotPassword">
           <LoginforgotpasswordIc />
+
         </ForgotMessage>
       </Wrapper>
     </Container>
@@ -331,3 +332,41 @@ const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
 const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
   cursor: pointer;
 `;
+
+const LoginTitleIcon=styled(LoginTitleIc)`
+  width: 19.5rem;
+`
+
+const IfyourareanewuserIcon=styled(IfyourareanewuserIc)`
+  width: 26.5rem;
+`
+
+const SignuphereIcon=styled(SignuphereIc)`
+  width: 17.5rem;
+`
+
+const LoginEmailIcon=styled(LoginEmailIc)`
+  width: 5.2rem;
+`
+
+const LoginPasswordIcon=styled(LoginPasswordIc)`
+  width: 10.7rem;
+`
+
+const DefaultLoginBtnIcon=styled(DefaultLoginBtnIc)`
+  width: 56.1rem;
+`
+
+const ProducerLoginBtnIcon=styled(ProducerLoginBtnIc)`
+  width: 56.1rem;
+`
+
+const VocalLoginBtnIcon=styled(VocalLoginBtnIc)`
+  width: 56.1rem;
+`
+
+const LoginforgotpasswordIcon=styled(LoginforgotpasswordIc)`
+  width: 20rem;
+
+  margin-top: -2rem;
+`
