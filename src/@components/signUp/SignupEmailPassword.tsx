@@ -165,9 +165,12 @@ export default function SignupEmailPassword(props:SetPropsType) {
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
         isSendCode&&setIsResendCode((prev)=>!prev)
-        setIsSendCode(true)
-        setEmailMessage(emailInvalidMessage.TIME)
-        setIsVerify(false)
+        if(emailInvalidMessage.SUCCESS){
+            setIsSendCode(true)
+            setEmailMessage(emailInvalidMessage.TIME)
+            setIsVerify(false)
+            alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
+        }
     }
     
     function verifyCode(e: React.MouseEvent){

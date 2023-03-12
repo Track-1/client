@@ -15,6 +15,7 @@ import { isSignupSuccess } from "../utils/signUp/checkSignUpStep";
 import { useRecoilValue } from 'recoil';
 import { openConventionModal } from "../recoil/conventionModal";
 import { UserDataPropsType } from "../type/signUpStepTypes";
+import { EditDataType } from "../type/editDataType";
 
 
 export default function SignUpPage() {
@@ -25,8 +26,16 @@ export default function SignUpPage() {
             ID:"",
             PW:"",
             name:"",
+            isAgree:"",
     });
     const showModal=useRecoilValue(openConventionModal)
+    const [userProfile, setUserProfile]=useState<EditDataType>({
+        contact: "",
+        category: [],
+        keyword: [],
+        introduce: "",
+    })
+    
 
   return (
     <>
@@ -37,10 +46,10 @@ export default function SignUpPage() {
             </BackButtonWrapper>
             <SignUpContainer background={background}>
                 <SignUpStepWrapper>
-                    <SignupMessage step={step} setStep={setStep} setUserData={setUserData}/>
+                    <SignupMessage step={step} setStep={setStep} userProfile={userProfile} setUserProfile={setUserProfile}/>
                     <StepBox>
                         <SignupStepHeader step={step}/>
-                        <SignUpStepRenderer step={step} setStep={setStep} userData={userData} setUserData={setUserData}/>
+                        <SignUpStepRenderer step={step} setStep={setStep} userData={userData} setUserData={setUserData} userProfile={userProfile} setUserProfile={setUserProfile}/>
                     </StepBox>
                 </SignUpStepWrapper>
             </SignUpContainer>

@@ -1,8 +1,11 @@
+import { EditDataType } from "./editDataType";
+
 export interface UserDataPropsType{
   imageFile:string;
   ID:string;
   PW:string;
   name:string;
+  isAgree:String;
 }
 
 export interface StepPropsType{
@@ -16,6 +19,8 @@ export interface StepUserPropsType{
   setStep:React.Dispatch<React.SetStateAction<string>>;  
   userData:UserDataPropsType;
   setUserData:React.Dispatch<React.SetStateAction<UserDataPropsType>>
+  userProfile:EditDataType
+  setUserProfile: React.Dispatch<React.SetStateAction<EditDataType>>
 }
 
 export interface SetStepPropsType {
@@ -44,3 +49,17 @@ export interface ContinueButtonPropsTypes{
   setStep:React.Dispatch<React.SetStateAction<string>>;  
 }
 
+export interface SignupMessagePropsType{
+  step:string;
+  setStep:React.Dispatch<React.SetStateAction<string>>;  
+  userProfile:EditDataType
+  setUserProfile: React.Dispatch<React.SetStateAction<EditDataType>>
+
+}
+
+export interface SignupProfilePropsTye{
+  setStep:React.Dispatch<React.SetStateAction<string>>;  
+  userProfile:EditDataType
+  setUserProfile: React.Dispatch<React.SetStateAction<EditDataType>>
+
+}

@@ -9,11 +9,13 @@ import { openConventionModal, openConventionPolicy } from '../../recoil/conventi
 
 interface PropsType{
     setCompleteCheck: React.Dispatch<React.SetStateAction<boolean>>
+    checkedConventions:ConventionChecksType[]
+    setCheckedConventions: React.Dispatch<React.SetStateAction<ConventionChecksType[]>>
 }
 
 export default function ConventionCheckBox(props:PropsType) {
-    const {setCompleteCheck}=props
-    const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
+    const {setCompleteCheck, checkedConventions, setCheckedConventions}=props
+    // const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
     const [checkedCount, setCheckedCount]=useState<number>(0);
     const [policy, setPolicy]=useRecoilState<string>(openConventionPolicy)
     const [showModal, setShowModal]=useRecoilState<boolean>(openConventionModal)
