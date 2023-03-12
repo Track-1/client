@@ -707,6 +707,7 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
+  padding-bottom: 1rem;
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }

@@ -31,7 +31,7 @@ export default function MainHeader() {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <TrackOneMainLogoIc style={{ cursor: "pointer" }} />
+        <TrackOneMainLogoIcon/>
         <TrackheadersloganIcon/>
         {/* <Img src={sloganImg} alt="슬로건" /> */}
         {!isLogin() && (
@@ -81,4 +81,11 @@ const LoginIcon = styled(LoginIc)`
 const TrackheadersloganIcon=styled(TrackheadersloganIc)`
   position: absolute;
   margin-left: 74rem;
+
+  width: 35rem;
+`
+
+const TrackOneMainLogoIcon=styled(TrackOneMainLogoIc)`
+  width: 26.3rem;
+  cursor: pointer;
 `

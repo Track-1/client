@@ -21,9 +21,9 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
     function showUploadImage(){
         switch(userType){
             case currentUser.PRODUCER:
-                return <SignUpUploadImageIc/>
+                return <SignUpUploadImageIcon/>
             case currentUser.VOCAL:
-                return <SignupVocalProfileImgIc/>
+                return <SignupVocalProfileImgIcon/>
         }
     }
 
@@ -127,3 +127,14 @@ const SignUpUploadImageWrapper=styled.div`
   position: absolute;
 `
 
+const SignUpUploadImageIcon=styled(SignUpUploadImageIc)`
+  width: 21.7rem;
+  height: 21.7rem;
+
+`
+
+const SignupVocalProfileImgIcon=styled(SignupVocalProfileImgIc)`
+  width: 21.7rem;
+  height: 21.7rem;
+
+`

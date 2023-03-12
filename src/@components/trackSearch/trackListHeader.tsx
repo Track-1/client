@@ -43,6 +43,8 @@ const StickerWrapper = styled.article`
 const ProducerTextIcon = styled(ProducerTextIc)`
   position: absolute;
   z-index: 5;
+
+  width: 18.7rem;
 `;
 
 const ProducerStickerWrapper = styled.div`
@@ -68,6 +70,7 @@ const VocalTextIcon = styled(VocalTextIc)`
   z-index: 3;
 
   margin: 5.5rem 0 0 23.5rem;
+  width: 10rem;
 
   transform: rotate(-15.03deg);
 `;

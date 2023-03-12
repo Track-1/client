@@ -252,15 +252,15 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function showTitle(){
         if(isSendCode&&!isVerify){
-            return <WeSentYouACodeTextIc/>
+            return <WeSentYouACodeTextIcon/>
         }
 
         else if(isVerify){
-            return <CreateAPasswordForYourAccountTitleIc/>
+            return <CreateAPasswordForYourAccountTitleIcon/>
         }
         
         else{
-            return <SignUpEmailTitleIc/>
+            return <SignUpEmailTitleIcon/>
         }
     }
 
@@ -364,10 +364,14 @@ const TitleWrapper=styled.section`
 
 const WhatsYourEmailIcon=styled(WhatsYourEmailIc)`
     margin-top: 5.96rem;
+
+    width: 20.7rem;
 `
 
 const SignUpPasswordIcon=styled(SignUpPasswordIc)`
     margin-top: 3.2rem;
+
+    width: 11.1rem;
 `
 
 const SignupEmailWrapper=styled.div`
@@ -415,10 +419,14 @@ const IconWrapper=styled.div<{marginLeft:number}>`
 
 const VerificationCodeTextIcon=styled(VerificationCodeTextIc)`
     margin-top: 3.2rem;
+
+    width: 18.1rem;
 `
 
 const ConfirmPasswordTextIcon=styled(ConfirmPasswordTextIc)`
     margin-top: 3.2rem;
+
+    width: 20rem;
 `
 
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
@@ -446,4 +454,16 @@ const EyeIcWrapper=styled.div`
     margin: 1.9rem 0 0 52rem;
 
     cursor: pointer;;
+`
+
+const SignUpEmailTitleIcon=styled(SignUpEmailTitleIc)`
+    width: 48.3rem;
+`
+
+const WeSentYouACodeTextIcon=styled(WeSentYouACodeTextIc)`
+    width: 30.7rem;
+`
+
+const CreateAPasswordForYourAccountTitleIcon=styled(CreateAPasswordForYourAccountTitleIc)`
+    width: 55.5rem;
 `

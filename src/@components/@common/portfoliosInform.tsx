@@ -146,12 +146,14 @@ const InformContainer = styled.div``;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   margin-top: 5.9rem;
-  margin-left: 12.65rem;
+  /* margin-left: 12.65rem; */
+
+  width: 24.5rem;
 `;
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;
-  margin-left: 12.65rem;
+  /* margin-left: 12.65rem; */
 `;
 
 const PortfolioInformWrapper = styled.section`

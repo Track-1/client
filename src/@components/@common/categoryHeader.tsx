@@ -129,6 +129,8 @@ const HeaderWrapper = styled.div`
 `;
 
 const TrackOneMainLogoIcon = styled(TrackOneMainLogoIc)`
+  width: 26.3rem;
+
   cursor: pointer;
 `;
 
@@ -149,21 +151,25 @@ const CategoryWrapper = styled.div`
 `;
 
 const TracksSelectTextIcon = styled(TracksSelectTextIc)`
+  width: 8.9rem;
   cursor: pointer;
 `;
 
 const TracksHeaderTextIcon = styled(TracksHeaderTextIc)`
+  width: 8.9rem;
   cursor: pointer;
 `;
 
 const VocalsSelectTextIcon = styled(VocalsSelectTextIc)`
   margin-left: 7.368rem;
+  width: 8.9rem;
 
   cursor: pointer;
 `;
 
 const VocalsHeaderTextIcon = styled(VocalsHeaderTextIc)`
   margin-left: 7.368rem;
+  width: 8.9rem;
 
   cursor: pointer;
 `;

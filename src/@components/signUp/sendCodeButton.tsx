@@ -23,7 +23,7 @@ export default function SendCodeButton(props:ButtonPropsType) {
 
   return (
     <ButtonWrapper isActive={isActive()} onClick={onClick}>
-        {isSendCode?<SignUpResendButtonIc/>:<SignupSendcodeTextIc/>}
+        {isSendCode?<SignUpResendButtonIcon/>:<SignupSendcodeTextIcon/>}
     </ButtonWrapper>
   )
 }
@@ -40,4 +40,12 @@ const ButtonWrapper=styled.button<{isActive:boolean}>`
 
     border-radius: 5rem;
     background-color: ${({ theme,isActive }) => isActive?theme.colors.main:theme.colors.gray4};
+`
+
+const SignupSendcodeTextIcon=styled(SignupSendcodeTextIc)`
+  width: 9.3rem;
+`
+
+const SignUpResendButtonIcon=styled(SignUpResendButtonIc)`
+  width: 6.3rem;
 `

@@ -44,7 +44,8 @@ export default function SignUpPage() {
             <BackButtonWrapper>
                 <SignUpBackButton/>
             </BackButtonWrapper>
-            <SignUpContainer background={background}>
+            <SignUpContainer>
+                <Img src={background} alt="배경"/>
                 <SignUpStepWrapper>
                     <SignupMessage step={step} setStep={setStep} userProfile={userProfile} setUserProfile={setUserProfile}/>
                     <StepBox>
@@ -70,11 +71,16 @@ const BackButtonWrapper=styled.div`
     margin: 5.9rem 0 0 7.9rem;
 `
 
-const SignUpContainer=styled.div<{background:string}>`
+const SignUpContainer=styled.div`
+    width: 192rem;
+    height: 98rem;
+`
+
+const Img=styled.img`
+    position: absolute;
     width: 192rem;
     height: 98rem;
 
-    background-image: url(${({background})=>background});
 `
 
 const SignUpStepWrapper=styled.div`
