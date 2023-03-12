@@ -67,29 +67,35 @@ const RoleWrapper=styled.section`
 
 const SignUpSelectRoleTitleIcon=styled(SignUpSelectRoleTitleIc)`
   margin-left:14.4rem;
+
+  width: 48.2rem;
 `
 
 const SignupSelectedProducerIcon=styled(SignupSelectedProducerIc)`
   margin:3.3rem 0 1.4rem 11.2rem;
-
+  width: 61.9rem;
+  height: 21.5rem;
   cursor: pointer;
 `
 
 const SignupNotSelectedProducerIcon=styled(SignupNotSelectedProducerIc)`
   margin:3.3rem 0 1.4rem 11.2rem;
-
+  width: 61.9rem;
+  height: 21.5rem;
   cursor: pointer;
 `
 
 const SignupSelectedVocalIcon=styled(SignupSelectedVocalIc)`
   margin-left: 6.3rem;
-
+  width: 61.9rem;
+  height: 21.5rem;
   cursor: pointer;
 `
 
 const SignupNotSelectedVocalIcon=styled(SignupNotSelectedVocalIc)`
   margin-left: 6.3rem;
-
+  width: 61.9rem;
+  height: 21.5rem;
   cursor: pointer;
 `
 

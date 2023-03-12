@@ -61,10 +61,14 @@ export default function SignupMessage(props: SignupMessagePropsType) {
 
 const SignBgLogoIcon = styled(SignBgLogoIc)`
   margin: 43.5rem 24.9rem 0 23.3rem;
+
+  width: 47.8rem;
 `;
 
 const SignWelcomeIcon = styled(SignWelcomeIc)`
   margin: 1.2rem 28.2rem 0 32.7rem;
+
+  width: 35.1rem;
 `;
 
 const WelcomeMessageWrapper = styled.section`

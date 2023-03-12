@@ -17,7 +17,7 @@ export default function VerifyButton(props:VerifyPropsType) {
     
   return (
     <ButtonWrapper isActive={isActive()} onClick={onClick}>
-        <SignUpVerifyButtonIc/>
+        <SignUpVerifyButtonIcon/>
     </ButtonWrapper>
   )
 }
@@ -34,4 +34,8 @@ const ButtonWrapper=styled.button<{isActive:boolean}>`
 
     border-radius: 5rem;
     background-color: ${({ theme,isActive }) => isActive?theme.colors.main:theme.colors.gray4};
+`
+
+const SignUpVerifyButtonIcon=styled(SignUpVerifyButtonIc)`
+    width: 5rem;
 `
