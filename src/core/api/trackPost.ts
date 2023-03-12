@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useMutation } from "react-query";
-import { UploadDataType } from "../../type/uploadDataType";
 import { getCookie } from "../../utils/cookie";
 
 export async function getTrackInfo(props: number) {
@@ -8,6 +6,7 @@ export async function getTrackInfo(props: number) {
   try {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
@@ -21,7 +20,9 @@ export async function getComment(page: number, beatId: number) {
   try {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
+        beatId: beatId,
       },
     });
     return data?.data.data;
