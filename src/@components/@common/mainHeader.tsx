@@ -9,40 +9,44 @@ import ProducerBriefInfo from "../main/produderBriefInfo";
 import VocalBriefInfo from "../main/vocalBriefInfo";
 import { getCookie } from "../../utils/cookie";
 import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
-import { isProducer,isVocal } from '../../utils/common/userType';
+import { isProducer, isVocal } from "../../utils/common/userType";
 
 export default function MainHeader() {
   const navigate = useNavigate();
-  const userType=useRecoilValue(LoginUserType);
-  const userId=useRecoilValue(LoginUserId);
+  const userType = useRecoilValue(LoginUserType);
+  const userId = useRecoilValue(LoginUserId);
 
-  function moveToLogin(){
+  function moveToLogin() {
     navigate("/login");
   }
 
-  function moveToSignup(){
+  function moveToSignup() {
     navigate("/sign-up");
   }
 
-  function isLogin(){
-    return getCookie("accessToken")!==undefined;
+  function moveToHome() {
+    navigate("/");
+  }
+
+  function isLogin() {
+    return getCookie("accessToken") !== undefined;
   }
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <TrackOneMainLogoIcon/>
-        <TrackheadersloganIcon/>
+        <TrackOneMainLogoIc style={{ cursor: "pointer" }} onClick={moveToHome} />
+        <TrackheadersloganIcon />
         {/* <Img src={sloganImg} alt="슬로건" /> */}
         {!isLogin() && (
           <BtnWrpper>
-            <LoginIcon onClick={moveToLogin}/>
-            <SignupIc onClick={moveToSignup}/>
+            <LoginIcon onClick={moveToLogin} />
+            <SignupIc onClick={moveToSignup} />
           </BtnWrpper>
         )}
-        
+
         {isLogin() && isProducer(userType) && <ProducerBriefInfo userId={userId} />}
-        {isLogin() && isVocal(userType) && <VocalBriefInfo userId={userId}/>}
+        {isLogin() && isVocal(userType) && <VocalBriefInfo userId={userId} />}
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -78,14 +82,8 @@ const LoginIcon = styled(LoginIc)`
   margin-right: 2.2rem;
 `;
 
-const TrackheadersloganIcon=styled(TrackheadersloganIc)`
+const TrackheadersloganIcon = styled(TrackheadersloganIc)`
   position: absolute;
   margin-left: 74rem;
+`;
 
-  width: 35rem;
-`
-
-const TrackOneMainLogoIcon=styled(TrackOneMainLogoIc)`
-  width: 26.3rem;
-  cursor: pointer;
-`

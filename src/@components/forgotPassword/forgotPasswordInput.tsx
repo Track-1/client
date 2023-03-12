@@ -8,15 +8,20 @@ import {
   ResendPasswordVocalBtnIc,
   ProducerModeToggleIc,
   ProducerDefaultModeToggleIc,
+  InputWarningIc,
 } from "../../assets";
+
 import { useEffect, useState } from "react";
 import { useSendNewPasswordEmail } from "../../utils/hooks/useSendNewPasswordEmail";
+import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
+import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
 
 export default function ForgotPasswordInput() {
   const [email, setEmail] = useState<string>("");
   const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
   const [userType, setUserType] = useState<string>("vocal");
   const [resendTrigger, setResendTrigger] = useState<boolean>(false);
+  const [emailMessage, setEmailMessage] = useState<string>(emailInvalidMessage.NULL);
 
   const { mutate, isSuccess } = useSendNewPasswordEmail(userType, email);
 
@@ -28,9 +33,17 @@ export default function ForgotPasswordInput() {
     isSuccess && setResendTrigger(true);
   }, [isSuccess]);
 
-  function validateEmail(e: React.ChangeEvent<HTMLInputElement>) {
-    const email = e.target.value;
-    setEmail(email);
+  function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.value) {
+      setEmailMessage(emailInvalidMessage.NULL);
+    } else if (!checkEmailForm(e.target.value)) {
+      setEmailMessage(emailInvalidMessage.FORM);
+    } else if (checkEmailForm(e.target.value)) {
+      setEmailMessage(emailInvalidMessage.SUCCESS);
+      setEmail(e.target.value);
+    }
+
+    setEmail(e.target.value);
   }
 
   function producerToggleType() {
@@ -42,21 +55,22 @@ export default function ForgotPasswordInput() {
   }
 
   function requestBtnType() {
-    if (false) {
-      return <RequestResetPasswordDefaultBtnIcon onClick={() => console.log()} />;
-    }
-    if (resendTrigger) {
-      return isProducerMode ? (
-        <ResendPasswordProducerBtnIcon onClick={() => mutate()} />
-      ) : (
-        <ResendPasswordVocalBtnIcon onClick={() => mutate()} />
-      );
+    if (!checkEmailForm(email)) {
+      return <RequestResetPasswordDefaultBtnIc />;
     } else {
-      return isProducerMode ? (
-        <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
-      ) : (
-        <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
-      );
+      if (resendTrigger) {
+        return isProducerMode ? (
+          <ResendPasswordProducerBtnIcon onClick={() => mutate()} />
+        ) : (
+          <ResendPasswordVocalBtnIcon onClick={() => mutate()} />
+        );
+      } else {
+        return isProducerMode ? (
+          <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
+        ) : (
+          <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
+        );
+      }
     }
   }
 
@@ -66,11 +80,18 @@ export default function ForgotPasswordInput() {
         <TitleWrapper>
           <ForgotPasswordTitleIc />
         </TitleWrapper>
-        <InputWrapper>
+        <InputBox>
           <InputTitle>What's your email</InputTitle>
-          <Input placeholder="Enter your email address" onChange={validateEmail} />
-          <UnderLine />
-        </InputWrapper>
+          <InputWrapper>
+            <Input placeholder="Enter your email address" onChange={writeEmail} />
+            {!checkEmailForm(email) && email.length !== 0 && <InputWarningIc />}
+          </InputWrapper>
+          <UnderLine inputState={emailMessage} />
+        </InputBox>
+        {!checkEmailForm(email) && email.length !== 0 && <WarningMessage>{emailMessage}</WarningMessage>}
+        {isSuccess && checkEmailForm(email) && (
+          <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 30 minutes.</ValidTimeMessage>
+        )}
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
           {producerToggleType()}
@@ -110,8 +131,16 @@ const TitleWrapper = styled.div`
   margin-top: 9.1rem;
 `;
 
-const InputWrapper = styled.div`
+const InputBox = styled.div`
   margin-top: 6.4rem;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 2.99rem;
 `;
 
 const InputTitle = styled.div`
@@ -123,8 +152,6 @@ const Input = styled.input`
   height: 3.4rem;
   width: 100%;
 
-  margin-top: 2.99rem;
-
   ${({ theme }) => theme.fonts.comment};
   color: ${({ theme }) => theme.colors.white};
   ::placeholder {
@@ -133,9 +160,42 @@ const Input = styled.input`
   border: none;
 `;
 
-const UnderLine = styled.hr`
+const WarningMessage = styled.span`
+  ${({ theme }) => theme.fonts.description};
+  color: ${({ theme }) => theme.colors.red};
+  margin-top: 1.1rem;
+`;
+
+const ValidTimeMessage = styled.span<{ isProducerMode: boolean }>`
+  ${({ theme }) => theme.fonts.description};
+  ${(props) => {
+    if (props.isProducerMode) {
+      return css`
+        color: ${({ theme }) => theme.colors.sub1};
+      `;
+    } else {
+      return css`
+        color: ${({ theme }) => theme.colors.sub2};
+      `;
+    }
+  }}
+
+  margin-top: 1.1rem;
+`;
+
+const UnderLine = styled.hr<{ inputState: string }>`
   border: 0.1rem solid;
-  border-color: ${({ theme }) => theme.colors.gray3};
+  ${(props) => {
+    if (props.inputState === emailInvalidMessage.FORM) {
+      return css`
+        border-color: ${({ theme }) => theme.colors.red};
+      `;
+    } else {
+      return css`
+        border-color: ${({ theme }) => theme.colors.gray3};
+      `;
+    }
+  }}
 `;
 
 const ModeWrapper = styled.div`
@@ -153,10 +213,6 @@ const ModeText = styled.div`
 
 const RequestBtnWrapper = styled.div`
   margin-top: 2.2rem;
-`;
-
-const RequestResetPasswordDefaultBtnIcon = styled(RequestResetPasswordDefaultBtnIc)`
-  cursor: pointer;
 `;
 
 const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
