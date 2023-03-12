@@ -1,12 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
+
 import { useMutation } from "react-query";
 import { deletePortfolio, deleteTitlePortfolio } from "../../core/api/delete";
 import { useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
 import { patchTitleAPI } from "../../core/api/profile";
+
+import { PortfolioType } from "../../type/profilePropsType";
+
 
 interface PropsType {
   isTitle: boolean;
@@ -54,7 +59,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
       return deletePortfolio(portfolioId, loginUserType);
     }
   }
-
+  
   function checkIsVocalSearching() {
     return profileState === profileCategory.VOCAL_SEARCHING;
   }
@@ -63,14 +68,22 @@ export default function PortfolioUpdateModal(props: PropsType) {
     return profileState === profileCategory.PORTFOLIO;
   }
 
+  function moveEditPage() {
+    navigate(`/portfolio-edit/${2}`, {
+      state: portfolios,
+    });
+  }
+
   return (
     <ModalWrapper
       isTitle={isTitle}
       checkIsPortfolio={checkIsPortfolio()}
       checkIsVocalSearching={checkIsVocalSearching()}>
       <ModalBox underline={true}>
-        수정하기
-        <PencilUpdateIc />
+        <div onClick={moveEditPage}>
+          수정하기
+          <PencilUpdateIc />
+        </div>
       </ModalBox>
       {!checkIsVocalSearching() ? (
         <ModalBox underline={!isTitle} onClick={() => deleteTrack()}>

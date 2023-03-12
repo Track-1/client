@@ -207,4 +207,14 @@ export { ReactComponent as ProfileEditSleepAcountTitleIc } from "./icon/profileE
 export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
 export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEditSleeperButtonIc.svg";
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
-
+export { ReactComponent as SignUpVocalChangePhotoIc } from "./icon/signUpVocalChangePhotoIc.svg";
+export { ReactComponent as SignUpChangeImgIc } from "./icon/signUpChangeImgIc.svg";
+export { ReactComponent as SignupProfileCompleteIc } from "./icon/signupProfileCompleteIc.svg";
+export { ReactComponent as ClosedAddCommentIc } from "./icon/closedAddCommentIc.svg";
+export { ReactComponent as LoginTitleIc } from "./icon/loginTitleIc.svg";
+export { ReactComponent as IfyourareanewuserIc } from "./icon/ifyourareanewuserIc.svg";
+export { ReactComponent as SignuphereIc } from "./icon/signuphereIc.svg";
+export { ReactComponent as LoginforgotpasswordIc } from "./icon/loginforgotpasswordIc.svg";
+export { ReactComponent as LoginEmailIc } from "./icon/loginEmailIc.svg";
+export { ReactComponent as LoginPasswordIc } from "./icon/loginPasswordIc.svg";
+export { ReactComponent as TrackheadersloganIc } from "./icon/trackheadersloganIc.svg";

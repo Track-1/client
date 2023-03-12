@@ -14,13 +14,15 @@ import {
 import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
+import { isProducer } from "../../utils/common/userType";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const loginUserType = useRecoilValue(LoginUserType);
   const loginUserId = useRecoilValue(LoginUserId);
+  const loginUserImg=useRecoilValue(LoginUserImg);
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
@@ -65,10 +67,23 @@ export default function CategoryHeader() {
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
           <ProfileWrapper onClick={moveMypage}>
-            <ProfileImg
+            {/* <ProfileImg
               src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
               alt="프로필이미지"
-            />
+            /> */}
+             {
+              isProducer(loginUserType)?(
+              <ProducerProfileImg
+                src={loginUserImg}
+                alt="프로필이미지"
+              />):(
+              <VocalProfileImageWrapper>
+              <VocalProfileImage
+                src={loginUserImg}
+                alt="프로필이미지"
+              />
+              </VocalProfileImageWrapper>
+            )}
             <ToggleIc />
           </ProfileWrapper>
         </HeaderWrapper>
@@ -168,4 +183,44 @@ const ProfileImg = styled.img`
 
   border: 0.15rem solid white;
   border-radius: 2.4rem;
+`;
+
+const ProducerProfileImg = styled.img`
+  width: 4.6rem;
+  height: 4.6rem;
+
+  margin-right: 1.29rem;
+
+  border: 0.15rem solid white;
+  border-radius: 2.4rem;
+  border: 0.15rem solid ${({ theme }) => theme.colors.white};
+`;
+
+const VocalProfileImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 2.7rem;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: rotate(45deg);
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 0.15rem solid ${({ theme }) => theme.colors.white};
+`;
+
+const VocalProfileImage = styled.img`
+  height: 6rem;
+  width: 6rem;
+
+  /* border: 0.1rem solid ${({ theme }) => theme.colors.black}; */
+  border-radius: 50%;
+
+  transform: rotate(-45deg);
 `;

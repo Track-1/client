@@ -1,9 +1,24 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainInfoVocalIc, MainLogoutIc } from "../../assets";
-import thumbnailImg from "../../assets/image/thumbnailImg.png";
-export default function VocalBriefInfo() {
+import thumbnailImg from "../../assets/image/vocalPortfolioList5.png";
+import { onLogout } from "../../core/api/logout";
+import { getVocalProfile } from "../../core/api/vocalProfile";
+import { UserPropsType } from "../../type/userPropsType";
+import { VocalProfileType } from "../../type/vocalProfile";
+import { getCookie, removeCookie } from "../../utils/cookie";
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from "recoil";
+import { LoginUserImg } from "../../recoil/loginUserData";
+
+export default function VocalBriefInfo(props:UserPropsType) {
+  const {userId}=props;
+  const navigate=useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [profileData, setProfileData] = useState<VocalProfileType>();
+  const [loginUserImg, setLoginUserImg]=useRecoilState(LoginUserImg)
 
   function hoverProfile() {
     setIsHovered(true);
@@ -13,33 +28,55 @@ export default function VocalBriefInfo() {
     setIsHovered(false);
   }
 
+  const { data } = useQuery(["profile",userId], ()=>getVocalProfile(userId, 1)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+        setProfileData(data.vocalProfile)
+        setLoginUserImg(data.producerProfile.profileImage);
+    },
+    onError: error => {
+      console.log("실패");
+    }
+  });
+
+  function logout (){
+    onLogout();
+  }
+
+  function moveToMypage(){
+    navigate(`/vocal-profile/${userId}`);
+  }
+
   return (
-    <>
-      <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
+    <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
+      <InfoContainer onClick={moveToMypage}>
         <ProfileImageWrapper>
-          <ProfileImage src={thumbnailImg} />
+          <ProfileImage src={profileData?.profileImage} />
         </ProfileImageWrapper>
-        <UserName>_Bepore</UserName>
+        <UserName>{profileData?.name}</UserName>
       </InfoContainer>
+      <Blank></Blank>
       {isHovered && (
         <UserInfoContainer>
           <InfoBox>
             <ImageWrapper>
-              <InfoProfileImage src={thumbnailImg} />
+              <InfoProfileImage src={profileData?.profileImage} />
             </ImageWrapper>
             <TextWrapper>
-              <InfoUserName>_Bepor</InfoUserName>
+              <InfoUserName>{profileData?.name}</InfoUserName>
               <MainInfoVocalIc />
-              <UserEmail>pianowell@gmail.com</UserEmail>
+              <UserEmail>{profileData?.contact}</UserEmail>
             </TextWrapper>
           </InfoBox>
-          <LogoutBox>
+          <LogoutBox onClick={logout}>
             Log out
             <MainLogoutIc />
           </LogoutBox>
         </UserInfoContainer>
       )}
-    </>
+    </div>
   );
 }
 
@@ -49,12 +86,13 @@ const InfoContainer = styled.article`
   align-items: center;
 
   height: 5.2rem;
-  width: 19.5rem;
   padding: 0 2.2rem 0 1.3rem;
 
   background-color: ${({ theme }) => theme.colors.sub2};
 
   border-radius: 3rem;
+
+  cursor: pointer;
 `;
 
 const ProfileImageWrapper = styled.div`
@@ -65,6 +103,7 @@ const ProfileImageWrapper = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
+  margin-right: 1.2rem;
 
   height: 2.8rem;
   width: 2.8rem;
@@ -99,6 +138,8 @@ const UserInfoContainer = styled.section`
 
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 0.5rem;
+
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`
@@ -168,3 +209,9 @@ const LogoutBox = styled.div`
   ${({ theme }) => theme.fonts.body1}
   color: ${({ theme }) => theme.colors.white};
 `;
+
+const Blank=styled.div`
+  position: absolute;
+  width: 50rem;
+  height: 3rem;
+`

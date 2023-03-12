@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { getCookie } from "../../utils/cookie";
 
 export async function getProducerPortfolio(producerId: number, page: number) {
@@ -13,6 +14,7 @@ export async function getProducerPortfolio(producerId: number, page: number) {
       },
     );
     return data?.data.data;
+
   } catch (e) {
     console.log(e);
   }
@@ -38,6 +40,20 @@ export async function getSelectingTracks(producerId: number, page: number) {
 export async function postProducerPortfolio() {
   try {
     await axios.post(`${process.env.REACT_APP_BASE_URL}/mypage/producer`);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function patchProducerPortfolio(producerPortfolioId: number, editDatas: any) {
+  try {
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/mypage//producer/${producerPortfolioId}`, editDatas, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+    console.log(getCookie("accessToken"));
   } catch (e) {
     console.log(e);
   }

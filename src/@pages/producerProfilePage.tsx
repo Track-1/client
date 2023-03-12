@@ -10,7 +10,7 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import usePlayer from "../utils/hooks/usePlayer";
 import { useInfiniteQuery } from "react-query";
@@ -24,7 +24,7 @@ export default function ProducerProfilePage() {
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
-  const [isMe, setIsMe] = useState<boolean>(false);
+  const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
   const [audioInfos, setAudioInfos] = useState({
     title: "",
@@ -52,6 +52,7 @@ export default function ProducerProfilePage() {
           response = await getSelectingTracks(loginUserId, page);
           break;
       }
+      console.log(response);
       setIsMe(response?.isMe);
       setProfileData(response?.producerProfile);
       setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
@@ -103,6 +104,7 @@ export default function ProducerProfilePage() {
 
   return (
     <>
+      <Outlet />
       {visible && <TracksProfileUploadModal />}
       {profileData && <ProducerInfos profileData={profileData} />}
       <PageContainer>

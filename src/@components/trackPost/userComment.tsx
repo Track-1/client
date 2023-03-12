@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AddCommentIc, CloseBtnIc } from "../../assets";
+import { AddCommentIc, CloseBtnIc, ClosedAddCommentIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUserComment from "./eachUserComment";
 import { useEffect, useState } from "react";
@@ -20,10 +20,11 @@ import usePlayer from "../../utils/hooks/usePlayer";
 interface PropsType {
   closeComment: () => void;
   beatId: number;
+  isClosed:boolean |undefined;
 }
 
 export default function UserComment(props: PropsType) {
-  const { closeComment, beatId } = props;
+  const { closeComment, beatId, isClosed } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -126,7 +127,7 @@ export default function UserComment(props: PropsType) {
           <AddWrapper>
             <div></div>
 
-            <AddCommentIcon onClick={uploadComment} />
+            {!isClosed?<AddCommentIcon onClick={uploadComment} />:<ClosedAddCommentIcon/>}
           </AddWrapper>
         </form>
 
@@ -188,6 +189,9 @@ const CloseCommentBtn = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 2.7rem;
+
+  cursor: pointer;
+
 `;
 
 const AddWrapper = styled.div`
@@ -197,6 +201,13 @@ const AddWrapper = styled.div`
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`
+  margin-top: 1.9rem;
+  margin-bottom: 1.4rem;
+
+  cursor: pointer;
+`;
+
+const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 `;
