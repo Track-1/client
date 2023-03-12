@@ -18,7 +18,7 @@ import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
-import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 import { accessToken } from "../../recoil/token";
 import { useSetRecoilState } from "recoil";
 
