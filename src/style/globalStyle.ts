@@ -66,8 +66,25 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
 
     font-family: sans-serif;
-    font-size: 62.5%;
+    /* font-size: 62.5%; */
     user-select: none;
+    @media (max-width:1800px){
+      font-size: 62.5%;
+    }
+    @media (min-width:1200px) and (max-width:1799px){
+      font-size: 47.5%;
+    }
+    @media (min-width:1024px) and (max-width:1199px){
+      font-size: 43%;
+    }
+    @media (min-width: 768px) and (max-width:1023px){ 
+      font-size: 36.5%;
+    }
+    @media (max-width:767px){ 
+      font-size: 30%;
+    }
+    
+
   }
   ul, li {
     padding-left: 0rem;
