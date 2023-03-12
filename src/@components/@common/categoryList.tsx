@@ -129,7 +129,7 @@ export default function CategoryList() {
         ))}
         {isTracksPage(tracksOrVocals) && isProducer(userType) && (
           <UploadButton type="button" onClick={moveUploadPage}>
-            <UploadTextIc />
+            <UploadTextIcon />
           </UploadButton>
         )}
 
@@ -224,3 +224,7 @@ const TrackSearchingPinkIcon = styled(TrackSearchingPinkIc)`
   width: 23.8rem;
   cursor: pointer;
 `;
+
+const UploadTextIcon=styled(UploadTextIc)`
+  width: 12.4rem;
+`

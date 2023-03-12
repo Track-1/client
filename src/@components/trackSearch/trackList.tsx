@@ -141,18 +141,23 @@ const HoverPlayIcon = styled(HoverPlayIc)`
 const CategoryWrapper = styled.section`
   margin: 4.6rem 0 3.5rem 9rem;
 `;
-const TitleTextIcon = styled(TitleTextIc)``;
+const TitleTextIcon = styled(TitleTextIc)`
+  width: 5rem;
+`;
 
 const ProducerCategoryTextIcon = styled(ProducerCategoryTextIc)`
   margin-left: 43rem;
+  width: 10.5rem;
 `;
 
 const CategoryTextIcon = styled(CategoryTextIc)`
   margin-left: 10.7rem;
+  width: 10.3rem;
 `;
 
 const HashtagTextIcon = styled(HashtagTextIc)`
   margin-left: 10.7rem;
+  width: 9.3rem;
 `;
 
 const TracksWrapper = styled.section`
