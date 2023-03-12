@@ -18,12 +18,9 @@ import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
-
-import { useSetRecoilState } from "recoil";
 import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { accessToken } from "../../recoil/token";
 import { useSetRecoilState } from "recoil";
-
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -37,7 +34,7 @@ export default function LoginInput() {
 
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
-  const [token, setToken] = useRecoilState<string>(accessToken);
+  // const [token, setToken] = useSetRecoilState<string>(accessToken);
 
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{10,25}$/;
@@ -147,13 +144,15 @@ export default function LoginInput() {
   return (
     <Container>
       <Wrapper>
-        <LoginTitleIc/>
+        <LoginTitleIc />
         <SubTitleWrapper>
-          <IfyourareanewuserIc/>
-          <Link to="sign-up"><SignuphereIc/></Link>
+          <IfyourareanewuserIc />
+          <Link to="sign-up">
+            <SignuphereIc />
+          </Link>
         </SubTitleWrapper>
         <InputBox marginTop={8}>
-          <LoginEmailIc/>
+          <LoginEmailIc />
           <InputWrapper>
             <Input
               type="text"
@@ -164,10 +163,14 @@ export default function LoginInput() {
             />
           </InputWrapper>
           <UnderLine inputState={emailInputState} />
-          {isWarningState(emailInputState) ? <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>:<WarningMessage isWarning={false}>null</WarningMessage>}
+          {isWarningState(emailInputState) ? (
+            <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>
+          ) : (
+            <WarningMessage isWarning={false}>null</WarningMessage>
+          )}
         </InputBox>
         <InputBox marginTop={2.9}>
-          <LoginPasswordIc/>
+          <LoginPasswordIc />
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
@@ -182,8 +185,10 @@ export default function LoginInput() {
           </InputWrapper>
           <UnderLine inputState={passwordInputState} />
           {isWarningState(passwordInputState) ? (
-            <WarningMessage isWarning={true}>Wrong password.Try again or click Forgot password to reset it.</WarningMessage>
-          ):(
+            <WarningMessage isWarning={true}>
+              Wrong password.Try again or click Forgot password to reset it.
+            </WarningMessage>
+          ) : (
             <WarningMessage isWarning={false}>null</WarningMessage>
           )}
         </InputBox>
@@ -193,7 +198,9 @@ export default function LoginInput() {
         </ModeWrapper>
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
-        <ForgotMessage to="/"><LoginforgotpasswordIc/></ForgotMessage>
+        <ForgotMessage to="/">
+          <LoginforgotpasswordIc />
+        </ForgotMessage>
       </Wrapper>
     </Container>
   );
@@ -214,11 +221,10 @@ const Container = styled.article`
   border: 0.3rem solid transparent;
   border-radius: 5rem;
   background-image: linear-gradient(rgba(20, 21, 23, 0.6), rgba(20, 21, 23, 0.6)),
-  linear-gradient(to top, transparent, #3E4045);
+    linear-gradient(to top, transparent, #3e4045);
 
   background-origin: border-box;
   background-clip: content-box, border-box;
-
 `;
 
 const Wrapper = styled.div`
@@ -233,9 +239,8 @@ const SubTitleWrapper = styled.div`
   margin-bottom: 2.3rem;
 `;
 
-
-const InputBox = styled.div<{marginTop:number}>`
-  margin-top: ${({marginTop})=>marginTop}rem;
+const InputBox = styled.div<{ marginTop: number }>`
+  margin-top: ${({ marginTop }) => marginTop}rem;
 `;
 
 const InputWrapper = styled.div`
@@ -259,8 +264,8 @@ const Input = styled.input`
   border: none;
 `;
 
-const WarningMessage = styled.span<{isWarning:boolean}>`
-  color: ${({ theme,isWarning }) => isWarning?theme.colors.red:"transparent"};
+const WarningMessage = styled.span<{ isWarning: boolean }>`
+  color: ${({ theme, isWarning }) => (isWarning ? theme.colors.red : "transparent")};
   ${({ theme }) => theme.fonts.description};
   margin-top: 1.1rem;
 `;

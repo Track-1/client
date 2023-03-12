@@ -132,7 +132,6 @@ export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHe
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
 
-
 export { ReactComponent as ForgotPasswordTitleIc } from "./icon/forgotPasswordTitleIc.svg";
 export { ReactComponent as RequestResetPasswordDefaultBtnIc } from "./icon/requestResetPasswordDefaultBtnIc.svg";
 export { ReactComponent as RequestResetPasswordProducerBtnIc } from "./icon/requestResetPasswordProducerBtnIc.svg";
@@ -200,8 +199,6 @@ export { ReactComponent as InstagramLogoIc } from "./icon/instagramLogoIc.svg";
 export { ReactComponent as FacebookLogoIc } from "./icon/facebookLogoIc.svg";
 export { ReactComponent as SignupVocalProfileImgIc } from "./icon/signupVocalProfileImgIc.svg";
 
-export { ReactComponent as ProducerModeToggleIc } from "./icon/producerModeToggleIc.svg";
-export { ReactComponent as ProducerDefaultModeToggleIc } from "./icon/producerDefaultModeToggleIc.svg";
 export { ReactComponent as EyeIc } from "./icon/eyeIc.svg";
 export { ReactComponent as ProducerLoginBtnIc } from "./icon/producerLoginBtnIc.svg";
 export { ReactComponent as VocalLoginBtnIc } from "./icon/vocalLoginBtnIc.svg";
@@ -235,4 +232,3 @@ export { ReactComponent as LoginforgotpasswordIc } from "./icon/loginforgotpassw
 export { ReactComponent as LoginEmailIc } from "./icon/loginEmailIc.svg";
 export { ReactComponent as LoginPasswordIc } from "./icon/loginPasswordIc.svg";
 export { ReactComponent as TrackheadersloganIc } from "./icon/trackheadersloganIc.svg";
-

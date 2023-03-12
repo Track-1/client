@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
@@ -9,9 +8,7 @@ import { useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
 import { patchTitleAPI } from "../../core/api/profile";
-
-import { PortfolioType } from "../../type/profilePropsType";
-
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   isTitle: boolean;
@@ -24,7 +21,7 @@ interface PropsType {
 
 export default function PortfolioUpdateModal(props: PropsType) {
   const { isTitle, profileState, portfolioId, portfoliosData, clickedPortfolioId } = props;
-  console.log(portfoliosData);
+  const navigate = useNavigate();
 
   const loginUserType = useRecoilValue(LoginUserType);
 
@@ -59,7 +56,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
       return deletePortfolio(portfolioId, loginUserType);
     }
   }
-  
+
   function checkIsVocalSearching() {
     return profileState === profileCategory.VOCAL_SEARCHING;
   }
@@ -70,7 +67,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
 
   function moveEditPage() {
     navigate(`/portfolio-edit/${2}`, {
-      state: portfolios,
+      // state: portfolios,
     });
   }
 

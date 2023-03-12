@@ -112,9 +112,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
-              {/* {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
+              {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
-
                 <PortfolioUpdateModal
                   isTitle={checkIsTitle()}
                   ref={modalRef}
@@ -124,7 +123,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
                   clickedPortfolioId={id}
                 />
               )}
-
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>
             <InformCategory>{portfolios[id].category}</InformCategory>
