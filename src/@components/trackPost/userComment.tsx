@@ -143,6 +143,7 @@ export default function UserComment(props: PropsType) {
                   clickComment={clickComment}
                   pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
+                  isMe={comments[index].isMe}
                 />
               );
             })}

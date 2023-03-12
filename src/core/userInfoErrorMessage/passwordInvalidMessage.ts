@@ -4,3 +4,4 @@ export const passwordInvalidMessage = {
     MATCH: "These passwords don’t match.",
     SUCCESS: "password success"
 };
+

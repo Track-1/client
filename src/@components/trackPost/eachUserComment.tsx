@@ -5,7 +5,8 @@ import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
-
+import useModal from "../../utils/hooks/useModal";
+import EditDropDownComment from "./editDropDownComment";
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -14,15 +15,17 @@ interface PropsType {
   pauseAudio: () => void;
   clickComment: (index: number) => void;
   currentIndex: number;
+  isMe: boolean;
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio } = props;
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
 
   function hoverComment() {
     setIsHover(true);
@@ -46,6 +49,10 @@ export default function EachUserComment(props: PropsType) {
     return play && isClickedComment();
   }
 
+  function changeToggleState() {
+    setEditModalToggle((prev) => !prev);
+  }
+
   return (
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
@@ -61,7 +68,11 @@ export default function EachUserComment(props: PropsType) {
         )}
       </ProfileImage>
       <InfoBox>
-        <UserName>{commentInfo.vocalName}</UserName>
+        <InfoTopWrapper>
+          <UserName>{commentInfo.vocalName}</UserName>
+          {isMe && <EllipsisIcon onClick={changeToggleState} />}
+          {editModalToggle && <EditDropDownComment currentId={commentInfo.commentId} />}
+        </InfoTopWrapper>
         <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
     </CommentContainer>
@@ -108,8 +119,13 @@ const PlayerBlur = styled.div`
 `;
 
 const InfoBox = styled.div`
+  height: 8rem;
+  width: 79rem;
+`;
+
+const InfoTopWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const UserName = styled.strong`
@@ -121,9 +137,10 @@ const CommentText = styled.strong`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.description}
   margin-top: 1.2rem;
+  line-height: 2.88rem;
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`
+  float: right;
   cursor: pointer;
 `;
-
