@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
 import { onLogout } from "../../core/api/logout";
 import { getProducerPortfolio } from "../../core/api/producerProfile";
+import { LoginUserImg } from "../../recoil/loginUserData";
 import { ProducerProfileType } from "../../type/producerProfile";
 import { UserPropsType } from "../../type/userPropsType";
 
@@ -14,6 +16,7 @@ export default function ProducerBriefInfo(props:UserPropsType) {
   const navigate=useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<ProducerProfileType>();
+  const [loginUserImg, setLoginUserImg]=useRecoilState(LoginUserImg)
 
   function hoverProfile() {
     setIsHovered(true);
@@ -29,6 +32,7 @@ export default function ProducerBriefInfo(props:UserPropsType) {
     retry: 0, 
     onSuccess: data => {
         setProfileData(data.producerProfile)
+        setLoginUserImg(data.producerProfile.profileImage);
     },
     onError: error => {
       console.log(error);

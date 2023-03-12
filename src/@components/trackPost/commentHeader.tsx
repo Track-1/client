@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { Track1Ic } from "../../assets";
+import { Track1Ic, TrackOneMainLogoIc } from "../../assets";
 
 export default function CommentHeader() {
   const navigate = useNavigate();
@@ -49,8 +49,8 @@ const HeaderWrapper = styled.div`
   width: 178.7rem;
 `;
 
-const TrackOneIcon = styled(Track1Ic)`
-  margin-top: 4.1rem;
-  margin-left: -0.3rem;
+const TrackOneIcon = styled(TrackOneMainLogoIc)`
+  margin-top: 6.1rem;
+  margin-left: 7.5rem;
   position: fixed;
 `;
