@@ -6,12 +6,21 @@ import {
   ProducerLoginBtnIc,
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
+  LoginTitleIc,
+  IfyourareanewuserIc,
+  SignuphereIc,
+  LoginforgotpasswordIc,
+  LoginEmailIc,
+  LoginPasswordIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
+import { accessToken } from "../../recoil/token";
+import { useSetRecoilState } from "recoil";
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -25,6 +34,8 @@ export default function LoginInput() {
 
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
 
+  // const [token, setToken] = useSetRecoilState<string>(accessToken);
+
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{10,25}$/;
 
@@ -32,26 +43,28 @@ export default function LoginInput() {
   const BLUR = "blur";
   const WARNING = "warning";
 
+  const setLoginUserType = useSetRecoilState(LoginUserType);
+  const setLoginUserId = useSetRecoilState(LoginUserId);
+
   useEffect(() => {
     isProducerMode ? setLoginType("producer") : setLoginType("vocal");
   }, [isProducerMode]);
 
-  const { mutate, isSuccess } = useMutation(() => onLogin(email, password, loginType), {
+  const { mutate } = useMutation(() => onLogin(email, password, loginType), {
     onSuccess: (data) => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
+        setLoginUserType(data.data.data.tableName);
+        setLoginUserId(data.data.data.id);
         setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
-        onLoginSuccess(accessToken);
+        onLoginSuccess();
+        navigate("/");
       }
     },
     onError: (error: any) => {
       alert(error?.response.data.message);
     },
   });
-
-  useEffect(() => {
-    isSuccess && navigate("/");
-  }, [isSuccess]);
 
   function producerToggleType() {
     return isProducerMode ? (
@@ -131,13 +144,15 @@ export default function LoginInput() {
   return (
     <Container>
       <Wrapper>
-        <Title>Log in</Title>
+        <LoginTitleIc />
         <SubTitleWrapper>
-          <span>If you are new user, </span>
-          <StLink to="sign-up">Sign up here</StLink>
+          <IfyourareanewuserIc />
+          <Link to="sign-up">
+            <SignuphereIc />
+          </Link>
         </SubTitleWrapper>
-        <InputBox>
-          <InputTitle>Email</InputTitle>
+        <InputBox marginTop={8}>
+          <LoginEmailIc />
           <InputWrapper>
             <Input
               type="text"
@@ -148,10 +163,14 @@ export default function LoginInput() {
             />
           </InputWrapper>
           <UnderLine inputState={emailInputState} />
-          {isWarningState(emailInputState) && <WarningMessage>{emailWarningMessage}</WarningMessage>}
+          {isWarningState(emailInputState) ? (
+            <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>
+          ) : (
+            <WarningMessage isWarning={false}>null</WarningMessage>
+          )}
         </InputBox>
-        <InputBox>
-          <InputTitle>Password</InputTitle>
+        <InputBox marginTop={2.9}>
+          <LoginPasswordIc />
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
@@ -165,8 +184,12 @@ export default function LoginInput() {
             <EyeIcon onClick={() => setShowPassword((prev) => !prev)} />
           </InputWrapper>
           <UnderLine inputState={passwordInputState} />
-          {isWarningState(passwordInputState) && (
-            <WarningMessage>Wrong password.Try again or click Forgot password to reset it.</WarningMessage>
+          {isWarningState(passwordInputState) ? (
+            <WarningMessage isWarning={true}>
+              Wrong password.Try again or click Forgot password to reset it.
+            </WarningMessage>
+          ) : (
+            <WarningMessage isWarning={false}>null</WarningMessage>
           )}
         </InputBox>
         <ModeWrapper>
@@ -175,7 +198,9 @@ export default function LoginInput() {
         </ModeWrapper>
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
-        <ForgotMessage to="/">Forgot password</ForgotMessage>
+        <ForgotMessage to="/">
+          <LoginforgotpasswordIc />
+        </ForgotMessage>
       </Wrapper>
     </Container>
   );
@@ -186,22 +211,24 @@ const Container = styled.article`
   top: 9.9rem;
   left: 96rem;
 
-  height: 88.8rem;
   width: 77.9rem;
+  height: 88.8rem;
 
-  background: rgba(20, 21, 23, 0.6);
+  right: 18.1rem;
+
   backdrop-filter: blur(1rem);
 
+  border: 0.3rem solid transparent;
   border-radius: 5rem;
+  background-image: linear-gradient(rgba(20, 21, 23, 0.6), rgba(20, 21, 23, 0.6)),
+    linear-gradient(to top, transparent, #3e4045);
+
+  background-origin: border-box;
+  background-clip: content-box, border-box;
 `;
 
 const Wrapper = styled.div`
   margin: 10.9rem 11rem;
-`;
-
-const Title = styled.strong`
-  ${({ theme }) => theme.fonts.title};
-  color: ${({ theme }) => theme.colors.white};
 `;
 
 const SubTitleWrapper = styled.div`
@@ -212,17 +239,8 @@ const SubTitleWrapper = styled.div`
   margin-bottom: 2.3rem;
 `;
 
-const StLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.main};
-`;
-
-const InputBox = styled.div`
-  margin-top: 5.9rem;
-`;
-
-const InputTitle = styled.div`
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.gray2};
+const InputBox = styled.div<{ marginTop: number }>`
+  margin-top: ${({ marginTop }) => marginTop}rem;
 `;
 
 const InputWrapper = styled.div`
@@ -246,8 +264,8 @@ const Input = styled.input`
   border: none;
 `;
 
-const WarningMessage = styled.span`
-  color: ${({ theme }) => theme.colors.red};
+const WarningMessage = styled.span<{ isWarning: boolean }>`
+  color: ${({ theme, isWarning }) => (isWarning ? theme.colors.red : "transparent")};
   ${({ theme }) => theme.fonts.description};
   margin-top: 1.1rem;
 `;
@@ -278,7 +296,7 @@ const ModeWrapper = styled.div`
 
   float: right;
 
-  margin-top: 5.2rem;
+  margin-top: 3rem;
 `;
 
 const ModeText = styled.div`
@@ -288,7 +306,7 @@ const ModeText = styled.div`
 `;
 
 const LoginBtnWrapper = styled.div`
-  margin-top: 16rem;
+  margin-top: 13rem;
 
   cursor: pointer;
 `;

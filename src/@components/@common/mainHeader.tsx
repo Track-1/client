@@ -1,44 +1,48 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import sloganImg from "../../assets/image/sloganImg.svg";
-import { TrackOneMainLogoIc, LoginIc, SignupIc } from "../../assets";
-import { useRecoilState } from "recoil";
+import { TrackOneMainLogoIc, LoginIc, SignupIc, TrackheadersloganIc } from "../../assets";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../../recoil/main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProducerBriefInfo from "../main/produderBriefInfo";
 import VocalBriefInfo from "../main/vocalBriefInfo";
+import { getCookie } from "../../utils/cookie";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
+import { isProducer,isVocal } from '../../utils/common/userType';
 
 export default function MainHeader() {
   const navigate = useNavigate();
-
-  const [userType, setUserType] = useRecoilState(UserType);
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const userType=useRecoilValue(LoginUserType);
+  const userId=useRecoilValue(LoginUserId);
 
   function moveToLogin(){
-    navigate('/login');
+    navigate("/login");
   }
 
   function moveToSignup(){
-    navigate('/sign-up');
+    navigate("/sign-up");
+  }
+
+  function isLogin(){
+    return getCookie("accessToken")!==undefined;
   }
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
         <TrackOneMainLogoIc style={{ cursor: "pointer" }} />
-        <img src={sloganImg} alt="슬로건" />
-        {!isLogin && (
+        <TrackheadersloganIcon/>
+        {/* <Img src={sloganImg} alt="슬로건" /> */}
+        {!isLogin() && (
           <BtnWrpper>
             <LoginIcon onClick={moveToLogin}/>
             <SignupIc onClick={moveToSignup}/>
           </BtnWrpper>
         )}
-        {isLogin && userType === "producer" && 
-        <ProducerBriefInfo />
-        }
-        {isLogin && userType === "vocal" && 
-        <VocalBriefInfo />
-        }
+        
+        {isLogin() && isProducer(userType) && <ProducerBriefInfo userId={userId} />}
+        {isLogin() && isVocal(userType) && <VocalBriefInfo userId={userId}/>}
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -73,3 +77,8 @@ const BtnWrpper = styled.div`
 const LoginIcon = styled(LoginIc)`
   margin-right: 2.2rem;
 `;
+
+const TrackheadersloganIcon=styled(TrackheadersloganIc)`
+  position: absolute;
+  margin-left: 74rem;
+`

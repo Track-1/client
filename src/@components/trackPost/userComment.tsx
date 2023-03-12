@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AddCommentIc, CloseBtnIc } from "../../assets";
+import { AddCommentIc, CloseBtnIc, ClosedAddCommentIc } from "../../assets";
 import CommentWrite from "./commentWrite";
 import EachUserComment from "./eachUserComment";
 import { useEffect, useState } from "react";
@@ -20,10 +20,11 @@ import usePlayer from "../../utils/hooks/usePlayer";
 interface PropsType {
   closeComment: () => void;
   beatId: number;
+  isClosed:boolean |undefined;
 }
 
 export default function UserComment(props: PropsType) {
-  const { closeComment, beatId } = props;
+  const { closeComment, beatId, isClosed } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -48,11 +49,11 @@ export default function UserComment(props: PropsType) {
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response.commentList.length !== 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
     },
   );
-  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response.commentList[clickedIndex], "comment");
+  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
   // get end
 
@@ -95,7 +96,7 @@ export default function UserComment(props: PropsType) {
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
-      setComments((prev) => (prev ? [...prev, ...response?.commentList] : [...response?.commentList]));
+      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
       return { response, nextPage: page + 1 };
     }
   }
@@ -126,7 +127,7 @@ export default function UserComment(props: PropsType) {
           <AddWrapper>
             <div></div>
 
-            <AddCommentIcon onClick={uploadComment} />
+            {!isClosed?<AddCommentIcon onClick={uploadComment} />:<ClosedAddCommentIcon/>}
           </AddWrapper>
         </form>
 
@@ -142,6 +143,7 @@ export default function UserComment(props: PropsType) {
                   clickComment={clickComment}
                   pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
+                  isMe={comments[index].isMe}
                 />
               );
             })}
@@ -187,6 +189,9 @@ const CloseCommentBtn = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 2.7rem;
+
+  cursor: pointer;
+
 `;
 
 const AddWrapper = styled.div`
@@ -196,6 +201,13 @@ const AddWrapper = styled.div`
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`
+  margin-top: 1.9rem;
+  margin-bottom: 1.4rem;
+
+  cursor: pointer;
+`;
+
+const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 `;

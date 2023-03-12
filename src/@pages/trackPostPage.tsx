@@ -23,23 +23,23 @@ import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation } from "react-router-dom";
-import { getTrackInfo } from "../core/api/trackPost";
+import { useLocation, useParams } from "react-router-dom";
+import { getTrackInfo, patchProfile } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
+import { getCookie } from "../utils/cookie";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
   const { progress, audio } = usePlayer();
-
-  const [isEnd, setIsEnd] = useState<boolean>(true);
+  // const {beatId} = useParams();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
-  const [beatId, setBeatId] = useState<number>(-1);
+  const [beatId, setBeatId] = useState<number>(state);
   const [audioInfos, setAudioInfos] = useState<any>({
     title: "",
     name: "",
@@ -107,7 +107,7 @@ export default function TrackPostPage() {
   function openComment() {
     setIsCommentOpen(true);
     setShowPlayer(false);
-    setBeatId(state);
+    // setBeatId(state);
     audio.src = "";
   }
 
@@ -116,12 +116,14 @@ export default function TrackPostPage() {
   }
 
   function closeTrackPost() {
-    setIsEnd(true);
+    patchProfile(beatId)
+    console.log("dfdfdfdfdfdfddd")
   }
 
   function openTrackPost() {
-    setIsEnd(false);
-  }
+    patchProfile(beatId)
+    console.log("abababababab")
+  } 
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
     const tempInfos = audioInfos;
@@ -145,10 +147,10 @@ export default function TrackPostPage() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
   }, []);
-
+  
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed}/>}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <TrackPostPageWrapper>
@@ -167,8 +169,8 @@ export default function TrackPostPage() {
               </ProducerBox>
               <ButtonWrapper>
                 {trackInfoData.isMe &&
-                  (isEnd ? <ClosedWithXIcon onClick={openTrackPost} /> : <OpenedIcon onClick={closeTrackPost} />)}
-                {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <DownloadBtnIcon />)}
+                  (!trackInfoData?.isClosed ? <OpenedIcon onClick={closeTrackPost} />:<ClosedWithXIcon onClick={openTrackPost} />)}
+                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <DownloadBtnIcon />:<ClosedBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
@@ -251,6 +253,8 @@ const AudioTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
 
   margin-top: 25.1rem;
+
+  cursor: pointer;
 `;
 
 const ProducerBox = styled.div`
@@ -278,6 +282,8 @@ const NickName = styled.strong`
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
+
 `;
 
 const DownloadBtnIcon = styled(DownloadBtnIc)`
