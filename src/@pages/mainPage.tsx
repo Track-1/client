@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Header from "../@components/@common/mainHeader";
+import MainHeader from "../@components/@common/mainHeader";
 import Footer from "../@components/@common/footer";
 
 import { MainTracksTextIc, MainVocalsTextIc } from "../assets";
@@ -10,6 +10,11 @@ import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
 import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
+import ConventionModal from "../@components/@common/conventionModal";
+import { openConventionModal } from "../recoil/conventionModal";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import { Category } from "../core/constants/categoryHeader";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -17,30 +22,34 @@ export default function MainPage() {
   const [background, setBackground] = useState<string>(mainBackgroundImg);
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
-
+  const showModal=useRecoilValue(openConventionModal)
+  const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
+  
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
-    setIsVocalsHover(!isVocalsHover);
+    setIsVocalsHover(true);
   }
 
   function setTracksImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverTracksImg);
-    setIsTracksHover(!isTracksHover);
+    setIsTracksHover(true);
   }
 
   function setDefaultImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(mainBackgroundImg);
-
-    isTracksHover ? setIsTracksHover(!isTracksHover) : setIsVocalsHover(!isVocalsHover);
+    setIsTracksHover(false);
+    setIsVocalsHover(false);
   }
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
     isTracksHover ? navigate("/track-search") : navigate("/vocal-search");
+    isTracksHover? setTracksOrVocals(Category.TRACKS):setTracksOrVocals(Category.VOCALS)
   }
 
   return (
+    <>
     <MainPageWrapper>
-      <Header />
+      <MainHeader />
       <Main>
         <img src={background} alt="배경이미지" />
         <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
@@ -51,10 +60,15 @@ export default function MainPage() {
       </Main>
       <Footer />
     </MainPageWrapper>
+
+    {showModal&&(<ConventionModal/>)}
+    </>
   );
 }
 
 const MainPageWrapper = styled.div`
+  position: absolute;
+
   background-color: black;
 `;
 

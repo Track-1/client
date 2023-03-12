@@ -1,12 +1,12 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+const token = useRecoilValue;
 
 //서버통신 함수
-export const server = axios.create({
+export const client = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`,
+    Authorization: `Bearer ${token}`,
   },
 });
-
-
