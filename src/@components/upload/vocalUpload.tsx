@@ -23,6 +23,8 @@ export default function VocalUpload(props: propsType) {
   return (
     <Container>
       <SectionWrapper>
+      <Img src={VocalUploadFrameIc} alt="배경"/>
+
         <VocalImageBox>
           <VocalImageFrame
             onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
@@ -67,8 +69,9 @@ const SectionWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  background-image: url(${VocalUploadFrameIc});
-  background-repeat: no-repeat;
+  padding: 7.2rem 0 0 0;
+  /* background-image: url(${VocalUploadFrameIc});
+  background-repeat: no-repeat; */
 `;
 
 const VocalImageBox = styled.div`
@@ -77,9 +80,19 @@ const VocalImageBox = styled.div`
   display: flex;
   align-items: center;
   transform: rotate(0deg);
+  margin-top: 7.2rem;
   margin-left: 7.3rem;
   margin-right: 7.5rem;
 `;
+
+const Img=styled.img`
+  position: absolute;
+
+  width: 185rem;
+  height: 74.6rem;
+  margin-top: 7.5rem;
+
+`
 
 const VocalImageFrame = styled.div`
   height: 45.1rem;
