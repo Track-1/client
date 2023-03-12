@@ -12,6 +12,7 @@ export interface ProducerPortfolioType {
 }
 
 export interface ProducerProfileType {
+  id: number;
   profileImage: string;
   profileImge: string;
   name: string;
