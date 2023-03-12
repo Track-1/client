@@ -50,7 +50,10 @@ const HeaderWrapper = styled.div`
 `;
 
 const TrackOneIcon = styled(TrackOneMainLogoIc)`
-  margin-top: 6.1rem;
+  margin-top: 5.85rem;
   margin-left: 7.5rem;
   position: fixed;
+
+  width: 26.3rem;
+
 `;
