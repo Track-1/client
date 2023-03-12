@@ -215,12 +215,12 @@ const UploadButton = styled.button`
 
 const TrackSearchingTextIcon = styled(TrackSearchingTextIc)`
   margin: 2.275rem 0 0 6.3rem;
-
+  width: 23.8rem;
   cursor: pointer;
 `;
 
 const TrackSearchingPinkIcon = styled(TrackSearchingPinkIc)`
   margin: 2.275rem 0 0 6.3rem;
-
+  width: 23.8rem;
   cursor: pointer;
 `;
