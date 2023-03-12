@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { SignUpBackArrowIc, SignUpChangeImageIc, SignUpErrorIc, SignUpUploadImageIc, SignUpVerifyIc, WhatsYourNameTextIc } from '../../assets';
+import { SignUpBackArrowIc, SignUpChangeImageIc, SignUpContinueButtonIc, SignUpErrorIc, SignUpUploadImageIc, SignUpVerifyIc, WhatsYourNameTextIc } from '../../assets';
 import { SetUserPropsType } from '../../type/signUpStepTypes';
 import styled from 'styled-components';
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
@@ -9,7 +9,7 @@ import { nicknameValidMessage } from '../../core/userInfoErrorMessage/nicknameMe
 import { checkNicknameForm } from '../../utils/errorMessage/checkNicknameForm';
 import ConventionCheckBox from './conventionCheckBox';
 import { continueType } from '../../core/signUp/continueType';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { UserType } from '../../recoil/main';
 import { useMutation, useQueryClient } from 'react-query';
 import { joinProducer, joinVocal } from '../../core/api/signUp';
@@ -19,6 +19,7 @@ import ProfilImageContainer from './profilImageContainer';
 import { ConventionChecksType } from '../../type/conventionChecksType';
 import { conventionSelectedCheck } from '../../core/signUp/conventionSelectedCheck';
 import { setCookie } from "../../utils/cookie";
+import { LoginUserId, LoginUserType } from '../../recoil/loginUserData';
 
 export default function SignupNicknameConvention(props:SetUserPropsType) {
     const {setStep, setUserData, userData}=props;
@@ -30,7 +31,11 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const userType=useRecoilValue(UserType)
     const [successNextStep, setSuccessNextStep]=useState<string>(continueType.FAIL)
     const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(conventionSelectedCheck);
-
+    const [nextStep, setNextStep]=useState<string>(signUpStep.SIGNUP_NICKNAME_CONVENTION);
+    const [isSave, setIsSave]=useState<boolean>(false);
+    const setLoginUserType = useSetRecoilState(LoginUserType);
+    const setLoginUserId = useSetRecoilState(LoginUserId);
+  
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
       if (checkImageType(uploadName) && e.target.files) {
@@ -83,9 +88,14 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     setNickname(e.target.value)
   }
 
-  function saveUserData(){
-    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  function onSaveData(){
+    setIsSave(true)
   }
+
+  useEffect(()=>{
+    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  },[imageSrc, nickname, completeCheck])
+  
 
   useEffect(()=>{
     completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
@@ -96,31 +106,42 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   
   const {mutate:JoinProducer} = useMutation(joinProducer, {
     onSuccess: (data) => {
-    queryClient.invalidateQueries("join-producer");
-    const accessToken = data.data.data.accessToken;
-    setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      queryClient.invalidateQueries("join-producer");
+      const accessToken = data.data.data.accessToken;
+      setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      setStep(signUpStep.SIGNUP_PROFILE);
+      setLoginUserType(data.data.data.userResult.tableName);
+      setLoginUserId(data.data.data.userResult.id);
     },
     onError:()=>{
-
+      
     }
   });
 
   const {mutate:JoinVocal} = useMutation(joinVocal, {
     onSuccess: (data) => {
-    queryClient.invalidateQueries("join-vocal");
-    const accessToken = data.data.data.accessToken;
-    setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      queryClient.invalidateQueries("join-vocal");
+      const accessToken = data.data.data.accessToken;
+      setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
+      setStep(signUpStep.SIGNUP_PROFILE);
+      setLoginUserType(data.data.data.userResult.tableName);
+      setLoginUserId(data.data.data.userResult.id);
     },
-    onError:()=>{
-     
+    onError:(error)=>{
+      alert(error)
+      setStep(signUpStep.SIGNUP_NICKNAME_CONVENTION);
     }
   });
 
   useEffect(() => {
       isVocal(userType)&&JoinVocal(userData);
       isProducer(userType)&&JoinProducer(userData);
-  }, [userData]);
+  }, [isSave]);
   //user data post end
+
+  function isNull(answer:string){
+    return answer===''
+}
 
   return (
     <>
@@ -143,15 +164,32 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     <ConventionCheckBox setCompleteCheck={setCompleteCheck} checkedConventions={checkedConventions} setCheckedConventions={setCheckedConventions}/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
-      <div onClick={saveUserData}>
-        <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/>
-      </div>
+
+        {/* <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/> */}
+        <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
+          <SignUpContinueButtonIc/>
+      </ContinueButtonWrapper>
+
     </ArrowButtonWrapper>
     
     </>
   );
 
 }
+const ContinueButtonWrapper=styled.button<{isNotNull:boolean}>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 17rem;
+    height: 4.6rem;
+
+    /* margin: 10.8rem 0 0 49.8rem; */
+
+    border-radius: 2.5rem;
+    border: 0.1rem solid ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};
+    background-color: ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};
+`
 
 const Input=styled.input<{width:number, underline:string}>`
     display: flex;

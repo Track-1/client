@@ -1,14 +1,11 @@
 import axios from "axios";
 import { getCookie } from "../../utils/cookie";
-import { client } from "./common/axios";
+
 
 export async function getVocalProfile(vocalId: number, page: number) {
-  // const accessToken =
-  //   userType === "producer"
-  //     ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
-  //     : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
   try {
-    const data = await client.get(`/profile/vocal/${2}?page=${2}&limit=5`, {
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/profile/vocal/${vocalId}?page=${page}&limit=5`, {
+
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,

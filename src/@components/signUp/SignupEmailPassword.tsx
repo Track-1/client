@@ -18,7 +18,7 @@ import { passwordInvalidMessage } from '../../core/userInfoErrorMessage/password
 import { checkPasswordForm } from '../../utils/errorMessage/checkPasswordForm';
 import { passwordConfirmType } from '../../core/signUp/passwordConfirm';
 import { continueType } from '../../core/signUp/continueType';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { UserType } from '../../recoil/main';
 
 export default function SignupEmailPassword(props:SetPropsType) {
@@ -39,7 +39,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const [isShowPasswordConfirm, setIsShowPasswordConfirm]=useState<boolean>(false)
     const tableName=useRecoilValue<string>(UserType)
     const [isVerifyClicked, setIsVerifyClicked]=useState<boolean>(false);
-   
+    const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
@@ -203,6 +203,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function backToRole(){
         setStep(signUpStep.SIGNUP_ROLE)
+        setSelectedRole('');
     }
 
     function setErrorIcon(message:string){ 

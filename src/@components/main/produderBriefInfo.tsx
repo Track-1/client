@@ -1,9 +1,22 @@
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
-export default function ProducerBriefInfo() {
+import { onLogout } from "../../core/api/logout";
+import { getProducerPortfolio } from "../../core/api/producerProfile";
+import { LoginUserImg } from "../../recoil/loginUserData";
+import { ProducerProfileType } from "../../type/producerProfile";
+import { UserPropsType } from "../../type/userPropsType";
+
+export default function ProducerBriefInfo(props:UserPropsType) {
+  const {userId}=props;
+  const navigate=useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [profileData, setProfileData] = useState<ProducerProfileType>();
+  const [loginUserImg, setLoginUserImg]=useRecoilState(LoginUserImg)
 
   function hoverProfile() {
     setIsHovered(true);
@@ -13,29 +26,55 @@ export default function ProducerBriefInfo() {
     setIsHovered(false);
   }
 
+  const { data } = useQuery(["profile",userId], ()=>getProducerPortfolio(userId, 1)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+        setProfileData(data.producerProfile)
+        setLoginUserImg(data.producerProfile.profileImage);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  });
+
+  function logout (){
+    onLogout();
+    navigate('/')
+  }
+
+  function moveToMypage(){
+    navigate(`/producer-profile/${userId}`);
+  }
+
+  console.log(isHovered)
   return (
-    <>
-      <InfoContainer onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
-        <ProfileImage src={thumbnailImg} />
-        <UserName>_Bepore</UserName>
+    <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
+      <InfoContainer onClick={moveToMypage}>
+        <div>
+        <ProfileImage src={profileData?.profileImage} />
+        </div>
+        <UserName>{profileData?.name}</UserName>
       </InfoContainer>
+      <Blank></Blank>
       {isHovered && (
         <UserInfoContainer>
           <InfoBox>
-            <InfoProfileImage src={thumbnailImg} />
+            <InfoProfileImage src={profileData?.profileImage} />
             <TextWrapper>
-              <InfoUserName>_Bepore_1223</InfoUserName>
+              <InfoUserName>{profileData?.name}</InfoUserName>
               <MainInfoProducerIc />
-              <UserEmail>pianowell@gmail.com</UserEmail>
+              <UserEmail>{profileData?.contact}</UserEmail>
             </TextWrapper>
           </InfoBox>
-          <LogoutBox>
+          <LogoutBox onClick={logout}>
             Log out
             <MainLogoutIc />
           </LogoutBox>
         </UserInfoContainer>
       )}
-    </>
+    </div>
   );
 }
 
@@ -45,17 +84,20 @@ const InfoContainer = styled.article`
   align-items: center;
 
   height: 5.2rem;
-  width: 19.5rem;
   padding: 0 2.2rem 0 1.3rem;
 
   background-color: ${({ theme }) => theme.colors.sub1};
 
   border-radius: 3rem;
+
+  cursor: pointer;
 `;
 
 const ProfileImage = styled.img`
   height: 3.2rem;
   width: 3.2rem;
+
+  margin-right: 1.2rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;
@@ -75,6 +117,8 @@ const UserInfoContainer = styled.section`
 
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 0.5rem;
+
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`
@@ -127,3 +171,11 @@ const LogoutBox = styled.div`
   ${({ theme }) => theme.fonts.body1}
   color: ${({ theme }) => theme.colors.white};
 `;
+
+const Blank=styled.div`
+  position: absolute;
+  width: 50rem;
+  height: 3rem;
+
+`
+

@@ -19,6 +19,7 @@ import { isClickedOutside } from "../../utils/common/modal";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
 import useModal from "../../utils/hooks/useModal";
+import { LoginUserType } from "../../recoil/loginUserData";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
@@ -32,6 +33,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
   const { modalRef } = useModal();
+
+  const loginUserType = useRecoilValue(LoginUserType);
 
   // useEffect(() => {
   //   function closeModal(e: MouseEvent) {
@@ -111,16 +114,15 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
               {/* {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
-                <PortfolioUpdateModal isTitle={checkIsTitle()} ref={modalRef} profileState={profileState} />
-              )} */}
 
-              <EllipsisIcon onClick={clickEllipsis} />
-              <PortfolioUpdateModal
-                isTitle={checkIsTitle()}
-                ref={modalRef}
-                profileState={profileState}
-                portfolios={portfolios[clickId]}
-              />
+                <PortfolioUpdateModal
+                  isTitle={checkIsTitle()}
+                  ref={modalRef}
+                  profileState={profileState}
+                  portfolioId={portfolios[id].id}
+                />
+              )}
+
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>
             <InformCategory>{portfolios[id].category}</InformCategory>

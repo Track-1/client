@@ -47,7 +47,7 @@ export default function VocalsPage() {
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response.vocalList.length !== 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
     },
   );
@@ -57,7 +57,7 @@ export default function VocalsPage() {
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getVocalsData(filteredUrlApi, isSelected, page);
-      setVocalsData((prev) => [...prev, ...response?.vocalList]);
+      setVocalsData((prev) => [...prev, ...response]);
       return { response, nextPage: page + 1 };
     }
   }

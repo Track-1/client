@@ -32,7 +32,6 @@ export default function SignupMessage(props:SignupMessagePropsType) {
     mutate(userProfile);
   }
 
-  console.log(isComplete)
 
     useEffect(() => {
       if(userProfile.contact===''&&userProfile.category.length===0&&userProfile.introduce===''&&userProfile.keyword.length===0){

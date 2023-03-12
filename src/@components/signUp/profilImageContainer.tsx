@@ -26,12 +26,12 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
                 return <SignupVocalProfileImgIc/>
         }
     }
-console.log(userType)
+
     function checkImgHover(){
       return imageSrc&&isHover;
     }
 
-    console.log(isVocal(userType))
+  
     
   return (
     <ImageContainer isProducer={isProducer(userType)}>

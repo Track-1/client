@@ -2,18 +2,53 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
+
+import { useMutation } from "react-query";
+import { deleteProducerPortfolio, deleteVocalPortfolio } from "../../core/api/delete";
+import { useRecoilValue } from "recoil";
+import { UserType } from "../../recoil/main";
+import { LoginUserType } from "../../recoil/loginUserData";
+
 import { PortfolioType } from "../../type/profilePropsType";
+
 
 interface PropsType {
   isTitle: boolean;
   profileState: string;
   ref: React.RefObject<HTMLDivElement>;
+
+//   portfolioId: number;
+// }
+
+// export default function PortfolioUpdateModal(props: PropsType) {
+//   const { isTitle, profileState, portfolioId } = props;
+
+//   const loginUserType = useRecoilValue(LoginUserType);
+
+//   const { mutate } = useMutation(() => deleteAPI(), {
+//     onSuccess: () => {
+//       //성공하고 업로드 다시 되어야하는거 구현해야돼!
+//     },
+//     onError: (error) => {
+//       console.log(error);
+//     },
+//   });
+
+//   function deleteAPI() {
+//     if (loginUserType === "producer") {
+//       return deleteProducerPortfolio(portfolioId);
+//     } else {
+//       return deleteVocalPortfolio(portfolioId);
+//     }
+//   }
+
   portfolios: PortfolioType;
 }
 
 export default function PortfolioUpdateModal(props: PropsType) {
   const { isTitle, profileState, portfolios } = props;
   const navigate = useNavigate();
+
 
   function checkIsVocalSearching() {
     return profileState === profileCategory.VOCAL_SEARCHING;
@@ -41,12 +76,12 @@ export default function PortfolioUpdateModal(props: PropsType) {
         </div>
       </ModalBox>
       {!checkIsVocalSearching() ? (
-        <ModalBox underline={!isTitle}>
+        <ModalBox underline={!isTitle} onClick={() => mutate()}>
           삭제하기
           <TrashDeleteIc />
         </ModalBox>
       ) : (
-        <ModalBox underline={false}>
+        <ModalBox underline={false} onClick={() => mutate()}>
           삭제하기
           <TrashDeleteIc />
         </ModalBox>
@@ -88,4 +123,6 @@ const ModalBox = styled.div<{ underline: boolean }>`
   height: 5.6rem;
   padding: 1.1rem 1.9rem;
   border-bottom: 0.1rem solid ${({ underline, theme }) => (underline ? theme.colors.gray3 : "transparent")};
+
+  cursor: pointer;
 `;
