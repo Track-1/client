@@ -132,6 +132,15 @@ export { ReactComponent as VocalListHeaderSloganNewIc } from "./icon/vocalListHe
 export { ReactComponent as VocalListHeaderSloganIc } from "./icon/vocalListHeaderSloganIc.svg";
 export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
 
+
+export { ReactComponent as ForgotPasswordTitleIc } from "./icon/forgotPasswordTitleIc.svg";
+export { ReactComponent as RequestResetPasswordDefaultBtnIc } from "./icon/requestResetPasswordDefaultBtnIc.svg";
+export { ReactComponent as RequestResetPasswordProducerBtnIc } from "./icon/requestResetPasswordProducerBtnIc.svg";
+export { ReactComponent as RequestResetPasswordVocalBtnIc } from "./icon/requestResetPasswordVocalBtnIc.svg";
+export { ReactComponent as ResendPasswordProducerBtnIc } from "./icon/resendPasswordProducerBtnIc.svg";
+export { ReactComponent as ResendPasswordVocalBtnIc } from "./icon/resendPasswordVocalBtnIc.svg";
+export { ReactComponent as ProducerDefaultModeToggleIc } from "./icon/producerDefaultModeToggleIc.svg";
+export { ReactComponent as ProducerModeToggleIc } from "./icon/producerModeToggleIc.svg";
 export { ReactComponent as ResetPasswordTitleIc } from "./icon/resetPasswordTitleIc.svg";
 export { ReactComponent as ShowPasswordIc } from "./icon/showPasswordIc.svg";
 export { ReactComponent as HiddenPasswordIc } from "./icon/hiddenPasswordIc.svg";
@@ -139,7 +148,6 @@ export { ReactComponent as DefaultSaveBtnIc } from "./icon/defaultSaveBtnIc.svg"
 export { ReactComponent as SaveBtnIc } from "./icon/saveBtnIc.svg";
 export { ReactComponent as InputSuccessIc } from "./icon/inputSuccessIc.svg";
 export { ReactComponent as InputWarningIc } from "./icon/inputWarningIc.svg";
-
 
 export { ReactComponent as SignBackgroundIc } from "./icon/signBackgroundIc.svg";
 export { ReactComponent as SignBgLogoIc } from "./icon/signBgLogoIc.svg";
@@ -227,3 +235,4 @@ export { ReactComponent as LoginforgotpasswordIc } from "./icon/loginforgotpassw
 export { ReactComponent as LoginEmailIc } from "./icon/loginEmailIc.svg";
 export { ReactComponent as LoginPasswordIc } from "./icon/loginPasswordIc.svg";
 export { ReactComponent as TrackheadersloganIc } from "./icon/trackheadersloganIc.svg";
+
