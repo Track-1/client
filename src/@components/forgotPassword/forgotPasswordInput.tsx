@@ -46,10 +46,6 @@ export default function ForgotPasswordInput() {
     setEmail(e.target.value);
   }
 
-  function isEmailSuccess() {
-    return emailMessage === emailInvalidMessage.SUCCESS;
-  }
-
   function producerToggleType() {
     return isProducerMode ? (
       <ProducerModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
@@ -57,7 +53,6 @@ export default function ForgotPasswordInput() {
       <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
     );
   }
-  console.log(isSuccess);
 
   function requestBtnType() {
     if (!checkEmailForm(email)) {
@@ -85,13 +80,18 @@ export default function ForgotPasswordInput() {
         <TitleWrapper>
           <ForgotPasswordTitleIc />
         </TitleWrapper>
-        <InputWrapper>
+        <InputBox>
           <InputTitle>What's your email</InputTitle>
-          <Input placeholder="Enter your email address" onChange={writeEmail} />
+          <InputWrapper>
+            <Input placeholder="Enter your email address" onChange={writeEmail} />
+            {!checkEmailForm(email) && email.length !== 0 && <InputWarningIc />}
+          </InputWrapper>
           <UnderLine inputState={emailMessage} />
-        </InputWrapper>
+        </InputBox>
         {!checkEmailForm(email) && email.length !== 0 && <WarningMessage>{emailMessage}</WarningMessage>}
-        {isSuccess && <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 30 minutes.</ValidTimeMessage>}
+        {isSuccess && checkEmailForm(email) && (
+          <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 30 minutes.</ValidTimeMessage>
+        )}
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
           {producerToggleType()}
@@ -131,8 +131,16 @@ const TitleWrapper = styled.div`
   margin-top: 9.1rem;
 `;
 
-const InputWrapper = styled.div`
+const InputBox = styled.div`
   margin-top: 6.4rem;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 2.99rem;
 `;
 
 const InputTitle = styled.div`
@@ -143,8 +151,6 @@ const InputTitle = styled.div`
 const Input = styled.input`
   height: 3.4rem;
   width: 100%;
-
-  margin-top: 2.99rem;
 
   ${({ theme }) => theme.fonts.comment};
   color: ${({ theme }) => theme.colors.white};
