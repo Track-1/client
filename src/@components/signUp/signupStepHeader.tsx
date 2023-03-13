@@ -12,7 +12,7 @@ export default function SignupStepHeader(props:OnlyStepPropsType) {
     const navigate=useNavigate()
 
     function moveLoginPage(){
-        navigate('/log-in')
+        navigate('/login')
     }
 
   return (
