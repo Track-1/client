@@ -155,6 +155,9 @@ export default function SignupEmailPassword(props:SetPropsType) {
         if(!e.target.value){
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
         }
+        else{
+            setVerificationCodeMessage(verificationCodeInvalidMessage.ING)
+        }
         setVerificationCode(e.target.value)
     }
 
@@ -174,6 +177,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
     
     function verifyCode(e: React.MouseEvent){
+        setIsVerifyClicked(prev=>!prev)
        if(verificationCodeMessage===verificationCodeInvalidMessage.SUCCESS){
             setIsVerify(true)
             setEmailMessage(emailInvalidMessage.VERIFY) 
@@ -198,7 +202,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
         formData.append("userEmail", email);
         formData.append("verificationCode", verificationCode);
         VerifyCode.mutate(formData);
-    }, [verificationCode]);
+    }, [isVerifyClicked]);
     //verifycode end
 
     function backToRole(){
