@@ -63,7 +63,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
-        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:(error)=>{
@@ -103,7 +102,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
-        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:()=>{
@@ -151,7 +149,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
-        console.log(PostAuthMail.isError)
         if(!e.target.value){
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
         }
