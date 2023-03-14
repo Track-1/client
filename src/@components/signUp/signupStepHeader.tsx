@@ -64,12 +64,12 @@ const SignUpStep1Icon=styled(SignUpStep1Ic)`
     height: 2.4rem;
 `
 
-const SignUpStep2Icon=styled(SignUpStep1Ic)`
+const SignUpStep2Icon=styled(SignUpStep2Ic)`
     width: 2.4rem;
     height: 2.4rem;
 `
 
-const SignUpStep3Icon=styled(SignUpStep1Ic)`
+const SignUpStep3Icon=styled(SignUpStep3Ic)`
     width: 2.4rem;
     height: 2.4rem;
 `
