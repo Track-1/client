@@ -47,6 +47,10 @@ export default function SignupEmailPassword(props:SetPropsType) {
             setEmailMessage(emailInvalidMessage.NULL)
             setPasswordMessage(passwordInvalidMessage.NULL)
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+            setPassword('');
+            setPasswordConfirm('');
+            setIsShowPassword(false);
+            setIsShowPasswordConfirm(false)
         }
         else{
             if(!e.target.value){
@@ -318,7 +322,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
             <SignUpPasswordIcon/>
             <InputWrapper>
-                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
+                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword} value={password}/>
                 {setErrorIcon(passwordMessage)&&(
                     <IconWrapper marginLeft={-8.4}>
                         {setErrorIcon(passwordMessage)}
@@ -336,7 +340,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
                 <>
                 <ConfirmPasswordTextIcon/>
                 <InputWrapper>
-                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm}/>
+                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm} value={passwordConfirm}/>
                     {setErrorIcon(passwordConfirmMessage)&&(
                         <IconWrapper marginLeft={-8.4}>
                             {setErrorIcon(passwordConfirmMessage)}
