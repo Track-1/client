@@ -31,25 +31,25 @@ export default function SignupSuccess() {
     }
 
   return (
-    <>
-        <SignUpSuccessBackgroundIc/>
+    <SuccessPageContainer>
+        <SignUpSuccessBackgroundIcon/>
 
     <SuccessPageWrapper>
     <SignUpGetStartedButtonIcon onClick={moveToHome}/>
 
         {isVocal(userType)&&(
             <UploadButtonWrapper>
-                <SignUpVocalQIc/>
+                <SignUpVocalQIcon/>
                 <UploadButton>
-                    <SignUpVocalButtonIc onClick={moveToVocalUpload}/>
+                    <SignUpVocalButtonIcon onClick={moveToVocalUpload}/>
                 </UploadButton>
             </UploadButtonWrapper>
         )}
         {isProducer(userType)&&(
             <UploadButtonWrapper>
-                <SignUpProducerQIc/>
+                <SignUpProducerQIcon/>
                 <UploadButton>
-                    <SignUpProducerButtonIc onClick={openProducerUploadModal}/>
+                    <SignUpProducerButtonIcon onClick={openProducerUploadModal}/>
                 </UploadButton>
             </UploadButtonWrapper>
         )}
@@ -61,7 +61,7 @@ export default function SignupSuccess() {
         )}
 
     </SuccessPageWrapper>
-    </>
+    </SuccessPageContainer>
   )
 }
 
@@ -74,6 +74,7 @@ const SuccessPageWrapper=styled.div`
 `
 
 const SignUpGetStartedButtonIcon=styled(SignUpGetStartedButtonIc)`
+    width: 55.5rem;
     margin-top: 46.7rem;
 
     cursor: pointer;
@@ -89,7 +90,7 @@ const UploadButtonWrapper=styled.div`
 `
 
 const UploadButton=styled.div`
-    margin-top: 2.6rem;
+    margin-top: 1rem;
     cursor: pointer;
 `
 
@@ -100,4 +101,31 @@ const ModalWrapper=styled.section`
     margin: 2.5rem 0 0 13.6rem;
 
     cursor: pointer;
+`
+
+const SignUpSuccessBackgroundIcon=styled(SignUpSuccessBackgroundIc)`
+    width: 192rem;
+    height: 108rem;
+`
+
+const SuccessPageContainer=styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const SignUpVocalQIcon=styled(SignUpVocalQIc)`
+    width: 51.5rem;
+`
+
+const SignUpProducerQIcon=styled(SignUpProducerQIc)`
+     width: 50.6rem;
+`
+
+const SignUpVocalButtonIcon=styled(SignUpVocalButtonIc)`
+    width: 55.5rem;
+`
+
+const SignUpProducerButtonIcon=styled(SignUpProducerButtonIc)`
+    width: 55.5rem;
 `
