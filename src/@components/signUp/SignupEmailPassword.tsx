@@ -43,6 +43,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(emailMessage===emailInvalidMessage.VERIFY){
+            setIsSendCode(false);
             setEmailMessage(emailInvalidMessage.NULL)
             setPasswordMessage(passwordInvalidMessage.NULL)
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
@@ -291,7 +292,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
                         {setErrorIcon(emailMessage)}
                     </IconWrapper>
                 )}
-                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode}/>
+                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode} emailMessage={emailMessage}/>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(emailMessage)}>
                 {emailMessage}
