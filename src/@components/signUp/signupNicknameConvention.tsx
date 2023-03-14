@@ -167,7 +167,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
 
         {/* <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/> */}
       <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
-          <SignUpContinueButtonIc/>
+          <SignUpContinueButtonIcon/>
       </ContinueButtonWrapper>
 
     </ArrowButtonWrapper>
@@ -228,6 +228,7 @@ const IconWrapper=styled.div<{marginLeft:number}>`
 `
 
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
+  width: 10.5rem;
     cursor: pointer;
 `
 
@@ -250,4 +251,8 @@ const NicknameWrapper=styled.section`
 
 const WhatsYourNameTextIcon=styled(WhatsYourNameTextIc)`
   width: 21.2rem;
+`
+
+const SignUpContinueButtonIcon=styled(SignUpContinueButtonIc)`
+    width: 9.7rem;
 `

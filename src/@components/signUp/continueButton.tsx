@@ -17,7 +17,7 @@ export default function ContinueButton(props:ContinueButtonPropsTypes) {
 
   return (
     <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={moveNextStep}>
-        <SignUpContinueButtonIc/>
+        <SignUpContinueButtonIcon/>
     </ContinueButtonWrapper>
   )
 }
@@ -35,4 +35,8 @@ const ContinueButtonWrapper=styled.button<{isNotNull:boolean}>`
     border-radius: 2.5rem;
     border: 0.1rem solid ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};
     background-color: ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};
+`
+
+const SignUpContinueButtonIcon=styled(SignUpContinueButtonIc)`
+    width: 9.7rem;
 `

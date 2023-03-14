@@ -161,7 +161,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function isEmailSuccess(){
         return emailMessage===emailInvalidMessage.SUCCESS
     }
-    
+
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
         setVerificationCode('');
@@ -432,6 +432,7 @@ const ConfirmPasswordTextIcon=styled(ConfirmPasswordTextIc)`
 `
 
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
+    width: 10.5rem;
     cursor: pointer;
 `
 
