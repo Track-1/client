@@ -49,6 +49,8 @@ export default function SignupEmailPassword(props:SetPropsType) {
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
             setPassword('');
             setPasswordConfirm('');
+            setIsShowPassword(false);
+            setIsShowPasswordConfirm(false)
         }
         else{
             if(!e.target.value){
