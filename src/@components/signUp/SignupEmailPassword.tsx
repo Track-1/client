@@ -42,20 +42,23 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
-        if(!e.target.value){
+        if(emailMessage===emailInvalidMessage.VERIFY){
             setEmailMessage(emailInvalidMessage.NULL)
         }
-
-        else if(!checkEmailForm(e.target.value)){
-            setEmailMessage(emailInvalidMessage.FORM)
+        else{
+            if(!e.target.value){
+                setEmailMessage(emailInvalidMessage.NULL)
+            }
+    
+            else if(!checkEmailForm(e.target.value)){
+                setEmailMessage(emailInvalidMessage.FORM)
+            }
+    
+            else if(checkEmailForm(e.target.value)){
+                setEmail(e.target.value)
+                setIsValidForm(prev=>!prev);
+            }
         }
-
-        else if(checkEmailForm(e.target.value)){
-            setEmail(e.target.value)
-            setIsValidForm(prev=>!prev);
-            
-        }
- 
         setEmail(e.target.value)
     }
  
@@ -248,7 +251,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function successNextStep(){
         return (
-            passwordConfirmMessage===passwordInvalidMessage.SUCCESS?continueType.SUCCESS:continueType.FAIL
+            (passwordConfirmMessage===passwordInvalidMessage.SUCCESS&&emailMessage===emailInvalidMessage.VERIFY)?continueType.SUCCESS:continueType.FAIL
         )
     }
 
