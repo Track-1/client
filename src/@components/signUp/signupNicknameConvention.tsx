@@ -128,7 +128,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       setLoginUserId(data.data.data.userResult.id);
     },
     onError:(error)=>{
-      alert(error)
+      
       setStep(signUpStep.SIGNUP_NICKNAME_CONVENTION);
     }
   });
