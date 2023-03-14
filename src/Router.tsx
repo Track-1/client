@@ -12,6 +12,7 @@ import SignUpPage from "./@pages/signUpPage";
 import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
+import TrackPostEditPage from "./@pages/trackPostEditPage";
 
 export default function Router() {
   return (
@@ -22,6 +23,7 @@ export default function Router() {
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalsPage />} />
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
+        <Route path="/track-post/edit/:beatId" element={<TrackPostEditPage />} />
         <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         <Route path="/portfolio-edit/:producerId" element={<ProducerPortfolioEditPage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
