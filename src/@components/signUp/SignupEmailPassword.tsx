@@ -162,8 +162,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
         return emailMessage===emailInvalidMessage.SUCCESS
     }
 
+    console.log(verificationCodeMessage)
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
+        setVerificationCode('');
+        setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
         isSendCode&&setIsResendCode((prev)=>!prev)
         if(emailInvalidMessage.SUCCESS){
             setIsSendCode(true)
@@ -175,10 +178,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     
     function verifyCode(e: React.MouseEvent){
         setIsVerifyClicked(prev=>!prev)
-       if(verificationCodeMessage===verificationCodeInvalidMessage.SUCCESS){
-            setIsVerify(true)
-            setEmailMessage(emailInvalidMessage.VERIFY) 
-       }       
+           
     }
 
     //verifycode post
@@ -186,9 +186,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
         onSuccess: () => {
         queryClient.invalidateQueries("verifycode");
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
+        setIsVerify(true)
+        setEmailMessage(emailInvalidMessage.VERIFY) 
         },
         onError:(error)=>{
-            verificationCode&&
+            verificationCode!==''&&
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
         }
     });
