@@ -37,7 +37,6 @@ export default function SendCodeButton(props:ButtonPropsType) {
     }
   }
 
-
   return (
     <ButtonWrapper isActive={isActive()} onClick={onClick}>
         {checkEmailTime()?<SignUpResendButtonIcon/>:<SignupSendcodeTextIcon/>}
