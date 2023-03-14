@@ -19,7 +19,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
 import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
-import { accessToken } from "../../recoil/token";
 import { useSetRecoilState } from "recoil";
 
 export default function LoginInput() {
@@ -31,13 +30,9 @@ export default function LoginInput() {
   const [passwordInputState, setPasswordInputState] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("vocal");
-
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
-
-  // const [token, setToken] = useSetRecoilState<string>(accessToken);
-
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-  const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{10,25}$/;
+  const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,}$/;
 
   const FOCUS = "focus";
   const BLUR = "blur";
@@ -147,7 +142,7 @@ export default function LoginInput() {
         <LoginTitleIcon />
         <SubTitleWrapper>
           <IfyourareanewuserIcon />
-          <Link to="sign-up">
+          <Link to="/sign-up">
             <SignuphereIcon />
           </Link>
         </SubTitleWrapper>
@@ -200,7 +195,6 @@ export default function LoginInput() {
 
         <ForgotMessage to="/forgotPassword">
           <LoginforgotpasswordIc />
-
         </ForgotMessage>
       </Wrapper>
     </Container>
@@ -333,40 +327,40 @@ const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
   cursor: pointer;
 `;
 
-const LoginTitleIcon=styled(LoginTitleIc)`
+const LoginTitleIcon = styled(LoginTitleIc)`
   width: 19.5rem;
-`
+`;
 
-const IfyourareanewuserIcon=styled(IfyourareanewuserIc)`
+const IfyourareanewuserIcon = styled(IfyourareanewuserIc)`
   width: 26.5rem;
-`
+`;
 
-const SignuphereIcon=styled(SignuphereIc)`
+const SignuphereIcon = styled(SignuphereIc)`
   width: 17.5rem;
-`
+`;
 
-const LoginEmailIcon=styled(LoginEmailIc)`
+const LoginEmailIcon = styled(LoginEmailIc)`
   width: 5.2rem;
-`
+`;
 
-const LoginPasswordIcon=styled(LoginPasswordIc)`
+const LoginPasswordIcon = styled(LoginPasswordIc)`
   width: 10.7rem;
-`
+`;
 
-const DefaultLoginBtnIcon=styled(DefaultLoginBtnIc)`
+const DefaultLoginBtnIcon = styled(DefaultLoginBtnIc)`
   width: 56.1rem;
-`
+`;
 
-const ProducerLoginBtnIcon=styled(ProducerLoginBtnIc)`
+const ProducerLoginBtnIcon = styled(ProducerLoginBtnIc)`
   width: 56.1rem;
-`
+`;
 
-const VocalLoginBtnIcon=styled(VocalLoginBtnIc)`
+const VocalLoginBtnIcon = styled(VocalLoginBtnIc)`
   width: 56.1rem;
-`
+`;
 
-const LoginforgotpasswordIcon=styled(LoginforgotpasswordIc)`
+const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
   width: 20rem;
 
   margin-top: -2rem;
-`
+`;
