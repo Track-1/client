@@ -161,9 +161,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function isEmailSuccess(){
         return emailMessage===emailInvalidMessage.SUCCESS
     }
-
-    console.log("isResendCode"+isResendCode)
-    console.log("isSendCode"+isSendCode)
+    
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
         setVerificationCode('');
