@@ -55,9 +55,9 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   function setErrorIcon(message:string){ 
     switch (message) {
         case nicknameValidMessage.ERROR:
-            return <SignUpErrorIc/>;
+            return <SignUpErrorIcon/>;
         case nicknameValidMessage.SUCCESS:
-            return <SignUpVerifyIc/>; 
+            return <SignUpVerifyIcon/>; 
         default:
             return ;
       }
@@ -255,4 +255,14 @@ const WhatsYourNameTextIcon=styled(WhatsYourNameTextIc)`
 
 const SignUpContinueButtonIcon=styled(SignUpContinueButtonIc)`
     width: 9.7rem;
+`
+
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpVerifyIcon=styled(SignUpVerifyIc)`
+    width: 4rem;
+    height: 4rem;
 `
