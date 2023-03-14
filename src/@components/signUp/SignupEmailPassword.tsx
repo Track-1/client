@@ -211,19 +211,19 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function setErrorIcon(message:string){ 
         switch (message) {
             case emailInvalidMessage.FORM:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case emailInvalidMessage.DUPLICATION:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case verificationCodeInvalidMessage.ERROR:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case passwordInvalidMessage.FORM:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case passwordInvalidMessage.MATCH:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case emailInvalidMessage.VERIFY:
-                return <SignUpVerifyIc/>; 
+                return <SignUpVerifyIcon/>; 
             case passwordInvalidMessage.SUCCESS:
-                return <SignUpVerifyIc/>; 
+                return <SignUpVerifyIcon/>; 
             case emailInvalidMessage.SUCCESS:
                 return ;    
             default:
@@ -319,7 +319,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
                     </IconWrapper>
                 )}
                 <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD)}>
-                    {isShowPassword?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                    {isShowPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
                 </EyeIcWrapper>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
@@ -337,7 +337,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
                         </IconWrapper>
                     )}
                     <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD_CONFIRM)}>
-                        {isShowPasswordConfirm?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                        {isShowPasswordConfirm?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
                     </EyeIcWrapper>
                 </InputWrapper>
                 <MessageWrapper textColor={setMessageColor(passwordConfirmMessage)}>
@@ -469,4 +469,24 @@ const WeSentYouACodeTextIcon=styled(WeSentYouACodeTextIc)`
 
 const CreateAPasswordForYourAccountTitleIcon=styled(CreateAPasswordForYourAccountTitleIc)`
     width: 55.5rem;
+`
+
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpVerifyIcon=styled(SignUpVerifyIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpEyeXIcon=styled(SignUpEyeXIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpEyeIcon=styled(SignUpEyeIc)`
+    width: 4rem;
+    height: 4rem;
 `
