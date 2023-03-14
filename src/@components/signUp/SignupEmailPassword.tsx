@@ -44,6 +44,8 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
         if(emailMessage===emailInvalidMessage.VERIFY){
             setEmailMessage(emailInvalidMessage.NULL)
+            setPasswordMessage(passwordInvalidMessage.NULL)
+            setPasswordConfirmMessage(passwordInvalidMessage.NULL)
         }
         else{
             if(!e.target.value){
