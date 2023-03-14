@@ -116,14 +116,14 @@ export default function TrackPostPage() {
   }
 
   function closeTrackPost() {
-    patchProfile(beatId)
-    console.log("dfdfdfdfdfdfddd")
+    patchProfile(beatId);
+    console.log("dfdfdfdfdfdfddd");
   }
 
   function openTrackPost() {
-    patchProfile(beatId)
-    console.log("abababababab")
-  } 
+    patchProfile(beatId);
+    console.log("abababababab");
+  }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
     const tempInfos = audioInfos;
@@ -147,10 +147,10 @@ export default function TrackPostPage() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
   }, []);
-  
+
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed}/>}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed} />}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <TrackPostPageWrapper>
@@ -169,8 +169,12 @@ export default function TrackPostPage() {
               </ProducerBox>
               <ButtonWrapper>
                 {trackInfoData.isMe &&
-                  (!trackInfoData?.isClosed ? <OpenedIcon onClick={closeTrackPost} />:<ClosedWithXIcon onClick={openTrackPost} />)}
-                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <DownloadBtnIcon />:<ClosedBtnIcon />)}
+                  (!trackInfoData?.isClosed ? (
+                    <OpenedIcon onClick={closeTrackPost} />
+                  ) : (
+                    <ClosedWithXIcon onClick={openTrackPost} />
+                  ))}
+                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <DownloadBtnIcon /> : <ClosedBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
@@ -283,7 +287,6 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-
 `;
 
 const DownloadBtnIcon = styled(DownloadBtnIc)`
