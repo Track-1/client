@@ -89,7 +89,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }
 
   function onSaveData(){
-    setIsSave(true)
+    completeNicknameConventions()&&setIsSave(true);
   }
 
   useEffect(()=>{
@@ -166,7 +166,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
 
         {/* <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/> */}
-        <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
+      <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
           <SignUpContinueButtonIc/>
       </ContinueButtonWrapper>
 
