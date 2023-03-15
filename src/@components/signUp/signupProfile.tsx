@@ -91,8 +91,10 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
         <ContactContainer>
           <ProfileEditContactIc />
           <ContactInput
+            type="text"
             placeholder="Enter your phone number or SNS account"
             onChange={changeContact}
+            maxLength={40}
           />
         </ContactContainer>
         <CategoryContainer>
