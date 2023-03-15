@@ -73,7 +73,6 @@ export default function VocalList(props: PropsType) {
               isHoverVocal={hoverVocal === index}
               isClickVocal={clickedIndex === index}
               clickVocal={clickedIndex}>
-            <MusicProfileWrapper showPlayer={showPlayer} checkHover={checkHover(index)} checkClick={checkClick(index)}>
               <GradientLine>
                 <AlbumCoverImg src={vocal.vocalProfileImage} alt="앨범자켓사진" />
               </GradientLine>
