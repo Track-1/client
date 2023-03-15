@@ -82,7 +82,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
         queryClient.invalidateQueries("email");
         setEmail(email)
         setEmailMessage(emailInvalidMessage.TIME)
-        // alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
+        alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         },
         onError:(error:any)=>{
             console.log(error)
@@ -100,32 +100,13 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }, [isSendCode]);
     //auth-mail post end
 
-    // const {mutate:CheckDuplication } = useMutation(checkEmailDuplication, {
-    //     onSuccess: (data) => {
-    //     queryClient.invalidateQueries("email-duplicate");
-
-    //     data.isDuplicate?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
-    //     },
-    //     onError:(error)=>{
-    //     }
-    // });
-
-    // useEffect(() => {
-    //     let formData = new FormData();
-    //     formData.append("tableName", tableName);
-    //     formData.append("userEmail", email);
-    //     CheckDuplication(formData);
-    // }, [isSendCode, isResendCode]);
-    // }, [isValidForm]);
-    //mail duplicate end
-
     //auth-mail-repost
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
         setEmail(email)
         setEmailMessage(emailInvalidMessage.TIME)
-        // alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
+        alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         },
         onError:(error:any)=>{
         console.log(error)
@@ -201,7 +182,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
         isSendCode&&emailMessage!==emailInvalidMessage.DUPLICATION&&setIsResendCode((prev)=>!prev)
         if(isEmailSuccess()){
             setIsSendCode(true)
-            // setEmailMessage(emailInvalidMessage.TIME)
             setIsVerify(false)
         }
     }
