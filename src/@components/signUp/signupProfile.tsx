@@ -149,8 +149,10 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
           <DesciprtionInput
+            type="text"
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
+            maxLength={150}
           />
           <TextCount onChange={countDescriptionText}>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
