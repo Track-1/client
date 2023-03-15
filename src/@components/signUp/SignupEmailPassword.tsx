@@ -55,15 +55,18 @@ export default function SignupEmailPassword(props:SetPropsType) {
         else{
             if(!e.target.value){
                 setEmailMessage(emailInvalidMessage.NULL)
+                return
             }
     
-            else if(!checkEmailForm(e.target.value)){
+            if(!checkEmailForm(e.target.value)){
                 setEmailMessage(emailInvalidMessage.FORM)
+                return
             }
     
-            else if(checkEmailForm(e.target.value)){
+            if(checkEmailForm(e.target.value)){
                 setEmail(e.target.value)
                 setIsValidForm(prev=>!prev);
+                return
             }
         }
         setEmail(e.target.value)
@@ -129,14 +132,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordMessage(passwordInvalidMessage.NULL)
+            return
         }
 
-        else if(!checkPasswordForm(e.target.value)){
+        if(!checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.FORM)
+            return
         }
 
-        else if(checkPasswordForm(e.target.value)){
+        if(checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.SUCCESS)
+            return
         }
 
         setPassword(e.target.value)
@@ -145,14 +151,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+            return
         }
 
-        else if(e.target.value!==password){
+        if(e.target.value!==password){
             setPasswordConfirmMessage(passwordInvalidMessage.MATCH)
+            return
         }
 
-        else if(e.target.value===password){
+        if(e.target.value===password){
             setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS)
+            return 
         }
 
         setPasswordConfirm(e.target.value)
