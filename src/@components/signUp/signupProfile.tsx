@@ -89,14 +89,16 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     <>
       <InfoContainer>
         <ContactContainer>
-          <ProfileEditContactIc />
+          <ProfileEditContactIcon />
           <ContactInput
+            type="text"
             placeholder="Enter your phone number or SNS account"
             onChange={changeContact}
+            maxLength={40}
           />
         </ContactContainer>
         <CategoryContainer>
-          <ProfileEditCategoryIc />
+          <ProfileEditCategoryIcon />
           <CategoryBox>
             {Object.keys(CategoryId).map((category, index) => {
               return (
@@ -113,7 +115,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
-          <ProfileEditHashtagIc />
+          <ProfileEditHashtagIcon />
           <InputHashtagWrapper>
             {hashtags.length < 3 && (
               <Hashtag>
@@ -145,10 +147,12 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
-          <ProfileEditDescriptionIc />
+          <ProfileEditDescriptionIcon />
           <DesciprtionInput
+            type="text"
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
+            maxLength={150}
           />
           <TextCount onChange={countDescriptionText}>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
@@ -322,3 +326,19 @@ const MaxCount = styled.strong`
 
   color: ${({ theme }) => theme.colors.gray3};
 `;
+
+const ProfileEditContactIcon=styled(ProfileEditContactIc)`
+  width: 8.8rem;
+`
+
+const ProfileEditCategoryIcon=styled(ProfileEditCategoryIc)`
+  width: 10.3rem;
+`
+
+const ProfileEditHashtagIcon=styled(ProfileEditHashtagIc)`
+  width: 9.3rem;
+`
+
+const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
+  width: 12.6rem;
+`
