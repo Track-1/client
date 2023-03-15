@@ -44,14 +44,13 @@ export default function ForgotPasswordInput() {
 
   function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
+    setEmail(input);
+
     if (!input) {
       setEmailMessage(emailInvalidMessage.NULL);
-    } else if (!checkEmailForm(input)) {
-      setEmailMessage(emailInvalidMessage.FORM);
-    } else if (checkEmailForm(input)) {
-      setEmailMessage(emailInvalidMessage.SUCCESS);
+    } else {
+      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS) : setEmailMessage(emailInvalidMessage.FORM);
     }
-    setEmail(input);
   }
 
   function onRequestCapsulation() {
