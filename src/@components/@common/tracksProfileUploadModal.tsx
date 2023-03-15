@@ -8,11 +8,11 @@ import {
   ProducerProfileUploadeModalIc,
 } from "../../assets";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
-  const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
+  const setVisible = useSetRecoilState<boolean>(uploadButtonClicked);
 
   function moveVocalSearching() {
     navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
@@ -33,18 +33,18 @@ export default function TracksProfileUploadModal() {
           <VocalSearchingWrapper onClick={moveVocalSearching}>
             <VocalSearchingIcon />
             <TextWrapper marginTop={2.7}>
-              <VocalSearchingTextIc />
+              <VocalSearchingTextIcon />
               <Explain>보컬이 필요한 스케치곡</Explain>
             </TextWrapper>
           </VocalSearchingWrapper>
           <PortfolioWrapper onClick={movePortfolio}>
             <PortfolioIcon />
             <TextWrapper marginTop={13}>
-              <PortfolioTextIc />
+              <PortfolioTextIcon />
               <Explain>감각을 보여줄 수 있는 작업물</Explain>
             </TextWrapper>
           </PortfolioWrapper>
-          <ProducerProfileUploadeModalIc />
+          <ProducerProfileUploadeModalIcon />
         </ModalWrapper>
         <ModalBackgroundShadow onClick={clickOutside}></ModalBackgroundShadow>
       </UploadButtonModalWrapper>
@@ -104,3 +104,22 @@ const Explain = styled.p`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray3};
 `;
+
+const ProducerProfileUploadeModalIcon=styled(ProducerProfileUploadeModalIc)`
+  width: 30.4rem;
+ 
+  @media (min-width:1200px) and (max-width:1799px){
+      margin-top: -2rem;
+    }
+
+`
+
+const VocalSearchingTextIcon=styled(VocalSearchingTextIc)`
+  width: 17.7rem;
+  height: 2.2rem;
+`
+
+const PortfolioTextIcon=styled(PortfolioTextIc)`
+  width: 8.9rem;
+  height: 2.2rem;
+`

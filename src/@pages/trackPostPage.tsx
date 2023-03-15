@@ -15,7 +15,7 @@ import {
 } from "../assets";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -23,62 +23,68 @@ import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation } from "react-router-dom";
-import { getTrackInfo } from "../core/api/trackPost";
+import { useLocation, useParams } from "react-router-dom";
+import { getTrackInfo, patchProfile } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
-import { UserType } from "../recoil/main";
+import usePlayer from "../utils/hooks/usePlayer";
+import { getCookie } from "../utils/cookie";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
-
-  const [isEnd, setIsEnd] = useState<boolean>(false);
+  const { progress, audio } = usePlayer();
+  // const {beatId} = useParams();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [trackInfoData, setTrackInfoData] = useState<TrackInfoDataType>();
-  const [duration, setCurrentDuration] = useState<number>(0);
-  const [beatId, setBeatId] = useState<number>(-1);
-  const [fileLink, setFileLink] = useState<string>();
-  const [title, setTitle] = useState<string>();
-  const [image, setImage] = useState<string>("");
+  const [beatId, setBeatId] = useState<number>(state);
+  const [audioInfos, setAudioInfos] = useState<any>({
+    title: "",
+    name: "",
+    progress: "",
+    duration: "",
+    image: "",
+  });
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const user = useRecoilValue(UserType);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  const audio = useMemo(() => new Audio(), []);
+  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      if (data?.status === 200) {
+        setTrackInfoData(data?.data.data);
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   useEffect(() => {
     setWhom(Category.TRACKS);
   }, []);
 
   useEffect(() => {
-    trackInfoData && setTitle(trackInfoData.title);
-    if (trackInfoData?.beatWavFile !== undefined) {
+    if (trackInfoData) {
       audio.src = trackInfoData?.beatWavFile;
-      setCurrentDuration(trackInfoData?.wavFileLength);
+      getAudioInfos(
+        trackInfoData?.title,
+        trackInfoData?.producerName,
+        trackInfoData?.jacketImage,
+        trackInfoData?.wavFileLength,
+      );
     }
   }, [trackInfoData]);
-
-  useEffect(() => {
-    if (play) {
-      audio.addEventListener("timeupdate", () => {
-        goProgress();
-      });
-    } else {
-      audio.removeEventListener("timeupdate", () => {
-        goProgress();
-      });
-    }
-  }, [play]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
   }
+
   function openEdit() {
     setIsEditOpen(true);
   }
@@ -98,17 +104,10 @@ export default function TrackPostPage() {
     setPlay(false);
   }
 
-  function goProgress() {
-    if (audio.duration) {
-      const currentDuration = (audio.currentTime / audio.duration) * 100;
-      setProgress(currentDuration);
-    }
-  }
-
   function openComment() {
     setIsCommentOpen(true);
     setShowPlayer(false);
-    setBeatId(state);
+    // setBeatId(state);
     audio.src = "";
   }
 
@@ -116,97 +115,25 @@ export default function TrackPostPage() {
     setIsCommentOpen(false);
   }
 
-  function endmyTrack() {
-    setIsEnd(true);
+  function closeTrackPost() {
+    patchProfile(beatId)
+    console.log("dfdfdfdfdfdfddd")
   }
 
-  function notEndmyTrack() {
-    setIsEnd(false);
+  function openTrackPost() {
+    patchProfile(beatId)
+    console.log("abababababab")
+  } 
+
+  function getAudioInfos(title: string, name: string, image: string, duration: number) {
+    const tempInfos = audioInfos;
+    tempInfos.title = title;
+    tempInfos.name = name;
+    tempInfos.image = image;
+    tempInfos.duration = duration;
+
+    setAudioInfos(tempInfos);
   }
-
-  function isProducer() {
-    return user === "producer";
-  }
-
-  function isVocal() {
-    return user === "vocal";
-  }
-
-  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      if (data?.status === 200) {
-        setTrackInfoData(data?.data.data);
-        setFileLink(data?.data.data.beatWavFile);
-      }
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  // const downloadFile = () => {
-  // 	if (fileLink) {
-  // 		fetch(fileLink, { method: 'GET' })
-  // 			.then(res => {
-  // 				return res.blob();
-  // 			})
-  // 			.then(blob => {
-  // 				const url = window.URL.createObjectURL(blob);
-  // 				const a = document.createElement('a');
-  // 				a.href = url;
-  // 				a.download = trackInfoData?`${trackInfoData.title}`:"ㅇㅇ";
-  // 				document.body.appendChild(a);
-  // 				a.click();
-  // 				setTimeout(_ => {
-  // 					window.URL.revokeObjectURL(url);
-  // 				}, 60000);
-  // 				a.remove();
-  // 				// setOpen(false);
-  // 			})
-  // 			.catch(err => {
-  // 				console.error('err: ', err);
-  // 			});
-  // 	} else {
-  // 		alert(
-  // 			'PDF 다운에 실패했습니다. 다시 한 번 시도해주세요. 지속적인 실패 시 문의부탁드립니다.',
-  // 		);
-  // 	}
-  // };
-
-  // function downloadFile(){
-  //   fetch(`${fileLink}`, {method: 'GET'})
-  //   .then(res => {
-  //     return res.blob();
-  //   })
-  //   .then(blob => {
-  //     var url = window.URL.createObjectURL(blob);
-  //     var a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = 'myItem.extension';
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     setTimeout(
-  //       _ => { window.URL.revokeObjectURL(url); },
-  //       60000);
-  //     a.remove();
-  //   })
-  //   .catch(err => {
-  //     console.error('err: ', err);
-  //   })
-  // }
-
-  //   function downloadFile (){
-  //     console.log("dfdfd")
-  //     const url = fileLink
-  //     const download = document.createElement('a');
-
-  //     download.href = url?url:"";
-  //     download.setAttribute('download',title?title:"");
-  //     download.setAttribute('type', 'application/json');
-  //     download.click();
-  // }
 
   const downloadFile = useCallback((fileName: string, fileLink: string) => {
     const blob = new Blob([fileLink], { type: "audio/mp3" });
@@ -220,10 +147,10 @@ export default function TrackPostPage() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(blob);
   }, []);
-
+  
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} />}
+      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed}/>}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
 
       <TrackPostPageWrapper>
@@ -241,18 +168,10 @@ export default function TrackPostPage() {
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe && isProducer() && isEnd && <ClosedWithXIcon onClick={notEndmyTrack} />}
-                {trackInfoData.isMe && isProducer() && !isEnd && <OpenedIcon onClick={endmyTrack} />}
-                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <a href={trackInfoData.beatWavFile} download={trackInfoData.title}><DownloadBtnIcon /></a>)} */}
-                {((!trackInfoData.isMe && isProducer() && isEnd) || (isVocal() && isEnd)) && <ClosedBtnIcon />}
-                {((!trackInfoData.isMe && isProducer() && !isEnd) || (isVocal() && !isEnd)) && (
-                  <button onClick={() => downloadFile(trackInfoData.title, trackInfoData.beatWavFile)}>
-                    <DownloadBtnIcon />
-                  </button>
-                )}
-                {/* {!trackInfoData.isMe && (isEnd ? <ClosedBtnIcon /> : <form action={fileLink}><button onClick={downloadFile}><DownloadBtnIcon /></button></form>)} */}
+                {trackInfoData.isMe &&
+                  (!trackInfoData?.isClosed ? <OpenedIcon onClick={closeTrackPost} />:<ClosedWithXIcon onClick={openTrackPost} />)}
+                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <DownloadBtnIcon />:<ClosedBtnIcon />)}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
-
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
@@ -290,10 +209,9 @@ export default function TrackPostPage() {
             playAudio={playAudio}
             pauseAudio={pauseAudio}
             progress={progress}
-            duration={duration}
-            title={trackInfoData?.title}
-            name={trackInfoData?.producerName}
-            image={image}
+            audioInfos={audioInfos}
+            play={play}
+            setPlay={setPlay}
           />
         )}
       </TrackPostPageWrapper>
@@ -335,6 +253,8 @@ const AudioTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
 
   margin-top: 25.1rem;
+
+  cursor: pointer;
 `;
 
 const ProducerBox = styled.div`
@@ -362,6 +282,8 @@ const NickName = styled.strong`
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
+
 `;
 
 const DownloadBtnIcon = styled(DownloadBtnIc)`

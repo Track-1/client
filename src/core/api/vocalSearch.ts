@@ -1,45 +1,18 @@
 import axios from "axios";
+import { getCookie } from "../../utils/cookie";
 
-// export async function getVocalsData(filteredUrlApi: string, isSelected: boolean, pageNum: number) {
-//   try {
-//     const data = await axios.get(
-//       `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=${pageNum}&limit=8${filteredUrlApi}&isSelected=${isSelected}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`,
-//         },
-//       },
-//     );
-//     data && console.log(data);
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-
-export async function getVocalsData(filteredUrlApi: string, isSelected: boolean) {
+export async function getVocalsData(filteredUrlApi: string, isSelected: boolean, page: number) {
   try {
     const data = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/vocals/filter?page=1&limit=100${filteredUrlApi}&isSelected=${isSelected}`,
+      `${process.env.REACT_APP_BASE_URL}/vocals/filter?${filteredUrlApi}&isSelected=${isSelected}&page=${page}&limit=3`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`,
+          Authorization: `Bearer ${getCookie("accessToken")}`,
         },
       },
     );
-    // data && console.log(data);
-    return data;
+    return data?.data.data;
   } catch (e) {
     console.log(e);
   }
 }
-
-// export async function getFilteredVocals() {
-//   try {
-//     const data = await axios.get("/vocals&categ=Hiphop&categ=rb&…&isSelected=True");
-//     data && console.log(data);
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }

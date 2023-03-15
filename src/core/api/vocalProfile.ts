@@ -1,18 +1,16 @@
 import axios from "axios";
+import { getCookie } from "../../utils/cookie";
 
-export async function getVocalProfile(state: number, userType: string) {
-  const accessToken =
-    userType === "producer"
-      ? `${process.env.REACT_APP_PRODUCER_ACCESSTOKEN}`
-      : `${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`;
+export async function getVocalProfile(vocalId: number, page: number) {
   try {
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/profile/vocal/${state}?page=1&limit=5`, {
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/profile/vocal/${vocalId}?page=${page}&limit=5`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    data && console.log(data);
-    return data && data;
+    console.log(data);
+    return data?.data.data;
   } catch (e) {
     console.log(e);
   }
@@ -21,6 +19,20 @@ export async function getVocalProfile(state: number, userType: string) {
 export async function postVocalPortfolio() {
   try {
     await axios.post("/mypage/vocal");
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function patchVocalrProfile(editData: any) {
+  try {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/profile/vocal`, editData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+    console.log(data);
   } catch (e) {
     console.log(e);
   }

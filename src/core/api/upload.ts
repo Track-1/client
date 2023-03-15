@@ -24,6 +24,6 @@ export async function UploadInfo(postData: Object, userType: string, producerUpl
         break;
     }
   } catch (error) {
-    alert('업로드 실패');
+    alert("업로드 실패");
   }
 }

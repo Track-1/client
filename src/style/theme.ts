@@ -15,6 +15,7 @@ const colors = {
 
   white: "#FFFFFF",
   black: "#0D0E11",
+  red: "#FF4F4F",
 };
 
 export type ColorsTypes = typeof colors;
@@ -45,6 +46,14 @@ const fonts = {
   id: FONT({ family: true, weight: 300, size: 2, lineHeight: 2.6 }),
   caption_large: FONT({ family: true, weight: 300, size: 3, lineHeight: 3.9 }),
   title: FONT({ family: true, weight: 300, size: 5, lineHeight: 6.5 }),
+  input: FONT({ family: false, weight: 400, size: 2, lineHeight: 3.4 }),
+
+  message: FONT({ family: false, weight: 400, size: 1.6, lineHeight: 1.9 }),
+  typography_title: FONT({ family: false, weight: 700, size: 2, lineHeight: 2 }),
+  typography_intro: FONT({ family: false, weight: 600, size: 1.5, lineHeight: 2.4 }),
+  typography_content: FONT({ family: false, weight: 500, size: 1.5, lineHeight: 2.4 }),
+  checkbox: FONT({ family: false, weight: 400, size: 1.6, lineHeight: 1.6 }),
+
 };
 
 export type FontsTypes = typeof fonts;

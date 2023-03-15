@@ -18,6 +18,8 @@ import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 import { isClickedOutside } from "../../utils/common/modal";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
+import useModal from "../../utils/hooks/useModal";
+import { LoginUserType } from "../../recoil/loginUserData";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios } = props;
@@ -30,16 +32,20 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   const [id, setId] = useState<number>(-1);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
-  useEffect(() => {
-    function closeModal(e: MouseEvent) {
-      isClickedOutside(e, ellipsisModalRef) && setOpenEllipsisModal(false);
-    }
+  const { modalRef } = useModal();
 
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [openEllipsisModal]);
+  const loginUserType = useRecoilValue(LoginUserType);
+
+  // useEffect(() => {
+  //   function closeModal(e: MouseEvent) {
+  //     isClickedOutside(e, ellipsisModalRef, openUploadModal) && setOpenEllipsisModal(false);
+  //   }
+
+  //   document.addEventListener("mousedown", closeModal);
+  //   return () => {
+  //     document.removeEventListener("mousedown", closeModal);
+  //   };
+  // }, [openEllipsisModal]);
 
   function clickEllipsis() {
     setOpenEllipsisModal(true);
@@ -63,29 +69,33 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function checkIsTitle() {
-    return (clickId===-1&&hoverId===0)||(clickId===0&&(isHoveredNClicked()||hoverId===-1)||(hoverId===0))
+    return (
+      (clickId === -1 && hoverId === 0) || (clickId === 0 && (isHoveredNClicked() || hoverId === -1)) || hoverId === 0
+    );
   }
 
-  function isNotHovered(){
-    return hoverId === -1
+  function isNotHovered() {
+    return hoverId === -1;
   }
 
-  function isClicked(){
-    return clickId!==-1
+  function isClicked() {
+    return clickId !== -1;
   }
 
-  function checkisEllipsis(){
-    return isMe && isClicked()&&(isHoveredNClicked()||isNotHovered())
+  function checkisEllipsis() {
+    return isMe && isClicked() && (isHoveredNClicked() || isNotHovered());
   }
 
-  useEffect(()=>{
-    !isNotHovered()&&setId(hoverId)
-    isClicked()&&isNotHovered()&&setId(clickId)
-    !isClicked()&&isNotHovered()&&setId(clickId)
-  },[hoverId, clickId])
+  useEffect(() => {
+    !isNotHovered() && setId(hoverId);
+    isClicked() && isNotHovered() && setId(clickId);
+    !isClicked() && isNotHovered() && setId(clickId);
+  }, [hoverId, clickId]);
 
-  function moveTrackPost(id:number){
-    navigate(`/track-post/${id}`)
+  function moveTrackPost(id: number) {
+    navigate(`/track-post/${id}`, {
+      state: portfolios,
+    });
   }
 
   return (
@@ -102,15 +112,21 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
-              {checkisEllipsis()&& <EllipsisIcon onClick={clickEllipsis} />}
-              {openEllipsisModal&& checkisEllipsis()&&(
-                <PortfolioUpdateModal isTitle={checkIsTitle()} ref={ellipsisModalRef} profileState={profileState} />
+              {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
+              {openEllipsisModal && checkisEllipsis() && (
+                <PortfolioUpdateModal
+                  isTitle={checkIsTitle()}
+                  ref={modalRef}
+                  profileState={profileState}
+                  portfolioId={portfolios[id].id}
+                  portfoliosData={portfolios}
+                  clickedPortfolioId={id}
+                />
               )}
-
             </InformTitleWrapper>
             <InformTitle>{portfolios[id].title}</InformTitle>
             <InformCategory>{portfolios[id].category}</InformCategory>
-        </InformWrapper>
+          </InformWrapper>
 
           <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>
@@ -126,18 +142,18 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   );
 }
 
-const InformContainer=styled.div`
-  
-`
+const InformContainer = styled.div``;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   margin-top: 5.9rem;
-  margin-left: 12.65rem;
+  /* margin-left: 12.65rem; */
+
+  width: 24.5rem;
 `;
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;
-  margin-left: 12.65rem;
+  /* margin-left: 12.65rem; */
 `;
 
 const PortfolioInformWrapper = styled.section`
@@ -195,14 +211,14 @@ const InformTag = styled.div<{ textLength: number }>`
 
   height: 3.8rem;
   /* width: 10rem; */
-  /* width: ${({ textLength }) => textLength*13}%; */
+  /* width: ${({ textLength }) => textLength * 13}%; */
 
-  /* width: ${({ textLength }) => (7>textLength&&textLength>2)?textLength+5:textLength+7}rem;
-  width: ${({ textLength }) => textLength>=7&&textLength+10}rem; */
+  /* width: ${({ textLength }) => (7 > textLength && textLength > 2 ? textLength + 5 : textLength + 7)}rem;
+  width: ${({ textLength }) => textLength >= 7 && textLength + 10}rem; */
 
   margin-bottom: 1rem;
   padding-left: 1.5rem;
-  padding-right:2rem;
+  padding-right: 2rem;
 
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 2.1rem;

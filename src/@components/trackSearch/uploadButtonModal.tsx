@@ -36,8 +36,6 @@ export default function UploadButtonModal() {
     };
   }, [openModal]);
 
-  console.log(openModal)
-
   return (
     <ModalBg>
       <UploadButtonModalWrapper ref={modalRef}>
@@ -45,7 +43,7 @@ export default function UploadButtonModal() {
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
             <div onClick={moveVocalSearching}>
-              <VocalSearchingTextIc />
+              <VocalSearchingTextIcon />
               <Explain>보컬이 필요한 스케치곡</Explain>
             </div>
           </TextWrapper>
@@ -54,12 +52,12 @@ export default function UploadButtonModal() {
           <PortfolioIcon />
           <TextWrapper marginTop={10.7}>
             <div onClick={movePortfolio}>
-              <PortfolioTextIc />
+              <PortfolioTextIcon />
               <Explain>감각을 보여줄 수 있는 작업물</Explain>
             </div>
           </TextWrapper>
         </PortfolioWrapper>
-        <UnionIc />
+        <UnionIcon />
       </UploadButtonModalWrapper>
     </ModalBg>
   );
@@ -68,28 +66,23 @@ export default function UploadButtonModal() {
 const ModalBg = styled.section`
   height: 100vh;
   width: 100vw;
-
   position: fixed;
   z-index: 10000;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
-
   background-color: rgba(0, 0, 0, 0.6);
 `;
 const UploadButtonModalWrapper = styled.section`
   position: sticky;
-
   margin-top: 75.5rem;
   margin-left: 34.2rem;
-
   pointer-events: none;
 `;
 
 const VocalSearchingWrapper = styled.article`
   position: fixed;
-
   display: flex;
 `;
 
@@ -100,7 +93,6 @@ const VocalSearchingIcon = styled(VocalSearchingIc)`
 
 const PortfolioWrapper = styled.article`
   position: fixed;
-
   display: flex;
 `;
 
@@ -112,9 +104,7 @@ const PortfolioIcon = styled(PortfolioIc)`
 const TextWrapper = styled.div<{ marginTop: number }>`
   margin-left: 1.4rem;
   margin-top: ${({ marginTop }) => marginTop}rem;
-
   pointer-events: auto;
-
   cursor: pointer;
 `;
 
@@ -127,3 +117,22 @@ const Explain = styled.p`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray3};
 `;
+
+const UnionIcon=styled(UnionIc)`
+  width: 30.4rem;
+ 
+  @media (min-width:1200px) and (max-width:1799px){
+      margin-top: -2rem;
+    }
+
+`
+
+const VocalSearchingTextIcon=styled(VocalSearchingTextIc)`
+  width: 17.7rem;
+  height: 2.2rem;
+`
+
+const PortfolioTextIcon=styled(PortfolioTextIc)`
+  width: 8.9rem;
+  height: 2.2rem;
+`

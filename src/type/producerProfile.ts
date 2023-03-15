@@ -8,9 +8,11 @@ export interface ProducerPortfolioType {
   category: string;
   wavFileLength: number;
   isTitle: boolean;
+  vocalPortfolioId: number;
 }
 
 export interface ProducerProfileType {
+  id: number;
   profileImage: string;
   profileImge: string;
   name: string;

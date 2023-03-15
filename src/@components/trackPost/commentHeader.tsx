@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { ToggleIc, Track1Ic } from "../../assets";
-import profileImg from "../../assets/image/profileImg.png";
+import { Track1Ic, TrackOneMainLogoIc } from "../../assets";
 
 export default function CommentHeader() {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ export default function CommentHeader() {
 }
 
 const CategoryHeaderContainer = styled.header`
-  /* position: sticky; */
   top: 0;
 
   width: 192rem;
@@ -51,8 +49,11 @@ const HeaderWrapper = styled.div`
   width: 178.7rem;
 `;
 
-const TrackOneIcon = styled(Track1Ic)`
-  margin-top: 4.1rem;
-  margin-left: -0.3rem;
+const TrackOneIcon = styled(TrackOneMainLogoIc)`
+  margin-top: 5.85rem;
+  margin-left: 7.5rem;
   position: fixed;
+
+  width: 26.3rem;
+
 `;

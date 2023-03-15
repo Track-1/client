@@ -1,41 +1,52 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import sloganImg from "../../assets/image/sloganImg.svg";
-import { LogoIc, ProducerMypageIc, ProducerToggleIc, VocalMypageIc, VocalToggleIc,TrackOneMainLogoIc } from "../../assets";
-import { useRecoilState } from "recoil";
+import { TrackOneMainLogoIc, LoginIc, SignupIc, TrackheadersloganIc } from "../../assets";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../../recoil/main";
+import { useEffect, useState } from "react";
+import ProducerBriefInfo from "../main/produderBriefInfo";
+import VocalBriefInfo from "../main/vocalBriefInfo";
+import { getCookie } from "../../utils/cookie";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
+import { isProducer, isVocal } from "../../utils/common/userType";
 
 export default function MainHeader() {
   const navigate = useNavigate();
+  const userType = useRecoilValue(LoginUserType);
+  const userId = useRecoilValue(LoginUserId);
 
-  const [userType, setUserType] = useRecoilState(UserType);
-
-  function moveMyPage() {
-    userType === "producer" ? navigate("/producer-profile/2", {state:2}) : navigate("/vocal-profile/1", {state:1});
+  function moveToLogin() {
+    navigate("/login");
   }
 
-  function changeUserType(e: React.MouseEvent<SVGSVGElement>) {
-    userType === "producer" ? setUserType("vocal") : setUserType("producer");
+  function moveToSignup() {
+    navigate("/sign-up");
+  }
+
+  function moveToHome() {
+    navigate("/");
+  }
+
+  function isLogin() {
+    return getCookie("accessToken") !== undefined;
   }
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <TrackOneMainLogoIc style={{ cursor: "pointer" }} />
-        <img src={sloganImg} alt="슬로건" />
-        <BtnWrpper>
-          {userType === "producer" ? (
-            <>
-              <ProducerToggleIc style={{ cursor: "pointer" }} onClick={changeUserType} />
-              <ProducerMypageIc style={{ cursor: "pointer" }} onClick={moveMyPage} />
-            </>
-          ) : (
-            <>
-              <VocalToggleIc style={{ cursor: "pointer" }} onClick={changeUserType} />
-              <VocalMypageIc style={{ cursor: "pointer" }} onClick={moveMyPage} />
-            </>
-          )}
-        </BtnWrpper>
+        <TrackOneMainLogoIc style={{ cursor: "pointer" }} onClick={moveToHome} />
+        <TrackheadersloganIcon />
+        {/* <Img src={sloganImg} alt="슬로건" /> */}
+        {!isLogin() && (
+          <BtnWrpper>
+            <LoginIcon onClick={moveToLogin} />
+            <SignupIc onClick={moveToSignup} />
+          </BtnWrpper>
+        )}
+
+        {isLogin() && isProducer(userType) && <ProducerBriefInfo userId={userId} />}
+        {isLogin() && isVocal(userType) && <VocalBriefInfo userId={userId} />}
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -46,7 +57,6 @@ const HeaderContainer = styled.header`
   height: 14.3rem;
 
   position: fixed;
-  z-index: 999;
 `;
 
 const HeaderWrapper = styled.div`
@@ -64,4 +74,16 @@ const BtnWrpper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  cursor: pointer;
 `;
+
+const LoginIcon = styled(LoginIc)`
+  margin-right: 2.2rem;
+`;
+
+const TrackheadersloganIcon = styled(TrackheadersloganIc)`
+  position: absolute;
+  margin-left: 74rem;
+`;
+

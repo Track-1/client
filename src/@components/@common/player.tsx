@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
-import { useState, useLayoutEffect, useRef, useEffect } from "react";
-import jacketImage from "../../assets/image/thumbnailImg.png";
+import { useState, useLayoutEffect, useRef } from "react";
 import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import { playMusic, showPlayerBar } from "../../recoil/player";
+import { showPlayerBar } from "../../recoil/player";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -16,23 +15,20 @@ interface PropsType {
   title: string;
   name: string;
   image: string;
+  play: any;
+  setPlay: any;
 }
 
-export default function Player(props: PropsType) {
-  const { audio, playAudio, pauseAudio, progress, duration, title, name, image } = props;
-  // const duration = parseInt(String(audio.duration / 60)) + ":" + parseInt(String(audio.duration % 60));
+export default function Player(props: any) {
+  const { audio, playAudio, pauseAudio, progress, play, setPlay, audioInfos } = props;
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
 
   const playBar = useRef<HTMLDivElement>(null);
 
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  // const [title, setTitle] = useState<string>();
-  const [producerName, setProducerName] = useState<string>();
   const [barWidth, setBarWidth] = useState<number>(0);
   const [down, setDown] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   useLayoutEffect(() => {
@@ -106,15 +102,15 @@ export default function Player(props: PropsType) {
         </PlayerBarWrapper>
 
         <PlayerInformWrapper>
-          <Thumbnail src={image} alt="썸네일 이미지" />
-          <PlayerTitleText>{title}</PlayerTitleText>
-          <PlayerNameText>{name}</PlayerNameText>
+          <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
+          <PlayerTitleText>{audioInfos.title}</PlayerTitleText>
+          <PlayerNameText>{audioInfos.name}</PlayerNameText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
           <PlayerInformText width={10} whiteText={true}>
             {createTimeText(Math.round(audio.currentTime))}
           </PlayerInformText>
           <PlayerInformText width={30} whiteText={false}>
-            {createTimeText(Math.round(duration))}
+            {createTimeText(Math.round(audioInfos.duration))}
           </PlayerInformText>
           <QuitIcon onClick={quitAudio} />
         </PlayerInformWrapper>
@@ -132,7 +128,6 @@ const PlayerContainer = styled.section`
   display: flex;
 
   width: 192rem;
-  /* height: 108rem; */
 `;
 
 const PlayerWrapper = styled.article`
