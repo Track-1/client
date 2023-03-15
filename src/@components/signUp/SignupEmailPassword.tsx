@@ -43,8 +43,9 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
-        // setIsSendCode(false)
+        setIsSendCode(false)
         if(emailMessage===emailInvalidMessage.VERIFY){
+            console.log("dddd")
             setIsSendCode(false);
             setEmailMessage(emailInvalidMessage.NULL)
             setPasswordMessage(passwordInvalidMessage.NULL)
@@ -57,21 +58,21 @@ export default function SignupEmailPassword(props:SetPropsType) {
         else{
             if(!e.target.value){
                 setEmailMessage(emailInvalidMessage.NULL)
-                return
+                
             }
     
             if(!checkEmailForm(e.target.value)){
                 setEmailMessage(emailInvalidMessage.FORM)
-                return
+               
             }
     
             if(checkEmailForm(e.target.value)){
                 setEmail(e.target.value)
                 setEmailMessage(emailInvalidMessage.ING)
                 // setIsValidForm(prev=>!prev);
-                return
+               
             }
-        }
+         }
         setEmail(e.target.value)
     }
  
@@ -95,7 +96,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
         let formData = new FormData();
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
-        PostAuthMail.mutate(formData);
+        isSendCode&&PostAuthMail.mutate(formData);
     }, [isSendCode]);
     //auth-mail post end
 
@@ -144,17 +145,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordMessage(passwordInvalidMessage.NULL)
-            return
+            
         }
 
         if(!checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.FORM)
-            return
+           
         }
 
         if(checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.SUCCESS)
-            return
+           
         }
 
         setPassword(e.target.value)
@@ -163,17 +164,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
-            return
+            
         }
 
         if(e.target.value!==password){
             setPasswordConfirmMessage(passwordInvalidMessage.MATCH)
-            return
+          
         }
 
         if(e.target.value===password){
             setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS)
-            return 
+            
         }
 
         setPasswordConfirm(e.target.value)
