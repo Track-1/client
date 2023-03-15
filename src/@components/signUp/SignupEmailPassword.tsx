@@ -69,7 +69,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
             if(checkEmailForm(e.target.value)){
                 setEmail(e.target.value)
                 setEmailMessage(emailInvalidMessage.ING)
-                // setIsValidForm(prev=>!prev);
+            
                
             }
          }
@@ -189,7 +189,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     console.log(emailMessage)
     
     function verifyCode(e: React.MouseEvent){
-        setIsVerifyClicked(prev=>!prev)
+        setIsVerifyClicked(!isVerifyClicked)
            
     }
 
@@ -246,10 +246,10 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function showPassword(type:string){
         if(type===passwordConfirmType.PASSWORD){
-            setIsShowPassword(prev=>!prev)
+            setIsShowPassword(!isShowPassword)
         }
         else if(type===passwordConfirmType.PASSWORD_CONFIRM){
-            setIsShowPasswordConfirm(prev=>!prev)
+            setIsShowPasswordConfirm(!isShowPasswordConfirm)
         }
     }
 
