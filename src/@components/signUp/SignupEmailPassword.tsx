@@ -42,20 +42,30 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType)
 
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
-        if(!e.target.value){
+        if(emailMessage===emailInvalidMessage.VERIFY){
+            setIsSendCode(false);
             setEmailMessage(emailInvalidMessage.NULL)
+            setPasswordMessage(passwordInvalidMessage.NULL)
+            setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+            setPassword('');
+            setPasswordConfirm('');
+            setIsShowPassword(false);
+            setIsShowPasswordConfirm(false)
         }
-
-        else if(!checkEmailForm(e.target.value)){
-            setEmailMessage(emailInvalidMessage.FORM)
+        else{
+            if(!e.target.value){
+                setEmailMessage(emailInvalidMessage.NULL)
+            }
+    
+            else if(!checkEmailForm(e.target.value)){
+                setEmailMessage(emailInvalidMessage.FORM)
+            }
+    
+            else if(checkEmailForm(e.target.value)){
+                setEmail(e.target.value)
+                setIsValidForm(prev=>!prev);
+            }
         }
-
-        else if(checkEmailForm(e.target.value)){
-            setEmail(e.target.value)
-            setIsValidForm(prev=>!prev);
-            
-        }
- 
         setEmail(e.target.value)
     }
  
@@ -63,7 +73,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const PostAuthMail = useMutation(authEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email");
-        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:(error)=>{
@@ -103,7 +112,6 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
-        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
         },
         onError:()=>{
@@ -151,9 +159,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
-        console.log(PostAuthMail.isError)
         if(!e.target.value){
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
+        }
+        else{
+            setVerificationCodeMessage(verificationCodeInvalidMessage.ING)
         }
         setVerificationCode(e.target.value)
     }
@@ -164,6 +174,8 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
+        setVerificationCode('');
+        setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
         isSendCode&&setIsResendCode((prev)=>!prev)
         if(emailInvalidMessage.SUCCESS){
             setIsSendCode(true)
@@ -174,10 +186,8 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
     
     function verifyCode(e: React.MouseEvent){
-       if(verificationCodeMessage===verificationCodeInvalidMessage.SUCCESS){
-            setIsVerify(true)
-            setEmailMessage(emailInvalidMessage.VERIFY) 
-       }       
+        setIsVerifyClicked(prev=>!prev)
+           
     }
 
     //verifycode post
@@ -185,9 +195,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
         onSuccess: () => {
         queryClient.invalidateQueries("verifycode");
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
+        setIsVerify(true)
+        setEmailMessage(emailInvalidMessage.VERIFY) 
         },
         onError:(error)=>{
-            verificationCode&&
+            verificationCode!==''&&
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
         }
     });
@@ -198,7 +210,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
         formData.append("userEmail", email);
         formData.append("verificationCode", verificationCode);
         VerifyCode.mutate(formData);
-    }, [verificationCode]);
+    }, [isVerifyClicked]);
     //verifycode end
 
     function backToRole(){
@@ -209,19 +221,19 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function setErrorIcon(message:string){ 
         switch (message) {
             case emailInvalidMessage.FORM:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case emailInvalidMessage.DUPLICATION:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case verificationCodeInvalidMessage.ERROR:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case passwordInvalidMessage.FORM:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case passwordInvalidMessage.MATCH:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case emailInvalidMessage.VERIFY:
-                return <SignUpVerifyIc/>; 
+                return <SignUpVerifyIcon/>; 
             case passwordInvalidMessage.SUCCESS:
-                return <SignUpVerifyIc/>; 
+                return <SignUpVerifyIcon/>; 
             case emailInvalidMessage.SUCCESS:
                 return ;    
             default:
@@ -246,7 +258,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function successNextStep(){
         return (
-            passwordConfirmMessage===passwordInvalidMessage.SUCCESS?continueType.SUCCESS:continueType.FAIL
+            (passwordConfirmMessage===passwordInvalidMessage.SUCCESS&&emailMessage===emailInvalidMessage.VERIFY)?continueType.SUCCESS:continueType.FAIL
         )
     }
 
@@ -284,7 +296,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
                         {setErrorIcon(emailMessage)}
                     </IconWrapper>
                 )}
-                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode}/>
+                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode} emailMessage={emailMessage}/>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(emailMessage)}>
                 {emailMessage}
@@ -310,14 +322,14 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
             <SignUpPasswordIcon/>
             <InputWrapper>
-                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
+                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword} value={password}/>
                 {setErrorIcon(passwordMessage)&&(
                     <IconWrapper marginLeft={-8.4}>
                         {setErrorIcon(passwordMessage)}
                     </IconWrapper>
                 )}
                 <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD)}>
-                    {isShowPassword?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                    {isShowPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
                 </EyeIcWrapper>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
@@ -328,14 +340,14 @@ export default function SignupEmailPassword(props:SetPropsType) {
                 <>
                 <ConfirmPasswordTextIcon/>
                 <InputWrapper>
-                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm}/>
+                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm} value={passwordConfirm}/>
                     {setErrorIcon(passwordConfirmMessage)&&(
                         <IconWrapper marginLeft={-8.4}>
                             {setErrorIcon(passwordConfirmMessage)}
                         </IconWrapper>
                     )}
                     <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD_CONFIRM)}>
-                        {isShowPasswordConfirm?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                        {isShowPasswordConfirm?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
                     </EyeIcWrapper>
                 </InputWrapper>
                 <MessageWrapper textColor={setMessageColor(passwordConfirmMessage)}>
@@ -430,6 +442,7 @@ const ConfirmPasswordTextIcon=styled(ConfirmPasswordTextIc)`
 `
 
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
+    width: 10.5rem;
     cursor: pointer;
 `
 
@@ -466,4 +479,24 @@ const WeSentYouACodeTextIcon=styled(WeSentYouACodeTextIc)`
 
 const CreateAPasswordForYourAccountTitleIcon=styled(CreateAPasswordForYourAccountTitleIc)`
     width: 55.5rem;
+`
+
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpVerifyIcon=styled(SignUpVerifyIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpEyeXIcon=styled(SignUpEyeXIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpEyeIcon=styled(SignUpEyeIc)`
+    width: 4rem;
+    height: 4rem;
 `

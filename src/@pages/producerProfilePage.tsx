@@ -46,10 +46,10 @@ export default function ProducerProfilePage() {
     if (hasNextPage !== false) {
       switch (profileState) {
         case "Portfolio":
-          response = await getProducerPortfolio(loginUserId, page);
+          response = await getProducerPortfolio(state, page);
           break;
         case "Vocal Searching":
-          response = await getSelectingTracks(loginUserId, page);
+          response = await getSelectingTracks(state, page);
           break;
       }
       console.log(response);

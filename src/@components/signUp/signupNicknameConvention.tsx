@@ -55,9 +55,9 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   function setErrorIcon(message:string){ 
     switch (message) {
         case nicknameValidMessage.ERROR:
-            return <SignUpErrorIc/>;
+            return <SignUpErrorIcon/>;
         case nicknameValidMessage.SUCCESS:
-            return <SignUpVerifyIc/>; 
+            return <SignUpVerifyIcon/>; 
         default:
             return ;
       }
@@ -89,7 +89,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
   }
 
   function onSaveData(){
-    setIsSave(true)
+    completeNicknameConventions()&&setIsSave(true);
   }
 
   useEffect(()=>{
@@ -128,7 +128,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       setLoginUserId(data.data.data.userResult.id);
     },
     onError:(error)=>{
-      alert(error)
+      
       setStep(signUpStep.SIGNUP_NICKNAME_CONVENTION);
     }
   });
@@ -166,8 +166,8 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
 
         {/* <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/> */}
-        <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
-          <SignUpContinueButtonIc/>
+      <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
+          <SignUpContinueButtonIcon/>
       </ContinueButtonWrapper>
 
     </ArrowButtonWrapper>
@@ -228,6 +228,7 @@ const IconWrapper=styled.div<{marginLeft:number}>`
 `
 
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
+  width: 10.5rem;
     cursor: pointer;
 `
 
@@ -250,4 +251,18 @@ const NicknameWrapper=styled.section`
 
 const WhatsYourNameTextIcon=styled(WhatsYourNameTextIc)`
   width: 21.2rem;
+`
+
+const SignUpContinueButtonIcon=styled(SignUpContinueButtonIc)`
+    width: 9.7rem;
+`
+
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpVerifyIcon=styled(SignUpVerifyIc)`
+    width: 4rem;
+    height: 4rem;
 `
