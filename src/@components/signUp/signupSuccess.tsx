@@ -55,8 +55,8 @@ export default function SignupSuccess() {
         )}
         {visible&&(
         <ModalWrapper>
-            <MoveTouploadVocalSearchingButtonIc onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
-            <MoveTouploadPortfolioButtonIc onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
+            <MoveTouploadVocalSearchingButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
+            <MoveTouploadPortfolioButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
         </ModalWrapper>
         )}
 
@@ -128,4 +128,14 @@ const SignUpVocalButtonIcon=styled(SignUpVocalButtonIc)`
 
 const SignUpProducerButtonIcon=styled(SignUpProducerButtonIc)`
     width: 55.5rem;
+`
+
+const MoveTouploadVocalSearchingButtonIcon=styled(MoveTouploadVocalSearchingButtonIc)`
+    width: 28.4rem;
+    height: 10.6rem;
+`
+
+const MoveTouploadPortfolioButtonIcon=styled(MoveTouploadPortfolioButtonIc)`
+    width: 28.4rem;
+    height: 8.4rem;
 `
