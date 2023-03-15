@@ -116,7 +116,7 @@ export default function ConventionCheckBox(props:PropsType) {
     {checkedConventions.map(({id, selected, text}:ConventionChecksType)=>(
         <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
             <CheckBox onClick={()=>categoryClick(id)}>
-                {selected?<ConventionFullBoxIc/>:<ConventionBlanckBoxIc/>}
+                {selected?<ConventionFullBoxIcon/>:<ConventionBlanckBoxIcon/>}
             </CheckBox>
             <TextWrapper>
                 <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
@@ -172,4 +172,14 @@ const FullConvention=styled.p<{checkFirstIndex:boolean}>`
     ${({theme})=>theme.fonts.checkbox};
 
     cursor: pointer;
+`
+
+const ConventionFullBoxIcon=styled(ConventionFullBoxIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const ConventionBlanckBoxIcon=styled(ConventionBlanckBoxIc)`
+    width: 4rem;
+    height: 4rem;
 `
