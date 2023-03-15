@@ -1,12 +1,17 @@
 import axios from "axios";
 
 export async function authEmail(formData:any) {
+  // try{
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`,formData,{
       headers: {
         "Content-Type": "application/json",
       },
     });
     return data
+  // }
+  // catch(error:any){
+  //   console.log(error.response.data.message)
+  // }
 }
 
 export async function checkEmailDuplication(formData:any) {
@@ -19,16 +24,16 @@ export async function checkEmailDuplication(formData:any) {
 }
 
 export async function repostAuthEmail(formData:any) {
-  try {
+  // try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`,formData,{
       headers: {
         "Content-Type": "application/json",
       },
     });
     return data
-  } catch (e) {
-    console.log(e);
-  }
+  // } catch (e) {
+  //   console.log(e);
+  // }
 }
 
 export async function postVerifyCode(formData:any) {
