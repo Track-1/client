@@ -84,9 +84,9 @@ export default function ForgotPasswordInput() {
 
   function producerToggleType() {
     return isProducerMode ? (
-      <ProducerModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
+      <ProducerModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
     ) : (
-      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
+      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
     );
   }
 
