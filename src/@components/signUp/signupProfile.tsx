@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   AddHashtagIc,
+  DeleteHashtagIc,
   ProfileEditCategoryIc,
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
@@ -14,6 +15,7 @@ import { CategoryId } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
+import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 
 export default function SignupProfile(props:SignupProfilePropsTye) {
   const {setStep, userProfile, setUserProfile}=props;
@@ -35,7 +37,8 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     FUNK: false,
   });
   const [contactInput, setContactInput]=useState<string>();
-  
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
+
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
   }
@@ -85,6 +88,35 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     }
     
   },[contactInput,categories, isCategorySelected, hashtagRef, hashtags, descriptionInput])
+console.log(userProfile.keyword)
+  function deleteHashtag(index: number) {
+    const deleteTag = userProfile.keyword;
+    deleteTag.splice(index, 1);
+
+    setUserProfile((prevState) => {
+      return { ...prevState, keyword: deleteTag };
+    });
+   // resetHashtagInputWidth();
+  }
+
+  // function resetHashtagInputWidth(): void {
+  //   setHashtagInputWidth(HASHTAG_WIDTH);
+  // }
+
+  // function restrictInput(ref: any): void {
+  //   ref.current!.value = ref.current!.value.slice(0, -1);
+  // }
+
+  // function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const inputLength = e.target.value.length;
+
+  //   if (checkMaxInputLength(inputLength, 10)) {
+  //     setHashtagLength(inputLength);
+  //   //  setHashtagInputWidth(Number(e.target.value));
+  //   } else {
+  //     restrictInput(enteredHashtag);
+  //   }
+  // }
 
   return (
     <>
@@ -130,6 +162,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                     inputWidth={hashtagInput.length}
                     ref={hashtagRef}
                     placeholder="HashTag"
+                    maxLength={10}
                   />
                 </HashtagWrapper>
               </Hashtag>
@@ -141,7 +174,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                     <HashtagSharp># </HashtagSharp>
                     <CompletedHashtag>{hashtag}</CompletedHashtag>
                   </HashtagWrapper>
-                  <ProfileHashtagXIc/>
+                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                 </Hashtag>
               );
             })}
@@ -249,7 +282,6 @@ const Hashtag = styled.div`
   border-radius: 2.1rem;
 
   margin-right: 1rem;
- // margin-top: 2.8rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -289,7 +321,7 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  //margin-top: 1.3rem;
+  
 `;
 
 const DescriptionContainer = styled.article`
@@ -347,3 +379,9 @@ const ProfileEditHashtagIcon=styled(ProfileEditHashtagIc)`
 const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
   width: 12.6rem;
 `
+
+
+const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  //margin-left: 1rem;
+  cursor: pointer;
+`;
