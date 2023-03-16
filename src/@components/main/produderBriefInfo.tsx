@@ -46,7 +46,8 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   function moveToMypage() {
     navigate(`/producer-profile/${userId}`);
   }
-
+console.log("프로필")
+console.log(profileData)
   return (
     <div onMouseEnter={hoverProfile} onMouseLeave={hoverOutProfile}>
       <InfoContainer onClick={moveToMypage}>

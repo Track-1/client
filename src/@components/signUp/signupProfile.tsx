@@ -8,6 +8,7 @@ import {
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
   ProfileEditHashtagIc,
+  ProfileHashtagXIc,
 } from "../../assets";
 import { CategoryId } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
@@ -140,6 +141,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                     <HashtagSharp># </HashtagSharp>
                     <CompletedHashtag>{hashtag}</CompletedHashtag>
                   </HashtagWrapper>
+                  <ProfileHashtagXIc/>
                 </Hashtag>
               );
             })}
@@ -232,6 +234,9 @@ const HashtagContainer = styled.article`
 const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+
+  margin-top: 2.8rem;
 `;
 
 const Hashtag = styled.div`
@@ -244,7 +249,7 @@ const Hashtag = styled.div`
   border-radius: 2.1rem;
 
   margin-right: 1rem;
-  margin-top: 2.8rem;
+ // margin-top: 2.8rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -284,7 +289,7 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-top: 2.8rem;
+  //margin-top: 1.3rem;
 `;
 
 const DescriptionContainer = styled.article`
