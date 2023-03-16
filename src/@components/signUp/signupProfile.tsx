@@ -36,18 +36,28 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     HOUSE: false,
     FUNK: false,
   });
-  const [contactInput, setContactInput]=useState<string>();
-  const [hashtagLength, setHashtagLength] = useState<number>(0);
+  const [contactInput, setContactInput]=useState<string>("");
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
+    
   }
-
+  console.log("hashtagInput"+hashtagInput)
+  console.log("hashtags"+hashtags)
   function completeHashtag() {
     if (hashtagRef.current) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
     }
+  }
+  console.log("contact"+contactInput)
+  console.log(userProfile.keyword)
+
+  function deleteHashtag(index: number) {
+    // const deleteTag = userProfile.keyword;
+    // deleteTag.splice(index, 1);
+
+    // setHashtags((prev) => [...prev, keyword: deleteTag]);    
   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -78,45 +88,17 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   }
 
   useEffect(()=>{
-    if(contactInput!==undefined){
+    //if(contactInput!==undefined){
       setUserProfile({
         contact: contactInput,
         category: Array.from(categories),
         keyword: hashtags,
         introduce: descriptionInput,
-      });
-    }
+     });
+    //}
     
   },[contactInput,categories, isCategorySelected, hashtagRef, hashtags, descriptionInput])
-console.log(userProfile.keyword)
-  function deleteHashtag(index: number) {
-    const deleteTag = userProfile.keyword;
-    deleteTag.splice(index, 1);
 
-    setUserProfile((prevState) => {
-      return { ...prevState, keyword: deleteTag };
-    });
-   // resetHashtagInputWidth();
-  }
-
-  // function resetHashtagInputWidth(): void {
-  //   setHashtagInputWidth(HASHTAG_WIDTH);
-  // }
-
-  // function restrictInput(ref: any): void {
-  //   ref.current!.value = ref.current!.value.slice(0, -1);
-  // }
-
-  // function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const inputLength = e.target.value.length;
-
-  //   if (checkMaxInputLength(inputLength, 10)) {
-  //     setHashtagLength(inputLength);
-  //   //  setHashtagInputWidth(Number(e.target.value));
-  //   } else {
-  //     restrictInput(enteredHashtag);
-  //   }
-  // }
 
   return (
     <>
