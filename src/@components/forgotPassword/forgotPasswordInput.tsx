@@ -48,10 +48,14 @@ export default function ForgotPasswordInput() {
 
   function producerToggleType() {
     return isProducerMode ? (
-      <ProducerModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
+      <ProducerModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
     ) : (
-      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode((prev) => !prev)} />
+      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
     );
+  }
+
+  function isErrorCase() {
+    return !checkEmailForm(email) && email.length !== 0;
   }
 
   function requestBtnType() {
@@ -84,13 +88,13 @@ export default function ForgotPasswordInput() {
           <InputTitle>What's your email</InputTitle>
           <InputWrapper>
             <Input placeholder="Enter your email address" onChange={writeEmail} />
-            {!checkEmailForm(email) && email.length !== 0 && <InputWarningIc />}
+            {isErrorCase() && <InputWarningIc />}
           </InputWrapper>
           <UnderLine inputState={emailMessage} />
         </InputBox>
-        {!checkEmailForm(email) && email.length !== 0 && <WarningMessage>{emailMessage}</WarningMessage>}
+        {isErrorCase() && <WarningMessage>{emailMessage}</WarningMessage>}
         {isSuccess && checkEmailForm(email) && (
-          <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 30 minutes.</ValidTimeMessage>
+          <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
         )}
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
