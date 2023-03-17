@@ -27,10 +27,10 @@ export default function Footer() {
       </FooterTextWrapper>
       <LogoWrapper>
       <a href="https://www.instagram.com/track1_official/">
-        <InstagramLogoIc/>
+        <InstagramLogoIcon/>
       </a>
       <a href="https://www.facebook.com/people/Track-1/100088269640316/">
-        <FacebookLogoIc/>
+        <FacebookLogoIcon/>
       </a>
       </LogoWrapper>
     </FooterContainer>
@@ -72,6 +72,8 @@ const FooterTextWrapper = styled.div`
 const LogoWrapper=styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  
   margin: 2rem 0 0 92rem;
 
   width: 7.8rem;
@@ -85,4 +87,14 @@ const Text=styled.p<{isGray:boolean, isStrong:boolean, marginRight:number}>`
   font-weight: ${({isStrong})=>isStrong?700:400};
 
   cursor: pointer;
+`
+
+const InstagramLogoIcon=styled(InstagramLogoIc)`
+  width: 2.8rem;
+  height: 2.8rem;
+`
+
+const FacebookLogoIcon=styled(FacebookLogoIc)`
+  width: 2.8rem;
+  height: 2.8rem;
 `
