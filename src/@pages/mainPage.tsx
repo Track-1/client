@@ -15,6 +15,7 @@ import { openConventionModal } from "../recoil/conventionModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
+import Ads from "../@components/main/ads";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ export default function MainPage() {
         <MainTracksTextIcon isTracksHover={isTracksHover} />
         <MainSlogan src={mainSloganImg} alt="슬로건" />
       </Main>
+      <Ads/>
       <Footer />
     </MainPageWrapper>
 
