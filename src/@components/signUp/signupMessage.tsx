@@ -24,8 +24,8 @@ export default function SignupMessage(props: SignupMessagePropsType) {
       setStep(signUpStep.SIGNUP_SUCCESS);
       console.log("성공")
     },
-    onError: () => {
-      setStep(signUpStep.SIGNUP_PROFILE);
+    onError: (error) => {
+      console.log(error)
       console.log("실패")
     },
   });
