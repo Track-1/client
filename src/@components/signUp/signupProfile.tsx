@@ -55,7 +55,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     setHashtagInput("");
   }
 
-  function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
+  function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescriptionInput(e.target.value);
   }
 
@@ -160,12 +160,13 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
           <DesciprtionInput
-            type="text"
+            typeof="text"
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
             maxLength={150}
+            row={Math.floor(descriptionInput.length/31)+1}
           />
-          <TextCount onChange={countDescriptionText}>
+          <TextCount>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
@@ -309,15 +310,23 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input`
-  height: 3.4rem;
+const DesciprtionInput = styled.textarea<{row:number}>`
+  height: ${({row})=>row*3.4}rem;
+ // height: 3.4rem;
   width: 55.9rem;
+  outline: 0;
+  resize: none;
 
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  background-color: transparent;
   margin-top: 3.3rem;
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
-  padding-bottom: 0.5rem;
+  padding-bottom: 1.5rem;
 
   ${({ theme }) => theme.fonts.input}
 
