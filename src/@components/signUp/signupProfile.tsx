@@ -125,6 +125,17 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
         <HashtagContainer>
           <ProfileEditHashtagIcon />
           <InputHashtagWrapper>
+          {hashtags.map((hashtag, index) => {
+              return (
+                <Hashtag key={index}>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <CompletedHashtag>{hashtag}</CompletedHashtag>
+                  </HashtagWrapper>
+                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                </Hashtag>
+              );
+            })}
             {hashtags.length < 3 && (
               <Hashtag>
                 <HashtagWrapper>
@@ -142,17 +153,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                 </HashtagWrapper>
               </Hashtag>
             )}
-            {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </HashtagWrapper>
-                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                </Hashtag>
-              );
-            })}
+            
             {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
