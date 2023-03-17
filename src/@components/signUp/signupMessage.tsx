@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { SignBgLogoIc, SignupProfileCompleteIc, SignUpSkipButtonIc, SignWelcomeIc } from "../../assets";
-import { patchProfile } from "../../core/api/trackPost";
 import { signUpStep } from "../../core/signUp/signupStepType";
 import { SignupMessagePropsType } from "../../type/signUpStepTypes";
 import { isMessageLogo, isMessageWelcome } from "../../utils/signUp/checkMessageType";
 import { useState } from "react";
+import { patchJoinProfile } from "../../core/api/profile";
 
 export default function SignupMessage(props: SignupMessagePropsType) {
   const { step, setStep, userProfile, setUserProfile } = props;
@@ -18,7 +18,7 @@ export default function SignupMessage(props: SignupMessagePropsType) {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(patchProfile, {
+  const { mutate } = useMutation(patchJoinProfile, {
     onSuccess: (data) => {
       queryClient.invalidateQueries("userProfile");
       setStep(signUpStep.SIGNUP_SUCCESS);
