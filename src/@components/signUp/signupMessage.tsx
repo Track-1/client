@@ -23,7 +23,9 @@ export default function SignupMessage(props: SignupMessagePropsType) {
       queryClient.invalidateQueries("userProfile");
       setStep(signUpStep.SIGNUP_SUCCESS);
     },
-    onError: () => {},
+    onError: () => {
+      
+    },
   });
 
   function submit() {
