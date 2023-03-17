@@ -9,7 +9,7 @@ export default function Ads() {
     <AdsCover></AdsCover>
     <AdsWrapper>
     <MainAdsIcon/>
-        <img src={adsImg} alt="광고 이미지"/>
+        <Img src={adsImg} alt="광고 이미지"/>
     </AdsWrapper>
     </>
   )
@@ -36,4 +36,8 @@ const MainAdsIcon=styled(MainAdsIc)`
     position: absolute;
 
     margin: 5.1rem 0 0 7.4rem;
+`
+
+const Img=styled.img`
+    width: 100%;
 `
