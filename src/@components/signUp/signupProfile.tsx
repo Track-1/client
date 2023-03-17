@@ -311,8 +311,7 @@ const DescriptionContainer = styled.article`
 `;
 
 const DesciprtionInput = styled.textarea<{row:number}>`
-  height: ${({row})=>row*3.4}rem;
- // height: 3.4rem;
+  height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
   outline: 0;
   resize: none;
@@ -323,10 +322,11 @@ const DesciprtionInput = styled.textarea<{row:number}>`
   border: none;
   background-color: transparent;
   margin-top: 3.3rem;
+  overflow: hidden;
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
-  padding-bottom: 1.5rem;
+  padding-bottom: 3rem;
 
   ${({ theme }) => theme.fonts.input}
 
