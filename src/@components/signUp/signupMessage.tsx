@@ -22,15 +22,19 @@ export default function SignupMessage(props: SignupMessagePropsType) {
     onSuccess: (data) => {
       queryClient.invalidateQueries("userProfile");
       setStep(signUpStep.SIGNUP_SUCCESS);
+      console.log("성공")
     },
     onError: () => {
-      
+      setStep(signUpStep.SIGNUP_PROFILE);
+      console.log("실패")
     },
   });
 
   function submit() {
     mutate(userProfile);
   }
+
+  console.log(userProfile)
 
   useEffect(() => {
     if (
