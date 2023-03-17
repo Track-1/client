@@ -5,6 +5,8 @@ import styled from "styled-components";
 import {
   AddHashtagIc,
   DeleteHashtagIc,
+  HashtagWarningIc,
+  HoverHashtagWarningIc,
   ProfileEditCategoryIc,
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
@@ -16,6 +18,7 @@ import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
+import useHover from "../../utils/hooks/useHover";
 
 export default function SignupProfile(props:SignupProfilePropsTye) {
   const {setStep, userProfile, setUserProfile}=props;
@@ -37,6 +40,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     FUNK: false,
   });
   const [contactInput, setContactInput]=useState<string>("");
+  const { hoverState, changeHoverState } = useHover();
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
@@ -156,6 +160,24 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
             
             {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
+          <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+              {hoverState ? (
+                <>
+                  <HoverHashtagWarningIcon />
+                  <WarningTextWrapper>
+                    <WarningText>
+                      1. 해시태그는 최대 3개까지 추가 가능합니다.
+                      <br />
+                      2. 최대 10자까지 작성이 가능합니다.
+                      <br />
+                      3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                    </WarningText>
+                  </WarningTextWrapper>
+                </>
+              ) : (
+                <HashtagWarningIc />
+              )}
+            </WarningIcon>
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
@@ -375,3 +397,36 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   margin-left: -1rem;
   cursor: pointer;
 `;
+
+const WarningTextWrapper = styled.div`
+  height: 12.5rem;
+  width: 47.2rem;
+
+  position: absolute;
+
+  top: 61.2rem;
+  left: 128.4rem;
+  background: rgba(30, 32, 37, 0.7);
+  backdrop-filter: blur(3px);
+  border-radius: 5px;
+`;
+
+const WarningText = styled.div`
+  ${({ theme }) => theme.fonts.description};
+  color: ${({ theme }) => theme.colors.gray2};
+
+  margin: 1.9rem 1.8rem 0.4rem 2.9rem;
+`;
+
+const WarningIcon = styled.div`
+  height: 3rem;
+  margin-top: 0.7rem;
+  border-radius: 5rem;
+
+  cursor: pointer;
+`;
+
+const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
