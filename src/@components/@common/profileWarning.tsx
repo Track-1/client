@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { HashtagWarningIc, HoverHashtagWarningIc } from '../../assets';
 import useHover from "../../utils/hooks/useHover";
 
-export default function profileWarning() {
+export default function ProfileWarning() {
     const { hoverState, changeHoverState } = useHover();
 
   return (
     <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
     {hoverState ? (
       <>
-        <HoverHashtagWarningIc />
+        <HoverHashtagWarningIcon />
         <WarningTextWrapper>
           <WarningText>
             1. 해시태그는 최대 3개까지 추가 가능합니다.
@@ -22,10 +22,10 @@ export default function profileWarning() {
         </WarningTextWrapper>
       </>
     ) : (
-      <HashtagWarningIc />
+      <HashtagWarningIcon />
     )}
   </WarningIcon>
-  )
+)
 }
 
 const WarningTextWrapper = styled.div`
@@ -34,8 +34,7 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  margin-top: 1.4rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -55,3 +54,21 @@ const WarningIcon = styled.div`
 
   cursor: pointer;
 `;
+
+const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+  margin-left: 42.6rem;
+  margin-top: -1rem;
+`
+
+const HashtagWarningIcon=styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+  margin-left: 42.6rem;
+  margin-top: -1rem;
+`
+
+const HashIconWrapper=styled.div`
+  display: flex;
+`
