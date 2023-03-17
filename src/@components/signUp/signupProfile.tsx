@@ -96,7 +96,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     
   },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
 
-
   return (
     <>
       <InfoContainer>
@@ -127,7 +126,27 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
+          <HashIconWrapper>
           <ProfileEditHashtagIcon />
+          <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+              {hoverState ? (
+                <>
+                  <HoverHashtagWarningIcon />
+                  <WarningTextWrapper>
+                    <WarningText>
+                      1. 해시태그는 최대 3개까지 추가 가능합니다.
+                      <br />
+                      2. 최대 10자까지 작성이 가능합니다.
+                      <br />
+                      3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                    </WarningText>
+                  </WarningTextWrapper>
+                </>
+              ) : (
+                <HashtagWarningIcon />
+              )}
+            </WarningIcon>
+            </HashIconWrapper>
           <InputHashtagWrapper>
           {hashtags.map((hashtag, index) => {
               return (
@@ -160,24 +179,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
             
             {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
-          <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
-              {hoverState ? (
-                <>
-                  <HoverHashtagWarningIcon />
-                  <WarningTextWrapper>
-                    <WarningText>
-                      1. 해시태그는 최대 3개까지 추가 가능합니다.
-                      <br />
-                      2. 최대 10자까지 작성이 가능합니다.
-                      <br />
-                      3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                    </WarningText>
-                  </WarningTextWrapper>
-                </>
-              ) : (
-                <HashtagWarningIc />
-              )}
-            </WarningIcon>
+          
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
@@ -404,8 +406,7 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  margin-top: 1.4rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -429,4 +430,17 @@ const WarningIcon = styled.div`
 const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
   width: 4rem;
   height: 4rem;
+  margin-left: 42.6rem;
+  margin-top: -1rem;
+`
+
+const HashtagWarningIcon=styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+  margin-left: 42.6rem;
+  margin-top: -1rem;
+`
+
+const HashIconWrapper=styled.div`
+  display: flex;
 `
