@@ -40,24 +40,19 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
-    
   }
-  console.log("hashtagInput"+hashtagInput)
-  console.log("hashtags"+hashtags)
   function completeHashtag() {
     if (hashtagRef.current) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
-  console.log("contact"+contactInput)
-  console.log(userProfile.keyword)
 
   function deleteHashtag(index: number) {
-    // const deleteTag = userProfile.keyword;
-    // deleteTag.splice(index, 1);
-
-    // setHashtags((prev) => [...prev, keyword: deleteTag]);    
+   const deleteTag = userProfile.keyword;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
+    setHashtagInput("");
   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -97,7 +92,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
      });
     //}
     
-  },[contactInput,categories, isCategorySelected, hashtagRef, hashtags, descriptionInput])
+  },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
 
 
   return (
