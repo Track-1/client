@@ -234,3 +234,4 @@ export { ReactComponent as LoginPasswordIc } from "./icon/loginPasswordIc.svg";
 export { ReactComponent as TrackheadersloganIc } from "./icon/trackheadersloganIc.svg";
 export { ReactComponent as ProfileEditBtnIc } from "./icon/profileEditBtnIc.svg";
 export { ReactComponent as ProfileHashtagXIc } from "./icon/profileHashtagXIc.svg";
+export { ReactComponent as MainAdsIc } from "./icon/mainAdsIc.svg";
