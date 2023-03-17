@@ -297,7 +297,10 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  
+  width: 4rem;
+  height: 4rem;
+
+  cursor: pointer;
 `;
 
 const DescriptionContainer = styled.article`
