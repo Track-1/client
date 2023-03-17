@@ -154,7 +154,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
               </Hashtag>
             )}
             
-            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
@@ -257,7 +257,7 @@ const Hashtag = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
 
-  margin-right: 1rem;
+  padding-right: 1rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -361,6 +361,8 @@ const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
 
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  //margin-left: 1rem;
+  width: 2.8rem;
+  
+  margin-left: -1rem;
   cursor: pointer;
 `;
