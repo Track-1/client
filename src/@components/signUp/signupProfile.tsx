@@ -83,14 +83,12 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   }
 
   useEffect(()=>{
-    //if(contactInput!==undefined){
       setUserProfile({
         contact: contactInput,
         category: Array.from(categories),
         keyword: hashtags,
         introduce: descriptionInput,
      });
-    //}
     
   },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
 
