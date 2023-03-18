@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainInfoVocalIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/vocalPortfolioList5.png";
-import { onLogout } from "../../core/api/logout";
+import { onLogout, onLogoutAutomatic } from "../../core/api/logout";
 import { getVocalProfile } from "../../core/api/vocalProfile";
 import { UserPropsType } from "../../type/userPropsType";
 import { VocalProfileType } from "../../type/vocalProfile";
@@ -36,8 +36,10 @@ export default function VocalBriefInfo(props:UserPropsType) {
         setProfileData(data.vocalProfile)
         setLoginUserImg(data.producerProfile.profileImage);
     },
-    onError: error => {
-      console.log("실패");
+    onError: (error:any) => {
+      if(error.response.data.message==='Access 토큰이 만료되었습니다.'){
+        onLogoutAutomatic()
+      }
     }
   });
 

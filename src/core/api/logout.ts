@@ -21,3 +21,8 @@ export async function onLogout() {
         console.log(e);
     }
 }
+
+export async function onLogoutAutomatic(){
+    removeCookie("accessToken");
+    window.location.replace("/")
+}
