@@ -44,7 +44,8 @@ export default function VocalBriefInfo(props:UserPropsType) {
         onLogoutAutomatic()
         setLoginUserImg("");
         setLoginUserType("");
-        setLoginUserId(-1);    
+        setLoginUserId(-1);  
+        setLoginUserImg("");
       }
     }
   });
@@ -54,6 +55,7 @@ export default function VocalBriefInfo(props:UserPropsType) {
     setLoginUserImg("");
     setLoginUserType("");
     setLoginUserId(-1);
+    setLoginUserImg("");
   }
 
   function moveToMypage(){
