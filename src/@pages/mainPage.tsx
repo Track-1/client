@@ -50,7 +50,7 @@ export default function MainPage() {
   return (
     <>
     <MainPageWrapper>
-      <MainHeader />
+        <MainHeader />
       <Main>
         <Img src={background} alt="배경이미지" />
         <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
@@ -157,3 +157,4 @@ const MainSlogan = styled.img`
 const Img=styled.img`
   width: 192rem;
 `
+

@@ -56,6 +56,7 @@ const HeaderContainer = styled.header`
   width: 100%;
   height: 14.3rem;
   position: fixed;
+ z-index: 2;
 
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 `;
@@ -66,6 +67,7 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 5.9rem 7.5rem;
+  
 `;
 
 const BtnWrpper = styled.div`
@@ -88,5 +90,6 @@ const TrackheadersloganIcon=styled(TrackheadersloganIc)`
 
 const TrackOneMainLogoIcon=styled(TrackOneMainLogoIc)`
   width: 26.3rem;
+  
   cursor: pointer;
 `
