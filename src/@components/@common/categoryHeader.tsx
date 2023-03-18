@@ -15,7 +15,8 @@ import profileImg from "../../assets/image/profileImg.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
-import { isProducer } from "../../utils/common/userType";
+import { isProducer, isVocal } from "../../utils/common/userType";
+import { getCookie } from "../../utils/cookie";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
@@ -44,6 +45,10 @@ export default function CategoryHeader() {
       : navigate(`/producer-profile/${loginUserId}`, { state: loginUserId });
   }
 
+  function checkLogined(){
+    return getCookie("accessToken")!==undefined
+  }
+console.log(getCookie("accessToken"));
   return (
     <CategoryHeaderContainer>
       <CategoryContainer>
@@ -66,17 +71,16 @@ export default function CategoryHeader() {
       <HeaderContainer>
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
-          <ProfileWrapper onClick={moveMypage}>
-            {/* <ProfileImg
-              src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
-              alt="프로필이미지"
-            /> */}
+          {checkLogined()&&<ProfileWrapper onClick={moveMypage}>
              {
-              isProducer(loginUserType)?(
+              isProducer(loginUserType)&&(
               <ProducerProfileImg
                 src={loginUserImg}
                 alt="프로필이미지"
-              />):(
+              />
+              )}
+              {
+                isVocal(loginUserType)&&(
               <VocalProfileImageWrapper>
               <VocalProfileImage
                 src={loginUserImg}
@@ -85,7 +89,7 @@ export default function CategoryHeader() {
               </VocalProfileImageWrapper>
             )}
             <ToggleIc />
-          </ProfileWrapper>
+          </ProfileWrapper>}
         </HeaderWrapper>
       </HeaderContainer>
     </CategoryHeaderContainer>
