@@ -15,7 +15,7 @@ export default function SignUpBackButton() {
 
   return (
     <ButtonContainer onClick={movePreviousPage}>
-      <BackBtnIc />
+      <BackBtnIcon />
       <ButtonText>Back</ButtonText>
     </ButtonContainer>
   );
@@ -36,3 +36,7 @@ const ButtonText = styled.strong`
 
   color: ${({ theme }) => theme.colors.white};
 `;
+
+const BackBtnIcon=styled(BackBtnIc)`
+  width: 3.25rem;
+`
