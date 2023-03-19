@@ -5,6 +5,8 @@ import styled from "styled-components";
 import {
   AddHashtagIc,
   DeleteHashtagIc,
+  HashtagWarningIc,
+  HoverHashtagWarningIc,
   ProfileEditCategoryIc,
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
@@ -16,6 +18,8 @@ import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
+import useHover from "../../utils/hooks/useHover";
+import ProfileWarning from '../@common/profileWarning';
 
 export default function SignupProfile(props:SignupProfilePropsTye) {
   const {setStep, userProfile, setUserProfile}=props;
@@ -92,7 +96,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     
   },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
 
-
   return (
     <>
       <InfoContainer>
@@ -123,7 +126,10 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
+          <HashIconWrapper>
           <ProfileEditHashtagIcon />
+          <ProfileWarning/>
+            </HashIconWrapper>
           <InputHashtagWrapper>
           {hashtags.map((hashtag, index) => {
               return (
@@ -156,6 +162,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
             
             {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
+          
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
@@ -263,6 +270,7 @@ const Hashtag = styled.div`
 
 const HashtagWrapper = styled.div`
   display: flex;
+  align-items: center;
 
   padding: 0 1.5rem;
 `;
@@ -321,7 +329,7 @@ const DesciprtionInput = styled.textarea<{row:number}>`
   word-break: break-word;
   border: none;
   background-color: transparent;
-  margin-top: 3.3rem;
+  margin-top: 3rem;
   overflow: hidden;
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
@@ -368,10 +376,13 @@ const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
   width: 12.6rem;
 `
 
-
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   width: 2.8rem;
   
   margin-left: -1rem;
   cursor: pointer;
 `;
+
+const HashIconWrapper=styled.div`
+  display: flex;
+`

@@ -164,10 +164,8 @@ const ImageWrapper = styled.div`
 `;
 
 const InfoProfileImage = styled.img`
-  height: 10rem;
-  width: 10rem;
-
-  margin-left: 2.2rem;
+  width: 150%;
+  height: 135%;
 
   transform: rotate(-45deg);
 `;
