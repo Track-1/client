@@ -61,8 +61,8 @@ export default function ProducerPortfolioEditPage() {
     },
   });
 
-  function getFileName(e: any) {
-    setAudioFile(e.target.files[0]);
+  function getFileName(e: React.ChangeEvent<HTMLInputElement>) {
+    setAudioFile(e.target.files![0]);
   }
 
   function toggleDropdown() {
