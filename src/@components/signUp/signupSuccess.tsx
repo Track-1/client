@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { MoveTouploadPortfolioButtonIc, MoveTouploadVocalSearchingButtonIc, SignUpGetStartedButtonIc, SignUpProducerButtonIc, SignUpProducerQIc, SignUpSuccessBackgroundIc, SignUpVocalButtonIc, SignUpVocalQIc } from '../../assets'
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,13 @@ import { currentUser } from '../../core/constants/userType';
 import { profileCategory } from '../../core/constants/pageCategory';
 import { useState } from 'react';
 import { isProducer, isVocal } from '../../utils/common/userType';
+import useModal from '../../utils/hooks/useModal';
 
 export default function SignupSuccess() {
     const userType=useRecoilValue<string>(UserType)
     const [visible, setVisible]=useState<boolean>(false)
     const navigate=useNavigate()
+    const { modalRef } = useModal();
 
     function moveToHome(){
         navigate('/')
@@ -29,6 +31,17 @@ export default function SignupSuccess() {
     function moveToProducerUpload(page:string){
         navigate(page)
     }
+
+    const modalCloseHandler = (e:any) => {
+        if(visible && modalRef.current && !modalRef.current.contains(e.target)) setVisible(false);
+      };
+      
+      useEffect(() => {
+        window.addEventListener('click', modalCloseHandler);
+        return () => {
+          window.removeEventListener('click', modalCloseHandler);
+        };
+      });
 
   return (
     <SuccessPageContainer>
@@ -54,9 +67,9 @@ export default function SignupSuccess() {
             </UploadButtonWrapper>
         )}
         {visible&&(
-        <ModalWrapper>
-            <MoveTouploadVocalSearchingButtonIc onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
-            <MoveTouploadPortfolioButtonIc onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
+        <ModalWrapper ref={modalRef}>
+            <MoveTouploadVocalSearchingButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
+            <MoveTouploadPortfolioButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
         </ModalWrapper>
         )}
 
@@ -128,4 +141,14 @@ const SignUpVocalButtonIcon=styled(SignUpVocalButtonIc)`
 
 const SignUpProducerButtonIcon=styled(SignUpProducerButtonIc)`
     width: 55.5rem;
+`
+
+const MoveTouploadVocalSearchingButtonIcon=styled(MoveTouploadVocalSearchingButtonIc)`
+    width: 28.4rem;
+    height: 10.6rem;
+`
+
+const MoveTouploadPortfolioButtonIcon=styled(MoveTouploadPortfolioButtonIc)`
+    width: 28.4rem;
+    height: 8.4rem;
 `
