@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { MainInfoProducerIc, MainLogoutIc } from "../../assets";
 import thumbnailImg from "../../assets/image/thumbnailImg.png";
-import { onLogout } from "../../core/api/logout";
+import { onLogout, onLogoutAutomatic } from "../../core/api/logout";
 import { getProducerPortfolio } from "../../core/api/producerProfile";
-import { LoginUserImg } from "../../recoil/loginUserData";
+import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { ProducerProfileType } from "../../type/producerProfile";
 import { UserPropsType } from "../../type/userPropsType";
 
@@ -17,6 +17,8 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [loginUserImg, setLoginUserImg] = useRecoilState(LoginUserImg);
+  const setLoginUserType = useSetRecoilState(LoginUserType);
+  const setLoginUserId = useSetRecoilState(LoginUserId);
 
   function hoverProfile() {
     setIsHovered(true);
@@ -33,8 +35,14 @@ export default function ProducerBriefInfo(props: UserPropsType) {
       setProfileData(data.producerProfile);
       setLoginUserImg(data.producerProfile.profileImage);
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error:any) => {
+      if(error.response.data.message==='Access 토큰이 만료되었습니다.'){
+        onLogoutAutomatic()
+        setLoginUserImg("");
+        setLoginUserType("");
+        setLoginUserId(-1);  
+        setLoginUserImg("");
+      }
     },
   });
 
