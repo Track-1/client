@@ -49,7 +49,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     }
 
     function checkImageHover(){
-      setIsHover(prev=>!prev)
+      setIsHover(!isHover)
     }
 
   function setErrorIcon(message:string){ 
