@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { UploadInfo } from "../../core/api/upload";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
+import { LoginUserId } from "../../recoil/loginUserData";
 
 interface PropsType {
   userType: string;
@@ -21,13 +22,14 @@ export default function UploadHeader(props: PropsType) {
   const { userType, producerUploadType, uploadData, setUploadData, uploadDataRef } = props;
 
   const navigate = useNavigate();
-
+  const loginUserId = useRecoilValue(LoginUserId);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
   const { mutate } = useMutation(post, {
     onSuccess: () => {
-      checkUserType(userType) ? navigate(-1) : navigate("/vocal-profile/1");
+      alert("업로드 성공");
+      checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`);
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -45,7 +47,7 @@ export default function UploadHeader(props: PropsType) {
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     setOpenModal(false);
     const introduce = uploadDataRef?.current?.value;
-  
+
     setUploadData((prevState) => {
       return { ...prevState, introduce: introduce };
     });
@@ -71,7 +73,7 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function isEmptyWavFile(): boolean {
-    return uploadData.wavFile === null;
+    return uploadData.audioFile === null;
   }
 
   function isEmptyKeyword(): boolean {
@@ -89,7 +91,7 @@ export default function UploadHeader(props: PropsType) {
           <UploadBackIcon onClick={backPage} />
           <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
-        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon onClick={upload} />}
+        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIc onClick={upload} />}
       </HeaderWrapper>
     </Container>
   );
@@ -121,10 +123,6 @@ const UserClass = styled.div`
 `;
 
 const UploadBackIcon = styled(UploadBackIc)`
-  cursor: pointer;
-`;
-
-const UploadBtnIcon = styled(UploadBtnIc)`
   cursor: pointer;
 `;
 
