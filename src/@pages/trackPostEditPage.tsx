@@ -23,7 +23,7 @@ export default function TrackPostEditPage() {
   const hashtagText = useRef<HTMLInputElement | null>(null);
   const [category, setCategory] = useState<string>();
   const [audioFile, setAudioFile] = useState<File>();
-  const [hashtag, steHashtag] = useState<string[]>();
+  const [hashtag, setHashtag] = useState<string[]>();
   const [hashtagInput, setHashtegInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
   const [description, setDescription] = useState<string>();
@@ -46,7 +46,7 @@ export default function TrackPostEditPage() {
     hashtag?.forEach((keyword) => {
       if (keyword !== deleteTarget) temp.push(keyword);
     });
-    steHashtag(temp);
+    setHashtag(temp);
   }
 
   function changeHashtagWidth(e: React.ChangeEvent<HTMLInputElement>) {
@@ -55,7 +55,7 @@ export default function TrackPostEditPage() {
 
   function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.code === "Enter" && hashtagText.current !== null) {
-      steHashtag((prev) => prev && [...prev, hashtagText.current!.value]);
+      setHashtag((prev) => prev && [...prev, hashtagText.current!.value]);
     }
   }
 
