@@ -4,5 +4,6 @@ export const emailInvalidMessage = {
     DUPLICATION: "This email is already taken.",
     SUCCESS: "email success",
     TIME:"Valid time is 30 minutes.",
-    VERIFY:"email verify"
+    VERIFY:"email verify", 
+    ING:"email ing",
   };

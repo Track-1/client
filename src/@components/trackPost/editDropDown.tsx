@@ -25,9 +25,13 @@ export default function EditDropDown() {
     mutate();
   }
 
+  function moveTrackPostEditPage() {
+    navigate(`/track-post/edit/${beatId}`, { state: beatId });
+  }
+
   return (
     <DropDownContainer>
-      <EditWrapper>
+      <EditWrapper onClick={moveTrackPostEditPage}>
         <EditText>수정하기</EditText>
         <EditIc />
       </EditWrapper>

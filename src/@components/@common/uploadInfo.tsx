@@ -135,7 +135,7 @@ export default function UploadInfo(props: propsType) {
   function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files !== null) {
       const file = e.target.value;
-      const audioFile = e.target!.files[0];
+      const inputAudioFile = e.target!.files[0];
       const audioFileName: string = getAudioFileName(file);
       const audioFileType: string = getAudioFileType(file, audioFileName.length);
       const onlyFileName: string = getOnlyFileName(file);
@@ -143,7 +143,7 @@ export default function UploadInfo(props: propsType) {
       if (checkAduioFileType(audioFileType)) {
         setAudioAttribute(audioFileName, audioFileType, onlyFileName);
         setUploadData((prevState) => {
-          return { ...prevState, wavFile: audioFile };
+          return { ...prevState, audioFile: inputAudioFile };
         });
       } else {
         alert("확장자를 확인해 주세요!");

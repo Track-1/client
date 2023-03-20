@@ -22,8 +22,9 @@ export default function ForgotPasswordInput() {
   const [userType, setUserType] = useState<string>("vocal");
   const [resendTrigger, setResendTrigger] = useState<boolean>(false);
   const [emailMessage, setEmailMessage] = useState<string>(emailInvalidMessage.NULL);
+  const [recentEmail, setRecentEmail] = useState<string>("");
 
-  const { mutate, isSuccess } = useSendNewPasswordEmail(userType, email);
+  const { mutate, isSuccess, isError, error } = useSendNewPasswordEmail(userType, email);
 
   useEffect(() => {
     isProducerMode ? setUserType("producer") : setUserType("vocal");
@@ -33,18 +34,30 @@ export default function ForgotPasswordInput() {
     isSuccess && setResendTrigger(true);
   }, [isSuccess]);
 
-  function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
-    if (!e.target.value) {
-      setEmailMessage(emailInvalidMessage.NULL);
-    } else if (!checkEmailForm(e.target.value)) {
-      setEmailMessage(emailInvalidMessage.FORM);
-    } else if (checkEmailForm(e.target.value)) {
-      setEmailMessage(emailInvalidMessage.SUCCESS);
-      setEmail(e.target.value);
-    }
-
-    setEmail(e.target.value);
+  function isNotSignupEmail() {
+    return isError && error?.response.status === 401;
   }
+
+  function compareRecentEmail() {
+    return email === recentEmail;
+  }
+
+  function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+    const input = e.target.value;
+    setEmail(input);
+
+    if (!input) {
+      setEmailMessage(emailInvalidMessage.NULL);
+    } else {
+      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS) : setEmailMessage(emailInvalidMessage.FORM);
+    }
+  }
+
+  function onRequestCapsulation() {
+    mutate();
+    setRecentEmail(email);
+  }
+
 
   function producerToggleType() {
     return isProducerMode ? (
@@ -54,7 +67,7 @@ export default function ForgotPasswordInput() {
     );
   }
 
-  function isErrorCase() {
+  function isInputWarnning() {
     return !checkEmailForm(email) && email.length !== 0;
   }
 
@@ -62,20 +75,28 @@ export default function ForgotPasswordInput() {
     if (!checkEmailForm(email)) {
       return <RequestResetPasswordDefaultBtnIc />;
     } else {
-      if (resendTrigger) {
+      if (resendTrigger && compareRecentEmail() && isSuccess) {
         return isProducerMode ? (
-          <ResendPasswordProducerBtnIcon onClick={() => mutate()} />
+          <ResendPasswordProducerBtnIcon onClick={() => onRequestCapsulation()} />
         ) : (
-          <ResendPasswordVocalBtnIcon onClick={() => mutate()} />
+          <ResendPasswordVocalBtnIcon onClick={() => onRequestCapsulation()} />
         );
       } else {
         return isProducerMode ? (
-          <RequestResetPasswordProducerBtnIcon onClick={() => mutate()} />
+          <RequestResetPasswordProducerBtnIcon onClick={() => onRequestCapsulation()} />
         ) : (
-          <RequestResetPasswordVocalBtnIcon onClick={() => mutate()} />
+          <RequestResetPasswordVocalBtnIcon onClick={() => onRequestCapsulation()} />
         );
       }
     }
+  }
+
+  function producerToggleType() {
+    return isProducerMode ? (
+      <ProducerModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
+    ) : (
+      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
+    );
   }
 
   return (
@@ -88,12 +109,16 @@ export default function ForgotPasswordInput() {
           <InputTitle>What's your email</InputTitle>
           <InputWrapper>
             <Input placeholder="Enter your email address" onChange={writeEmail} />
-            {isErrorCase() && <InputWarningIc />}
+            {isInputWarnning() && <InputWarningIc />}
+            {isError && compareRecentEmail() && <InputWarningIc />}
           </InputWrapper>
           <UnderLine inputState={emailMessage} />
         </InputBox>
-        {isErrorCase() && <WarningMessage>{emailMessage}</WarningMessage>}
-        {isSuccess && checkEmailForm(email) && (
+        {isNotSignupEmail() && compareRecentEmail() && (
+          <WarningMessage>We don’t have an account with that email address</WarningMessage>
+        )}
+        {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
+        {isSuccess && checkEmailForm(email) && compareRecentEmail() && (
           <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
         )}
         <ModeWrapper>
@@ -220,25 +245,31 @@ const RequestBtnWrapper = styled.div`
 `;
 
 const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
+  width: ?rem;
   cursor: pointer;
 `;
 
 const RequestResetPasswordVocalBtnIcon = styled(RequestResetPasswordVocalBtnIc)`
+  width: ?rem;
   cursor: pointer;
 `;
 
 const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
+  width: ?rem;
   cursor: pointer;
 `;
 
 const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
+  width: ?rem;
   cursor: pointer;
 `;
 
 const ResendPasswordProducerBtnIcon = styled(ResendPasswordProducerBtnIc)`
+  width: ?rem;
   cursor: pointer;
 `;
 
 const ResendPasswordVocalBtnIcon = styled(ResendPasswordVocalBtnIc)`
+  width: ?rem;
   cursor: pointer;
 `;
