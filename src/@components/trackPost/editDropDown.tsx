@@ -30,7 +30,7 @@ export default function EditDropDown() {
   }
 
   return (
-    <DropDownContainer>
+    <DropDownContainer >
       <EditWrapper onClick={moveTrackPostEditPage}>
         <EditText>수정하기</EditText>
         <EditIc />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { PauseBtnIc, PlayBtnIc, EllipsisIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
@@ -26,6 +26,18 @@ export default function EachUserComment(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
+  const { modalRef } = useModal();
+
+  // const modalCloseHandler = (e:any) => {
+  //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
+  // };
+  
+  // useEffect(() => {
+  //   window.addEventListener('click', modalCloseHandler);
+  //   return () => {
+  //     window.removeEventListener('click', modalCloseHandler);
+  //   };
+  // });
 
   function hoverComment() {
     setIsHover(true);
@@ -50,8 +62,10 @@ export default function EachUserComment(props: PropsType) {
   }
 
   function changeToggleState() {
-    setEditModalToggle((prev) => !prev);
+    setEditModalToggle(true);
   }
+  
+ // console.log(editModalToggle)
 
   return (
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
@@ -71,8 +85,8 @@ export default function EachUserComment(props: PropsType) {
         <InfoTopWrapper>
           <UserName>{commentInfo.vocalName}</UserName>
           {isMe && <EllipsisIcon onClick={changeToggleState} />}
-          {editModalToggle && <EditDropDownComment currentId={commentInfo.commentId} />}
         </InfoTopWrapper>
+        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setEditModalToggle={setEditModalToggle} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
     </CommentContainer>
@@ -141,6 +155,7 @@ const CommentText = styled.strong`
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`
+  width: 4rem;
   float: right;
   cursor: pointer;
 `;
