@@ -144,6 +144,7 @@ export default function UserComment(props: PropsType) {
                   pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
                   isMe={comments[index].isMe}
+                  getUploadData={getUploadData}
                 />
               );
             })}

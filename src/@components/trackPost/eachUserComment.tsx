@@ -7,6 +7,7 @@ import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
 import useModal from "../../utils/hooks/useModal";
 import EditDropDownComment from "./editDropDownComment";
+import CommentUpdate from "./commentUpdate";
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -16,10 +17,12 @@ interface PropsType {
   clickComment: (index: number) => void;
   currentIndex: number;
   isMe: boolean;
+  getUploadData: (content: string, wavFile: File | null) => any;
+
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe } = props;
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -27,6 +30,7 @@ export default function EachUserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const { modalRef } = useModal();
+  const [isEdit, setIsEdit]=useState<boolean>(false);
 
   // const modalCloseHandler = (e:any) => {
   //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
@@ -62,12 +66,16 @@ export default function EachUserComment(props: PropsType) {
   }
 
   function changeToggleState() {
-    setEditModalToggle(true);
+    setEditModalToggle(!editModalToggle);
   }
   
- // console.log(editModalToggle)
+  useEffect(()=>{
+    isEdit&&setEditModalToggle(false);
+  },[isEdit])
 
   return (
+    <>
+    {isEdit?<CommentUpdate getUploadData={getUploadData}/>:(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
         {isHover && !isClickedPlayingComment() && (
@@ -86,10 +94,11 @@ export default function EachUserComment(props: PropsType) {
           <UserName>{commentInfo.vocalName}</UserName>
           {isMe && <EllipsisIcon onClick={changeToggleState} />}
         </InfoTopWrapper>
-        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setEditModalToggle={setEditModalToggle} /></div>)}
+        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
-    </CommentContainer>
+    </CommentContainer>)}
+    </>
   );
 }
 

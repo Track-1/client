@@ -5,11 +5,11 @@ import { useMutation } from "react-query";
 
 interface PropsType {
   currentId: number;
-  setEditModalToggle: React.Dispatch<React.SetStateAction<boolean>>
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function EditDropDownComment(props: PropsType) {
-  const { currentId, setEditModalToggle } = props;
+  const { currentId, setIsEdit } = props;
   const { mutate } = useMutation(() => deleteTrackComment(currentId), {
     onSuccess: () => {
       //다시 업로드 하는거 해줘야된다.!
@@ -21,7 +21,7 @@ export default function EditDropDownComment(props: PropsType) {
   });
 
   function editComment(){
-    setEditModalToggle(false)
+    setIsEdit(true)
   }
   
   return (
