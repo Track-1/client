@@ -47,8 +47,8 @@ export default function VocalList(props: PropsType) {
     setPlay(false);
   }
 
-  function clickVocalName(id: number) {
-    navigate(`/vocal-profile/${id}`, { state: id });
+  function moveVocalProfilePage(vocalId: number) {
+    navigate(`/vocal-profile/${vocalId}`, { state: vocalId });
   }
 
   return (
@@ -57,7 +57,7 @@ export default function VocalList(props: PropsType) {
         vocalData.map((vocal, index) => (
           <VocalContainer key={index}>
             <UsernameInformWrapper>
-              <Username onClick={() => clickVocalName(vocal.vocalId)}>{vocal.vocalName}</Username>
+              <Username onClick={() => moveVocalProfilePage(vocal.vocalId)}>{vocal.vocalName}</Username>
               {!vocal.isSelected && <VocalSleepIcon />}
             </UsernameInformWrapper>
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   AddHashtagIc,
+  DeleteHashtagIc,
   ProfileEditCategoryIc,
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
@@ -11,6 +12,7 @@ import { CategoryId } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
+import ProfileWarning from "./profileWarning";
 
 interface PropsType {
   isSave: boolean;
@@ -37,6 +39,7 @@ export default function ProfileEditInfo(props: PropsType) {
     HOUSE: false,
     FUNK: false,
   });
+  const [contactInput, setContactInput]=useState<string>("");
 
   useEffect(() => {
     selectPrevCategory(prevDatas?.cagetory);
@@ -67,6 +70,11 @@ export default function ProfileEditInfo(props: PropsType) {
       setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
+
+  function deleteHashtag(index: number) {
+     setHashtags([...hashtags.splice(index, 1)]);
+     setHashtagInput("");
+   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
     setDescriptionInput(e.target.value);
@@ -103,19 +111,25 @@ export default function ProfileEditInfo(props: PropsType) {
     setCategories(new Set(tempCatgorySet));
   }
 
+  function changeContact(e: React.ChangeEvent<HTMLInputElement>){
+    setContactInput(e.target.value)
+  }
+
   return (
     <>
       <InfoContainer>
         <ContactContainer>
-          <ProfileEditContactIc />
+          <ProfileEditContactIcon />
           <ContactInput
             ref={contactInputRef}
             placeholder="Enter your phone number or SNS account"
             defaultValue={prevDatas?.contact}
+            onChange={changeContact}
+            maxLength={40}
           />
         </ContactContainer>
         <CategoryContainer>
-          <ProfileEditCategoryIc />
+          <ProfileEditCategoryIcon />
           <CategoryBox>
             {Object.keys(CategoryId).map((category, index) => {
               return (
@@ -132,8 +146,22 @@ export default function ProfileEditInfo(props: PropsType) {
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
-          <ProfileEditHashtagIc />
+        <HashIconWrapper>
+          <ProfileEditHashtagIcon />
+          <ProfileWarning/>
+            </HashIconWrapper>
           <InputHashtagWrapper>
+          {hashtags.map((hashtag, index) => {
+              return (
+                <Hashtag key={index}>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <CompletedHashtag>{hashtag}</CompletedHashtag>
+                  </HashtagWrapper>
+                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                </Hashtag>
+              );
+            })}
             {hashtags.length < 3 && (
               <Hashtag>
                 <HashtagWrapper>
@@ -146,29 +174,24 @@ export default function ProfileEditInfo(props: PropsType) {
                     inputWidth={hashtagInput.length}
                     ref={hashtagRef}
                     placeholder="HashTag"
+                    maxLength={10}
                   />
                 </HashtagWrapper>
               </Hashtag>
             )}
-            {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </HashtagWrapper>
-                </Hashtag>
-              );
-            })}
-            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            
+            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
-          <ProfileEditDescriptionIc />
+          <ProfileEditDescriptionIcon />
           <DesciprtionInput
+            typeof="text"
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
             defaultValue={prevDatas?.introduce}
+            maxLength={150}
+            row={Math.floor(descriptionInput.length/31)+1}
           />
           <TextCount onChange={countDescriptionText}>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
@@ -322,8 +345,8 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input`
-  height: 3.4rem;
+const DesciprtionInput = styled.input<{row:number}>`
+  height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
 
   margin-top: 3.3rem;
@@ -355,3 +378,30 @@ const MaxCount = styled.strong`
 
   color: ${({ theme }) => theme.colors.gray3};
 `;
+
+const ProfileEditContactIcon=styled(ProfileEditContactIc)`
+  width: 8.8rem;
+`
+
+const ProfileEditCategoryIcon=styled(ProfileEditCategoryIc)`
+  width: 10.3rem;
+`
+
+const ProfileEditHashtagIcon=styled(ProfileEditHashtagIc)`
+  width: 9.3rem;
+`
+
+const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
+  width: 12.6rem;
+`
+
+const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 2.8rem;
+  
+  margin-left: -1rem;
+  cursor: pointer;
+`;
+
+const HashIconWrapper=styled.div`
+  display: flex;
+`

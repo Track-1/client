@@ -1,29 +1,47 @@
 import React from 'react'
 import styled from 'styled-components'
 import { SignUpResendButtonIc, SignupSendcodeTextIc } from '../../assets'
+import { verificationCodeInvalidMessage } from '../../core/userInfoErrorMessage/verificationCodeInvalidMessage';
+import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
 
 interface ButtonPropsType{
   isEmailSuccess:boolean;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   isSendCode:boolean;
   isResendCode:boolean;
+  emailMessage:string;
 }
 
 export default function SendCodeButton(props:ButtonPropsType) {
-  const {isEmailSuccess, onClick, isSendCode, isResendCode}=props;
+  const {isEmailSuccess, onClick, isSendCode, isResendCode, emailMessage}=props;
+
+  function checkEmailVerify(){
+    return emailMessage===emailInvalidMessage.VERIFY
+  }
+
+  function checkEmailDuplication(){
+    return emailMessage===emailInvalidMessage.DUPLICATION
+  }
+
+  function checkEmailTime(){
+    return emailMessage===emailInvalidMessage.TIME
+  }
+
+  function checkEmailSuccess(){
+    return emailMessage===emailInvalidMessage.SUCCESS
+  }
+
+  function checkEmail(){
+    return emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.TIME||emailMessage===emailInvalidMessage.ING
+  }
 
   function isActive(){
-    if(isEmailSuccess||isSendCode||isResendCode){
-      return true
-    }
-    else{
-      return false
-    }
+    return checkEmail()&&true;
   }
 
   return (
     <ButtonWrapper isActive={isActive()} onClick={onClick}>
-        {isSendCode?<SignUpResendButtonIcon/>:<SignupSendcodeTextIcon/>}
+        {checkEmailTime()?<SignUpResendButtonIcon/>:<SignupSendcodeTextIcon/>}
     </ButtonWrapper>
   )
 }

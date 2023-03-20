@@ -14,18 +14,29 @@ import { passwordInvalidMessage } from "../../core/userInfoErrorMessage/password
 import { checkPasswordForm } from "../../utils/errorMessage/checkPasswordForm";
 import { useMutation } from "react-query";
 import { patchResetPassword } from "../../core/api/resetPassword";
+import useMovePage from "../../utils/hooks/useMovePage";
+import { onLogout } from "../../core/api/logout";
 
 export default function ResetPasswordInput() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-
   const [passwordMessage, setPasswordMessage] = useState<string>(passwordInvalidMessage.NULL);
   const [confirmPasswordMessage, setConfirmPasswordMessage] = useState<string>(passwordInvalidMessage.NULL);
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  const { mutate } = useMutation(() => patchResetPassword(password));
+  const [movePage] = useMovePage();
+
+  const { mutate } = useMutation(() => patchResetPassword(password), {
+    onSuccess: () => {
+      alert("비밀번호 변경 성공");
+      movePage("/");
+      onLogout();
+    },
+    onError: (error: any) => {
+      alert(error.response.data.message);
+    },
+  });
 
   useEffect(() => {
     if (!confirmPassword) {
@@ -37,17 +48,20 @@ export default function ResetPasswordInput() {
     }
   }, [password]);
 
+  function isSamePassword() {
+    return password === confirmPassword;
+  }
+
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
-
     setPassword(input);
 
     if (!input) {
       setPasswordMessage(passwordInvalidMessage.NULL);
-    } else if (!checkPasswordForm(input)) {
-      setPasswordMessage(passwordInvalidMessage.FORM);
-    } else if (checkPasswordForm(input)) {
-      setPasswordMessage(passwordInvalidMessage.SUCCESS);
+    } else {
+      checkPasswordForm(input)
+        ? setPasswordMessage(passwordInvalidMessage.SUCCESS)
+        : setPasswordMessage(passwordInvalidMessage.FORM);
     }
   }
 
@@ -60,10 +74,10 @@ export default function ResetPasswordInput() {
       setConfirmPasswordMessage(passwordInvalidMessage.NULL);
     } else if (password !== input) {
       setConfirmPasswordMessage(passwordInvalidMessage.MATCH);
-    } else if (!checkPasswordForm(input)) {
-      setConfirmPasswordMessage(passwordInvalidMessage.FORM);
-    } else if (checkPasswordForm(input)) {
-      setConfirmPasswordMessage(passwordInvalidMessage.SUCCESS);
+    } else {
+      checkPasswordForm(input)
+        ? setConfirmPasswordMessage(passwordInvalidMessage.SUCCESS)
+        : setConfirmPasswordMessage(passwordInvalidMessage.FORM);
     }
   }
 
@@ -97,9 +111,9 @@ export default function ResetPasswordInput() {
             />
             {showIcon(passwordMessage)}
             {showPassword ? (
-              <HiddenPasswordIcon onClick={() => setShowPassword((prev) => !prev)} />
+              <HiddenPasswordIcon onClick={() => setShowPassword(!showPassword)} />
             ) : (
-              <ShowPasswordIcon onClick={() => setShowPassword((prev) => !prev)} />
+              <ShowPasswordIcon onClick={() => setShowPassword(!showPassword)} />
             )}
           </InputWrapper>
           <UnderLine inputState={passwordMessage} />
@@ -119,9 +133,9 @@ export default function ResetPasswordInput() {
             />
             {showIcon(confirmPasswordMessage)}
             {showConfirmPassword ? (
-              <HiddenPasswordIcon onClick={() => setShowConfirmPassword((prev) => !prev)} />
+              <HiddenPasswordIcon onClick={() => setShowConfirmPassword(!showConfirmPassword)} />
             ) : (
-              <ShowPasswordIcon onClick={() => setShowConfirmPassword((prev) => !prev)} />
+              <ShowPasswordIcon onClick={() => setShowConfirmPassword(!showConfirmPassword)} />
             )}
           </InputWrapper>
           {/* 밑줄 상태 변경해야된다. */}
@@ -132,14 +146,11 @@ export default function ResetPasswordInput() {
             )}
         </InputBox>
         <SentenceWrapper>
-          {/* 줄간격 조정해야된다 */}
-          <Sentence>
-            If you save your new password, <br />
-            your account will be signed out everywhere
-          </Sentence>
+          <Sentence>If you save your new password,</Sentence>
+          <Sentence>your account will be signed out everywhere</Sentence>
         </SentenceWrapper>
         <SaveBtnWrapper>
-          {checkPasswordForm(password) && password === confirmPassword ? (
+          {checkPasswordForm(password) && isSamePassword() ? (
             <SaveBtnIcon onClick={() => mutate()} />
           ) : (
             <DefaultSaveBtnIcon />
@@ -239,19 +250,20 @@ const UnderLine = styled.hr<{ inputState: string }>`
 
 const SentenceWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   height: 4.3rem;
 
   margin-top: 5.9rem;
 `;
 
-const Sentence = styled.div`
+const Sentence = styled.p`
   ${({ theme }) => theme.fonts.body1};
   color: ${({ theme }) => theme.colors.gray3};
 
   font-weight: 400;
   font-size: 1.5rem;
-  line-height: 1.8rem;
+  line-height: 2.8rem;
   text-align: center;
 `;
 

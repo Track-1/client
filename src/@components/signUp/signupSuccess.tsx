@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { MoveTouploadPortfolioButtonIc, MoveTouploadVocalSearchingButtonIc, SignUpGetStartedButtonIc, SignUpProducerButtonIc, SignUpProducerQIc, SignUpSuccessBackgroundIc, SignUpVocalButtonIc, SignUpVocalQIc } from '../../assets'
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,13 @@ import { currentUser } from '../../core/constants/userType';
 import { profileCategory } from '../../core/constants/pageCategory';
 import { useState } from 'react';
 import { isProducer, isVocal } from '../../utils/common/userType';
+import useModal from '../../utils/hooks/useModal';
 
 export default function SignupSuccess() {
     const userType=useRecoilValue<string>(UserType)
     const [visible, setVisible]=useState<boolean>(false)
     const navigate=useNavigate()
+    const { modalRef } = useModal();
 
     function moveToHome(){
         navigate('/')
@@ -30,38 +32,49 @@ export default function SignupSuccess() {
         navigate(page)
     }
 
+    const modalCloseHandler = (e:any) => {
+        if(visible && modalRef.current && !modalRef.current.contains(e.target)) setVisible(false);
+      };
+      
+      useEffect(() => {
+        window.addEventListener('click', modalCloseHandler);
+        return () => {
+          window.removeEventListener('click', modalCloseHandler);
+        };
+      });
+
   return (
-    <>
-        <SignUpSuccessBackgroundIc/>
+    <SuccessPageContainer>
+        <SignUpSuccessBackgroundIcon/>
 
     <SuccessPageWrapper>
     <SignUpGetStartedButtonIcon onClick={moveToHome}/>
 
         {isVocal(userType)&&(
             <UploadButtonWrapper>
-                <SignUpVocalQIc/>
+                <SignUpVocalQIcon/>
                 <UploadButton>
-                    <SignUpVocalButtonIc onClick={moveToVocalUpload}/>
+                    <SignUpVocalButtonIcon onClick={moveToVocalUpload}/>
                 </UploadButton>
             </UploadButtonWrapper>
         )}
         {isProducer(userType)&&(
             <UploadButtonWrapper>
-                <SignUpProducerQIc/>
+                <SignUpProducerQIcon/>
                 <UploadButton>
-                    <SignUpProducerButtonIc onClick={openProducerUploadModal}/>
+                    <SignUpProducerButtonIcon onClick={openProducerUploadModal}/>
                 </UploadButton>
             </UploadButtonWrapper>
         )}
         {visible&&(
-        <ModalWrapper>
-            <MoveTouploadVocalSearchingButtonIc onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
-            <MoveTouploadPortfolioButtonIc onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
+        <ModalWrapper ref={modalRef}>
+            <MoveTouploadVocalSearchingButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
+            <MoveTouploadPortfolioButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
         </ModalWrapper>
         )}
 
     </SuccessPageWrapper>
-    </>
+    </SuccessPageContainer>
   )
 }
 
@@ -74,6 +87,7 @@ const SuccessPageWrapper=styled.div`
 `
 
 const SignUpGetStartedButtonIcon=styled(SignUpGetStartedButtonIc)`
+    width: 55.5rem;
     margin-top: 46.7rem;
 
     cursor: pointer;
@@ -89,7 +103,7 @@ const UploadButtonWrapper=styled.div`
 `
 
 const UploadButton=styled.div`
-    margin-top: 2.6rem;
+    margin-top: 1rem;
     cursor: pointer;
 `
 
@@ -100,4 +114,41 @@ const ModalWrapper=styled.section`
     margin: 2.5rem 0 0 13.6rem;
 
     cursor: pointer;
+`
+
+const SignUpSuccessBackgroundIcon=styled(SignUpSuccessBackgroundIc)`
+    width: 192rem;
+    height: 108rem;
+`
+
+const SuccessPageContainer=styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const SignUpVocalQIcon=styled(SignUpVocalQIc)`
+    width: 51.5rem;
+`
+
+const SignUpProducerQIcon=styled(SignUpProducerQIc)`
+     width: 50.6rem;
+`
+
+const SignUpVocalButtonIcon=styled(SignUpVocalButtonIc)`
+    width: 55.5rem;
+`
+
+const SignUpProducerButtonIcon=styled(SignUpProducerButtonIc)`
+    width: 55.5rem;
+`
+
+const MoveTouploadVocalSearchingButtonIcon=styled(MoveTouploadVocalSearchingButtonIc)`
+    width: 28.4rem;
+    height: 10.6rem;
+`
+
+const MoveTouploadPortfolioButtonIcon=styled(MoveTouploadPortfolioButtonIc)`
+    width: 28.4rem;
+    height: 8.4rem;
 `

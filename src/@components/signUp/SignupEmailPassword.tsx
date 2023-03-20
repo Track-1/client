@@ -41,33 +41,52 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const [isVerifyClicked, setIsVerifyClicked]=useState<boolean>(false);
     const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType)
 
+
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
-        if(!e.target.value){
+        setIsSendCode(false)
+        if(emailMessage===emailInvalidMessage.VERIFY){
+            console.log("dddd")
+            setIsSendCode(false);
             setEmailMessage(emailInvalidMessage.NULL)
+            setPasswordMessage(passwordInvalidMessage.NULL)
+            setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+            setPassword('');
+            setPasswordConfirm('');
+            setIsShowPassword(false);
+            setIsShowPasswordConfirm(false)
         }
-
-        else if(!checkEmailForm(e.target.value)){
-            setEmailMessage(emailInvalidMessage.FORM)
-        }
-
-        else if(checkEmailForm(e.target.value)){
-            setEmail(e.target.value)
-            setIsValidForm(prev=>!prev);
+        else{
+            if(!e.target.value){
+                setEmailMessage(emailInvalidMessage.NULL)
+                
+            }
+    
+            if(!checkEmailForm(e.target.value)){
+                setEmailMessage(emailInvalidMessage.FORM)
+               
+            }
+    
+            if(checkEmailForm(e.target.value)){
+                setEmail(e.target.value)
+                setEmailMessage(emailInvalidMessage.ING)
             
-        }
- 
+               
+            }
+         }
         setEmail(e.target.value)
     }
  
     //auth-mail post
     const PostAuthMail = useMutation(authEmail, {
-        onSuccess: () => {
+        onSuccess: (data) => {
         queryClient.invalidateQueries("email");
-        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
+        setEmailMessage(emailInvalidMessage.TIME)
+        alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         },
-        onError:(error)=>{
-
+        onError:(error:any)=>{
+            console.log(error)
+           error.response.data.message==='중복된 이메일입니다'?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         }
     });
 
@@ -77,38 +96,24 @@ export default function SignupEmailPassword(props:SetPropsType) {
         let formData = new FormData();
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
-        PostAuthMail.mutate(formData);
+        isSendCode&&PostAuthMail.mutate(formData);
     }, [isSendCode]);
     //auth-mail post end
-
-    const {mutate:CheckDuplication } = useMutation(checkEmailDuplication, {
-        onSuccess: (data) => {
-        queryClient.invalidateQueries("email-duplicate");
-
-        data.isDuplicate?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
-        },
-        onError:(error)=>{
-        }
-    });
-
-    useEffect(() => {
-        let formData = new FormData();
-        formData.append("tableName", tableName);
-        formData.append("userEmail", email);
-        CheckDuplication(formData);
-    }, [isValidForm]);
-    //mail duplicate end
 
     //auth-mail-repost
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
-        // setEmailMessage(emailInvalidMessage.TIME)
         setEmail(email)
+        setEmailMessage(emailInvalidMessage.TIME)
+        alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         },
-        onError:()=>{
+        onError:(error:any)=>{
+        console.log(error)
+           error.response.data.message==='중복된 이메일입니다'?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         }
     });
+
 
     useEffect(() => {
         let formData = new FormData();
@@ -121,14 +126,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordMessage(passwordInvalidMessage.NULL)
+            
         }
 
-        else if(!checkPasswordForm(e.target.value)){
+        if(!checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.FORM)
+           
         }
 
-        else if(checkPasswordForm(e.target.value)){
+        if(checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.SUCCESS)
+           
         }
 
         setPassword(e.target.value)
@@ -137,47 +145,52 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+            
         }
 
-        else if(e.target.value!==password){
+        if(e.target.value!==password){
             setPasswordConfirmMessage(passwordInvalidMessage.MATCH)
+          
         }
 
-        else if(e.target.value===password){
+        if(e.target.value===password){
             setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS)
+            
         }
 
         setPasswordConfirm(e.target.value)
     }
 
     function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>){
-        console.log(PostAuthMail.isError)
         if(!e.target.value){
             setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
+        }
+        else{
+            setVerificationCodeMessage(verificationCodeInvalidMessage.ING)
         }
         setVerificationCode(e.target.value)
     }
 
     function isEmailSuccess(){
-        return emailMessage===emailInvalidMessage.SUCCESS
+        return emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.ING||emailMessage===emailInvalidMessage.TIME
     }
 
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
-        isSendCode&&setIsResendCode((prev)=>!prev)
-        if(emailInvalidMessage.SUCCESS){
+        setVerificationCode('');
+        setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
+        isSendCode&&emailMessage!==emailInvalidMessage.DUPLICATION&&setIsResendCode((prev)=>!prev)
+        if(isEmailSuccess()){
             setIsSendCode(true)
-            setEmailMessage(emailInvalidMessage.TIME)
             setIsVerify(false)
-            alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         }
     }
+
+    console.log(emailMessage)
     
     function verifyCode(e: React.MouseEvent){
-       if(verificationCodeMessage===verificationCodeInvalidMessage.SUCCESS){
-            setIsVerify(true)
-            setEmailMessage(emailInvalidMessage.VERIFY) 
-       }       
+        setIsVerifyClicked(!isVerifyClicked)
+           
     }
 
     //verifycode post
@@ -185,9 +198,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
         onSuccess: () => {
         queryClient.invalidateQueries("verifycode");
         setVerificationCodeMessage(verificationCodeInvalidMessage.SUCCESS)
+        setIsVerify(true)
+        setEmailMessage(emailInvalidMessage.VERIFY) 
         },
         onError:(error)=>{
-            verificationCode&&
+            verificationCode!==''&&
                 setVerificationCodeMessage(verificationCodeInvalidMessage.ERROR)
         }
     });
@@ -198,7 +213,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
         formData.append("userEmail", email);
         formData.append("verificationCode", verificationCode);
         VerifyCode.mutate(formData);
-    }, [verificationCode]);
+    }, [isVerifyClicked]);
     //verifycode end
 
     function backToRole(){
@@ -209,19 +224,19 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function setErrorIcon(message:string){ 
         switch (message) {
             case emailInvalidMessage.FORM:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case emailInvalidMessage.DUPLICATION:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case verificationCodeInvalidMessage.ERROR:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case passwordInvalidMessage.FORM:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case passwordInvalidMessage.MATCH:
-                return <SignUpErrorIc/>;
+                return <SignUpErrorIcon/>;
             case emailInvalidMessage.VERIFY:
-                return <SignUpVerifyIc/>; 
+                return <SignUpVerifyIcon/>; 
             case passwordInvalidMessage.SUCCESS:
-                return <SignUpVerifyIc/>; 
+                return <SignUpVerifyIcon/>; 
             case emailInvalidMessage.SUCCESS:
                 return ;    
             default:
@@ -231,10 +246,10 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function showPassword(type:string){
         if(type===passwordConfirmType.PASSWORD){
-            setIsShowPassword(prev=>!prev)
+            setIsShowPassword(!isShowPassword)
         }
         else if(type===passwordConfirmType.PASSWORD_CONFIRM){
-            setIsShowPasswordConfirm(prev=>!prev)
+            setIsShowPasswordConfirm(!isShowPasswordConfirm)
         }
     }
 
@@ -246,12 +261,12 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function successNextStep(){
         return (
-            passwordConfirmMessage===passwordInvalidMessage.SUCCESS?continueType.SUCCESS:continueType.FAIL
+            (passwordConfirmMessage===passwordInvalidMessage.SUCCESS&&emailMessage===emailInvalidMessage.VERIFY)?continueType.SUCCESS:continueType.FAIL
         )
     }
 
     function showTitle(){
-        if(isSendCode&&!isVerify){
+        if(isSendCode&&!isVerify&&emailMessage===emailInvalidMessage.SUCCESS){
             return <WeSentYouACodeTextIcon/>
         }
 
@@ -284,13 +299,13 @@ export default function SignupEmailPassword(props:SetPropsType) {
                         {setErrorIcon(emailMessage)}
                     </IconWrapper>
                 )}
-                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode}/>
+                <SendCodeButton isEmailSuccess={isEmailSuccess()} onClick={(e: React.MouseEvent<HTMLElement>) => sendCode(e)} isSendCode={isSendCode} isResendCode={isResendCode} emailMessage={emailMessage}/>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(emailMessage)}>
                 {emailMessage}
             </MessageWrapper>
 
-            {isSendCode&&!isVerify&&(
+            {isSendCode&&!isVerify&&(emailMessage===emailInvalidMessage.TIME)&&(
                 <>
                 <VerificationCodeTextIcon/>
                 <InputWrapper>
@@ -310,14 +325,14 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
             <SignUpPasswordIcon/>
             <InputWrapper>
-                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword}/>
+                <Input type={setPasswordInputType(isShowPassword)} placeholder="Create a password" width={56} underline={setInputUnderline(passwordMessage)} onChange={writePassword} value={password}/>
                 {setErrorIcon(passwordMessage)&&(
                     <IconWrapper marginLeft={-8.4}>
                         {setErrorIcon(passwordMessage)}
                     </IconWrapper>
                 )}
                 <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD)}>
-                    {isShowPassword?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                    {isShowPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
                 </EyeIcWrapper>
             </InputWrapper>
             <MessageWrapper textColor={setMessageColor(passwordMessage)}>
@@ -328,14 +343,14 @@ export default function SignupEmailPassword(props:SetPropsType) {
                 <>
                 <ConfirmPasswordTextIcon/>
                 <InputWrapper>
-                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm}/>
+                    <Input type={setPasswordInputType(isShowPasswordConfirm)} placeholder="Enter a password again" width={56} underline={setInputUnderline(passwordConfirmMessage)} onChange={writePasswordConfirm} value={passwordConfirm}/>
                     {setErrorIcon(passwordConfirmMessage)&&(
                         <IconWrapper marginLeft={-8.4}>
                             {setErrorIcon(passwordConfirmMessage)}
                         </IconWrapper>
                     )}
                     <EyeIcWrapper onClick={()=>showPassword(passwordConfirmType.PASSWORD_CONFIRM)}>
-                        {isShowPasswordConfirm?<SignUpEyeXIc/>:<SignUpEyeIc/>}
+                        {isShowPasswordConfirm?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
                     </EyeIcWrapper>
                 </InputWrapper>
                 <MessageWrapper textColor={setMessageColor(passwordConfirmMessage)}>
@@ -430,6 +445,7 @@ const ConfirmPasswordTextIcon=styled(ConfirmPasswordTextIc)`
 `
 
 const SignUpBackArrowIcon=styled(SignUpBackArrowIc)`
+    width: 10.5rem;
     cursor: pointer;
 `
 
@@ -466,4 +482,24 @@ const WeSentYouACodeTextIcon=styled(WeSentYouACodeTextIc)`
 
 const CreateAPasswordForYourAccountTitleIcon=styled(CreateAPasswordForYourAccountTitleIc)`
     width: 55.5rem;
+`
+
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpVerifyIcon=styled(SignUpVerifyIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpEyeXIcon=styled(SignUpEyeXIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const SignUpEyeIcon=styled(SignUpEyeIc)`
+    width: 4rem;
+    height: 4rem;
 `

@@ -4,15 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   AddHashtagIc,
+  DeleteHashtagIc,
+  HashtagWarningIc,
+  HoverHashtagWarningIc,
   ProfileEditCategoryIc,
   ProfileEditContactIc,
   ProfileEditDescriptionIc,
   ProfileEditHashtagIc,
+  ProfileHashtagXIc,
 } from "../../assets";
 import { CategoryId } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
+import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
+import useHover from "../../utils/hooks/useHover";
+import ProfileWarning from '../@common/profileWarning';
 
 export default function SignupProfile(props:SignupProfilePropsTye) {
   const {setStep, userProfile, setUserProfile}=props;
@@ -33,12 +40,11 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     HOUSE: false,
     FUNK: false,
   });
-  const [contactInput, setContactInput]=useState<string>();
-  
+  const [contactInput, setContactInput]=useState<string>("");
+
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
   }
-
   function completeHashtag() {
     if (hashtagRef.current) {
       hashtagRef.current.value = "";
@@ -46,7 +52,14 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     }
   }
 
-  function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
+  function deleteHashtag(index: number) {
+   const deleteTag = userProfile.keyword;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
+    setHashtagInput("");
+  }
+
+  function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescriptionInput(e.target.value);
   }
 
@@ -74,29 +87,29 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   }
 
   useEffect(()=>{
-    if(contactInput!==undefined){
       setUserProfile({
         contact: contactInput,
         category: Array.from(categories),
         keyword: hashtags,
         introduce: descriptionInput,
-      });
-    }
+     });
     
-  },[contactInput,categories, isCategorySelected, hashtagRef, hashtags, descriptionInput])
+  },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
 
   return (
     <>
       <InfoContainer>
         <ContactContainer>
-          <ProfileEditContactIc />
+          <ProfileEditContactIcon />
           <ContactInput
+            type="text"
             placeholder="Enter your phone number or SNS account"
             onChange={changeContact}
+            maxLength={40}
           />
         </ContactContainer>
         <CategoryContainer>
-          <ProfileEditCategoryIc />
+          <ProfileEditCategoryIcon />
           <CategoryBox>
             {Object.keys(CategoryId).map((category, index) => {
               return (
@@ -113,8 +126,22 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
-          <ProfileEditHashtagIc />
+          <HashIconWrapper>
+          <ProfileEditHashtagIcon />
+          <ProfileWarning/>
+            </HashIconWrapper>
           <InputHashtagWrapper>
+          {hashtags.map((hashtag, index) => {
+              return (
+                <Hashtag key={index}>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <CompletedHashtag>{hashtag}</CompletedHashtag>
+                  </HashtagWrapper>
+                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                </Hashtag>
+              );
+            })}
             {hashtags.length < 3 && (
               <Hashtag>
                 <HashtagWrapper>
@@ -127,30 +154,26 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                     inputWidth={hashtagInput.length}
                     ref={hashtagRef}
                     placeholder="HashTag"
+                    maxLength={10}
                   />
                 </HashtagWrapper>
               </Hashtag>
             )}
-            {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </HashtagWrapper>
-                </Hashtag>
-              );
-            })}
-            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            
+            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
+          
         </HashtagContainer>
         <DescriptionContainer>
-          <ProfileEditDescriptionIc />
+          <ProfileEditDescriptionIcon />
           <DesciprtionInput
+            typeof="text"
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
+            maxLength={150}
+            row={Math.floor(descriptionInput.length/31)+1}
           />
-          <TextCount onChange={countDescriptionText}>
+          <TextCount>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
@@ -228,6 +251,9 @@ const HashtagContainer = styled.article`
 const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+
+  margin-top: 2.8rem;
 `;
 
 const Hashtag = styled.div`
@@ -239,12 +265,12 @@ const Hashtag = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
 
-  margin-right: 1rem;
-  margin-top: 2.8rem;
+  padding-right: 1rem;
 `;
 
 const HashtagWrapper = styled.div`
   display: flex;
+  align-items: center;
 
   padding: 0 1.5rem;
 `;
@@ -280,7 +306,10 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-top: 2.8rem;
+  width: 4rem;
+  height: 4rem;
+
+  cursor: pointer;
 `;
 
 const DescriptionContainer = styled.article`
@@ -289,15 +318,23 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input`
-  height: 3.4rem;
+const DesciprtionInput = styled.textarea<{row:number}>`
+  height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
+  outline: 0;
+  resize: none;
 
-  margin-top: 3.3rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  background-color: transparent;
+  margin-top: 3rem;
+  overflow: hidden;
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
-  padding-bottom: 0.5rem;
+  padding-bottom: 3rem;
 
   ${({ theme }) => theme.fonts.input}
 
@@ -322,3 +359,30 @@ const MaxCount = styled.strong`
 
   color: ${({ theme }) => theme.colors.gray3};
 `;
+
+const ProfileEditContactIcon=styled(ProfileEditContactIc)`
+  width: 8.8rem;
+`
+
+const ProfileEditCategoryIcon=styled(ProfileEditCategoryIc)`
+  width: 10.3rem;
+`
+
+const ProfileEditHashtagIcon=styled(ProfileEditHashtagIc)`
+  width: 9.3rem;
+`
+
+const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
+  width: 12.6rem;
+`
+
+const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 2.8rem;
+  
+  margin-left: -1rem;
+  cursor: pointer;
+`;
+
+const HashIconWrapper=styled.div`
+  display: flex;
+`

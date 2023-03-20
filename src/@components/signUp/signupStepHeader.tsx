@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 import { LoginHereMessageIc, SignUpStep1Ic, SignUpStep2Ic, SignUpStep3Ic, SignUpStepBlanckIc } from '../../assets';
 import { OnlyStepPropsType } from '../../type/signUpStepTypes'
-import { checkStepType } from '../../utils/signUp/stepType';
 import { useNavigate } from 'react-router-dom';
-import { signUpHeader } from '../../core/signUp/signupStepType';
 import { isHeaderExist, isStepOne, isStepThree, isStepTwo } from '../../utils/signUp/checkSignUpStep';
 
 
@@ -12,7 +10,7 @@ export default function SignupStepHeader(props:OnlyStepPropsType) {
     const navigate=useNavigate()
 
     function moveLoginPage(){
-        navigate('/log-in')
+        navigate('/login')
     }
 
   return (
@@ -20,9 +18,9 @@ export default function SignupStepHeader(props:OnlyStepPropsType) {
     {isHeaderExist({step})&&
     <StepHeaderWrapper>
         <StepsWrapper>
-            {isStepOne({step})?<SignUpStep1Ic/>:<SignUpStepBlanckIc/>}
-            {isStepTwo({step})?<SignUpStep2Ic/>:<SignUpStepBlanckIc/>}
-            {isStepThree({step})?<SignUpStep3Ic/>:<SignUpStepBlanckIc/>}
+            {isStepOne({step})?<SignUpStep1Icon/>:<SignUpStepBlanckIcon/>}
+            {isStepTwo({step})?<SignUpStep2Icon/>:<SignUpStepBlanckIcon/>}
+            {isStepThree({step})?<SignUpStep3Icon/>:<SignUpStepBlanckIcon/>}
         </StepsWrapper>
         <LoginHereMessageIcon onClick={moveLoginPage}/>
     </StepHeaderWrapper>
@@ -32,6 +30,7 @@ export default function SignupStepHeader(props:OnlyStepPropsType) {
 }
 
 const LoginHereMessageIcon=styled(LoginHereMessageIc)`
+    width: 30.6rem;
     cursor: pointer;
 `
 
@@ -53,4 +52,24 @@ const StepHeaderWrapper=styled.section`
     height: 2.4rem;
 
     margin: 7rem 0 0 11rem;
+`
+
+const SignUpStepBlanckIcon=styled(SignUpStepBlanckIc)`
+    width: 1.8rem;
+    height: 1.8rem;
+`
+
+const SignUpStep1Icon=styled(SignUpStep1Ic)`
+    width: 2.4rem;
+    height: 2.4rem;
+`
+
+const SignUpStep2Icon=styled(SignUpStep2Ic)`
+    width: 2.4rem;
+    height: 2.4rem;
+`
+
+const SignUpStep3Icon=styled(SignUpStep3Ic)`
+    width: 2.4rem;
+    height: 2.4rem;
 `
