@@ -4,14 +4,20 @@ import { useQuery } from "react-query";
 import subBackgroundImg from "../assets/image/subBackgroundImg.png";
 import styled from "styled-components";
 import { TrackOneMainLogoIc } from "../assets";
-import { useNavigate } from "react-router-dom";
+import useMovePage from "../utils/hooks/useMovePage";
 
 export default function ResetPasswordPage() {
-  const { isSuccess } = useQuery("validateToken", validateResetPasswordToken);
-  const navigate = useNavigate();
+  const { isSuccess } = useQuery("validateToken", validateResetPasswordToken, {
+    onError: (error: any) => {
+      alert(error.response.data.message);
+      movePage("/");
+    },
+  });
+
+  const [movePage] = useMovePage();
 
   function moveToHome() {
-    navigate("/");
+    movePage("/");
   }
 
   return (

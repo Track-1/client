@@ -58,6 +58,15 @@ export default function ForgotPasswordInput() {
     setRecentEmail(email);
   }
 
+
+  function producerToggleType() {
+    return isProducerMode ? (
+      <ProducerModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
+    ) : (
+      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
+    );
+  }
+
   function isInputWarnning() {
     return !checkEmailForm(email) && email.length !== 0;
   }
@@ -110,7 +119,7 @@ export default function ForgotPasswordInput() {
         )}
         {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
         {isSuccess && checkEmailForm(email) && compareRecentEmail() && (
-          <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 30 minutes.</ValidTimeMessage>
+          <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
         )}
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
