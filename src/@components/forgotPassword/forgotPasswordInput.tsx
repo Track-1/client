@@ -58,15 +58,6 @@ export default function ForgotPasswordInput() {
     setRecentEmail(email);
   }
 
-
-  function producerToggleType() {
-    return isProducerMode ? (
-      <ProducerModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
-    ) : (
-      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
-    );
-  }
-
   function isInputWarnning() {
     return !checkEmailForm(email) && email.length !== 0;
   }
