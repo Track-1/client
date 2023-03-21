@@ -61,11 +61,12 @@ export default function UserComment(props: PropsType) {
   //post
   const { mutate:post } = useMutation(()=>postComment(uploadData, beatId), {
     onSuccess: () => {
-      queryClient.invalidateQueries("beatId");
+      queryClient.invalidateQueries("comments");
       setContent("");
       setWavFile(null);
       setIsCompleted(false);
       setIsEnd(false);
+      console.log("포스트성공")
     },
   });
 
@@ -75,6 +76,7 @@ export default function UserComment(props: PropsType) {
     if (content && wavFile) {
       setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
       post();
+      console.log("포스트시작")
     }
   }, [isCompleted]);
  //post end
@@ -82,11 +84,12 @@ export default function UserComment(props: PropsType) {
  //update
  const { mutate:update } = useMutation(()=>updateComment(uploadData, beatId), {
   onSuccess: () => {
-    queryClient.invalidateQueries("update");
+    queryClient.invalidateQueries("comments");
     setContent("");
     setWavFile(null);
     setIsUpdated(false);
     setIsEnd(false);
+    console.log("성공")
   },
 });
 
@@ -127,7 +130,7 @@ useEffect(() => {
   }
 
   function uploadComment() {
-    setIsCompleted(true);
+    setIsCompleted(!isCompleted);
   }
 
   function clickComment(index: number) {

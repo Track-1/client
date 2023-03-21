@@ -11,41 +11,42 @@ interface PropsType {
     getUploadData: (content: string, wavFile: File | null) => any;
     comment:string;
     fileGetName:string;
+    isUpdated:boolean;
     setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function CommentUpdate(props:PropsType) {
-    const { getUploadData, comment, fileGetName, setIsUpdated } = props;
+    const { getUploadData, comment, fileGetName, isUpdated, setIsUpdated } = props;
 
     const commentText = useRef<HTMLTextAreaElement | null>(null);
     const commentFile = useRef<HTMLInputElement | null>(null);
   
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [fileName, setFileName] = useState<string>(fileGetName);
+    const [editedFile, setEditedFile] = useState<File | null>(null);
+    const [editedFileName, setEditedFileName] = useState<string>(fileGetName);
   
-    const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
-    const isCompleted = useRecoilValue(postIsCompleted);
+    const [commentLength, setCommentLength] = useState<number>(0);
+    //const isCompleted = useRecoilValue(postIsCompleted);
     const imgSrc = useRecoilValue(LoginUserImg);
 
     useEffect(() => {
       const currentText = commentText.current!.value;
   
-      isCompleted && getUploadData(currentText, uploadedFile);
-    }, [isCompleted]);
+      isUpdated && getUploadData(currentText, editedFile);
+    }, [isUpdated]);
   
     function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
       const currentLength = e.target.value.length;
       setCommentLength(currentLength);
     }
   
-    function getFile(e: React.ChangeEvent<HTMLInputElement>) {
+    function updateFile(e: React.ChangeEvent<HTMLInputElement>) {
       const currentFile = e.target.files && e.target.files[0];
-      currentFile && setUploadedFile(currentFile);
+      currentFile && setEditedFile(currentFile);
       currentFile && changeFileName(currentFile.name);
     }
   
     function changeFileName(fileName: string) {
-      setFileName(fileName);
+        setEditedFileName(fileName);
     }
 
     function submitUpdateComment(){
@@ -61,13 +62,13 @@ export default function CommentUpdate(props:PropsType) {
         />
         <InfoBox>
           <TitleWrapper>
-            <InputTitle>{fileName}</InputTitle>
-            <label htmlFor="userFile">
+            <InputTitle>{editedFileName}</InputTitle>
+            <label htmlFor="updateFile">
               <div>
                 <UploadIcon />
               </div>
             </label>
-            <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
+            <FileInput type="file" accept=".mp3, .wav" id="updateFile" onChange={updateFile} ref={commentFile} />
             <CountWrapper>
               <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
             </CountWrapper>

@@ -12,7 +12,7 @@ export async function getTrackInfo(props: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
+   
     return data;
   } catch (e) {
     console.log(e);
@@ -40,10 +40,11 @@ export async function postComment(formData: UploadDataType, beatId:any) {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beatId:`${beatId}`
+        beatId: beatId
       },
     });
   } catch (e) {
+    console.log("포스트")
     console.log(e);
   }
 }
@@ -57,6 +58,7 @@ export async function updateComment(formData: UploadDataType, beatId:number) {
       },
     });
   } catch (e) {
+    console.log("수정")
     console.log(e);
   }
 }
