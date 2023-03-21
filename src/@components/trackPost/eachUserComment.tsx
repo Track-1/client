@@ -8,6 +8,8 @@ import { isSameIndex } from "../../utils/common/checkIndex";
 import useModal from "../../utils/hooks/useModal";
 import EditDropDownComment from "./editDropDownComment";
 import CommentUpdate from "./commentUpdate";
+import { useMutation, useQueryClient } from "react-query";
+import { updateComment } from "../../core/api/trackPost";
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -17,8 +19,7 @@ interface PropsType {
   clickComment: (index: number) => void;
   currentIndex: number;
   isMe: boolean;
-  getUploadData: (content: string, wavFile: File | null) => any;
-
+  getUploadData: (content: string, audioFile: File | null) => any;
 }
 
 export default function EachUserComment(props: PropsType) {
@@ -72,10 +73,10 @@ export default function EachUserComment(props: PropsType) {
   useEffect(()=>{
     isEdit&&setEditModalToggle(false);
   },[isEdit])
-
+  
   return (
     <>
-    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={commentInfo.vocalWavFile}/>:(
+    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={commentInfo.fileName}/>:(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
         {isHover && !isClickedPlayingComment() && (

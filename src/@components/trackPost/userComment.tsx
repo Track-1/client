@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
 import { useMutation, useQueryClient, useInfiniteQuery } from "react-query";
-import { getComment } from "../../core/api/trackPost";
+import { getComment, updateComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
@@ -31,7 +31,7 @@ export default function UserComment(props: PropsType) {
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
-    wavFile: null,
+    audioFile: null,
   });
 
   const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
@@ -58,7 +58,7 @@ export default function UserComment(props: PropsType) {
   // get end
 
   //post
-  const { mutate } = useMutation(postComment, {
+  const { mutate:post } = useMutation(postComment, {
     onSuccess: () => {
       queryClient.invalidateQueries("beatId");
       setContent("");
@@ -69,16 +69,14 @@ export default function UserComment(props: PropsType) {
   });
 
   const queryClient = useQueryClient();
-  //post end
 
   useEffect(() => {
     if (content && wavFile) {
-      let formData = new FormData();
-      formData.append("wavFile", wavFile);
-      formData.append("content", content);
-      mutate(formData);
+      setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
+      post(uploadData, beatId);
     }
   }, [isCompleted]);
+ //post end
 
   useEffect(() => {
     if (comments) {
@@ -104,7 +102,7 @@ export default function UserComment(props: PropsType) {
   function getUploadData(text: string, audioFile: File | null) {
     setUploadData({
       content: text,
-      wavFile: audioFile,
+      audioFile: audioFile,
     });
   }
 
@@ -116,6 +114,26 @@ export default function UserComment(props: PropsType) {
     setClickedIndex(index);
   }
 
+  const { mutate:update } = useMutation(updateComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("update");
+      setContent("");
+      setWavFile(null);
+      setIsCompleted(false);
+      setIsEnd(false);
+    },
+  });
+
+  useEffect(() => {
+    if (content && wavFile) {
+      let formData = new FormData();
+      formData.append("audioFile", wavFile);
+      formData.append("content", content);
+      update(formData, beatId);
+    }
+  }, [isCompleted]);
+ //post end
+  
   return (
     <>
       <CommentContainer>

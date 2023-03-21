@@ -4,6 +4,8 @@ import { CommentUpldatCompleteIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
+import { useMutation, useQueryClient } from "react-query";
+import { updateComment } from "../../core/api/trackPost";
 
 interface PropsType {
     getUploadData: (content: string, wavFile: File | null) => any;
@@ -45,9 +47,11 @@ export default function CommentUpdate(props:PropsType) {
       setFileName(fileName);
     }
 
-    function updateComment(){
-        
+    function submitUpdateComment(){
+
     }
+
+   
   
     return (
         <>

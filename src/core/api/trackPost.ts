@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UploadDataType } from "../../type/uploadDataType";
 import { getCookie } from "../../utils/cookie";
 
 export async function getTrackInfo(props: number) {
@@ -33,12 +34,13 @@ export async function getComment(page: number, beatId: number) {
   }
 }
 
-export async function postComment(formData: any) {
+export async function postComment(formData: UploadDataType, beatId:number) {
   try {
-    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/8`, formData, {
+    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
+        beatId:`${beatId}`
       },
     });
   } catch (e) {
@@ -46,7 +48,7 @@ export async function postComment(formData: any) {
   }
 }
 
-export async function updateComment(formData: any, beatId:number) {
+export async function updateComment(formData: UploadDataType, beatId:number) {
   try {
     const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
       headers: {
