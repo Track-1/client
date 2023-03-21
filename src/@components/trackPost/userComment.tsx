@@ -35,6 +35,7 @@ export default function UserComment(props: PropsType) {
   });
 
   const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
+  const [isUpdated, setIsUpdated]=useState<boolean>(false);
   const [content, setContent] = useRecoilState<string>(postContent);
   const [wavFile, setWavFile] = useRecoilState(postWavFile);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
@@ -58,7 +59,7 @@ export default function UserComment(props: PropsType) {
   // get end
 
   //post
-  const { mutate:post } = useMutation(postComment, {
+  const { mutate:post } = useMutation(()=>postComment(uploadData, beatId), {
     onSuccess: () => {
       queryClient.invalidateQueries("beatId");
       setContent("");
@@ -73,10 +74,29 @@ export default function UserComment(props: PropsType) {
   useEffect(() => {
     if (content && wavFile) {
       setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
-      post(uploadData, beatId);
+      post();
     }
   }, [isCompleted]);
  //post end
+
+ //update
+ const { mutate:update } = useMutation(()=>updateComment(uploadData, beatId), {
+  onSuccess: () => {
+    queryClient.invalidateQueries("update");
+    setContent("");
+    setWavFile(null);
+    setIsUpdated(false);
+    setIsEnd(false);
+  },
+});
+
+useEffect(() => {
+  if (content && wavFile) {
+    setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
+    update();
+  }
+}, [isUpdated]);
+//update end
 
   useEffect(() => {
     if (comments) {
@@ -114,25 +134,6 @@ export default function UserComment(props: PropsType) {
     setClickedIndex(index);
   }
 
-  const { mutate:update } = useMutation(updateComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("update");
-      setContent("");
-      setWavFile(null);
-      setIsCompleted(false);
-      setIsEnd(false);
-    },
-  });
-
-  useEffect(() => {
-    if (content && wavFile) {
-      let formData = new FormData();
-      formData.append("audioFile", wavFile);
-      formData.append("content", content);
-      update(formData, beatId);
-    }
-  }, [isCompleted]);
- //post end
   
   return (
     <>
@@ -163,6 +164,8 @@ export default function UserComment(props: PropsType) {
                   currentIndex={index}
                   isMe={comments[index].isMe}
                   getUploadData={getUploadData}
+                  isUpdated={isUpdated}
+                  setIsUpdated={setIsUpdated}
                 />
               );
             })}

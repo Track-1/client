@@ -11,10 +11,11 @@ interface PropsType {
     getUploadData: (content: string, wavFile: File | null) => any;
     comment:string;
     fileGetName:string;
+    setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function CommentUpdate(props:PropsType) {
-    const { getUploadData, comment, fileGetName } = props;
+    const { getUploadData, comment, fileGetName, setIsUpdated } = props;
 
     const commentText = useRef<HTMLTextAreaElement | null>(null);
     const commentFile = useRef<HTMLInputElement | null>(null);
@@ -48,10 +49,8 @@ export default function CommentUpdate(props:PropsType) {
     }
 
     function submitUpdateComment(){
-
+        setIsUpdated(true);
     }
-
-   
   
     return (
         <>
@@ -84,7 +83,7 @@ export default function CommentUpdate(props:PropsType) {
         </InfoBox>
         
       </WriteContainer>
-      <CommentUpldatCompleteIcon onClick={updateComment}/>
+      <CommentUpldatCompleteIcon onClick={submitUpdateComment}/>
       </>
     );
   }

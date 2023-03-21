@@ -20,10 +20,12 @@ interface PropsType {
   currentIndex: number;
   isMe: boolean;
   getUploadData: (content: string, audioFile: File | null) => any;
+  isUpdated:boolean;
+  setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData } = props;
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData, isUpdated, setIsUpdated } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -31,7 +33,7 @@ export default function EachUserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const { modalRef } = useModal();
-  const [isEdit, setIsEdit]=useState<boolean>(false);
+ const [isEdit, setIsEdit]=useState<boolean>(false);
 
   // const modalCloseHandler = (e:any) => {
   //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
@@ -73,10 +75,14 @@ export default function EachUserComment(props: PropsType) {
   useEffect(()=>{
     isEdit&&setEditModalToggle(false);
   },[isEdit])
+
+  useEffect(()=>{
+    isUpdated&&setIsEdit(false)
+  },[isUpdated])
   
   return (
     <>
-    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={commentInfo.fileName}/>:(
+    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} setIsUpdated={setIsUpdated} />:(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
         {isHover && !isClickedPlayingComment() && (

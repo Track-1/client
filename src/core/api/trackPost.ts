@@ -34,7 +34,7 @@ export async function getComment(page: number, beatId: number) {
   }
 }
 
-export async function postComment(formData: UploadDataType, beatId:number) {
+export async function postComment(formData: UploadDataType, beatId:any) {
   try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}`, formData, {
       headers: {
