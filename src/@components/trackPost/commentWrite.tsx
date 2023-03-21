@@ -7,10 +7,12 @@ import { LoginUserImg } from "../../recoil/loginUserData";
 
 interface PropsType {
   getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
+  isCompleted:boolean;
+  setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData } = props;
+  const { getUploadData, isCompleted, setIsCompleted } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
@@ -19,7 +21,7 @@ export default function CommentWrite(props: PropsType) {
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
 
   const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
-  const isCompleted = useRecoilValue(postIsCompleted);
+//  const isCompleted = useRecoilValue(postIsCompleted);
   const imgSrc = useRecoilValue(LoginUserImg);
 
   useEffect(() => {

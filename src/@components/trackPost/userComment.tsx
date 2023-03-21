@@ -35,11 +35,17 @@ export default function UserComment(props: PropsType) {
     fileName:"",
   });
 
-  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
+  // const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
   const [isUpdated, setIsUpdated]=useState<boolean>(false);
-  const [content, setContent] = useRecoilState<string>(postContent);
-  const [wavFile, setWavFile] = useRecoilState(postWavFile);
-  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [content, setContent] = useState<string>("");
+  const [wavFile, setWavFile] = useState(null);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
+
+  // const [content, setContent] = useRecoilState<string>(postContent);
+  // const [wavFile, setWavFile] = useRecoilState(postWavFile);
+  // const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId]=useState<number>(0);
@@ -74,11 +80,11 @@ export default function UserComment(props: PropsType) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (content && wavFile) {
-      setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
+    // if (content && wavFile) {
+    //   setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
       post();
       console.log("포스트시작")
-    }
+   // }
   }, [isCompleted]);
  //post end
 
@@ -140,8 +146,6 @@ useEffect(() => {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-
-  console.log(comments);
   
   return (
     <>
@@ -150,7 +154,7 @@ useEffect(() => {
           <CloseBtnIc onClick={closeComment} />
         </CloseCommentBtn>
         <form>
-          <CommentWrite getUploadData={getUploadData} />
+          <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} setIsCompleted={setIsCompleted} />
           <AddWrapper>
             <div></div>
 

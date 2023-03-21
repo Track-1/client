@@ -42,6 +42,7 @@ export async function postComment(formData: UploadDataType, beatId:any) {
         beatId: beatId
       },
     });
+    console.log(data)
   } catch (e) {
     console.log("포스트")
     console.log(e);
