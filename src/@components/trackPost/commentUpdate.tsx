@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CommentUpldatCompleteIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
+import { LoginUserImg } from "../../recoil/loginUserData";
 
 interface PropsType {
     getUploadData: (content: string, wavFile: File | null) => any;
@@ -19,7 +20,8 @@ export default function CommentUpdate(props:PropsType) {
   
     const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
     const isCompleted = useRecoilValue(postIsCompleted);
-  
+    const imgSrc = useRecoilValue(LoginUserImg);
+
     useEffect(() => {
       const currentText = commentText.current!.value;
   
@@ -45,7 +47,7 @@ export default function CommentUpdate(props:PropsType) {
         <>
       <WriteContainer>
         <ProfileImage
-          src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
+          src={imgSrc}
           alt="프로필 이미지"
         />
         <InfoBox>
