@@ -506,6 +506,7 @@ const InputDescriptionText = styled.textarea`
 
   outline: 0;
   resize: none;
+  overflow: hidden;
   background-color: transparent;
 
   border: none;
