@@ -7,16 +7,17 @@ import { LoginUserImg } from "../../recoil/loginUserData";
 
 interface PropsType {
     getUploadData: (content: string, wavFile: File | null) => any;
+    comment:string;
 }
 
 export default function CommentUpdate(props:PropsType) {
-    const { getUploadData } = props;
+    const { getUploadData, comment } = props;
 
     const commentText = useRef<HTMLTextAreaElement | null>(null);
     const commentFile = useRef<HTMLInputElement | null>(null);
   
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [fileName, setFileName] = useState<string>("file_upload.mp3");
+   // const [fileName, setFileName] = useState<string>("file_upload.mp3");
   
     const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
     const isCompleted = useRecoilValue(postIsCompleted);
@@ -65,7 +66,7 @@ export default function CommentUpdate(props:PropsType) {
           </TitleWrapper>
           <InputWrapper>
             <InputBox
-              placeholder="트랙 음악을 다운받아서 보컬 녹음 파일을 업로드해보세요!"
+              defaultValue={comment}
               maxLength={150}
               onChange={changeCommentLength}
               ref={commentText}
