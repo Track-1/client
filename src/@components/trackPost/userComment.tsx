@@ -40,11 +40,11 @@ export default function UserComment(props: PropsType) {
 
   const [isUpdated, setIsUpdated]=useState<boolean>(false);
   const [content, setContent] = useState<string>("");
-  const [wavFile, setWavFile] = useState(null);
+  const [audioFile, setAudioFile] = useState(null);
   const [isEnd, setIsEnd] = useState<boolean>(false);
 
   // const [content, setContent] = useRecoilState<string>(postContent);
-  // const [wavFile, setWavFile] = useRecoilState(postWavFile);
+  // const [audioFile, setAudioFile] = useRecoilState(postWavFile);
   // const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -70,9 +70,9 @@ export default function UserComment(props: PropsType) {
     onSuccess: () => {
       queryClient.invalidateQueries("comments");
       setContent("");
-      setWavFile(null);
+      setAudioFile(null);
       setIsCompleted(false);
-      setIsEnd(false);
+      //setIsEnd(false);
       console.log("포스트성공")
     },
   });
@@ -80,8 +80,8 @@ export default function UserComment(props: PropsType) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    // if (content && wavFile) {
-    //   setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
+    // if (content && audioFile) {
+    //   setUploadData((prev)=>({...prev, audioFile:audioFile, content:content}));
       post();
       console.log("포스트시작")
    // }
@@ -92,18 +92,18 @@ export default function UserComment(props: PropsType) {
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
-    setContent("");
-    setWavFile(null);
-    setIsUpdated(false);
-    setIsEnd(false);
+    // setContent("");
+    // setAudioFile(null);
+    // setIsUpdated(false);
+    // setIsEnd(false);
     console.log("성공")
   },
 });
 
 useEffect(() => {
   update();
-  // if (content && wavFile) {
-  //   setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
+  // if (content && audioFile) {
+  //   setUploadData((prev)=>({...prev, audioFile:audioFile, content:content}));
    
   // }
   console.log("지나감2")
@@ -146,7 +146,7 @@ useEffect(() => {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-  
+console.log("commentId"+commentId)
   return (
     <>
       <CommentContainer>
@@ -154,7 +154,7 @@ useEffect(() => {
           <CloseBtnIc onClick={closeComment} />
         </CloseCommentBtn>
         <form>
-          <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} setIsCompleted={setIsCompleted} />
+          <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} setIsCompleted={setIsCompleted} content={content} audioFile={audioFile} />
           <AddWrapper>
             <div></div>
 

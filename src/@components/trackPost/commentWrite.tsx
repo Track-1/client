@@ -9,10 +9,12 @@ interface PropsType {
   getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
   isCompleted:boolean;
   setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>
+  content: string;
+  audioFile: File | null;
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData, isCompleted, setIsCompleted } = props;
+  const { getUploadData, isCompleted, setIsCompleted, content, audioFile } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
@@ -23,6 +25,9 @@ export default function CommentWrite(props: PropsType) {
   const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
 //  const isCompleted = useRecoilValue(postIsCompleted);
   const imgSrc = useRecoilValue(LoginUserImg);
+
+ 
+  
 
   useEffect(() => {
     const currentText = commentText.current!.value;
@@ -53,7 +58,7 @@ export default function CommentWrite(props: PropsType) {
       />
       <InfoBox>
         <TitleWrapper>
-          <InputTitle>{fileName}</InputTitle>
+          <InputTitle>{!audioFile?fileName:"file_upload.mp3"}</InputTitle>
           <label htmlFor="userFile">
             <div>
               <UploadIcon />
@@ -61,7 +66,7 @@ export default function CommentWrite(props: PropsType) {
           </label>
           <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
           <CountWrapper>
-            <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
+            <InputCount commentLength={commentLength} >{commentLength}</InputCount>/ 150
           </CountWrapper>
         </TitleWrapper>
         <InputWrapper>

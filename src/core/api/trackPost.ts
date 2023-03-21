@@ -19,12 +19,13 @@ export async function getTrackInfo(props: number) {
   }
 }
 
-export async function getComment(page: number, commentId: number) {
+export async function getComment(page: number, beatId: number) {
   try {
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}?page=${page}&limit=5`, {
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
+        beadId:beatId
       },
     });
     return data?.data.data;
@@ -49,13 +50,12 @@ export async function postComment(formData: UploadDataType, beatId:any) {
   }
 }
 
-export async function updateComment(formData: UploadDataType, beatId:number) {
+export async function updateComment(formData: UploadDataType, commentId: number) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${commentId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beatId: beatId
       },
     });
   } catch (e) {

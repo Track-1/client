@@ -75,6 +75,7 @@ export default function EachUserComment(props: PropsType) {
 
   function changeToggleState() {
     setEditModalToggle(!editModalToggle);
+    setCommentId(commentInfo.commentId);
   }
   
   useEffect(()=>{
@@ -85,10 +86,6 @@ export default function EachUserComment(props: PropsType) {
     isUpdated&&setIsEdit(false)
   },[isUpdated])
   
-  useEffect(()=>{
-    setCommentId(commentInfo.commentId);
-  },[])
-
   return (
     <>
     {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>:(
@@ -108,7 +105,7 @@ export default function EachUserComment(props: PropsType) {
       <InfoBox>
         <InfoTopWrapper>
           <UserName>{commentInfo.vocalName}</UserName>
-          {isMe && <EllipsisIcon onClick={changeToggleState} />}
+          {isMe && <EllipsisIcon onClick={changeToggleState}/>}
         </InfoTopWrapper>
         {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
