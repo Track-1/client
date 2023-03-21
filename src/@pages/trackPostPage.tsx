@@ -19,12 +19,12 @@ import { useEffect, useState, useCallback } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { playMusic, showPlayerBar } from "../recoil/player";
+import { audioFile, playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useLocation, useParams } from "react-router-dom";
-import { getTrackInfo, patchProfile } from "../core/api/trackPost";
+import { getTrackInfo, patchProfile, getAudioFile } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
@@ -135,17 +135,31 @@ export default function TrackPostPage() {
     setAudioInfos(tempInfos);
   }
 
-  const downloadFile = useCallback((fileName: string, fileLink: string) => {
-    const blob = new Blob([fileLink], { type: "audio/mp3" });
-    const url = window.URL.createObjectURL(blob);
+  //() => onLogin(email, password, loginType)
 
-    const element = document.createElement("a");
-    element.href = url;
-    element.download = fileName;
-    element.click();
+  // const downloadFile = useCallback((fileName: string, fileLink: string) => {
+  //   const blob = new Blob([fileLink], { type: "audio/mpeg" });
+  //   console.log(blob);
+  //   console.log(fileLink);
+  //   const element = document.createElement("a");
+  //   const url = window.URL.createObjectURL(blob);
+  //   element.href = url;
+  //   // element.href = fileLink;
+  //   console.log(element.href);
+  //   console.log(url);
+  //   element.download = fileName;
+  //   console.log(fileLink);
+  //   console.log(audio.src);
+  //   console.log(element);
+  //   element.click();
 
-    let reader = new FileReader();
-    reader.readAsArrayBuffer(blob);
+  //   let reader = new FileReader();
+  //   reader.readAsArrayBuffer(blob);
+  // }, []);
+
+  const downloadFile = useCallback(async (fileName: string, fileLink: string) => {
+    const response = await getAudioFile(state, fileLink);
+    console.log(response);
   }, []);
 
   return (
@@ -174,7 +188,12 @@ export default function TrackPostPage() {
                   ) : (
                     <ClosedWithXIcon onClick={openTrackPost} />
                   ))}
-                {!trackInfoData.isMe && (!trackInfoData?.isClosed ? <DownloadBtnIcon /> : <ClosedBtnIcon />)}
+                {!trackInfoData.isMe &&
+                  (!trackInfoData?.isClosed ? (
+                    <DownloadBtnIcon onClick={() => downloadFile("", audio.src)} />
+                  ) : (
+                    <ClosedBtnIcon />
+                  ))}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>

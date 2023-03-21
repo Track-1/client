@@ -128,6 +128,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
+    e.stopPropagation();
     setHiddenDropBox((prev) => !prev);
   }
 
@@ -319,7 +320,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   return (
-    <Container>
+    <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
         typeof="text"
         placeholder="Please enter a title"
