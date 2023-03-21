@@ -8,11 +8,13 @@ import { useMutation, useQueryClient } from "react-query";
 import { updateComment } from "../../core/api/trackPost";
 
 interface PropsType {
-    getUploadData: (content: string, wavFile: File | null) => any;
+    getUploadData: (content: string, wavFile: File | null, fileName:string) => any;
     comment:string;
     fileGetName:string;
     isUpdated:boolean;
     setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
+    // commentId:number;
+   // setCommentId: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function CommentUpdate(props:PropsType) {
@@ -31,7 +33,8 @@ export default function CommentUpdate(props:PropsType) {
     useEffect(() => {
       const currentText = commentText.current!.value;
   
-      isUpdated && getUploadData(currentText, editedFile);
+      isUpdated && getUploadData(currentText, editedFile, editedFileName);
+      console.log("지나감1")
     }, [isUpdated]);
   
     function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -52,6 +55,7 @@ export default function CommentUpdate(props:PropsType) {
     function submitUpdateComment(){
         setIsUpdated(true);
     }
+    console.log("isUpdated"+isUpdated)
   
     return (
         <>

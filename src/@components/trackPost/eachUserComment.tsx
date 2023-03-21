@@ -19,13 +19,15 @@ interface PropsType {
   clickComment: (index: number) => void;
   currentIndex: number;
   isMe: boolean;
-  getUploadData: (content: string, audioFile: File | null) => any;
+  getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
   isUpdated:boolean;
   setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
+  // commentId:number;
+  setCommentId: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData, isUpdated, setIsUpdated } = props;
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData, isUpdated, setIsUpdated,setCommentId } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -33,8 +35,11 @@ export default function EachUserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const { modalRef } = useModal();
- const [isEdit, setIsEdit]=useState<boolean>(false);
+  const [isEdit, setIsEdit]=useState<boolean>(false);
 
+  // useEffect(()=>{
+  //   setCommentId(commentId)
+  // },[])
   // const modalCloseHandler = (e:any) => {
   //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
   // };
@@ -80,9 +85,13 @@ export default function EachUserComment(props: PropsType) {
     isUpdated&&setIsEdit(false)
   },[isUpdated])
   
+  useEffect(()=>{
+    setCommentId(commentInfo.commentId);
+  },[])
+
   return (
     <>
-    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated} />:(
+    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>:(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
         {isHover && !isClickedPlayingComment() && (

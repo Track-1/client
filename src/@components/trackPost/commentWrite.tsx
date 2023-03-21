@@ -6,7 +6,7 @@ import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted
 import { LoginUserImg } from "../../recoil/loginUserData";
 
 interface PropsType {
-  getUploadData: (content: string, audioFile: File | null) => any;
+  getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
 }
 
 export default function CommentWrite(props: PropsType) {
@@ -25,7 +25,7 @@ export default function CommentWrite(props: PropsType) {
   useEffect(() => {
     const currentText = commentText.current!.value;
 
-    isCompleted && getUploadData(currentText, uploadedFile);
+    isCompleted && getUploadData(currentText, uploadedFile, fileName);
   }, [isCompleted]);
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {

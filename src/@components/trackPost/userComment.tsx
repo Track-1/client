@@ -32,6 +32,7 @@ export default function UserComment(props: PropsType) {
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     audioFile: null,
+    fileName:"",
   });
 
   const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
@@ -41,9 +42,9 @@ export default function UserComment(props: PropsType) {
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [commentId, setCommentId]=useState<number>(0);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
-
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     "comments",
@@ -82,7 +83,7 @@ export default function UserComment(props: PropsType) {
  //post end
 
  //update
- const { mutate:update } = useMutation(()=>updateComment(uploadData, beatId), {
+ const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
     setContent("");
@@ -94,10 +95,12 @@ export default function UserComment(props: PropsType) {
 });
 
 useEffect(() => {
-  if (content && wavFile) {
-    setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
-    update();
-  }
+  update();
+  // if (content && wavFile) {
+  //   setUploadData((prev)=>({...prev, audioFile:wavFile, content:content}));
+   
+  // }
+  console.log("지나감2")
 }, [isUpdated]);
 //update end
 
@@ -122,10 +125,11 @@ useEffect(() => {
     }
   }
 
-  function getUploadData(text: string, audioFile: File | null) {
+  function getUploadData(text: string, audioFile: File | null, fileName:string) {
     setUploadData({
       content: text,
       audioFile: audioFile,
+      fileName: fileName,
     });
   }
 
@@ -137,6 +141,7 @@ useEffect(() => {
     setClickedIndex(index);
   }
 
+  console.log(comments);
   
   return (
     <>
@@ -169,6 +174,7 @@ useEffect(() => {
                   getUploadData={getUploadData}
                   isUpdated={isUpdated}
                   setIsUpdated={setIsUpdated}
+                  setCommentId={setCommentId}
                 />
               );
             })}

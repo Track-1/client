@@ -19,13 +19,12 @@ export async function getTrackInfo(props: number) {
   }
 }
 
-export async function getComment(page: number, beatId: number) {
+export async function getComment(page: number, commentId: number) {
   try {
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}?page=${page}&limit=5`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beatId: beatId,
       },
     });
     return data?.data.data;
@@ -55,6 +54,7 @@ export async function updateComment(formData: UploadDataType, beatId:number) {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
+        beatId: beatId
       },
     });
   } catch (e) {
