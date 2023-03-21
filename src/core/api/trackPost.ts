@@ -48,7 +48,7 @@ export async function postComment(formData: any) {
 
 export async function updateComment(formData: any, beatId:number) {
   try {
-    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
