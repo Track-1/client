@@ -16,7 +16,7 @@ export default function UploadButtonModal() {
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfoilo", { state: "Portfoilo" });
+    navigate("/upload/Portfolio", { state: "Portfolio" });
   }
 
   function isClickedOutside(e: MouseEvent) {
@@ -120,7 +120,7 @@ const Explain = styled.p`
 
 const UnionIcon=styled(UnionIc)`
   width: 30.4rem;
- 
+
   @media (min-width:1200px) and (max-width:1799px){
       margin-top: -2rem;
     }
