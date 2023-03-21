@@ -35,9 +35,9 @@ export async function getComment(page: number, beatId: number) {
 
 export async function postComment(formData: any) {
   try {
-    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/8`, formData, {
+    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/8`, formData, {
       headers: {
-        "Content-Type": "amultipart/form-data",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
@@ -45,6 +45,20 @@ export async function postComment(formData: any) {
     console.log(e);
   }
 }
+
+export async function updateComment(formData: any, beatId:number) {
+  try {
+    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 export async function getAudioFile() {
   try {
@@ -59,7 +73,7 @@ export async function patchProfile(beatId: any) {
   try {
     const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {
       headers: {
-        "Content-Type": "amultipart/form-data",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
