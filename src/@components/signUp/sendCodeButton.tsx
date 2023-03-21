@@ -19,22 +19,24 @@ export default function SendCodeButton(props:ButtonPropsType) {
     return emailMessage===emailInvalidMessage.VERIFY
   }
 
+  function checkEmailDuplication(){
+    return emailMessage===emailInvalidMessage.DUPLICATION
+  }
+
   function checkEmailTime(){
     return emailMessage===emailInvalidMessage.TIME
   }
 
+  function checkEmailSuccess(){
+    return emailMessage===emailInvalidMessage.SUCCESS
+  }
+
+  function checkEmail(){
+    return emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.TIME||emailMessage===emailInvalidMessage.ING
+  }
+
   function isActive(){
-    if (checkEmailVerify()){
-      return false;
-    }
-    else{
-      if(isEmailSuccess||isSendCode||isResendCode){
-        return true
-      }
-      else{
-        return false
-      }
-    }
+    return checkEmail()&&true;
   }
 
   return (

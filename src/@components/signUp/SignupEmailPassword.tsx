@@ -41,8 +41,11 @@ export default function SignupEmailPassword(props:SetPropsType) {
     const [isVerifyClicked, setIsVerifyClicked]=useState<boolean>(false);
     const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType)
 
+
     function writeEmail(e: React.ChangeEvent<HTMLInputElement>){
+        setIsSendCode(false)
         if(emailMessage===emailInvalidMessage.VERIFY){
+            console.log("dddd")
             setIsSendCode(false);
             setEmailMessage(emailInvalidMessage.NULL)
             setPasswordMessage(passwordInvalidMessage.NULL)
@@ -55,28 +58,35 @@ export default function SignupEmailPassword(props:SetPropsType) {
         else{
             if(!e.target.value){
                 setEmailMessage(emailInvalidMessage.NULL)
+                
             }
     
-            else if(!checkEmailForm(e.target.value)){
+            if(!checkEmailForm(e.target.value)){
                 setEmailMessage(emailInvalidMessage.FORM)
+               
             }
     
-            else if(checkEmailForm(e.target.value)){
+            if(checkEmailForm(e.target.value)){
                 setEmail(e.target.value)
-                setIsValidForm(prev=>!prev);
+                setEmailMessage(emailInvalidMessage.ING)
+            
+               
             }
-        }
+         }
         setEmail(e.target.value)
     }
  
     //auth-mail post
     const PostAuthMail = useMutation(authEmail, {
-        onSuccess: () => {
+        onSuccess: (data) => {
         queryClient.invalidateQueries("email");
         setEmail(email)
+        setEmailMessage(emailInvalidMessage.TIME)
+        alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         },
-        onError:(error)=>{
-
+        onError:(error:any)=>{
+            console.log(error)
+           error.response.data.message==='중복된 이메일입니다'?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         }
     });
 
@@ -86,37 +96,24 @@ export default function SignupEmailPassword(props:SetPropsType) {
         let formData = new FormData();
         formData.append("tableName", tableName);
         formData.append("userEmail", email);
-        PostAuthMail.mutate(formData);
+        isSendCode&&PostAuthMail.mutate(formData);
     }, [isSendCode]);
     //auth-mail post end
-
-    const {mutate:CheckDuplication } = useMutation(checkEmailDuplication, {
-        onSuccess: (data) => {
-        queryClient.invalidateQueries("email-duplicate");
-
-        data.isDuplicate?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
-        },
-        onError:(error)=>{
-        }
-    });
-
-    useEffect(() => {
-        let formData = new FormData();
-        formData.append("tableName", tableName);
-        formData.append("userEmail", email);
-        CheckDuplication(formData);
-    }, [isValidForm]);
-    //mail duplicate end
 
     //auth-mail-repost
     const RepostAuthMail = useMutation(repostAuthEmail, {
         onSuccess: () => {
         queryClient.invalidateQueries("email-repost");
         setEmail(email)
+        setEmailMessage(emailInvalidMessage.TIME)
+        alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         },
-        onError:()=>{
+        onError:(error:any)=>{
+        console.log(error)
+           error.response.data.message==='중복된 이메일입니다'?setEmailMessage(emailInvalidMessage.DUPLICATION):setEmailMessage(emailInvalidMessage.SUCCESS);
         }
     });
+
 
     useEffect(() => {
         let formData = new FormData();
@@ -129,14 +126,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePassword(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordMessage(passwordInvalidMessage.NULL)
+            
         }
 
-        else if(!checkPasswordForm(e.target.value)){
+        if(!checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.FORM)
+           
         }
 
-        else if(checkPasswordForm(e.target.value)){
+        if(checkPasswordForm(e.target.value)){
             setPasswordMessage(passwordInvalidMessage.SUCCESS)
+           
         }
 
         setPassword(e.target.value)
@@ -145,14 +145,17 @@ export default function SignupEmailPassword(props:SetPropsType) {
     function writePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>){
         if(!e.target.value){
             setPasswordConfirmMessage(passwordInvalidMessage.NULL)
+            
         }
 
-        else if(e.target.value!==password){
+        if(e.target.value!==password){
             setPasswordConfirmMessage(passwordInvalidMessage.MATCH)
+          
         }
 
-        else if(e.target.value===password){
+        if(e.target.value===password){
             setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS)
+            
         }
 
         setPasswordConfirm(e.target.value)
@@ -169,24 +172,24 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
 
     function isEmailSuccess(){
-        return emailMessage===emailInvalidMessage.SUCCESS
+        return emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.ING||emailMessage===emailInvalidMessage.TIME
     }
 
     // sendCode나 resend 버튼 클릭
     function sendCode(e: React.MouseEvent){
         setVerificationCode('');
         setVerificationCodeMessage(verificationCodeInvalidMessage.NULL)
-        isSendCode&&setIsResendCode((prev)=>!prev)
-        if(emailInvalidMessage.SUCCESS){
+        isSendCode&&emailMessage!==emailInvalidMessage.DUPLICATION&&setIsResendCode((prev)=>!prev)
+        if(isEmailSuccess()){
             setIsSendCode(true)
-            setEmailMessage(emailInvalidMessage.TIME)
             setIsVerify(false)
-            alert("Please check your email. \n If you got no mail, please check your spam mail, too.")
         }
     }
+
+    console.log(emailMessage)
     
     function verifyCode(e: React.MouseEvent){
-        setIsVerifyClicked(prev=>!prev)
+        setIsVerifyClicked(!isVerifyClicked)
            
     }
 
@@ -243,10 +246,10 @@ export default function SignupEmailPassword(props:SetPropsType) {
 
     function showPassword(type:string){
         if(type===passwordConfirmType.PASSWORD){
-            setIsShowPassword(prev=>!prev)
+            setIsShowPassword(!isShowPassword)
         }
         else if(type===passwordConfirmType.PASSWORD_CONFIRM){
-            setIsShowPasswordConfirm(prev=>!prev)
+            setIsShowPasswordConfirm(!isShowPasswordConfirm)
         }
     }
 
@@ -263,7 +266,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
     }
 
     function showTitle(){
-        if(isSendCode&&!isVerify){
+        if(isSendCode&&!isVerify&&emailMessage===emailInvalidMessage.SUCCESS){
             return <WeSentYouACodeTextIcon/>
         }
 
@@ -302,7 +305,7 @@ export default function SignupEmailPassword(props:SetPropsType) {
                 {emailMessage}
             </MessageWrapper>
 
-            {isSendCode&&!isVerify&&(
+            {isSendCode&&!isVerify&&(emailMessage===emailInvalidMessage.TIME)&&(
                 <>
                 <VerificationCodeTextIcon/>
                 <InputWrapper>
