@@ -6,7 +6,7 @@ import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted
 import { LoginUserImg } from "../../recoil/loginUserData";
 
 interface PropsType {
-  getUploadData: (content: string, wavFile: File | null) => any;
+  getUploadData: (content: string, audioFile: File | null) => any;
 }
 
 export default function CommentWrite(props: PropsType) {

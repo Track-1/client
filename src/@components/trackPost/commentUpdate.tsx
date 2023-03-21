@@ -8,16 +8,17 @@ import { LoginUserImg } from "../../recoil/loginUserData";
 interface PropsType {
     getUploadData: (content: string, wavFile: File | null) => any;
     comment:string;
+    fileGetName:string;
 }
 
 export default function CommentUpdate(props:PropsType) {
-    const { getUploadData, comment } = props;
+    const { getUploadData, comment, fileGetName } = props;
 
     const commentText = useRef<HTMLTextAreaElement | null>(null);
     const commentFile = useRef<HTMLInputElement | null>(null);
   
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-   // const [fileName, setFileName] = useState<string>("file_upload.mp3");
+    const [fileName, setFileName] = useState<string>(fileGetName);
   
     const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
     const isCompleted = useRecoilValue(postIsCompleted);
@@ -42,6 +43,10 @@ export default function CommentUpdate(props:PropsType) {
   
     function changeFileName(fileName: string) {
       setFileName(fileName);
+    }
+
+    function updateComment(){
+        
     }
   
     return (
@@ -75,7 +80,7 @@ export default function CommentUpdate(props:PropsType) {
         </InfoBox>
         
       </WriteContainer>
-      <CommentUpldatCompleteIcon />
+      <CommentUpldatCompleteIcon onClick={updateComment}/>
       </>
     );
   }
