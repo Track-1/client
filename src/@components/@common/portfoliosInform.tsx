@@ -12,7 +12,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useEffect, useRef, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
-import PortfoiloViewMoreButton from "./portfoiloViewMoreButton";
+import PortfolioViewMoreButton from "./portfolioViewMoreButton";
 import { useNavigate } from "react-router-dom";
 import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
 import { isClickedOutside } from "../../utils/common/modal";
@@ -107,7 +107,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
-                <PortfoiloViewMoreButton onClick={() => moveTrackPost(id)} />
+                <PortfolioViewMoreButton onClick={() => moveTrackPost(id)} />
               )}
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
               {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}

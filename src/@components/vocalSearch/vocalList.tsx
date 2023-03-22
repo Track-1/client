@@ -159,9 +159,7 @@ const CategoryNum = styled.span`
   position: relative;
   z-index: 1;
   border-radius: 50%;
-
   ${({ theme }) => theme.fonts.description};
-
   padding: 0.5rem 0.6rem 0.6rem 0.4rem;
   color: ${({ theme }) => theme.colors.gray2};
   background-color: ${({ theme }) => theme.colors.gray5};
@@ -171,7 +169,6 @@ const AlbumCoverImg = styled.img`
   position: relative;
   transform: rotate(-45deg);
   object-fit: cover;
-
   width: 130%;
   height: 130%;
   bottom: 3rem;

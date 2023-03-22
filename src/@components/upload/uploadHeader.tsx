@@ -15,18 +15,17 @@ interface PropsType {
   producerUploadType: string | undefined;
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  uploadDataRef: React.MutableRefObject<HTMLTextAreaElement | null> | null;
 }
 
 export default function UploadHeader(props: PropsType) {
-  const { userType, producerUploadType, uploadData, setUploadData, uploadDataRef } = props;
+  const { userType, producerUploadType, uploadData } = props;
 
   const navigate = useNavigate();
   const loginUserId = useRecoilValue(LoginUserId);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
-  const { mutate } = useMutation(post, {
+  const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
       alert("업로드 성공");
       checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`);
@@ -36,24 +35,13 @@ export default function UploadHeader(props: PropsType) {
     },
   });
 
-  async function post() {
-    return await UploadInfo(uploadData, userType, producerUploadType);
-  }
-
   function backPage(e: React.MouseEvent<SVGSVGElement>) {
     navigate(-1);
   }
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
     setOpenModal(false);
-    const introduce = uploadDataRef?.current?.value;
-
-    setUploadData((prevState) => {
-      return { ...prevState, introduce: introduce };
-    });
-    if (isUploadActive) {
-      mutate();
-    }
+    mutate();
   }
 
   function checkMeetConditions(): void {
@@ -91,7 +79,7 @@ export default function UploadHeader(props: PropsType) {
           <UploadBackIcon onClick={backPage} />
           <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
-        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIc onClick={upload} />}
+        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIc />}
       </HeaderWrapper>
     </Container>
   );

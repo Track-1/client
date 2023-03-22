@@ -50,9 +50,10 @@ export async function postComment(formData: UploadDataType, beatId:any) {
   }
 }
 
+
 export async function updateComment(formData: UploadDataType, commentId: number) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${commentId}`, formData, {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -64,10 +65,26 @@ export async function updateComment(formData: UploadDataType, commentId: number)
   }
 }
 
-
-export async function getAudioFile() {
+export async function getAudioFile(props: number, fileLink: any) {
+  const state = props;
   try {
-    const data = await axios.get("/tracks/:beatId/download");
+    const data = await axios
+      .get(`/tracks/${state}/download`, {
+        responseType: "blob",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([fileLink], { type: "audio/mp3" }));
+        console.log(response.data);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "file.mp3");
+        document.body.appendChild(link);
+        link.click();
+      });
     return data;
   } catch (e) {
     console.log(e);
