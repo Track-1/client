@@ -52,12 +52,13 @@ export async function postComment(formData: UploadDataType, beatId:any) {
 
 export async function updateComment(formData: UploadDataType, commentId: number) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${commentId}`, formData, {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
+    console.log(data)
   } catch (e) {
     console.log("수정")
     console.log(e);
