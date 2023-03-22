@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
 
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { deletePortfolio, deleteTitlePortfolio } from "../../core/api/delete";
 import { useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
@@ -24,10 +24,11 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const navigate = useNavigate();
 
   const loginUserType = useRecoilValue(LoginUserType);
+  const queryClient = useQueryClient();
 
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
-      //성공하고 업로드 다시 되어야하는거 구현해야돼!
+      queryClient.invalidateQueries("userProfile");
       alert("삭제 성공");
     },
     onError: (error) => {
