@@ -173,7 +173,8 @@ export default function CommentUpdate(props:PropsType) {
   `;
   
   const InputCount = styled.strong<{ commentLength: number }>`
-    width: 6rem;
+    width: 10rem;
+    margin-left: -2rem;
 
     ${({ theme }) => theme.fonts.description}
   

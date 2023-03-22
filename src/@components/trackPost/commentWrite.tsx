@@ -110,6 +110,7 @@ const InfoBox = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  height: 2.5rem;
   display: flex;
 
   align-items: center;
@@ -151,7 +152,8 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
-  width: 6rem;
+  width: 10rem;
+  margin-left: -2rem;
   ${({ theme }) => theme.fonts.description}
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
