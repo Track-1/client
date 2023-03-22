@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { PauseBtnIc, PlayBtnIc, EllipsisIc } from "../../assets";
+import { PauseBtnIc, PlayBtnIc, EllipsisIc, PauseButtonIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
@@ -92,12 +92,12 @@ export default function EachUserComment(props: PropsType) {
       <ProfileImage img={commentInfo.vocalProfileImage}>
         {isHover && !isClickedPlayingComment() && (
           <PlayerBlur onClick={() => playAudio(currentIndex)}>
-            <PlayBtnIc />
+            <PlayBtnIcon />
           </PlayerBlur>
         )}
         {isClickedPlayingComment() && (
           <PlayerBlur onClick={pauseAudio}>
-            <PauseBtnIc />
+            <PauseButtonIcon />
           </PlayerBlur>
         )}
       </ProfileImage>
@@ -180,3 +180,11 @@ const EllipsisIcon = styled(EllipsisIc)`
   float: right;
   cursor: pointer;
 `;
+
+const PlayBtnIcon=styled(PlayBtnIc)`
+  height: 2.4rem;
+`
+
+const PauseButtonIcon=styled(PauseButtonIc)`
+  height: 2.4rem;
+`
