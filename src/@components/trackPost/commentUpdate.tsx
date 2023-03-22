@@ -132,6 +132,8 @@ export default function CommentUpdate(props:PropsType) {
   `;
   
   const TitleWrapper = styled.div`
+    height: 2.5rem;
+
     display: flex;
   
     align-items: center;
