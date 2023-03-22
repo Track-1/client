@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
 import { deleteTrackComment } from "../../core/api/delete";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteComment } from "../../core/api/trackPost";
 
 interface PropsType {
   currentId: number;
@@ -10,10 +11,14 @@ interface PropsType {
 
 export default function EditDropDownComment(props: PropsType) {
   const { currentId, setIsEdit } = props;
-  const { mutate } = useMutation(() => deleteTrackComment(currentId), {
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(() => deleteComment(currentId), {
     onSuccess: () => {
       //다시 업로드 하는거 해줘야된다.!
-      alert("성공!");
+      queryClient.invalidateQueries("comments");
+      
+      //alert("성공!");
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -23,6 +28,11 @@ export default function EditDropDownComment(props: PropsType) {
   function editComment(){
     setIsEdit(true)
   }
+
+  function deleteTrackComment(){
+    console.log("클릭")
+    mutate();
+  }
   
   return (
     <DropDownContainer>
@@ -31,7 +41,7 @@ export default function EditDropDownComment(props: PropsType) {
         <EditIcon />
       </EditWrapper>
       <DivisionBar />
-      <DeleteWrapper onClick={() => mutate()}>
+      <DeleteWrapper onClick={deleteTrackComment}>
         <DeleteText>삭제하기</DeleteText>
         <DeleteIcon />
       </DeleteWrapper>
@@ -45,7 +55,7 @@ const DropDownContainer = styled.ul`
   right: 0;
   height: 11.2rem;
   width: 20.1rem;
-
+  z-index: 2;
   background-color: ${({ theme }) => theme.colors.gray4};
 
   color: ${({ theme }) => theme.colors.white};
