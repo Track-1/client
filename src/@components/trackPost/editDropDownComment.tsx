@@ -28,6 +28,11 @@ export default function EditDropDownComment(props: PropsType) {
   function editComment(){
     setIsEdit(true)
   }
+
+  function deleteTrackComment(){
+    console.log("클릭")
+    mutate();
+  }
   
   return (
     <DropDownContainer>
@@ -36,7 +41,7 @@ export default function EditDropDownComment(props: PropsType) {
         <EditIcon />
       </EditWrapper>
       <DivisionBar />
-      <DeleteWrapper onClick={() => mutate()}>
+      <DeleteWrapper onClick={deleteTrackComment}>
         <DeleteText>삭제하기</DeleteText>
         <DeleteIcon />
       </DeleteWrapper>
@@ -50,7 +55,7 @@ const DropDownContainer = styled.ul`
   right: 0;
   height: 11.2rem;
   width: 20.1rem;
-
+  z-index: 2;
   background-color: ${({ theme }) => theme.colors.gray4};
 
   color: ${({ theme }) => theme.colors.white};
