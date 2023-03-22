@@ -59,6 +59,7 @@ export async function updateComment(formData: UploadDataType, commentId: number)
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
+    console.log(data)
   } catch (e) {
     console.log("수정")
     console.log(e);

@@ -72,7 +72,6 @@ export default function UserComment(props: PropsType) {
       setContent("");
       setAudioFile(null);
       setIsCompleted(false);
-      //setIsEnd(false);
       console.log("포스트성공")
     },
   });
@@ -80,11 +79,8 @@ export default function UserComment(props: PropsType) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    // if (content && audioFile) {
-    //   setUploadData((prev)=>({...prev, audioFile:audioFile, content:content}));
       post();
       console.log("포스트시작")
-   // }
   }, [isCompleted]);
  //post end
 
@@ -102,10 +98,6 @@ export default function UserComment(props: PropsType) {
 
 useEffect(() => {
   update();
-  // if (content && audioFile) {
-  //   setUploadData((prev)=>({...prev, audioFile:audioFile, content:content}));
-   
-  // }
   console.log("지나감2")
 }, [isUpdated]);
 //update end
