@@ -89,18 +89,21 @@ export default function EachUserComment(props: PropsType) {
     <>
     {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>:(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
-      <ProfileImage img={commentInfo.vocalProfileImage}>
+     <ProfileImageWrapper>
         {isHover && !isClickedPlayingComment() && (
-          <PlayerBlur onClick={() => playAudio(currentIndex)}>
+          <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
             <PlayBtnIcon />
-          </PlayerBlur>
+            <PlayerBlur></PlayerBlur>
+          </PlayerBlurWrapper>
         )}
         {isClickedPlayingComment() && (
-          <PlayerBlur onClick={pauseAudio}>
+          <PlayerBlurWrapper onClick={pauseAudio}>
             <PauseButtonIcon />
-          </PlayerBlur>
+            <PlayerBlur></PlayerBlur>
+          </PlayerBlurWrapper>
         )}
-      </ProfileImage>
+         <ProfileImage src={commentInfo.vocalProfileImage}/>
+      </ProfileImageWrapper>
       <InfoBox>
         <InfoTopWrapper>
           <UserName>{commentInfo.vocalName}</UserName>
@@ -130,27 +133,32 @@ const CommentContainer = styled.article`
   }
 `;
 
-const ProfileImage = styled.div<{ img: string }>`
+const ProfileImage = styled.img`
+  width: 100%;
+`;
+
+const ProfileImageWrapper=styled.div`
   height: 9rem;
   width: 9rem;
+  overflow: hidden;
   margin-right: 2rem;
   margin-left: 3.8rem;
   border-radius: 9rem;
-  background-image: url(${({ img }) => img});
-  background-repeat: no-repeat;
-  background-size: contain;
-`;
 
+`
 const PlayerBlur = styled.div`
-  height: 9rem;
-  width: 9rem;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: rgb(0,0,0,0.5);
   backdrop-filter: blur(0.6rem);
-  border-radius: 50%;
+  -webkit-filter: blur(0.6rem);
+`;
+const PlayerBlurWrapper = styled.div`
+ height: 9rem;
+  width: 9rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* pointer-events: none; */
+  border-radius: 50%;
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`
@@ -159,6 +167,8 @@ const InfoBox = styled.div`
 `;
 
 const InfoTopWrapper = styled.div`
+  height: 2rem;
+  margin-bottom: 1.2rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -177,14 +187,17 @@ const CommentText = styled.strong`
 
 const EllipsisIcon = styled(EllipsisIc)`
   width: 4rem;
+  margin-top: -2rem;
   float: right;
   cursor: pointer;
 `;
 
 const PlayBtnIcon=styled(PlayBtnIc)`
+  position: absolute;
   height: 2.4rem;
 `
 
 const PauseButtonIcon=styled(PauseButtonIc)`
+  position: absolute;
   height: 2.4rem;
 `

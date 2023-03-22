@@ -51,7 +51,7 @@ export default function EditDropDownComment(props: PropsType) {
 
 const DropDownContainer = styled.ul`
   position: absolute;
-  top: 8.2rem;
+  top: 5.8rem;
   right: 0;
   height: 11.2rem;
   width: 20.1rem;
