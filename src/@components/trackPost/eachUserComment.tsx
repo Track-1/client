@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { PauseBtnIc, PlayBtnIc, EllipsisIc, PauseButtonIc } from "../../assets";
+import { PauseBtnIc, PlayBtnIc, EllipsisIc, PauseButtonIc, CommentUpldatCompleteIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
@@ -84,10 +84,20 @@ export default function EachUserComment(props: PropsType) {
   useEffect(()=>{
     isUpdated&&setIsEdit(false)
   },[isUpdated])
+
+  function submitUpdateComment(){
+      setIsUpdated(true);
+  }
   
   return (
     <>
-    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>:(
+    {isEdit?
+    (
+      <>
+      <CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>
+      {/* <CommentUpldatCompleteIcon onClick={submitUpdateComment}/> */}
+      </>
+    ):(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
      <ProfileImageWrapper>
         {isHover && !isClickedPlayingComment() && (
@@ -200,4 +210,11 @@ const PlayBtnIcon=styled(PlayBtnIc)`
 const PauseButtonIcon=styled(PauseButtonIc)`
   position: absolute;
   height: 2.4rem;
+`
+
+const CommentUpldatCompleteIcon=styled(CommentUpldatCompleteIc)`
+    width: 13.9rem;
+
+    margin-left: 80rem;
+    margin-top: 1.8rem;
 `

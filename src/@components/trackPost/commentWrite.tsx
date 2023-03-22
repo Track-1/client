@@ -26,9 +26,6 @@ export default function CommentWrite(props: PropsType) {
 //  const isCompleted = useRecoilValue(postIsCompleted);
   const imgSrc = useRecoilValue(LoginUserImg);
 
- 
-  
-
   useEffect(() => {
     const currentText = commentText.current!.value;
 

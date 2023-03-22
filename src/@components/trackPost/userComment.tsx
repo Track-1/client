@@ -85,7 +85,7 @@ export default function UserComment(props: PropsType) {
   }, [isCompleted]);
  //post end
 
- //console.log(uploadData)
+ console.log(uploadData)
  //update
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
@@ -136,7 +136,7 @@ useEffect(() => {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-console.log("commentId"+commentId)
+//console.log("uploadData"+uploadData.content)
   return (
     <>
       <CommentContainer>

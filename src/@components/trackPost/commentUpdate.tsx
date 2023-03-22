@@ -30,22 +30,27 @@ export default function CommentUpdate(props:PropsType) {
     //const isCompleted = useRecoilValue(postIsCompleted);
     const imgSrc = useRecoilValue(LoginUserImg);
 
+    const [isUpdating, setIsUpdating]=useState<boolean>(false);
+
     useEffect(() => {
       const currentText = commentText.current!.value;
   
-      isUpdated && getUploadData(currentText, editedFile, editedFileName);
+      getUploadData(currentText, editedFile, editedFileName);
       console.log("지나감1")
-    }, [isUpdated]);
+    }, [isUpdating]);
   
+    
     function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
       const currentLength = e.target.value.length;
       setCommentLength(currentLength);
+      setIsUpdating(!isUpdating)
     }
   
     function updateFile(e: React.ChangeEvent<HTMLInputElement>) {
       const currentFile = e.target.files && e.target.files[0];
       currentFile && setEditedFile(currentFile);
       currentFile && changeFileName(currentFile.name);
+      setIsUpdating(!isUpdating)
     }
   
     function changeFileName(fileName: string) {
@@ -55,7 +60,10 @@ export default function CommentUpdate(props:PropsType) {
     function submitUpdateComment(){
         setIsUpdated(true);
     }
-    console.log("isUpdated"+isUpdated)
+
+    useEffect(()=>{
+        fileGetName===""&&setEditedFileName("file_upload.mp3")
+    },[])
   
     return (
         <>
@@ -74,7 +82,7 @@ export default function CommentUpdate(props:PropsType) {
             </label>
             <FileInput type="file" accept=".mp3, .wav" id="updateFile" onChange={updateFile} ref={commentFile} />
             <CountWrapper>
-              <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
+              <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
             </CountWrapper>
           </TitleWrapper>
           <InputWrapper>
