@@ -41,11 +41,11 @@ export default function UserComment(props: PropsType) {
   const [isUpdated, setIsUpdated]=useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [audioFile, setAudioFile] = useState(null);
-  const [isEnd, setIsEnd] = useState<boolean>(false);
+ // const [isEnd, setIsEnd] = useState<boolean>(false);
 
   // const [content, setContent] = useRecoilState<string>(postContent);
   // const [audioFile, setAudioFile] = useRecoilState(postWavFile);
-  // const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+ const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId]=useState<number>(0);
@@ -72,6 +72,7 @@ export default function UserComment(props: PropsType) {
       setContent("");
       setAudioFile(null);
       setIsCompleted(false);
+      setIsEnd(false)
       console.log("포스트성공")
     },
   });
@@ -84,6 +85,7 @@ export default function UserComment(props: PropsType) {
   }, [isCompleted]);
  //post end
 
+ console.log(uploadData)
  //update
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
