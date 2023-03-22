@@ -49,10 +49,14 @@ export default function CommentWrite(props: PropsType) {
 
   return (
     <WriteContainer>
+      <ImageContainer>
+      <ProfileImageWrapper>
       <ProfileImage
         src={imgSrc}
         alt="프로필 이미지"
       />
+      </ProfileImageWrapper>
+      </ImageContainer>
       <InfoBox>
         <TitleWrapper>
           <InputTitle>{!audioFile?fileName:"file_upload.mp3"}</InputTitle>
@@ -94,15 +98,21 @@ const WriteContainer = styled.article`
   align-items: center;
 `;
 
-const ProfileImage = styled.img`
-  height: 10rem;
-  width: 10rem;
-
-  margin-left: 2.7rem;
-  margin-right: 1.2rem;
-
-  border-radius: 10rem;
+const ProfileImageWrapper = styled.div`
+  height: 9rem;
+  width: 9rem;
+  overflow: hidden;
+  border-radius: 9rem;
 `;
+
+const ImageContainer=styled.div`
+  margin-right: 2rem;
+  margin-left: 3.8rem;
+`
+
+const ProfileImage=styled.img`
+  width: 100%
+`
 
 const InfoBox = styled.div`
   display: flex;
