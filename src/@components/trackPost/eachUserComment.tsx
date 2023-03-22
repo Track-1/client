@@ -22,7 +22,6 @@ interface PropsType {
   getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
   isUpdated:boolean;
   setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
-  // commentId:number;
   setCommentId: React.Dispatch<React.SetStateAction<number>>
 }
 
