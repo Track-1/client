@@ -53,7 +53,7 @@ export default function UserComment(props: PropsType) {
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["comments", getUploadData],
+    ["comments", getUploadData, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {

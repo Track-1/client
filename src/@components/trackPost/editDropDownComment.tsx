@@ -3,6 +3,8 @@ import { DeleteIc, EditIc } from "../../assets";
 import { deleteTrackComment } from "../../core/api/delete";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteComment } from "../../core/api/trackPost";
+import { useRecoilState } from "recoil";
+import { endPost } from "../../recoil/postIsCompleted";
 
 interface PropsType {
   currentId: number;
@@ -13,11 +15,13 @@ export default function EditDropDownComment(props: PropsType) {
   const { currentId, setIsEdit } = props;
 
   const queryClient = useQueryClient();
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+
   const { mutate } = useMutation(() => deleteComment(currentId), {
     onSuccess: () => {
       //다시 업로드 하는거 해줘야된다.!
       queryClient.invalidateQueries("comments");
-      
+      setIsEnd(!isEnd);
       //alert("성공!");
     },
     onError: (error) => {
