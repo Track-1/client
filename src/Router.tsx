@@ -13,6 +13,7 @@ import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import TrackPostEditPage from "./@pages/trackPostEditPage";
+import { getCookie } from "./utils/cookie";
 
 export default function Router() {
   return (
@@ -27,10 +28,9 @@ export default function Router() {
         <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         <Route path="/portfolio-edit/:producerId" element={<ProducerPortfolioEditPage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
-        {/* <Route path="/upload" element={<UploadPage />} /> */}
         <Route path="/upload/:producerUploadType" element={<UploadPage />} />
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-        <Route path="/resetPassword" element={<ResetPasswordPage />} />
+        <Route path={`/resetPassword/${getCookie("forgotPasswordToken")}`} element={<ResetPasswordPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/profile-edit/:id" element={<ProfileEditPage />} />
       </Routes>
