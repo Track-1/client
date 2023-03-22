@@ -1,5 +1,5 @@
 import { file } from "@babel/types";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -19,7 +19,7 @@ import {
   CanUploadBtnIc,
   FileChangeIc,
 } from "../assets";
-import { getTrackInfo } from "../core/api/trackPost";
+import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
 import { Categories, CategoryDropdown } from "../core/constants/categories";
 import { TrackInfoDataType } from "../type/tracksDataType";
 
@@ -35,6 +35,7 @@ export default function TrackPostEditPage() {
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
   const [description, setDescription] = useState<string>();
   const [title, setTitle] = useState<string | undefined>(prevData?.title);
+  const [editData, setEditData] = useState<any>();
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -50,7 +51,18 @@ export default function TrackPostEditPage() {
     },
   });
 
-  // const {mutation} = useMutation()
+  const { mutate } = useMutation(() => patchTrackPost(data?.data.data.beatId, editData), {
+    onSuccess: () => {
+      console.log("data");
+    },
+    onError: () => {
+      console.log("x");
+    },
+  });
+
+  useEffect(() => {
+    mutate();
+  }, [editData]);
 
   function selectCategory(text: string) {
     setCategory(CategoryDropdown[text.toLowerCase()]);
@@ -95,6 +107,16 @@ export default function TrackPostEditPage() {
     setTitle(e.target.value);
   }
 
+  function completeEdit() {
+    const formData = new FormData();
+    title && formData.append("title", title);
+    formData.append("category", category);
+    formData.append("audioFile", String(audioFile));
+    description && formData.append("introduce", description);
+    hashtag && formData.append("keyword", hashtag[0]);
+    setEditData(formData);
+  }
+
   return (
     <>
       {data?.data && (
@@ -105,7 +127,7 @@ export default function TrackPostEditPage() {
                 <UploadBackIcon />
                 <UserClass> {}</UserClass>
               </LeftWrapper>
-              <CanUploadBtnIcon />
+              <CanUploadBtnIcon onClick={completeEdit} />
             </HeaderWrapper>
           </Container>
           <Container2>
@@ -185,38 +207,54 @@ export default function TrackPostEditPage() {
                     <InputBox>
                       <InputWrapper>
                         <>
-                          {hashtag?.map((item: string, index: number) => {
-                            return (
+                          {hashtag &&
+                            hashtag?.map((item: string, index: number) => {
+                              return (
+                                <InputHashtagWrapper>
+                                  <Hashtag key={index}>
+                                    <HashtagWrapper>
+                                      <HashtagSharp>{`# ${item}`}</HashtagSharp>
+                                      <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
+                                    </HashtagWrapper>
+                                  </Hashtag>
+                                </InputHashtagWrapper>
+                              );
+                            })}
+                          {!hashtag &&
+                            data?.data.data.keyword.map((item: string, index: number) => {
+                              return (
+                                <InputHashtagWrapper>
+                                  <Hashtag key={index}>
+                                    <HashtagWrapper>
+                                      <HashtagSharp>{`# ${item}`}</HashtagSharp>
+                                      <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
+                                    </HashtagWrapper>
+                                  </Hashtag>
+                                </InputHashtagWrapper>
+                              );
+                            })}
+                          {hashtag && hashtag?.length < 3 && (
+                            <>
                               <InputHashtagWrapper>
-                                <Hashtag key={index}>
+                                <Hashtag>
                                   <HashtagWrapper>
-                                    <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                                    <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
+                                    <HashtagSharp># </HashtagSharp>
+                                    <HashtagInput
+                                      placeholder="Hashtag"
+                                      type="text"
+                                      defaultValue=""
+                                      onChange={changeHashtagWidth}
+                                      width={hashtagInput.length}
+                                      onKeyUp={addHashtag}
+                                      ref={hashtagText}
+                                    />
+                                    <div style={{ width: "1" }}></div>
                                   </HashtagWrapper>
                                 </Hashtag>
                               </InputHashtagWrapper>
-                            );
-                          })}
-                          <>
-                            <InputHashtagWrapper>
-                              <Hashtag>
-                                <HashtagWrapper>
-                                  <HashtagSharp># </HashtagSharp>
-                                  <HashtagInput
-                                    placeholder="Hashtag"
-                                    type="text"
-                                    defaultValue=""
-                                    onChange={changeHashtagWidth}
-                                    width={hashtagInput.length}
-                                    onKeyUp={addHashtag}
-                                    ref={hashtagText}
-                                  />
-                                  <div style={{ width: "1" }}></div>
-                                </HashtagWrapper>
-                              </Hashtag>
-                            </InputHashtagWrapper>
-                            <AddHashtagIcon />
-                          </>
+                              <AddHashtagIcon />
+                            </>
+                          )}
                         </>
                       </InputWrapper>
 
@@ -244,13 +282,26 @@ export default function TrackPostEditPage() {
                       <UploadDescriptionIc />
                     </NameBox>
                     <InputBox>
-                      <InputDescriptionText
-                        typeof="text"
-                        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
-                        spellCheck={false}
-                        maxLength={250}
-                        defaultValue=""
-                        onChange={checkDescription}></InputDescriptionText>
+                      {description && (
+                        <InputDescriptionText
+                          typeof="text"
+                          placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                          spellCheck={false}
+                          maxLength={250}
+                          onChange={checkDescription}>
+                          {description}
+                        </InputDescriptionText>
+                      )}
+                      {!description && (
+                        <InputDescriptionText
+                          typeof="text"
+                          placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                          spellCheck={false}
+                          maxLength={250}
+                          onChange={checkDescription}>
+                          {data?.data.data.introduce}
+                        </InputDescriptionText>
+                      )}
                     </InputBox>
                   </InfoItemBox>
                 </InfoContainer>

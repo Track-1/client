@@ -72,3 +72,16 @@ export async function patchProfile(beatId: any) {
     console.log(e);
   }
 }
+
+export async function patchTrackPost(beatId: number, formData: any) {
+  try {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
