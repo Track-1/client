@@ -226,6 +226,7 @@ const AddWrapper = styled.div`
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`
+  width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 
@@ -233,6 +234,7 @@ const AddCommentIcon = styled(AddCommentIc)`
 `;
 
 const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
+  width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 `;

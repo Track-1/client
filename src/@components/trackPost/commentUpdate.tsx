@@ -165,6 +165,8 @@ export default function CommentUpdate(props:PropsType) {
   `;
   
   const InputCount = styled.strong<{ commentLength: number }>`
+    width: 6rem;
+
     ${({ theme }) => theme.fonts.description}
   
     color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};

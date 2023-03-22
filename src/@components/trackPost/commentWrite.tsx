@@ -66,7 +66,7 @@ export default function CommentWrite(props: PropsType) {
           </label>
           <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
           <CountWrapper>
-            <InputCount commentLength={commentLength} >{commentLength}</InputCount>/ 150
+            <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
           </CountWrapper>
         </TitleWrapper>
         <InputWrapper>
@@ -154,6 +154,7 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
+  width: 6rem;
   ${({ theme }) => theme.fonts.description}
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
