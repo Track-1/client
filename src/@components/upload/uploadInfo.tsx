@@ -24,11 +24,10 @@ import useHover from "../../utils/hooks/useHover";
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function UploadInfo(props: propsType) {
-  const { uploadData, setUploadData, setUploadDataRef } = props;
+  const { uploadData, setUploadData } = props;
   const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -83,7 +82,6 @@ export default function UploadInfo(props: propsType) {
   }, [hashtagInputWidth]);
 
   useEffect(() => {
-    setUploadDataRef(introduceRef);
     const initArray = getInitFalseArray();
     initArrayState(initArray);
   }, []);
@@ -292,6 +290,10 @@ export default function UploadInfo(props: propsType) {
     const enterCount = e.target.value.split("\n").length;
     const inputLength = e.target.value.length;
     const currentHeight = introduceRef.current!.scrollHeight;
+
+    setUploadData((prevState) => {
+      return { ...prevState, content: e.target.value };
+    });
 
     if (
       checkMaxInputLength(enterCount, 7) &&

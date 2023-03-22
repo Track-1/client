@@ -19,7 +19,7 @@ export default function TracksProfileUploadModal() {
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfoilo", { state: "Portfoilo" });
+    navigate("/upload/Portfolio", { state: "Portfolio" });
   }
 
   function clickOutside() {
@@ -105,21 +105,20 @@ const Explain = styled.p`
   color: ${({ theme }) => theme.colors.gray3};
 `;
 
-const ProducerProfileUploadeModalIcon=styled(ProducerProfileUploadeModalIc)`
+const ProducerProfileUploadeModalIcon = styled(ProducerProfileUploadeModalIc)`
   width: 30.4rem;
- 
-  @media (min-width:1200px) and (max-width:1799px){
-      margin-top: -2rem;
-    }
 
-`
+  @media (min-width: 1200px) and (max-width: 1799px) {
+    margin-top: -2rem;
+  }
+`;
 
-const VocalSearchingTextIcon=styled(VocalSearchingTextIc)`
+const VocalSearchingTextIcon = styled(VocalSearchingTextIc)`
   width: 17.7rem;
   height: 2.2rem;
-`
+`;
 
-const PortfolioTextIcon=styled(PortfolioTextIc)`
+const PortfolioTextIcon = styled(PortfolioTextIc)`
   width: 8.9rem;
   height: 2.2rem;
-`
+`;

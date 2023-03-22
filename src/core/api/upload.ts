@@ -1,26 +1,23 @@
 import axios from "axios";
 import PATH from "../../core/api/common/path";
-import { currentUser } from "../constants/userType";
 import { getCookie } from "../../utils/cookie";
+import { profileCategory } from "../constants/pageCategory";
 
-export async function UploadInfo(postData: Object, userType: string, producerUploadType: string | undefined) {
-  switch (userType) {
-    case currentUser.PRODUCER:
-      const path = producerUploadType === currentUser.PRODUCER ? `${PATH.MYPAGE}/${PATH.PRODUCER}` : `${PATH.TRACKS}`;
-      await axios.post(`${process.env.REACT_APP_BASE_URL}/${path}`, postData, {
+export async function UploadInfo(postData: Object, userType: string, uploadType: string | undefined) {
+  switch (uploadType) {
+    case profileCategory.PORTFOLIO:
+      return await axios.post(`${process.env.REACT_APP_BASE_URL}/${PATH.MYPAGE}/${userType}`, postData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${getCookie("accessToken")}`,
         },
       });
-      break;
-    case currentUser.VOCAL:
-      await axios.post(`${process.env.REACT_APP_BASE_URL}/${PATH.MYPAGE}/${PATH.VOCAL}`, postData, {
+    case profileCategory.VOCAL_SEARCHING:
+      return await axios.post(`${process.env.REACT_APP_BASE_URL}/${PATH.TRACKS}`, postData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${getCookie("accessToken")}`,
         },
       });
-      break;
   }
 }

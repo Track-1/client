@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import UploadInfo from "../@common/uploadInfo";
+import UploadInfo from "./uploadInfo";
 import TrackUploadDefaultImg from "../../assets/image/trackUploadDefaultImg.png";
 import { FileChangeIc } from "../../assets";
 import { uploadImage } from "../../utils/uploadPage/uploadImage";
@@ -10,11 +10,10 @@ import useHover from "../../utils/hooks/useHover";
 interface PropsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function TrackUpload(props: PropsType) {
-  const { uploadData, setUploadData, setUploadDataRef } = props;
+  const { uploadData, setUploadData } = props;
 
   const [trackUploadImg, setTrackUploadImg] = useState<string>(TrackUploadDefaultImg);
   const { hoverState, changeHoverState } = useHover();
@@ -49,7 +48,7 @@ export default function TrackUpload(props: PropsType) {
           onChange={(e) => uploadImage(e, setTrackUploadImg, setUploadData)}
           readOnly
         />
-        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} />
       </SectionWrapper>
     </Container>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import UploadInfo from "../@common/uploadInfo";
+import UploadInfo from "./uploadInfo";
 import VocalUploadDefaultImg from "../../assets/image/vocalUploadDefaultImg.png";
 import VocalUploadFrameIc from "../../assets/icon/vocalUploadFrameIc.svg";
 import { FileChangeIc } from "../../assets";
@@ -11,11 +11,10 @@ import useHover from "../../utils/hooks/useHover";
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  setUploadDataRef: React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLTextAreaElement | null> | null>>;
 }
 
 export default function VocalUpload(props: propsType) {
-  const { uploadData, setUploadData, setUploadDataRef } = props;
+  const { uploadData, setUploadData } = props;
 
   const [vocalUploadImg, setVocalUploadImg] = useState<string>(VocalUploadDefaultImg);
   const { hoverState, changeHoverState } = useHover();
@@ -23,7 +22,7 @@ export default function VocalUpload(props: propsType) {
   return (
     <Container>
       <SectionWrapper>
-      <Img src={VocalUploadFrameIc} alt="배경"/>
+        <Img src={VocalUploadFrameIc} alt="배경" />
 
         <VocalImageBox>
           <VocalImageFrame
@@ -51,7 +50,7 @@ export default function VocalUpload(props: propsType) {
           readOnly
         />
 
-        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} setUploadDataRef={setUploadDataRef} />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} />
       </SectionWrapper>
     </Container>
   );
@@ -85,14 +84,13 @@ const VocalImageBox = styled.div`
   margin-right: 7.5rem;
 `;
 
-const Img=styled.img`
+const Img = styled.img`
   position: absolute;
 
   width: 185rem;
   height: 74.6rem;
   margin-top: 7.5rem;
-
-`
+`;
 
 const VocalImageFrame = styled.div`
   height: 45.1rem;

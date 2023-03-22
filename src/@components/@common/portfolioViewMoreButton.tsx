@@ -5,7 +5,7 @@ interface PropsType {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default function PortfoiloViewMoreButton(props: PropsType) {
+export default function PortfolioViewMoreButton(props: PropsType) {
   return (
     <ViewMoreButtonWrapper>
       <ProducerVocalSearchingArrowIcon />
