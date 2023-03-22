@@ -84,19 +84,12 @@ export default function EachUserComment(props: PropsType) {
   useEffect(()=>{
     isUpdated&&setIsEdit(false)
   },[isUpdated])
-
-  function submitUpdateComment(){
-      setIsUpdated(true);
-  }
   
   return (
     <>
     {isEdit?
     (
-      <>
       <CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>
-      {/* <CommentUpldatCompleteIcon onClick={submitUpdateComment}/> */}
-      </>
     ):(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
      <ProfileImageWrapper>
