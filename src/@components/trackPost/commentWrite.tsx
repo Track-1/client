@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { UploadIc } from "../../assets";
+import { FileUploadButtonIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
@@ -61,7 +61,7 @@ export default function CommentWrite(props: PropsType) {
           <InputTitle>{!audioFile?fileName:"file_upload.mp3"}</InputTitle>
           <label htmlFor="userFile">
             <div>
-              <UploadIcon />
+              <FileUploadButtonIcon />
             </div>
           </label>
           <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
@@ -180,3 +180,10 @@ const InputBox = styled.textarea`
   border: none;
   resize: none;
 `;
+
+
+const FileUploadButtonIcon=styled(FileUploadButtonIc)`
+  width: 4rem;
+  margin-left: 1.2rem;
+
+`

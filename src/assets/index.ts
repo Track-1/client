@@ -237,3 +237,4 @@ export { ReactComponent as ProfileHashtagXIc } from "./icon/profileHashtagXIc.sv
 export { ReactComponent as MainAdsIc } from "./icon/mainAdsIc.svg";
 export { ReactComponent as CommentUpldatCompleteIc } from "./icon/commentUpldatCompleteIc.svg";
 export { ReactComponent as PauseButtonIc } from "./icon/pauseButtonIc.svg";
+export { ReactComponent as FileUploadButtonIc } from "./icon/fileUploadButtonIc.svg";

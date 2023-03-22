@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { CommentUpldatCompleteIc, UploadIc } from "../../assets";
+import { CommentUpldatCompleteIc, FileUploadButtonIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
@@ -69,7 +69,7 @@ export default function CommentUpdate(props:PropsType) {
             <InputTitle>{editedFileName}</InputTitle>
             <label htmlFor="updateFile">
               <div>
-                <UploadIcon />
+                <FileUploadButtonIcon />
               </div>
             </label>
             <FileInput type="file" accept=".mp3, .wav" id="updateFile" onChange={updateFile} ref={commentFile} />
@@ -197,4 +197,9 @@ const CommentUpldatCompleteIcon=styled(CommentUpldatCompleteIc)`
 
     margin-left: 80rem;
     margin-top: 1.8rem;
+`
+
+const FileUploadButtonIcon=styled(FileUploadButtonIc)`
+  width: 4rem;
+  margin-left: 1.2rem;
 `
