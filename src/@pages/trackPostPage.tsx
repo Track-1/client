@@ -198,6 +198,7 @@ export default function TrackPostPage() {
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
+              <EditDropDown />
             </TitleContainer>
             <InfoContainer>
               <PlayImageWrapper className={play ? "playAnimation" : "pauseAnimation"}>
