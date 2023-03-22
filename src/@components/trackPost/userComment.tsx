@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { UploadDataType } from "../../type/uploadDataType";
 
 import { useMutation, useQueryClient, useInfiniteQuery } from "react-query";
-import { getComment } from "../../core/api/trackPost";
+import { getComment, updateComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
@@ -31,18 +31,26 @@ export default function UserComment(props: PropsType) {
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
-    wavFile: null,
+    audioFile: null,
+    fileName:"",
   });
 
-  const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
-  const [content, setContent] = useRecoilState<string>(postContent);
-  const [wavFile, setWavFile] = useRecoilState(postWavFile);
-  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  // const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
+  const [isUpdated, setIsUpdated]=useState<boolean>(false);
+  const [content, setContent] = useState<string>("");
+  const [audioFile, setAudioFile] = useState(null);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
+
+  // const [content, setContent] = useRecoilState<string>(postContent);
+  // const [audioFile, setAudioFile] = useRecoilState(postWavFile);
+  // const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [commentId, setCommentId]=useState<number>(0);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
-
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     "comments",
@@ -58,27 +66,49 @@ export default function UserComment(props: PropsType) {
   // get end
 
   //post
-  const { mutate } = useMutation(postComment, {
+  const { mutate:post } = useMutation(()=>postComment(uploadData, beatId), {
     onSuccess: () => {
-      queryClient.invalidateQueries("beatId");
+      queryClient.invalidateQueries("comments");
       setContent("");
-      setWavFile(null);
+      setAudioFile(null);
       setIsCompleted(false);
-      setIsEnd(false);
+      //setIsEnd(false);
+      console.log("포스트성공")
     },
   });
 
   const queryClient = useQueryClient();
-  //post end
 
   useEffect(() => {
-    if (content && wavFile) {
-      let formData = new FormData();
-      formData.append("wavFile", wavFile);
-      formData.append("content", content);
-      mutate(formData);
-    }
+    // if (content && audioFile) {
+    //   setUploadData((prev)=>({...prev, audioFile:audioFile, content:content}));
+      post();
+      console.log("포스트시작")
+   // }
   }, [isCompleted]);
+ //post end
+
+ //update
+ const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
+  onSuccess: () => {
+    queryClient.invalidateQueries("comments");
+    // setContent("");
+    // setAudioFile(null);
+    // setIsUpdated(false);
+    // setIsEnd(false);
+    console.log("성공")
+  },
+});
+
+useEffect(() => {
+  update();
+  // if (content && audioFile) {
+  //   setUploadData((prev)=>({...prev, audioFile:audioFile, content:content}));
+   
+  // }
+  console.log("지나감2")
+}, [isUpdated]);
+//update end
 
   useEffect(() => {
     if (comments) {
@@ -101,21 +131,22 @@ export default function UserComment(props: PropsType) {
     }
   }
 
-  function getUploadData(text: string, audioFile: File | null) {
+  function getUploadData(text: string, audioFile: File | null, fileName:string) {
     setUploadData({
       content: text,
-      wavFile: audioFile,
+      audioFile: audioFile,
+      fileName: fileName,
     });
   }
 
   function uploadComment() {
-    setIsCompleted(true);
+    setIsCompleted(!isCompleted);
   }
 
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-
+console.log("commentId"+commentId)
   return (
     <>
       <CommentContainer>
@@ -123,7 +154,7 @@ export default function UserComment(props: PropsType) {
           <CloseBtnIc onClick={closeComment} />
         </CloseCommentBtn>
         <form>
-          <CommentWrite getUploadData={getUploadData} />
+          <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} setIsCompleted={setIsCompleted} content={content} audioFile={audioFile} />
           <AddWrapper>
             <div></div>
 
@@ -144,6 +175,10 @@ export default function UserComment(props: PropsType) {
                   pauseAudio={pausesPlayerAudio}
                   currentIndex={index}
                   isMe={comments[index].isMe}
+                  getUploadData={getUploadData}
+                  isUpdated={isUpdated}
+                  setIsUpdated={setIsUpdated}
+                  setCommentId={setCommentId}
                 />
               );
             })}

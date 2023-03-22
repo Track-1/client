@@ -6,4 +6,5 @@ export interface UserCommentType {
   vocalProfileImage:string;
   vocalWavFile:string;
   vocalWavFileLength:number;
+  fileName:number;
 }

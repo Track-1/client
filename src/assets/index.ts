@@ -235,3 +235,4 @@ export { ReactComponent as TrackheadersloganIc } from "./icon/trackheadersloganI
 export { ReactComponent as ProfileEditBtnIc } from "./icon/profileEditBtnIc.svg";
 export { ReactComponent as ProfileHashtagXIc } from "./icon/profileHashtagXIc.svg";
 export { ReactComponent as MainAdsIc } from "./icon/mainAdsIc.svg";
+export { ReactComponent as CommentUpldatCompleteIc } from "./icon/commentUpldatCompleteIc.svg";

@@ -5,10 +5,11 @@ import { useMutation } from "react-query";
 
 interface PropsType {
   currentId: number;
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function EditDropDownComment(props: PropsType) {
-  const { currentId } = props;
+  const { currentId, setIsEdit } = props;
   const { mutate } = useMutation(() => deleteTrackComment(currentId), {
     onSuccess: () => {
       //다시 업로드 하는거 해줘야된다.!
@@ -19,16 +20,20 @@ export default function EditDropDownComment(props: PropsType) {
     },
   });
 
+  function editComment(){
+    setIsEdit(true)
+  }
+  
   return (
     <DropDownContainer>
-      <EditWrapper>
+      <EditWrapper onClick={editComment}>
         <EditText>수정하기</EditText>
-        <EditIc />
+        <EditIcon />
       </EditWrapper>
       <DivisionBar />
       <DeleteWrapper onClick={() => mutate()}>
         <DeleteText>삭제하기</DeleteText>
-        <DeleteIc />
+        <DeleteIcon />
       </DeleteWrapper>
     </DropDownContainer>
   );
@@ -36,7 +41,7 @@ export default function EditDropDownComment(props: PropsType) {
 
 const DropDownContainer = styled.ul`
   position: absolute;
-  top: 6.2rem;
+  top: 8.2rem;
   right: 0;
   height: 11.2rem;
   width: 20.1rem;
@@ -81,3 +86,13 @@ const DeleteWrapper = styled.li`
 `;
 
 const DeleteText = styled.strong``;
+
+const EditIcon=styled(EditIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
+
+const DeleteIcon=styled(DeleteIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`

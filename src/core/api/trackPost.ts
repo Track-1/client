@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UploadDataType } from "../../type/uploadDataType";
 import { getCookie } from "../../utils/cookie";
 
 export async function getTrackInfo(props: number) {
@@ -11,7 +12,7 @@ export async function getTrackInfo(props: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
+   
     return data;
   } catch (e) {
     console.log(e);
@@ -24,7 +25,7 @@ export async function getComment(page: number, beatId: number) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beatId: beatId,
+        beadId:beatId
       },
     });
     return data?.data.data;
@@ -33,15 +34,33 @@ export async function getComment(page: number, beatId: number) {
   }
 }
 
-export async function postComment(formData: any) {
+export async function postComment(formData: UploadDataType, beatId:any) {
   try {
-    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/8`, formData, {
+    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}`, formData, {
       headers: {
-        "Content-Type": "amultipart/form-data",
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+        beatId: beatId
+      },
+    });
+    console.log(data)
+  } catch (e) {
+    console.log("포스트")
+    console.log(e);
+  }
+}
+
+
+export async function updateComment(formData: UploadDataType, commentId: number) {
+  try {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
   } catch (e) {
+    console.log("수정")
     console.log(e);
   }
 }
@@ -76,7 +95,7 @@ export async function patchProfile(beatId: any) {
   try {
     const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {
       headers: {
-        "Content-Type": "amultipart/form-data",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { PauseBtnIc, PlayBtnIc, EllipsisIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
@@ -7,6 +7,9 @@ import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
 import useModal from "../../utils/hooks/useModal";
 import EditDropDownComment from "./editDropDownComment";
+import CommentUpdate from "./commentUpdate";
+import { useMutation, useQueryClient } from "react-query";
+import { updateComment } from "../../core/api/trackPost";
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -16,16 +19,37 @@ interface PropsType {
   clickComment: (index: number) => void;
   currentIndex: number;
   isMe: boolean;
+  getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
+  isUpdated:boolean;
+  setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
+  // commentId:number;
+  setCommentId: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe } = props;
+  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData, isUpdated, setIsUpdated,setCommentId } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
+  const { modalRef } = useModal();
+  const [isEdit, setIsEdit]=useState<boolean>(false);
+
+  // useEffect(()=>{
+  //   setCommentId(commentId)
+  // },[])
+  // const modalCloseHandler = (e:any) => {
+  //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
+  // };
+  
+  // useEffect(() => {
+  //   window.addEventListener('click', modalCloseHandler);
+  //   return () => {
+  //     window.removeEventListener('click', modalCloseHandler);
+  //   };
+  // });
 
   function hoverComment() {
     setIsHover(true);
@@ -50,10 +74,21 @@ export default function EachUserComment(props: PropsType) {
   }
 
   function changeToggleState() {
-    setEditModalToggle((prev) => !prev);
+    setEditModalToggle(!editModalToggle);
+    setCommentId(commentInfo.commentId);
   }
+  
+  useEffect(()=>{
+    isEdit&&setEditModalToggle(false);
+  },[isEdit])
 
+  useEffect(()=>{
+    isUpdated&&setIsEdit(false)
+  },[isUpdated])
+  
   return (
+    <>
+    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>:(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
       <ProfileImage img={commentInfo.vocalProfileImage}>
         {isHover && !isClickedPlayingComment() && (
@@ -70,12 +105,13 @@ export default function EachUserComment(props: PropsType) {
       <InfoBox>
         <InfoTopWrapper>
           <UserName>{commentInfo.vocalName}</UserName>
-          {isMe && <EllipsisIcon onClick={changeToggleState} />}
-          {editModalToggle && <EditDropDownComment currentId={commentInfo.commentId} />}
+          {isMe && <EllipsisIcon onClick={changeToggleState}/>}
         </InfoTopWrapper>
+        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
-    </CommentContainer>
+    </CommentContainer>)}
+    </>
   );
 }
 
@@ -141,6 +177,7 @@ const CommentText = styled.strong`
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`
+  width: 4rem;
   float: right;
   cursor: pointer;
 `;

@@ -3,13 +3,18 @@ import styled from "styled-components";
 import { UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
+import { LoginUserImg } from "../../recoil/loginUserData";
 
 interface PropsType {
-  getUploadData: (content: string, wavFile: File | null) => any;
+  getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
+  isCompleted:boolean;
+  setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>
+  content: string;
+  audioFile: File | null;
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData } = props;
+  const { getUploadData, isCompleted, setIsCompleted, content, audioFile } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
@@ -18,12 +23,16 @@ export default function CommentWrite(props: PropsType) {
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
 
   const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
-  const isCompleted = useRecoilValue(postIsCompleted);
+//  const isCompleted = useRecoilValue(postIsCompleted);
+  const imgSrc = useRecoilValue(LoginUserImg);
+
+ 
+  
 
   useEffect(() => {
     const currentText = commentText.current!.value;
 
-    isCompleted && getUploadData(currentText, uploadedFile);
+    isCompleted && getUploadData(currentText, uploadedFile, fileName);
   }, [isCompleted]);
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -44,12 +53,12 @@ export default function CommentWrite(props: PropsType) {
   return (
     <WriteContainer>
       <ProfileImage
-        src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
+        src={imgSrc}
         alt="프로필 이미지"
       />
       <InfoBox>
         <TitleWrapper>
-          <InputTitle>{fileName}</InputTitle>
+          <InputTitle>{!audioFile?fileName:"file_upload.mp3"}</InputTitle>
           <label htmlFor="userFile">
             <div>
               <UploadIcon />
@@ -57,7 +66,7 @@ export default function CommentWrite(props: PropsType) {
           </label>
           <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
           <CountWrapper>
-            <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
+            <InputCount commentLength={commentLength} >{commentLength}</InputCount>/ 150
           </CountWrapper>
         </TitleWrapper>
         <InputWrapper>
