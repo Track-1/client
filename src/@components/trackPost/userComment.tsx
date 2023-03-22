@@ -88,10 +88,6 @@ export default function UserComment(props: PropsType) {
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
-    // setContent("");
-    // setAudioFile(null);
-    // setIsUpdated(false);
-    // setIsEnd(false);
     console.log("성공")
   },
 });
