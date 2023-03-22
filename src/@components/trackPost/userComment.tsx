@@ -53,7 +53,7 @@ export default function UserComment(props: PropsType) {
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["comments"],
+    ["comments", getUploadData],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -85,12 +85,13 @@ export default function UserComment(props: PropsType) {
   }, [isCompleted]);
  //post end
 
- console.log(uploadData)
+// console.log(uploadData)
  //update
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
     console.log("성공")
+    setIsUpdated(false)
   },
 });
 
@@ -116,7 +117,8 @@ useEffect(() => {
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
-      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      // setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      setComments([...response]);
       return { response, nextPage: page + 1 };
     }
   }
