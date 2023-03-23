@@ -9,10 +9,11 @@ import { endPost } from "../../recoil/postIsCompleted";
 interface PropsType {
   currentId: number;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
+  setEditModalToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function EditDropDownComment(props: PropsType) {
-  const { currentId, setIsEdit } = props;
+  const { currentId, setIsEdit,setEditModalToggle } = props;
 
   const queryClient = useQueryClient();
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
@@ -39,8 +40,14 @@ export default function EditDropDownComment(props: PropsType) {
       mutate();
     }
   }
+
+  function closeModal(){
+    console.log("Asdf")
+    setEditModalToggle(false);
+  }
   
   return (
+    <>
     <DropDownContainer>
       <EditWrapper onClick={editComment}>
         <EditText>수정하기</EditText>
@@ -52,6 +59,8 @@ export default function EditDropDownComment(props: PropsType) {
         <DeleteIcon />
       </DeleteWrapper>
     </DropDownContainer>
+    <DropDownBackground onClick={closeModal}></DropDownBackground>
+    </>
   );
 }
 
@@ -111,4 +120,9 @@ const EditIcon=styled(EditIc)`
 const DeleteIcon=styled(DeleteIc)`
   width: 2.4rem;
   height: 2.4rem;
+`
+
+const DropDownBackground=styled.div`
+  width: 107.7rem;
+  height: 108rem;
 `

@@ -112,7 +112,7 @@ export default function EachUserComment(props: PropsType) {
           <UserName>{commentInfo.vocalName}</UserName>
           {isMe && <EllipsisIcon onClick={changeToggleState}/>}
         </InfoTopWrapper>
-        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} /></div>)}
+        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} setEditModalToggle={setEditModalToggle} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
       </InfoBox>
     </CommentContainer>)}
