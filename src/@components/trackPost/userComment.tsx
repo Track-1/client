@@ -35,22 +35,17 @@ export default function UserComment(props: PropsType) {
     fileName:"",
   });
 
-  // const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-
   const [isUpdated, setIsUpdated]=useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [audioFile, setAudioFile] = useState(null);
- // const [isEnd, setIsEnd] = useState<boolean>(false);
-
-  // const [content, setContent] = useRecoilState<string>(postContent);
-  // const [audioFile, setAudioFile] = useRecoilState(postWavFile);
- const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId]=useState<number>(0);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ["comments", getUploadData, isEnd],
@@ -63,6 +58,17 @@ export default function UserComment(props: PropsType) {
   );
   const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getComment(page, beatId);
+      //setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      setComments([...response]);
+      
+      return { response, nextPage: page + 1 };
+    }
+  }
+
   // get end
 
   //post
@@ -85,7 +91,6 @@ export default function UserComment(props: PropsType) {
   }, [isCompleted]);
  //post end
 
-// console.log(uploadData)
  //update
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
@@ -114,15 +119,7 @@ useEffect(() => {
     }
   }, [currentAudioFile]);
 
-  async function getData(page: number) {
-    if (hasNextPage !== false) {
-      const response = await getComment(page, beatId);
-      // setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      setComments([...response]);
-      return { response, nextPage: page + 1 };
-    }
-  }
-
+ 
   function getUploadData(text: string, audioFile: File | null, fileName:string) {
     setUploadData({
       content: text,
