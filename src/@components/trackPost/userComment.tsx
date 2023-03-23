@@ -109,8 +109,6 @@ useEffect(() => {
 }, [isUpdated]);
 //update end
 
-console.log(isEnd)
-
   useEffect(() => {
     if (comments) {
       audio.src = comments[clickedIndex].vocalWavFile;
