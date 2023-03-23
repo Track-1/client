@@ -108,18 +108,19 @@ export async function getAudioFile(props: number, fileLink: any) {
   }
 }
 
-export async function patchProfile(beatId: any) {
+export async function closeTrack(beatId: any) {
   try {
     const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
     data && console.log(data);
-    if (data.status === 200) {
-      window.location.replace("/");
-    }
+
+    // if (data.status === 200) {
+    //   window.location.replace("/");
+    // }
   } catch (e) {
     console.log("문제발생");
     console.log(e);

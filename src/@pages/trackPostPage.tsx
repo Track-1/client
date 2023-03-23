@@ -24,7 +24,7 @@ import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useLocation, useParams } from "react-router-dom";
-import { getTrackInfo, patchProfile, getAudioFile } from "../core/api/trackPost";
+import { getTrackInfo, getAudioFile, closeTrack } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
@@ -116,12 +116,12 @@ export default function TrackPostPage() {
   }
 
   function closeTrackPost() {
-    patchProfile(beatId);
+    closeTrack(beatId);
     console.log("dfdfdfdfdfdfddd");
   }
 
   function openTrackPost() {
-    patchProfile(beatId);
+    closeTrack(beatId);
     console.log("abababababab");
   }
 
@@ -161,6 +161,7 @@ export default function TrackPostPage() {
     const response = await getAudioFile(state, fileLink);
     console.log(response);
   }, []);
+
 
   return (
     <>
