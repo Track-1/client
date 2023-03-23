@@ -24,7 +24,7 @@ import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useLocation, useParams } from "react-router-dom";
-import { getTrackInfo, getAudioFile, closeTrack, getFileLink } from "../core/api/trackPost";
+import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
@@ -145,99 +145,21 @@ export default function TrackPostPage() {
     setAudioInfos(tempInfos);
   }
 
-  //() => onLogin(email, password, loginType)
-
-  // const downloadFile = useCallback((fileName: string, fileLink: string) => {
-  //   const blob = new Blob([fileLink], { type: "audio/mpeg" });
-  //   console.log(blob);
-  //   console.log(fileLink);
-  //   const element = document.createElement("a");
-  //   const url = window.URL.createObjectURL(blob);
-  //   element.href = url;
-  //   // element.href = fileLink;
-  //   console.log(element.href);
-  //   console.log(url);
-  //   element.download = fileName;
-  //   console.log(fileLink);
-  //   console.log(audio.src);
-  //   console.log(element);
-  //   element.click();
-
-  //   let reader = new FileReader();
-  //   reader.readAsArrayBuffer(blob);
-  // }, []);
-
-
-  //
-  // function downloadFile(){
-  //   setDownload(!download);
-  //     fetch('https://track-list-bucket.s3.ap-northeast-2.amazonaws.com/audio/1676873179537-%25E1%2584%2580%25E1%2585%25A9%25E1%2584%2585%25E1%2585%25A2%2520Dive%2520Into%2520You.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCCROMAZWQ2%2F20230224%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230224T063202Z&X-Amz-Expires=900&X-Amz-Signature=9cbabfdd5890f524ae677cbfef64f9d2f649899b75d2ea8feba8d3525afb3506&X-Amz-SignedHeaders=host', {method: 'GET'})
-  // .then(res => {
-  //   return res.blob();
-  // })
-  // .then(blob => {
-  //   var url = window.URL.createObjectURL(blob);
-  //   var a = document.createElement('a');
-  //   a.href = url;
-  //   a.download = 'a.mp3';
-  //   document.body.appendChild(a); 
-  //   a.click();  
-  //   setTimeout(
-  //     _ => { window.URL.revokeObjectURL(url); }, 
-  //     60000); 
-  //   a.remove(); 
-  // })
-  // .catch(err => {
-  //   console.error('err: ', err);
-  // })
-  // }
-// 'https://track-list-bucket.s3.ap-northeast-2.amazonaws.com/audio/1676873179537-%25E1%2584%2580%25E1%2585%25A9%25E1%2584%2585%25E1%2585%25A2%2520Dive%2520Into%2520You.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCCROMAZWQ2%2F20230224%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230224T063202Z&X-Amz-Expires=900&X-Amz-Signature=9cbabfdd5890f524ae677cbfef64f9d2f649899b75d2ea8feba8d3525afb3506&X-Amz-SignedHeaders=host'
- 
 const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
   , {
     refetchOnWindowFocus: false, 
     retry: 0, 
     onSuccess: data => {
-        // setLink(data)
-        console.log(data)
-        // let blob = new Blob([new ArrayBuffer(data)], { type: "audio/mpeg" }); 
         let blob = new Blob([data?.data],{ type: "audio/mpeg" }); 
-        console.log(blob)
-
-        var url = window.URL.createObjectURL(blob); //여기가 잘 안되는 중
+        var url = window.URL.createObjectURL(blob); 
         console.log(url)
         setLink(url)
-        // var a = document.createElement('a');
-        // a.href = url;
-        // a.download = 'a.mp3';
-        // document.body.appendChild(a); 
-        // a.click();  
-        // setTimeout(_ => { window.URL.revokeObjectURL(url); }, 
-        //   60000); 
-        // a.remove(); 
-        // return (
-        //   <a href={url} download="asdf">dfdfdfdfd</a>
-        // )
     },
     onError: error => {
       console.log("실패");
       console.log(error)
     }
   });
-
-  // const downloadFile = useCallback(async (fileName: string, fileLink: string) => {
-  //   const response = await getAudioFile(state, fileLink);
-  //   console.log(response);
-  //   console.log(fileName)
-  // }, []);
-
-  function downloadFile(){
-    setDownload(!download)
-
-  }
-
-
-  
 
   return (
     <>
@@ -267,12 +189,7 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                   ))}
                 {!trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
-                    // <DownloadBtnIcon onClick={() => downloadFile("ㅇㅇ", audio.src)} />
-                    <a href={link} download="제발되라"><DownloadBtnIcon onClick={downloadFile}/></a>
-                    // <>
-                    // <DownloadBtnIcon onClick={downloadFile}/>
-                    // {/* <Video src={link}><DownloadBtnIcon/></Video> */}
-                    // </>
+                    <a href={link} download="제발되라"><DownloadBtnIcon/></a>
                   ) : (
                     <ClosedBtnIcon />
                   ))}
