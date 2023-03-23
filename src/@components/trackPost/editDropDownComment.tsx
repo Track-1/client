@@ -5,18 +5,38 @@ import { useMutation, useQueryClient } from "react-query";
 import { deleteComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
 import { endPost } from "../../recoil/postIsCompleted";
+import {useEffect, useRef} from "react";
 
 interface PropsType {
   currentId: number;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
+  editModalToggle:boolean;
   setEditModalToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function EditDropDownComment(props: PropsType) {
-  const { currentId, setIsEdit,setEditModalToggle } = props;
+  const { currentId, setIsEdit,editModalToggle, setEditModalToggle } = props;
 
   const queryClient = useQueryClient();
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const modalRef = useRef<HTMLUListElement>(null);
+  
+  function isClickedOutside(e: MouseEvent) {
+    return editModalToggle && !modalRef.current?.contains(e.target as Node);
+  }
+
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setEditModalToggle(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [editModalToggle]);
 
   const { mutate } = useMutation(() => deleteComment(currentId), {
     onSuccess: () => {
@@ -41,14 +61,14 @@ export default function EditDropDownComment(props: PropsType) {
     }
   }
 
-  function closeModal(){
-    console.log("Asdf")
-    setEditModalToggle(false);
-  }
+  // function closeModal(){
+  //   console.log("Asdf")
+  //   setEditModalToggle(false);
+  // }
   
   return (
     <>
-    <DropDownContainer>
+    <DropDownContainer ref={modalRef}>
       <EditWrapper onClick={editComment}>
         <EditText>수정하기</EditText>
         <EditIcon />
@@ -59,7 +79,7 @@ export default function EditDropDownComment(props: PropsType) {
         <DeleteIcon />
       </DeleteWrapper>
     </DropDownContainer>
-    <DropDownBackground onClick={closeModal}></DropDownBackground>
+    <DropDownBackground></DropDownBackground>
     </>
   );
 }

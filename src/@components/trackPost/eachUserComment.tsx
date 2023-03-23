@@ -33,8 +33,9 @@ export default function EachUserComment(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
-  const { modalRef } = useModal();
+//  const { modalRef } = useModal();
   const [isEdit, setIsEdit]=useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // useEffect(()=>{
   //   setCommentId(commentId)
@@ -49,6 +50,10 @@ export default function EachUserComment(props: PropsType) {
   //     window.removeEventListener('click', modalCloseHandler);
   //   };
   // });
+
+  function isClickedOutside(e: MouseEvent) {
+    return editModalToggle && !modalRef.current?.contains(e.target as Node);
+  }
 
   function hoverComment() {
     setIsHover(true);
@@ -73,7 +78,7 @@ export default function EachUserComment(props: PropsType) {
   }
 
   function changeToggleState() {
-    setEditModalToggle(!editModalToggle);
+    setEditModalToggle(true);
     setCommentId(commentInfo.commentId);
   }
   
@@ -113,8 +118,9 @@ export default function EachUserComment(props: PropsType) {
           {isMe && <EllipsisIcon onClick={changeToggleState}/>}
         </InfoTopWrapper>
         <CommentText>{commentInfo.comment}</CommentText>
-        {editModalToggle && (<EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} setEditModalToggle={setEditModalToggle} />)}
+        {editModalToggle && (<EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} editModalToggle={editModalToggle} setEditModalToggle={setEditModalToggle} />)}
       </InfoBox>
+      
     </CommentContainer>)}
     </>
   );
