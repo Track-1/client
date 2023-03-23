@@ -25,7 +25,6 @@ export default function ProducerBriefInfo(props: UserPropsType) {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
-      console.log(data?.producerProfile);
       setLoginUserImg(data.producerProfile.profileImage);
     },
     onError: (error) => {

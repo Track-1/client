@@ -35,25 +35,20 @@ export default function UserComment(props: PropsType) {
     fileName:"",
   });
 
-  // const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-
   const [isUpdated, setIsUpdated]=useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [audioFile, setAudioFile] = useState(null);
-  const [isEnd, setIsEnd] = useState<boolean>(false);
-
-  // const [content, setContent] = useRecoilState<string>(postContent);
-  // const [audioFile, setAudioFile] = useRecoilState(postWavFile);
-  // const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId]=useState<number>(0);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+ 
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "comments",
+    ["comments", getUploadData, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -63,6 +58,17 @@ export default function UserComment(props: PropsType) {
   );
   const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getComment(page, beatId);
+      //setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      setComments([...response]);
+      
+      return { response, nextPage: page + 1 };
+    }
+  }
+
   // get end
 
   //post
@@ -72,6 +78,7 @@ export default function UserComment(props: PropsType) {
       setContent("");
       setAudioFile(null);
       setIsCompleted(false);
+      setIsEnd(!isEnd)
       console.log("포스트성공")
     },
   });
@@ -89,6 +96,7 @@ export default function UserComment(props: PropsType) {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
     console.log("성공")
+    setIsUpdated(false)
   },
 });
 
@@ -111,14 +119,7 @@ useEffect(() => {
     }
   }, [currentAudioFile]);
 
-  async function getData(page: number) {
-    if (hasNextPage !== false) {
-      const response = await getComment(page, beatId);
-      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      return { response, nextPage: page + 1 };
-    }
-  }
-
+ 
   function getUploadData(text: string, audioFile: File | null, fileName:string) {
     setUploadData({
       content: text,
@@ -134,7 +135,7 @@ useEffect(() => {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-console.log("commentId"+commentId)
+
   return (
     <>
       <CommentContainer>
@@ -224,6 +225,7 @@ const AddWrapper = styled.div`
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`
+  width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 
@@ -231,6 +233,7 @@ const AddCommentIcon = styled(AddCommentIc)`
 `;
 
 const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
+  width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 `;

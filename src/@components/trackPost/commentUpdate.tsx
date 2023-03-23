@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { CommentUpldatCompleteIc, UploadIc } from "../../assets";
+import { ClosedWithXIc, CommentUpldatCompleteIc, FileUploadButtonIc, ProfileHashtagXIc, QuitIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
@@ -13,12 +13,11 @@ interface PropsType {
     fileGetName:string;
     isUpdated:boolean;
     setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
-    // commentId:number;
-   // setCommentId: React.Dispatch<React.SetStateAction<number>>
+    setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function CommentUpdate(props:PropsType) {
-    const { getUploadData, comment, fileGetName, isUpdated, setIsUpdated } = props;
+    const { getUploadData, comment, fileGetName, isUpdated, setIsUpdated,setIsEdit } = props;
 
     const commentText = useRef<HTMLTextAreaElement | null>(null);
     const commentFile = useRef<HTMLInputElement | null>(null);
@@ -27,25 +26,29 @@ export default function CommentUpdate(props:PropsType) {
     const [editedFileName, setEditedFileName] = useState<string>(fileGetName);
   
     const [commentLength, setCommentLength] = useState<number>(0);
-    //const isCompleted = useRecoilValue(postIsCompleted);
     const imgSrc = useRecoilValue(LoginUserImg);
+
+    const [isUpdating, setIsUpdating]=useState<boolean>(false);
 
     useEffect(() => {
       const currentText = commentText.current!.value;
   
-      isUpdated && getUploadData(currentText, editedFile, editedFileName);
+      getUploadData(currentText, editedFile, editedFileName);
       console.log("지나감1")
-    }, [isUpdated]);
+    }, [isUpdating]);
   
+    
     function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
       const currentLength = e.target.value.length;
       setCommentLength(currentLength);
+      setIsUpdating(!isUpdating)
     }
   
     function updateFile(e: React.ChangeEvent<HTMLInputElement>) {
       const currentFile = e.target.files && e.target.files[0];
       currentFile && setEditedFile(currentFile);
       currentFile && changeFileName(currentFile.name);
+      setIsUpdating(!isUpdating)
     }
   
     function changeFileName(fileName: string) {
@@ -55,26 +58,38 @@ export default function CommentUpdate(props:PropsType) {
     function submitUpdateComment(){
         setIsUpdated(true);
     }
-    console.log("isUpdated"+isUpdated)
+
+    useEffect(()=>{
+        fileGetName===""&&setEditedFileName("file_upload.mp3")
+    },[])
+
+    function stopUpdating(){
+        setIsEdit(false);
+    }
   
     return (
         <>
       <WriteContainer>
-        <ProfileImage
-          src={imgSrc}
-          alt="프로필 이미지"
-        />
+      <ImageContainer>
+      <ProfileImageWrapper>
+      <ProfileImage
+        src={imgSrc}
+        alt="프로필 이미지"
+      />
+      </ProfileImageWrapper>
+      </ImageContainer>
         <InfoBox>
           <TitleWrapper>
             <InputTitle>{editedFileName}</InputTitle>
             <label htmlFor="updateFile">
               <div>
-                <UploadIcon />
+                <FileUploadButtonIcon />
               </div>
             </label>
             <FileInput type="file" accept=".mp3, .wav" id="updateFile" onChange={updateFile} ref={commentFile} />
             <CountWrapper>
-              <InputCount commentLength={commentLength}>{commentLength}</InputCount>/ 150
+              <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
+              <QuitIcon onClick={stopUpdating}/>
             </CountWrapper>
           </TitleWrapper>
           <InputWrapper>
@@ -108,22 +123,30 @@ export default function CommentUpdate(props:PropsType) {
     align-items: center;
   `;
   
-  const ProfileImage = styled.img`
-    height: 10rem;
-    width: 10rem;
-  
-    margin-left: 2.7rem;
-    margin-right: 1.2rem;
-  
-    border-radius: 10rem;
-  `;
-  
-  const InfoBox = styled.div`
+  const ProfileImageWrapper = styled.div`
+  height: 9rem;
+  width: 9rem;
+  overflow: hidden;
+  border-radius: 9rem;
+`;
+
+const ImageContainer=styled.div`
+  margin-right: 2rem;
+  margin-left: 3.8rem;
+`
+
+const ProfileImage=styled.img`
+  width: 100%
+`
+
+const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
-  `;
+`;
   
   const TitleWrapper = styled.div`
+    height: 2.5rem;
+
     display: flex;
   
     align-items: center;
@@ -156,15 +179,26 @@ export default function CommentUpdate(props:PropsType) {
   
   const CountWrapper = styled.div`
     display: flex;
+    //justify-content: flex-end;
+    position: absolute;
+    right: 0;
+    margin-right: 8rem;
   
     color: ${({ theme }) => theme.colors.gray3};
   
     ${({ theme }) => theme.fonts.description}
   
-    margin-left: 54.1rem;
+  //  margin-left: 54.1rem;
   `;
   
   const InputCount = styled.strong<{ commentLength: number }>`
+    display: flex;
+    justify-content: flex-end;
+
+    width: 10rem;
+    margin-left: -10rem;
+    margin-right: 2rem;
+
     ${({ theme }) => theme.fonts.description}
   
     color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
@@ -197,4 +231,13 @@ const CommentUpldatCompleteIcon=styled(CommentUpldatCompleteIc)`
 
     margin-left: 80rem;
     margin-top: 1.8rem;
+`
+
+const FileUploadButtonIcon=styled(FileUploadButtonIc)`
+  width: 4rem;
+  margin-left: 1.2rem;
+`
+
+const QuitIcon=styled(QuitIc)`
+    width: 1.5rem;
 `
