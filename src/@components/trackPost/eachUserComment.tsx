@@ -33,28 +33,8 @@ export default function EachUserComment(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
-//  const { modalRef } = useModal();
   const [isEdit, setIsEdit]=useState<boolean>(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(()=>{
-  //   setCommentId(commentId)
-  // },[])
-  // const modalCloseHandler = (e:any) => {
-  //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
-  // };
   
-  // useEffect(() => {
-  //   window.addEventListener('click', modalCloseHandler);
-  //   return () => {
-  //     window.removeEventListener('click', modalCloseHandler);
-  //   };
-  // });
-
-  function isClickedOutside(e: MouseEvent) {
-    return editModalToggle && !modalRef.current?.contains(e.target as Node);
-  }
-
   function hoverComment() {
     setIsHover(true);
   }

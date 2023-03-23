@@ -60,11 +60,6 @@ export default function EditDropDownComment(props: PropsType) {
       mutate();
     }
   }
-
-  // function closeModal(){
-  //   console.log("Asdf")
-  //   setEditModalToggle(false);
-  // }
   
   return (
     <>

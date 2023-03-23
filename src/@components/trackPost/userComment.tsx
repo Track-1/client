@@ -138,7 +138,7 @@ useEffect(() => {
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-//console.log("uploadData"+uploadData.content)
+
   return (
     <>
       <CommentContainer>
