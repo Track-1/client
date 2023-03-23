@@ -26,7 +26,6 @@ export default function CommentUpdate(props:PropsType) {
     const [editedFileName, setEditedFileName] = useState<string>(fileGetName);
   
     const [commentLength, setCommentLength] = useState<number>(0);
-    //const isCompleted = useRecoilValue(postIsCompleted);
     const imgSrc = useRecoilValue(LoginUserImg);
 
     const [isUpdating, setIsUpdating]=useState<boolean>(false);

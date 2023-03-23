@@ -45,7 +45,7 @@ export default function UserComment(props: PropsType) {
   const [commentId, setCommentId]=useState<number>(0);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
-
+ 
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ["comments", getUploadData, isEnd],
@@ -78,7 +78,7 @@ export default function UserComment(props: PropsType) {
       setContent("");
       setAudioFile(null);
       setIsCompleted(false);
-      setIsEnd(false)
+      setIsEnd(!isEnd)
       console.log("포스트성공")
     },
   });
