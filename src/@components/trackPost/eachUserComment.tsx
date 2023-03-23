@@ -89,7 +89,7 @@ export default function EachUserComment(props: PropsType) {
     <>
     {isEdit?
     (
-      <CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>
+      <CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated} setIsEdit={setIsEdit}/>
     ):(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
      <ProfileImageWrapper>
