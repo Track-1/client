@@ -43,6 +43,8 @@ export default function UserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId]=useState<number>(0);
+  const [startUpload, setStartUpload]=useState<boolean>(false);
+  const [startUpdate, setStartUpdate]=useState<boolean>(false);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
  
@@ -68,7 +70,6 @@ export default function UserComment(props: PropsType) {
       return { response, nextPage: page + 1 };
     }
   }
-
   // get end
 
   //post
@@ -77,8 +78,9 @@ export default function UserComment(props: PropsType) {
       queryClient.invalidateQueries("comments");
       setContent("");
       setAudioFile(null);
-      setIsCompleted(false);
+    //  setIsCompleted(false);
       setIsEnd(!isEnd)
+      setStartUpload(false);
       console.log("포스트성공")
     },
   });
@@ -86,7 +88,7 @@ export default function UserComment(props: PropsType) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-      post();
+    post();
       console.log("포스트시작")
   }, [isCompleted]);
  //post end
@@ -95,7 +97,8 @@ export default function UserComment(props: PropsType) {
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
-    console.log("성공")
+    console.log("댓글성공")
+    setIsEnd(!isEnd)
     setIsUpdated(false)
   },
 });
@@ -130,6 +133,8 @@ useEffect(() => {
 
   function uploadComment() {
     setIsCompleted(!isCompleted);
+    setStartUpload(true);
+  //  post()
   }
 
   function clickComment(index: number) {

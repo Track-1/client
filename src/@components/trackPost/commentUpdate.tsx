@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ClosedWithXIc, CommentUpldatCompleteIc, FileUploadButtonIc, ProfileHashtagXIc, QuitIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
+import { endPost, postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
 import { useMutation, useQueryClient } from "react-query";
 import { updateComment } from "../../core/api/trackPost";
@@ -29,6 +29,7 @@ export default function CommentUpdate(props:PropsType) {
     const imgSrc = useRecoilValue(LoginUserImg);
 
     const [isUpdating, setIsUpdating]=useState<boolean>(false);
+    const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
     useEffect(() => {
       const currentText = commentText.current!.value;
@@ -56,7 +57,8 @@ export default function CommentUpdate(props:PropsType) {
     }
 
     function submitUpdateComment(){
-        setIsUpdated(true);
+       // setIsUpdated(!isUpdated);
+       setIsUpdated(true);
     }
 
     useEffect(()=>{
@@ -64,6 +66,7 @@ export default function CommentUpdate(props:PropsType) {
     },[])
 
     function stopUpdating(){
+        //console.log("Dddddd")
         setIsEdit(false);
     }
   

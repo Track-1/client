@@ -15,7 +15,7 @@ interface PropsType {
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData, isCompleted, setIsCompleted,audioFile } = props;
+  const { getUploadData, isCompleted,audioFile } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
@@ -28,21 +28,25 @@ export default function CommentWrite(props: PropsType) {
   const imgSrc = useRecoilValue(LoginUserImg);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
+  const [ing, setIng]=useState<boolean>(false);
+
   useEffect(() => {
     const currentText = commentText.current!.value;
 
-    isCompleted && getUploadData(currentText, uploadedFile, fileName);
-  }, [isCompleted]);
+    getUploadData(currentText, uploadedFile, fileName);
+  }, [ing]);
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
     setCommentLength(currentLength);
+    setIng(!ing)
   }
 
   function getFile(e: React.ChangeEvent<HTMLInputElement>) {
     const currentFile = e.target.files && e.target.files[0];
     currentFile && setUploadedFile(currentFile);
     currentFile && changeFileName(currentFile.name);
+    setIng(!ing)
   }
 
   function changeFileName(fileName: string) {
