@@ -11,18 +11,6 @@ export interface ProducerPortfolioType {
   vocalPortfolioId: number;
 }
 
-export interface SelectingTracksType{
-  id: number;
-  jacketImage: string;
-  beatWavFile: string;
-  title: string;
-  content: string;
-  keyword: string[];
-  category: string;
-  waveFileLength: number;
-  isSelected: boolean;
-}
-
 export interface ProducerProfileType {
   id: number;
   profileImage: string;

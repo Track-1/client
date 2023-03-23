@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
-import { ProducerPortfolioType, ProducerProfileType, SelectingTracksType } from "../type/producerProfile";
+import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
