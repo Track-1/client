@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { getCookie } from "../../utils/cookie";
-
+//여기서 api 호출
 export async function getProducerPortfolio(producerId: number, page: number) {
   try {
     const data = await axios.get(
