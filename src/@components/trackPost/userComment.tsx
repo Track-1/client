@@ -97,10 +97,9 @@ export default function UserComment(props: PropsType) {
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
-    console.log("성공")
+    console.log("댓글성공")
     setIsEnd(!isEnd)
-    
- //   setIsUpdated(false)
+    setIsUpdated(false)
   },
 });
 
@@ -109,6 +108,8 @@ useEffect(() => {
   console.log("지나감2")
 }, [isUpdated]);
 //update end
+
+console.log(isEnd)
 
   useEffect(() => {
     if (comments) {
