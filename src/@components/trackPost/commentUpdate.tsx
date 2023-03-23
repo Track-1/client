@@ -56,7 +56,7 @@ export default function CommentUpdate(props:PropsType) {
     }
 
     function submitUpdateComment(){
-        setIsUpdated(true);
+        setIsUpdated(!isUpdated);
     }
 
     useEffect(()=>{
