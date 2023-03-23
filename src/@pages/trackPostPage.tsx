@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-
+import JSZip from 'jszip';
 import {
   DownloadBtnIc,
   PauseBtnIc,
@@ -24,13 +24,21 @@ import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useLocation, useParams } from "react-router-dom";
-import { getTrackInfo, getAudioFile, closeTrack } from "../core/api/trackPost";
+import { getTrackInfo, getAudioFile, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
+import axios from "axios";
+
+interface IDownloadProps {
+  fileName?: string;
+  url?: string;
+  data?: string | Blob;
+}
+
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -51,6 +59,8 @@ export default function TrackPostPage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [link, setLink] = useState<string>('');
+  const [download, setDownload] = useState<boolean>(false);
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -157,11 +167,77 @@ export default function TrackPostPage() {
   //   reader.readAsArrayBuffer(blob);
   // }, []);
 
-  const downloadFile = useCallback(async (fileName: string, fileLink: string) => {
-    const response = await getAudioFile(state, fileLink);
-    console.log(response);
-  }, []);
 
+  //
+  // function downloadFile(){
+  //   setDownload(!download);
+  //     fetch('https://track-list-bucket.s3.ap-northeast-2.amazonaws.com/audio/1676873179537-%25E1%2584%2580%25E1%2585%25A9%25E1%2584%2585%25E1%2585%25A2%2520Dive%2520Into%2520You.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCCROMAZWQ2%2F20230224%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230224T063202Z&X-Amz-Expires=900&X-Amz-Signature=9cbabfdd5890f524ae677cbfef64f9d2f649899b75d2ea8feba8d3525afb3506&X-Amz-SignedHeaders=host', {method: 'GET'})
+  // .then(res => {
+  //   return res.blob();
+  // })
+  // .then(blob => {
+  //   var url = window.URL.createObjectURL(blob);
+  //   var a = document.createElement('a');
+  //   a.href = url;
+  //   a.download = 'a.mp3';
+  //   document.body.appendChild(a); 
+  //   a.click();  
+  //   setTimeout(
+  //     _ => { window.URL.revokeObjectURL(url); }, 
+  //     60000); 
+  //   a.remove(); 
+  // })
+  // .catch(err => {
+  //   console.error('err: ', err);
+  // })
+  // }
+// 'https://track-list-bucket.s3.ap-northeast-2.amazonaws.com/audio/1676873179537-%25E1%2584%2580%25E1%2585%25A9%25E1%2584%2585%25E1%2585%25A2%2520Dive%2520Into%2520You.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCCROMAZWQ2%2F20230224%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230224T063202Z&X-Amz-Expires=900&X-Amz-Signature=9cbabfdd5890f524ae677cbfef64f9d2f649899b75d2ea8feba8d3525afb3506&X-Amz-SignedHeaders=host'
+ 
+const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+        // setLink(data)
+        console.log(data)
+        // let blob = new Blob([new ArrayBuffer(data)], { type: "audio/mpeg" }); 
+        let blob = new Blob([data?.data],{ type: "audio/mpeg" }); 
+        console.log(blob)
+
+        var url = window.URL.createObjectURL(blob); //여기가 잘 안되는 중
+        console.log(url)
+        setLink(url)
+        // var a = document.createElement('a');
+        // a.href = url;
+        // a.download = 'a.mp3';
+        // document.body.appendChild(a); 
+        // a.click();  
+        // setTimeout(_ => { window.URL.revokeObjectURL(url); }, 
+        //   60000); 
+        // a.remove(); 
+        // return (
+        //   <a href={url} download="asdf">dfdfdfdfd</a>
+        // )
+    },
+    onError: error => {
+      console.log("실패");
+      console.log(error)
+    }
+  });
+
+  // const downloadFile = useCallback(async (fileName: string, fileLink: string) => {
+  //   const response = await getAudioFile(state, fileLink);
+  //   console.log(response);
+  //   console.log(fileName)
+  // }, []);
+
+  function downloadFile(){
+    setDownload(!download)
+
+  }
+
+
+  
 
   return (
     <>
@@ -191,7 +267,12 @@ export default function TrackPostPage() {
                   ))}
                 {!trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
-                    <DownloadBtnIcon onClick={() => downloadFile("", audio.src)} />
+                    // <DownloadBtnIcon onClick={() => downloadFile("ㅇㅇ", audio.src)} />
+                    <a href={link} download="제발되라"><DownloadBtnIcon onClick={downloadFile}/></a>
+                    // <>
+                    // <DownloadBtnIcon onClick={downloadFile}/>
+                    // {/* <Video src={link}><DownloadBtnIcon/></Video> */}
+                    // </>
                   ) : (
                     <ClosedBtnIcon />
                   ))}
@@ -441,3 +522,7 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
   cursor: pointer;
 `;
+
+const Video=styled.video`
+  background-color: pink;
+`
