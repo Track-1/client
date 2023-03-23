@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
-import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
+import { ProducerPortfolioType, ProducerProfileType, SelectingTracksType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
@@ -23,6 +23,7 @@ export default function ProducerProfilePage() {
 
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
+  const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
@@ -40,22 +41,71 @@ export default function ProducerProfilePage() {
   const loginUserId = useRecoilValue(LoginUserId);
 
   const { progress, audio } = usePlayer();
-
+  /*
   async function getData(page: number) {
+    //getData가 페이지가 딱 열렸을 때, 한 번만 탐. 스크롤 용도임.
     let response: any;
     if (hasNextPage !== false) {
       switch (profileState) {
         case "Portfolio":
           response = await getProducerPortfolio(state, page);
+          console.log(response);
+
           break;
         case "Vocal Searching":
           response = await getSelectingTracks(state, page);
+          console.log(response);
+
           break;
       }
       console.log(response);
       setIsMe(response?.isMe);
       setProfileData(response?.producerProfile);
       setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
+      console.log(setPortfolioData);
+      // vocal searching을 클릭하면 beatList로 데이터가 받아들여지긴하는데... beatList에는 isMe와 producerProfile이 없어서 오류가 남.
+   //   setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+   //   console.log(setSelectingTracksData);
+      //setPortfolioData((prev) => [...prev, ...response?.beatList]);
+
+      //  setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+      //  console.log(setSelectingTracksData);
+      //setSelectingTracks도 있어야하지 않겠어..?
+      return { response, nextPage: page + 1 };
+    }
+  }
+*/
+  async function getData(page: number) {
+    //getData가 페이지가 딱 열렸을 때, 한 번만 탐. 스크롤 용도임.
+    let response: any;
+    if (hasNextPage !== false) {
+      response = await getProducerPortfolio(state, page);
+
+      setIsMe(response?.isMe);
+      setProfileData(response?.producerProfile);
+
+      switch (profileState) {
+        case "Portfolio":
+          setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
+          console.log(response);
+          console.log(setPortfolioData);
+          break;
+        case "Vocal Searching":
+          setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+          console.log(response);
+          console.log(setSelectingTracksData);
+          break;
+      }
+      console.log(response);
+
+      // vocal searching을 클릭하면 beatList로 데이터가 받아들여지긴하는데... beatList에는 isMe와 producerProfile이 없어서 오류가 남.
+      //   setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+      //   console.log(setSelectingTracksData);
+      //setPortfolioData((prev) => [...prev, ...response?.beatList]);
+
+      //  setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+      //  console.log(setSelectingTracksData);
+      //setSelectingTracks도 있어야하지 않겠어..?
       return { response, nextPage: page + 1 };
     }
   }
@@ -119,18 +169,31 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {portfolioData && profileData && (
-          <ProducerPortFolioList
-            isMe={isMe}
-            portfolioData={portfolioData}
-            profileState={profileState}
-            stateChange={stateChange}
-            audio={audio}
-            pauseAudio={pauseAudio}
-            getAudioInfos={getAudioInfos}
-            producerName={profileData?.name}
-          />
-        )}
+        {portfolioData &&
+          profileData &&
+          (profileState === "Portfolio" ? (
+            <ProducerPortFolioList
+              isMe={isMe}
+              portfolioData={portfolioData}
+              profileState={profileState}
+              stateChange={stateChange}
+              audio={audio}
+              pauseAudio={pauseAudio}
+              getAudioInfos={getAudioInfos}
+              producerName={profileData?.name}
+            />
+          ) : (
+            <ProducerPortFolioList
+              isMe={isMe}
+              portfolioData={selectingTracksData}
+              profileState={profileState}
+              stateChange={stateChange}
+              audio={audio}
+              pauseAudio={pauseAudio}
+              getAudioInfos={getAudioInfos}
+              producerName={profileData?.name}
+            />
+          ))}
       </PageContainer>
       <InfiniteDiv ref={observerRef}> </InfiniteDiv>
 
