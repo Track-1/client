@@ -5,11 +5,8 @@ import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
-import useModal from "../../utils/hooks/useModal";
 import EditDropDownComment from "./editDropDownComment";
 import CommentUpdate from "./commentUpdate";
-import { useMutation, useQueryClient } from "react-query";
-import { updateComment } from "../../core/api/trackPost";
 
 interface PropsType {
   commentInfo: UserCommentType;
