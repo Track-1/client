@@ -112,8 +112,8 @@ export default function EachUserComment(props: PropsType) {
           <UserName>{commentInfo.vocalName}</UserName>
           {isMe && <EllipsisIcon onClick={changeToggleState}/>}
         </InfoTopWrapper>
-        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} setEditModalToggle={setEditModalToggle} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
+        {editModalToggle && (<EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} setEditModalToggle={setEditModalToggle} />)}
       </InfoBox>
     </CommentContainer>)}
     </>
@@ -166,7 +166,7 @@ const PlayerBlurWrapper = styled.div`
 
 const InfoBox = styled.div`
   height: 8rem;
-  width: 79rem;
+  width: 78rem;
 `;
 
 const InfoTopWrapper = styled.div`

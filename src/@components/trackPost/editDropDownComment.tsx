@@ -78,8 +78,6 @@ const DropDownContainer = styled.ul`
 
   border-radius: 0.5rem;
 
-  margin-left: 25rem;
-
   cursor: pointer;
 `;
 
@@ -123,6 +121,8 @@ const DeleteIcon=styled(DeleteIc)`
 `
 
 const DropDownBackground=styled.div`
-  width: 107.7rem;
-  height: 108rem;
+    margin-top: -35rem;
+    margin-left: -15rem;
+    width: 120rem;
+    height: 200rem;
 `
