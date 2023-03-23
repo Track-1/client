@@ -189,7 +189,7 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                   ))}
                 {!trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
-                    <a href={link} download="제발되라"><DownloadBtnIcon/></a>
+                    <a href={link} download={trackInfoData.title}><DownloadBtnIcon/></a>
                   ) : (
                     <ClosedBtnIcon />
                   ))}
