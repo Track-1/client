@@ -34,8 +34,10 @@ export default function EditDropDownComment(props: PropsType) {
   }
 
   function deleteTrackComment(){
-    console.log("클릭")
-    mutate();
+    if (window.confirm('댓글을 삭제하시겠습니까?'))
+    {
+      mutate();
+    }
   }
   
   return (
