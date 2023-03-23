@@ -180,12 +180,16 @@ const InfoBox = styled.div`
   
   const CountWrapper = styled.div`
     display: flex;
+    //justify-content: flex-end;
+    position: absolute;
+    right: 0;
+    margin-right: 8rem;
   
     color: ${({ theme }) => theme.colors.gray3};
   
     ${({ theme }) => theme.fonts.description}
   
-    margin-left: 54.1rem;
+  //  margin-left: 54.1rem;
   `;
   
   const InputCount = styled.strong<{ commentLength: number }>`
