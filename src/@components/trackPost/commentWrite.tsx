@@ -15,7 +15,7 @@ interface PropsType {
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData, isCompleted, setIsCompleted,audioFile } = props;
+  const { getUploadData, isCompleted } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
