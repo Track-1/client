@@ -122,17 +122,6 @@ export default function TrackPostPage() {
     setIsCommentOpen(false);
   }
 
-  // const { data:close } = useQuery(["closing",isClosed], ()=>closeTrack(beatId)
-  // , {
-  //   refetchOnWindowFocus: false, 
-  //   retry: 0, 
-  //   onSuccess: data => {
-  //     console.log("성공")
-  //   },
-  //   onError: error => {
-  //     console.log("실패");
-  //   }
-  // });
   const queryClient = useQueryClient();
 
   const {mutate} = useMutation(closeTrack, {
@@ -140,7 +129,6 @@ export default function TrackPostPage() {
         queryClient.invalidateQueries("closing");
         console.log("성공")
         setIsClosed(!isClosed)
-     //   window.location.reload();
       }
   });
 
