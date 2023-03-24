@@ -262,5 +262,5 @@ const InfiniteWrapper = styled.div`
 `;
 
 const CloseBtnIcon=styled(CloseBtnIc)`
-  width: 20rem;
+  width: 19.9rem;
 `

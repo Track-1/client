@@ -128,6 +128,7 @@ const PlayerContainer = styled.section`
   display: flex;
 
   width: 192rem;
+  height: 11rem;
 `;
 
 const PlayerWrapper = styled.article`
@@ -196,8 +197,8 @@ const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
 `;
 
 const Thumbnail = styled.img`
-  width: 6.5rem;
-  height: 6.5rem;
+  width: 5.7rem;
+  height: 5.7rem;
 
   margin-left: 34rem;
   margin-right: 3.069rem;
@@ -234,18 +235,21 @@ const PlayerNameText = styled.div`
 `;
 
 const PauseIcon = styled(PauseIc)`
+  height: 2.4rem;
   margin-right: 5.1rem;
   pointer-events: auto;
   z-index: 1000;
 `;
 
 const PlayIcon = styled(PlayIc)`
+  height: 2.4rem;
   margin-right: 5.1rem;
   pointer-events: auto;
   z-index: 1000;
 `;
 
 const QuitIcon = styled(QuitIc)`
+  height: 1.5rem;
   pointer-events: auto;
   z-index: 1000;
 `;
