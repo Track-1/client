@@ -21,6 +21,7 @@ export default function ProducerProfilePage() {
 
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
+  const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
@@ -60,14 +61,20 @@ export default function ProducerProfilePage() {
   async function getData(page: number) {
     let response: any;
     if (hasNextPage !== false) {
+      response = await getProducerPortfolio(state, page);
+
+      setIsMe(response?.isMe);
+      setProfileData(response?.producerProfile);
+
       switch (profileState) {
         case "Portfolio":
-          response = await getProducerPortfolio(state, page);
+          setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
           break;
         case "Vocal Searching":
-          response = await getSelectingTracks(state, page);
+          setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
           break;
       }
+
       return { response, nextPage: page + 1 };
     }
   }
@@ -131,18 +138,31 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {portfolioData && profileData && (
-          <ProducerPortFolioList
-            isMe={isMe}
-            portfolioData={portfolioData}
-            profileState={profileState}
-            stateChange={stateChange}
-            audio={audio}
-            pauseAudio={pauseAudio}
-            getAudioInfos={getAudioInfos}
-            producerName={profileData?.name}
-          />
-        )}
+        {portfolioData &&
+          profileData &&
+          (profileState === "Portfolio" ? (
+            <ProducerPortFolioList
+              isMe={isMe}
+              portfolioData={portfolioData}
+              profileState={profileState}
+              stateChange={stateChange}
+              audio={audio}
+              pauseAudio={pauseAudio}
+              getAudioInfos={getAudioInfos}
+              producerName={profileData?.name}
+            />
+          ) : (
+            <ProducerPortFolioList
+              isMe={isMe}
+              portfolioData={selectingTracksData}
+              profileState={profileState}
+              stateChange={stateChange}
+              audio={audio}
+              pauseAudio={pauseAudio}
+              getAudioInfos={getAudioInfos}
+              producerName={profileData?.name}
+            />
+          ))}
       </PageContainer>
       <InfiniteDiv ref={observerRef}> </InfiniteDiv>
 
