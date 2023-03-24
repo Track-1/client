@@ -117,7 +117,6 @@ export default function TrackPostPage() {
   function openComment() {
     setIsCommentOpen(true);
     setShowPlayer(false);
-    // setBeatId(state);
     audio.src = "";
   }
 
@@ -167,7 +166,6 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
         setDownload(false)}
     },
     onError: error => {
-      console.log("실패");
       console.log(error)
     }
   });
@@ -204,7 +202,6 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                   ))}
                 {!trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
-                    // <a href={link} download={trackInfoData.title}><DownloadBtnIcon/></a>
                     <DownloadBtnIcon onClick={getFile}/>
                   ) : (
                     <ClosedBtnIcon />
