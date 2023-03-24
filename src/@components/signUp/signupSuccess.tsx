@@ -14,7 +14,9 @@ export default function SignupSuccess() {
     const userType=useRecoilValue<string>(UserType)
     const [visible, setVisible]=useState<boolean>(false)
     const navigate=useNavigate()
-    const { modalRef } = useModal();
+    // const { modalRef } = useModal();
+    const modalRef = useRef<HTMLUListElement>(null);
+    const [editModalToggle, setEditModalToggle]=useState<boolean>(false)
 
     function moveToHome(){
         navigate('/')
@@ -32,16 +34,33 @@ export default function SignupSuccess() {
         navigate(page)
     }
 
-    const modalCloseHandler = (e:any) => {
-        if(visible && modalRef.current && !modalRef.current.contains(e.target)) setVisible(false);
-      };
-      
+    function isClickedOutside(e: MouseEvent) {
+        return editModalToggle && !modalRef.current?.contains(e.target as Node);
+      }
+    
+      function closeModal(e: MouseEvent) {
+        if (isClickedOutside(e)) {
+          setEditModalToggle(false);
+        }
+      }
+    
       useEffect(() => {
-        window.addEventListener('click', modalCloseHandler);
+        document.addEventListener("mousedown", closeModal);
         return () => {
-          window.removeEventListener('click', modalCloseHandler);
+          document.removeEventListener("mousedown", closeModal);
         };
-      });
+      }, [editModalToggle]);
+
+    // const modalCloseHandler = (e:any) => {
+    //     if(visible && modalRef.current && !modalRef.current.contains(e.target)) setVisible(false);
+    //   };
+      
+    //   useEffect(() => {
+    //     window.addEventListener('click', modalCloseHandler);
+    //     return () => {
+    //       window.removeEventListener('click', modalCloseHandler);
+    //     };
+    //   });
 
   return (
     <SuccessPageContainer>
@@ -66,7 +85,7 @@ export default function SignupSuccess() {
                 </UploadButton>
             </UploadButtonWrapper>
         )}
-        {visible&&(
+        {editModalToggle&&(
         <ModalWrapper ref={modalRef}>
             <MoveTouploadVocalSearchingButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.VOCAL_SEARCHING}`)}/>
             <MoveTouploadPortfolioButtonIcon onClick={()=>moveToProducerUpload(`/upload/${profileCategory.PORTFOLIO}`)}/>
