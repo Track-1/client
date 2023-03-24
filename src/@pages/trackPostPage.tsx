@@ -29,7 +29,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
@@ -58,8 +58,9 @@ export default function TrackPostPage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [link, setLink] = useState<string>('');
   const [download, setDownload] = useState<boolean>(false);
+  const [isClosed, setIsClosed]=useState<boolean>(false);
 
-  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
+  const { data } = useQuery(["state", state,isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
@@ -121,14 +122,35 @@ export default function TrackPostPage() {
     setIsCommentOpen(false);
   }
 
+  // const { data:close } = useQuery(["closing",isClosed], ()=>closeTrack(beatId)
+  // , {
+  //   refetchOnWindowFocus: false, 
+  //   retry: 0, 
+  //   onSuccess: data => {
+  //     console.log("성공")
+  //   },
+  //   onError: error => {
+  //     console.log("실패");
+  //   }
+  // });
+  const queryClient = useQueryClient();
+
+  const {mutate} = useMutation(closeTrack, {
+      onSuccess: () => {
+        queryClient.invalidateQueries("closing");
+        console.log("성공")
+        setIsClosed(!isClosed)
+     //   window.location.reload();
+      }
+  });
+
   function closeTrackPost() {
-    closeTrack(beatId);
-    console.log("dfdfdfdfdfdfddd");
+   mutate(beatId)
   }
 
   function openTrackPost() {
-    closeTrack(beatId);
-    console.log("abababababab");
+ 
+    mutate(beatId)
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
@@ -185,7 +207,22 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
   
   function getFile(){
       !download&&setDownload(true)
-      
+  }
+
+  function checkIsMeOpen(){
+    return trackInfoData?.isMe&& !trackInfoData?.isClosed
+  }
+
+  function checkIsMeClosed(){
+    return trackInfoData?.isMe&& trackInfoData?.isClosed
+  }
+
+  function checkIsNotMeOpen(){
+    return !trackInfoData?.isMe&& !trackInfoData?.isClosed
+  }
+
+  function checkIsNotMeClosed(){
+    return !trackInfoData?.isMe&& trackInfoData?.isClosed
   }
 
   return (
@@ -208,7 +245,11 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {trackInfoData.isMe &&
+                {checkIsMeOpen()&&<OpenedIcon onClick={closeTrackPost} />}
+                {checkIsMeClosed()&&<ClosedWithXIcon onClick={openTrackPost} />}
+                {checkIsNotMeOpen()&&<DownloadBtnIcon onClick={getFile}/>}
+                {checkIsNotMeClosed()&&<ClosedBtnIcon />}
+                {/* {trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
                     <OpenedIcon onClick={closeTrackPost} />
                   ) : (
@@ -219,7 +260,7 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                     <DownloadBtnIcon onClick={getFile}/>
                   ) : (
                     <ClosedBtnIcon />
-                  ))}
+                  ))} */}
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
