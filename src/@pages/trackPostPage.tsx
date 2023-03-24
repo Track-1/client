@@ -225,9 +225,11 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
               </BackButtonWrapper>
               <AudioTitle>{trackInfoData.title}</AudioTitle>
               <ProducerBox>
+                <ProfileImgWrapper>
                 <ProducerProfile
                   src={trackInfoData.producerProfileImage}
-                  alt="프로듀서 프로필 이미지"></ProducerProfile>
+                  alt="프로듀서 프로필 이미지"/>
+                </ProfileImgWrapper>
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
@@ -330,13 +332,25 @@ const ProducerBox = styled.div`
   margin-bottom: 3.4rem;
 `;
 
-const ProducerProfile = styled.img`
+const ProfileImgWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   height: 4.4rem;
   width: 4.4rem;
+  margin-right: 1rem;
 
   border-radius: 6.5rem;
+  overflow: hidden;
+`
 
-  margin-right: 1rem;
+const ProducerProfile = styled.img`
+  height: 100%;
+  width:  100%;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const NickName = styled.strong`
@@ -410,12 +424,19 @@ const PlayImageWrapper = styled.div`
 
   margin-left: 3.6rem;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   overflow: hidden;
 `;
 
 const PlayerImage = styled.img`
-  height: 60.4rem;
-  width: 60.4rem;
+    width: 100%;
+    height: 100%;
+    transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
 `;
 
 const DescriptionContainer = styled.div`
