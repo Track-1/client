@@ -474,6 +474,7 @@ const TextBox = styled.div`
 `;
 
 const CommentBtnIcon = styled(CommentBtnIc)`
+  width: 20rem;
   margin-top: 4.7rem;
   margin-right: 7.5rem;
 
