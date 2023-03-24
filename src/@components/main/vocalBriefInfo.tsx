@@ -29,7 +29,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
     retry: 0,
     onSuccess: (data) => {
       setProfileData(data.vocalProfile);
-      setLoginUserImg(data.producerProfile.profileImage);
+      setLoginUserImg(data.vocalProfile.profileImage);
     },
     onError: (error) => {
       console.log("실패");
