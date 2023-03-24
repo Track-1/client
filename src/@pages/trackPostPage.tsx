@@ -234,19 +234,7 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                 {checkIsMeOpen()&&<OpenedIcon onClick={closeTrackPost} />}
                 {checkIsMeClosed()&&<ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen()&&<DownloadBtnIcon onClick={getFile}/>}
-                {checkIsNotMeClosed()&&<ClosedBtnIcon />}
-                {/* {trackInfoData.isMe &&
-                  (!trackInfoData?.isClosed ? (
-                    <OpenedIcon onClick={closeTrackPost} />
-                  ) : (
-                    <ClosedWithXIcon onClick={openTrackPost} />
-                  ))}
-                {!trackInfoData.isMe &&
-                  (!trackInfoData?.isClosed ? (
-                    <DownloadBtnIcon onClick={getFile}/>
-                  ) : (
-                    <ClosedBtnIcon />
-                  ))} */}
+                {checkIsNotMeClosed()&&<ClosedBtnIcon />}            
                 {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
