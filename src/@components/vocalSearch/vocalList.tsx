@@ -143,6 +143,8 @@ const Username = styled.span`
 `;
 
 const VocalSleepIcon = styled(VocalSleepIc)`
+  width: 4rem;
+  height: 4rem;
   display: block;
   position: absolute;
   right: 6.2rem;
