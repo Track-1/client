@@ -125,8 +125,15 @@ export async function getFileLink(beatId:number){
       
     });
     console.log(data)
-    const res = await axios.get(data.data.data.wavFile, {
-      responseType: 'blob',
+    //return data
+
+    // const res = await axios.get(data.data.data.wavFile, {
+    //   responseType: 'blob',
+    // });
+    // return res;
+     const res = await axios.get(data.data.data.wavFile, {
+      responseType: 'arraybuffer',
+      withCredentials: false,
     });
     return res;
 }

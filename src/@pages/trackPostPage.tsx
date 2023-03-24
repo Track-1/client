@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import JSZip from 'jszip';
+import {saveAs} from "file-saver";
+
 import {
   DownloadBtnIc,
   PauseBtnIc,
@@ -32,13 +34,8 @@ import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
 import axios from "axios";
-
-interface IDownloadProps {
-  fileName?: string;
-  url?: string;
-  data?: string | Blob;
-}
-
+// import { saveAs } from 'file-saver'; 
+// import FileSaver from "file-saver"
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -144,18 +141,18 @@ export default function TrackPostPage() {
     setAudioInfos(tempInfos);
   }
 
+ 
 const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
   , {
     refetchOnWindowFocus: false, 
     retry: 0, 
     onSuccess: data => {
-      if(download){
-      console.log("성공")
+      if(download){       
         let blob = new Blob([data?.data],{ type: "audio/mpeg" }); 
-        var url = window.URL.createObjectURL(blob); 
+        let url = window.URL.createObjectURL(blob); //s3링크
+        
         console.log(url)
         setLink(url)
-
         var a = document.createElement('a');
         a.href = url;
         a.download = `${trackInfoData?.title}`;
@@ -163,15 +160,32 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
         a.click();  
         setTimeout(_ => { window.URL.revokeObjectURL(url); }, 60000); 
         a.remove(); 
-        setDownload(false)}
+         setDownload(false)
+
+        // let zip = new JSZip();
+        // zip.file(`${trackInfoData?.title}`, url);
+        // zip.generateAsync({ type: "base64", }).then(
+        //   function( url )
+        //   {
+        //     var element = document.createElement('a'); 
+        //     element.setAttribute('href', 'data:application/octastream;base64,' + url ); 
+        //     element.setAttribute('download', `${trackInfoData?.title}` ); 
+        //     element.style.display = 'none'; 
+        //     document.body.appendChild(element); element.click(); 
+        //     document.body.removeChild(element);          
+        //   }
+        // );
+
+      }
     },
     onError: error => {
       console.log(error)
     }
   });
-
-    function getFile(){
+  
+  function getFile(){
       !download&&setDownload(true)
+      
   }
 
   return (

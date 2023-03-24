@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/file-saver": "^2.0.5",
+    "FileSaver": "^0.10.0",
     "apis": "^0.1.2",
     "axios": "^1.2.1",
     "babel-eslint": "^10.1.0",
