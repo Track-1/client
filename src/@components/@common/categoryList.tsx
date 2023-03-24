@@ -85,9 +85,9 @@ export default function CategoryList() {
     if (selectedCategorys[id].selected) {
       switch (tracksOrVocals) {
         case Category.TRACKS:
-          return <NeonXIc />;
+          return <NeonXIcon />;
         case Category.VOCALS:
-          return <PinkXIc />;
+          return <PinkXIcon />;
       }
     }
   }
@@ -227,4 +227,14 @@ const TrackSearchingPinkIcon = styled(TrackSearchingPinkIc)`
 
 const UploadTextIcon=styled(UploadTextIc)`
   width: 12.4rem;
+`
+
+const PinkXIcon=styled(PinkXIc)`
+  width: 1rem;
+  height: 1rem;
+`
+
+const NeonXIcon=styled(NeonXIc)`
+  width: 1rem;
+  height: 1rem;
 `
