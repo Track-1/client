@@ -44,9 +44,9 @@ export default function ProducerProfilePage() {
 
   async function getData(page: number) {
     let response: any;
-    if (hasNextPage !== false) {
-      response = await getProducerPortfolio(state, page);
+    response = await getProducerPortfolio(state, page);
 
+    if (hasNextPage !== false) {
       setIsMe(response?.isMe);
       setProfileData(response?.producerProfile);
 
@@ -59,11 +59,41 @@ export default function ProducerProfilePage() {
           break;
       }
       console.log(response);
-
+      console.log(portfolioData);
+      console.log(setPortfolioData);
+      console.log(selectingTracksData);
+      console.log(setSelectingTracksData);
       return { response, nextPage: page + 1 };
     }
   }
+  /*
+  async function getData(page: number) {
+    let response: any;
+    response = await getProducerPortfolio(state, 1);
 
+    setIsMe(response?.isMe);
+    setProfileData(response?.producerProfile);
+
+    switch (profileState) {
+      case "Portfolio":
+        setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
+        break;
+      case "Vocal Searching":
+        setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+        break;
+    }
+    if (hasNextPage !== false) {
+      response = await getProducerPortfolio(state, page);
+
+      return { response, nextPage: page + 1 };
+    }
+    console.log(response);
+    console.log(portfolioData);
+    console.log(selectingTracksData);
+  }
+  */
+
+  //이부분 살펴보기
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     "vocalPortFolio",
     ({ pageParam = 1 }) => getData(pageParam),
@@ -75,6 +105,14 @@ export default function ProducerProfilePage() {
   );
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  function ScrollToTop() {
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
+    return null;
+  }
 
   function playAudio() {
     audio.play();
@@ -123,6 +161,7 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
+        
         {portfolioData &&
           profileData &&
           (profileState === "Portfolio" ? (
