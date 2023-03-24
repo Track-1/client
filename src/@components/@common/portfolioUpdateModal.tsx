@@ -40,6 +40,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
     () => patchTitleAPI(portfoliosData[0].id, portfoliosData[clickedPortfolioId].id, loginUserType),
     {
       onSuccess: (data) => {
+        queryClient.invalidateQueries("userProfile");
         alert("타이틀변경 성공");
       },
       onError: (error) => {
