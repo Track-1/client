@@ -66,6 +66,22 @@ export async function updateComment(formData: UploadDataType, commentId: number)
   }
 }
 
+export async function deleteComment(commentId: number) {
+  try {
+    const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+    console.log(data)
+  } catch (e) {
+    console.log("삭제")
+    console.log(e);
+  }
+}
+
+
 export async function getAudioFile(props: number, fileLink: any) {
   const state = props;
   try {
@@ -106,6 +122,19 @@ export async function patchProfile(beatId: any) {
     }
   } catch (e) {
     console.log("문제발생");
+    console.log(e);
+  }
+}
+
+export async function patchTrackPost(beatId: number, formData: any) {
+  try {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+  } catch (e) {
     console.log(e);
   }
 }

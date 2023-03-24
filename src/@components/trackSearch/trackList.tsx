@@ -126,12 +126,14 @@ export default function TrackList(props: PropsType) {
 const TrackListContainer = styled.section``;
 
 const HoverPauseIcon = styled(HoverPauseIc)`
+  width: 8.3rem;
   position: absolute;
   z-index: 2;
 
   cursor: pointer;
 `;
 const HoverPlayIcon = styled(HoverPlayIc)`
+  width: 8.3rem;
   position: absolute;
   z-index: 2;
 

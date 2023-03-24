@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { UploadIc } from "../../assets";
+import { FileUploadButtonIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
+import { endPost, postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
+import { UserCommentType } from "../../type/userCommentsType";
 
 interface PropsType {
   getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
@@ -14,7 +15,7 @@ interface PropsType {
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData, isCompleted, setIsCompleted, content, audioFile } = props;
+  const { getUploadData, isCompleted,audioFile } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
@@ -23,50 +24,68 @@ export default function CommentWrite(props: PropsType) {
   const [fileName, setFileName] = useState<string>("file_upload.mp3");
 
   const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
-//  const isCompleted = useRecoilValue(postIsCompleted);
-  const imgSrc = useRecoilValue(LoginUserImg);
 
- 
-  
+  const imgSrc = useRecoilValue(LoginUserImg);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+
+  const [ing, setIng]=useState<boolean>(false);
 
   useEffect(() => {
     const currentText = commentText.current!.value;
 
-    isCompleted && getUploadData(currentText, uploadedFile, fileName);
-  }, [isCompleted]);
+    getUploadData(currentText, uploadedFile, fileName);
+  }, [ing]);
 
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
     setCommentLength(currentLength);
+    setIng(!ing)
   }
 
   function getFile(e: React.ChangeEvent<HTMLInputElement>) {
     const currentFile = e.target.files && e.target.files[0];
     currentFile && setUploadedFile(currentFile);
     currentFile && changeFileName(currentFile.name);
+    setIng(!ing)
   }
 
   function changeFileName(fileName: string) {
     setFileName(fileName);
   }
 
+  useEffect(()=>{
+    if(commentFile.current!==null){
+      commentFile.current.value = '';
+      setFileName("file_upload.mp3");
+    }
+    if(commentText.current!==null){
+      commentText.current.value = '';
+    }
+  },[isEnd])
+
+
   return (
+    <form>
     <WriteContainer>
+      <ImageContainer>
+      <ProfileImageWrapper>
       <ProfileImage
         src={imgSrc}
         alt="프로필 이미지"
       />
+      </ProfileImageWrapper>
+      </ImageContainer>
       <InfoBox>
         <TitleWrapper>
-          <InputTitle>{!audioFile?fileName:"file_upload.mp3"}</InputTitle>
+          <InputTitle>{fileName}</InputTitle>
           <label htmlFor="userFile">
             <div>
-              <UploadIcon />
+              <FileUploadButtonIcon />
             </div>
           </label>
-          <FileInput type="file" accept=".mp3, .wav" id="userFile" onChange={getFile} ref={commentFile} />
+          <FileInput type="file" accept=".mp3, .wav" id="userFile" className="file" onChange={getFile} ref={commentFile} />
           <CountWrapper>
-            <InputCount commentLength={commentLength} >{commentLength}</InputCount>/ 150
+            <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
           </CountWrapper>
         </TitleWrapper>
         <InputWrapper>
@@ -79,6 +98,7 @@ export default function CommentWrite(props: PropsType) {
         </InputWrapper>
       </InfoBox>
     </WriteContainer>
+    </form>
   );
 }
 
@@ -97,15 +117,21 @@ const WriteContainer = styled.article`
   align-items: center;
 `;
 
-const ProfileImage = styled.img`
-  height: 10rem;
-  width: 10rem;
-
-  margin-left: 2.7rem;
-  margin-right: 1.2rem;
-
-  border-radius: 10rem;
+const ProfileImageWrapper = styled.div`
+  height: 9rem;
+  width: 9rem;
+  overflow: hidden;
+  border-radius: 9rem;
 `;
+
+const ImageContainer=styled.div`
+  margin-right: 2rem;
+  margin-left: 3.8rem;
+`
+
+const ProfileImage=styled.img`
+  width: 100%
+`
 
 const InfoBox = styled.div`
   display: flex;
@@ -113,6 +139,7 @@ const InfoBox = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  height: 2.5rem;
   display: flex;
 
   align-items: center;
@@ -154,6 +181,8 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
+  width: 10rem;
+  margin-left: -2rem;
   ${({ theme }) => theme.fonts.description}
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
@@ -180,3 +209,10 @@ const InputBox = styled.textarea`
   border: none;
   resize: none;
 `;
+
+
+const FileUploadButtonIcon=styled(FileUploadButtonIc)`
+  width: 4rem;
+  margin-left: 1.2rem;
+
+`

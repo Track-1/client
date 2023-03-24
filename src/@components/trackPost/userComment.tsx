@@ -35,25 +35,22 @@ export default function UserComment(props: PropsType) {
     fileName:"",
   });
 
-  // const [isCompleted, setIsCompleted] = useRecoilState<boolean>(postIsCompleted);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-
   const [isUpdated, setIsUpdated]=useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [audioFile, setAudioFile] = useState(null);
-  const [isEnd, setIsEnd] = useState<boolean>(false);
-
-  // const [content, setContent] = useRecoilState<string>(postContent);
-  // const [audioFile, setAudioFile] = useRecoilState(postWavFile);
-  // const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId]=useState<number>(0);
+  const [startUpload, setStartUpload]=useState<boolean>(false);
+  const [startUpdate, setStartUpdate]=useState<boolean>(false);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+ 
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "comments",
+    ["comments", getUploadData, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -63,6 +60,16 @@ export default function UserComment(props: PropsType) {
   );
   const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  async function getData(page: number) {
+    if (hasNextPage !== false) {
+      const response = await getComment(page, beatId);
+      //setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      setComments([...response]);
+      
+      return { response, nextPage: page + 1 };
+    }
+  }
   // get end
 
   //post
@@ -71,7 +78,9 @@ export default function UserComment(props: PropsType) {
       queryClient.invalidateQueries("comments");
       setContent("");
       setAudioFile(null);
-      setIsCompleted(false);
+    //  setIsCompleted(false);
+      setIsEnd(!isEnd)
+      setStartUpload(false);
       console.log("포스트성공")
     },
   });
@@ -79,7 +88,7 @@ export default function UserComment(props: PropsType) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-      post();
+    post();
       console.log("포스트시작")
   }, [isCompleted]);
  //post end
@@ -88,11 +97,9 @@ export default function UserComment(props: PropsType) {
  const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
   onSuccess: () => {
     queryClient.invalidateQueries("comments");
-    // setContent("");
-    // setAudioFile(null);
-    // setIsUpdated(false);
-    // setIsEnd(false);
-    console.log("성공")
+    console.log("댓글성공")
+    setIsEnd(!isEnd)
+    setIsUpdated(false)
   },
 });
 
@@ -115,14 +122,7 @@ useEffect(() => {
     }
   }, [currentAudioFile]);
 
-  async function getData(page: number) {
-    if (hasNextPage !== false) {
-      const response = await getComment(page, beatId);
-      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      return { response, nextPage: page + 1 };
-    }
-  }
-
+ 
   function getUploadData(text: string, audioFile: File | null, fileName:string) {
     setUploadData({
       content: text,
@@ -133,12 +133,14 @@ useEffect(() => {
 
   function uploadComment() {
     setIsCompleted(!isCompleted);
+    setStartUpload(true);
+  //  post()
   }
 
   function clickComment(index: number) {
     setClickedIndex(index);
   }
-console.log("commentId"+commentId)
+
   return (
     <>
       <CommentContainer>
@@ -228,6 +230,7 @@ const AddWrapper = styled.div`
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`
+  width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 
@@ -235,6 +238,7 @@ const AddCommentIcon = styled(AddCommentIc)`
 `;
 
 const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
+  width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
 `;

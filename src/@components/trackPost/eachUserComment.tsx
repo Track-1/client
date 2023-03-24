@@ -1,15 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { PauseBtnIc, PlayBtnIc, EllipsisIc } from "../../assets";
+import { PauseBtnIc, PlayBtnIc, EllipsisIc, PauseButtonIc, CommentUpldatCompleteIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
-import useModal from "../../utils/hooks/useModal";
 import EditDropDownComment from "./editDropDownComment";
 import CommentUpdate from "./commentUpdate";
-import { useMutation, useQueryClient } from "react-query";
-import { updateComment } from "../../core/api/trackPost";
 
 interface PropsType {
   commentInfo: UserCommentType;
@@ -33,23 +30,8 @@ export default function EachUserComment(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
-  const { modalRef } = useModal();
   const [isEdit, setIsEdit]=useState<boolean>(false);
-
-  // useEffect(()=>{
-  //   setCommentId(commentId)
-  // },[])
-  // const modalCloseHandler = (e:any) => {
-  //   if(editModalToggle && modalRef.current && !modalRef.current.contains(e.target)) setEditModalToggle(false);
-  // };
   
-  // useEffect(() => {
-  //   window.addEventListener('click', modalCloseHandler);
-  //   return () => {
-  //     window.removeEventListener('click', modalCloseHandler);
-  //   };
-  // });
-
   function hoverComment() {
     setIsHover(true);
   }
@@ -73,7 +55,7 @@ export default function EachUserComment(props: PropsType) {
   }
 
   function changeToggleState() {
-    setEditModalToggle(!editModalToggle);
+    setEditModalToggle(true);
     setCommentId(commentInfo.commentId);
   }
   
@@ -87,28 +69,35 @@ export default function EachUserComment(props: PropsType) {
   
   return (
     <>
-    {isEdit?<CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated}/>:(
+    {isEdit?
+    (
+      <CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated} setIsEdit={setIsEdit}/>
+    ):(
     <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
-      <ProfileImage img={commentInfo.vocalProfileImage}>
+     <ProfileImageWrapper>
         {isHover && !isClickedPlayingComment() && (
-          <PlayerBlur onClick={() => playAudio(currentIndex)}>
-            <PlayBtnIc />
-          </PlayerBlur>
+          <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
+            <PlayBtnIcon />
+            <PlayerBlur></PlayerBlur>
+          </PlayerBlurWrapper>
         )}
         {isClickedPlayingComment() && (
-          <PlayerBlur onClick={pauseAudio}>
-            <PauseBtnIc />
-          </PlayerBlur>
+          <PlayerBlurWrapper onClick={pauseAudio}>
+            <PauseButtonIcon />
+            <PlayerBlur></PlayerBlur>
+          </PlayerBlurWrapper>
         )}
-      </ProfileImage>
+         <ProfileImage src={commentInfo.vocalProfileImage}/>
+      </ProfileImageWrapper>
       <InfoBox>
         <InfoTopWrapper>
           <UserName>{commentInfo.vocalName}</UserName>
           {isMe && <EllipsisIcon onClick={changeToggleState}/>}
         </InfoTopWrapper>
-        {editModalToggle && (<div ref={modalRef}><EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} /></div>)}
         <CommentText>{commentInfo.comment}</CommentText>
+        {editModalToggle && (<EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} editModalToggle={editModalToggle} setEditModalToggle={setEditModalToggle} />)}
       </InfoBox>
+      
     </CommentContainer>)}
     </>
   );
@@ -130,35 +119,42 @@ const CommentContainer = styled.article`
   }
 `;
 
-const ProfileImage = styled.div<{ img: string }>`
+const ProfileImage = styled.img`
+  width: 100%;
+`;
+
+const ProfileImageWrapper=styled.div`
   height: 9rem;
   width: 9rem;
+  overflow: hidden;
   margin-right: 2rem;
   margin-left: 3.8rem;
   border-radius: 9rem;
-  background-image: url(${({ img }) => img});
-  background-repeat: no-repeat;
-  background-size: contain;
-`;
 
+`
 const PlayerBlur = styled.div`
-  height: 9rem;
-  width: 9rem;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: rgb(0,0,0,0.5);
   backdrop-filter: blur(0.6rem);
-  border-radius: 50%;
+  -webkit-filter: blur(0.6rem);
+`;
+const PlayerBlurWrapper = styled.div`
+ height: 9rem;
+  width: 9rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* pointer-events: none; */
+  border-radius: 50%;
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`
   height: 8rem;
-  width: 79rem;
+  width: 78rem;
 `;
 
 const InfoTopWrapper = styled.div`
+  height: 2rem;
+  margin-bottom: 1.2rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -177,6 +173,24 @@ const CommentText = styled.strong`
 
 const EllipsisIcon = styled(EllipsisIc)`
   width: 4rem;
+  margin-top: -2rem;
   float: right;
   cursor: pointer;
 `;
+
+const PlayBtnIcon=styled(PlayBtnIc)`
+  position: absolute;
+  height: 2.4rem;
+`
+
+const PauseButtonIcon=styled(PauseButtonIc)`
+  position: absolute;
+  height: 2.4rem;
+`
+
+const CommentUpldatCompleteIcon=styled(CommentUpldatCompleteIc)`
+    width: 13.9rem;
+
+    margin-left: 80rem;
+    margin-top: 1.8rem;
+`
