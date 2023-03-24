@@ -48,7 +48,7 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
       {checkImgHover()&&isProducer(userType)&&<SignUpChangeProducerImageIcon/>}
       {checkImgHover()&&isVocal(userType)&&(<SignUpChangeVocalImageIcon/>)} 
     </Label>
-      <input type="file" id="profile-img" style={{ visibility: "hidden" }} onChange={(e) => {uploadImage(e)}} />
+      <input type="file" id="profile-img" style={{ visibility: "hidden" }} accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={(e) => {uploadImage(e)}} />
   </ImageContainer>
   )
 }
