@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
-import JSZip from 'jszip';
-import {saveAs} from "file-saver";
+// import JSZip from 'jszip';
+// import {saveAs} from "file-saver";
 
 import {
   DownloadBtnIc,
@@ -34,8 +34,6 @@ import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
 import axios from "axios";
-// import { saveAs } from 'file-saver'; 
-// import FileSaver from "file-saver"
 
 export default function TrackPostPage() {
   const { state } = useLocation();
