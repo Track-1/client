@@ -177,8 +177,8 @@ const AlbumCoverImg = styled.img`
 
 const GradientProfile = styled.div<{ isHoverVocal: boolean; isClickVocal: boolean; clickVocal: number }>`
   position: absolute;
-  width: 23.4rem;
-  height: 23.4rem;
+  width: 24.341rem;
+  height: 24.341rem;
   top: 2.5rem;
   right: 1.9rem;
   cursor: pointer;
@@ -202,6 +202,9 @@ const VocalHoverPauseIcon = styled(VocalHoverPauseIc)<{
     isHoverVocal || (isClickVocal && clickVocal !== -1) ? "" : "none"};
   position: absolute;
   top: 0;
+  width: 8.4rem;
+  height: 8.4rem;
+
   margin-left: 10rem;
   margin-top: 10rem;
   transform: rotate(-45deg);
@@ -209,6 +212,8 @@ const VocalHoverPauseIcon = styled(VocalHoverPauseIc)<{
 `;
 
 const VocalHoverPlayIcon = styled(VocalHoverPlayIc)`
+  width: 8.4rem;
+  height: 8.4rem;
   position: absolute;
   top: 0;
   margin-left: 10rem;
