@@ -84,7 +84,7 @@ export async function deleteComment(commentId: number) {
 export async function closeTrack(beatId: number) {
   try {
     const data = await axios.patch(
-      `${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, null,
+      `${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {},
       {
       headers: {
         "Content-Type": "application/json",
@@ -92,10 +92,6 @@ export async function closeTrack(beatId: number) {
       },
     });
     data && console.log(data);
-
-    // if (data.status === 200) {
-    //   window.location.replace("/");
-    // }
   } catch (e) {
     console.log("문제발생");
     console.log(e);
