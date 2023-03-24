@@ -81,45 +81,21 @@ export async function deleteComment(commentId: number) {
   }
 }
 
-
-export async function getAudioFile(props: number, fileLink: any) {
-  const state = props;
+export async function closeTrack(beatId: number) {
   try {
-    const data = await axios
-      .get(`/tracks/${state}/download`, {
-        responseType: "blob",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getCookie("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([fileLink], { type: "audio/mp3" }));
-        console.log(response.data);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "file.mp3");
-        document.body.appendChild(link);
-        link.click();
-      });
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-export async function patchProfile(beatId: any) {
-  try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {
+    const data = await axios.patch(
+      `${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, null,
+      {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
     data && console.log(data);
-    if (data.status === 200) {
-      window.location.replace("/");
-    }
+
+    // if (data.status === 200) {
+    //   window.location.replace("/");
+    // }
   } catch (e) {
     console.log("문제발생");
     console.log(e);
@@ -137,4 +113,20 @@ export async function patchTrackPost(beatId: number, formData: any) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export async function getFileLink(beatId:number){
+    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/download`, 
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+      
+    });
+    console.log(data)
+    const res = await axios.get(data.data.data.wavFile, {
+      responseType: 'blob',
+    });
+    return res;
 }

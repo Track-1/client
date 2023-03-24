@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-
+import JSZip from 'jszip';
 import {
   DownloadBtnIc,
   PauseBtnIc,
@@ -24,13 +24,21 @@ import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
 import { useLocation, useParams } from "react-router-dom";
-import { getTrackInfo, patchProfile, getAudioFile } from "../core/api/trackPost";
+import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useQuery } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
+import axios from "axios";
+
+interface IDownloadProps {
+  fileName?: string;
+  url?: string;
+  data?: string | Blob;
+}
+
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -51,6 +59,8 @@ export default function TrackPostPage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [link, setLink] = useState<string>('');
+  const [download, setDownload] = useState<boolean>(false);
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -116,12 +126,12 @@ export default function TrackPostPage() {
   }
 
   function closeTrackPost() {
-    patchProfile(beatId);
+    closeTrack(beatId);
     console.log("dfdfdfdfdfdfddd");
   }
 
   function openTrackPost() {
-    patchProfile(beatId);
+    closeTrack(beatId);
     console.log("abababababab");
   }
 
@@ -135,32 +145,21 @@ export default function TrackPostPage() {
     setAudioInfos(tempInfos);
   }
 
-  //() => onLogin(email, password, loginType)
-
-  // const downloadFile = useCallback((fileName: string, fileLink: string) => {
-  //   const blob = new Blob([fileLink], { type: "audio/mpeg" });
-  //   console.log(blob);
-  //   console.log(fileLink);
-  //   const element = document.createElement("a");
-  //   const url = window.URL.createObjectURL(blob);
-  //   element.href = url;
-  //   // element.href = fileLink;
-  //   console.log(element.href);
-  //   console.log(url);
-  //   element.download = fileName;
-  //   console.log(fileLink);
-  //   console.log(audio.src);
-  //   console.log(element);
-  //   element.click();
-
-  //   let reader = new FileReader();
-  //   reader.readAsArrayBuffer(blob);
-  // }, []);
-
-  const downloadFile = useCallback(async (fileName: string, fileLink: string) => {
-    const response = await getAudioFile(state, fileLink);
-    console.log(response);
-  }, []);
+const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
+  , {
+    refetchOnWindowFocus: false, 
+    retry: 0, 
+    onSuccess: data => {
+        let blob = new Blob([data?.data],{ type: "audio/mpeg" }); 
+        var url = window.URL.createObjectURL(blob); 
+        console.log(url)
+        setLink(url)
+    },
+    onError: error => {
+      console.log("실패");
+      console.log(error)
+    }
+  });
 
   return (
     <>
@@ -190,7 +189,7 @@ export default function TrackPostPage() {
                   ))}
                 {!trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
-                    <DownloadBtnIcon onClick={() => downloadFile("", audio.src)} />
+                    <a href={link} download={trackInfoData.title}><DownloadBtnIcon/></a>
                   ) : (
                     <ClosedBtnIcon />
                   ))}
@@ -440,3 +439,7 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
   cursor: pointer;
 `;
+
+const Video=styled.video`
+  background-color: pink;
+`
