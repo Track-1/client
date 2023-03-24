@@ -150,16 +150,31 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
     refetchOnWindowFocus: false, 
     retry: 0, 
     onSuccess: data => {
+      if(download){
+      console.log("성공")
         let blob = new Blob([data?.data],{ type: "audio/mpeg" }); 
         var url = window.URL.createObjectURL(blob); 
         console.log(url)
         setLink(url)
+
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = `${trackInfoData?.title}`;
+        document.body.appendChild(a); 
+        a.click();  
+        setTimeout(_ => { window.URL.revokeObjectURL(url); }, 60000); 
+        a.remove(); 
+        setDownload(false)}
     },
     onError: error => {
       console.log("실패");
       console.log(error)
     }
   });
+
+    function getFile(){
+      !download&&setDownload(true)
+  }
 
   return (
     <>
@@ -189,7 +204,8 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                   ))}
                 {!trackInfoData.isMe &&
                   (!trackInfoData?.isClosed ? (
-                    <a href={link} download={trackInfoData.title}><DownloadBtnIcon/></a>
+                    // <a href={link} download={trackInfoData.title}><DownloadBtnIcon/></a>
+                    <DownloadBtnIcon onClick={getFile}/>
                   ) : (
                     <ClosedBtnIcon />
                   ))}
