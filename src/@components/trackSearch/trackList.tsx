@@ -127,6 +127,7 @@ const TrackListContainer = styled.section``;
 
 const HoverPauseIcon = styled(HoverPauseIc)`
   width: 8.3rem;
+  height:  8.3rem;
   position: absolute;
   z-index: 2;
 
@@ -134,6 +135,7 @@ const HoverPauseIcon = styled(HoverPauseIc)`
 `;
 const HoverPlayIcon = styled(HoverPlayIc)`
   width: 8.3rem;
+  height:  8.3rem;
   position: absolute;
   z-index: 2;
 
