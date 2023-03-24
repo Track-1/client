@@ -64,10 +64,10 @@ export default function UploadButtonModal() {
 }
 
 const ModalBg = styled.section`
-  height: 100vh;
-  width: 100vw;
+  /* height: 100vh;
+  width: 100vw; */
   position: fixed;
-  z-index: 10000;
+  z-index: 10;
   top: 0;
   bottom: 0;
   right: 0;
@@ -87,6 +87,7 @@ const VocalSearchingWrapper = styled.article`
 `;
 
 const VocalSearchingIcon = styled(VocalSearchingIc)`
+  width: 4rem;
   margin-top: 2.24rem;
   margin-left: 3.4rem;
 `;
@@ -97,6 +98,7 @@ const PortfolioWrapper = styled.article`
 `;
 
 const PortfolioIcon = styled(PortfolioIc)`
+  width: 4rem;
   margin-top: 10.2rem;
   margin-left: 3.4rem;
 `;
