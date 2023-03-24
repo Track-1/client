@@ -237,11 +237,11 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                 {checkIsMeClosed()&&<ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen()&&<DownloadBtnIcon onClick={getFile}/>}
                 {checkIsNotMeClosed()&&<ClosedBtnIcon />}            
-                {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+                {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
-              <EditDropDown />
+              {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>
               <PlayImageWrapper className={play ? "playAnimation" : "pauseAnimation"}>
@@ -310,7 +310,10 @@ const TitleContainer = styled.section`
   flex-direction: column;
 `;
 
-const BackButtonWrapper = styled.div``;
+const BackButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const AudioTitle = styled.h1`
   width: 47rem;
@@ -395,7 +398,7 @@ const OpenedIcon = styled(OpenedIc)`
 const EditBtnIcon = styled(EditBtnIc)`
   margin-left: 18.2rem;
 
-  cursor: pointer;
+cursor: pointer;
 `;
 
 const InfoContainer = styled.section`
@@ -506,4 +509,14 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
 const Video=styled.video`
   background-color: pink;
+`
+
+const PauseBtnIcon=styled(PauseBtnIc)`
+  width: 5.2rem;
+  height: 5.2rem;
+`
+
+const SmallPlayBtnIcon=styled(SmallPlayBtnIc)`
+  width: 5.2rem;
+  height: 5.2rem;
 `
