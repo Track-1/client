@@ -12,6 +12,8 @@ import {
   LoginforgotpasswordIc,
   LoginEmailIc,
   LoginPasswordIc,
+  SignUpEyeIc,
+  SignUpEyeXIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
@@ -175,8 +177,9 @@ export default function LoginInput() {
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
             />
-
-            <EyeIcon onClick={() => setShowPassword((prev) => !prev)} />
+            <div onClick={() => setShowPassword((prev) => !prev)}>
+            {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
+            </div>
           </InputWrapper>
           <UnderLine inputState={passwordInputState} />
           {isWarningState(passwordInputState) ? (
@@ -194,7 +197,7 @@ export default function LoginInput() {
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
         <ForgotMessage to="/forgotPassword">
-          <LoginforgotpasswordIc />
+          <LoginforgotpasswordIcon />
         </ForgotMessage>
       </Wrapper>
     </Container>
@@ -315,7 +318,15 @@ const ForgotMessage = styled(Link)`
   margin-top: 3.2rem;
 `;
 
-const EyeIcon = styled(EyeIc)`
+const SignUpEyeIcon = styled(SignUpEyeIc)`
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
+`;
+
+const SignUpEyeXIcon = styled(SignUpEyeXIc)`
+  width: 4rem;
+  height: 4rem;
   cursor: pointer;
 `;
 
@@ -364,3 +375,4 @@ const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
 
   margin-top: -2rem;
 `;
+
