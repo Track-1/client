@@ -83,6 +83,10 @@ export default function LoginInput() {
   function changeHoverEmailState(e: React.FocusEvent<HTMLInputElement>): void {
     const input = e.target.value;
 
+    if(!e.target.value){
+      setEmailInputState("null");
+    }
+
     if (!EMAIL_RULE.test(input) && !isInputEmpty(input)) {
       setEmailInputState(WARNING);
       return;
@@ -93,6 +97,11 @@ export default function LoginInput() {
 
   function changeHoverPasswordState(e: React.FocusEvent<HTMLInputElement>): void {
     const input = e.target.value;
+
+    if(!e.target.value){
+      setPasswordInputState("null");
+    }
+
 
     if (!PASSWORD_RULE.test(input) && !isInputEmpty(input)) {
       setPasswordInputState(WARNING);
@@ -146,7 +155,8 @@ export default function LoginInput() {
   function isWarningState(state: string): boolean {
     return state === WARNING;
   }
-
+  console.log("이메일"+isWarningState(emailInputState))
+  console.log("패스워드"+isWarningState(passwordInputState))
   return (
     <Container>
       <Wrapper>
