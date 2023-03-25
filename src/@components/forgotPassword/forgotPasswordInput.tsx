@@ -95,7 +95,7 @@ export default function ForgotPasswordInput() {
     <Container>
       <Wrapper>
         <TitleWrapper>
-          <ForgotPasswordTitleIc />
+          <ForgotPasswordTitleIcon />
         </TitleWrapper>
         <InputBox>
           <ForgotPasswordEmailAskIcon/>
@@ -119,7 +119,7 @@ export default function ForgotPasswordInput() {
           <ModeText>Producer Mode</ModeText>
           {producerToggleType()}
         </ModeWrapper>
-        <RequestBtnWrapper>{requestBtnType()}</RequestBtnWrapper>
+        {requestBtnType()}
       </Wrapper>
     </Container>
   );
@@ -163,11 +163,11 @@ const InputWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  margin-top: 2.99rem;
+  margin-top: 3rem;
 `;
 
 const ForgotPasswordEmailAskIcon=styled(ForgotPasswordEmailAskIc)`
-  width:27.8rem;  
+  width:20.7rem;  
 `
 
 const Input = styled.input`
@@ -223,18 +223,15 @@ const UnderLine = styled.hr<{ inputState: string }>`
 const ModeWrapper = styled.div`
   display: flex;
   align-items: center;
+
   float: right;
-  margin: 4.2rem 0 3.1rem;
+  margin: 1rem 0 3.5rem 0;
 `;
 
 const ModeText = styled.div`
   ${({ theme }) => theme.fonts.body1};
   color: ${({ theme }) => theme.colors.gray1};
   margin: 0 1.2rem;
-`;
-
-const RequestBtnWrapper = styled.div`
-  margin-top: 2.2rem;
 `;
 
 const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
@@ -280,4 +277,8 @@ const RequestResetPasswordDefaultBtnIcon=styled(RequestResetPasswordDefaultBtnIc
 const ErrorMessage=styled.div`
   width: 100%;
   height: 3rem;
+`
+
+const ForgotPasswordTitleIcon=styled(ForgotPasswordTitleIc)`
+  width: 27.8rem;
 `
