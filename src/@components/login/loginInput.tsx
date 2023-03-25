@@ -406,7 +406,4 @@ const SignUpErrorIcon=styled(SignUpErrorIc)`
 
 const IconWrapper=styled.div`
   display: flex;
-  /* justify-content: space-between;
-
-  width: 8.5rem; */
 `
