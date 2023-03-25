@@ -102,7 +102,9 @@ export default function TrackList(props: PropsType) {
               {isInitPlay(index) && <HoverPauseIcon onClick={() => playAudio(index)} />}
               {isPlayAgain(index) &&
                 (play ? <HoverPlayIcon onClick={pauseAudio} /> : <HoverPauseIcon onClick={() => playAudio(index)} />)}
+              <ThumnailWrapper>
               <Thumbnail src={track.jacketImage} alt="썸네일" />
+              </ThumnailWrapper>
               <TrackText width={36.8} isHoverActive={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
               </TrackText>
@@ -127,6 +129,7 @@ const TrackListContainer = styled.section``;
 
 const HoverPauseIcon = styled(HoverPauseIc)`
   width: 8.3rem;
+  height:  8.3rem;
   position: absolute;
   z-index: 2;
 
@@ -134,6 +137,7 @@ const HoverPauseIcon = styled(HoverPauseIc)`
 `;
 const HoverPlayIcon = styled(HoverPlayIc)`
   width: 8.3rem;
+  height:  8.3rem;
   position: absolute;
   z-index: 2;
 
@@ -203,13 +207,25 @@ const TrackBox = styled.div`
   margin-left: 2.4rem;
 `;
 
-const Thumbnail = styled.img`
+const ThumnailWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   width: 8.3rem;
   height: 8.3rem;
 
   margin-right: 2.8rem;
 
   border-radius: 6.55rem;
+  overflow: hidden;
+`
+const Thumbnail = styled.img`
+  width: 100%;
+  height: 100%;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const TrackText = styled.div<{ width: number; isHoverActive: boolean }>`

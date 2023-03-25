@@ -12,6 +12,8 @@ import {
   LoginforgotpasswordIc,
   LoginEmailIc,
   LoginPasswordIc,
+  SignUpEyeIc,
+  SignUpEyeXIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
@@ -175,8 +177,9 @@ export default function LoginInput() {
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
             />
-
-            <EyeIcon onClick={() => setShowPassword((prev) => !prev)} />
+            <div onClick={() => setShowPassword((prev) => !prev)}>
+            {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
+            </div>
           </InputWrapper>
           <UnderLine inputState={passwordInputState} />
           {isWarningState(passwordInputState) ? (
@@ -194,7 +197,7 @@ export default function LoginInput() {
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
         <ForgotMessage to="/forgotPassword">
-          <LoginforgotpasswordIc />
+          <LoginforgotpasswordIcon />
         </ForgotMessage>
       </Wrapper>
     </Container>
@@ -229,9 +232,7 @@ const Wrapper = styled.div`
 const SubTitleWrapper = styled.div`
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
-
-  margin-top: 3.3rem;
-  margin-bottom: 2.3rem;
+  margin-top: 1rem;
 `;
 
 const InputBox = styled.div<{ marginTop: number }>`
@@ -292,6 +293,7 @@ const ModeWrapper = styled.div`
   float: right;
 
   margin-top: 3rem;
+  margin-bottom:6rem;
 `;
 
 const ModeText = styled.div`
@@ -301,8 +303,6 @@ const ModeText = styled.div`
 `;
 
 const LoginBtnWrapper = styled.div`
-  margin-top: 13rem;
-
   cursor: pointer;
 `;
 
@@ -312,18 +312,28 @@ const ForgotMessage = styled(Link)`
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
 
-  margin-top: 3.2rem;
+  margin-top: 1rem;
 `;
 
-const EyeIcon = styled(EyeIc)`
+const SignUpEyeIcon = styled(SignUpEyeIc)`
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
+`;
+
+const SignUpEyeXIcon = styled(SignUpEyeXIc)`
+  width: 4rem;
+  height: 4rem;
   cursor: pointer;
 `;
 
 const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
+  width: 5.8rem;
   cursor: pointer;
 `;
 
-const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
+const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`  
+  width: 5.8rem;
   cursor: pointer;
 `;
 
@@ -362,5 +372,6 @@ const VocalLoginBtnIcon = styled(VocalLoginBtnIc)`
 const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
   width: 20rem;
 
-  margin-top: -2rem;
+  //margin-top: -2rem;
 `;
+

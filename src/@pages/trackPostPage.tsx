@@ -225,9 +225,11 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
               </BackButtonWrapper>
               <AudioTitle>{trackInfoData.title}</AudioTitle>
               <ProducerBox>
+                <ProfileImgWrapper>
                 <ProducerProfile
                   src={trackInfoData.producerProfileImage}
-                  alt="프로듀서 프로필 이미지"></ProducerProfile>
+                  alt="프로듀서 프로필 이미지"/>
+                </ProfileImgWrapper>
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
@@ -235,11 +237,11 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
                 {checkIsMeClosed()&&<ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen()&&<DownloadBtnIcon onClick={getFile}/>}
                 {checkIsNotMeClosed()&&<ClosedBtnIcon />}            
-                {play ? <PauseBtnIc onClick={pauseAudio} /> : <SmallPlayBtnIc onClick={playAudio} />}
+                {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
-              <EditDropDown />
+              {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>
               <PlayImageWrapper className={play ? "playAnimation" : "pauseAnimation"}>
@@ -308,7 +310,10 @@ const TitleContainer = styled.section`
   flex-direction: column;
 `;
 
-const BackButtonWrapper = styled.div``;
+const BackButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const AudioTitle = styled.h1`
   width: 47rem;
@@ -330,13 +335,25 @@ const ProducerBox = styled.div`
   margin-bottom: 3.4rem;
 `;
 
-const ProducerProfile = styled.img`
+const ProfileImgWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   height: 4.4rem;
   width: 4.4rem;
+  margin-right: 1rem;
 
   border-radius: 6.5rem;
+  overflow: hidden;
+`
 
-  margin-right: 1rem;
+const ProducerProfile = styled.img`
+  height: 100%;
+  width:  100%;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const NickName = styled.strong`
@@ -381,7 +398,7 @@ const OpenedIcon = styled(OpenedIc)`
 const EditBtnIcon = styled(EditBtnIc)`
   margin-left: 18.2rem;
 
-  cursor: pointer;
+cursor: pointer;
 `;
 
 const InfoContainer = styled.section`
@@ -410,12 +427,19 @@ const PlayImageWrapper = styled.div`
 
   margin-left: 3.6rem;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   overflow: hidden;
 `;
 
 const PlayerImage = styled.img`
-  height: 60.4rem;
-  width: 60.4rem;
+    width: 100%;
+    height: 100%;
+    transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
 `;
 
 const DescriptionContainer = styled.div`
@@ -474,6 +498,7 @@ const TextBox = styled.div`
 `;
 
 const CommentBtnIcon = styled(CommentBtnIc)`
+  width: 23rem;
   margin-top: 4.7rem;
   margin-right: 7.5rem;
 
@@ -484,4 +509,14 @@ const CommentBtnIcon = styled(CommentBtnIc)`
 
 const Video=styled.video`
   background-color: pink;
+`
+
+const PauseBtnIcon=styled(PauseBtnIc)`
+  width: 5.2rem;
+  height: 5.2rem;
+`
+
+const SmallPlayBtnIcon=styled(SmallPlayBtnIc)`
+  width: 5.2rem;
+  height: 5.2rem;
 `

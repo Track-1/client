@@ -85,9 +85,9 @@ export default function CategoryList() {
     if (selectedCategorys[id].selected) {
       switch (tracksOrVocals) {
         case Category.TRACKS:
-          return <NeonXIc />;
+          return <NeonXIcon />;
         case Category.VOCALS:
-          return <PinkXIc />;
+          return <PinkXIcon />;
       }
     }
   }
@@ -112,13 +112,13 @@ export default function CategoryList() {
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
               {isTracksPage(tracksOrVocals) && (
-                <img
+                <Img width={category.width}
                   src={require(`../../assets/icon/${checkIsSelectedTrackCategory(category.id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
               )}
               {isVocalsPage(tracksOrVocals) && (
-                <img
+                <Img width={category.width}
                   src={require(`../../assets/icon/${checkIsSelectedVocalCategory(category.id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
@@ -189,6 +189,7 @@ const CategoryTextBoxWrapper = styled.article<{ isSelected: boolean; tracksOrVoc
 const CategoryTextBox = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   width: 22.104rem;
 
@@ -227,4 +228,18 @@ const TrackSearchingPinkIcon = styled(TrackSearchingPinkIc)`
 
 const UploadTextIcon=styled(UploadTextIc)`
   width: 12.4rem;
+`
+
+const PinkXIcon=styled(PinkXIc)`
+  width: 1rem;
+  height: 1rem;
+`
+
+const NeonXIcon=styled(NeonXIc)`
+  width: 1rem;
+  height: 1rem;
+`
+
+const Img=styled.img<{width:number}>`
+  width: ${({width})=>width}rem;
 `
