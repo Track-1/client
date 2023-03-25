@@ -9,6 +9,7 @@ import {
   ProducerModeToggleIc,
   ProducerDefaultModeToggleIc,
   InputWarningIc,
+  ForgotPasswordEmailAskIc,
 } from "../../assets";
 
 import { useEffect, useState } from "react";
@@ -64,7 +65,7 @@ export default function ForgotPasswordInput() {
 
   function requestBtnType() {
     if (!checkEmailForm(email)) {
-      return <RequestResetPasswordDefaultBtnIc />;
+      return <RequestResetPasswordDefaultBtnIcon />;
     } else {
       if (resendTrigger && compareRecentEmail() && isSuccess) {
         return isProducerMode ? (
@@ -97,21 +98,23 @@ export default function ForgotPasswordInput() {
           <ForgotPasswordTitleIc />
         </TitleWrapper>
         <InputBox>
-          <InputTitle>What's your email</InputTitle>
+          <ForgotPasswordEmailAskIcon/>
           <InputWrapper>
             <Input placeholder="Enter your email address" onChange={writeEmail} />
-            {isInputWarnning() && <InputWarningIc />}
-            {isError && compareRecentEmail() && <InputWarningIc />}
+            {isInputWarnning() && <InputWarningIcon />}
+            {isError && compareRecentEmail() && <InputWarningIcon />}
           </InputWrapper>
-          <UnderLine inputState={emailMessage} />
+          <UnderLine inputState={emailMessage}/>
         </InputBox>
-        {isNotSignupEmail() && compareRecentEmail() && (
+        <ErrorMessage>
+        {(isNotSignupEmail() && compareRecentEmail()) && (
           <WarningMessage>We don’t have an account with that email address</WarningMessage>
         )}
         {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
-        {isSuccess && checkEmailForm(email) && compareRecentEmail() && (
+        {(isSuccess && checkEmailForm(email) && compareRecentEmail()) && (
           <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
         )}
+        </ErrorMessage>
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
           {producerToggleType()}
@@ -163,10 +166,9 @@ const InputWrapper = styled.div`
   margin-top: 2.99rem;
 `;
 
-const InputTitle = styled.div`
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.gray2};
-`;
+const ForgotPasswordEmailAskIcon=styled(ForgotPasswordEmailAskIc)`
+  width:27.8rem;  
+`
 
 const Input = styled.input`
   height: 3.4rem;
@@ -236,31 +238,46 @@ const RequestBtnWrapper = styled.div`
 `;
 
 const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
 
 const RequestResetPasswordVocalBtnIcon = styled(RequestResetPasswordVocalBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
 
 const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
-  width: ?rem;
+  width: 5.8rem;
   cursor: pointer;
 `;
 
 const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
-  width: ?rem;
+  width: 5.8rem;
   cursor: pointer;
 `;
 
 const ResendPasswordProducerBtnIcon = styled(ResendPasswordProducerBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
 
 const ResendPasswordVocalBtnIcon = styled(ResendPasswordVocalBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
+
+const InputWarningIcon=styled(InputWarningIc)`
+  width: 2.2rem;
+  height: 2.2rem;
+`
+
+const RequestResetPasswordDefaultBtnIcon=styled(RequestResetPasswordDefaultBtnIc)`
+  width: 56rem;
+  cursor: pointer;
+`
+
+const ErrorMessage=styled.div`
+  width: 100%;
+  height: 3rem;
+`
