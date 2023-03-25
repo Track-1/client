@@ -232,9 +232,7 @@ const Wrapper = styled.div`
 const SubTitleWrapper = styled.div`
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
-
-  margin-top: 3.3rem;
-  margin-bottom: 2.3rem;
+  margin-top: 1rem;
 `;
 
 const InputBox = styled.div<{ marginTop: number }>`
@@ -295,6 +293,7 @@ const ModeWrapper = styled.div`
   float: right;
 
   margin-top: 3rem;
+  margin-bottom:6rem;
 `;
 
 const ModeText = styled.div`
@@ -304,8 +303,6 @@ const ModeText = styled.div`
 `;
 
 const LoginBtnWrapper = styled.div`
-  margin-top: 13rem;
-
   cursor: pointer;
 `;
 
@@ -315,7 +312,7 @@ const ForgotMessage = styled(Link)`
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
 
-  margin-top: 3.2rem;
+  margin-top: 1rem;
 `;
 
 const SignUpEyeIcon = styled(SignUpEyeIc)`
@@ -331,10 +328,12 @@ const SignUpEyeXIcon = styled(SignUpEyeXIc)`
 `;
 
 const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
+  width: 5.8rem;
   cursor: pointer;
 `;
 
-const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
+const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`  
+  width: 5.8rem;
   cursor: pointer;
 `;
 
@@ -373,6 +372,6 @@ const VocalLoginBtnIcon = styled(VocalLoginBtnIc)`
 const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
   width: 20rem;
 
-  margin-top: -2rem;
+  //margin-top: -2rem;
 `;
 
