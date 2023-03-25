@@ -14,6 +14,7 @@ import {
   LoginPasswordIc,
   SignUpEyeIc,
   SignUpEyeXIc,
+  SignUpErrorIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
@@ -177,7 +178,9 @@ export default function LoginInput() {
               onBlur={changeHoverEmailState}
               onChange={validateEmail}
             />
+            {isWarningState(emailInputState)&&<SignUpErrorIcon/>}
           </InputWrapper>
+          
           <UnderLine inputState={emailInputState} />
           {isWarningState(emailInputState) ? (
             <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>
@@ -196,10 +199,14 @@ export default function LoginInput() {
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
             />
+            <IconWrapper>
+            {isWarningState(passwordInputState) &&<SignUpErrorIcon/>}
             <div onClick={() => setShowPassword((prev) => !prev)}>
-            {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
+              {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
             </div>
+            </IconWrapper>
           </InputWrapper>
+          
           <UnderLine inputState={passwordInputState} />
           {isWarningState(passwordInputState) ? (
             <WarningMessage isWarning={true}>
@@ -267,7 +274,7 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  height: 3.4rem;
+  height: 4rem;
   width: 100%;
 
   ${({ theme }) => theme.fonts.comment};
@@ -390,7 +397,16 @@ const VocalLoginBtnIcon = styled(VocalLoginBtnIc)`
 
 const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
   width: 20rem;
-
-  //margin-top: -2rem;
 `;
 
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const IconWrapper=styled.div`
+  display: flex;
+  /* justify-content: space-between;
+
+  width: 8.5rem; */
+`
