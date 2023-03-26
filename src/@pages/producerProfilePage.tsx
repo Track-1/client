@@ -113,13 +113,13 @@ export default function ProducerProfilePage() {
 
   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
     "producerPortFolio",
-    ({ pageParam = 1 }) => (stateChange === true ? getData(pageParam, pageParam) : undefined),
+    ({ pageParam = 1 }) => getData(pageParam, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
         if (profileState == "Portfolio") {
           return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
         } else {
-          return lastPage?.response2.beatList.length !== 0 ? lastPage?.nextPage : undefined;
+          return lastPage?.response2.beatList.length !== 0 ? lastPage?.nextPage2 : undefined;
         }
       },
     },
@@ -128,11 +128,7 @@ export default function ProducerProfilePage() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   function ScrollToTop() {
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
-
-    return null;
+    window.scrollTo(0, 0);
   }
 
   function playAudio() {
@@ -148,13 +144,11 @@ export default function ProducerProfilePage() {
   function changeToProfile() {
     setProfileState("Portfolio");
     setStateChange(!stateChange);
-    console.log(stateChange);
   }
 
   function changeToVocalSearch() {
     setProfileState("Vocal Searching");
     setStateChange(!stateChange);
-    console.log(stateChange);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
@@ -175,11 +169,21 @@ export default function ProducerProfilePage() {
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
-          <PortfolioTab profileState={profileState} onClick={changeToProfile}>
+          <PortfolioTab
+            profileState={profileState}
+            onClick={() => {
+              changeToProfile();
+              ScrollToTop();
+            }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
           </PortfolioTab>
-          <VocalSearchingTab profileState={profileState} onClick={changeToVocalSearch}>
+          <VocalSearchingTab
+            profileState={profileState}
+            onClick={() => {
+              changeToVocalSearch();
+              ScrollToTop();
+            }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
           </VocalSearchingTab>
