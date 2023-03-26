@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -54,15 +54,22 @@ export default function ProducerProfilePage() {
 
   async function getProfileTypeApi() {
     if (hasNextPage !== false) {
-      return profileState === "Portfolio" ? await getProducerPortfolio(state, 1) : await getSelectingTracks(state, 1);
+      console.log(profileState);
+      console.log(stateChange);
+      return profileState === "Portfolio" || stateChange === true
+        ? await getProducerPortfolio(state, 1)
+        : await getSelectingTracks(state, 1);
     }
   }
 
-  async function getData(page: number) {
+  async function getData(page: number, page2: number) {
     let response: any;
-    response = await getProducerPortfolio(state, page);
-
+    let response2: any;
+    console.log(profileState);
+    console.log(stateChange);
     if (hasNextPage !== false) {
+      response = await getProducerPortfolio(state, page);
+      response2 = await getSelectingTracks(state, page2);
       setIsMe(response?.isMe);
       setProfileData(response?.producerProfile);
 
@@ -71,25 +78,49 @@ export default function ProducerProfilePage() {
           setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
           break;
         case "Vocal Searching":
-          setSelectingTracksData((prev) => [...prev, ...response?.beatList]);
+          setSelectingTracksData((prev) => [...prev, ...response2?.beatList]);
           break;
       }
 
-      return { response, nextPage: page + 1 };
+      return { response, response2, nextPage: page + 1, nextPage2: page2 + 1 };
     }
-    console.log(response);
-    console.log(portfolioData);
-    console.log(selectingTracksData);
   }
-  */
 
-  //이부분 살펴보기
-  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "vocalPortFolio",
+  /*   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
+    "producerPortFolio",
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+      },
+    },
+  );
+ */
+
+  /*   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
+    "producerPortFolio",
+    ({ pageParam = 1 }) => getData(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (profileState == "Portfolio") {
+          return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+        } else {
+          return lastPage?.response.beatList.length !== 0 ? lastPage?.nextPage : undefined;
+        }
+      },
+    },
+  ); */
+
+  const { hasNextPage, fetchNextPage } = useInfiniteQuery(
+    "producerPortFolio",
+    ({ pageParam = 1 }) => (stateChange === true ? getData(pageParam, pageParam) : undefined),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (profileState == "Portfolio") {
+          return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+        } else {
+          return lastPage?.response2.beatList.length !== 0 ? lastPage?.nextPage : undefined;
+        }
       },
     },
   );
@@ -117,11 +148,13 @@ export default function ProducerProfilePage() {
   function changeToProfile() {
     setProfileState("Portfolio");
     setStateChange(!stateChange);
+    console.log(stateChange);
   }
 
   function changeToVocalSearch() {
     setProfileState("Vocal Searching");
     setStateChange(!stateChange);
+    console.log(stateChange);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
@@ -151,32 +184,18 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        
-        {portfolioData &&
-          profileData &&
-          (profileState === "Portfolio" ? (
-            <ProducerPortFolioList
-              isMe={isMe}
-              portfolioData={portfolioData}
-              profileState={profileState}
-              stateChange={stateChange}
-              audio={audio}
-              pauseAudio={pauseAudio}
-              getAudioInfos={getAudioInfos}
-              producerName={profileData?.name}
-            />
-          ) : (
-            <ProducerPortFolioList
-              isMe={isMe}
-              portfolioData={selectingTracksData}
-              profileState={profileState}
-              stateChange={stateChange}
-              audio={audio}
-              pauseAudio={pauseAudio}
-              getAudioInfos={getAudioInfos}
-              producerName={profileData?.name}
-            />
-          ))}
+        {portfolioData && profileData && (
+          <ProducerPortFolioList
+            isMe={isMe}
+            portfolioData={profileState === "Portfolio" ? portfolioData : selectingTracksData}
+            profileState={profileState}
+            stateChange={stateChange}
+            audio={audio}
+            pauseAudio={pauseAudio}
+            getAudioInfos={getAudioInfos}
+            producerName={profileData?.name}
+          />
+        )}
       </PageContainer>
       <InfiniteDiv ref={observerRef}> </InfiniteDiv>
 
