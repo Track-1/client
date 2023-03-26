@@ -50,7 +50,7 @@ export default function ForgotPasswordInput() {
     if (!input) {
       setEmailMessage(emailInvalidMessage.NULL);
     } else {
-      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS) : setEmailMessage(emailInvalidMessage.FORM);
+      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS):setEmailMessage(emailInvalidMessage.FORM);
     }
   }
 
@@ -60,7 +60,15 @@ export default function ForgotPasswordInput() {
   }
 
   function isInputWarnning() {
-    return !checkEmailForm(email) && email.length !== 0;
+   // props.inputState === "We don’t have an account with that email address"
+    if(emailMessage===emailInvalidMessage.FORM||emailMessage==="We don’t have an account with that email address"){
+      return true;
+    }
+    if(emailMessage===emailInvalidMessage.NULL||emailMessage===emailInvalidMessage.SUCCESS){
+      return false;
+    }
+    return false;
+  //  return !checkEmailForm(email) && email.length !== 0;
   }
 
   function requestBtnType() {
@@ -106,15 +114,16 @@ export default function ForgotPasswordInput() {
           </InputWrapper>
           <UnderLine inputState={emailMessage}/>
         </InputBox>
-        <ErrorMessage>
+        <>
         {(isNotSignupEmail() && compareRecentEmail()) && (
-          <WarningMessage>We don’t have an account with that email address</WarningMessage>
+          <WarningMessage>{emailMessage}</WarningMessage>
         )}
+        {isNotSignupEmail() && compareRecentEmail()&&setEmailMessage("We don’t have an account with that email address")}
         {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
         {(isSuccess && checkEmailForm(email) && compareRecentEmail()) && (
           <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
         )}
-        </ErrorMessage>
+        </>
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
           {producerToggleType()}
@@ -183,12 +192,18 @@ const Input = styled.input`
 `;
 
 const WarningMessage = styled.span`
+  width: 100%;
+  height: 3rem;
+
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.red};
   margin-top: 1.1rem;
 `;
 
 const ValidTimeMessage = styled.span<{ isProducerMode: boolean }>`
+  width: 100%;
+  height: 3rem;
+
   ${({ theme }) => theme.fonts.description};
   ${(props) => {
     if (props.isProducerMode) {
@@ -207,12 +222,14 @@ const ValidTimeMessage = styled.span<{ isProducerMode: boolean }>`
 
 const UnderLine = styled.hr<{ inputState: string }>`
   border: 0.1rem solid;
+
   ${(props) => {
-    if (props.inputState === emailInvalidMessage.FORM) {
+    if (props.inputState === emailInvalidMessage.FORM||props.inputState === "We don’t have an account with that email address") {
       return css`
         border-color: ${({ theme }) => theme.colors.red};
       `;
-    } else {
+    } 
+    else {
       return css`
         border-color: ${({ theme }) => theme.colors.gray3};
       `;
@@ -272,11 +289,6 @@ const InputWarningIcon=styled(InputWarningIc)`
 const RequestResetPasswordDefaultBtnIcon=styled(RequestResetPasswordDefaultBtnIc)`
   width: 56rem;
   cursor: pointer;
-`
-
-const ErrorMessage=styled.div`
-  width: 100%;
-  height: 3rem;
 `
 
 const ForgotPasswordTitleIcon=styled(ForgotPasswordTitleIc)`

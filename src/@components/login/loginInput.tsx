@@ -34,7 +34,7 @@ export default function LoginInput() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("vocal");
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
-  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>("At least 10 characters(A-Z, a-z), numbers, or special characters.");
+  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>("");
 
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,}$/;
