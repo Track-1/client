@@ -7,6 +7,8 @@ import {
   SaveBtnIc,
   InputSuccessIc,
   InputWarningIc,
+  ChangePasswordConfirmIc,
+  ChangePasswordNewPasswordIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { passwordInvalidMessage } from "../../core/userInfoErrorMessage/passwordInvalidMessage";
@@ -29,7 +31,7 @@ export default function ResetPasswordInput() {
 
   const { mutate } = useMutation(() => patchResetPassword(password), {
     onSuccess: () => {
-      alert("비밀번호 변경 성공");
+      alert("비밀번호가 변경되었습니다.");
       movePage("/");
       onLogout();
     },
@@ -94,14 +96,26 @@ export default function ResetPasswordInput() {
     }
   }
 
+  function checkError(messages:string){
+    if(messages===passwordInvalidMessage.NULL||messages===passwordInvalidMessage.SUCCESS||passwordInvalidMessage.SUCCESS||passwordInvalidMessage.NULL){
+      return false;
+    }
+    else if(messages===passwordInvalidMessage.FORM||passwordInvalidMessage.MATCH){
+      return true;
+    }
+    return false;
+  }
+  console.log(checkError(passwordMessage))
+  console.log(passwordMessage)
+
   return (
     <Container>
       <Wrapper>
         <TitleWrapper>
-          <ResetPasswordTitleIc />
+          <ResetPasswordTitleIcon />
         </TitleWrapper>
         <InputBox>
-          <InputTitle>New password</InputTitle>
+          <ChangePasswordNewPasswordIcon/>
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
@@ -117,13 +131,15 @@ export default function ResetPasswordInput() {
             )}
           </InputWrapper>
           <UnderLine inputState={passwordMessage} />
-          {passwordMessage !== passwordInvalidMessage.NULL && passwordMessage !== passwordInvalidMessage.SUCCESS && (
-            <WarningMessage>{passwordMessage}</WarningMessage>
-          )}
+          {passwordMessage !== passwordInvalidMessage.NULL && passwordMessage !== passwordInvalidMessage.SUCCESS ? (
+            <WarningMessage isError={true}>{passwordMessage}</WarningMessage>
+          ):(
+            <WarningMessage isError={false}>{passwordMessage}</WarningMessage>
+          )} 
         </InputBox>
 
         <InputBox>
-          <InputTitle>Confirm your new password</InputTitle>
+          <ChangePasswordConfirmIcon/>
           <InputWrapper>
             <Input
               type={showConfirmPassword ? "text" : "password"}
@@ -138,11 +154,12 @@ export default function ResetPasswordInput() {
               <ShowPasswordIcon onClick={() => setShowConfirmPassword(!showConfirmPassword)} />
             )}
           </InputWrapper>
-          {/* 밑줄 상태 변경해야된다. */}
           <UnderLine inputState={confirmPasswordMessage} />
           {confirmPasswordMessage !== passwordInvalidMessage.NULL &&
-            confirmPasswordMessage !== passwordInvalidMessage.SUCCESS && (
-              <WarningMessage>{confirmPasswordMessage}</WarningMessage>
+            confirmPasswordMessage !== passwordInvalidMessage.SUCCESS ? (
+              <WarningMessage isError={true}>{confirmPasswordMessage}</WarningMessage>
+            ):(
+              <WarningMessage isError={false}>{confirmPasswordMessage}</WarningMessage>
             )}
         </InputBox>
         <SentenceWrapper>
@@ -195,13 +212,16 @@ const TitleWrapper = styled.div`
 `;
 
 const InputBox = styled.div`
-  margin-top: 4.8rem;
+  margin-top: 1.8rem;
 `;
 
-const InputTitle = styled.div`
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.gray2};
-`;
+const ChangePasswordNewPasswordIcon=styled(ChangePasswordNewPasswordIc)`
+  width: 16.3rem;
+`
+
+const ChangePasswordConfirmIcon=styled(ChangePasswordConfirmIc)`
+  width: 30.9rem;
+`
 
 const InputWrapper = styled.div`
   display: flex;
@@ -223,10 +243,13 @@ const Input = styled.input`
   border: none;
 `;
 
-const WarningMessage = styled.span`
+const WarningMessage = styled.span<{isError:boolean}>` 
+  width: 100%;
+  height: 3rem;
   ${({ theme }) => theme.fonts.description};
-  color: ${({ theme }) => theme.colors.red};
-  margin-top: 1.1rem;
+  color: ${({ theme,isError }) => isError?theme.colors.red:'transparent'};
+
+  margin-top: 1.1rem;  
 `;
 
 const UnderLine = styled.hr<{ inputState: string }>`
@@ -254,7 +277,7 @@ const SentenceWrapper = styled.div`
   justify-content: center;
   height: 4.3rem;
 
-  margin-top: 5.9rem;
+  margin-top: 2.9rem;
 `;
 
 const Sentence = styled.p`
@@ -268,17 +291,23 @@ const Sentence = styled.p`
 `;
 
 const InputSuccessIcon = styled(InputSuccessIc)`
+  width: 2.2rem;
   margin-right: 2rem;
 `;
-const InputWarningIcon = styled(InputWarningIc)`
+const InputWarningIcon = styled(InputWarningIc)`  
+  width: 2.2rem;
   margin-right: 2rem;
 `;
 
 const ShowPasswordIcon = styled(ShowPasswordIc)`
+  width: 2.7rem;
+  height: 2.7rem;
   cursor: pointer;
 `;
 
-const HiddenPasswordIcon = styled(HiddenPasswordIc)`
+const HiddenPasswordIcon = styled(HiddenPasswordIc)`  
+  width: 2.7rem;
+  height: 2.7rem;
   cursor: pointer;
 `;
 
@@ -287,9 +316,17 @@ const SaveBtnWrapper = styled.div`
 `;
 
 const DefaultSaveBtnIcon = styled(DefaultSaveBtnIc)`
+  width: 56rem;
   cursor: pointer;
 `;
 
 const SaveBtnIcon = styled(SaveBtnIc)`
+  width: 56rem;
   cursor: pointer;
 `;
+
+
+const ResetPasswordTitleIcon=styled(ResetPasswordTitleIc)`
+  width: 36rem;
+  margin-top: 4.2rem;
+`

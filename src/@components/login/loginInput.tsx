@@ -14,6 +14,7 @@ import {
   LoginPasswordIc,
   SignUpEyeIc,
   SignUpEyeXIc,
+  SignUpErrorIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
 import { onLogin, onLoginSuccess } from "../../core/api/login";
@@ -33,6 +34,8 @@ export default function LoginInput() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("vocal");
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
+  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>("start");
+
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,}$/;
 
@@ -59,7 +62,14 @@ export default function LoginInput() {
       }
     },
     onError: (error: any) => {
-      alert(error?.response.data.message);
+      if(error?.response.data.message==="존재하지 않는 아이디입니다."){
+        setEmailWarningMessage("We don’t have an account with that email address.")
+        setEmailInputState(WARNING)
+      }
+      else if(error?.response.data.message==="잘못된 비밀번호입니다."){
+        setPasswordWarningMessage("Wrong password.Try again or click Forgot password to reset it.")
+        setPasswordInputState(WARNING)
+      }
     },
   });
 
@@ -74,7 +84,11 @@ export default function LoginInput() {
   function changeHoverEmailState(e: React.FocusEvent<HTMLInputElement>): void {
     const input = e.target.value;
 
-    if (!EMAIL_RULE.test(input) && !isInputEmpty(input)) {
+    if(!e.target.value){
+      setEmailInputState("null");
+    }
+
+    if (!EMAIL_RULE.test(input)) {
       setEmailInputState(WARNING);
       return;
     }
@@ -83,14 +97,13 @@ export default function LoginInput() {
   }
 
   function changeHoverPasswordState(e: React.FocusEvent<HTMLInputElement>): void {
-    const input = e.target.value;
-
-    if (!PASSWORD_RULE.test(input) && !isInputEmpty(input)) {
-      setPasswordInputState(WARNING);
-      return;
+    if(!e.target.value){
+      setPasswordInputState("");
     }
-
-    e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
+    else{
+      e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
+    }
+   
   }
 
   function validateEmail(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -108,10 +121,8 @@ export default function LoginInput() {
     const passwordInput = e.target.value;
 
     setPassword(passwordInput);
-
-    PASSWORD_RULE.test(passwordInput) || isInputEmpty(passwordInput)
-      ? setPasswordInputState(FOCUS)
-      : setPasswordInputState(WARNING);
+    setPasswordInputState(FOCUS)
+    
   }
 
   function loginBtnType() {
@@ -158,7 +169,9 @@ export default function LoginInput() {
               onBlur={changeHoverEmailState}
               onChange={validateEmail}
             />
+            {isWarningState(emailInputState)&&<SignUpErrorIcon/>}
           </InputWrapper>
+          
           <UnderLine inputState={emailInputState} />
           {isWarningState(emailInputState) ? (
             <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>
@@ -177,14 +190,18 @@ export default function LoginInput() {
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
             />
+            <IconWrapper>
+            {isWarningState(passwordInputState)&&<SignUpErrorIcon/>}
             <div onClick={() => setShowPassword((prev) => !prev)}>
-            {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
+              {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
             </div>
+            </IconWrapper>
           </InputWrapper>
-          <UnderLine inputState={passwordInputState} />
+          
+          <UnderLine inputState={passwordInputState}/>
           {isWarningState(passwordInputState) ? (
             <WarningMessage isWarning={true}>
-              Wrong password.Try again or click Forgot password to reset it.
+              {passwordWarningMessage}
             </WarningMessage>
           ) : (
             <WarningMessage isWarning={false}>null</WarningMessage>
@@ -196,7 +213,7 @@ export default function LoginInput() {
         </ModeWrapper>
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
-        <ForgotMessage to="/forgotPassword">
+        <ForgotMessage to="/forgot-password">
           <LoginforgotpasswordIcon />
         </ForgotMessage>
       </Wrapper>
@@ -248,7 +265,7 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  height: 3.4rem;
+  height: 4rem;
   width: 100%;
 
   ${({ theme }) => theme.fonts.comment};
@@ -371,7 +388,13 @@ const VocalLoginBtnIcon = styled(VocalLoginBtnIc)`
 
 const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
   width: 20rem;
-
-  //margin-top: -2rem;
 `;
 
+const SignUpErrorIcon=styled(SignUpErrorIc)`
+    width: 4rem;
+    height: 4rem;
+`
+
+const IconWrapper=styled.div`
+  display: flex;
+`

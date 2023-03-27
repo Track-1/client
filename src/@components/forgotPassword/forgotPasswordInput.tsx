@@ -9,6 +9,7 @@ import {
   ProducerModeToggleIc,
   ProducerDefaultModeToggleIc,
   InputWarningIc,
+  ForgotPasswordEmailAskIc,
 } from "../../assets";
 
 import { useEffect, useState } from "react";
@@ -49,7 +50,7 @@ export default function ForgotPasswordInput() {
     if (!input) {
       setEmailMessage(emailInvalidMessage.NULL);
     } else {
-      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS) : setEmailMessage(emailInvalidMessage.FORM);
+      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS):setEmailMessage(emailInvalidMessage.FORM);
     }
   }
 
@@ -59,12 +60,20 @@ export default function ForgotPasswordInput() {
   }
 
   function isInputWarnning() {
-    return !checkEmailForm(email) && email.length !== 0;
+   // props.inputState === "We don’t have an account with that email address"
+    if(emailMessage===emailInvalidMessage.FORM||emailMessage==="We don’t have an account with that email address"){
+      return true;
+    }
+    if(emailMessage===emailInvalidMessage.NULL||emailMessage===emailInvalidMessage.SUCCESS){
+      return false;
+    }
+    return false;
+  //  return !checkEmailForm(email) && email.length !== 0;
   }
 
   function requestBtnType() {
     if (!checkEmailForm(email)) {
-      return <RequestResetPasswordDefaultBtnIc />;
+      return <RequestResetPasswordDefaultBtnIcon />;
     } else {
       if (resendTrigger && compareRecentEmail() && isSuccess) {
         return isProducerMode ? (
@@ -94,29 +103,32 @@ export default function ForgotPasswordInput() {
     <Container>
       <Wrapper>
         <TitleWrapper>
-          <ForgotPasswordTitleIc />
+          <ForgotPasswordTitleIcon />
         </TitleWrapper>
         <InputBox>
-          <InputTitle>What's your email</InputTitle>
+          <ForgotPasswordEmailAskIcon/>
           <InputWrapper>
             <Input placeholder="Enter your email address" onChange={writeEmail} />
-            {isInputWarnning() && <InputWarningIc />}
-            {isError && compareRecentEmail() && <InputWarningIc />}
+            {isInputWarnning() && <InputWarningIcon />}
+            {isError && compareRecentEmail() && <InputWarningIcon />}
           </InputWrapper>
-          <UnderLine inputState={emailMessage} />
+          <UnderLine inputState={emailMessage}/>
         </InputBox>
-        {isNotSignupEmail() && compareRecentEmail() && (
-          <WarningMessage>We don’t have an account with that email address</WarningMessage>
+        <>
+        {(isNotSignupEmail() && compareRecentEmail()) && (
+          <WarningMessage>{emailMessage}</WarningMessage>
         )}
+        {isNotSignupEmail() && compareRecentEmail()&&setEmailMessage("We don’t have an account with that email address")}
         {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
-        {isSuccess && checkEmailForm(email) && compareRecentEmail() && (
+        {(isSuccess && checkEmailForm(email) && compareRecentEmail()) && (
           <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
         )}
+        </>
         <ModeWrapper>
           <ModeText>Producer Mode</ModeText>
           {producerToggleType()}
         </ModeWrapper>
-        <RequestBtnWrapper>{requestBtnType()}</RequestBtnWrapper>
+        {requestBtnType()}
       </Wrapper>
     </Container>
   );
@@ -160,13 +172,12 @@ const InputWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  margin-top: 2.99rem;
+  margin-top: 3rem;
 `;
 
-const InputTitle = styled.div`
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.gray2};
-`;
+const ForgotPasswordEmailAskIcon=styled(ForgotPasswordEmailAskIc)`
+  width:20.7rem;  
+`
 
 const Input = styled.input`
   height: 3.4rem;
@@ -181,12 +192,18 @@ const Input = styled.input`
 `;
 
 const WarningMessage = styled.span`
+  width: 100%;
+  height: 3rem;
+
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.red};
   margin-top: 1.1rem;
 `;
 
 const ValidTimeMessage = styled.span<{ isProducerMode: boolean }>`
+  width: 100%;
+  height: 3rem;
+
   ${({ theme }) => theme.fonts.description};
   ${(props) => {
     if (props.isProducerMode) {
@@ -205,12 +222,14 @@ const ValidTimeMessage = styled.span<{ isProducerMode: boolean }>`
 
 const UnderLine = styled.hr<{ inputState: string }>`
   border: 0.1rem solid;
+
   ${(props) => {
-    if (props.inputState === emailInvalidMessage.FORM) {
+    if (props.inputState === emailInvalidMessage.FORM||props.inputState === "We don’t have an account with that email address") {
       return css`
         border-color: ${({ theme }) => theme.colors.red};
       `;
-    } else {
+    } 
+    else {
       return css`
         border-color: ${({ theme }) => theme.colors.gray3};
       `;
@@ -221,8 +240,9 @@ const UnderLine = styled.hr<{ inputState: string }>`
 const ModeWrapper = styled.div`
   display: flex;
   align-items: center;
+
   float: right;
-  margin: 4.2rem 0 3.1rem;
+  margin: 1rem 0 3.5rem 0;
 `;
 
 const ModeText = styled.div`
@@ -231,36 +251,46 @@ const ModeText = styled.div`
   margin: 0 1.2rem;
 `;
 
-const RequestBtnWrapper = styled.div`
-  margin-top: 2.2rem;
-`;
-
 const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
 
 const RequestResetPasswordVocalBtnIcon = styled(RequestResetPasswordVocalBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
 
 const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
-  width: ?rem;
+  width: 5.8rem;
   cursor: pointer;
 `;
 
 const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
-  width: ?rem;
+  width: 5.8rem;
   cursor: pointer;
 `;
 
 const ResendPasswordProducerBtnIcon = styled(ResendPasswordProducerBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
 
 const ResendPasswordVocalBtnIcon = styled(ResendPasswordVocalBtnIc)`
-  width: ?rem;
+  width: 56rem;
   cursor: pointer;
 `;
+
+const InputWarningIcon=styled(InputWarningIc)`
+  width: 2.2rem;
+  height: 2.2rem;
+`
+
+const RequestResetPasswordDefaultBtnIcon=styled(RequestResetPasswordDefaultBtnIc)`
+  width: 56rem;
+  cursor: pointer;
+`
+
+const ForgotPasswordTitleIcon=styled(ForgotPasswordTitleIc)`
+  width: 27.8rem;
+`
