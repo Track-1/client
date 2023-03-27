@@ -62,7 +62,7 @@ export default function ProducerBriefInfo(props: UserPropsType) {
           </InfoBox>
           <LogoutBox onClick={logout}>
             Log out
-            <MainLogoutIc />
+            <MainLogoutIcon />
           </LogoutBox>
         </UserInfoContainer>
       )}
@@ -169,3 +169,8 @@ const Blank = styled.div`
   width: 50rem;
   height: 3rem;
 `;
+
+const MainLogoutIcon=styled(MainLogoutIc)`
+  width: 4rem;
+  height: 4rem;
+`
