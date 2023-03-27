@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -38,7 +38,7 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  const data = useQuery("userProfile", getProfileTypeApi, {
+  const data = useQuery("userProfile", () => getProducerPortfolio(state, 1), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
