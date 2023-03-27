@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -45,7 +45,6 @@ export default function ProducerProfilePage() {
       setIsMe(data?.isMe);
       setProfileData(data?.producerProfile);
       setPortfolioData([...data?.producerPortfolio]);
-      //setSelectingTracksData([...data?.beatList]);
     },
     onError: (error) => {
       console.log(error);
@@ -54,55 +53,36 @@ export default function ProducerProfilePage() {
 
   async function getProfileTypeApi() {
     if (hasNextPage !== false) {
-      console.log(profileState);
-      console.log(stateChange);
       return profileState === "Portfolio" ? await getProducerPortfolio(state, 1) : await getSelectingTracks(state, 1);
     }
   }
 
-  async function getData(portfolioPage: number, selectingPage: number) {
-    let portfolioResponse: any;
-    let selectingResponse: any;
-    console.log(profileState);
-    console.log(stateChange);
+  async function getData(page: number) {
+    let response: any;
     if (hasNextPage !== false) {
-      portfolioResponse = await getProducerPortfolio(state, portfolioPage);
-      selectingResponse = await getSelectingTracks(state, selectingPage);
-
-      setIsMe(portfolioResponse?.isMe);
-      setProfileData(portfolioResponse?.producerProfile);
-
       switch (profileState) {
         case "Portfolio":
-          setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
-          return { portfolioResponse, selectingResponse, portfolioNextPage: portfolioPage + 1, selectingNextPage: 1 };
+          response = await getProducerPortfolio(state, page);
+          break;
         case "Vocal Searching":
-          setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
-          return { portfolioResponse, selectingResponse, portfolioNextPage: 1, selectingNextPage: selectingPage + 1 };
+          response = await getSelectingTracks(state, page);
+          break;
       }
-
+      return { response, nextPage: page + 1 };
     }
   }
 
   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
     "producerPortFolio",
-    ({ pageParam = 1 }) => getData(pageParam, pageParam),
+    ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        if (profileState == "Portfolio") {
-          return lastPage?.portfolioResponse.producerPortfolio.length !== 0 ? lastPage?.portfolioNextPage : undefined;
-        } else {
-          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
-        }
+        return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
       },
     },
   );
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
-
-  function ScrollToTop() {
-    window.scrollTo(0, 0);
-  }
 
   function playAudio() {
     audio.play();
@@ -142,21 +122,11 @@ export default function ProducerProfilePage() {
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
-          <PortfolioTab
-            profileState={profileState}
-            onClick={() => {
-              changeToProfile();
-              ScrollToTop();
-            }}>
+          <PortfolioTab profileState={profileState} onClick={changeToProfile}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
           </PortfolioTab>
-          <VocalSearchingTab
-            profileState={profileState}
-            onClick={() => {
-              changeToVocalSearch();
-              ScrollToTop();
-            }}>
+          <VocalSearchingTab profileState={profileState} onClick={changeToVocalSearch}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
           </VocalSearchingTab>
@@ -164,7 +134,7 @@ export default function ProducerProfilePage() {
         {portfolioData && profileData && (
           <ProducerPortFolioList
             isMe={isMe}
-            portfolioData={profileState === "Portfolio" ? portfolioData : selectingTracksData}
+            portfolioData={portfolioData}
             profileState={profileState}
             stateChange={stateChange}
             audio={audio}
