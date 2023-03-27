@@ -21,6 +21,7 @@ export default function ProducerProfilePage() {
 
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
+  const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
   const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
