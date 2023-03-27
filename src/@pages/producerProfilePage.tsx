@@ -61,29 +61,26 @@ export default function ProducerProfilePage() {
     }
   }
 
-  async function getData(page: number, page2: number) {
-    let response: any;
-    let response2: any;
+  async function getData(portfolioPage: number, selectingPage: number) {
+    let portfolioResponse: any;
+    let selectingResponse: any;
     console.log(profileState);
     console.log(stateChange);
     if (hasNextPage !== false) {
-      response = await getProducerPortfolio(state, page);
-      response2 = await getSelectingTracks(state, page2);
+      portfolioResponse = await getProducerPortfolio(state, portfolioPage);
+      selectingResponse = await getSelectingTracks(state, selectingPage);
 
-      setIsMe(response?.isMe);
-      setProfileData(response?.producerProfile);
+      setIsMe(portfolioResponse?.isMe);
+      setProfileData(portfolioResponse?.producerProfile);
 
       switch (profileState) {
         case "Portfolio":
-          setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
-          return { response, response2, nextPage: page + 1, nextPage2: 1 };
-          break;
+          setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
+          return { portfolioResponse, selectingResponse, portfolioNextPage: portfolioPage + 1, selectingNextPage: 1 };
         case "Vocal Searching":
-          setSelectingTracksData((prev) => [...prev, ...response2?.beatList]);
-          return { response, response2, nextPage: 1, nextPage2: page2 + 1 };
-          break;
+          setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
+          return { portfolioResponse, selectingResponse, portfolioNextPage: 1, selectingNextPage: selectingPage + 1 };
       }
-
     }
   }
 
@@ -93,9 +90,9 @@ export default function ProducerProfilePage() {
     {
       getNextPageParam: (lastPage, allPages) => {
         if (profileState == "Portfolio") {
-          return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+          return lastPage?.portfolioResponse.producerPortfolio.length !== 0 ? lastPage?.portfolioNextPage : undefined;
         } else {
-          return lastPage?.response2.beatList.length !== 0 ? lastPage?.nextPage2 : undefined;
+          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
         }
       },
     },
