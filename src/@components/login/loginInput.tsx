@@ -34,7 +34,7 @@ export default function LoginInput() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("vocal");
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
-  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>("");
+  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>("start");
 
   const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,}$/;
@@ -88,7 +88,8 @@ export default function LoginInput() {
       setEmailInputState("null");
     }
 
-    if (!EMAIL_RULE.test(input) && !isInputEmpty(input)) {
+    if (!EMAIL_RULE.test(input)) {
+    // if (!EMAIL_RULE.test(input) && !isInputEmpty(input)) {
       setEmailInputState(WARNING);
       return;
     }
@@ -100,16 +101,24 @@ export default function LoginInput() {
     const input = e.target.value;
 
     if(!e.target.value){
-      setPasswordInputState("null");
+      setPasswordInputState("");
     }
-
-
-    if (!PASSWORD_RULE.test(input) && !isInputEmpty(input)) {
-      setPasswordInputState(WARNING);
-      return;
+    else{
+      e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
     }
+    // 형식 검사 안 함. 로그인 버튼 클릭했을 때 맞는지 아닌지만 판단.
+    // 로그인 버튼 클릭하고 나서 안 맞는 경우에만 inputstate(warning)
+   // if (!PASSWORD_RULE.test(input) && !isInputEmpty(input)) {
+    // else{
+    //   setPasswordInputState("start");
+    // }   
+ 
+   //   setPasswordInputState("");
 
-    e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
+     // return;
+   // }
+
+    
   }
 
   function validateEmail(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -127,10 +136,10 @@ export default function LoginInput() {
     const passwordInput = e.target.value;
 
     setPassword(passwordInput);
-
-    PASSWORD_RULE.test(passwordInput) || isInputEmpty(passwordInput)
-      ? setPasswordInputState(FOCUS)
-      : setPasswordInputState(WARNING);
+    setPasswordInputState(FOCUS)
+    // PASSWORD_RULE.test(passwordInput) || isInputEmpty(passwordInput)
+    //   ? setPasswordInputState(FOCUS)
+    //   : setPasswordInputState(WARNING);
   }
 
   function loginBtnType() {
@@ -156,8 +165,11 @@ export default function LoginInput() {
   function isWarningState(state: string): boolean {
     return state === WARNING;
   }
-  console.log("이메일"+isWarningState(emailInputState))
-  console.log("패스워드"+isWarningState(passwordInputState))
+
+  function isPasswordNull(){
+    return passwordWarningMessage==="start";
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -200,14 +212,14 @@ export default function LoginInput() {
               onChange={validatePassword}
             />
             <IconWrapper>
-            {isWarningState(passwordInputState) &&<SignUpErrorIcon/>}
+            {isWarningState(passwordInputState)&&<SignUpErrorIcon/>}
             <div onClick={() => setShowPassword((prev) => !prev)}>
               {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
             </div>
             </IconWrapper>
           </InputWrapper>
           
-          <UnderLine inputState={passwordInputState} />
+          <UnderLine inputState={passwordInputState}/>
           {isWarningState(passwordInputState) ? (
             <WarningMessage isWarning={true}>
               {passwordWarningMessage}
