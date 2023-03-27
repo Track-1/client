@@ -52,7 +52,7 @@ export default function ProducerPortFolioList(props: PropsType) {
   function hoverOutPortfolio(id: number) {
     id !== clickedIndex && setHoveredIndex(-1);
   }
-
+console.log(portfolioData)
   return (
     <>
       <ProfileListContainer>

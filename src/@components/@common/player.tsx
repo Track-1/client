@@ -102,7 +102,9 @@ export default function Player(props: any) {
         </PlayerBarWrapper>
 
         <PlayerInformWrapper>
+          <ThumbnailWrapper>
           <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
+          </ThumbnailWrapper>
           <PlayerTitleText>{audioInfos.title}</PlayerTitleText>
           <PlayerNameText>{audioInfos.name}</PlayerNameText>
           {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
@@ -128,6 +130,7 @@ const PlayerContainer = styled.section`
   display: flex;
 
   width: 192rem;
+  height: 11rem;
 `;
 
 const PlayerWrapper = styled.article`
@@ -195,15 +198,27 @@ const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
   z-index: 1000;
 `;
 
-const Thumbnail = styled.img`
-  width: 6.5rem;
-  height: 6.5rem;
-
+const ThumbnailWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width: 5.7rem;
+  height: 5.7rem;
   margin-left: 34rem;
   margin-right: 3.069rem;
 
   border-radius: 5rem;
-  z-index: 1000;
+
+  overflow: hidden;
+`
+
+const Thumbnail = styled.img`
+  width: 100%;
+  height:100%;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const PlayerInformText = styled.div<{ width: number; whiteText: boolean }>`
@@ -234,18 +249,21 @@ const PlayerNameText = styled.div`
 `;
 
 const PauseIcon = styled(PauseIc)`
+  height: 2.4rem;
   margin-right: 5.1rem;
   pointer-events: auto;
   z-index: 1000;
 `;
 
 const PlayIcon = styled(PlayIc)`
+  height: 2.4rem;
   margin-right: 5.1rem;
   pointer-events: auto;
   z-index: 1000;
 `;
 
 const QuitIcon = styled(QuitIc)`
+  height: 1.5rem;
   pointer-events: auto;
   z-index: 1000;
 `;

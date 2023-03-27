@@ -145,7 +145,7 @@ useEffect(() => {
     <>
       <CommentContainer>
         <CloseCommentBtn>
-          <CloseBtnIc onClick={closeComment} />
+          <CloseBtnIcon onClick={closeComment} />
         </CloseCommentBtn>
         <form>
           <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} setIsCompleted={setIsCompleted} content={content} audioFile={audioFile} />
@@ -247,6 +247,8 @@ const BlurSection = styled.div`
   height: 32rem;
   width: 107.7rem;
 
+  /* position: relative; */
+
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
   bottom: 0;
   position: sticky;
@@ -258,3 +260,7 @@ const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
 `;
+
+const CloseBtnIcon=styled(CloseBtnIc)`
+  width: 19.9rem;
+`
