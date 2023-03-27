@@ -30,7 +30,7 @@ export default function Router() {
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         <Route path="/upload/:producerUploadType" element={<UploadPage />} />
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-        <Route path={`/resetPassword/${getCookie("forgotPasswordToken")}`} element={<ResetPasswordPage />} />
+        <Route path={`/reset-password/${getCookie("forgotPasswordToken")}`} element={<ResetPasswordPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/profile-edit/:id" element={<ProfileEditPage />} />
       </Routes>
