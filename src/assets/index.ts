@@ -238,3 +238,7 @@ export { ReactComponent as MainAdsIc } from "./icon/mainAdsIc.svg";
 export { ReactComponent as CommentUpldatCompleteIc } from "./icon/commentUpldatCompleteIc.svg";
 export { ReactComponent as PauseButtonIc } from "./icon/pauseButtonIc.svg";
 export { ReactComponent as FileUploadButtonIc } from "./icon/fileUploadButtonIc.svg";
+export { ReactComponent as ForgotPasswordEmailAskIc } from "./icon/forgotPasswordEmailAskIc.svg";
+export { ReactComponent as ChangePasswordNewPasswordIc } from "./icon/changePasswordNewPasswordIc.svg";
+export { ReactComponent as ChangePasswordConfirmIc } from "./icon/changePasswordConfirmIc.svg";
+

@@ -5,6 +5,7 @@ import subBackgroundImg from "../assets/image/subBackgroundImg.png";
 import styled from "styled-components";
 import { TrackOneMainLogoIc } from "../assets";
 import useMovePage from "../utils/hooks/useMovePage";
+import Footer from "../@components/@common/footer";
 
 export default function ResetPasswordPage() {
   const { isSuccess } = useQuery("validateToken", validateResetPasswordToken, {
@@ -20,26 +21,32 @@ export default function ResetPasswordPage() {
     movePage("/");
   }
 
+  console.log("접속")
   return (
     <>
       {isSuccess && (
         <>
           <LogoWrapper>
-            <TrackOneMainLogoIc style={{ cursor: "pointer" }} onClick={moveToHome} />
+            <TrackOneMainLogoIcon style={{ cursor: "pointer" }} onClick={moveToHome} />
           </LogoWrapper>
           <ResetPasswordInput />
           <BackgroundImg src={subBackgroundImg} alt="배경사진" />
-          {/* <Footer /> */}
+          <Footer />
         </>
       )}
     </>
   );
 }
 
+const TrackOneMainLogoIcon=styled(TrackOneMainLogoIc)`
+  width: 26.3rem;
+`
+
 const LogoWrapper = styled.div`
   margin: 5.9rem 0 0 7.9rem;
 `;
 
 const BackgroundImg = styled.img`
+  width: 192rem;
   margin-top: 19.6rem;
 `;

@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
       </BackButtonWrapper>
       <ForgotPasswordInput />
       <BackgroundImg src={subBackgroundImg} alt="배경사진" />
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }
@@ -22,5 +22,6 @@ const BackButtonWrapper = styled.div`
 `;
 
 const BackgroundImg = styled.img`
+  width: 192rem;
   margin-top: 19.6rem;
 `;
