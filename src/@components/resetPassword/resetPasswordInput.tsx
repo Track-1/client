@@ -329,4 +329,5 @@ const SaveBtnIcon = styled(SaveBtnIc)`
 const ResetPasswordTitleIcon=styled(ResetPasswordTitleIc)`
   width: 36rem;
   margin-top: 4.2rem;
+  margin-bottom: 6rem;
 `
