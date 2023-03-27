@@ -31,7 +31,7 @@ export default function ResetPasswordInput() {
 
   const { mutate } = useMutation(() => patchResetPassword(password), {
     onSuccess: () => {
-      alert("비밀번호 변경 성공");
+      alert("비밀번호가 변경되었습니다.");
       movePage("/");
       onLogout();
     },
