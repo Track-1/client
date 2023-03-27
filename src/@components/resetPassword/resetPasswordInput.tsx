@@ -217,6 +217,7 @@ const InputBox = styled.div`
 
 const ChangePasswordNewPasswordIcon=styled(ChangePasswordNewPasswordIc)`
   width: 16.3rem;
+  margin-top: 3rem;
 `
 
 const ChangePasswordConfirmIcon=styled(ChangePasswordConfirmIc)`
@@ -312,7 +313,7 @@ const HiddenPasswordIcon = styled(HiddenPasswordIc)`
 `;
 
 const SaveBtnWrapper = styled.div`
-  margin-top: 2.2rem;
+  margin-top: 0.5rem;
 `;
 
 const DefaultSaveBtnIcon = styled(DefaultSaveBtnIc)`
@@ -328,5 +329,5 @@ const SaveBtnIcon = styled(SaveBtnIc)`
 
 const ResetPasswordTitleIcon=styled(ResetPasswordTitleIc)`
   width: 36rem;
-  margin-top: 4.2rem;
+  margin-top: 1rem;
 `
