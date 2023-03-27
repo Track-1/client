@@ -45,7 +45,7 @@ export default function ProducerProfilePage() {
     onSuccess: (data) => {
       setIsMe(data?.isMe);
       setProfileData(data?.producerProfile);
-      setPortfolioData([...data?.producerPortfolio]);
+      //  setPortfolioData([...data?.producerPortfolio]);
       //setSelectingTracksData([...data?.beatList]);
     },
     onError: (error) => {
@@ -54,11 +54,9 @@ export default function ProducerProfilePage() {
   });
 
   async function getProfileTypeApi() {
-    if (hasNextPage !== false) {
-      console.log(profileState);
-      console.log(stateChange);
-      return profileState === "Portfolio" ? await getProducerPortfolio(state, 1) : await getSelectingTracks(state, 1);
-    }
+    console.log(profileState);
+
+    return await getProducerPortfolio(state, 1);
   }
 
   async function getData(portfolioPage: number, selectingPage: number) {
@@ -81,7 +79,6 @@ export default function ProducerProfilePage() {
           setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
           return { portfolioResponse, selectingResponse, portfolioNextPage: 1, selectingNextPage: selectingPage + 1 };
       }
-
     }
   }
 
@@ -118,11 +115,13 @@ export default function ProducerProfilePage() {
   function changeToProfile() {
     setProfileState("Portfolio");
     setStateChange(!stateChange);
+    setSelectingTracksData([]);
   }
 
   function changeToVocalSearch() {
     setProfileState("Vocal Searching");
     setStateChange(!stateChange);
+    setPortfolioData([]);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
