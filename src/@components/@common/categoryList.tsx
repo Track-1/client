@@ -37,6 +37,7 @@ export default function CategoryList() {
       ),
     );
     setFilteredUrlApi("");
+    setTrackSearchingClicked(false)
   },[isClickedCategory])
 
   function categoryClick(id: number) {
