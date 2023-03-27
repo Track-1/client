@@ -154,7 +154,6 @@ export default function ResetPasswordInput() {
               <ShowPasswordIcon onClick={() => setShowConfirmPassword(!showConfirmPassword)} />
             )}
           </InputWrapper>
-          {/* 밑줄 상태 변경해야된다. */}
           <UnderLine inputState={confirmPasswordMessage} />
           {confirmPasswordMessage !== passwordInvalidMessage.NULL &&
             confirmPasswordMessage !== passwordInvalidMessage.SUCCESS ? (
@@ -213,7 +212,7 @@ const TitleWrapper = styled.div`
 `;
 
 const InputBox = styled.div`
-  margin-top: 4.8rem;
+  margin-top: 1.8rem;
 `;
 
 const ChangePasswordNewPasswordIcon=styled(ChangePasswordNewPasswordIc)`
@@ -278,7 +277,7 @@ const SentenceWrapper = styled.div`
   justify-content: center;
   height: 4.3rem;
 
-  margin-top: 5.9rem;
+  margin-top: 2.9rem;
 `;
 
 const Sentence = styled.p`
@@ -302,11 +301,13 @@ const InputWarningIcon = styled(InputWarningIc)`
 
 const ShowPasswordIcon = styled(ShowPasswordIc)`
   width: 2.7rem;
+  height: 2.7rem;
   cursor: pointer;
 `;
 
 const HiddenPasswordIcon = styled(HiddenPasswordIc)`  
   width: 2.7rem;
+  height: 2.7rem;
   cursor: pointer;
 `;
 
@@ -327,4 +328,5 @@ const SaveBtnIcon = styled(SaveBtnIc)`
 
 const ResetPasswordTitleIcon=styled(ResetPasswordTitleIc)`
   width: 36rem;
+  margin-top: 4.2rem;
 `
