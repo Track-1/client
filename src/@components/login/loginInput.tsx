@@ -213,7 +213,7 @@ export default function LoginInput() {
         </ModeWrapper>
         <LoginBtnWrapper>{loginBtnType()}</LoginBtnWrapper>
 
-        <ForgotMessage to="/forgotPassword">
+        <ForgotMessage to="/forgot-password">
           <LoginforgotpasswordIcon />
         </ForgotMessage>
       </Wrapper>
