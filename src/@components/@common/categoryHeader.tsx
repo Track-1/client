@@ -16,6 +16,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { isProducer } from "../../utils/common/userType";
+import { categorySelect, clickCategoryHeader } from "../../recoil/categorySelect";
 
 export default function CategoryHeader() {
   const navigate = useNavigate();
@@ -23,15 +24,18 @@ export default function CategoryHeader() {
   const loginUserType = useRecoilValue(LoginUserType);
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserImg=useRecoilValue(LoginUserImg);
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
+    setIsClickedCategory(!isClickedCategory)
   }
 
   function moveVocalSearchPage() {
     setTracksOrVocals(Category.VOCALS);
     navigate("/vocal-search");
+    setIsClickedCategory(!isClickedCategory)
   }
 
   function moveMainPage() {
