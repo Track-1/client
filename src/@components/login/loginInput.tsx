@@ -89,7 +89,6 @@ export default function LoginInput() {
     }
 
     if (!EMAIL_RULE.test(input)) {
-    // if (!EMAIL_RULE.test(input) && !isInputEmpty(input)) {
       setEmailInputState(WARNING);
       return;
     }
@@ -98,27 +97,13 @@ export default function LoginInput() {
   }
 
   function changeHoverPasswordState(e: React.FocusEvent<HTMLInputElement>): void {
-    const input = e.target.value;
-
     if(!e.target.value){
       setPasswordInputState("");
     }
     else{
       e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
     }
-    // 형식 검사 안 함. 로그인 버튼 클릭했을 때 맞는지 아닌지만 판단.
-    // 로그인 버튼 클릭하고 나서 안 맞는 경우에만 inputstate(warning)
-   // if (!PASSWORD_RULE.test(input) && !isInputEmpty(input)) {
-    // else{
-    //   setPasswordInputState("start");
-    // }   
- 
-   //   setPasswordInputState("");
-
-     // return;
-   // }
-
-    
+   
   }
 
   function validateEmail(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -137,9 +122,7 @@ export default function LoginInput() {
 
     setPassword(passwordInput);
     setPasswordInputState(FOCUS)
-    // PASSWORD_RULE.test(passwordInput) || isInputEmpty(passwordInput)
-    //   ? setPasswordInputState(FOCUS)
-    //   : setPasswordInputState(WARNING);
+    
   }
 
   function loginBtnType() {
@@ -164,10 +147,6 @@ export default function LoginInput() {
 
   function isWarningState(state: string): boolean {
     return state === WARNING;
-  }
-
-  function isPasswordNull(){
-    return passwordWarningMessage==="start";
   }
 
   return (
