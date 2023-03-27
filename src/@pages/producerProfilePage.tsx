@@ -46,6 +46,7 @@ export default function ProducerProfilePage() {
       setIsMe(data?.isMe);
       setProfileData(data?.producerProfile);
       setPortfolioData([...data?.producerPortfolio]);
+      //setSelectingTracksData([...data?.beatList]);
     },
     onError: (error) => {
       console.log(error);
@@ -56,9 +57,7 @@ export default function ProducerProfilePage() {
     if (hasNextPage !== false) {
       console.log(profileState);
       console.log(stateChange);
-      return profileState === "Portfolio" || stateChange === true
-        ? await getProducerPortfolio(state, 1)
-        : await getSelectingTracks(state, 1);
+      return profileState === "Portfolio" ? await getProducerPortfolio(state, 1) : await getSelectingTracks(state, 1);
     }
   }
 
@@ -70,46 +69,23 @@ export default function ProducerProfilePage() {
     if (hasNextPage !== false) {
       response = await getProducerPortfolio(state, page);
       response2 = await getSelectingTracks(state, page2);
+
       setIsMe(response?.isMe);
       setProfileData(response?.producerProfile);
 
       switch (profileState) {
         case "Portfolio":
           setPortfolioData((prev) => [...prev, ...response?.producerPortfolio]);
+          return { response, response2, nextPage: page + 1, nextPage2: 1 };
           break;
         case "Vocal Searching":
           setSelectingTracksData((prev) => [...prev, ...response2?.beatList]);
+          return { response, response2, nextPage: 1, nextPage2: page2 + 1 };
           break;
       }
 
-      return { response, response2, nextPage: page + 1, nextPage2: page2 + 1 };
     }
   }
-
-  /*   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
-    "producerPortFolio",
-    ({ pageParam = 1 }) => getData(pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
-      },
-    },
-  );
- */
-
-  /*   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
-    "producerPortFolio",
-    ({ pageParam = 1 }) => getData(pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        if (profileState == "Portfolio") {
-          return lastPage?.response.producerPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
-        } else {
-          return lastPage?.response.beatList.length !== 0 ? lastPage?.nextPage : undefined;
-        }
-      },
-    },
-  ); */
 
   const { hasNextPage, fetchNextPage } = useInfiniteQuery(
     "producerPortFolio",
