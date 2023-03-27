@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
+import ProducerEmptyProfileImg from "../assets/image/producerEmptyProfileImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
@@ -50,6 +51,10 @@ export default function ProducerProfilePage() {
       console.log(error);
     },
   });
+
+  function isPortfolioDataEmpty() {
+    return portfolioData.length === 0;
+  }
 
   async function getProfileTypeApi() {
     if (hasNextPage !== false) {
@@ -131,7 +136,7 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {portfolioData && profileData && (
+        {!isPortfolioDataEmpty() && profileData ? (
           <ProducerPortFolioList
             isMe={isMe}
             portfolioData={portfolioData}
@@ -142,6 +147,8 @@ export default function ProducerProfilePage() {
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
           />
+        ) : (
+          <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
         )}
       </PageContainer>
       <InfiniteDiv ref={observerRef}> </InfiniteDiv>
@@ -206,4 +213,10 @@ const BlankDiv = styled.div`
 
 const RightArrorIcon = styled(RightArrorIc)`
   margin-right: 1rem;
+`;
+
+const ProducerEmptyProfileImage = styled.img`
+  position: absolute;
+  top: 26.2rem;
+  left: 69.6rem;
 `;

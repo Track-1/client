@@ -4,6 +4,7 @@ import Player from "../@components/@common/player";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
 import VocalProfileList from "../@components/vocalProfile/vocalProfileList";
 import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
+import VocalEmptyProfileImg from "../assets/image/vocalEmptyProfileImg.png";
 import { Category } from "../core/constants/categoryHeader";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
@@ -68,6 +69,10 @@ export default function VocalProfilePage() {
     }
   }
 
+  function isPortfolioDataEmpty() {
+    return portfolioData.length === 0;
+  }
+
   function playAudio() {
     audio.play();
     setPlay(true);
@@ -94,7 +99,7 @@ export default function VocalProfilePage() {
       <VocalProfile>{profileData && <ProducerInfos profileData={profileData} />}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
-          {portfolioData && profileData && (
+          {!isPortfolioDataEmpty() && profileData ? (
             <VocalProfileList
               isMe={isMe}
               portfolioData={portfolioData}
@@ -104,6 +109,8 @@ export default function VocalProfilePage() {
               getAudioInfos={getAudioInfos}
               vocalName={profileData?.name}
             />
+          ) : (
+            <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
           )}
           <VocalProfileShadow />
         </VocalProfileWrapper>
@@ -151,4 +158,10 @@ const VocalProfile = styled.article`
 const PlayerWrapper = styled.div`
   position: sticky;
   bottom: 0;
+`;
+
+const VocalEmptyProfileImage = styled.img`
+  position: absolute;
+  top: 26.2rem;
+  left: 69.6rem;
 `;
