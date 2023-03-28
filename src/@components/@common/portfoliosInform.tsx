@@ -106,11 +106,12 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {openEllipsisModal && checkisEllipsis() && (
                 <PortfolioUpdateModal
                   isTitle={checkIsTitle()}
-                  ref={modalRef}
                   profileState={profileState}
                   portfolioId={portfolios[id].id}
                   portfoliosData={portfolios}
                   clickedPortfolioId={id}
+                  openEllipsisModal={openEllipsisModal}
+                  setOpenEllipsisModal={setOpenEllipsisModal}
                 />
               )}
             </InformTitleWrapper>

@@ -9,22 +9,26 @@ import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
 import { patchTitleAPI } from "../../core/api/profile";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 interface PropsType {
   isTitle: boolean;
   profileState: string;
-  ref: React.RefObject<HTMLDivElement>;
+ // ref: React.RefObject<HTMLDivElement>;
   portfolioId: number;
   portfoliosData: PortfolioType[];
   clickedPortfolioId: number;
+  openEllipsisModal:boolean;
+  setOpenEllipsisModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function PortfolioUpdateModal(props: PropsType) {
-  const { isTitle, profileState, portfolioId, portfoliosData, clickedPortfolioId } = props;
+  const { isTitle, profileState, portfolioId, portfoliosData, clickedPortfolioId,openEllipsisModal,setOpenEllipsisModal } = props;
   const navigate = useNavigate();
 
   const loginUserType = useRecoilValue(LoginUserType);
   const queryClient = useQueryClient();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
@@ -73,8 +77,26 @@ export default function PortfolioUpdateModal(props: PropsType) {
     });
   }
 
+  function isClickedOutside(e: MouseEvent) {
+    return openEllipsisModal && !modalRef.current?.contains(e.target as Node);
+  }
+
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setOpenEllipsisModal(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openEllipsisModal]);
+
   return (
     <ModalWrapper
+      ref={modalRef}
       isTitle={isTitle}
       checkIsPortfolio={checkIsPortfolio()}
       checkIsVocalSearching={checkIsVocalSearching()}>
