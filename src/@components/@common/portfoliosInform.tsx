@@ -94,9 +94,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   function moveTrackPost(id: number) {
     console.log("asdfjdkfjkdfj")
-    navigate(`/track-post/${id}`, {
-      state: portfolios,
-    });
+    navigate(`/track-post/${id}`, { state: id });
   }
 
   return (
