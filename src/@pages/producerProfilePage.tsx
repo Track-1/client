@@ -18,7 +18,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
-
+console.log(state)
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
@@ -141,7 +141,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} />}
+      {profileData && <ProducerInfos profileData={profileData} isMe={isMe}/>}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
@@ -206,6 +206,7 @@ const PageContainer = styled.section`
 `;
 
 const GradientBox = styled.img`
+  width: 45rem;
   left: 60rem;
 `;
 
@@ -215,6 +216,7 @@ const TabContainer = styled.ul`
   left: 63.8rem;
 
   ${({ theme }) => theme.fonts.body1};
+  cursor: pointer;
 `;
 
 const PortfolioTab = styled.li<{ profileState: string }>`
@@ -238,5 +240,7 @@ const BlankDiv = styled.div`
 `;
 
 const RightArrorIcon = styled(RightArrorIc)`
+  width: 2.4rem;
+  height: 2.4rem;
   margin-right: 1rem;
 `;

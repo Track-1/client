@@ -91,7 +91,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} isMe={isMe} />}</VocalProfile>
+      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} isMe={isMe}/>}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
           {portfolioData && profileData && (
@@ -105,7 +105,7 @@ export default function VocalProfilePage() {
               vocalName={profileData?.name}
             />
           )}
-          <VocalProfileShadow />
+          <VocalProfileShadowIcon />
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
 
@@ -152,3 +152,7 @@ const PlayerWrapper = styled.div`
   position: sticky;
   bottom: 0;
 `;
+
+const VocalProfileShadowIcon=styled(VocalProfileShadow)`
+  width: 45rem;
+`
