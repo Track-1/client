@@ -206,6 +206,7 @@ const PageContainer = styled.section`
 `;
 
 const GradientBox = styled.img`
+  width: 45rem;
   left: 60rem;
 `;
 

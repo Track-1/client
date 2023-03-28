@@ -105,7 +105,7 @@ export default function VocalProfilePage() {
               vocalName={profileData?.name}
             />
           )}
-          <VocalProfileShadow />
+          <VocalProfileShadowIcon />
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
 
@@ -152,3 +152,7 @@ const PlayerWrapper = styled.div`
   position: sticky;
   bottom: 0;
 `;
+
+const VocalProfileShadowIcon=styled(VocalProfileShadow)`
+  width: 45rem;
+`
