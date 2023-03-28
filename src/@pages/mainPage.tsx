@@ -20,8 +20,6 @@ import Ads from "../@components/main/ads";
 export default function MainPage() {
   const navigate = useNavigate();
 
-  alert("홍명헌짱!");
-
   const [background, setBackground] = useState<string>(mainBackgroundImg);
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
