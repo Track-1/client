@@ -10,13 +10,14 @@ import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   profileData: ProducerProfileType;
+  isMe:boolean;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData } = props;
+  const { profileData, isMe } = props;
   const navigate = useNavigate();
 
-  console.log(profileData?.profileImage);
+ // console.log(profileData?.profileImage);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
@@ -26,11 +27,13 @@ export default function ProducerInfos(props: PropsType) {
     });
   }
 
+  console.log(profileData)
+
   return (
     <InfoContainer>
       <InfoHeader>
         <BackButton />
-        <ProfileEditBtnIc onClick={moveProfileEditPage} />
+        {isMe&&<ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
       {tracksOrVocals === "Vocals" ? (
@@ -242,3 +245,7 @@ const Category = styled.li`
   //padding-bottom: 1.1rem;
   margin-bottom: 1.1rem;
 `;
+
+const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
+  width: 16.6rem;
+`
