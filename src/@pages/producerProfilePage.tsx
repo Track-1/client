@@ -215,6 +215,7 @@ const TabContainer = styled.ul`
   left: 63.8rem;
 
   ${({ theme }) => theme.fonts.body1};
+  cursor: pointer;
 `;
 
 const PortfolioTab = styled.li<{ profileState: string }>`
@@ -238,5 +239,7 @@ const BlankDiv = styled.div`
 `;
 
 const RightArrorIcon = styled(RightArrorIc)`
+  width: 2.4rem;
+  height: 2.4rem;
   margin-right: 1rem;
 `;
