@@ -20,130 +20,18 @@ interface PropsType {
   prevDatas: any;
 }
 
-export default function ProfileEditInfo(props: PropsType) {
-  const { isSave, editDatas, prevDatas } = props;
-  const contactInputRef = useRef<HTMLInputElement | null>(null);
-  const hashtagRef = useRef<HTMLInputElement | null>(null);
-  const [hashtagInput, setHashtagInput] = useState<string>("");
-  const [hashtags, setHashtags] = useState<string[]>([]);
-  const [descriptionInput, setDescriptionInput] = useState<string>("");
-  const [categories, setCategories] = useState<Set<string>>(new Set());
-  const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>({
-    "R&B": false,
-    HIPHOP: false,
-    BALLAD: false,
-    POP: false,
-    ROCK: false,
-    EDM: false,
-    JAZZ: false,
-    HOUSE: false,
-    FUNK: false,
-  });
-  const [contactInput, setContactInput] = useState<string>("");
-
-  useEffect(() => {
-    selectPrevCategory(prevDatas?.cagetory);
-    inputPrevHashtags(prevDatas?.keyword);
-  }, []);
-
-  console.log(prevDatas);
-  useEffect(() => {
-    editDatas(getEditDatas());
-  }, [isSave]);
-
-  function selectPrevCategory(prevCategories: string[]) {
-    prevCategories?.forEach((category) => {
-      selectCategory(category);
-    });
-  }
-
-  function inputPrevHashtags(prevHashtags: string[]) {
-    prevHashtags?.forEach((hashtag) => setHashtags((prev) => [...prev, hashtag]));
-  }
-
-  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
-    setHashtagInput(e.target.value);
-  }
-
-  function completeHashtag() {
-    if (hashtagRef.current) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-    }
-  }
-
-  function deleteHashtag(index: number) {
-    setHashtags([...hashtags.splice(index, 1)]);
-    setHashtagInput("");
-  }
-
-  function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
-    setDescriptionInput(e.target.value);
-  }
-
-  function getEditDatas() {
-    if (contactInputRef.current !== null) {
-      return {
-        contact: contactInputRef.current.value,
-        category: Array.from(categories),
-        keyword: hashtags,
-        introduce: descriptionInput,
-      };
-    }
-    return editInputDatas;
-  }
-
-  function selectCategory(category: string) {
-    changeClickedCategoryColor(category);
-    changeSelectedCategory(category);
-  }
-
-  function changeClickedCategoryColor(category: string) {
-    const tempSelected = isCategorySelected;
-    tempSelected[category] = !tempSelected[category];
-    setIsCategorySelected({ ...tempSelected });
-  }
-
-  function changeSelectedCategory(category: string) {
-    const tempCatgorySet = categories;
-    categories.has(CategoryId[category])
-      ? tempCatgorySet.delete(CategoryId[category])
-      : tempCatgorySet.add(CategoryId[category]);
-    setCategories(new Set(tempCatgorySet));
-  }
-
-  function changeContact(e: React.ChangeEvent<HTMLInputElement>) {
-    setContactInput(e.target.value);
-  }
-
+export default function ProfileEditInfo() {
   return (
     <>
       <InfoContainer>
         <ContactContainer>
           <ProfileEditContactIcon />
-          <ContactInput
-            ref={contactInputRef}
-            placeholder="Enter your phone number or SNS account"
-            defaultValue={prevDatas?.contact}
-            onChange={changeContact}
-            maxLength={40}
-          />
+          <ContactInput />
         </ContactContainer>
         <CategoryContainer>
           <ProfileEditCategoryIcon />
           <CategoryBox>
-            {Object.keys(CategoryId).map((category, index) => {
-              return (
-                <CategoryItem
-                  isSelected={isCategorySelected[category]}
-                  onClick={() => {
-                    selectCategory(category);
-                  }}
-                  key={index}>
-                  {category}
-                </CategoryItem>
-              );
-            })}
+            <CategoryItem></CategoryItem>
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
@@ -152,50 +40,28 @@ export default function ProfileEditInfo(props: PropsType) {
             <ProfileWarning />
           </HashIconWrapper>
           <InputHashtagWrapper>
-            {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </HashtagWrapper>
-                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                </Hashtag>
-              );
-            })}
-            {hashtags.length < 3 && (
-              <Hashtag>
-                <HashtagWrapper>
-                  <HashtagSharp># </HashtagSharp>
-                  <HashtagInput
-                    onChange={getInputText}
-                    onKeyPress={(e) => {
-                      e.key === "Enter" && completeHashtag();
-                    }}
-                    inputWidth={hashtagInput.length}
-                    ref={hashtagRef}
-                    placeholder="HashTag"
-                    maxLength={10}
-                  />
-                </HashtagWrapper>
-              </Hashtag>
-            )}
+            <Hashtag>
+              <HashtagWrapper>
+                <HashtagSharp># </HashtagSharp>
+                <CompletedHashtag></CompletedHashtag>
+              </HashtagWrapper>
+              <DeleteHashtagIcon />
+            </Hashtag>
+            <Hashtag>
+              <HashtagWrapper>
+                <HashtagSharp># </HashtagSharp>
+                <HashtagInput />
+              </HashtagWrapper>
+            </Hashtag>
 
-            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            <AddHashtagIcon />
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
-          <DesciprtionInput
-            typeof="text"
-            onChange={countDescriptionText}
-            placeholder="What kind of work do you do?"
-            defaultValue={prevDatas?.introduce}
-            maxLength={150}
-            row={Math.floor(descriptionInput.length / 31) + 1}
-          />
-          <TextCount onChange={countDescriptionText}>
-            {descriptionInput.length}/<MaxCount>150</MaxCount>
+          <DesciprtionInput />
+          <TextCount>
+            <MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
       </InfoContainer>
@@ -268,12 +134,10 @@ const CategoryBox = styled.ul`
   margin-top: 2.2rem;
 `;
 
-const CategoryItem = styled.li<{ isSelected: boolean }>`
+const CategoryItem = styled.li`
   width: 25%;
 
   margin-bottom: 1.2rem;
-
-  color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray4)};
 `;
 
 const HashtagContainer = styled.article`
@@ -313,9 +177,7 @@ const HashtagSharp = styled.p`
   margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
-
+const HashtagInput = styled.input`
   display: flex;
 
   ${({ theme }) => theme.fonts.hashtag};
@@ -346,8 +208,7 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input<{ row: number }>`
-  height: ${({ row }) => row * 3.4 + 1}rem;
+const DesciprtionInput = styled.input`
   width: 55.9rem;
 
   margin-top: 3.3rem;
