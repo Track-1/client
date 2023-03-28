@@ -13,102 +13,53 @@ import { getVocalProfile, patchVocalrProfile } from "../core/api/vocalProfile";
 import { getProducerPortfolio, patchProducerProfile } from "../core/api/producerProfile";
 
 export default function ProfileEditPage() {
-  const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
-  const [isSave, setIsSave] = useState<boolean>(false);
-  const [isMeetRequired, setIsMeetRequired] = useState<boolean>(false);
-  const [user, setUser] = useState<string>(currentUser.PRODUCER);
-  const [prevDatas, setPrevDatas] = useState<any>();
-  const [patchData, setPatchData] = useState<any>();
   const { state } = useLocation();
-  const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState<File>(state.profileImage);
+  const [name, setName] = useState<string>(state.name);
+  const [contact, setContact] = useState<string>(state.contact);
+  const [categories, setCategories] = useState<Set<string>>(state.category);
+  const [hashtags, setHashtags] = useState<string[]>(state.keyword);
+  const [description, setDescription] = useState<string>(state.introduce);
 
-  console.log(state);
-
-  useEffect(() => {
-    const formData = new FormData();
-    formData.append("imgFile", state?.profileImage);
-    formData.append("name", state?.name);
-    formData.append("contact", editDatas.contact);
-    formData.append("category", editDatas.category[0]);
-    formData.append("keyword", editDatas.keyword[0]);
-    formData.append("introduce", editDatas.introduce);
-    user === currentUser.VOCAL && formData.append("isSelected", "true");
-    setPatchData(formData);
-  }, [isSave]);
-
-  const { mutate } = useMutation(
-    () => (user === currentUser.PRODUCER ? patchProducerProfile(patchData) : patchVocalrProfile(patchData)),
-    {
-      onSuccess: () => {
-        console.log("ok");
-        navigate(-1);
-      },
-      onError: (e) => {
-        console.log(e);
-
-        navigate(-1);
-      },
-    },
-  );
-
-  useEffect(() => {
-    patchData?.keys().length >= 6 && mutate(patchData);
-    console.log(patchData, "dfdfdfd");
-  }, [patchData]);
-
-  const { data } = useQuery(
-    ["userId", 1],
-    () => (user === currentUser.PRODUCER ? getProducerPortfolio(state.id, 1) : getVocalProfile(state.id, 1)),
-    {
-      refetchOnWindowFocus: false,
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-        setPrevDatas(data);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    },
-  );
-
-  function editDats(datas: any) {
-    setEditDatas(datas);
+  function updateProfileImage(imgFile: File) {
+    setProfileImage(imgFile);
   }
 
-  function saveEditDatas() {
-    setIsSave(true);
+  function updateName(name: string) {
+    setName(name);
   }
 
-  function activeSaveButton(inputState: string) {
-    inputState === nickName.CORRECT ? setIsMeetRequired(true) : setIsMeetRequired(false);
+  function updateContact(contact: string) {
+    setContact(contact);
+  }
+
+  function updateCategory(category: any) {
+    const tempCategorySet = categories;
+    tempCategorySet.has(category) ? tempCategorySet.delete(category) : tempCategorySet.add(category);
+    setCategories(tempCategorySet);
+  }
+
+  function updateHashtag(hashtag: string) {
+    setHashtags([...hashtags, hashtag]);
+  }
+
+  function updateDescription(inputText: string) {
+    setDescription(inputText);
   }
 
   return (
     <>
-      <ProfileEditHeader saveEditDatas={saveEditDatas} isMeetRequired={isMeetRequired} />
+      <ProfileEditHeader />
       <EditContainer>
-        {user === currentUser.PRODUCER && (
-          <ProducerProfileEditTitle
-            activeSaveButton={activeSaveButton}
-            id={state}
-            prevProfileImage={data?.producerProfile.profileImage}
-            prevName={data?.producerProfile.name}
-          />
-        )}
-        {user === currentUser.VOCAL && (
-          <VocalProfileEditTitle
-            activeSaveButton={activeSaveButton}
-            id={state}
-            prevProfileImage={data?.vocalProfile.profileImage}
-            prevName={data?.vocalProfile.name}
-          />
-        )}
-        <ProfileEditInfo
-          isSave={isSave}
-          editDatas={editDats}
-          prevDatas={user === currentUser.PRODUCER ? state : data?.vocalProfile}
+        <ProducerProfileEditTitle
+          profileImage={profileImage}
+          name={name}
+          updateProfileImage={updateProfileImage}
+          updateName={updateName}
         />
+        {/* <VocalProfileEditTitle
+          /> */}
+        <ProfileEditInfo />
       </EditContainer>
     </>
   );
