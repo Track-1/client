@@ -10,13 +10,14 @@ import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   profileData: ProducerProfileType;
+  isMe: boolean;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData } = props;
+  const { profileData, isMe } = props;
   const navigate = useNavigate();
 
-  console.log(profileData?.profileImage);
+  console.log(profileData);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
@@ -30,7 +31,7 @@ export default function ProducerInfos(props: PropsType) {
     <InfoContainer>
       <InfoHeader>
         <BackButton />
-        <ProfileEditBtnIc onClick={moveProfileEditPage} />
+        {isMe && <ProfileEditBtnIc onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
       {tracksOrVocals === "Vocals" ? (
