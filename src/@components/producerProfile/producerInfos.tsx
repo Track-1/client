@@ -55,7 +55,7 @@ export default function ProducerInfos(props: PropsType) {
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
-          <CategoryIc />
+          <CategoryIcon />
           <CategoryArray>
             {Object.values(Categories).map((value) =>
               profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
@@ -208,6 +208,7 @@ const HashtagBox = styled.div`
 `;
 
 const HashtagIcon = styled(HashtagIc)`
+  width: 9.2rem;
   margin-bottom: 1.5rem;
 `;
 
@@ -232,6 +233,7 @@ const Inroduce = styled.div`
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
+  width: 12rem;
   margin-top: 0.7rem;
   margin-right: 2.9rem;
 `;
@@ -248,4 +250,8 @@ const Category = styled.li`
 
 const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
   width: 16.6rem;
+`
+
+const CategoryIcon=styled(CategoryIc)`
+  width: 10.2rem;
 `
