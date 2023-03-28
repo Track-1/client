@@ -87,6 +87,10 @@ export default function PortfolioUpdateModal(props: PropsType) {
     }
   }
 
+  function checkShowTitleBox(){
+    return !isTitle && !checkIsVocalSearching()
+  }
+
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
     return () => {
@@ -99,7 +103,9 @@ export default function PortfolioUpdateModal(props: PropsType) {
       ref={modalRef}
       isTitle={isTitle}
       checkIsPortfolio={checkIsPortfolio()}
-      checkIsVocalSearching={checkIsVocalSearching()}>
+      checkIsVocalSearching={checkIsVocalSearching()}
+      checkShowTitleBox={checkShowTitleBox()}
+      >
       <ModalBox underline={true} onClick={moveEditPage}>
           수정하기
           <PencilUpdateIcon />
@@ -115,7 +121,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
           <TrashDeleteIcon />
         </ModalBox>
       )}
-      {!isTitle && !checkIsVocalSearching() && (
+      {checkShowTitleBox() && (
         <ModalBox underline={false} onClick={() => patchTitle()}>
           타이틀 설정
           <SetIsTitleIcon />
@@ -125,7 +131,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
   );
 }
 
-const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean; checkIsVocalSearching: boolean }>`
+const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean; checkIsVocalSearching: boolean;checkShowTitleBox:boolean; }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,6 +140,7 @@ const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean; c
   left: 17.2rem;
   margin-top: ${({ isTitle, checkIsVocalSearching }) => (isTitle || checkIsVocalSearching) && 16}rem;
   margin-top: ${({ isTitle, checkIsPortfolio }) => !isTitle && checkIsPortfolio && 21}rem;
+  margin-top: ${({ isTitle, checkShowTitleBox }) => !isTitle && checkShowTitleBox && 21}rem;
 
   width: 20.1rem;
 
