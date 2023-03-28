@@ -16,9 +16,6 @@ interface PropsType {
 export default function ProducerInfos(props: PropsType) {
   const { profileData, isMe } = props;
   const navigate = useNavigate();
-
- // console.log(profileData?.profileImage);
-
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
   function moveProfileEditPage() {
