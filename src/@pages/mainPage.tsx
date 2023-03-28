@@ -26,8 +26,6 @@ export default function MainPage() {
   const showModal = useRecoilValue(openConventionModal);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
 
-  console.log("hello");
-
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
     setIsVocalsHover(true);
