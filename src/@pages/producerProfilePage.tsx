@@ -151,7 +151,7 @@ console.log(state)
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} isMe={isMe}/>}
+      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.TRACKS}/>}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
