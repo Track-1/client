@@ -28,6 +28,7 @@ const arrowSliding = keyframes`
 const ProducerVocalSearchingArrowIcon = styled(ProducerVocalSearchingArrowIc)`
   cursor: pointer;
   overflow: visible;
+  width: 19.9rem;
 
   &:hover {
     animation-name: ${arrowSliding};
@@ -40,5 +41,6 @@ const ProducerVocalSearchingArrowIcon = styled(ProducerVocalSearchingArrowIc)`
 `;
 
 const ProducerVocalSearchingViewMoreTextIcon = styled(ProducerVocalSearchingViewMoreTextIc)`
+  width: 13.8rem;
   cursor: pointer;
 `;

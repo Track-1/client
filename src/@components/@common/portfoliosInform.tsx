@@ -143,12 +143,15 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   );
 }
 
-const InformContainer = styled.div``;
+const InformContainer = styled.div`
+  margin-top: 11rem;
+`;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
+  position: absolute;
+  right: 0;
   margin-top: 5.9rem;
-  /* margin-left: 12.65rem; */
-
+ // margin-right: 6.9rem;
   width: 24.5rem;
 `;
 
@@ -235,6 +238,8 @@ const InformTagWrapper = styled.div`
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`
+  width: 4rem;
+  height: 4rem;
   cursor: pointer;
 `;
 
