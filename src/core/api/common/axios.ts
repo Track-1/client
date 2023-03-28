@@ -18,10 +18,10 @@ client.interceptors.request.use(function (config: any) {
   }
 
   if (config.headers && token) {
-    // config.headers[
-    //   "Authorization"
-    // ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MSwiaWF0IjoxNjc5OTA3MzMyLCJleHAiOjE2Nzk5MDczMzN9.DcIOMZotyDYFyH_i14NVZXGp9KC5Oh6UtG5MjSSkfc4`;
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers[
+      "Authorization"
+    ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MSwiaWF0IjoxNjc5OTA3MzMyLCJleHAiOjE2Nzk5MDczMzN9.DcIOMZotyDYFyH_i14NVZXGp9KC5Oh6UtG5MjSSkfc4`;
+    // config.headers["Authorization"] = `Bearer ${token}`;
 
     return config;
   }
