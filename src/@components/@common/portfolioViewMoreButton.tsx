@@ -1,11 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc } from "../../assets";
 
-interface PropsType {
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
-}
-
-export default function PortfolioViewMoreButton(props: PropsType) {
+export default function PortfolioViewMoreButton() {
   return (
     <ViewMoreButtonWrapper>
       <ProducerVocalSearchingArrowIcon />

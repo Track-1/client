@@ -93,7 +93,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
-  //  console.log("asdfjdkfjkdfj")
+    console.log("asdfjdkfjkdfj")
     navigate(`/track-post/${id}`, {
       state: portfolios,
     });
@@ -108,7 +108,9 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
-                <PortfolioViewMoreButton onClick={() => moveTrackPost(id)} />
+                <div  onClick={() => moveTrackPost(portfolios[id].id)} >
+                <PortfolioViewMoreButton/>
+                </div>
               )}
               {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
               {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
