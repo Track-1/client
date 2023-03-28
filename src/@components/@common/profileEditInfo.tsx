@@ -39,13 +39,14 @@ export default function ProfileEditInfo(props: PropsType) {
     HOUSE: false,
     FUNK: false,
   });
-  const [contactInput, setContactInput]=useState<string>("");
+  const [contactInput, setContactInput] = useState<string>("");
 
   useEffect(() => {
     selectPrevCategory(prevDatas?.cagetory);
     inputPrevHashtags(prevDatas?.keyword);
   }, []);
 
+  console.log(prevDatas);
   useEffect(() => {
     editDatas(getEditDatas());
   }, [isSave]);
@@ -72,9 +73,9 @@ export default function ProfileEditInfo(props: PropsType) {
   }
 
   function deleteHashtag(index: number) {
-     setHashtags([...hashtags.splice(index, 1)]);
-     setHashtagInput("");
-   }
+    setHashtags([...hashtags.splice(index, 1)]);
+    setHashtagInput("");
+  }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
     setDescriptionInput(e.target.value);
@@ -111,8 +112,8 @@ export default function ProfileEditInfo(props: PropsType) {
     setCategories(new Set(tempCatgorySet));
   }
 
-  function changeContact(e: React.ChangeEvent<HTMLInputElement>){
-    setContactInput(e.target.value)
+  function changeContact(e: React.ChangeEvent<HTMLInputElement>) {
+    setContactInput(e.target.value);
   }
 
   return (
@@ -146,12 +147,12 @@ export default function ProfileEditInfo(props: PropsType) {
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
-        <HashIconWrapper>
-          <ProfileEditHashtagIcon />
-          <ProfileWarning/>
-            </HashIconWrapper>
+          <HashIconWrapper>
+            <ProfileEditHashtagIcon />
+            <ProfileWarning />
+          </HashIconWrapper>
           <InputHashtagWrapper>
-          {hashtags.map((hashtag, index) => {
+            {hashtags.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
                   <HashtagWrapper>
@@ -179,7 +180,7 @@ export default function ProfileEditInfo(props: PropsType) {
                 </HashtagWrapper>
               </Hashtag>
             )}
-            
+
             {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
@@ -191,7 +192,7 @@ export default function ProfileEditInfo(props: PropsType) {
             placeholder="What kind of work do you do?"
             defaultValue={prevDatas?.introduce}
             maxLength={150}
-            row={Math.floor(descriptionInput.length/31)+1}
+            row={Math.floor(descriptionInput.length / 31) + 1}
           />
           <TextCount onChange={countDescriptionText}>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
@@ -345,8 +346,8 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input<{row:number}>`
-  height: ${({row})=>row*3.4+1}rem;
+const DesciprtionInput = styled.input<{ row: number }>`
+  height: ${({ row }) => row * 3.4 + 1}rem;
   width: 55.9rem;
 
   margin-top: 3.3rem;
@@ -379,29 +380,29 @@ const MaxCount = styled.strong`
   color: ${({ theme }) => theme.colors.gray3};
 `;
 
-const ProfileEditContactIcon=styled(ProfileEditContactIc)`
+const ProfileEditContactIcon = styled(ProfileEditContactIc)`
   width: 8.8rem;
-`
+`;
 
-const ProfileEditCategoryIcon=styled(ProfileEditCategoryIc)`
+const ProfileEditCategoryIcon = styled(ProfileEditCategoryIc)`
   width: 10.3rem;
-`
+`;
 
-const ProfileEditHashtagIcon=styled(ProfileEditHashtagIc)`
+const ProfileEditHashtagIcon = styled(ProfileEditHashtagIc)`
   width: 9.3rem;
-`
+`;
 
-const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
+const ProfileEditDescriptionIcon = styled(ProfileEditDescriptionIc)`
   width: 12.6rem;
-`
+`;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   width: 2.8rem;
-  
+
   margin-left: -1rem;
   cursor: pointer;
 `;
 
-const HashIconWrapper=styled.div`
+const HashIconWrapper = styled.div`
   display: flex;
-`
+`;
