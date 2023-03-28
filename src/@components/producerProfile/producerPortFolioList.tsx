@@ -87,7 +87,13 @@ console.log(portfolioData)
                     profileState={profileState}
                   />
                 )}
-
+                <PortfolioImageWrapper
+                  isLarge={isSameIndex(index, 0) || isSameIndex(clickedIndex, index)}
+                  index={index}
+                  profileState={profileState}
+                  clickBool={isSameIndex(clickedIndex, index)}
+                  hoverBool={isSameIndex(hoveredIndex, index)}
+                >
                 <PortfolioImage
                   src={portfolio.jacketImage}
                   isLarge={isSameIndex(index, 0) || isSameIndex(clickedIndex, index)}
@@ -96,6 +102,7 @@ console.log(portfolioData)
                   clickBool={isSameIndex(clickedIndex, index)}
                   hoverBool={isSameIndex(hoveredIndex, index)}
                 />
+                </PortfolioImageWrapper>
               </div>
               <TitleWrapper>
                 {isSameIndex(index, 0) &&
@@ -206,6 +213,27 @@ const PortfolioBox = styled.article<{
   }
 `;
 
+const PortfolioImageWrapper=styled.div<{
+  isLarge: boolean;
+  index: number;
+  profileState: string;
+  clickBool: boolean;
+  hoverBool: boolean;
+}>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  height: ${({ clickBool, index, profileState }) =>
+    (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
+  width: ${({ clickBool, index, profileState }) =>
+    (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
+
+  border-radius: 25rem;
+ // position: absolute;
+  overflow: hidden;
+`
+
 const PortfolioImage = styled.img<{
   isLarge: boolean;
   index: number;
@@ -213,10 +241,16 @@ const PortfolioImage = styled.img<{
   clickBool: boolean;
   hoverBool: boolean;
 }>`
-  height: ${({ clickBool, index, profileState }) =>
+  /* height: ${({ clickBool, index, profileState }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   width: ${({ clickBool, index, profileState }) =>
-    (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
+    (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem; */
+  width: 100%;
+  height: 100%;
+
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 
   opacity: ${({ hoverBool, clickBool }) => !hoverBool && !clickBool && 0.2};
 `;
@@ -224,6 +258,9 @@ const PortfolioImage = styled.img<{
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
   position: absolute;
   z-index: 5;
+
+  width: 42rem;
+  height: 42rem;
 
   top: 50%;
   left: 50%;
@@ -234,6 +271,9 @@ const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
 const ProducerProfilePlayIcon = styled(ProducerProfilePlayIc)`
   position: absolute;
   z-index: 5;
+
+  width: 42rem;
+  height: 42rem;
 
   top: 50%;
   left: 50%;
