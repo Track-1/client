@@ -100,27 +100,25 @@ export default function PortfolioUpdateModal(props: PropsType) {
       isTitle={isTitle}
       checkIsPortfolio={checkIsPortfolio()}
       checkIsVocalSearching={checkIsVocalSearching()}>
-      <ModalBox underline={true}>
-        <div onClick={moveEditPage}>
+      <ModalBox underline={true} onClick={moveEditPage}>
           수정하기
-          <PencilUpdateIc />
-        </div>
+          <PencilUpdateIcon />
       </ModalBox>
       {!checkIsVocalSearching() ? (
         <ModalBox underline={!isTitle} onClick={() => deleteTrack()}>
           삭제하기
-          <TrashDeleteIc />
+          <TrashDeleteIcon />
         </ModalBox>
       ) : (
         <ModalBox underline={false} onClick={() => deleteTrack()}>
           삭제하기
-          <TrashDeleteIc />
+          <TrashDeleteIcon />
         </ModalBox>
       )}
       {!isTitle && !checkIsVocalSearching() && (
         <ModalBox underline={false} onClick={() => patchTitle()}>
           타이틀 설정
-          <SetIsTitleIc />
+          <SetIsTitleIcon />
         </ModalBox>
       )}
     </ModalWrapper>
@@ -157,3 +155,18 @@ const ModalBox = styled.div<{ underline: boolean }>`
 
   cursor: pointer;
 `;
+
+const PencilUpdateIcon=styled(PencilUpdateIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
+
+const TrashDeleteIcon=styled(TrashDeleteIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
+
+const SetIsTitleIcon=styled(SetIsTitleIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
