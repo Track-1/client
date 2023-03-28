@@ -6,63 +6,55 @@ import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDef
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 interface PropsType {
-  activeSaveButton: (inputState: string) => void;
-  id: number;
-  prevProfileImage: string;
-  prevName: string;
+  profileImage: File;
+  name: string;
+  updateProfileImage: (imgFile: File) => void;
+  updateName: (name: string) => void;
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
-  const { activeSaveButton, id, prevProfileImage, prevName } = props;
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
+  const { profileImage, name, updateProfileImage, updateName } = props;
+  const [showImage, setShowImage] = useState<string | ArrayBuffer>();
+  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [nameState, setNameState] = useState<nickName>(nickName.NOTHING);
 
-  const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
-  const [isUploaded, setIsUploaded] = useState<boolean>(false);
-  const [profileImage, setProfileImage] = useState<any>();
-  const [inputState, setInputState] = useState<string>(nickName.NOTHING);
-
-  useEffect(() => {
-    activeSaveButton(inputState);
-  }, [inputState]);
-
-  function getFile(e: React.ChangeEvent<HTMLInputElement>) {
-    setIsUploaded(true);
-    e.target.files && setProfileImage(e.target.files[0]);
-    showPrevImage(e);
+  function getImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const imageFiles = e.target.files as FileList;
+    updateProfileImage(imageFiles[0]);
+    showPrevImage(imageFiles);
+    setIsImageUploaded(true);
   }
 
-  function showPrevImage(e: React.ChangeEvent<HTMLInputElement>) {
+  function showPrevImage(imageFiles: FileList) {
     const reader = new FileReader();
-    if (e.target.files && e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]);
-    }
+    reader.readAsDataURL(imageFiles[0]);
     reader.onloadend = () => {
       const resultImage = reader.result;
-      resultImage && setPrevImage(resultImage);
+      resultImage && setShowImage(resultImage);
     };
   }
 
-  function checkInputName(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length === 0) return;
-
-    NICK_NAME.test(e.target.value) ? setInputState(nickName.CORRECT) : setInputState(nickName.ERROR);
+  function checkNameInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const text = e.target.value;
+    NICK_NAME.test(text) ? setNameState(nickName.CORRECT) : setNameState(nickName.ERROR);
   }
 
   return (
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg">
-        {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={String(prevProfileImage)} />}
+        {isImageUploaded ? <ProfileImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />}
       </ProfileImageContainer>
-      <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
+      <FileInput type="file" id="profileImg" onChange={getImageFile} />
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
           <PointIcon />
         </NameTitleWrapper>
-        <InputWrapper inputState={inputState}>
-          <NameInput onChange={checkInputName} defaultValue={prevName} />
-          {inputState !== nickName.NOTHING &&
-            (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
+        <InputWrapper nameState={nameState}>
+          <NameInput defaultValue={name} onChange={checkNameInput} />
+          {nameState === nickName.CORRECT && <ProfileEditCheckIc />}
+          {nameState === nickName.ERROR && <ProfileEditWarningIc />}
         </InputWrapper>
       </NameContainer>
     </TitleContainer>
@@ -140,16 +132,16 @@ const PointIcon = styled.div`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const InputWrapper = styled.div<{ inputState: string }>`
+const InputWrapper = styled.div<{ nameState: nickName }>`
   width: 54.9rem;
 
   display: flex;
   justify-content: space-between;
 
-  border-bottom: ${({ inputState, theme }) => {
-    if (inputState === "nothing") return "0.1rem solid white";
-    if (inputState === "correct") return "0.1rem solid #5200FF";
-    if (inputState === "error") return "0.1rem solid  #FF4F4F";
+  border-bottom: ${({ nameState }) => {
+    if (nameState === "nothing") return "0.1rem solid white";
+    if (nameState === "correct") return "0.1rem solid #5200FF";
+    if (nameState === "error") return "0.1rem solid  #FF4F4F";
   }};
 `;
 
