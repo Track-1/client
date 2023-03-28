@@ -17,7 +17,7 @@ import {
   SignUpErrorIc,
 } from "../../assets";
 import { useEffect, useState } from "react";
-import { onLogin, onLoginSuccess } from "../../core/api/login";
+import { onLogin } from "../../core/api/login";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
@@ -57,7 +57,6 @@ export default function LoginInput() {
         setLoginUserType(data.data.data.tableName);
         setLoginUserId(data.data.data.id);
         setCookie("accessToken", accessToken, {}); //옵션줘야돼용~
-        onLoginSuccess();
         navigate("/");
       }
     },
