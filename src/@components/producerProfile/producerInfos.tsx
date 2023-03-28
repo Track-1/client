@@ -29,9 +29,7 @@ export default function ProducerInfos(props: PropsType) {
   return (
     <InfoContainer>
       <InfoHeader>
-        <BackButtonWrapper>
         <BackButton />
-        </BackButtonWrapper>
         {isMe&&<ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
@@ -77,7 +75,7 @@ export default function ProducerInfos(props: PropsType) {
 }
 
 const InfoContainer = styled.section`
-  width: 61rem;
+  width: 60rem;
 
   position: fixed;
 
@@ -89,12 +87,10 @@ const InfoContainer = styled.section`
 `;
 
 const InfoHeader = styled.div`
-  width: 100%;
+  width: 60rem;
 
   display: flex;
-  justify-content: space-between;
-
-  margin-left: 8.6rem;
+  padding-left: 7.6rem;
 `;
 
 const Blank = styled.div`
@@ -170,7 +166,7 @@ const ProducerEmail = styled.h2`
 `;
 
 const DetailInfoContainer = styled.section`
-  width: 43.5rem;
+  width: 45rem;
 
   display: flex;
   justify-content: space-between;
@@ -212,7 +208,7 @@ const HashtagIcon = styled(HashtagIc)`
 `;
 
 const DescriptionBox = styled.div`
-  width: 43.6rem;
+  width: 28em;
 
   display: flex;
   justify-content: space-between;
@@ -248,16 +244,11 @@ const Category = styled.li`
 `;
 
 const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
-  position: absolute;
-  right: 0;
-  margin-right: 7.5rem;
   width: 16.6rem;
+  margin-left: 16.9rem;
 `
 
 const CategoryIcon=styled(CategoryIc)`
   width: 10.2rem;
 `
 
-const BackButtonWrapper=styled.div`
-  margin: 0 0 0 5rem;
-`
