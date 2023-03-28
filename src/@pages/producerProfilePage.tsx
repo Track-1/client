@@ -18,7 +18,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
-
+console.log(state)
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);

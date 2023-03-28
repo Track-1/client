@@ -38,7 +38,7 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   }
 
   function moveToMypage() {
-    navigate(`/producer-profile/${userId}`);
+    navigate(`/producer-profile/${userId}`, userId);
   }
 
   return (
