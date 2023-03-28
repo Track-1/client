@@ -18,6 +18,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { currentUser } from "../core/constants/userType";
 import { Category } from "../core/constants/categoryHeader";
+import { endPost } from "../recoil/postIsCompleted";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -40,6 +41,7 @@ console.log(state)
   const showPlayer = useRecoilValue(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
+  const isEnd=useRecoilValue(endPost);
 
   const { progress, audio } = usePlayer();
 
@@ -49,7 +51,7 @@ console.log(state)
     setTracksOrVocals(currentUser.PRODUCER)
   }, []);
   
-  const data = useQuery("userProfile", () => getProducerPortfolio(state, 1), {
+  const data = useQuery(["userProfile",isEnd], () => getProducerPortfolio(state, 1), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {

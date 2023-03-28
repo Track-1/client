@@ -18,6 +18,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { LoginUserId } from "../recoil/loginUserData";
 import { currentUser } from "../core/constants/userType";
+import { endPost } from "../recoil/postIsCompleted";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -37,13 +38,13 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-
+  const isEnd=useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
 
   const { state } = useLocation();
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "vocalPortFolio",
+    ["vocalPortFolio", isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {

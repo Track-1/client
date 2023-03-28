@@ -4,12 +4,13 @@ import { profileCategory } from "../../core/constants/pageCategory";
 
 import { useMutation, useQueryClient } from "react-query";
 import { deletePortfolio, deleteTitlePortfolio } from "../../core/api/delete";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
 import { patchTitleAPI } from "../../core/api/profile";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { endPost } from '../../recoil/postIsCompleted';
 
 interface PropsType {
   isTitle: boolean;
@@ -29,6 +30,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const loginUserType = useRecoilValue(LoginUserType);
   const queryClient = useQueryClient();
   const modalRef = useRef<HTMLDivElement>(null);
+  const [isEnd, setIsEnd]=useRecoilState<boolean>(endPost);
 
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
@@ -45,7 +47,8 @@ export default function PortfolioUpdateModal(props: PropsType) {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries("userProfile");
-        alert("타이틀변경 성공");
+        setIsEnd(!isEnd);
+        alert("타이틀이 변경되었습니다.");
       },
       onError: (error) => {
         console.log(error);
