@@ -17,6 +17,7 @@ export interface PortfolioPropsType {
   clickId: number;
   portfolios: PortfolioType[];
   profileState: string;
+  whom:string;
 }
 
 export interface PortfolioDetailPropsType {

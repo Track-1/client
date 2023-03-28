@@ -15,6 +15,9 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { useInfiniteQuery, useQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import { currentUser } from "../core/constants/userType";
+import { Category } from "../core/constants/categoryHeader";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -36,9 +39,16 @@ console.log(state)
   const visible = useRecoilValue(uploadButtonClicked);
   const showPlayer = useRecoilValue(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
 
   const { progress, audio } = usePlayer();
 
+  useEffect(() => {
+    // setWhom(Category.TRACKS);
+    // setShowPlayer(false);
+    setTracksOrVocals(currentUser.PRODUCER)
+  }, []);
+  
   const data = useQuery("userProfile", () => getProducerPortfolio(state, 1), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -174,6 +184,7 @@ console.log(state)
             pauseAudio={pauseAudio}
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
+            whom={Category.TRACKS}
           />
         )}
       </PageContainer>

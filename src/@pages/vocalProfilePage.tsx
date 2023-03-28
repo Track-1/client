@@ -17,6 +17,7 @@ import ProducerInfos from "../@components/producerProfile/producerInfos";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { LoginUserId } from "../recoil/loginUserData";
+import { currentUser } from "../core/constants/userType";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -35,6 +36,7 @@ export default function VocalProfilePage() {
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
+  const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
 
   const { progress, audio } = usePlayer();
 
@@ -53,8 +55,9 @@ export default function VocalProfilePage() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   useEffect(() => {
-    setWhom(Category.TRACKS);
-    setShowPlayer(false);
+    // setWhom(Category.TRACKS);
+    // setShowPlayer(false);
+    setTracksOrVocals(currentUser.VOCAL)
   }, []);
 
   async function getData(page: number) {
@@ -103,6 +106,7 @@ export default function VocalProfilePage() {
               infiniteRef={observerRef}
               getAudioInfos={getAudioInfos}
               vocalName={profileData?.name}
+              whom={Category.VOCALS}
             />
           )}
           <VocalProfileShadowIcon />

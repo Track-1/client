@@ -41,7 +41,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
   }
 
   function moveToMypage() {
-    navigate(`/vocal-profile/${userId}`);
+    navigate(`/vocal-profile/${userId}`, {state:userId});
   }
 console.log(profileData)
   return (

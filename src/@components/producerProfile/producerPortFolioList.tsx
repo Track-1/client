@@ -7,6 +7,7 @@ import { ProducerPortfolioType } from "../../type/producerProfile";
 import usePlay from "../../utils/hooks/usePlay";
 import PortfoliosInform from "../@common/portfoliosInform";
 import { isNotSameIndex, isSameIndex } from "../../utils/common/checkIndex";
+import { currentUser } from "../../core/constants/userType";
 
 interface PropsType {
   portfolioData: ProducerPortfolioType[];
@@ -17,10 +18,11 @@ interface PropsType {
   pauseAudio: () => void;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   producerName: string;
+  whom:string;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName } = props;
+  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName,whom } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [play, setPlay] = useRecoilState(playMusic);
@@ -129,6 +131,7 @@ console.log(portfolioData)
             clickId={clickedIndex}
             portfolios={portfolioData}
             profileState={profileState}
+            whom={currentUser.PRODUCER}
           />
         </InformWrapper>
       )}

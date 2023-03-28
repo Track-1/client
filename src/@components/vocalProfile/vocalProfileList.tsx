@@ -6,6 +6,7 @@ import { VocalProfileBlurPauseIc, VocalProfileBlurPlayIc } from "../../assets";
 import PortfoliosInform from "../@common/portfoliosInform";
 import usePlay from "../../utils/hooks/usePlay";
 import { VocalPortfolioType } from "../../type/vocalProfile";
+import { currentUser } from "../../core/constants/userType";
 
 interface PropsType {
   audio: HTMLAudioElement;
@@ -15,10 +16,11 @@ interface PropsType {
   infiniteRef: React.MutableRefObject<any>;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   vocalName: string;
+  whom:string;
 }
 
 export default function VocalProfileList(props: PropsType) {
-  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName } = props;
+  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName,whom } = props;
 
   const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
@@ -97,6 +99,7 @@ export default function VocalProfileList(props: PropsType) {
           clickId={clickedIndex}
           portfolios={portfolioData}
           profileState={"Porfolio"}
+          whom={whom}
         />
       )}
     </VocalProfileListWrapper>

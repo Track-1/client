@@ -22,7 +22,7 @@ import useModal from "../../utils/hooks/useModal";
 import { LoginUserType } from "../../recoil/loginUserData";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
-  const { isMe, hoverId, clickId, profileState, portfolios } = props;
+  const { isMe, hoverId, clickId, profileState, portfolios, whom } = props;
 
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
@@ -41,8 +41,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function clickUploadButton() {
-    isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
-    isVocalsPage(tracksOrVocals) && navigate("/upload/Portfolio");
+    isTracksPage(whom) && setOpenUploadModal(true);
+    isVocalsPage(whom) && navigate("/upload/Portfolio");
   }
 
   function checkIsVocalSearching() {
@@ -99,8 +99,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
                 <PortfolioViewMoreButton/>
                 </div>
               )}
-              {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
-              {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
+              {isTracksPage(whom) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
+              {isVocalsPage(whom) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIcon />}
               {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
