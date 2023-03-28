@@ -29,7 +29,9 @@ export default function ProducerInfos(props: PropsType) {
   return (
     <InfoContainer>
       <InfoHeader>
+        <BackButtonWrapper>
         <BackButton />
+        </BackButtonWrapper>
         {isMe&&<ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
@@ -246,9 +248,16 @@ const Category = styled.li`
 `;
 
 const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
+  position: absolute;
+  right: 0;
+  margin-right: 7.5rem;
   width: 16.6rem;
 `
 
 const CategoryIcon=styled(CategoryIc)`
   width: 10.2rem;
+`
+
+const BackButtonWrapper=styled.div`
+  margin: 0 0 0 5rem;
 `

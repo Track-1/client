@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BackBtnIc } from "../../assets";
+import { BackBtnIc, BackButtonIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 
 export default function BackButton() {
@@ -11,15 +11,12 @@ export default function BackButton() {
 
   return (
     <ButtonContainer onClick={movePreviousPage}>
-      <BackBtnIc />
-      <ButtonText>Back</ButtonText>
+      <BackButtonIcon/>
     </ButtonContainer>
   );
 }
 
 const ButtonContainer = styled.div`
-  width: 11.4rem;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,3 +29,7 @@ const ButtonText = styled.strong`
 
   color: ${({ theme }) => theme.colors.white};
 `;
+
+const BackButtonIcon=styled(BackButtonIc)`
+  width: 11.4rem;
+`
