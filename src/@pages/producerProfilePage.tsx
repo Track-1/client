@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -39,7 +39,7 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  const data = useQuery("userProfile", getProfileTypeApi, {
+  const data = useQuery("userProfile", () => getProducerPortfolio(state, 1), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
@@ -88,7 +88,7 @@ export default function ProducerProfilePage() {
     {
       getNextPageParam: (lastPage, allPages) => {
         console.log(profileState);
-        if (profileState == "Portfolio") {
+        if (profileState === "Portfolio") {
           return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
             ? lastPage?.portfolioNextPage
             : undefined;
@@ -141,7 +141,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} />}
+      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} />}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
