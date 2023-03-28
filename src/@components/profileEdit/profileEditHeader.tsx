@@ -6,21 +6,14 @@ interface PropsType {
   saveEditDatas: () => void;
   isMeetRequired: boolean;
 }
-export default function ProfileEditHeader(props: PropsType) {
-  const { saveEditDatas, isMeetRequired } = props;
-  const navigate = useNavigate();
-
-  function moveBackPage() {
-    navigate(-1);
-  }
-
+export default function ProfileEditHeader() {
   return (
     <HeaderContainer>
       <BackButtonWrapper>
-        <BackBtnIcon onClick={moveBackPage} />
+        <BackBtnIcon />
         <ButtonText>Back</ButtonText>
       </BackButtonWrapper>
-      {isMeetRequired ? <ProfileEditSaveButtonActiveIcon onClick={saveEditDatas} /> : <ProfileEditSaveButtonIcon />}
+      <ProfileEditSaveButtonActiveIcon /> <ProfileEditSaveButtonIcon />
     </HeaderContainer>
   );
 }
