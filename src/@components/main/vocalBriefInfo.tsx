@@ -41,7 +41,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
   }
 
   function moveToMypage() {
-    navigate(`/vocal-profile/${userId}`);
+    navigate(`/vocal-profile/${userId}`, {state:userId});
   }
 console.log(profileData)
   return (
@@ -110,8 +110,10 @@ const ProfileImageWrapper = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  height: 6rem;
-  width: 6rem;
+  /* height: 6rem;
+  width: 6rem; */
+  width: 150%;
+  //height: 135%;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;
@@ -165,7 +167,7 @@ const ImageWrapper = styled.div`
 
 const InfoProfileImage = styled.img`
   width: 150%;
-  height: 135%;
+  //height: 135%;
 
   transform: rotate(-45deg);
 `;

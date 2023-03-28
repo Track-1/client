@@ -22,7 +22,7 @@ import useModal from "../../utils/hooks/useModal";
 import { LoginUserType } from "../../recoil/loginUserData";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
-  const { isMe, hoverId, clickId, profileState, portfolios } = props;
+  const { isMe, hoverId, clickId, profileState, portfolios, whom } = props;
 
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
@@ -36,24 +36,13 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   const loginUserType = useRecoilValue(LoginUserType);
 
-  // useEffect(() => {
-  //   function closeModal(e: MouseEvent) {
-  //     isClickedOutside(e, ellipsisModalRef, openUploadModal) && setOpenEllipsisModal(false);
-  //   }
-
-  //   document.addEventListener("mousedown", closeModal);
-  //   return () => {
-  //     document.removeEventListener("mousedown", closeModal);
-  //   };
-  // }, [openEllipsisModal]);
-
   function clickEllipsis() {
     setOpenEllipsisModal(true);
   }
 
   function clickUploadButton() {
-    isTracksPage(tracksOrVocals) && setOpenUploadModal(true);
-    isVocalsPage(tracksOrVocals) && navigate("/upload/Portfolio");
+    isTracksPage(whom) && setOpenUploadModal(true);
+    isVocalsPage(whom) && navigate("/upload/Portfolio");
   }
 
   function checkIsVocalSearching() {
@@ -93,10 +82,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
-  //  console.log("asdfjdkfjkdfj")
-    navigate(`/track-post/${id}`, {
-      state: portfolios,
-    });
+    console.log("asdfjdkfjkdfj")
+    navigate(`/track-post/${id}`, { state: id });
   }
 
   return (
@@ -108,20 +95,23 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
-                <PortfolioViewMoreButton onClick={() => moveTrackPost(id)} />
+                <div  onClick={() => moveTrackPost(portfolios[id].id)} >
+                <PortfolioViewMoreButton/>
+                </div>
               )}
-              {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
-              {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
+              {isTracksPage(whom) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
+              {isVocalsPage(whom) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIcon />}
               {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
                 <PortfolioUpdateModal
                   isTitle={checkIsTitle()}
-                  ref={modalRef}
                   profileState={profileState}
                   portfolioId={portfolios[id].id}
                   portfoliosData={portfolios}
                   clickedPortfolioId={id}
+                  openEllipsisModal={openEllipsisModal}
+                  setOpenEllipsisModal={setOpenEllipsisModal}
                 />
               )}
             </InformTitleWrapper>
@@ -143,18 +133,22 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   );
 }
 
-const InformContainer = styled.div``;
+const InformContainer = styled.div`
+  margin-top: 11rem;
+`;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
+  position: absolute;
+  right: 0;
   margin-top: 5.9rem;
-  /* margin-left: 12.65rem; */
 
   width: 24.5rem;
+
+  cursor: pointer;
 `;
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;
-  /* margin-left: 12.65rem; */
 `;
 
 const PortfolioInformWrapper = styled.section`
@@ -204,18 +198,11 @@ const InformContent = styled.p`
 `;
 
 const InformTag = styled.div<{ textLength: number }>`
-  /* position: absolute; */
-
   display: flex;
   justify-content: left;
   align-items: center;
 
   height: 3.8rem;
-  /* width: 10rem; */
-  /* width: ${({ textLength }) => textLength * 13}%; */
-
-  /* width: ${({ textLength }) => (7 > textLength && textLength > 2 ? textLength + 5 : textLength + 7)}rem;
-  width: ${({ textLength }) => textLength >= 7 && textLength + 10}rem; */
 
   margin-bottom: 1rem;
   padding-left: 1.5rem;
@@ -235,6 +222,8 @@ const InformTagWrapper = styled.div`
 `;
 
 const EllipsisIcon = styled(EllipsisIc)`
+  width: 4rem;
+  height: 4rem;
   cursor: pointer;
 `;
 

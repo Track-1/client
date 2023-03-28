@@ -7,6 +7,7 @@ import { ProducerPortfolioType } from "../../type/producerProfile";
 import usePlay from "../../utils/hooks/usePlay";
 import PortfoliosInform from "../@common/portfoliosInform";
 import { isNotSameIndex, isSameIndex } from "../../utils/common/checkIndex";
+import { currentUser } from "../../core/constants/userType";
 
 interface PropsType {
   portfolioData: ProducerPortfolioType[];
@@ -17,10 +18,11 @@ interface PropsType {
   pauseAudio: () => void;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   producerName: string;
+  whom:string;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName } = props;
+  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName,whom } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [play, setPlay] = useRecoilState(playMusic);
@@ -87,15 +89,19 @@ console.log(portfolioData)
                     profileState={profileState}
                   />
                 )}
-
-                <PortfolioImage
-                  src={portfolio.jacketImage}
+                <PortfolioImageWrapper
                   isLarge={isSameIndex(index, 0) || isSameIndex(clickedIndex, index)}
                   index={index}
                   profileState={profileState}
                   clickBool={isSameIndex(clickedIndex, index)}
                   hoverBool={isSameIndex(hoveredIndex, index)}
+                >
+                <PortfolioImage
+                  src={portfolio.jacketImage}
+                  clickBool={isSameIndex(clickedIndex, index)}
+                  hoverBool={isSameIndex(hoveredIndex, index)}
                 />
+                </PortfolioImageWrapper>
               </div>
               <TitleWrapper>
                 {isSameIndex(index, 0) &&
@@ -125,6 +131,7 @@ console.log(portfolioData)
             clickId={clickedIndex}
             portfolios={portfolioData}
             profileState={profileState}
+            whom={currentUser.PRODUCER}
           />
         </InformWrapper>
       )}
@@ -206,17 +213,37 @@ const PortfolioBox = styled.article<{
   }
 `;
 
-const PortfolioImage = styled.img<{
+const PortfolioImageWrapper=styled.div<{
   isLarge: boolean;
   index: number;
   profileState: string;
   clickBool: boolean;
   hoverBool: boolean;
 }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   height: ${({ clickBool, index, profileState }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   width: ${({ clickBool, index, profileState }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
+
+  border-radius: 25rem;
+ // position: absolute;
+  overflow: hidden;
+`
+
+const PortfolioImage = styled.img<{
+  clickBool: boolean;
+  hoverBool: boolean;
+}>`
+  width: 100%;
+  height: 100%;
+
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 
   opacity: ${({ hoverBool, clickBool }) => !hoverBool && !clickBool && 0.2};
 `;
@@ -224,6 +251,9 @@ const PortfolioImage = styled.img<{
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
   position: absolute;
   z-index: 5;
+
+  width: 42rem;
+  height: 42rem;
 
   top: 50%;
   left: 50%;
@@ -234,6 +264,9 @@ const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
 const ProducerProfilePlayIcon = styled(ProducerProfilePlayIc)`
   position: absolute;
   z-index: 5;
+
+  width: 42rem;
+  height: 42rem;
 
   top: 50%;
   left: 50%;
