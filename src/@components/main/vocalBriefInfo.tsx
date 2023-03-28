@@ -43,7 +43,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
   function moveToMypage() {
     navigate(`/vocal-profile/${userId}`);
   }
-
+console.log(profileData)
   return (
     <div onClick={changeProfileBoxDisplay}>
       <InfoContainer>

@@ -93,6 +93,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
+  //  console.log("asdfjdkfjkdfj")
     navigate(`/track-post/${id}`, {
       state: portfolios,
     });
@@ -109,9 +110,9 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
               {checkIsVocalSearching() && isHoveredNClicked() && (
                 <PortfolioViewMoreButton onClick={() => moveTrackPost(id)} />
               )}
-              {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIc />}
-              {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIc />}
-              {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIc />}
+              {isTracksPage(tracksOrVocals) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
+              {isVocalsPage(tracksOrVocals) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
+              {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIcon />}
               {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
                 <PortfolioUpdateModal
@@ -236,3 +237,15 @@ const InformTagWrapper = styled.div`
 const EllipsisIcon = styled(EllipsisIc)`
   cursor: pointer;
 `;
+
+const ProducerPortfolioTitleTextIcon=styled(ProducerPortfolioTitleTextIc)`
+  width: 13.4rem;
+`
+
+const VocalPortfolioTitleTextIcon=styled(VocalPortfolioTitleTextIc)`
+  width: 13.4rem;
+`
+
+const BlankIcon=styled(BlankIc)`
+  width: 13.4rem;
+`

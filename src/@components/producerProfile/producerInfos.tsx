@@ -10,15 +10,12 @@ import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   profileData: ProducerProfileType;
-  isMe: boolean;
+  isMe:boolean;
 }
 
 export default function ProducerInfos(props: PropsType) {
   const { profileData, isMe } = props;
   const navigate = useNavigate();
-
-  console.log(profileData);
-
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
   function moveProfileEditPage() {
@@ -27,11 +24,13 @@ export default function ProducerInfos(props: PropsType) {
     });
   }
 
+  console.log(profileData)
+
   return (
     <InfoContainer>
       <InfoHeader>
         <BackButton />
-        {isMe && <ProfileEditBtnIc onClick={moveProfileEditPage} />}
+        {isMe&&<ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
       {tracksOrVocals === "Vocals" ? (
@@ -53,7 +52,7 @@ export default function ProducerInfos(props: PropsType) {
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
-          <CategoryIc />
+          <CategoryIcon />
           <CategoryArray>
             {Object.values(Categories).map((value) =>
               profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
@@ -206,6 +205,7 @@ const HashtagBox = styled.div`
 `;
 
 const HashtagIcon = styled(HashtagIc)`
+  width: 9.2rem;
   margin-bottom: 1.5rem;
 `;
 
@@ -230,6 +230,7 @@ const Inroduce = styled.div`
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
+  width: 12rem;
   margin-top: 0.7rem;
   margin-right: 2.9rem;
 `;
@@ -243,3 +244,11 @@ const Category = styled.li`
   //padding-bottom: 1.1rem;
   margin-bottom: 1.1rem;
 `;
+
+const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
+  width: 16.6rem;
+`
+
+const CategoryIcon=styled(CategoryIc)`
+  width: 10.2rem;
+`
