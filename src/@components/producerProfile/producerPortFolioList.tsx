@@ -96,9 +96,6 @@ console.log(portfolioData)
                 >
                 <PortfolioImage
                   src={portfolio.jacketImage}
-                  isLarge={isSameIndex(index, 0) || isSameIndex(clickedIndex, index)}
-                  index={index}
-                  profileState={profileState}
                   clickBool={isSameIndex(clickedIndex, index)}
                   hoverBool={isSameIndex(hoveredIndex, index)}
                 />
@@ -235,16 +232,9 @@ const PortfolioImageWrapper=styled.div<{
 `
 
 const PortfolioImage = styled.img<{
-  isLarge: boolean;
-  index: number;
-  profileState: string;
   clickBool: boolean;
   hoverBool: boolean;
 }>`
-  /* height: ${({ clickBool, index, profileState }) =>
-    (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
-  width: ${({ clickBool, index, profileState }) =>
-    (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem; */
   width: 100%;
   height: 100%;
 

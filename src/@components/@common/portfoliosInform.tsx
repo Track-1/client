@@ -36,17 +36,6 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
   const loginUserType = useRecoilValue(LoginUserType);
 
-  // useEffect(() => {
-  //   function closeModal(e: MouseEvent) {
-  //     isClickedOutside(e, ellipsisModalRef, openUploadModal) && setOpenEllipsisModal(false);
-  //   }
-
-  //   document.addEventListener("mousedown", closeModal);
-  //   return () => {
-  //     document.removeEventListener("mousedown", closeModal);
-  //   };
-  // }, [openEllipsisModal]);
-
   function clickEllipsis() {
     setOpenEllipsisModal(true);
   }
@@ -151,13 +140,14 @@ const UploadButtonIcon = styled(UploadButtonIc)`
   position: absolute;
   right: 0;
   margin-top: 5.9rem;
- // margin-right: 6.9rem;
+
   width: 24.5rem;
+
+  cursor: pointer;
 `;
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;
-  /* margin-left: 12.65rem; */
 `;
 
 const PortfolioInformWrapper = styled.section`
@@ -207,18 +197,11 @@ const InformContent = styled.p`
 `;
 
 const InformTag = styled.div<{ textLength: number }>`
-  /* position: absolute; */
-
   display: flex;
   justify-content: left;
   align-items: center;
 
   height: 3.8rem;
-  /* width: 10rem; */
-  /* width: ${({ textLength }) => textLength * 13}%; */
-
-  /* width: ${({ textLength }) => (7 > textLength && textLength > 2 ? textLength + 5 : textLength + 7)}rem;
-  width: ${({ textLength }) => textLength >= 7 && textLength + 10}rem; */
 
   margin-bottom: 1rem;
   padding-left: 1.5rem;
