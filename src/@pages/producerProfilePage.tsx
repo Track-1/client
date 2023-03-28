@@ -88,7 +88,7 @@ export default function ProducerProfilePage() {
     {
       getNextPageParam: (lastPage, allPages) => {
         console.log(profileState);
-        if (profileState == "Portfolio") {
+        if (profileState === "Portfolio") {
           return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
             ? lastPage?.portfolioNextPage
             : undefined;
@@ -141,7 +141,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} />}
+      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} />}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
