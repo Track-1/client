@@ -26,7 +26,7 @@ export default function ProfileEditInfo(props: PropsType) {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [descriptionInput, setDescriptionInput] = useState<string>("");
+  const [descriptionInput, setDescriptionInput] = useState<string>(prevDatas?.introduce);
   const [categories, setCategories] = useState<Set<string>>(new Set());
   const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>({
     "R&B": false,
@@ -44,6 +44,7 @@ export default function ProfileEditInfo(props: PropsType) {
   useEffect(() => {
     selectPrevCategory(prevDatas?.cagetory);
     inputPrevHashtags(prevDatas?.keyword);
+
   }, []);
 
   console.log(prevDatas);

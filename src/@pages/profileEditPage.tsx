@@ -90,10 +90,9 @@ export default function ProfileEditPage() {
 console.log(user)
   return (
     <>
-    <Img src={background} alt="배경"/>
       <ProfileEditHeader saveEditDatas={saveEditDatas} isMeetRequired={isMeetRequired} />
+      <Img src={background} alt="배경"/>
       <EditContainer>
-      
         {isTracksPage(user) && (
           <ProducerProfileEditTitle
             activeSaveButton={activeSaveButton}
@@ -136,5 +135,5 @@ const Img=styled.img`
     width: 192rem;
     height: 98rem;
 
-    margin-top: 4rem;
+    //margin-top: -9.8rem;
 `

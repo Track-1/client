@@ -27,6 +27,9 @@ const HeaderContainer = styled.header`
 
   height: 13.8rem;
   width: 100%;
+
+  position: sticky;
+  z-index: 2;
 `;
 
 const BackButtonWrapper = styled.div`
