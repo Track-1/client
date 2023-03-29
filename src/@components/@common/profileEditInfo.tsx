@@ -307,7 +307,7 @@ const Hashtag = styled.div`
 `;
 
 const HashtagWrapper = styled.div`
-    display: flex;
+  display: flex;
   align-items: center;
   padding: 0 1.5rem;
 `;
