@@ -45,8 +45,7 @@ export default function ProducerProfilePage() {
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
     let selectingResponse: any;
-    //console.log(profileState);
-    //console.log(stateChange);z
+
     if (hasNextPage !== false) {
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
       selectingResponse = await getSelectingTracks(state, selectingPage);
@@ -67,7 +66,6 @@ export default function ProducerProfilePage() {
 
   const { hasNextPage, fetchNextPage } = useInfiniteQuery(key, ({ pageParam = 1 }) => getData(pageParam, pageParam), {
     getNextPageParam: (lastPage, allPages) => {
-      console.log(profileState);
       if (profileState == "Portfolio") {
         return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0 ? lastPage?.portfolioNextPage : undefined;
       } else {
