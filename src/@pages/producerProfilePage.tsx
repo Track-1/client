@@ -83,11 +83,11 @@ export default function ProducerProfilePage() {
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
-  const handleClick = () => {
+  const changeKey = () => {
     setKey(Math.random().toString(36));
   };
 
-  function ScrollToTop() {
+  function scrollToTop() {
     window.scrollTo(0, 0);
   }
 
@@ -135,8 +135,8 @@ export default function ProducerProfilePage() {
             profileState={profileState}
             onClick={() => {
               changeToProfile();
-              ScrollToTop();
-              handleClick();
+              scrollToTop();
+              changeKey();
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -145,8 +145,8 @@ export default function ProducerProfilePage() {
             profileState={profileState}
             onClick={() => {
               changeToVocalSearch();
-              ScrollToTop();
-              handleClick();
+              scrollToTop();
+              changeKey();
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
