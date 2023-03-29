@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -12,7 +12,7 @@ import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { Outlet, useLocation } from "react-router-dom";
 import usePlayer from "../utils/hooks/usePlayer";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 
@@ -39,8 +39,6 @@ export default function ProducerProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   const { progress, audio } = usePlayer();
-
-
 
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
@@ -89,16 +87,6 @@ export default function ProducerProfilePage() {
     window.scrollTo(0, 0);
   }
 
-  function playAudio() {
-    audio.play();
-    setPlay(true);
-  }
-
-  function pauseAudio() {
-    audio.pause();
-    setPlay(false);
-  }
-
   function changeToProfile() {
     setProfileState("Portfolio");
     setStateChange(!stateChange);
@@ -109,6 +97,16 @@ export default function ProducerProfilePage() {
     setProfileState("Vocal Searching");
     setStateChange(!stateChange);
     setPortfolioData([]);
+  }
+
+  function playAudio() {
+    audio.play();
+    setPlay(true);
+  }
+
+  function pauseAudio() {
+    audio.pause();
+    setPlay(false);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
