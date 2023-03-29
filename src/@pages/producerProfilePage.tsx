@@ -15,6 +15,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { useInfiniteQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
+import { Category } from "../core/constants/categoryHeader";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -123,7 +124,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} />}
+      {profileData && <ProducerInfos profileData={profileData}  isMe={isMe} whom={Category.TRACKS}/>}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
