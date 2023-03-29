@@ -40,25 +40,7 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  const data = useQuery("userProfile", getProfileTypeApi, {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      setIsMe(data?.isMe);
-      setProfileData(data?.producerProfile);
-      //  setPortfolioData([...data?.producerPortfolio]);
-      //setSelectingTracksData([...data?.beatList]);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
 
-  async function getProfileTypeApi() {
-    //console.log(profileState);
-
-    return await getProducerPortfolio(state, 1);
-  }
 
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
