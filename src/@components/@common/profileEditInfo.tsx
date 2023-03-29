@@ -44,7 +44,7 @@ export default function ProfileEditInfo(props: PropsType) {
   useEffect(() => {
     selectPrevCategory(prevDatas?.cagetory);
     inputPrevHashtags(prevDatas?.keyword);
-
+    setHashtags(prevDatas?.keyword)
   }, []);
 
   console.log(prevDatas);
@@ -75,11 +75,7 @@ export default function ProfileEditInfo(props: PropsType) {
 console.log(hashtags)
 
   function deleteHashtag(index: number) {
-    // console.log(index)
-    // setHashtags([...hashtags.splice(index, index+1)]);
-    // setHashtagInput("");
-
-    const deleteTag = prevDatas.keyword;
+    const deleteTag = hashtags;
     deleteTag.splice(index, 1);
     setHashtags([...deleteTag]);
     setHashtagInput("");
@@ -161,7 +157,7 @@ console.log(hashtags)
             <ProfileWarning />
           </HashIconWrapper>
           <InputHashtagWrapper>
-            {hashtags.map((hashtag, index) => {
+            {hashtags?.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
                   <HashtagWrapper>
@@ -172,7 +168,7 @@ console.log(hashtags)
                 </Hashtag>
               );
             })}
-            {hashtags.length < 3 && (
+            {hashtags?.length < 3 && (
               <Hashtag>
                 <HashtagWrapper>
                   <HashtagSharp># </HashtagSharp>
@@ -190,7 +186,7 @@ console.log(hashtags)
               </Hashtag>
             )}
 
-            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            {hashtags?.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
@@ -201,10 +197,10 @@ console.log(hashtags)
             placeholder="What kind of work do you do?"
             defaultValue={prevDatas?.introduce}
             maxLength={150}
-            row={Math.floor(descriptionInput.length / 31) + 1}
+            row={Math.floor(descriptionInput?.length / 31) + 1}
           />
           <TextCount>
-            {descriptionInput.length}/<MaxCount>150</MaxCount>
+            {descriptionInput?.length}/<MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
       </InfoContainer>
@@ -301,7 +297,7 @@ const InputHashtagWrapper = styled.div`
 `;
 
 const Hashtag = styled.div`
-   display: flex;
+  display: flex;
   align-items: center;
   height: 3.8rem;
   background-color: ${({ theme }) => theme.colors.gray5};
