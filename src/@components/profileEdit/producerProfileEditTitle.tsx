@@ -61,7 +61,8 @@ export default function ProducerProfileEditTitle(props: PropsType) {
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
         {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={String(prevProfileImage)} />}
-        {isHover&&<SignUpChangeProducerImageIcon/>}
+        {/* {isHover&&<SignUpChangeProducerImageIcon/>} */}
+        <SignUpChangeProducerImageIcon/>
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>
