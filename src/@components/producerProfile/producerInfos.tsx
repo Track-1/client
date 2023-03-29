@@ -258,6 +258,8 @@ const Category = styled.li`
 const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
   width: 16.6rem;
   margin-left: 16.9rem;
+
+  cursor: pointer;
 `
 
 const CategoryIcon=styled(CategoryIc)`
