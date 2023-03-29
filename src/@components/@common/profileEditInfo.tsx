@@ -74,14 +74,14 @@ export default function ProfileEditInfo(props: PropsType) {
 console.log(hashtags)
 
   function deleteHashtag(index: number) {
-    console.log(index)
-    setHashtags([...hashtags.splice(index, index+1)]);
-    setHashtagInput("");
-
-    // const deleteTag = prevDatas.keyword;
-    // deleteTag.splice(index, 1);
-    // setHashtags([...deleteTag]);
+    // console.log(index)
+    // setHashtags([...hashtags.splice(index, index+1)]);
     // setHashtagInput("");
+
+    const deleteTag = prevDatas.keyword;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
+    setHashtagInput("");
   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
@@ -202,7 +202,7 @@ console.log(hashtags)
             maxLength={150}
             row={Math.floor(descriptionInput.length / 31) + 1}
           />
-          <TextCount onChange={countDescriptionText}>
+          <TextCount>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
