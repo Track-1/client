@@ -20,6 +20,7 @@ import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
 import useModal from "../../utils/hooks/useModal";
 import { LoginUserType } from "../../recoil/loginUserData";
+import { isProducer, isVocal } from "../../utils/common/userType";
 
 export default function PortfoliosInform(props: PortfolioPropsType) {
   const { isMe, hoverId, clickId, profileState, portfolios, whom } = props;
@@ -41,7 +42,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }
 
   function clickUploadButton() {
-    isTracksPage(whom) && setOpenUploadModal(true);
+    isProducer(whom) && setOpenUploadModal(true);
     isVocalsPage(whom) && navigate("/upload/Portfolio");
   }
 
@@ -95,11 +96,11 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
-                <div  onClick={() => moveTrackPost(portfolios[id].id)} >
+                <div onClick={() => moveTrackPost(portfolios[id].id)} >
                 <PortfolioViewMoreButton/>
                 </div>
               )}
-              {isTracksPage(whom) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
+              {isProducer(whom) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
               {isVocalsPage(whom) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
               {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIcon />}
               {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
