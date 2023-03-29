@@ -118,16 +118,7 @@ const ProfileImage = styled.div`
 `;
 
 const VocalProfileImageContainer = styled.div`
-  /* margin-top: 5rem;
-  margin-bottom: 2.1rem;
-
-  height: 19.3rem;
-  width: 19.3rem;
-
-  border-radius: 3rem;
-  transform: rotate(45deg);
-
-  overflow: hidden; */
+ 
 `;
 
 const VocalProfileImg = styled.img`
@@ -236,11 +227,6 @@ const DescriptionBox = styled.div`
 
 const Inroduce = styled.div`
   width: 28.5rem;
-
-  /* word-break: keep-all;
-
-  float: left; */
-
   outline: 0;
   resize: none;
   white-space: pre-wrap;
