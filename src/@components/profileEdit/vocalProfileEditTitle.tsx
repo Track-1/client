@@ -116,12 +116,10 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
-  height: 36.8rem;
+  /* height: 36.8rem;
   width: 36.8rem;
 
   margin-top: 9.4rem;
-
-  //border-radius: 50%;
 
   display: flex;
   justify-content: center;
@@ -131,20 +129,14 @@ const ProfileImageContainer = styled.label`
   width: 36.8rem;
 
   border-radius: 1.8rem;
-  //position: absolute;
   overflow: hidden;
-  transform: rotate(-45deg);
+  transform: rotate(-45deg); */
 `;
 
 const ProfileImage = styled.img`
-  /* height: 36.8rem;
-  width: 36.8rem; */
-
-  border-radius: 50%;
-
   width: 150%;
-  height: 135%;
-  //position: absolute;
+  height: 150%;
+  position: absolute;
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
@@ -157,18 +149,9 @@ const FileInput = styled.input`
 `;
 
 const UploadedImage = styled.img`
-  /* height: 36.8rem;
-  width: 36.8rem;
-
-  object-fit: cover;
-  transform: rotate(-45deg);
-  margin-top: -5rem;
-  margin-left: -5rem; */
-  border-radius: 50%;
-
   width: 150%;
-  height: 135%;
-  //position: absolute;
+  height: 150%;
+  position: absolute;
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
@@ -180,14 +163,17 @@ const ImageWrapper = styled.div`
   height: 26.7em;
   width: 26.7em;
 
-  transform: rotate(45deg);
-
-  margin-top: 5rem;
   margin-left: 5rem;
+  margin-top: 15rem;
+  margin-bottom:5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   border-radius: 3rem;
-
   overflow: hidden;
+  transform: rotate(-45deg);
 `;
 
 const NameContainer = styled.article`
