@@ -84,7 +84,7 @@ console.log(hashtags)
     setHashtagInput("");
   }
 
-  function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
+  function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescriptionInput(e.target.value);
   }
 
@@ -356,8 +356,8 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input<{ row: number }>`
-   height: ${({row})=>row*3.4+1}rem;
+const DesciprtionInput = styled.textarea<{ row: number }>`
+  height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
   outline: 0;
   resize: none;
