@@ -80,7 +80,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
         ) : (
           <ProfileImage src={prevProfileImage} />
         )}
-        </ImageWrapper>=
+        </ImageWrapper>
         {isHover&&(<SignUpChangeVocalImageIcon/>)} 
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={getFile} />
@@ -182,6 +182,7 @@ const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+//  position: absolute;
 
   border-radius: 3rem;
   overflow: hidden;
@@ -286,12 +287,14 @@ const SignUpChangeVocalImageIcon=styled(SignUpChangeImgIc)`
   width: 26.7em;
 
   border: 0.1rem solid rgba(30, 32, 37, 0.5);
-  border-radius: 1.8rem;
-  position: relative;
+  border-radius: 3rem;
   
   backdrop-filter: blur(1.7rem);
   transform: rotate(45deg);
   position: absolute;
-  right: 30.15rem;
-  top: 18.45rem;
+ 
+  margin-top: -31.7rem;
+  margin-left: 5rem;
+
+  cursor: pointer;
 `
