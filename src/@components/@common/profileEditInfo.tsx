@@ -71,9 +71,14 @@ export default function ProfileEditInfo(props: PropsType) {
       setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
-
+console.log(prevDatas.keyword)
   function deleteHashtag(index: number) {
-    setHashtags([...hashtags.splice(index, 1)]);
+    // setHashtags([...hashtags.splice(index, 1)]);
+    // setHashtagInput("");
+
+    const deleteTag = prevDatas.keyword;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
     setHashtagInput("");
   }
 
@@ -82,15 +87,16 @@ export default function ProfileEditInfo(props: PropsType) {
   }
 
   function getEditDatas() {
-    if (contactInputRef.current !== null) {
+    // if (contactInputRef.current !== null) {
       return {
-        contact: contactInputRef.current.value,
+        // contact: contactInputRef.current.value,
+        contact: contactInput,
         category: Array.from(categories),
         keyword: hashtags,
         introduce: descriptionInput,
       };
-    }
-    return editInputDatas;
+    // }
+   // return editInputDatas;
   }
 
   function selectCategory(category: string) {
