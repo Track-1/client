@@ -62,13 +62,15 @@ export default function VocalProfileEditTitle(props: PropsType) {
   return (
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg">
+      <ImageWrapper>
         {isUploaded ? (
-          <ImageWrapper>
+          // <ImageWrapper>
             <UploadedImage src={String(prevImage)} />
-          </ImageWrapper>
+          // </ImageWrapper>
         ) : (
           <ProfileImage src={prevProfileImage} />
         )}
+        </ImageWrapper>
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>
@@ -79,7 +81,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
         <InputWrapper inputState={inputState}>
           <NameInput onChange={checkInputName} defaultValue={prevName} />
           {inputState !== nickName.NOTHING &&
-            (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
+            (inputState === nickName.CORRECT ? <ProfileEditCheckIcon /> : <ProfileEditWarningIcon />)}
         </InputWrapper>
       </NameContainer>
       <SleepAcountContainer>
@@ -116,19 +118,18 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
-  /* height: 36.8rem;
-  width: 36.8rem;
+  /* height: 26.7em;
+  width: 26.7em;
 
-  margin-top: 9.4rem;
+  margin-left: 5rem;
+  margin-top: 15rem;
+  margin-bottom:5rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  height: 36.8rem;
-  width: 36.8rem;
 
-  border-radius: 1.8rem;
+  border-radius: 3rem;
   overflow: hidden;
   transform: rotate(-45deg); */
 `;
@@ -249,3 +250,13 @@ const ProfileEditSleeperButtonIcon = styled(ProfileEditSleeperButtonIc)`
   margin-top: 13rem;
   margin-bottom: 7.3rem;
 `;
+
+const ProfileEditWarningIcon=styled(ProfileEditWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
+
+const ProfileEditCheckIcon=styled(ProfileEditCheckIc)`
+  width: 4rem;
+  height: 4rem;
+`
