@@ -7,6 +7,7 @@ export const client = axios.create({
   headers: {
     Authorization: `Bearer ${getCookie("accessToken")}`,
   },
+  withCredentials: true,
 });
 
 client.interceptors.request.use(function (config: any) {
@@ -19,10 +20,8 @@ client.interceptors.request.use(function (config: any) {
 
   if (config.headers && token) {
     config.headers["Authorization"] = `Bearer ${token}`;
-
     return config;
   }
-
   return config;
 });
 
@@ -32,6 +31,7 @@ client.interceptors.response.use(
   },
   async function (error) {
     console.log(error);
+
     const originConfig = error.config;
 
     if (error.response && error.response.status === 401) {
@@ -41,6 +41,7 @@ client.interceptors.response.use(
             "Content-Type": "application/json",
             Authorization: `Bearer ${getCookie("accessToken")}`,
           },
+          withCredentials: true,
         });
         if (data) {
           console.log(data);
