@@ -22,10 +22,13 @@ export default function ProducerInfos(props: PropsType) {
 
   function moveProfileEditPage() {
     navigate(`/profile-edit/${profileData.id}`, {
-      state: profileData,
+      state: {
+        profileData:profileData,
+        user: whom
+      }
     });
   }
-
+  
   console.log(profileData)
 
   return (

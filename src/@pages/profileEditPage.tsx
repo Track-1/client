@@ -11,28 +11,30 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import { getVocalProfile, patchVocalrProfile } from "../core/api/vocalProfile";
 import { getProducerPortfolio, patchProducerProfile } from "../core/api/producerProfile";
+import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 
 export default function ProfileEditPage() {
   const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
   const [isSave, setIsSave] = useState<boolean>(false);
   const [isMeetRequired, setIsMeetRequired] = useState<boolean>(false);
-  const [user, setUser] = useState<string>(currentUser.PRODUCER);
+ //const [user, setUser] = useState<string>(currentUser.PRODUCER);
   const [prevDatas, setPrevDatas] = useState<any>();
   const [patchData, setPatchData] = useState<any>();
   const { state } = useLocation();
   const navigate = useNavigate();
-
-  console.log(state);
+  const user=state.user;
+  const profileData=state.profileData;
+  //console.log("state"+state);
 
   useEffect(() => {
     const formData = new FormData();
-    formData.append("imgFile", state?.profileImage);
-    formData.append("name", state?.name);
+    formData.append("imgFile", profileData?.profileImage);
+    formData.append("name", profileData?.name);
     formData.append("contact", editDatas.contact);
     formData.append("category", editDatas.category[0]);
     formData.append("keyword", editDatas.keyword[0]);
     formData.append("introduce", editDatas.introduce);
-    user === currentUser.VOCAL && formData.append("isSelected", "true");
+    isVocalsPage(user) && formData.append("isSelected", "true");
     setPatchData(formData);
   }, [isSave]);
 
@@ -58,7 +60,7 @@ export default function ProfileEditPage() {
 
   const { data } = useQuery(
     ["userId", 1],
-    () => (user === currentUser.PRODUCER ? getProducerPortfolio(state.id, 1) : getVocalProfile(state.id, 1)),
+    () => (isTracksPage(user) ? getProducerPortfolio(profileData.id, 1) : getVocalProfile(profileData.id, 1)),
     {
       refetchOnWindowFocus: false,
       retry: 0,
@@ -83,23 +85,23 @@ export default function ProfileEditPage() {
   function activeSaveButton(inputState: string) {
     inputState === nickName.CORRECT ? setIsMeetRequired(true) : setIsMeetRequired(false);
   }
-
+console.log(user)
   return (
     <>
       <ProfileEditHeader saveEditDatas={saveEditDatas} isMeetRequired={isMeetRequired} />
       <EditContainer>
-        {user === currentUser.PRODUCER && (
+        {isTracksPage(user) && (
           <ProducerProfileEditTitle
             activeSaveButton={activeSaveButton}
-            id={state}
+            id={profileData.id}
             prevProfileImage={data?.producerProfile.profileImage}
             prevName={data?.producerProfile.name}
           />
         )}
-        {user === currentUser.VOCAL && (
+        {isVocalsPage(user) && (
           <VocalProfileEditTitle
             activeSaveButton={activeSaveButton}
-            id={state}
+            id={profileData.id}
             prevProfileImage={data?.vocalProfile.profileImage}
             prevName={data?.vocalProfile.name}
           />
@@ -107,7 +109,7 @@ export default function ProfileEditPage() {
         <ProfileEditInfo
           isSave={isSave}
           editDatas={editDats}
-          prevDatas={user === currentUser.PRODUCER ? state : data?.vocalProfile}
+          prevDatas={isTracksPage(user) ? profileData : data?.vocalProfile}
         />
       </EditContainer>
     </>
