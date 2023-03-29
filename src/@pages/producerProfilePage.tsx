@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
@@ -12,21 +12,18 @@ import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { Outlet, useLocation } from "react-router-dom";
 import usePlayer from "../utils/hooks/usePlayer";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
-import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
-import { currentUser } from "../core/constants/userType";
-import { Category } from "../core/constants/categoryHeader";
-import { endPost } from "../recoil/postIsCompleted";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
-console.log(state)
+
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
+  const [key, setKey] = useState("producerPortFolio");
   const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
   const [audioInfos, setAudioInfos] = useState({
@@ -40,42 +37,13 @@ console.log(state)
   const visible = useRecoilValue(uploadButtonClicked);
   const showPlayer = useRecoilValue(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const isEnd=useRecoilValue(endPost);
 
   const { progress, audio } = usePlayer();
-
-  useEffect(() => {
-    // setWhom(Category.TRACKS);
-    // setShowPlayer(false);
-    setTracksOrVocals(currentUser.PRODUCER)
-  }, []);
-  
-  const data = useQuery(["userProfile",isEnd], () => getProducerPortfolio(state, 1), {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (data) => {
-      setIsMe(data?.isMe);
-      setProfileData(data?.producerProfile);
-      //  setPortfolioData([...data?.producerPortfolio]);
-      //setSelectingTracksData([...data?.beatList]);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  async function getProfileTypeApi() {
-    //console.log(profileState);
-
-    return await getProducerPortfolio(state, 1);
-  }
 
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
     let selectingResponse: any;
-    //console.log(profileState);
-    //console.log(stateChange);
+
     if (hasNextPage !== false) {
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
       selectingResponse = await getSelectingTracks(state, selectingPage);
@@ -94,37 +62,29 @@ console.log(state)
     }
   }
 
-  const { hasNextPage, fetchNextPage } = useInfiniteQuery(
-    "producerPortFolio",
-    ({ pageParam = 1 }) => getData(pageParam, pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        console.log(profileState);
-        if (profileState === "Portfolio") {
-          return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
-            ? lastPage?.portfolioNextPage
-            : undefined;
-        } else {
-          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
-        }
-      },
+  const { hasNextPage, fetchNextPage } = useInfiniteQuery(key, ({ pageParam = 1 }) => getData(pageParam, pageParam), {
+    getNextPageParam: (lastPage, allPages) => {
+      if (profileState == "Portfolio") {
+        return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0 ? lastPage?.portfolioNextPage : undefined;
+      } else {
+        return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
+      }
     },
-  );
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
-  function ScrollToTop() {
+  const changeKey = () => {
+    setKey(Math.random().toString(36));
+  };
+
+  function scrollToTop() {
     window.scrollTo(0, 0);
-  }
-
-  function playAudio() {
-    audio.play();
-    setPlay(true);
-  }
-
-  function pauseAudio() {
-    audio.pause();
-    setPlay(false);
   }
 
   function changeToProfile() {
@@ -137,6 +97,16 @@ console.log(state)
     setProfileState("Vocal Searching");
     setStateChange(!stateChange);
     setPortfolioData([]);
+  }
+
+  function playAudio() {
+    audio.play();
+    setPlay(true);
+  }
+
+  function pauseAudio() {
+    audio.pause();
+    setPlay(false);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
@@ -153,7 +123,7 @@ console.log(state)
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.TRACKS}/>}
+      {profileData && <ProducerInfos profileData={profileData} />}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
@@ -161,7 +131,8 @@ console.log(state)
             profileState={profileState}
             onClick={() => {
               changeToProfile();
-              ScrollToTop();
+              scrollToTop();
+              changeKey();
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -170,7 +141,8 @@ console.log(state)
             profileState={profileState}
             onClick={() => {
               changeToVocalSearch();
-              ScrollToTop();
+              scrollToTop();
+              changeKey();
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
@@ -186,7 +158,6 @@ console.log(state)
             pauseAudio={pauseAudio}
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
-            whom={Category.TRACKS}
           />
         )}
       </PageContainer>
@@ -219,7 +190,6 @@ const PageContainer = styled.section`
 `;
 
 const GradientBox = styled.img`
-  width: 45rem;
   left: 60rem;
 `;
 
@@ -229,7 +199,6 @@ const TabContainer = styled.ul`
   left: 63.8rem;
 
   ${({ theme }) => theme.fonts.body1};
-  cursor: pointer;
 `;
 
 const PortfolioTab = styled.li<{ profileState: string }>`
@@ -253,7 +222,5 @@ const BlankDiv = styled.div`
 `;
 
 const RightArrorIcon = styled(RightArrorIc)`
-  width: 2.4rem;
-  height: 2.4rem;
   margin-right: 1rem;
 `;
