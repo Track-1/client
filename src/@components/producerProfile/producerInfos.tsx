@@ -7,17 +7,17 @@ import { useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { Categories } from "../../core/constants/categories";
 import { useNavigate } from "react-router-dom";
+import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
 interface PropsType {
   profileData: ProducerProfileType;
+  isMe:boolean;
+  whom:string;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData } = props;
+  const { profileData, isMe,whom } = props;
   const navigate = useNavigate();
-
-  console.log(profileData?.profileImage);
-
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
   function moveProfileEditPage() {
@@ -26,20 +26,23 @@ export default function ProducerInfos(props: PropsType) {
     });
   }
 
+  console.log(profileData)
+
   return (
     <InfoContainer>
       <InfoHeader>
         <BackButton />
-        <ProfileEditBtnIc onClick={moveProfileEditPage} />
+        {isMe&&<ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
-      {tracksOrVocals === "Vocals" ? (
+      {isVocalsPage(whom) && (
         <VocalProfileImageContainer>
           <VocalProfileImage>
             <VocalProfileImg src={profileData?.profileImage} alt="프로필이미지" />
           </VocalProfileImage>
         </VocalProfileImageContainer>
-      ) : (
+      )}
+      {isTracksPage(whom)&&(
         <ProfileImage>
           <ProfileImg src={profileData?.profileImage} alt="프로필이미지" />
         </ProfileImage>
@@ -52,7 +55,7 @@ export default function ProducerInfos(props: PropsType) {
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
-          <CategoryIc />
+          <CategoryIcon />
           <CategoryArray>
             {Object.values(Categories).map((value) =>
               profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
@@ -75,7 +78,7 @@ export default function ProducerInfos(props: PropsType) {
 }
 
 const InfoContainer = styled.section`
-  width: 61rem;
+  width: 60rem;
 
   position: fixed;
 
@@ -87,12 +90,10 @@ const InfoContainer = styled.section`
 `;
 
 const InfoHeader = styled.div`
-  width: 100%;
+  width: 60rem;
 
   display: flex;
-  justify-content: space-between;
-
-  margin-left: 8.6rem;
+  padding-left: 7.6rem;
 `;
 
 const Blank = styled.div`
@@ -113,7 +114,7 @@ const ProfileImage = styled.div`
 `;
 
 const VocalProfileImageContainer = styled.div`
-  margin-top: 5rem;
+  /* margin-top: 5rem;
   margin-bottom: 2.1rem;
 
   height: 19.3rem;
@@ -122,24 +123,33 @@ const VocalProfileImageContainer = styled.div`
   border-radius: 3rem;
   transform: rotate(45deg);
 
-  overflow: hidden;
+  overflow: hidden; */
 `;
 
 const VocalProfileImg = styled.img`
-  height: 26.8rem;
-  width: 26.7rem;
+  width: 150%;
 
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
+  transform: rotate(45deg);
   position: relative;
-
-  top: -2rem;
-  left: -0.5rem;
-  right: 0;
-  bottom: 0;
+  right: 5.5rem;
+  top: -4.5rem;
 `;
 const VocalProfileImage = styled.div`
-  background-repeat: no-repeat;
-  background-size: contain;
+ display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  height: 19.3rem;
+  width: 19.3rem;
+  border-radius: 3rem;
+  overflow: hidden;
   transform: rotate(-45deg);
+  margin-top: 5rem;
+  margin-bottom: 2.1rem;
 `;
 
 const ProducerNameContainer = styled.div`
@@ -168,7 +178,7 @@ const ProducerEmail = styled.h2`
 `;
 
 const DetailInfoContainer = styled.section`
-  width: 43.5rem;
+  width: 45rem;
 
   display: flex;
   justify-content: space-between;
@@ -205,11 +215,12 @@ const HashtagBox = styled.div`
 `;
 
 const HashtagIcon = styled(HashtagIc)`
+  width: 9.2rem;
   margin-bottom: 1.5rem;
 `;
 
 const DescriptionBox = styled.div`
-  width: 43.6rem;
+  width: 28em;
 
   display: flex;
   justify-content: space-between;
@@ -229,6 +240,7 @@ const Inroduce = styled.div`
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
+  width: 12rem;
   margin-top: 0.7rem;
   margin-right: 2.9rem;
 `;
@@ -242,3 +254,13 @@ const Category = styled.li`
   //padding-bottom: 1.1rem;
   margin-bottom: 1.1rem;
 `;
+
+const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
+  width: 16.6rem;
+  margin-left: 16.9rem;
+`
+
+const CategoryIcon=styled(CategoryIc)`
+  width: 10.2rem;
+`
+

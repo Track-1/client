@@ -22,10 +22,12 @@ export default function ProfileEditPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  console.log(state);
+
   useEffect(() => {
     const formData = new FormData();
-    formData.append("imgFile", prevDatas?.profileImage);
-    formData.append("name", prevDatas?.name);
+    formData.append("imgFile", state?.profileImage);
+    formData.append("name", state?.name);
     formData.append("contact", editDatas.contact);
     formData.append("category", editDatas.category[0]);
     formData.append("keyword", editDatas.keyword[0]);
@@ -34,8 +36,24 @@ export default function ProfileEditPage() {
     setPatchData(formData);
   }, [isSave]);
 
+  const { mutate } = useMutation(
+    () => (user === currentUser.PRODUCER ? patchProducerProfile(patchData) : patchVocalrProfile(patchData)),
+    {
+      onSuccess: () => {
+        console.log("ok");
+        navigate(-1);
+      },
+      onError: (e) => {
+        console.log(e);
+
+        navigate(-1);
+      },
+    },
+  );
+
   useEffect(() => {
-    mutate();
+    patchData?.keys().length >= 6 && mutate(patchData);
+    console.log(patchData, "dfdfdfd");
   }, [patchData]);
 
   const { data } = useQuery(
@@ -50,19 +68,6 @@ export default function ProfileEditPage() {
       },
       onError: (error) => {
         console.log(error);
-      },
-    },
-  );
-
-  const { mutate } = useMutation(
-    () => (user === currentUser.PRODUCER ? patchProducerProfile(patchData) : patchVocalrProfile(patchData)),
-    {
-      onSuccess: () => {
-        console.log("ok");
-        navigate(-1);
-      },
-      onError: () => {
-        navigate(-1);
       },
     },
   );
@@ -102,7 +107,7 @@ export default function ProfileEditPage() {
         <ProfileEditInfo
           isSave={isSave}
           editDatas={editDats}
-          prevDatas={user === currentUser.PRODUCER ? data?.producerProfile : data?.vocalProfile}
+          prevDatas={user === currentUser.PRODUCER ? state : data?.vocalProfile}
         />
       </EditContainer>
     </>

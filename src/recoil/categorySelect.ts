@@ -33,3 +33,8 @@ export const vocalsData = atom({
     isSelected: true,
   }
 })
+
+export const clickCategoryHeader= atom({
+  key:"clickCategoryHeader",
+  default:false,
+})

@@ -1,11 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc } from "../../assets";
 
-interface PropsType {
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
-}
-
-export default function PortfolioViewMoreButton(props: PropsType) {
+export default function PortfolioViewMoreButton() {
   return (
     <ViewMoreButtonWrapper>
       <ProducerVocalSearchingArrowIcon />
@@ -32,6 +28,7 @@ const arrowSliding = keyframes`
 const ProducerVocalSearchingArrowIcon = styled(ProducerVocalSearchingArrowIc)`
   cursor: pointer;
   overflow: visible;
+  width: 19.9rem;
 
   &:hover {
     animation-name: ${arrowSliding};
@@ -44,5 +41,6 @@ const ProducerVocalSearchingArrowIcon = styled(ProducerVocalSearchingArrowIc)`
 `;
 
 const ProducerVocalSearchingViewMoreTextIcon = styled(ProducerVocalSearchingViewMoreTextIc)`
+  width: 13.8rem;
   cursor: pointer;
 `;

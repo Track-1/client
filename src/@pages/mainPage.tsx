@@ -23,9 +23,9 @@ export default function MainPage() {
   const [background, setBackground] = useState<string>(mainBackgroundImg);
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
-  const showModal=useRecoilValue(openConventionModal)
+  const showModal = useRecoilValue(openConventionModal);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
-  
+
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
     setIsVocalsHover(true);
@@ -44,26 +44,26 @@ export default function MainPage() {
 
   function movePage(e: React.MouseEvent<HTMLDivElement>) {
     isTracksHover ? navigate("/track-search") : navigate("/vocal-search");
-    isTracksHover? setTracksOrVocals(Category.TRACKS):setTracksOrVocals(Category.VOCALS)
+    isTracksHover ? setTracksOrVocals(Category.TRACKS) : setTracksOrVocals(Category.VOCALS);
   }
 
   return (
     <>
-    <MainPageWrapper>
+      <MainPageWrapper>
         <MainHeader />
-      <Main>
-        <Img src={background} alt="배경이미지" />
-        <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-        <VocalsTextIcon isVocalsHover={isVocalsHover} />
-        <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-        <MainTracksTextIcon isTracksHover={isTracksHover} />
-        <MainSlogan src={mainSloganImg} alt="슬로건" />
-      </Main>
-      <Ads/>
-      <Footer />
-    </MainPageWrapper>
+        <Main>
+          <Img src={background} alt="배경이미지" />
+          <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+          <VocalsTextIcon isVocalsHover={isVocalsHover} />
+          <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
+          <MainTracksTextIcon isTracksHover={isTracksHover} />
+          <MainSlogan src={mainSloganImg} alt="슬로건" />
+        </Main>
+        <Ads />
+        <Footer />
+      </MainPageWrapper>
 
-    {showModal&&(<ConventionModal/>)}
+      {showModal && <ConventionModal />}
     </>
   );
 }
@@ -154,7 +154,6 @@ const MainSlogan = styled.img`
   width: 35rem;
 `;
 
-const Img=styled.img`
+const Img = styled.img`
   width: 192rem;
-`
-
+`;

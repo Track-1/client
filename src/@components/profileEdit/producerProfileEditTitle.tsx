@@ -51,7 +51,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   return (
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg">
-        {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={prevProfileImage} />}
+        {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={String(prevProfileImage)} />}
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>

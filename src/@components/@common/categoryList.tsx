@@ -9,7 +9,7 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import { categorySelect, trackSearching } from "../../recoil/categorySelect";
+import { categorySelect, clickCategoryHeader, trackSearching } from "../../recoil/categorySelect";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { Category } from "../../core/constants/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
@@ -28,6 +28,17 @@ export default function CategoryList() {
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
   const userType=useRecoilValue(LoginUserType)
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+  useEffect(()=>{
+    setSelectedCategorys(
+      selectedCategorys.map((selectCateg) =>
+        ({ ...selectCateg, selected: false }),
+      ),
+    );
+    setFilteredUrlApi("");
+    setTrackSearchingClicked(false)
+  },[isClickedCategory])
 
   function categoryClick(id: number) {
     setSelectedCategorys(

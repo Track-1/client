@@ -33,12 +33,14 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   });
 
   function logout() {
+    console.log("eee");
     onLogout();
     navigate("/");
   }
 
   function moveToMypage() {
-    navigate(`/producer-profile/${userId}`);
+    navigate(`/producer-profile/${userId}`, { state: userId });
+    // console.log(userId);
   }
 
   return (
@@ -62,7 +64,7 @@ export default function ProducerBriefInfo(props: UserPropsType) {
           </InfoBox>
           <LogoutBox onClick={logout}>
             Log out
-            <MainLogoutIc />
+            <MainLogoutIcon />
           </LogoutBox>
         </UserInfoContainer>
       )}
@@ -169,3 +171,8 @@ const Blank = styled.div`
   width: 50rem;
   height: 3rem;
 `;
+
+const MainLogoutIcon=styled(MainLogoutIc)`
+  width: 4rem;
+  height: 4rem;
+`

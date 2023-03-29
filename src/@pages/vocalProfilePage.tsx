@@ -17,6 +17,8 @@ import ProducerInfos from "../@components/producerProfile/producerInfos";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { LoginUserId } from "../recoil/loginUserData";
+import { currentUser } from "../core/constants/userType";
+import { endPost } from "../recoil/postIsCompleted";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -35,13 +37,14 @@ export default function VocalProfilePage() {
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
-
+  const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
+  const isEnd=useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
 
   const { state } = useLocation();
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "vocalPortFolio",
+    ["vocalPortFolio", isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -53,8 +56,9 @@ export default function VocalProfilePage() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   useEffect(() => {
-    setWhom(Category.TRACKS);
-    setShowPlayer(false);
+    // setWhom(Category.TRACKS);
+    // setShowPlayer(false);
+    setTracksOrVocals(currentUser.VOCAL)
   }, []);
 
   async function getData(page: number) {
@@ -91,7 +95,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} />}</VocalProfile>
+      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.VOCALS}/>}</VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
           {portfolioData && profileData && (
@@ -103,9 +107,10 @@ export default function VocalProfilePage() {
               infiniteRef={observerRef}
               getAudioInfos={getAudioInfos}
               vocalName={profileData?.name}
+              whom={Category.VOCALS}
             />
           )}
-          <VocalProfileShadow />
+          <VocalProfileShadowIcon />
         </VocalProfileWrapper>
       </VocalProfilePageWrapper>
 
@@ -152,3 +157,7 @@ const PlayerWrapper = styled.div`
   position: sticky;
   bottom: 0;
 `;
+
+const VocalProfileShadowIcon=styled(VocalProfileShadow)`
+  width: 45rem;
+`

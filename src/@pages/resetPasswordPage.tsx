@@ -40,6 +40,8 @@ export default function ResetPasswordPage() {
 
 const TrackOneMainLogoIcon=styled(TrackOneMainLogoIc)`
   width: 26.3rem;
+  margin: -0.05rem 0 0 -0.4rem;
+  cursor: pointer;
 `
 
 const LogoWrapper = styled.div`

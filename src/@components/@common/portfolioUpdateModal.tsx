@@ -4,27 +4,33 @@ import { profileCategory } from "../../core/constants/pageCategory";
 
 import { useMutation, useQueryClient } from "react-query";
 import { deletePortfolio, deleteTitlePortfolio } from "../../core/api/delete";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
 import { patchTitleAPI } from "../../core/api/profile";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { endPost } from '../../recoil/postIsCompleted';
 
 interface PropsType {
   isTitle: boolean;
   profileState: string;
-  ref: React.RefObject<HTMLDivElement>;
+ // ref: React.RefObject<HTMLDivElement>;
   portfolioId: number;
   portfoliosData: PortfolioType[];
   clickedPortfolioId: number;
+  openEllipsisModal:boolean;
+  setOpenEllipsisModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function PortfolioUpdateModal(props: PropsType) {
-  const { isTitle, profileState, portfolioId, portfoliosData, clickedPortfolioId } = props;
+  const { isTitle, profileState, portfolioId, portfoliosData, clickedPortfolioId,openEllipsisModal,setOpenEllipsisModal } = props;
   const navigate = useNavigate();
 
   const loginUserType = useRecoilValue(LoginUserType);
   const queryClient = useQueryClient();
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [isEnd, setIsEnd]=useRecoilState<boolean>(endPost);
 
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
@@ -41,7 +47,8 @@ export default function PortfolioUpdateModal(props: PropsType) {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries("userProfile");
-        alert("타이틀변경 성공");
+        setIsEnd(!isEnd);
+        alert("타이틀이 변경되었습니다.");
       },
       onError: (error) => {
         console.log(error);
@@ -73,39 +80,61 @@ export default function PortfolioUpdateModal(props: PropsType) {
     });
   }
 
+  function isClickedOutside(e: MouseEvent) {
+    return openEllipsisModal && !modalRef.current?.contains(e.target as Node);
+  }
+
+  function closeModal(e: MouseEvent) {
+    if (isClickedOutside(e)) {
+      setOpenEllipsisModal(false);
+    }
+  }
+
+  function checkShowTitleBox(){
+    return !isTitle && !checkIsVocalSearching()
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", closeModal);
+    return () => {
+      document.removeEventListener("mousedown", closeModal);
+    };
+  }, [openEllipsisModal]);
+
   return (
     <ModalWrapper
+      ref={modalRef}
       isTitle={isTitle}
       checkIsPortfolio={checkIsPortfolio()}
-      checkIsVocalSearching={checkIsVocalSearching()}>
-      <ModalBox underline={true}>
-        <div onClick={moveEditPage}>
+      checkIsVocalSearching={checkIsVocalSearching()}
+      checkShowTitleBox={checkShowTitleBox()}
+      >
+      <ModalBox underline={true} onClick={moveEditPage}>
           수정하기
-          <PencilUpdateIc />
-        </div>
+          <PencilUpdateIcon />
       </ModalBox>
       {!checkIsVocalSearching() ? (
         <ModalBox underline={!isTitle} onClick={() => deleteTrack()}>
           삭제하기
-          <TrashDeleteIc />
+          <TrashDeleteIcon />
         </ModalBox>
       ) : (
         <ModalBox underline={false} onClick={() => deleteTrack()}>
           삭제하기
-          <TrashDeleteIc />
+          <TrashDeleteIcon />
         </ModalBox>
       )}
-      {!isTitle && !checkIsVocalSearching() && (
+      {checkShowTitleBox() && (
         <ModalBox underline={false} onClick={() => patchTitle()}>
           타이틀 설정
-          <SetIsTitleIc />
+          <SetIsTitleIcon />
         </ModalBox>
       )}
     </ModalWrapper>
   );
 }
 
-const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean; checkIsVocalSearching: boolean }>`
+const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean; checkIsVocalSearching: boolean;checkShowTitleBox:boolean; }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,6 +143,7 @@ const ModalWrapper = styled.div<{ isTitle: boolean; checkIsPortfolio: boolean; c
   left: 17.2rem;
   margin-top: ${({ isTitle, checkIsVocalSearching }) => (isTitle || checkIsVocalSearching) && 16}rem;
   margin-top: ${({ isTitle, checkIsPortfolio }) => !isTitle && checkIsPortfolio && 21}rem;
+  margin-top: ${({ isTitle, checkShowTitleBox }) => !isTitle && checkShowTitleBox && 21}rem;
 
   width: 20.1rem;
 
@@ -135,3 +165,18 @@ const ModalBox = styled.div<{ underline: boolean }>`
 
   cursor: pointer;
 `;
+
+const PencilUpdateIcon=styled(PencilUpdateIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
+
+const TrashDeleteIcon=styled(TrashDeleteIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
+
+const SetIsTitleIcon=styled(SetIsTitleIc)`
+  width: 2.4rem;
+  height: 2.4rem;
+`
