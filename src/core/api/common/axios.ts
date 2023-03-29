@@ -35,6 +35,7 @@ client.interceptors.response.use(
     const originConfig = error.config;
 
     if (error.response && error.response.status === 401) {
+      console.log("hello");
       try {
         const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/etc/refresh`, {
           headers: {
