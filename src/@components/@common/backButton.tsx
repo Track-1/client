@@ -32,4 +32,5 @@ const ButtonText = styled.strong`
 
 const BackButtonIcon=styled(BackButtonIc)`
   width: 11.4rem;
+  cursor: pointer;
 `

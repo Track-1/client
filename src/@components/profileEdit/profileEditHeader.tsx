@@ -47,10 +47,12 @@ const ButtonText = styled.div`
 `;
 
 const ProfileEditSaveButtonIcon = styled(ProfileEditSaveButtonIc)`
+  width: 24.6rem;
   margin: 5rem 6.9rem 0 0;
 `;
 
 const ProfileEditSaveButtonActiveIcon = styled(ProfileEditSaveButtonActiveIc)`
+  width: 24.6rem;
   margin: 5rem 6.9rem 0 0;
 `;
 

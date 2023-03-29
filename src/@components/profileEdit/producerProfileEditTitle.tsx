@@ -88,19 +88,33 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   height: 36.8rem;
   width: 36.8rem;
+  border-radius: 50%;
+ // position: absolute;
+  overflow: hidden;
+
+  /* height: 36.8rem;
+  width: 36.8rem; */
 
   margin-top: 17.8rem;
-
-  border-radius: 50%;
 `;
 
 const ProfileImage = styled.img`
-  height: 36.8rem;
+  /* height: 36.8rem;
   width: 36.8rem;
 
-  border-radius: 50%;
+  border-radius: 50%; */
+    width: 100%;
+    height: 100%;
+   // position: absolute;
+    transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
 `;
 
 const FileInput = styled.input`
@@ -108,11 +122,17 @@ const FileInput = styled.input`
 `;
 
 const UploadedImage = styled.img`
-  height: 36.8rem;
+  /* height: 36.8rem;
   width: 36.8rem;
 
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: cover; */
+  width: 100%;
+    height: 100%;
+   // position: absolute;
+    transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
 `;
 
 const NameContainer = styled.article`
