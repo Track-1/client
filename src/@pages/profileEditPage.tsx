@@ -12,6 +12,8 @@ import { useMutation, useQuery } from "react-query";
 import { getVocalProfile, patchVocalrProfile } from "../core/api/vocalProfile";
 import { getProducerPortfolio, patchProducerProfile } from "../core/api/producerProfile";
 import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
+import Footer from "../@components/@common/footer";
+import background from "../assets/icon/signUpBackgroundIc.svg";
 
 export default function ProfileEditPage() {
   const [editDatas, setEditDatas] = useState<EditDataType>(editInputDatas);
@@ -90,6 +92,7 @@ console.log(user)
     <>
       <ProfileEditHeader saveEditDatas={saveEditDatas} isMeetRequired={isMeetRequired} />
       <EditContainer>
+      <Img src={background} alt="배경"/>
         {isTracksPage(user) && (
           <ProducerProfileEditTitle
             activeSaveButton={activeSaveButton}
@@ -112,6 +115,7 @@ console.log(user)
           prevDatas={isTracksPage(user) ? profileData : data?.vocalProfile}
         />
       </EditContainer>
+      <Footer/>
     </>
   );
 }
@@ -122,3 +126,9 @@ const EditContainer = styled.section`
 
   padding: 0 21.8rem;
 `;
+
+const Img=styled.img`
+    position: absolute;
+    width: 192rem;
+    height: 98rem;
+`

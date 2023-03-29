@@ -283,26 +283,26 @@ const HashtagContainer = styled.article`
 `;
 
 const InputHashtagWrapper = styled.div`
+  /* display: flex;
+  flex-wrap: wrap; */
   display: flex;
   flex-wrap: wrap;
-`;
-
-const Hashtag = styled.div`
-  display: flex;
   align-items: center;
-
-  height: 3.8rem;
-
-  background-color: ${({ theme }) => theme.colors.gray5};
-  border-radius: 2.1rem;
-
-  margin-right: 1rem;
   margin-top: 2.8rem;
 `;
 
-const HashtagWrapper = styled.div`
-  display: flex;
+const Hashtag = styled.div`
+   display: flex;
+  align-items: center;
+  height: 3.8rem;
+  background-color: ${({ theme }) => theme.colors.gray5};
+  border-radius: 2.1rem;
+  padding-right: 1rem;
+`;
 
+const HashtagWrapper = styled.div`
+    display: flex;
+  align-items: center;
   padding: 0 1.5rem;
 `;
 
@@ -337,7 +337,9 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-top: 2.8rem;
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
 `;
 
 const DescriptionContainer = styled.article`
@@ -347,19 +349,21 @@ const DescriptionContainer = styled.article`
 `;
 
 const DesciprtionInput = styled.input<{ row: number }>`
-  height: ${({ row }) => row * 3.4 + 1}rem;
+   height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
-
-  margin-top: 3.3rem;
-
+  outline: 0;
+  resize: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  background-color: transparent;
+  margin-top: 3rem;
+  overflow: hidden;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
-
-  padding-bottom: 0.5rem;
-
+  padding-bottom: 3rem;
   ${({ theme }) => theme.fonts.input}
-
   color: ${({ theme }) => theme.colors.white};
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
