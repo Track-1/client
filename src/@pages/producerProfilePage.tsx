@@ -23,6 +23,7 @@ export default function ProducerProfilePage() {
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
+  const [key, setKey] = useState("producerPortFolio");
   const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
   const [audioInfos, setAudioInfos] = useState({
@@ -63,7 +64,7 @@ export default function ProducerProfilePage() {
     let portfolioResponse: any;
     let selectingResponse: any;
     //console.log(profileState);
-    //console.log(stateChange);
+    //console.log(stateChange);z
     if (hasNextPage !== false) {
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
       selectingResponse = await getSelectingTracks(state, selectingPage);
@@ -82,24 +83,24 @@ export default function ProducerProfilePage() {
     }
   }
 
-  const { hasNextPage, fetchNextPage } = useInfiniteQuery(
-    "producerPortFolio",
-    ({ pageParam = 1 }) => getData(pageParam, pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        console.log(profileState);
-        if (profileState == "Portfolio") {
-          return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
-            ? lastPage?.portfolioNextPage
-            : undefined;
-        } else {
-          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
-        }
-      },
+  const { hasNextPage, fetchNextPage } = useInfiniteQuery(key, ({ pageParam = 1 }) => getData(pageParam, pageParam), {
+    getNextPageParam: (lastPage, allPages) => {
+      console.log(profileState);
+      if (profileState == "Portfolio") {
+        return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0 ? lastPage?.portfolioNextPage : undefined;
+      } else {
+        return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
+      }
     },
-  );
+    refetchOnWindowFocus: false,
+    retry: 0,
+  });
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  const handleClick = () => {
+    setKey(Math.random().toString(36)); 
+  };
 
   function ScrollToTop() {
     window.scrollTo(0, 0);
@@ -150,6 +151,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToProfile();
               ScrollToTop();
+              handleClick();
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -159,6 +161,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToVocalSearch();
               ScrollToTop();
+              handleClick();
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
