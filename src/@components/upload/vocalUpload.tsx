@@ -22,8 +22,6 @@ export default function VocalUpload(props: propsType) {
   return (
     <Container>
       <SectionWrapper>
-        <Img src={VocalUploadFrameIc} alt="배경" />
-
         <VocalImageBox>
           <VocalImageFrame
             onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
@@ -52,23 +50,27 @@ export default function VocalUpload(props: propsType) {
 
         <UploadInfo uploadData={uploadData} setUploadData={setUploadData} />
       </SectionWrapper>
+      <Img src={VocalUploadFrameIc} alt="배경" />
     </Container>
   );
 }
 
 const Container = styled.section`
-  height: 76.2rem;
+  //height: 76.2rem;
 
   margin-left: 15rem;
 `;
 
 const SectionWrapper = styled.div`
-  height: 100%;
+  height: 76.2rem;
 
+  margin-top: 8rem;
   display: flex;
   align-items: center;
 
-  padding: 7.2rem 0 0 0;
+  position: absolute;
+  z-index: 2;
+  //top: 5.5rem;
   /* background-image: url(${VocalUploadFrameIc});
   background-repeat: no-repeat; */
 `;
@@ -79,7 +81,7 @@ const VocalImageBox = styled.div`
   display: flex;
   align-items: center;
   transform: rotate(0deg);
-  margin-top: 7.2rem;
+ // margin-top: 7.2rem;
   margin-left: 7.3rem;
   margin-right: 7.5rem;
 `;

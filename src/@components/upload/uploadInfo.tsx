@@ -515,8 +515,9 @@ export default function UploadInfo(props: propsType) {
 }
 
 const Container = styled.section`
-  height: 74.7rem;
+  height: 74.6rem;
   width: 88.7rem;
+  margin-top: -2.5rem;
 `;
 
 const TitleInput = styled.input`
