@@ -59,8 +59,8 @@ console.log(profileData)
             <ImageWrapper>
               <InfoProfileImage src={profileData?.profileImage} onClick={moveToMypage} />
             </ImageWrapper>
-            <TextWrapper>
-              <InfoUserName onClick={moveToMypage}>{profileData?.name}</InfoUserName>
+            <TextWrapper onClick={moveToMypage}>
+              <InfoUserName>{profileData?.name}</InfoUserName>
               <MainInfoVocalIc />
               <UserEmail>{profileData?.contact}</UserEmail>
             </TextWrapper>

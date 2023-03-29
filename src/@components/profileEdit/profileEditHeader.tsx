@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BackBtnIc, ProfileEditSaveButtonActiveIc, ProfileEditSaveButtonIc } from "../../assets";
+import BackButton from "../@common/backButton";
 
 interface PropsType {
   saveEditDatas: () => void;
@@ -10,16 +11,11 @@ export default function ProfileEditHeader(props: PropsType) {
   const { saveEditDatas, isMeetRequired } = props;
   const navigate = useNavigate();
 
-  function moveBackPage() {
-    navigate(-1);
-  }
-
   return (
     <HeaderContainer>
-      <BackButtonWrapper>
-        <BackBtnIcon onClick={moveBackPage} />
-        <ButtonText>Back</ButtonText>
-      </BackButtonWrapper>
+      <ButtonWrapper>
+      <BackButton/>
+      </ButtonWrapper>
       {isMeetRequired ? <ProfileEditSaveButtonActiveIcon onClick={saveEditDatas} /> : <ProfileEditSaveButtonIcon />}
     </HeaderContainer>
   );
@@ -31,6 +27,9 @@ const HeaderContainer = styled.header`
 
   height: 13.8rem;
   width: 100%;
+
+  position: sticky;
+  z-index: 2;
 `;
 
 const BackButtonWrapper = styled.div`
@@ -51,9 +50,15 @@ const ButtonText = styled.div`
 `;
 
 const ProfileEditSaveButtonIcon = styled(ProfileEditSaveButtonIc)`
+  width: 24.6rem;
   margin: 5rem 6.9rem 0 0;
 `;
 
 const ProfileEditSaveButtonActiveIcon = styled(ProfileEditSaveButtonActiveIc)`
+  width: 24.6rem;
   margin: 5rem 6.9rem 0 0;
 `;
+
+const ButtonWrapper=styled.div`
+  margin: 5.9rem 0 0 7.6rem;
+`

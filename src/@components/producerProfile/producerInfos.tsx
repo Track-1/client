@@ -22,10 +22,13 @@ export default function ProducerInfos(props: PropsType) {
 
   function moveProfileEditPage() {
     navigate(`/profile-edit/${profileData.id}`, {
-      state: profileData,
+      state: {
+        profileData:profileData,
+        user: whom
+      }
     });
   }
-
+  
   console.log(profileData)
 
   return (
@@ -94,6 +97,7 @@ const InfoHeader = styled.div`
 
   display: flex;
   padding-left: 7.6rem;
+  margin-top: -0.7rem;
 `;
 
 const Blank = styled.div`
@@ -114,29 +118,19 @@ const ProfileImage = styled.div`
 `;
 
 const VocalProfileImageContainer = styled.div`
-  /* margin-top: 5rem;
-  margin-bottom: 2.1rem;
-
-  height: 19.3rem;
-  width: 19.3rem;
-
-  border-radius: 3rem;
-  transform: rotate(45deg);
-
-  overflow: hidden; */
+ 
 `;
 
 const VocalProfileImg = styled.img`
   width: 150%;
+  height: 150%;
 
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
-
+  
   transform: rotate(45deg);
-  position: relative;
-  right: 5.5rem;
-  top: -4.5rem;
+  position: absolute;
 `;
 const VocalProfileImage = styled.div`
  display: flex;
@@ -233,10 +227,16 @@ const DescriptionBox = styled.div`
 
 const Inroduce = styled.div`
   width: 28.5rem;
-
-  word-break: keep-all;
-
-  float: left;
+  outline: 0;
+  resize: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  background-color: transparent;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+  overflow: hidden;
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
@@ -258,6 +258,8 @@ const Category = styled.li`
 const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
   width: 16.6rem;
   margin-left: 16.9rem;
+
+  cursor: pointer;
 `
 
 const CategoryIcon=styled(CategoryIc)`

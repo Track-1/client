@@ -7,9 +7,12 @@ import {
   ProfileEditSleepAcountTitleIc,
   ProfileEditSleeperButtonIc,
   ProfileEditWarningIc,
+  SignUpChangeImgIc,
+  SignupVocalProfileImgIc,
 } from "../../assets";
 import profileEditVocalDefaultImg from "../../assets/image/profileEditVocalDefaultImg.png";
 import { nickName } from "../../type/editDataType";
+import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
@@ -27,6 +30,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
   const [profileImage, setProfileImage] = useState<any>();
   const [inputState, setInputState] = useState<string>(nickName.NOTHING);
   const [isSleep, setIsSleep] = useState<boolean>(false);
+  const [isHover, setIsHover]=useState<boolean>(false);
 
   useEffect(() => {
     activeSaveButton(inputState);
@@ -59,18 +63,27 @@ export default function VocalProfileEditTitle(props: PropsType) {
     setIsSleep((prev) => !prev);
   }
 
+  function trueImageHover(){
+    setIsHover(true);
+  }
+
+  function falseImageHover(){
+    setIsHover(false);
+  }
+
   return (
     <TitleContainer>
-      <ProfileImageContainer htmlFor="profileImg">
+      <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
+      <ImageWrapper>
         {isUploaded ? (
-          <ImageWrapper>
             <UploadedImage src={String(prevImage)} />
-          </ImageWrapper>
         ) : (
           <ProfileImage src={prevProfileImage} />
         )}
+        </ImageWrapper>
+        {isHover&&(<SignUpChangeVocalImageIcon/>)} 
       </ProfileImageContainer>
-      <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
+      <FileInput type="file" id="profileImg" style={{ display: "none" }} accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={getFile} />
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
@@ -79,12 +92,12 @@ export default function VocalProfileEditTitle(props: PropsType) {
         <InputWrapper inputState={inputState}>
           <NameInput onChange={checkInputName} defaultValue={prevName} />
           {inputState !== nickName.NOTHING &&
-            (inputState === nickName.CORRECT ? <ProfileEditCheckIc /> : <ProfileEditWarningIc />)}
+            (inputState === nickName.CORRECT ? <ProfileEditCheckIcon /> : <ProfileEditWarningIcon />)}
         </InputWrapper>
       </NameContainer>
       <SleepAcountContainer>
         <SleepAcountTextWrapper>
-          <ProfileEditSleepAcountTitleIc />
+          <ProfileEditSleepAcountTitleIcon />
           <ProfileEditSleepAcountTextIcon />
         </SleepAcountTextWrapper>
         {isSleep ? (
@@ -116,19 +129,31 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
-  height: 36.8rem;
-  width: 36.8rem;
+  /* height: 26.7em;
+  width: 26.7em;
 
-  margin-top: 9.4rem;
+  margin-left: 5rem;
+  margin-top: 15rem;
+  margin-bottom:5rem;
 
-  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 3rem;
+  overflow: hidden;
+  transform: rotate(-45deg); */
 `;
 
 const ProfileImage = styled.img`
-  height: 36.8rem;
-  width: 36.8rem;
-
-  border-radius: 50%;
+  width: 150%;
+  height: 150%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+  
+  transform: rotate(45deg);
 `;
 
 const FileInput = styled.input`
@@ -136,27 +161,32 @@ const FileInput = styled.input`
 `;
 
 const UploadedImage = styled.img`
-  height: 36.8rem;
-  width: 36.8rem;
-
+  width: 150%;
+  height: 150%;
+  position: absolute;
+  transform: translate(50, 50);
   object-fit: cover;
-  transform: rotate(-45deg);
-  margin-top: -5rem;
-  margin-left: -5rem;
+  margin: auto;
+
+  transform: rotate(45deg);
 `;
 
 const ImageWrapper = styled.div`
   height: 26.7em;
   width: 26.7em;
 
-  transform: rotate(45deg);
-
-  margin-top: 5rem;
   margin-left: 5rem;
+  margin-top: 15rem;
+  margin-bottom:5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+//  position: absolute;
 
   border-radius: 3rem;
-
   overflow: hidden;
+  transform: rotate(-45deg);
 `;
 
 const NameContainer = styled.article`
@@ -216,19 +246,55 @@ const SleepAcountTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
+  height: 12rem;
   margin-top: 7rem;
 `;
 
 const ProfileEditSleepAcountTextIcon = styled(ProfileEditSleepAcountTextIc)`
+  width: 25rem;
+
   margin-top: 2.2rem;
 `;
 
 const ProfileEditActiveButtonIcon = styled(ProfileEditActiveButtonIc)`
-  margin-top: 13rem;
-  margin-bottom: 7.3rem;
+  width: 19.2rem;
+  margin-top: 12.5rem;
+  margin-bottom: 8rem;
 `;
 
 const ProfileEditSleeperButtonIcon = styled(ProfileEditSleeperButtonIc)`
-  margin-top: 13rem;
-  margin-bottom: 7.3rem;
+  width: 19.2rem;
+  margin-top: 12.5rem;
+  margin-bottom: 8rem;
 `;
+
+const ProfileEditWarningIcon=styled(ProfileEditWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
+
+const ProfileEditCheckIcon=styled(ProfileEditCheckIc)`
+  width: 4rem;
+  height: 4rem;
+`
+
+const ProfileEditSleepAcountTitleIcon=styled(ProfileEditSleepAcountTitleIc)`
+  width: 22rem;
+`
+
+const SignUpChangeVocalImageIcon=styled(SignUpChangeImgIc)`
+  height: 26.7em;
+  width: 26.7em;
+
+  border: 0.1rem solid rgba(30, 32, 37, 0.5);
+  border-radius: 3rem;
+  
+  backdrop-filter: blur(1.7rem);
+  transform: rotate(45deg);
+  position: absolute;
+ 
+  margin-top: -31.7rem;
+  margin-left: 5rem;
+
+  cursor: pointer;
+`

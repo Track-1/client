@@ -122,9 +122,11 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>
             {portfolios[id].keyword.map((tag, idx) => (
+              <HashTag>
               <InformTag key={idx} textLength={tag.length}>
                 #{tag}
               </InformTag>
+              </HashTag>
             ))}
           </InformTagWrapper>
         </InformContainer>
@@ -199,32 +201,36 @@ const InformContent = styled.p`
 
 const InformTag = styled.div<{ textLength: number }>`
   display: flex;
-  justify-content: left;
-  align-items: center;
-
-  height: 3.8rem;
-
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
-  padding-right: 2rem;
-
-  background: ${({ theme }) => theme.colors.gray4};
-  border-radius: 2.1rem;
-
-  ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.gray1};
+  
+  padding: 0 1.5rem;
 `;
 
 const InformTagWrapper = styled.div`
-  position: absolute;
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
   flex-direction: column;
+  margin-top: 2.8rem;
 `;
+
+const HashTag=styled.div`
+  display: flex;
+  align-items: center;
+  height: 3.8rem;
+  background-color: ${({ theme }) => theme.colors.gray4};
+  ${({ theme }) => theme.fonts.hashtag};
+  color: ${({ theme }) => theme.colors.gray1};
+  border-radius: 2.1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+`
 
 const EllipsisIcon = styled(EllipsisIc)`
   width: 4rem;
   height: 4rem;
   cursor: pointer;
+  margin-bottom: 1rem;
 `;
 
 const ProducerPortfolioTitleTextIcon=styled(ProducerPortfolioTitleTextIc)`

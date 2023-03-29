@@ -26,7 +26,7 @@ export default function ProfileEditInfo(props: PropsType) {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [descriptionInput, setDescriptionInput] = useState<string>("");
+  const [descriptionInput, setDescriptionInput] = useState<string>(prevDatas?.introduce);
   const [categories, setCategories] = useState<Set<string>>(new Set());
   const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>({
     "R&B": false,
@@ -44,6 +44,7 @@ export default function ProfileEditInfo(props: PropsType) {
   useEffect(() => {
     selectPrevCategory(prevDatas?.cagetory);
     inputPrevHashtags(prevDatas?.keyword);
+    setHashtags(prevDatas?.keyword)
   }, []);
 
   console.log(prevDatas);
@@ -71,26 +72,30 @@ export default function ProfileEditInfo(props: PropsType) {
       setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
+console.log(hashtags)
 
   function deleteHashtag(index: number) {
-    setHashtags([...hashtags.splice(index, 1)]);
+    const deleteTag = hashtags;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
     setHashtagInput("");
   }
 
-  function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
+  function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescriptionInput(e.target.value);
   }
 
   function getEditDatas() {
-    if (contactInputRef.current !== null) {
+    // if (contactInputRef.current !== null) {
       return {
-        contact: contactInputRef.current.value,
+        // contact: contactInputRef.current.value,
+        contact: contactInput,
         category: Array.from(categories),
         keyword: hashtags,
         introduce: descriptionInput,
       };
-    }
-    return editInputDatas;
+    // }
+   // return editInputDatas;
   }
 
   function selectCategory(category: string) {
@@ -152,7 +157,7 @@ export default function ProfileEditInfo(props: PropsType) {
             <ProfileWarning />
           </HashIconWrapper>
           <InputHashtagWrapper>
-            {hashtags.map((hashtag, index) => {
+            {hashtags?.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
                   <HashtagWrapper>
@@ -163,7 +168,7 @@ export default function ProfileEditInfo(props: PropsType) {
                 </Hashtag>
               );
             })}
-            {hashtags.length < 3 && (
+            {hashtags?.length < 3 && (
               <Hashtag>
                 <HashtagWrapper>
                   <HashtagSharp># </HashtagSharp>
@@ -181,7 +186,7 @@ export default function ProfileEditInfo(props: PropsType) {
               </Hashtag>
             )}
 
-            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            {hashtags?.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
@@ -192,10 +197,10 @@ export default function ProfileEditInfo(props: PropsType) {
             placeholder="What kind of work do you do?"
             defaultValue={prevDatas?.introduce}
             maxLength={150}
-            row={Math.floor(descriptionInput.length / 31) + 1}
+            row={Math.floor(descriptionInput?.length / 31) + 1}
           />
-          <TextCount onChange={countDescriptionText}>
-            {descriptionInput.length}/<MaxCount>150</MaxCount>
+          <TextCount>
+            {descriptionInput?.length}/<MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
       </InfoContainer>
@@ -283,26 +288,27 @@ const HashtagContainer = styled.article`
 `;
 
 const InputHashtagWrapper = styled.div`
+  /* display: flex;
+  flex-wrap: wrap; */
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  margin-top: 2.8rem;
 `;
 
 const Hashtag = styled.div`
   display: flex;
   align-items: center;
-
   height: 3.8rem;
-
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
-
+  padding-right: 1rem;
   margin-right: 1rem;
-  margin-top: 2.8rem;
 `;
 
 const HashtagWrapper = styled.div`
   display: flex;
-
+  align-items: center;
   padding: 0 1.5rem;
 `;
 
@@ -337,7 +343,10 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-top: 2.8rem;
+  width: 4rem;
+  height: 4rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
 `;
 
 const DescriptionContainer = styled.article`
@@ -346,20 +355,22 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.input<{ row: number }>`
-  height: ${({ row }) => row * 3.4 + 1}rem;
+const DesciprtionInput = styled.textarea<{ row: number }>`
+  height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
-
-  margin-top: 3.3rem;
-
+  outline: 0;
+  resize: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  background-color: transparent;
+  margin-top: 3rem;
+  overflow: hidden;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
-
-  padding-bottom: 0.5rem;
-
+  padding-bottom: 3rem;
   ${({ theme }) => theme.fonts.input}
-
   color: ${({ theme }) => theme.colors.white};
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }

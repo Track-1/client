@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { ProfileEditCheckIc, ProfileEditWarningIc } from "../../assets";
+import { ProfileEditCheckIc, ProfileEditWarningIc, SignUpChangeImageIc } from "../../assets";
 import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
@@ -20,6 +20,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   const [isUploaded, setIsUploaded] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<any>();
   const [inputState, setInputState] = useState<string>(nickName.NOTHING);
+  const [isHover, setIsHover]=useState<boolean>(false);
 
   useEffect(() => {
     activeSaveButton(inputState);
@@ -48,10 +49,19 @@ export default function ProducerProfileEditTitle(props: PropsType) {
     NICK_NAME.test(e.target.value) ? setInputState(nickName.CORRECT) : setInputState(nickName.ERROR);
   }
 
+  function trueImageHover(){
+    setIsHover(true);
+  }
+
+  function falseImageHover(){
+    setIsHover(false);
+  }
+
   return (
     <TitleContainer>
-      <ProfileImageContainer htmlFor="profileImg">
+      <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
         {isUploaded ? <UploadedImage src={String(prevImage)} /> : <ProfileImage src={String(prevProfileImage)} />}
+        {isHover&&<SignUpChangeProducerImageIcon/>}
       </ProfileImageContainer>
       <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
       <NameContainer>
@@ -88,19 +98,24 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   height: 36.8rem;
   width: 36.8rem;
+  border-radius: 50%;
+  overflow: hidden;
 
   margin-top: 17.8rem;
-
-  border-radius: 50%;
 `;
 
 const ProfileImage = styled.img`
-  height: 36.8rem;
-  width: 36.8rem;
-
-  border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
 `;
 
 const FileInput = styled.input`
@@ -108,11 +123,11 @@ const FileInput = styled.input`
 `;
 
 const UploadedImage = styled.img`
-  height: 36.8rem;
-  width: 36.8rem;
-
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(50, 50);
   object-fit: cover;
+  margin: auto;
 `;
 
 const NameContainer = styled.article`
@@ -161,3 +176,15 @@ const NameInput = styled.input`
 
   ${({ theme }) => theme.fonts.input}
 `;
+
+const SignUpChangeProducerImageIcon=styled(SignUpChangeImageIc)`
+  height: 36.8rem;
+  width: 36.8rem;
+  border: 0.1rem solid rgba(30, 32, 37, 0.5);
+  border-radius: 25rem;
+  position:absolute;
+  
+  backdrop-filter: blur(1.7rem);
+
+  cursor: pointer;
+`

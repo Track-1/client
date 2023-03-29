@@ -54,10 +54,10 @@ export default function ProducerBriefInfo(props: UserPropsType) {
       <Blank></Blank>
       {isShow && (
         <UserInfoContainer>
-          <InfoBox>
+          <InfoBox onClick={moveToMypage}>
             <InfoProfileImage src={data?.producerProfile?.profileImage} onClick={moveToMypage} />
             <TextWrapper>
-              <InfoUserName onClick={moveToMypage}>{data?.producerProfile?.name}</InfoUserName>
+              <InfoUserName>{data?.producerProfile?.name}</InfoUserName>
               <MainInfoProducerIc />
               <UserEmail>{data?.producerProfile?.contact}</UserEmail>
             </TextWrapper>
