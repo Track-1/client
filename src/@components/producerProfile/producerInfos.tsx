@@ -94,6 +94,7 @@ const InfoHeader = styled.div`
 
   display: flex;
   padding-left: 7.6rem;
+  margin-top: -0.7rem;
 `;
 
 const Blank = styled.div`
