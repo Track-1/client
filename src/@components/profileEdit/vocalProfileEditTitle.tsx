@@ -7,9 +7,12 @@ import {
   ProfileEditSleepAcountTitleIc,
   ProfileEditSleeperButtonIc,
   ProfileEditWarningIc,
+  SignUpChangeImgIc,
+  SignupVocalProfileImgIc,
 } from "../../assets";
 import profileEditVocalDefaultImg from "../../assets/image/profileEditVocalDefaultImg.png";
 import { nickName } from "../../type/editDataType";
+import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
   activeSaveButton: (inputState: string) => void;
@@ -27,6 +30,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
   const [profileImage, setProfileImage] = useState<any>();
   const [inputState, setInputState] = useState<string>(nickName.NOTHING);
   const [isSleep, setIsSleep] = useState<boolean>(false);
+  const [isHover, setIsHover]=useState<boolean>(false);
 
   useEffect(() => {
     activeSaveButton(inputState);
@@ -59,20 +63,27 @@ export default function VocalProfileEditTitle(props: PropsType) {
     setIsSleep((prev) => !prev);
   }
 
+  function trueImageHover(){
+    setIsHover(true);
+  }
+
+  function falseImageHover(){
+    setIsHover(false);
+  }
+
   return (
     <TitleContainer>
-      <ProfileImageContainer htmlFor="profileImg">
+      <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
       <ImageWrapper>
         {isUploaded ? (
-          // <ImageWrapper>
             <UploadedImage src={String(prevImage)} />
-          // </ImageWrapper>
         ) : (
           <ProfileImage src={prevProfileImage} />
         )}
-        </ImageWrapper>
+        </ImageWrapper>=
+        {isHover&&(<SignUpChangeVocalImageIcon/>)} 
       </ProfileImageContainer>
-      <FileInput type="file" id="profileImg" style={{ display: "none" }} onChange={getFile} />
+      <FileInput type="file" id="profileImg" style={{ display: "none" }} accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={getFile} />
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
@@ -270,3 +281,17 @@ const ProfileEditSleepAcountTitleIcon=styled(ProfileEditSleepAcountTitleIc)`
   width: 22rem;
 `
 
+const SignUpChangeVocalImageIcon=styled(SignUpChangeImgIc)`
+  height: 26.7em;
+  width: 26.7em;
+
+  border: 0.1rem solid rgba(30, 32, 37, 0.5);
+  border-radius: 1.8rem;
+  position: relative;
+  
+  backdrop-filter: blur(1.7rem);
+  transform: rotate(45deg);
+  position: absolute;
+  right: 30.15rem;
+  top: 18.45rem;
+`
