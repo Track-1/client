@@ -71,15 +71,17 @@ export default function ProfileEditInfo(props: PropsType) {
       setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
-console.log(prevDatas.keyword)
-  function deleteHashtag(index: number) {
-    // setHashtags([...hashtags.splice(index, 1)]);
-    // setHashtagInput("");
+console.log(hashtags)
 
-    const deleteTag = prevDatas.keyword;
-    deleteTag.splice(index, 1);
-    setHashtags([...deleteTag]);
+  function deleteHashtag(index: number) {
+    console.log(index)
+    setHashtags([...hashtags.splice(index, index+1)]);
     setHashtagInput("");
+
+    // const deleteTag = prevDatas.keyword;
+    // deleteTag.splice(index, 1);
+    // setHashtags([...deleteTag]);
+    // setHashtagInput("");
   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLInputElement>) {
