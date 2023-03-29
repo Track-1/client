@@ -86,7 +86,7 @@ export default function VocalProfileEditTitle(props: PropsType) {
       </NameContainer>
       <SleepAcountContainer>
         <SleepAcountTextWrapper>
-          <ProfileEditSleepAcountTitleIc />
+          <ProfileEditSleepAcountTitleIcon />
           <ProfileEditSleepAcountTextIcon />
         </SleepAcountTextWrapper>
         {isSleep ? (
@@ -234,21 +234,26 @@ const SleepAcountTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
+  height: 12rem;
   margin-top: 7rem;
 `;
 
 const ProfileEditSleepAcountTextIcon = styled(ProfileEditSleepAcountTextIc)`
+  width: 25rem;
+
   margin-top: 2.2rem;
 `;
 
 const ProfileEditActiveButtonIcon = styled(ProfileEditActiveButtonIc)`
-  margin-top: 13rem;
-  margin-bottom: 7.3rem;
+  width: 19.2rem;
+  margin-top: 12.5rem;
+  margin-bottom: 8rem;
 `;
 
 const ProfileEditSleeperButtonIcon = styled(ProfileEditSleeperButtonIc)`
-  margin-top: 13rem;
-  margin-bottom: 7.3rem;
+  width: 19.2rem;
+  margin-top: 12.5rem;
+  margin-bottom: 8rem;
 `;
 
 const ProfileEditWarningIcon=styled(ProfileEditWarningIc)`
@@ -260,3 +265,8 @@ const ProfileEditCheckIcon=styled(ProfileEditCheckIc)`
   width: 4rem;
   height: 4rem;
 `
+
+const ProfileEditSleepAcountTitleIcon=styled(ProfileEditSleepAcountTitleIc)`
+  width: 22rem;
+`
+
