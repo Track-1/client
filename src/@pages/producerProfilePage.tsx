@@ -94,12 +94,15 @@ export default function ProducerProfilePage() {
     },
     refetchOnWindowFocus: false,
     retry: 0,
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   const handleClick = () => {
-    setKey(Math.random().toString(36)); 
+    setKey(Math.random().toString(36));
   };
 
   function ScrollToTop() {
