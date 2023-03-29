@@ -303,6 +303,7 @@ const Hashtag = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
   padding-right: 1rem;
+  margin-right: 1rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -344,6 +345,7 @@ const CompletedHashtag = styled.article`
 const AddHashtagIcon = styled(AddHashtagIc)`
   width: 4rem;
   height: 4rem;
+  margin-top: -0.5rem;
   cursor: pointer;
 `;
 
