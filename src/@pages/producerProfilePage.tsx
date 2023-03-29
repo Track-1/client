@@ -159,6 +159,7 @@ export default function ProducerProfilePage() {
             pauseAudio={pauseAudio}
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
+            whom={Category.TRACKS}
           />
         )}
       </PageContainer>
@@ -186,11 +187,11 @@ const InfiniteDiv = styled.div`
 
 const PageContainer = styled.section`
   display: flex;
-
   margin-left: 61rem;
 `;
 
 const GradientBox = styled.img`
+  width: 45rem;
   left: 60rem;
 `;
 
@@ -198,23 +199,19 @@ const TabContainer = styled.ul`
   position: fixed;
   top: 6rem;
   left: 63.8rem;
-
   ${({ theme }) => theme.fonts.body1};
+  cursor: pointer;
 `;
 
 const PortfolioTab = styled.li<{ profileState: string }>`
   height: 4rem;
-
   color: ${({ theme, profileState }) => (profileState === "Portfolio" ? theme.colors.white : theme.colors.gray3)};
-
   display: flex;
 `;
 
 const VocalSearchingTab = styled.li<{ profileState: string }>`
   height: 4rem;
-
   color: ${({ theme, profileState }) => (profileState === "Vocal Searching" ? theme.colors.white : theme.colors.gray3)};
-
   display: flex;
 `;
 
@@ -223,5 +220,7 @@ const BlankDiv = styled.div`
 `;
 
 const RightArrorIcon = styled(RightArrorIc)`
+  width: 2.4rem;
+  height: 2.4rem;
   margin-right: 1rem;
 `;

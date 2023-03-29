@@ -265,4 +265,3 @@ const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
 const CategoryIcon=styled(CategoryIc)`
   width: 10.2rem;
 `
-

@@ -142,7 +142,6 @@ console.log(portfolioData)
 const TitleWrapper = styled.div`
   width: 14rem;
   height: 5rem;
-
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: normal;
@@ -150,12 +149,10 @@ const TitleWrapper = styled.div`
 
 const ProducerPorfolioBlur = styled.div<{ index: number; producerPortfolioClickBool: boolean; profileState: string }>`
   position: absolute;
-
   width: ${({ producerPortfolioClickBool, profileState, index }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
   height: ${({ producerPortfolioClickBool, profileState, index }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
-
   border-radius: 50%;
   transform: rotate(45deg);
   -webkit-backdrop-filter: blur(2rem);
@@ -168,18 +165,14 @@ const InformWrapper = styled.div`
 
 const ProfileListContainer = styled.section`
   width: 47.8rem;
-
   border: 0.3rem solid transparent;
   border-top-left-radius: 47.8rem;
   border-top-right-radius: 47.8rem;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   margin-left: -16rem;
   margin-top: 23.3rem;
-
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(to bottom, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
   background-origin: border-box;
@@ -196,18 +189,13 @@ const PortfolioBox = styled.article<{
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
   height: ${({ producerPortfolioClickBool, profileState, index }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || producerPortfolioClickBool ? 42 : 21.8}rem;
-
   position: relative;
-
   border-radius: 50%;
-
   overflow: hidden;
-
   margin-top: ${({ index, profileState }) => (isSameIndex(index, 0) && profileState !== "Vocal Searching" ? 3 : 4)}rem;
   margin-top: ${({ index, profileState }) => isSameIndex(index, 0) && profileState === "Vocal Searching" && 13}rem;
   margin-top: ${({ index, profileState, producerPortfolioClickBool }) =>
     isSameIndex(index, 0) && profileState === "Vocal Searching" && producerPortfolioClickBool && 3}rem;
-
   :hover {
     box-shadow: 0 0 4rem ${({ theme }) => theme.colors.sub1};
   }
@@ -228,7 +216,6 @@ const PortfolioImageWrapper=styled.div<{
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   width: ${({ clickBool, index, profileState }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
-
   border-radius: 25rem;
  // position: absolute;
   overflow: hidden;
@@ -240,21 +227,17 @@ const PortfolioImage = styled.img<{
 }>`
   width: 100%;
   height: 100%;
-
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
-
   opacity: ${({ hoverBool, clickBool }) => !hoverBool && !clickBool && 0.2};
 `;
 
 const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
   position: absolute;
   z-index: 5;
-
   width: 42rem;
   height: 42rem;
-
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -264,10 +247,8 @@ const ProducerProfilePauseIcon = styled(ProducerProfilePauseIc)`
 const ProducerProfilePlayIcon = styled(ProducerProfilePlayIc)`
   position: absolute;
   z-index: 5;
-
   width: 42rem;
   height: 42rem;
-
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -276,9 +257,7 @@ const ProducerProfilePlayIcon = styled(ProducerProfilePlayIc)`
 const AudioTitle = styled.h1<{ hoverBool: boolean; clickBool: boolean }>`
   color: ${({ theme }) => theme.colors.gray2};
   display: ${({ hoverBool, clickBool }) => (hoverBool || clickBool) && "none"};
-
   ${({ theme }) => theme.fonts.id}
-
   position: absolute;
   top: 50%;
   left: 50%;
