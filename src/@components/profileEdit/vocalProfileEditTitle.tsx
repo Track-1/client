@@ -121,14 +121,35 @@ const ProfileImageContainer = styled.label`
 
   margin-top: 9.4rem;
 
-  border-radius: 50%;
-`;
+  //border-radius: 50%;
 
-const ProfileImage = styled.img`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   height: 36.8rem;
   width: 36.8rem;
 
+  border-radius: 1.8rem;
+  //position: absolute;
+  overflow: hidden;
+  transform: rotate(-45deg);
+`;
+
+const ProfileImage = styled.img`
+  /* height: 36.8rem;
+  width: 36.8rem; */
+
   border-radius: 50%;
+
+  width: 150%;
+  height: 135%;
+  //position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+  
+  transform: rotate(45deg);
 `;
 
 const FileInput = styled.input`
@@ -136,13 +157,23 @@ const FileInput = styled.input`
 `;
 
 const UploadedImage = styled.img`
-  height: 36.8rem;
+  /* height: 36.8rem;
   width: 36.8rem;
 
   object-fit: cover;
   transform: rotate(-45deg);
   margin-top: -5rem;
-  margin-left: -5rem;
+  margin-left: -5rem; */
+  border-radius: 50%;
+
+  width: 150%;
+  height: 135%;
+  //position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
+  transform: rotate(45deg);
 `;
 
 const ImageWrapper = styled.div`
