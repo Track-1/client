@@ -727,7 +727,7 @@ const WarningTextWrapper = styled.div`
   top: 61.2rem;
   left: 128.4rem;
   background: rgba(30, 32, 37, 0.7);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.3rem);
   border-radius: 5px;
 `;
 
@@ -743,10 +743,10 @@ const DropMenuBox = styled.div<{ hiddenDropBox: boolean }>`
   width: 13rem;
 
   position: absolute;
-  top: 54.4rem;
-  left: 103.7rem;
+  top: 39.5rem;
+  left: 91.2rem;
   background: rgba(30, 32, 37, 0.7);
-  backdrop-filter: blur(6.5px);
+  backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
 `;
 
