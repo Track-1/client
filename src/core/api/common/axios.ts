@@ -10,7 +10,7 @@ export const client = axios.create({
   withCredentials: true,
 });
 
-client.interceptors.request.use(function (config: any) {
+axios.interceptors.request.use(function (config: any) {
   const token = getCookie("accessToken");
 
   if (!token) {
@@ -25,7 +25,7 @@ client.interceptors.request.use(function (config: any) {
   return config;
 });
 
-client.interceptors.response.use(
+axios.interceptors.response.use(
   function (response) {
     return response;
   },
