@@ -3,17 +3,18 @@ import styled from "styled-components";
 import { BackBtnIc, ProfileEditSaveButtonActiveIc, ProfileEditSaveButtonIc } from "../../assets";
 
 interface PropsType {
-  saveEditDatas: () => void;
-  isMeetRequired: boolean;
+  editReady: boolean;
+  editData: () => void;
 }
-export default function ProfileEditHeader() {
+export default function ProfileEditHeader(props: PropsType) {
+  const { editReady, editData } = props;
   return (
     <HeaderContainer>
       <BackButtonWrapper>
         <BackBtnIcon />
         <ButtonText>Back</ButtonText>
       </BackButtonWrapper>
-      <ProfileEditSaveButtonActiveIcon /> <ProfileEditSaveButtonIcon />
+      {editReady ? <ProfileEditSaveButtonActiveIcon onClick={editData} /> : <ProfileEditSaveButtonIcon />}
     </HeaderContainer>
   );
 }
