@@ -11,10 +11,11 @@ import { useNavigate } from "react-router-dom";
 interface PropsType {
   profileData: ProducerProfileType;
   isMe: boolean;
+  whoamI: string;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData, isMe } = props;
+  const { profileData, isMe, whoamI } = props;
   const navigate = useNavigate();
 
   console.log(profileData);
@@ -22,9 +23,14 @@ export default function ProducerInfos(props: PropsType) {
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
   function moveProfileEditPage() {
-    navigate(`/profile-edit/${profileData.id}`, {
-      state: profileData,
-    });
+    console.log(whoamI);
+    whoamI === "vocal"
+      ? navigate(`/profile-edit/vocal/${profileData.id}`, {
+          state: profileData,
+        })
+      : navigate(`/profile-edit/producer/${profileData.id}`, {
+          state: profileData,
+        });
   }
 
   return (
