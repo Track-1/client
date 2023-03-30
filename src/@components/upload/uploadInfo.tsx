@@ -384,7 +384,7 @@ export default function UploadInfo(props: propsType) {
                   type="file"
                   id="wavFileUpload"
                   style={{ display: "none" }}
-                  accept=".wav,.mp3"
+                  accept=".wav,.mp3, .WAV, .MP3"
                   onChange={uploadAudiofile}
                   readOnly
                 />
@@ -568,7 +568,6 @@ export default function UploadInfo(props: propsType) {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
-              {checkStateIcon[index] && <CheckCategoryIc />}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>
@@ -650,10 +649,11 @@ const InfoItemBox = styled.div`
 `;
 
 const NameBox = styled.div`
-  width: 20.7rem;
-  height: 100%;
+  width: 30rem;
+ // height: 100%;
 
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -761,7 +761,7 @@ const InputCategoryText = styled.div<{ categoryState: boolean }>`
 // `;
 
 const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, row:number }>`
-  width: 72rem;
+  width: 68rem;
   /* height: 4rem; */
 
   outline: 0;
@@ -827,7 +827,7 @@ const DropMenuBox = styled.div<{ hiddenDropBox: boolean }>`
 
   position: absolute;
   top: 39.5rem;
-  left: 91.2rem;
+  left: 96.5rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
@@ -907,17 +907,13 @@ const UploadHashtagIcon=styled(UploadHashtagIc)`
 
 const UploadDescriptionIcon=styled(UploadDescriptionIc)`
   width: 14.6rem;
+  margin-right: 7.5rem;
 `
 
 const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
   width: 4rem;
   height: 4rem;
 `
-
-
-
-//
-
 
 const InputHashtagWrapper = styled.div`
   /* display: flex;
@@ -973,3 +969,9 @@ const AddHashtagIcon = styled(AddHashtagIc)`
   margin-top: -0.5rem;
   cursor: pointer;
 `;
+
+const IconWrapper=styled.div`
+  width: 21rem;
+  display: flex;
+  justify-content: flex-start;
+`
