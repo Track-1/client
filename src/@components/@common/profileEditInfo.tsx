@@ -15,23 +15,90 @@ import { EditDataType } from "../../type/editDataType";
 import ProfileWarning from "./profileWarning";
 
 interface PropsType {
-  isSave: boolean;
-  editDatas: (datas: EditDataType) => void;
-  prevDatas: any;
+  contact: string;
+  categories: string[];
+  hashtags: string[];
+  description: string;
+  updateContact: (contact: string) => void;
+  updateCategory: (contact: string) => void;
+  updateHashtag: (hashtag: string) => void;
+  deleteHashtag: (index: number) => void;
+  updateDescription: (inputText: string) => void;
 }
 
-export default function ProfileEditInfo() {
+export default function ProfileEditInfo(props: PropsType) {
+  const {
+    contact,
+    categories,
+    hashtags,
+    description,
+    updateContact,
+    updateCategory,
+    updateHashtag,
+    deleteHashtag,
+    updateDescription,
+  } = props;
+  const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>({
+    "R&B": false,
+    HIPHOP: false,
+    BALLAD: false,
+    POP: false,
+    ROCK: false,
+    EDM: false,
+    JAZZ: false,
+    HOUSE: false,
+    FUNK: false,
+  });
+  const [hashtagText, setHashtagText] = useState<string>("");
+
+  function selectCategory(category: string) {
+    const tempSelected = isCategorySelected;
+    tempSelected[category] = !tempSelected[category];
+    setIsCategorySelected({ ...tempSelected });
+    updateCategory(category);
+  }
+
+  function deleteHashtagInput(index: number) {
+    deleteHashtag(index);
+  }
+
+  function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtagText(e.target.value);
+  }
+
+  function getHashtagInput(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.code === "Enter") {
+      updateHashtag(hashtagText);
+      setHashtagText("");
+      console.log(hashtags);
+    }
+  }
+
   return (
     <>
       <InfoContainer>
         <ContactContainer>
           <ProfileEditContactIcon />
-          <ContactInput />
+          <ContactInput
+            placeholder="Enter your phone number or SNS account"
+            defaultValue={contact}
+            onChange={(e) => updateContact(e.target.value)}
+            maxLength={40}
+          />
         </ContactContainer>
         <CategoryContainer>
           <ProfileEditCategoryIcon />
           <CategoryBox>
-            <CategoryItem></CategoryItem>
+            {Object.keys(CategoryId).map((category, index) => {
+              return (
+                <CategoryItem
+                  key={index}
+                  isSelected={isCategorySelected[category]}
+                  onClick={() => selectCategory(category)}>
+                  {category}
+                </CategoryItem>
+              );
+            })}
           </CategoryBox>
         </CategoryContainer>
         <HashtagContainer>
@@ -40,27 +107,33 @@ export default function ProfileEditInfo() {
             <ProfileWarning />
           </HashIconWrapper>
           <InputHashtagWrapper>
-            <Hashtag>
-              <HashtagWrapper>
-                <HashtagSharp># </HashtagSharp>
-                <CompletedHashtag></CompletedHashtag>
-              </HashtagWrapper>
-              <DeleteHashtagIcon />
-            </Hashtag>
-            <Hashtag>
-              <HashtagWrapper>
-                <HashtagSharp># </HashtagSharp>
-                <HashtagInput />
-              </HashtagWrapper>
-            </Hashtag>
-
-            <AddHashtagIcon />
+            {hashtags.map((hashtag, index) => {
+              return (
+                <Hashtag key={index}>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <CompletedHashtag>{hashtag}</CompletedHashtag>
+                  </HashtagWrapper>
+                  <DeleteHashtagIcon onClick={() => deleteHashtagInput(index)} />
+                </Hashtag>
+              );
+            })}
+            {hashtags.length < 3 && (
+              <Hashtag>
+                <HashtagWrapper>
+                  <HashtagSharp># </HashtagSharp>
+                  <HashtagInput onChange={checkHashtagText} onKeyUp={getHashtagInput} value={hashtagText} />
+                </HashtagWrapper>
+              </Hashtag>
+            )}
+            {hashtags.length < 3 && <AddHashtagIcon />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
-          <DesciprtionInput />
+          <DesciprtionInput defaultValue={description} onChange={(e) => updateDescription(e.target.value)} />
           <TextCount>
+            {description.length}
             <MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
@@ -134,10 +207,12 @@ const CategoryBox = styled.ul`
   margin-top: 2.2rem;
 `;
 
-const CategoryItem = styled.li`
+const CategoryItem = styled.li<{ isSelected: boolean }>`
   width: 25%;
 
   margin-bottom: 1.2rem;
+
+  color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray4)};
 `;
 
 const HashtagContainer = styled.article`
