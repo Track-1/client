@@ -91,7 +91,9 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} isMe={isMe} />}</VocalProfile>
+      <VocalProfile>
+        {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whoamI={"vocal"} />}
+      </VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
           {portfolioData && profileData && (
