@@ -5,7 +5,7 @@ import { client } from "./common/axios";
 
 export async function getProducerPortfolio(producerId: number, page: number) {
   try {
-    const data = await axios.get(
+    const data = await client.get(
       `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}?page=${page}&limit=3`,
       {
         headers: {
