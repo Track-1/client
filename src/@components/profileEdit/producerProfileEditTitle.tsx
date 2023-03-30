@@ -10,11 +10,12 @@ interface PropsType {
   name: string;
   updateProfileImage: (imgFile: File) => void;
   updateName: (name: string) => void;
+  changeReadyState: (isReady: boolean) => void;
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
-  const { profileImage, name, updateProfileImage, updateName } = props;
+  const { profileImage, name, updateProfileImage, updateName, changeReadyState } = props;
   const [showImage, setShowImage] = useState<string | ArrayBuffer>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [nameState, setNameState] = useState<nickName>(nickName.NOTHING);
@@ -37,7 +38,16 @@ export default function ProducerProfileEditTitle(props: PropsType) {
 
   function checkNameInput(e: React.ChangeEvent<HTMLInputElement>) {
     const text = e.target.value;
-    NICK_NAME.test(text) ? setNameState(nickName.CORRECT) : setNameState(nickName.ERROR);
+    updateName(text);
+    if (NICK_NAME.test(text)) {
+      setNameState(nickName.CORRECT);
+      changeReadyState(true);
+      return;
+    }
+    if (!NICK_NAME.test(text)) {
+      setNameState(nickName.ERROR);
+      changeReadyState(false);
+    }
   }
 
   return (
