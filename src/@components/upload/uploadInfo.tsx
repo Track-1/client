@@ -639,7 +639,7 @@ const InputFileTextWrapper = styled.div<{ fileName: string }>`
 
   display: flex;
   align-items: center;
-  border-bottom: 1px solid
+  border-bottom: 0.1rem solid
     ${(props) => (props.fileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
@@ -647,7 +647,7 @@ const InputCategoryTextWrapper = styled.div<{ categoryState: boolean }>`
   height: 4.2rem;
   width: 9.9rem;
 
-  border-bottom: 1px solid
+  border-bottom: 0.1rem solid
     ${(props) => (props.categoryState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
@@ -724,8 +724,8 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  top: 47rem;
+  left: 116rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.3rem);
   border-radius: 5px;
@@ -775,6 +775,8 @@ const DropMenuText = styled.p`
 `;
 
 const WarningIcon = styled.div`
+  width: 4rem;
+  height: 4rem;
   height: 3rem;
   margin-top: 0.7rem;
   border-radius: 5rem;
