@@ -496,7 +496,7 @@ export default function UploadInfo(props: propsType) {
               descriptionHoverState={descriptionHoverState}
               ref={introduceRef}
               onChange={resizeTextarea}
-              row={Math.floor(descriptionLength/31)+1}
+              row={Math.floor(descriptionLength/30)+1}
             ></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
@@ -679,46 +679,11 @@ const InputCategoryText = styled.div<{ categoryState: boolean }>`
   cursor: pointer;
 `;
 
-// const InputHashtagWrapper = styled.div`
-//   display: flex;
-//   margin-top: 1.4rem;
-// `;
-
-// const Hashtag = styled.div`
-//   height: 3.8rem;
-
-//   background-color: ${({ theme }) => theme.colors.gray5};
-//   border-radius: 2.1rem;
-//   margin-right: 1rem;
-// `;
-
-// const HashtagWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   margin: 0.9rem 1.5rem;
-// `;
-
-// const HashtagSharp = styled.p`
-//   ${({ theme }) => theme.fonts.hashtag};
-//   color: ${({ theme }) => theme.colors.gray1};
-// `;
-
-// const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
-//   width: ${(props) => props.hashtagInputWidth}rem;
-//   ${({ theme }) => theme.fonts.hashtag};
-//   color: ${({ theme }) => theme.colors.gray1};
-//   ::placeholder {
-//     color: ${({ theme }) => theme.colors.gray3};
-//   }
-// `;
-
 const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, row:number }>`
   width: 68rem;
-  /* height: 4rem; */
-
   outline: 0;
   resize: none;
-  overflow: hidden;
+  overflow: scroll;
   background-color: transparent;
 
   border: none;
@@ -733,24 +698,11 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, r
   }
   height: ${({row})=>row*3.4+1}rem;
   padding-bottom: 3rem;
-  /* height: ${({row})=>row*3.4+1}rem;
-  width: 55.9rem;
-  outline: 0;
-  resize: none;
+  
+ 
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-word;
-  border: none;
-  background-color: transparent;
-  margin-top: 3rem;
-  overflow: hidden;
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
-  padding-bottom: 3rem;
-  ${({ theme }) => theme.fonts.input}
-  color: ${({ theme }) => theme.colors.white};
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.gray3};
-  } */
 `;
 
 
