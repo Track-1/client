@@ -11,15 +11,51 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import { getVocalProfile, patchVocalrProfile } from "../core/api/vocalProfile";
 import { getProducerPortfolio, patchProducerProfile } from "../core/api/producerProfile";
+import { CategoryId } from "../core/constants/categories";
 
 export default function ProfileEditPage() {
   const { state } = useLocation();
   const [profileImage, setProfileImage] = useState<File>(state.profileImage);
   const [name, setName] = useState<string>(state.name);
   const [contact, setContact] = useState<string>(state.contact);
-  const [categories, setCategories] = useState<Set<string>>(state.category);
+  const [categories, setCategories] = useState<string[]>(state.category);
   const [hashtags, setHashtags] = useState<string[]>(state.keyword);
   const [description, setDescription] = useState<string>(state.introduce);
+  const [editReady, setEditReady] = useState<boolean>(false);
+  const [saveData, setSaveData] = useState<boolean>(false);
+  const [updatedData, setUpdatedData] = useState<any>();
+
+  useEffect(() => {
+    if (saveData === true) {
+      const formData = new FormData();
+      formData.append("imageFile", profileImage);
+      formData.append("name", name);
+      formData.append("contact", contact);
+      categories.forEach((item, index) => {
+        formData.append(`category[${index}]`, CategoryId[item]);
+      });
+      hashtags.forEach((item, index) => {
+        formData.append(`keyword[${index}]`, item);
+      });
+      formData.append("introduce", description);
+      setUpdatedData(formData);
+    }
+  }, [saveData]);
+
+  useEffect(() => {
+    if (updatedData !== undefined) {
+      mutate();
+    }
+  }, [updatedData]);
+
+  const { mutate } = useMutation(() => patchProducerProfile(updatedData), {
+    onSuccess: () => {
+      console.log("ok");
+    },
+    onError: () => {
+      console.log("x");
+    },
+  });
 
   function updateProfileImage(imgFile: File) {
     setProfileImage(imgFile);
@@ -34,32 +70,57 @@ export default function ProfileEditPage() {
   }
 
   function updateCategory(category: any) {
-    const tempCategorySet = categories;
+    const tempCategorySet = new Set(categories);
     tempCategorySet.has(category) ? tempCategorySet.delete(category) : tempCategorySet.add(category);
-    setCategories(tempCategorySet);
+    setCategories(Array.from(tempCategorySet));
   }
 
   function updateHashtag(hashtag: string) {
     setHashtags([...hashtags, hashtag]);
   }
 
+  function deleteHashtag(index: number) {
+    const tempHashtag = hashtags;
+    tempHashtag.splice(index, 1);
+    setHashtags([...tempHashtag]);
+  }
+
   function updateDescription(inputText: string) {
     setDescription(inputText);
   }
 
+  function changeReadyState(isReady: boolean) {
+    setEditReady(isReady);
+  }
+
+  function editData() {
+    setSaveData(true);
+  }
+
   return (
     <>
-      <ProfileEditHeader />
+      <ProfileEditHeader editReady={editReady} editData={editData} />
       <EditContainer>
         <ProducerProfileEditTitle
           profileImage={profileImage}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}
+          changeReadyState={changeReadyState}
         />
         {/* <VocalProfileEditTitle
           /> */}
-        <ProfileEditInfo />
+        <ProfileEditInfo
+          contact={contact}
+          categories={categories}
+          hashtags={hashtags}
+          description={description}
+          updateContact={updateContact}
+          updateCategory={updateCategory}
+          updateHashtag={updateHashtag}
+          deleteHashtag={deleteHashtag}
+          updateDescription={updateDescription}
+        />
       </EditContainer>
     </>
   );
