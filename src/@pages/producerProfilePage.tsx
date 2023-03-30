@@ -141,7 +141,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} />}
+      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whoamI={data?.data.whoamI} />}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
