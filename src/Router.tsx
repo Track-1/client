@@ -10,10 +10,11 @@ import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
 import SignUpPage from "./@pages/signUpPage";
 import LoginPage from "./@pages/loginPage";
-import ProfileEditPage from "./@pages/profileEditPage";
+import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import TrackPostEditPage from "./@pages/trackPostEditPage";
 import { getCookie } from "./utils/cookie";
+import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 
 export default function Router() {
   return (
@@ -32,7 +33,8 @@ export default function Router() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path={`/reset-password/${getCookie("forgotPasswordToken")}`} element={<ResetPasswordPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/profile-edit/:id" element={<ProfileEditPage />} />
+        <Route path="/profile-edit/producer/:id" element={<ProducerProfileEditPage />} />
+        <Route path="/profile-edit/vocal/:id" element={<VocalProfileEditPage />} />
       </Routes>
     </BrowserRouter>
   );
