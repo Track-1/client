@@ -9,6 +9,7 @@ import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
 import { LoginUserId } from "../../recoil/loginUserData";
+import BackButton from "../@common/backButton";
 
 interface PropsType {
   userType: string;
@@ -25,9 +26,10 @@ export default function UploadHeader(props: PropsType) {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
+  console.log("loginUserId"+loginUserId)
   const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
-      alert("업로드 성공");
+      // alert("업로드 성공");
       checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`);
     },
     onError: (error) => {
@@ -51,6 +53,8 @@ export default function UploadHeader(props: PropsType) {
       setIsUploadActive(false);
     }
   }
+
+  console.log(uploadData)
 
   function isEmptyTitle(): boolean {
     return uploadData.title === "";
@@ -76,10 +80,10 @@ export default function UploadHeader(props: PropsType) {
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
-          <UploadBackIcon onClick={backPage} />
+          <BackButton/>
           <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
-        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIc />}
+        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon />}
       </HeaderWrapper>
     </Container>
   );
@@ -115,5 +119,11 @@ const UploadBackIcon = styled(UploadBackIc)`
 `;
 
 const CanUploadBtnIcon = styled(CanUploadBtnIc)`
+  width: 24.6rem;
   cursor: pointer;
 `;
+
+
+const UploadBtnIcon=styled(UploadBtnIc)`
+  width: 24.6rem;
+`

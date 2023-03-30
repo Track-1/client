@@ -6,6 +6,7 @@ import { FileChangeIc } from "../../assets";
 import { uploadImage } from "../../utils/uploadPage/uploadImage";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
+import { currentUser } from "../../core/constants/userType";
 
 interface PropsType {
   uploadData: UploadInfoDataType;
@@ -48,7 +49,7 @@ export default function TrackUpload(props: PropsType) {
           onChange={(e) => uploadImage(e, setTrackUploadImg, setUploadData)}
           readOnly
         />
-        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} whom={currentUser.PRODUCER}/>
       </SectionWrapper>
     </Container>
   );

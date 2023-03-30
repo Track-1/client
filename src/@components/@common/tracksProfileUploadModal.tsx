@@ -64,6 +64,8 @@ const ModalWrapper = styled.div`
 
   position: absolute;
   z-index: 10;
+
+  cursor: pointer;
 `;
 
 const UploadButtonModalWrapper = styled.section`

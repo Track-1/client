@@ -20,14 +20,16 @@ import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
+import { isVocal } from "../../utils/common/userType";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+  whom:string;
 }
 
 export default function UploadInfo(props: propsType) {
-  const { uploadData, setUploadData } = props;
+  const { uploadData, setUploadData,whom } = props;
   const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -59,6 +61,33 @@ export default function UploadInfo(props: propsType) {
 
   // const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
   const { hoverState, changeHoverState } = useHover();
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const [hashtagInput, setHashtagInput] = useState<string>("");
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [descriptionPlaceholder, setDescriptionPlaceholder]=useState<string>('');
+
+  useEffect(()=>{
+    setUploadData((prevState) => {
+      return { ...prevState, keyword: hashtags };
+    });  
+  },[hashtags])
+
+  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtagInput(e.target.value);
+  }
+  function completeHashtag() {
+    if (hashtagRef.current) {
+      hashtagRef.current.value = "";
+      setHashtags((prev) => [...prev, hashtagInput]);
+    }
+  }
+
+  function deleteHashtag(index: number) {
+    const deleteTag = hashtags;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
+    setHashtagInput("");
+  }
 
   useEffect(() => {
     if (introduceRef && introduceRef.current) {
@@ -69,17 +98,18 @@ export default function UploadInfo(props: propsType) {
     }
   }, [textareaHeight]);
 
-  useEffect(() => {
-    if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
-      makeZeroInputWidth(0);
-      const inputWidth = enteredHashtag.current!.scrollWidth;
-      changeHashtagInputWidth(inputWidth);
-      setHashtagInputWidth(inputWidth);
-    } else {
-      makeZeroInputWidth(HASHTAG_WIDTH);
-      setHashtagInputWidth(HASHTAG_WIDTH);
-    }
-  }, [hashtagInputWidth]);
+  // useEffect(() => {
+  //   if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
+  //   // if (checkMaxInputLength(uploadData.keyword.length, 1)) {
+  //     makeZeroInputWidth(0);
+  //     const inputWidth = enteredHashtag.current!.scrollWidth;
+  //     changeHashtagInputWidth(inputWidth);
+  //     setHashtagInputWidth(inputWidth);
+  //   } else {
+  //     makeZeroInputWidth(HASHTAG_WIDTH);
+  //     setHashtagInputWidth(HASHTAG_WIDTH);
+  //   }
+  // }, [hashtagInputWidth]);
 
   useEffect(() => {
     const initArray = getInitFalseArray();
@@ -151,7 +181,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function checkAduioFileType(type: string) {
-    return type === ".mp3" || type === ".wav";
+    return type === ".mp3" || type === ".wav"||type === ".MP3" || type === ".WAV";
   }
 
   function getAudioFileName(file: string): string {
@@ -204,13 +234,17 @@ export default function UploadInfo(props: propsType) {
 
   //해시태그
   function appendHashtag(): void {
-    const hashtag = getEnteredHashtag();
-    if (!isDuplicateHashtag(hashtag)) {
-      setUploadData((prevState) => {
-        return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
-      });
-      resetHashtagInputWidth();
-      resetHashtagCurrentValue();
+    // const hashtag = getEnteredHashtag();
+    // if (!isDuplicateHashtag(hashtag)) {
+    //   setUploadData((prevState) => {
+    //     return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
+    //   });
+    //   // resetHashtagInputWidth();
+    //   // resetHashtagCurrentValue();
+    // }
+    if (hashtagRef.current) {
+      hashtagRef.current.value = "";
+      setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
 
@@ -259,30 +293,30 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-  function deleteHashtag(index: number) {
-    const deleteTag = uploadData.keyword;
-    deleteTag.splice(index, 1);
+  // function deleteHashtag(index: number) {
+  //   const deleteTag = uploadData.keyword;
+  //   deleteTag.splice(index, 1);
 
-    setUploadData((prevState) => {
-      return { ...prevState, keyword: deleteTag };
-    });
-    resetHashtagInputWidth();
-  }
+  //   setUploadData((prevState) => {
+  //     return { ...prevState, keyword: deleteTag };
+  //   });
+  //   resetHashtagInputWidth();
+  // }
 
   // function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
   //   isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
   // }
 
-  function isEmptyHashtagInput(): boolean {
-    return enteredHashtag.current!.value.length === 0;
-  }
+  // function isEmptyHashtagInput(): boolean {
+  //   return enteredHashtag.current!.value.length === 0;
+  // }
 
   function changeHashtagInputWidth(inputWidth: number): void {
     enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
   }
 
   function makeZeroInputWidth(width: number): void {
-    enteredHashtag!.current!.style.width = width + "rem";
+    // enteredHashtag!.current!.style.width = width + "rem";
   }
 
   //소개글
@@ -321,6 +355,11 @@ export default function UploadInfo(props: propsType) {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
 
+  useEffect(()=>{
+    setHashtags(uploadData.keyword);
+    isVocal(whom)?setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요."):setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.")
+  },[])
+
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
@@ -344,7 +383,7 @@ export default function UploadInfo(props: propsType) {
       <InfoContainer>
         <InfoItemBox>
           <NameBox>
-            <UploadFileUpdateIc />
+            <UploadFileUpdateIcon />
           </NameBox>
           <InputBox>
             <InputWrapper>
@@ -355,7 +394,7 @@ export default function UploadInfo(props: propsType) {
                   type="file"
                   id="wavFileUpload"
                   style={{ display: "none" }}
-                  accept=".wav,.mp3"
+                  accept=".wav,.mp3, .WAV, .MP3"
                   onChange={uploadAudiofile}
                   readOnly
                 />
@@ -369,7 +408,7 @@ export default function UploadInfo(props: propsType) {
 
         <InfoItemBox>
           <NameBox>
-            <UploadCategoryIc />
+            <UploadCategoryIcon />
           </NameBox>
           <InputBox>
             <InputWrapper>
@@ -385,73 +424,47 @@ export default function UploadInfo(props: propsType) {
 
         <InfoItemBox>
           <NameBox>
-            <UploadHashtagIc />
+            <UploadHashtagIcon />
           </NameBox>
           <InputBox>
-            <InputWrapper>
-              {uploadData.keyword.length > 0 ? (
-                <>
-                  {uploadData.keyword.map((item: string, index: number) => {
-                    return (
-                      <InputHashtagWrapper>
-                        <Hashtag key={index}>
-                          <HashtagWrapper>
-                            <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                            <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                          </HashtagWrapper>
-                        </Hashtag>
-                      </InputHashtagWrapper>
-                    );
-                  })}
-                  {isMaxHashtags() && (
-                    <InputHashtagWrapper>
-                      <Hashtag>
-                        <HashtagWrapper>
-                          <HashtagSharp># </HashtagSharp>
-                          <HashtagInput
-                            placeholder="Hashtag"
-                            type="text"
-                            defaultValue=""
-                            onKeyDown={addHashtagEnterKey}
-                            onChange={changeHashtagTextWidth}
-                            hashtagInputWidth={hashtagInputWidth}
-                            maxLength={10}
-                            ref={enteredHashtag}
-                          />
-
-                          <div style={{ width: "1" }}></div>
-                        </HashtagWrapper>
-                      </Hashtag>
-                    </InputHashtagWrapper>
-                  )}
-                </>
-              ) : (
-                <InputHashtagWrapper>
-                  <Hashtag>
-                    <HashtagWrapper>
-                      <HashtagSharp># </HashtagSharp>
-                      <HashtagInput
-                        placeholder="Hashtag"
-                        type="text"
-                        defaultValue=""
-                        onKeyDown={addHashtagEnterKey}
-                        onChange={changeHashtagTextWidth}
-                        hashtagInputWidth={hashtagInputWidth}
-                        maxLength={10}
-                        ref={enteredHashtag}
-                      />
-                    </HashtagWrapper>
-                  </Hashtag>
-                </InputHashtagWrapper>
-              )}
-              {hashtagLength > 0 && uploadData.keyword.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
-            </InputWrapper>
+            <InputHashtagWrapper>
+          {hashtags.map((hashtag, index) => {
+              return (
+                <Hashtag key={index}>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <CompletedHashtag>{hashtag}</CompletedHashtag>
+                  </HashtagWrapper>
+                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                </Hashtag>
+              );
+            })}
+            {hashtags.length < 3 && (
+              <Hashtag>
+                <HashtagWrapper>
+                  <HashtagSharp># </HashtagSharp>
+                  <HashtagInput
+                    onChange={getInputText}
+                    onKeyPress={(e) => {
+                      e.key === "Enter" && completeHashtag();
+                    }}
+                    inputWidth={hashtagInput.length}
+                    ref={hashtagRef}
+                    placeholder="HashTag"
+                    maxLength={10}
+                  />
+                </HashtagWrapper>
+              </Hashtag>
+            )}
+            
+            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+          </InputHashtagWrapper>
 
             <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
               {hoverState ? (
                 <>
-                  <HoverHashtagWarningIc />
-                  <WarningTextWrapper>
+                  <HoverHashtagWarningIcon />
+                  <WarningTextWrapper isVocal={isVocal(whom)}>
                     <WarningText>
                       1. 해시태그는 최대 3개까지 추가 가능합니다.
                       <br />
@@ -470,19 +483,21 @@ export default function UploadInfo(props: propsType) {
 
         <InfoItemBox>
           <NameBox>
-            <UploadDescriptionIc />
+            <UploadDescriptionIcon />
           </NameBox>
           <InputBox>
             <InputDescriptionText
               typeof="text"
-              placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+              placeholder={descriptionPlaceholder}
               spellCheck={false}
               maxLength={250}
               onFocus={hoverDescription}
               onBlur={hoverDescription}
               descriptionHoverState={descriptionHoverState}
               ref={introduceRef}
-              onChange={resizeTextarea}></InputDescriptionText>
+              onChange={resizeTextarea}
+              row={Math.floor(descriptionLength/30)+1}
+            ></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
@@ -492,7 +507,7 @@ export default function UploadInfo(props: propsType) {
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
-      <DropMenuBox hiddenDropBox={hiddenDropBox}>
+      <DropMenuBox hiddenDropBox={hiddenDropBox} isVocal={isVocal(whom)}>
         <DropMenuWrapper>
           {Object.values(Categories).map((text: string, index: number) => (
             <DropMenuItem
@@ -505,7 +520,6 @@ export default function UploadInfo(props: propsType) {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
-              {checkStateIcon[index] && <CheckCategoryIc />}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>
@@ -515,8 +529,9 @@ export default function UploadInfo(props: propsType) {
 }
 
 const Container = styled.section`
-  height: 74.7rem;
+  height: 74.6rem;
   width: 88.7rem;
+  margin-top: -2.5rem;
 `;
 
 const TitleInput = styled.input`
@@ -586,10 +601,11 @@ const InfoItemBox = styled.div`
 `;
 
 const NameBox = styled.div`
-  width: 20.7rem;
-  height: 100%;
+  width: 30rem;
+ // height: 100%;
 
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -638,7 +654,7 @@ const InputFileTextWrapper = styled.div<{ fileName: string }>`
 
   display: flex;
   align-items: center;
-  border-bottom: 1px solid
+  border-bottom: 0.1rem solid
     ${(props) => (props.fileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
@@ -646,7 +662,7 @@ const InputCategoryTextWrapper = styled.div<{ categoryState: boolean }>`
   height: 4.2rem;
   width: 9.9rem;
 
-  border-bottom: 1px solid
+  border-bottom: 0.1rem solid
     ${(props) => (props.categoryState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
 `;
 
@@ -663,46 +679,11 @@ const InputCategoryText = styled.div<{ categoryState: boolean }>`
   cursor: pointer;
 `;
 
-const InputHashtagWrapper = styled.div`
-  display: flex;
-  margin-top: 1.4rem;
-`;
-
-const Hashtag = styled.div`
-  height: 3.8rem;
-
-  background-color: ${({ theme }) => theme.colors.gray5};
-  border-radius: 2.1rem;
-  margin-right: 1rem;
-`;
-
-const HashtagWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0.9rem 1.5rem;
-`;
-
-const HashtagSharp = styled.p`
-  ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.gray1};
-`;
-
-const HashtagInput = styled.input<{ hashtagInputWidth: number }>`
-  width: ${(props) => props.hashtagInputWidth}rem;
-  ${({ theme }) => theme.fonts.hashtag};
-  color: ${({ theme }) => theme.colors.gray1};
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.gray3};
-  }
-`;
-
-const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>`
-  width: 72rem;
-  height: 4rem;
-
+const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, row:number }>`
+  width: 68rem;
   outline: 0;
   resize: none;
-  overflow: hidden;
+  overflow: scroll;
   background-color: transparent;
 
   border: none;
@@ -715,18 +696,27 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
+  height: ${({row})=>row*3.4+1}rem;
+  padding-bottom: 3rem;
+  
+ 
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
-const WarningTextWrapper = styled.div`
+
+
+const WarningTextWrapper = styled.div<{isVocal:boolean}>`
   height: 12.5rem;
   width: 47.2rem;
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  top: ${({isVocal})=>isVocal?47:61}rem;
+  left: ${({isVocal})=>isVocal?116:129}rem;
   background: rgba(30, 32, 37, 0.7);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.3rem);
   border-radius: 5px;
 `;
 
@@ -737,15 +727,15 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
-const DropMenuBox = styled.div<{ hiddenDropBox: boolean }>`
+const DropMenuBox = styled.div<{ hiddenDropBox: boolean, isVocal:boolean }>`
   display: ${(props) => (props.hiddenDropBox ? "none" : "default")};
   width: 13rem;
 
   position: absolute;
-  top: 54.4rem;
-  left: 103.7rem;
+  top:  ${({isVocal})=>isVocal?39.5:54}rem;
+  left: ${({isVocal})=>isVocal?96.5:109.5}rem;
   background: rgba(30, 32, 37, 0.7);
-  backdrop-filter: blur(6.5px);
+  backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
 `;
 
@@ -774,6 +764,8 @@ const DropMenuText = styled.p`
 `;
 
 const WarningIcon = styled.div`
+  width: 4rem;
+  height: 4rem;
   height: 3rem;
   margin-top: 0.7rem;
   border-radius: 5rem;
@@ -782,23 +774,110 @@ const WarningIcon = styled.div`
 `;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+  width: 4rem;
+  height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
 `;
 
-const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-left: -0.2rem;
-  margin-top: 1.3rem;
+// const AddHashtagIcon = styled(AddHashtagIc)`
+//   margin-left: -0.2rem;
+//   margin-top: 1.3rem;
 
-  cursor: pointer;
-`;
+//   cursor: pointer;
+// `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   margin-left: 1rem;
   cursor: pointer;
 `;
+
+const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+  width: 13.3rem;
+`
+
+const UploadCategoryIcon=styled(UploadCategoryIc)`
+  width: 12.3rem;
+`
+
+const UploadHashtagIcon=styled(UploadHashtagIc)`
+  width: 11.2rem;
+`
+
+const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+  width: 14.6rem;
+  margin-right: 7.5rem;
+`
+
+const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
+
+const InputHashtagWrapper = styled.div`
+  /* display: flex;
+  flex-wrap: wrap; */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+`;
+
+const Hashtag = styled.div`
+  display: flex;
+  align-items: center;
+  height: 3.8rem;
+  background-color: ${({ theme }) => theme.colors.gray5};
+  border-radius: 2.1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
+`;
+
+const HashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+`;
+
+const HashtagSharp = styled.p`
+  ${({ theme }) => theme.fonts.hashtag};
+  color: ${({ theme }) => theme.colors.gray1};
+  margin-right: 0.6rem;
+`;
+
+const HashtagInput = styled.input<{ inputWidth: number }>`
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
+  display: flex;
+  ${({ theme }) => theme.fonts.hashtag};
+  color: ${({ theme }) => theme.colors.gray1};
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.gray3};
+  }
+`;
+
+const CompletedHashtag = styled.article`
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => theme.fonts.hashtag}
+`;
+
+const AddHashtagIcon = styled(AddHashtagIc)`
+  width: 4rem;
+  height: 4rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
+`;
+
+const IconWrapper=styled.div`
+  width: 21rem;
+  display: flex;
+  justify-content: flex-start;
+`

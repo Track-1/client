@@ -7,6 +7,7 @@ import { FileChangeIc } from "../../assets";
 import { uploadImage } from "../../utils/uploadPage/uploadImage";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
+import { currentUser } from "../../core/constants/userType";
 
 interface propsType {
   uploadData: UploadInfoDataType;
@@ -22,8 +23,6 @@ export default function VocalUpload(props: propsType) {
   return (
     <Container>
       <SectionWrapper>
-        <Img src={VocalUploadFrameIc} alt="배경" />
-
         <VocalImageBox>
           <VocalImageFrame
             onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
@@ -32,7 +31,7 @@ export default function VocalUpload(props: propsType) {
               <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" hoverState={hoverState} />
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {hoverState && (
+              {hoverState && ( 
                 <FileChangeIcon
                   onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
                   onMouseLeave={(e) => changeHoverState(e, vocalUploadImg)}
@@ -50,25 +49,29 @@ export default function VocalUpload(props: propsType) {
           readOnly
         />
 
-        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} whom={currentUser.VOCAL}/>
       </SectionWrapper>
+      <Img src={VocalUploadFrameIc} alt="배경" />
     </Container>
   );
 }
 
 const Container = styled.section`
-  height: 76.2rem;
+  //height: 76.2rem;
 
   margin-left: 15rem;
 `;
 
 const SectionWrapper = styled.div`
-  height: 100%;
+  height: 76.2rem;
 
+  margin-top: 8rem;
   display: flex;
   align-items: center;
 
-  padding: 7.2rem 0 0 0;
+  position: absolute;
+  z-index: 2;
+  //top: 5.5rem;
   /* background-image: url(${VocalUploadFrameIc});
   background-repeat: no-repeat; */
 `;
@@ -79,7 +82,7 @@ const VocalImageBox = styled.div`
   display: flex;
   align-items: center;
   transform: rotate(0deg);
-  margin-top: 7.2rem;
+ // margin-top: 7.2rem;
   margin-left: 7.3rem;
   margin-right: 7.5rem;
 `;
@@ -124,9 +127,11 @@ const VocalUploadImage = styled.img<{ hoverState: boolean }>`
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
+  width: 18.9rem;
   position: absolute;
-  top: 17rem;
+  top: 14rem;
   left: 12rem;
   transform: rotate(-45deg);
   cursor: pointer;
 `;
+
