@@ -3,18 +3,17 @@ import { useEffect, useState } from "react";
 import ProfileEditInfo from "../@components/@common/profileEditInfo";
 import ProfileEditHeader from "../@components/profileEdit/profileEditHeader";
 import ProducerProfileEditTitle from "../@components/profileEdit/producerProfileEditTitle";
-import { editInputDatas } from "../core/editProfile/editData";
-import { EditDataType, nickName } from "../type/editDataType";
 import VocalProfileEditTitle from "../@components/profileEdit/vocalProfileEditTitle";
-import { currentUser } from "../core/constants/userType";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
-import { getVocalProfile, patchVocalrProfile } from "../core/api/vocalProfile";
-import { getProducerPortfolio, patchProducerProfile } from "../core/api/producerProfile";
+import { useMutation } from "react-query";
+import { patchProducerProfile } from "../core/api/producerProfile";
 import { CategoryId } from "../core/constants/categories";
+import { patchVocalrProfile } from "../core/api/vocalProfile";
 
-export default function ProfileEditPage() {
+export default function VocalProfileEditPage() {
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const [isSleep, setIsSleep] = useState<string>(state.isSelected);
   const [profileImage, setProfileImage] = useState<File>(state.profileImage);
   const [name, setName] = useState<string>(state.name);
   const [contact, setContact] = useState<string>(state.contact);
@@ -38,6 +37,7 @@ export default function ProfileEditPage() {
         formData.append(`keyword[${index}]`, item);
       });
       formData.append("introduce", description);
+      formData.append("isSelected", isSleep);
       setUpdatedData(formData);
     }
   }, [saveData]);
@@ -45,10 +45,11 @@ export default function ProfileEditPage() {
   useEffect(() => {
     if (updatedData !== undefined) {
       mutate();
+      navigate(-1);
     }
   }, [updatedData]);
 
-  const { mutate } = useMutation(() => patchProducerProfile(updatedData), {
+  const { mutate } = useMutation(() => patchVocalrProfile(updatedData), {
     onSuccess: () => {
       console.log("ok");
     },
@@ -97,19 +98,23 @@ export default function ProfileEditPage() {
     setSaveData(true);
   }
 
+  function changeSleepState() {
+    isSleep === "true" ? setIsSleep("false") : setIsSleep("true");
+  }
+
   return (
     <>
       <ProfileEditHeader editReady={editReady} editData={editData} />
       <EditContainer>
-        <ProducerProfileEditTitle
+        <VocalProfileEditTitle
           profileImage={profileImage}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}
           changeReadyState={changeReadyState}
+          isSleep={isSleep}
+          changeSleepState={changeSleepState}
         />
-        {/* <VocalProfileEditTitle
-          /> */}
         <ProfileEditInfo
           contact={contact}
           categories={categories}
