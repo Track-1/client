@@ -46,6 +46,8 @@ export default function ProducerProfilePage() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
 
+  console.log(profileData);
+
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
     let selectingResponse: any;
