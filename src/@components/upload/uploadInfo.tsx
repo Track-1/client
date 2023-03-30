@@ -761,8 +761,8 @@ const WarningTextWrapper = styled.div<{isVocal:boolean}>`
 
   position: absolute;
 
-  top: ${({isVocal})=>isVocal?47:54}rem;
-  left: ${({isVocal})=>isVocal?116:109.5}rem;
+  top: ${({isVocal})=>isVocal?47:61}rem;
+  left: ${({isVocal})=>isVocal?116:129}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.3rem);
   border-radius: 5px;
@@ -780,8 +780,8 @@ const DropMenuBox = styled.div<{ hiddenDropBox: boolean, isVocal:boolean }>`
   width: 13rem;
 
   position: absolute;
-  top:  ${({isVocal})=>isVocal?39.5:20}rem;
-  left: ${({isVocal})=>isVocal?96.5:20}rem;
+  top:  ${({isVocal})=>isVocal?39.5:54}rem;
+  left: ${({isVocal})=>isVocal?96.5:109.5}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
