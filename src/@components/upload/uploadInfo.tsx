@@ -344,7 +344,7 @@ export default function UploadInfo(props: propsType) {
       <InfoContainer>
         <InfoItemBox>
           <NameBox>
-            <UploadFileUpdateIc />
+            <UploadFileUpdateIcon />
           </NameBox>
           <InputBox>
             <InputWrapper>
@@ -369,7 +369,7 @@ export default function UploadInfo(props: propsType) {
 
         <InfoItemBox>
           <NameBox>
-            <UploadCategoryIc />
+            <UploadCategoryIcon />
           </NameBox>
           <InputBox>
             <InputWrapper>
@@ -385,7 +385,7 @@ export default function UploadInfo(props: propsType) {
 
         <InfoItemBox>
           <NameBox>
-            <UploadHashtagIc />
+            <UploadHashtagIcon />
           </NameBox>
           <InputBox>
             <InputWrapper>
@@ -450,7 +450,7 @@ export default function UploadInfo(props: propsType) {
             <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
               {hoverState ? (
                 <>
-                  <HoverHashtagWarningIc />
+                  <HoverHashtagWarningIcon />
                   <WarningTextWrapper>
                     <WarningText>
                       1. 해시태그는 최대 3개까지 추가 가능합니다.
@@ -470,7 +470,7 @@ export default function UploadInfo(props: propsType) {
 
         <InfoItemBox>
           <NameBox>
-            <UploadDescriptionIc />
+            <UploadDescriptionIcon />
           </NameBox>
           <InputBox>
             <InputDescriptionText
@@ -783,11 +783,15 @@ const WarningIcon = styled.div`
 `;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+  width: 4rem;
+  height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
 `;
@@ -803,3 +807,24 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   margin-left: 1rem;
   cursor: pointer;
 `;
+
+const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+  width: 13.3rem;
+`
+
+const UploadCategoryIcon=styled(UploadCategoryIc)`
+  width: 12.3rem;
+`
+
+const UploadHashtagIcon=styled(UploadHashtagIc)`
+  width: 11.2rem;
+`
+
+const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+  width: 14.6rem;
+`
+
+const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
