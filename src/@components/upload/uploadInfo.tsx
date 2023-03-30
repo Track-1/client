@@ -66,6 +66,12 @@ export default function UploadInfo(props: propsType) {
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder]=useState<string>('');
 
+  useEffect(()=>{
+    setUploadData((prevState) => {
+      return { ...prevState, keyword: hashtags };
+    });  
+  },[hashtags])
+
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
   }
@@ -175,7 +181,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function checkAduioFileType(type: string) {
-    return type === ".mp3" || type === ".wav";
+    return type === ".mp3" || type === ".wav"||type === ".MP3" || type === ".WAV";
   }
 
   function getAudioFileName(file: string): string {
@@ -228,13 +234,17 @@ export default function UploadInfo(props: propsType) {
 
   //해시태그
   function appendHashtag(): void {
-    const hashtag = getEnteredHashtag();
-    if (!isDuplicateHashtag(hashtag)) {
-      setUploadData((prevState) => {
-        return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
-      });
-      resetHashtagInputWidth();
-      resetHashtagCurrentValue();
+    // const hashtag = getEnteredHashtag();
+    // if (!isDuplicateHashtag(hashtag)) {
+    //   setUploadData((prevState) => {
+    //     return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
+    //   });
+    //   // resetHashtagInputWidth();
+    //   // resetHashtagCurrentValue();
+    // }
+    if (hashtagRef.current) {
+      hashtagRef.current.value = "";
+      setHashtags((prev) => [...prev, hashtagInput]);
     }
   }
 

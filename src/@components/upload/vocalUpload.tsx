@@ -31,7 +31,7 @@ export default function VocalUpload(props: propsType) {
               <VocalUploadImage src={vocalUploadImg} alt="썸네일이미지" hoverState={hoverState} />
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {hoverState && (
+              {hoverState && ( 
                 <FileChangeIcon
                   onMouseEnter={(e) => changeHoverState(e, vocalUploadImg)}
                   onMouseLeave={(e) => changeHoverState(e, vocalUploadImg)}
@@ -127,9 +127,11 @@ const VocalUploadImage = styled.img<{ hoverState: boolean }>`
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
+  width: 18.9rem;
   position: absolute;
-  top: 17rem;
+  top: 14rem;
   left: 12rem;
   transform: rotate(-45deg);
   cursor: pointer;
 `;
+

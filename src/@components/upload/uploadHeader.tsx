@@ -28,7 +28,7 @@ export default function UploadHeader(props: PropsType) {
 
   const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
-      alert("업로드 성공");
+      // alert("업로드 성공");
       checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`);
     },
     onError: (error) => {
@@ -52,6 +52,8 @@ export default function UploadHeader(props: PropsType) {
       setIsUploadActive(false);
     }
   }
+
+  console.log(uploadData)
 
   function isEmptyTitle(): boolean {
     return uploadData.title === "";
