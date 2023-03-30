@@ -18,11 +18,12 @@ interface PropsType {
   pauseAudio: () => void;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   producerName: string;
-  whom:string;
+  whom: string;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName,whom } = props;
+  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName, whom } =
+    props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [play, setPlay] = useRecoilState(playMusic);
@@ -54,7 +55,7 @@ export default function ProducerPortFolioList(props: PropsType) {
   function hoverOutPortfolio(id: number) {
     id !== clickedIndex && setHoveredIndex(-1);
   }
-console.log(portfolioData)
+
   return (
     <>
       <ProfileListContainer>
@@ -94,13 +95,12 @@ console.log(portfolioData)
                   index={index}
                   profileState={profileState}
                   clickBool={isSameIndex(clickedIndex, index)}
-                  hoverBool={isSameIndex(hoveredIndex, index)}
-                >
-                <PortfolioImage
-                  src={portfolio.jacketImage}
-                  clickBool={isSameIndex(clickedIndex, index)}
-                  hoverBool={isSameIndex(hoveredIndex, index)}
-                />
+                  hoverBool={isSameIndex(hoveredIndex, index)}>
+                  <PortfolioImage
+                    src={portfolio.jacketImage}
+                    clickBool={isSameIndex(clickedIndex, index)}
+                    hoverBool={isSameIndex(hoveredIndex, index)}
+                  />
                 </PortfolioImageWrapper>
               </div>
               <TitleWrapper>
@@ -201,7 +201,7 @@ const PortfolioBox = styled.article<{
   }
 `;
 
-const PortfolioImageWrapper=styled.div<{
+const PortfolioImageWrapper = styled.div<{
   isLarge: boolean;
   index: number;
   profileState: string;
@@ -211,15 +211,15 @@ const PortfolioImageWrapper=styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   height: ${({ clickBool, index, profileState }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   width: ${({ clickBool, index, profileState }) =>
     (isSameIndex(index, 0) && profileState !== "Vocal Searching") || clickBool ? 42 : 21.8}rem;
   border-radius: 25rem;
- // position: absolute;
+  // position: absolute;
   overflow: hidden;
-`
+`;
 
 const PortfolioImage = styled.img<{
   clickBool: boolean;

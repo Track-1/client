@@ -42,8 +42,8 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  function isPortfolioDataEmpty() {
-    return portfolioData.length === 0;
+  function isDataEmpty() {
+    return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
 
   async function getData(portfolioPage: number, selectingPage: number) {
@@ -154,7 +154,8 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {!isPortfolioDataEmpty() && profileData ? (
+
+        {!isDataEmpty() && profileData ? (
           <ProducerPortFolioList
             isMe={isMe}
             portfolioData={profileState === "Portfolio" ? portfolioData : selectingTracksData}
