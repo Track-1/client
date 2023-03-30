@@ -172,7 +172,7 @@ const Blank = styled.div`
   height: 3rem;
 `;
 
-const MainLogoutIcon=styled(MainLogoutIc)`
+const MainLogoutIcon = styled(MainLogoutIc)`
   width: 4rem;
   height: 4rem;
-`
+`;
