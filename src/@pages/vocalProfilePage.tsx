@@ -4,6 +4,7 @@ import Player from "../@components/@common/player";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
 import VocalProfileList from "../@components/vocalProfile/vocalProfileList";
 import VocalProfileShadow from "../@components/vocalProfile/vocalProfileShadow";
+import VocalEmptyProfileImg from "../assets/image/vocalEmptyProfileImg.png";
 import { Category } from "../core/constants/categoryHeader";
 import { playMusic, showPlayerBar } from "../recoil/player";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
@@ -38,7 +39,7 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const isEnd=useRecoilValue(endPost);
+  const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
 
   const { state } = useLocation();
@@ -58,7 +59,7 @@ export default function VocalProfilePage() {
   useEffect(() => {
     // setWhom(Category.TRACKS);
     // setShowPlayer(false);
-    setTracksOrVocals(currentUser.VOCAL)
+    setTracksOrVocals(currentUser.VOCAL);
   }, []);
 
   async function getData(page: number) {
@@ -70,6 +71,10 @@ export default function VocalProfilePage() {
 
       return { response, nextPage: page + 1 };
     }
+  }
+
+  function isPortfolioDataEmpty() {
+    return portfolioData.length === 0;
   }
 
   function playAudio() {
@@ -95,10 +100,12 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      <VocalProfile>{profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.VOCALS}/>}</VocalProfile>
+      <VocalProfile>
+        {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.VOCALS} />}
+      </VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
-          {portfolioData && profileData && (
+          {!isPortfolioDataEmpty() && profileData ? (
             <VocalProfileList
               isMe={isMe}
               portfolioData={portfolioData}
@@ -109,6 +116,8 @@ export default function VocalProfilePage() {
               vocalName={profileData?.name}
               whom={Category.VOCALS}
             />
+          ) : (
+            <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
           )}
           <VocalProfileShadowIcon />
         </VocalProfileWrapper>
@@ -158,6 +167,12 @@ const PlayerWrapper = styled.div`
   bottom: 0;
 `;
 
-const VocalProfileShadowIcon=styled(VocalProfileShadow)`
+const VocalProfileShadowIcon = styled(VocalProfileShadow)`
   width: 45rem;
-`
+`;
+
+const VocalEmptyProfileImage = styled.img`
+  position: absolute;
+  top: 26.2rem;
+  left: 69.6rem;
+`;

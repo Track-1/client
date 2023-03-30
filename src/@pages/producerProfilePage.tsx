@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProducerPortFolioList from "../@components/producerProfile/producerPortFolioList";
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
+import ProducerEmptyProfileImg from "../assets/image/producerEmptyProfileImg.png";
 import { RightArrorIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
@@ -41,6 +42,10 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
+  function isPortfolioDataEmpty() {
+    return portfolioData.length === 0;
+  }
+
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
     let selectingResponse: any;
@@ -65,7 +70,7 @@ export default function ProducerProfilePage() {
 
   const { hasNextPage, fetchNextPage } = useInfiniteQuery(key, ({ pageParam = 1 }) => getData(pageParam, pageParam), {
     getNextPageParam: (lastPage, allPages) => {
-      if (profileState == "Portfolio") {
+      if (profileState === "Portfolio") {
         return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0 ? lastPage?.portfolioNextPage : undefined;
       } else {
         return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
@@ -124,7 +129,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData}  isMe={isMe} whom={Category.TRACKS}/>}
+      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.TRACKS} />}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>
@@ -149,7 +154,7 @@ export default function ProducerProfilePage() {
             Vocal Searching
           </VocalSearchingTab>
         </TabContainer>
-        {portfolioData && profileData && (
+        {!isPortfolioDataEmpty() && profileData ? (
           <ProducerPortFolioList
             isMe={isMe}
             portfolioData={profileState === "Portfolio" ? portfolioData : selectingTracksData}
@@ -161,6 +166,8 @@ export default function ProducerProfilePage() {
             producerName={profileData?.name}
             whom={Category.TRACKS}
           />
+        ) : (
+          <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
         )}
       </PageContainer>
       <InfiniteDiv ref={observerRef}> </InfiniteDiv>
@@ -223,4 +230,10 @@ const RightArrorIcon = styled(RightArrorIc)`
   width: 2.4rem;
   height: 2.4rem;
   margin-right: 1rem;
+`;
+
+const ProducerEmptyProfileImage = styled.img`
+  position: absolute;
+  top: 26.2rem;
+  left: 69.6rem;
 `;
