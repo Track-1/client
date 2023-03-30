@@ -51,6 +51,7 @@ export default function TrackSearchPage() {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
 
