@@ -427,64 +427,6 @@ export default function UploadInfo(props: propsType) {
             <UploadHashtagIcon />
           </NameBox>
           <InputBox>
-            {/* <InputWrapper>
-              {uploadData.keyword.length > 0 ? (
-                <>
-                  {uploadData.keyword.map((item: string, index: number) => {
-                    return (
-                      <InputHashtagWrapper>
-                        <Hashtag key={index}>
-                          <HashtagWrapper>
-                            <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                            <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                          </HashtagWrapper>
-                        </Hashtag>
-                      </InputHashtagWrapper>
-                    );
-                  })}
-                  {isMaxHashtags() && (
-                    <InputHashtagWrapper>
-                      <Hashtag>
-                        <HashtagWrapper>
-                          <HashtagSharp># </HashtagSharp>
-                          <HashtagInput
-                            placeholder="Hashtag"
-                            type="text"
-                            defaultValue=""
-                            onKeyDown={addHashtagEnterKey}
-                            onChange={changeHashtagTextWidth}
-                            hashtagInputWidth={hashtagInputWidth}
-                            maxLength={10}
-                            ref={enteredHashtag}
-                          />
-
-                          <div style={{ width: "1" }}></div>
-                        </HashtagWrapper>
-                      </Hashtag>
-                    </InputHashtagWrapper>
-                  )}
-                </>
-              ) : (
-                <InputHashtagWrapper>
-                  <Hashtag>
-                    <HashtagWrapper>
-                      <HashtagSharp># </HashtagSharp>
-                      <HashtagInput
-                        placeholder="Hashtag"
-                        type="text"
-                        defaultValue=""
-                        onKeyDown={addHashtagEnterKey}
-                        onChange={changeHashtagTextWidth}
-                        hashtagInputWidth={hashtagInputWidth}
-                        maxLength={10}
-                        ref={enteredHashtag}
-                      />
-                    </HashtagWrapper>
-                  </Hashtag>
-                </InputHashtagWrapper>
-              )}
-              {hashtagLength > 0 && uploadData.keyword.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
-            </InputWrapper> */}
             <InputHashtagWrapper>
           {hashtags.map((hashtag, index) => {
               return (
@@ -522,7 +464,7 @@ export default function UploadInfo(props: propsType) {
               {hoverState ? (
                 <>
                   <HoverHashtagWarningIcon />
-                  <WarningTextWrapper>
+                  <WarningTextWrapper isVocal={isVocal(whom)}>
                     <WarningText>
                       1. 해시태그는 최대 3개까지 추가 가능합니다.
                       <br />
@@ -565,7 +507,7 @@ export default function UploadInfo(props: propsType) {
           <LimitCount>/250</LimitCount>
         </TextWrapper>
       </TextCount>
-      <DropMenuBox hiddenDropBox={hiddenDropBox}>
+      <DropMenuBox hiddenDropBox={hiddenDropBox} isVocal={isVocal(whom)}>
         <DropMenuWrapper>
           {Object.values(Categories).map((text: string, index: number) => (
             <DropMenuItem
@@ -811,14 +753,16 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, r
   } */
 `;
 
-const WarningTextWrapper = styled.div`
+
+
+const WarningTextWrapper = styled.div<{isVocal:boolean}>`
   height: 12.5rem;
   width: 47.2rem;
 
   position: absolute;
 
-  top: 47rem;
-  left: 116rem;
+  top: ${({isVocal})=>isVocal?47:54}rem;
+  left: ${({isVocal})=>isVocal?116:109.5}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.3rem);
   border-radius: 5px;
@@ -831,13 +775,13 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
-const DropMenuBox = styled.div<{ hiddenDropBox: boolean }>`
+const DropMenuBox = styled.div<{ hiddenDropBox: boolean, isVocal:boolean }>`
   display: ${(props) => (props.hiddenDropBox ? "none" : "default")};
   width: 13rem;
 
   position: absolute;
-  top: 39.5rem;
-  left: 96.5rem;
+  top:  ${({isVocal})=>isVocal?39.5:20}rem;
+  left: ${({isVocal})=>isVocal?96.5:20}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
