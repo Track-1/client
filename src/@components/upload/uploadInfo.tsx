@@ -20,14 +20,16 @@ import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
+import { isVocal } from "../../utils/common/userType";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+  whom:string;
 }
 
 export default function UploadInfo(props: propsType) {
-  const { uploadData, setUploadData } = props;
+  const { uploadData, setUploadData,whom } = props;
   const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -62,6 +64,7 @@ export default function UploadInfo(props: propsType) {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
+  const [descriptionPlaceholder, setDescriptionPlaceholder]=useState<string>('');
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
@@ -344,6 +347,7 @@ export default function UploadInfo(props: propsType) {
 
   useEffect(()=>{
     setHashtags(uploadData.keyword);
+    isVocal(whom)?setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요."):setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.")
   },[])
 
   return (
@@ -532,14 +536,16 @@ export default function UploadInfo(props: propsType) {
           <InputBox>
             <InputDescriptionText
               typeof="text"
-              placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+              placeholder={descriptionPlaceholder}
               spellCheck={false}
               maxLength={250}
               onFocus={hoverDescription}
               onBlur={hoverDescription}
               descriptionHoverState={descriptionHoverState}
               ref={introduceRef}
-              onChange={resizeTextarea}></InputDescriptionText>
+              onChange={resizeTextarea}
+              row={Math.floor(descriptionLength/31)+1}
+            ></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
@@ -754,9 +760,9 @@ const InputCategoryText = styled.div<{ categoryState: boolean }>`
 //   }
 // `;
 
-const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>`
+const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, row:number }>`
   width: 72rem;
-  height: 4rem;
+  /* height: 4rem; */
 
   outline: 0;
   resize: none;
@@ -773,6 +779,26 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean }>
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
+  height: ${({row})=>row*3.4+1}rem;
+  padding-bottom: 3rem;
+  /* height: ${({row})=>row*3.4+1}rem;
+  width: 55.9rem;
+  outline: 0;
+  resize: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  background-color: transparent;
+  margin-top: 3rem;
+  overflow: hidden;
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
+  padding-bottom: 3rem;
+  ${({ theme }) => theme.fonts.input}
+  color: ${({ theme }) => theme.colors.white};
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.gray3};
+  } */
 `;
 
 const WarningTextWrapper = styled.div`

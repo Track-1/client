@@ -7,6 +7,7 @@ import { FileChangeIc } from "../../assets";
 import { uploadImage } from "../../utils/uploadPage/uploadImage";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
+import { currentUser } from "../../core/constants/userType";
 
 interface propsType {
   uploadData: UploadInfoDataType;
@@ -48,7 +49,7 @@ export default function VocalUpload(props: propsType) {
           readOnly
         />
 
-        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} />
+        <UploadInfo uploadData={uploadData} setUploadData={setUploadData} whom={currentUser.VOCAL}/>
       </SectionWrapper>
       <Img src={VocalUploadFrameIc} alt="배경" />
     </Container>
