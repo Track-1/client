@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import styled from "styled-components";
 import { Category } from "../../core/constants/categoryHeader";
 
@@ -20,6 +21,7 @@ import { categorySelect, clickCategoryHeader } from "../../recoil/categorySelect
 
 export default function CategoryHeader(props: any) {
   const { excuteGetData } = props;
+  const isSameClicked = useRef(false);
 
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
@@ -28,10 +30,26 @@ export default function CategoryHeader(props: any) {
   const loginUserImg = useRecoilValue(LoginUserImg);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  const isSameCategoryCliked = () => {
+    if (!isSameClicked.current) {
+      isSameClicked.current = true;
+    }
+  };
+
+  function clickSameCategory() {
+    isSameCategoryCliked();
+    if (isSameClicked.current === false) {
+      excuteGetData();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
+
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
     setIsClickedCategory(!isClickedCategory);
+    clickSameCategory();
   }
 
   function moveVocalSearchPage() {
@@ -56,32 +74,14 @@ export default function CategoryHeader(props: any) {
         <CategoryWrapper>
           {tracksOrVocals === Category.TRACKS && (
             <>
-              <TracksSelectTextIcon
-                onClick={() => {
-                  moveTrackSearchPage();
-                  excuteGetData();
-                }}
-              />
-              <VocalsHeaderTextIcon
-                onClick={() => {
-                  moveVocalSearchPage();
-                }}
-              />
+              <TracksSelectTextIcon onClick={moveTrackSearchPage} />
+              <VocalsHeaderTextIcon onClick={moveVocalSearchPage} />
             </>
           )}
           {tracksOrVocals === Category.VOCALS && (
             <>
-              <TracksHeaderTextIcon
-                onClick={() => {
-                  moveTrackSearchPage();
-                  excuteGetData();
-                }}
-              />
-              <VocalsSelectTextIcon
-                onClick={() => {
-                  moveVocalSearchPage();
-                }}
-              />
+              <TracksHeaderTextIcon onClick={moveTrackSearchPage} />
+              <VocalsSelectTextIcon onClick={moveVocalSearchPage} />
             </>
           )}
         </CategoryWrapper>
