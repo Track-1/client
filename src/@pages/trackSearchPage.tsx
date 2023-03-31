@@ -52,7 +52,6 @@ export default function TrackSearchPage() {
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        //console.log(key);
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
       refetchOnWindowFocus: false,
