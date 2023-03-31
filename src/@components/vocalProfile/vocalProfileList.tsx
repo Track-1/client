@@ -45,11 +45,13 @@ export default function VocalProfileList(props: PropsType) {
     setHoveredIndex(-1);
   }
 
+  console.log(portfolioData[0].jacketImage);
+
   return (
     <VocalProfileListWrapper>
       <VocalsPortfolioWrapper>
         {portfolioData &&
-          portfolioData.map((vocal: any, index: number) => (
+          portfolioData?.map((vocal: any, index: number) => (
             <VocalPortfolio
               key={vocal.id}
               onMouseEnter={() => mouseOverVocalPortfolio(index)}
@@ -74,7 +76,7 @@ export default function VocalProfileList(props: PropsType) {
                 vocalPortfolioHoverBool={hoveredIndex === index}
                 vocalPortfolioClickBool={clickedIndex === index}>
                 <VocalPortfolioImg
-                  src={vocal.jacketImage}
+                  src={vocal?.jacketImage}
                   alt="보컬 포트폴리오이미지"
                   idx={index}
                   vocalPortfolioHoverBool={hoveredIndex === index}
