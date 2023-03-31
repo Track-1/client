@@ -66,10 +66,12 @@ console.log(tracksData)
     ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴
     {
       getNextPageParam: (lastPage, allPages) => {
+
         //console.log(key);
        // console.log(lastPage)
 
        console.log("3단계")
+
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
       refetchOnWindowFocus: false,

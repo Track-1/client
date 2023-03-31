@@ -20,6 +20,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { LoginUserId } from "../recoil/loginUserData";
 import { currentUser } from "../core/constants/userType";
 import { endPost } from "../recoil/postIsCompleted";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -39,18 +40,20 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
+  const { key } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
 
   const { state } = useLocation();
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["vocalPortFolio", isEnd],
+    [key, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response?.vocalPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.response?.vocalPortfolio.length % 6 == 0 ? lastPage?.nextPage : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -68,7 +71,6 @@ export default function VocalProfilePage() {
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
       setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
-
       return { response, nextPage: page + 1 };
     }
   }
