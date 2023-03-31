@@ -11,31 +11,29 @@ import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
 interface PropsType {
   profileData: ProducerProfileType;
-  isMe:boolean;
-  whom:string;
+  isMe: boolean;
+  whom: string;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData, isMe,whom } = props;
+  const { profileData, isMe, whom } = props;
   const navigate = useNavigate();
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
   function moveProfileEditPage() {
     navigate(`/profile-edit/${profileData.id}`, {
       state: {
-        profileData:profileData,
-        user: whom
-      }
+        profileData: profileData,
+        user: whom,
+      },
     });
   }
-  
-  console.log(profileData)
 
   return (
     <InfoContainer>
       <InfoHeader>
         <BackButton />
-        {isMe&&<ProfileEditBtnIcon onClick={moveProfileEditPage} />}
+        {isMe && <ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
       {isVocalsPage(whom) && (
@@ -45,7 +43,7 @@ export default function ProducerInfos(props: PropsType) {
           </VocalProfileImage>
         </VocalProfileImageContainer>
       )}
-      {isTracksPage(whom)&&(
+      {isTracksPage(whom) && (
         <ProfileImage>
           <ProfileImg src={profileData?.profileImage} alt="프로필이미지" />
         </ProfileImage>
@@ -60,22 +58,44 @@ export default function ProducerInfos(props: PropsType) {
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
-            {Object.values(Categories).map((value) =>
-              profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
+            {profileData.category.length > 0 ? (
+              Object.values(Categories).map((value) =>
+                profileData.category.includes(value) ? (
+                  <Category>{value}</Category>
+                ) : (
+                  <NotCategory>{value}</NotCategory>
+                ),
+              )
+            ) : (
+              <EmptyProfileMessageWrapper>
+                <EmptyProfileMessage>no information</EmptyProfileMessage>
+              </EmptyProfileMessageWrapper>
             )}
           </CategoryArray>
         </CategoryBox>
+
         <HashtagBox>
           <HashtagIcon />
-          {profileData.keyword.map((word) => {
-            return <HashTag text={word} />;
-          })}
+          {profileData.keyword.length > 0 ? (
+            profileData.keyword.map((word) => {
+              return <HashTag text={word} />;
+            })
+          ) : (
+            <EmptyProfileMessageWrapper>
+              <EmptyProfileMessage>no information</EmptyProfileMessage>
+            </EmptyProfileMessageWrapper>
+          )}
         </HashtagBox>
       </DetailInfoContainer>
       <DescriptionBox>
         <DescriptionIcon />
-        <Inroduce>{profileData.introduce}</Inroduce>
+        {profileData.introduce.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
       </DescriptionBox>
+      <EmptyDescriptionMessageBox>
+        <EmptyDescriptionMessageWrapper>
+          <EmptyProfileMessage>no information</EmptyProfileMessage>
+        </EmptyDescriptionMessageWrapper>
+      </EmptyDescriptionMessageBox>
     </InfoContainer>
   );
 }
@@ -117,9 +137,7 @@ const ProfileImage = styled.div`
   margin-top: 2rem;
 `;
 
-const VocalProfileImageContainer = styled.div`
- 
-`;
+const VocalProfileImageContainer = styled.div``;
 
 const VocalProfileImg = styled.img`
   width: 150%;
@@ -128,15 +146,15 @@ const VocalProfileImg = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
-  
+
   transform: rotate(45deg);
   position: absolute;
 `;
 const VocalProfileImage = styled.div`
- display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  
+
   height: 19.3rem;
   width: 19.3rem;
   border-radius: 3rem;
@@ -225,7 +243,7 @@ const DescriptionBox = styled.div`
   margin-top: 4.7rem;
 `;
 
-const Inroduce = styled.div`
+const Introduce = styled.div`
   width: 28.5rem;
   outline: 0;
   resize: none;
@@ -255,13 +273,36 @@ const Category = styled.li`
   margin-bottom: 1.1rem;
 `;
 
-const ProfileEditBtnIcon=styled(ProfileEditBtnIc)`
+const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
   width: 16.6rem;
   margin-left: 16.9rem;
 
   cursor: pointer;
-`
+`;
 
-const CategoryIcon=styled(CategoryIc)`
+const CategoryIcon = styled(CategoryIc)`
   width: 10.2rem;
-`
+`;
+
+const EmptyDescriptionMessageBox = styled.div`
+  width: 44.8rem;
+`;
+
+const EmptyProfileMessageWrapper = styled.div`
+  height: 10.3rem;
+
+  display: flex;
+  justify-content: center;
+
+  margin-top: 6.2rem;
+`;
+
+const EmptyDescriptionMessageWrapper = styled.div`
+  height: 10.3rem;
+  margin-top: 6.2rem;
+`;
+
+const EmptyProfileMessage = styled.p`
+  ${({ theme }) => theme.fonts.description}
+  color: ${({ theme }) => theme.colors.gray4};
+`;
