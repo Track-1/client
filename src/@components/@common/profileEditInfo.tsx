@@ -8,7 +8,7 @@ import {
   ProfileEditDescriptionIc,
   ProfileEditHashtagIc,
 } from "../../assets";
-import { CategoryId } from "../../core/constants/categories";
+import { CategoryId, CategoryText } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
@@ -55,7 +55,7 @@ export default function ProfileEditInfo(props: PropsType) {
     const tempSelected = isCategorySelected;
     tempSelected[category] = !tempSelected[category];
     setIsCategorySelected({ ...tempSelected });
-    updateCategory(category);
+    updateCategory(CategoryText[category]);
   }
 
   function deleteHashtagInput(index: number) {
@@ -70,7 +70,6 @@ export default function ProfileEditInfo(props: PropsType) {
     if (e.code === "Enter") {
       updateHashtag(hashtagText);
       setHashtagText("");
-      console.log(hashtags);
     }
   }
 
@@ -90,6 +89,9 @@ export default function ProfileEditInfo(props: PropsType) {
           <ProfileEditCategoryIcon />
           <CategoryBox>
             {Object.keys(CategoryId).map((category, index) => {
+              if (categories.includes(CategoryText[category])) {
+                isCategorySelected[category] = true;
+              }
               return (
                 <CategoryItem
                   key={index}
