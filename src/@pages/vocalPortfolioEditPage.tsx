@@ -15,44 +15,43 @@ import {
   DeleteHashtagIc,
   CheckCategoryIc,
 } from "../assets";
-import { Categories, CategoryDropdown } from "../core/constants/categories";
+import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CategoriesDropdownType, CategoryIdType } from "../type/CategoryChecksType";
-import { useMutation } from "react-query";
+import { QueryClient, useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
+import { patchVocalPortfolio } from "../core/api/vocalProfile";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
   const prevData = useLocation().state;
-  const hashtagText = useRef<HTMLInputElement | null>(null);
+  console.log(prevData);
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [image, setImage] = useState<string>(prevData?.jacketImage);
+  const [image, setImage] = useState<File>(new File([prevData?.jacketImage], prevData?.jacketImage));
   const [title, setTitle] = useState<string>(prevData?.title);
   const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFile);
-  const [category, setCategory] = useState<string>(CategoryDropdown[prevData?.category]);
+  const [category, setCategory] = useState<string>(prevData?.category);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [hashtag, steHashtag] = useState<string[]>(prevData?.keyword);
+  const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtegInput] = useState<string>("");
   const [description, setDescription] = useState<string>(prevData?.content);
   const [complete, setComplete] = useState<boolean>(false);
   const [editData, setEditdata] = useState<any>();
+  const [showImage, setShowImage] = useState<string | ArrayBuffer>();
+  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [hashtagText, setHashtagText] = useState<string>("");
   const navigate = useNavigate();
+  const queryClient = new QueryClient();
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
   }
 
-  useEffect(() => {
-    console.log(prevData);
-  });
-
-  useEffect(() => {
-    hashtagText.current!.value = "";
-  }, [hashtag]);
-
-  const { mutate } = useMutation(() => patchProducerPortfolio(prevData.id, editData), {
+  const { mutate } = useMutation(patchVocalPortfolio, {
     onSuccess: () => {
+      console.log(prevData.id);
+      queryClient.invalidateQueries("vocalPortFolio");
       navigate(-1);
     },
     onError: () => {
@@ -60,6 +59,22 @@ export default function VocalPortfolioEditPage() {
       navigate(-1);
     },
   });
+
+  function getImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const imageFiles = e.target.files as FileList;
+    setImage(imageFiles[0]);
+    showPrevImage(imageFiles);
+    setIsImageUploaded(true);
+  }
+
+  function showPrevImage(imageFiles: FileList) {
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFiles[0]);
+    reader.onloadend = () => {
+      const resultImage = reader.result;
+      resultImage && setShowImage(resultImage);
+    };
+  }
 
   function getFileName(e: any) {
     setAudioFile(e.target.files[0]);
@@ -79,16 +94,18 @@ export default function VocalPortfolioEditPage() {
     hashtag.forEach((keyword) => {
       if (keyword !== deleteTarget) temp.push(keyword);
     });
-    steHashtag(temp);
+    setHashtag(temp);
   }
 
   function changeHashtagWidth(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtegInput(e.target.value);
+    setHashtagText(e.target.value);
   }
 
   function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code === "Enter" && hashtagText.current !== null) {
-      steHashtag((prev) => [...prev, hashtagText.current!.value]);
+    if (e.code === "Enter") {
+      setHashtag((prev) => [...prev, hashtagText]);
+      setHashtagText("");
     }
   }
 
@@ -101,13 +118,22 @@ export default function VocalPortfolioEditPage() {
     formData.append("audioFile", audioFile);
     formData.append("jacketImage", image);
     formData.append("title", title);
-    formData.append("category", category);
+    formData.append("category", CategoryId[category?.toUpperCase()]);
     formData.append("content", description);
-    formData.append("keyword", hashtag[0]);
+    hashtag.forEach((item, index) => {
+      formData.append(`keyword[${index}]`, item);
+    });
     setEditdata(formData);
-    mutate();
     setComplete(true);
   }
+
+  function updateTitle(e: React.ChangeEvent<HTMLInputElement>) {
+    setTitle(e.target.value);
+  }
+
+  useEffect(() => {
+    complete && mutate({ vocalPortfolioId: prevData.id, editDatas: editData });
+  }, [complete]);
 
   return (
     <>
@@ -125,13 +151,24 @@ export default function VocalPortfolioEditPage() {
           <VocalImageBox>
             <VocalImageFrame />
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <TrackUploadImage src={image} alt="썸네일 이미지" />
+              {isImageUploaded ? (
+                <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+              ) : (
+                <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" />
+              )}
             </label>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               <FileChangeIcon />
             </label>
           </VocalImageBox>
-          <input type="file" id="imageFileUpload" style={{ display: "none" }} accept=".jpg,.jpeg,.png" readOnly />
+          <input
+            type="file"
+            id="imageFileUpload"
+            style={{ display: "none" }}
+            accept=".jpg,.jpeg,.png"
+            readOnly
+            onChange={getImageFile}
+          />
           <Container3>
             <TitleInput
               typeof="text"
@@ -139,12 +176,13 @@ export default function VocalPortfolioEditPage() {
               spellCheck={false}
               maxLength={36}
               defaultValue={title}
+              onChange={updateTitle}
             />
             <Line />
 
             <TextCount>
               <TextWrapper>
-                <InputCount>{}</InputCount>
+                <InputCount>{title.length}</InputCount>
                 <LimitCount>/36</LimitCount>
               </TextWrapper>
             </TextCount>
@@ -208,24 +246,23 @@ export default function VocalPortfolioEditPage() {
                         );
                       })}
                       <>
-                        <InputHashtagWrapper>
-                          <Hashtag>
-                            <HashtagWrapper>
-                              <HashtagSharp># </HashtagSharp>
-                              <HashtagInput
-                                placeholder="Hashtag"
-                                type="text"
-                                defaultValue=""
-                                onChange={changeHashtagWidth}
-                                width={hashtagInput.length}
-                                onKeyUp={addHashtag}
-                                ref={hashtagText}
-                              />
-                              <div style={{ width: "1" }}></div>
-                            </HashtagWrapper>
-                          </Hashtag>
-                        </InputHashtagWrapper>
-                        <AddHashtagIcon />
+                        {hashtag.length < 3 && (
+                          <InputHashtagWrapper>
+                            <Hashtag>
+                              <HashtagWrapper>
+                                <HashtagSharp># </HashtagSharp>
+                                <HashtagInput
+                                  onChange={changeHashtagWidth}
+                                  width={hashtagInput.length}
+                                  onKeyUp={addHashtag}
+                                  value={hashtagText}
+                                />
+                                <div style={{ width: "1" }}></div>
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        )}
+                        {hashtag.length < 2 && <AddHashtagIcon />}
                       </>
                     </>
                   </InputWrapper>
@@ -361,6 +398,7 @@ const VocalImageBox = styled.div`
 `;
 
 const VocalImageFrame = styled.div`
+  position: absolute;
   height: 45.1rem;
   width: 45.1rem;
 
@@ -387,8 +425,9 @@ const TrackUploadImage = styled.img`
 
 const FileChangeIcon = styled(FileChangeIc)`
   position: absolute;
-  top: 47.95rem;
-  left: 42.8rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
 `;
 
