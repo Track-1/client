@@ -3,24 +3,29 @@ import { CategoryIc, DescriptionIc, HashtagIc, ProfileEditBtnIc, SleeperAccountI
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { Categories } from "../../core/constants/categories";
 import { useNavigate } from "react-router-dom";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
+import { showPlayerBar } from "../../recoil/player";
 
 interface PropsType {
   profileData: ProducerProfileType;
   isMe: boolean;
   whom: string;
+  pauseAudio: any;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData, isMe, whom } = props;
+  const { profileData, isMe, whom, pauseAudio } = props;
   const navigate = useNavigate();
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   function moveProfileEditPage() {
+    pauseAudio();
+    setShowPlayer(false);
     navigate(`/profile-edit/${profileData.id}`, {
       state: {
         profileData: profileData,
@@ -58,15 +63,9 @@ export default function ProducerInfos(props: PropsType) {
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
-            {
-              Object.values(Categories).map((value) =>
-                profileData.category.includes(value) ? (
-                  <Category>{value}</Category>
-                ) : (
-                  <NotCategory>{value}</NotCategory>
-                ),
-              )
-            }
+            {Object.values(Categories).map((value) =>
+              profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
+            )}
           </CategoryArray>
         </CategoryBox>
 

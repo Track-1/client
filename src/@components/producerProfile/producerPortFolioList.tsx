@@ -132,6 +132,7 @@ export default function ProducerPortFolioList(props: PropsType) {
             portfolios={portfolioData}
             profileState={profileState}
             whom={currentUser.PRODUCER}
+            pauseAudio={pauseAudio}
           />
         </InformWrapper>
       )}

@@ -14,10 +14,12 @@ import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked
 import { Category } from "../../core/constants/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { UserType } from "../../recoil/main";
-import { isProducer } from '../../utils/common/userType';
-import { LoginUserType } from '../../recoil/loginUserData';
+import { isProducer } from "../../utils/common/userType";
+import { LoginUserType } from "../../recoil/loginUserData";
+import { showPlayerBar } from "../../recoil/player";
 
-export default function CategoryList() {
+export default function CategoryList(props: any) {
+  const { pausesPlayerAudio } = props;
   const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
@@ -27,18 +29,15 @@ export default function CategoryList() {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
-  const userType=useRecoilValue(LoginUserType)
+  const userType = useRecoilValue(LoginUserType);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  useEffect(()=>{
-    setSelectedCategorys(
-      selectedCategorys.map((selectCateg) =>
-        ({ ...selectCateg, selected: false }),
-      ),
-    );
+  useEffect(() => {
+    setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
     setFilteredUrlApi("");
-    setTrackSearchingClicked(false)
-  },[isClickedCategory])
+    setTrackSearchingClicked(false);
+  }, [isClickedCategory]);
 
   function categoryClick(id: number) {
     setSelectedCategorys(
@@ -71,6 +70,8 @@ export default function CategoryList() {
   }
 
   function moveUploadPage() {
+    setShowPlayer(false);
+    pausesPlayerAudio();
     setOpenModal(true);
   }
 
@@ -123,13 +124,15 @@ export default function CategoryList() {
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
               {isTracksPage(tracksOrVocals) && (
-                <Img width={category.width}
+                <Img
+                  width={category.width}
                   src={require(`../../assets/icon/${checkIsSelectedTrackCategory(category.id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
               )}
               {isVocalsPage(tracksOrVocals) && (
-                <Img width={category.width}
+                <Img
+                  width={category.width}
                   src={require(`../../assets/icon/${checkIsSelectedVocalCategory(category.id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
@@ -237,20 +240,20 @@ const TrackSearchingPinkIcon = styled(TrackSearchingPinkIc)`
   cursor: pointer;
 `;
 
-const UploadTextIcon=styled(UploadTextIc)`
+const UploadTextIcon = styled(UploadTextIc)`
   width: 12.4rem;
-`
+`;
 
-const PinkXIcon=styled(PinkXIc)`
+const PinkXIcon = styled(PinkXIc)`
   width: 1rem;
   height: 1rem;
-`
+`;
 
-const NeonXIcon=styled(NeonXIc)`
+const NeonXIcon = styled(NeonXIc)`
   width: 1rem;
   height: 1rem;
-`
+`;
 
-const Img=styled.img<{width:number}>`
-  width: ${({width})=>width}rem;
-`
+const Img = styled.img<{ width: number }>`
+  width: ${({ width }) => width}rem;
+`;

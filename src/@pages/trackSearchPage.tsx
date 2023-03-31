@@ -91,10 +91,10 @@ console.log(tracksData)
 
   return (
     <>
-      <CategoryHeader excuteGetData={excuteGetData} />
+      <CategoryHeader excuteGetData={excuteGetData} pausesPlayerAudio={pausesPlayerAudio} />
       <TrackSearchPageWrapper>
         <CategoryListWrapper>
-          <CategoryList />
+          <CategoryList pausesPlayerAudio={pausesPlayerAudio} />
         </CategoryListWrapper>
         <TrackListWrapper>
           <TrackListHeader />

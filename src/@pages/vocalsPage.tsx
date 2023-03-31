@@ -87,7 +87,7 @@ export default function VocalsPage() {
 
   return (
     <>
-      <CategoryHeader />
+      <CategoryHeader pausesPlayerAudio={pauseAudio} />
       <VocalSearchPageWrapper>
         <CategoryListWrapper>
           <CategoryList />

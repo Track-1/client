@@ -103,7 +103,9 @@ export default function VocalProfilePage() {
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
       <VocalProfile>
-        {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.VOCALS} />}
+        {profileData && (
+          <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.VOCALS} pauseAudio={pauseAudio} />
+        )}
       </VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
