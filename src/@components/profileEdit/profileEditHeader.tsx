@@ -4,19 +4,17 @@ import { BackBtnIc, ProfileEditSaveButtonActiveIc, ProfileEditSaveButtonIc } fro
 import BackButton from "../@common/backButton";
 
 interface PropsType {
-  saveEditDatas: () => void;
-  isMeetRequired: boolean;
+  editReady: boolean;
+  editData: () => void;
 }
 export default function ProfileEditHeader(props: PropsType) {
-  const { saveEditDatas, isMeetRequired } = props;
-  const navigate = useNavigate();
-
+  const { editReady, editData } = props;
   return (
     <HeaderContainer>
       <ButtonWrapper>
-      <BackButton/>
+        <BackButton />
       </ButtonWrapper>
-      {isMeetRequired ? <ProfileEditSaveButtonActiveIcon onClick={saveEditDatas} /> : <ProfileEditSaveButtonIcon />}
+      {editReady ? <ProfileEditSaveButtonActiveIcon onClick={editData} /> : <ProfileEditSaveButtonIcon />}
     </HeaderContainer>
   );
 }
@@ -59,6 +57,6 @@ const ProfileEditSaveButtonActiveIcon = styled(ProfileEditSaveButtonActiveIc)`
   margin: 5rem 6.9rem 0 0;
 `;
 
-const ButtonWrapper=styled.div`
+const ButtonWrapper = styled.div`
   margin: 5.9rem 0 0 7.6rem;
-`
+`;

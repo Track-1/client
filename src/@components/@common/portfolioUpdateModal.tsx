@@ -74,7 +74,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
   }
 
   function moveEditPage() {
-    navigate(`/portfolio-edit/${portfolioId}`, {
+    navigate(`/portfolio-edit/vocal/${portfolioId}`, {
       state: portfoliosData[clickedPortfolioId],
     });
   }

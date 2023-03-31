@@ -41,9 +41,9 @@ export default function VocalBriefInfo(props: UserPropsType) {
   }
 
   function moveToMypage() {
-    navigate(`/vocal-profile/${userId}`, {state:userId});
+    navigate(`/vocal-profile/${userId}`, { state: userId });
   }
-console.log(profileData)
+  console.log(profileData);
   return (
     <div onClick={changeProfileBoxDisplay}>
       <InfoContainer>
@@ -211,7 +211,7 @@ const Blank = styled.div`
   height: 3rem;
 `;
 
-const MainLogoutIcon=styled(MainLogoutIc)`
+const MainLogoutIcon = styled(MainLogoutIc)`
   width: 4rem;
   height: 4rem;
-`
+`;

@@ -70,20 +70,26 @@ export default function ProducerProfilePage() {
     }
   }
 
-  const { hasNextPage, fetchNextPage } = useInfiniteQuery(key, ({ pageParam = 1 }) => getData(pageParam, pageParam), {
-    getNextPageParam: (lastPage, allPages) => {
-      if (profileState === "Portfolio") {
-        return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0 ? lastPage?.portfolioNextPage : undefined;
-      } else {
-        return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
-      }
+  const { data, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    key,
+    ({ pageParam = 1 }) => getData(pageParam, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (profileState === "Portfolio") {
+          return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
+            ? lastPage?.portfolioNextPage
+            : undefined;
+        } else {
+          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
+        }
+      },
+      refetchOnWindowFocus: false,
+      retry: 0,
+      onError: (error) => {
+        console.log(error);
+      },
     },
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  );
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
@@ -131,7 +137,9 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.TRACKS} />}
+      {profileData && (
+        <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.TRACKS} whoamI={"producer"} />
+      )}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
         <TabContainer>

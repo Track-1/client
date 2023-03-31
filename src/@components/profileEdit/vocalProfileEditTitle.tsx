@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import {
   ProfileEditActiveButtonIc,
@@ -10,89 +11,92 @@ import {
   SignUpChangeImgIc,
   SignupVocalProfileImgIc,
 } from "../../assets";
-import profileEditVocalDefaultImg from "../../assets/image/profileEditVocalDefaultImg.png";
+import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
+import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
-  activeSaveButton: (inputState: string) => void;
-  id: number;
-  prevProfileImage: string;
-  prevName: string;
+  profileImage: File;
+  name: string;
+  updateProfileImage: (imgFile: File) => void;
+  updateName: (name: string) => void;
+  changeReadyState: (isReady: boolean) => void;
+  isSleep: string;
+  changeSleepState: () => void;
 }
 
-export default function VocalProfileEditTitle(props: PropsType) {
-  const { activeSaveButton, id, prevProfileImage, prevName } = props;
+export default function ProducerProfileEditTitle(props: PropsType) {
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
+  const { profileImage, name, updateProfileImage, updateName, changeReadyState, isSleep, changeSleepState } = props;
+  const [showImage, setShowImage] = useState<string | ArrayBuffer>();
+  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [nameState, setNameState] = useState<nickName>(nickName.NOTHING);
+  const [isHover, setIsHover] = useState<boolean>(false);
 
-  const [prevImage, setPrevImage] = useState<string | ArrayBuffer | null>();
-  const [isUploaded, setIsUploaded] = useState<boolean>(false);
-  const [profileImage, setProfileImage] = useState<any>();
-  const [inputState, setInputState] = useState<string>(nickName.NOTHING);
-  const [isSleep, setIsSleep] = useState<boolean>(false);
-  const [isHover, setIsHover]=useState<boolean>(false);
-
-  useEffect(() => {
-    activeSaveButton(inputState);
-  }, [inputState]);
-
-  function getFile(e: React.ChangeEvent<HTMLInputElement>) {
-    setIsUploaded(true);
-    e.target.files && setProfileImage(e.target.files[0]);
-    showPrevImage(e);
+  function getImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const imageFiles = e.target.files as FileList;
+    updateProfileImage(imageFiles[0]);
+    showPrevImage(imageFiles);
+    setIsImageUploaded(true);
   }
 
-  function showPrevImage(e: React.ChangeEvent<HTMLInputElement>) {
+  function showPrevImage(imageFiles: FileList) {
     const reader = new FileReader();
-    if (e.target.files && e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]);
-    }
+    reader.readAsDataURL(imageFiles[0]);
     reader.onloadend = () => {
       const resultImage = reader.result;
-      resultImage && setPrevImage(resultImage);
+      resultImage && setShowImage(resultImage);
     };
   }
 
-  function checkInputName(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value.length === 0) return;
-
-    NICK_NAME.test(e.target.value) ? setInputState(nickName.CORRECT) : setInputState(nickName.ERROR);
+  function checkNameInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const text = e.target.value;
+    updateName(text);
+    if (NICK_NAME.test(text)) {
+      setNameState(nickName.CORRECT);
+      changeReadyState(true);
+      return;
+    }
+    if (!NICK_NAME.test(text)) {
+      setNameState(nickName.ERROR);
+      changeReadyState(false);
+    }
   }
 
-  function changeSleepState() {
-    setIsSleep((prev) => !prev);
-  }
-
-  function trueImageHover(){
+  function trueImageHover() {
     setIsHover(true);
   }
 
-  function falseImageHover(){
+  function falseImageHover() {
     setIsHover(false);
   }
 
   return (
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
-      <ImageWrapper>
-        {isUploaded ? (
-            <UploadedImage src={String(prevImage)} />
-        ) : (
-          <ProfileImage src={prevProfileImage} />
-        )}
+        <ImageWrapper>
+          {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />}
         </ImageWrapper>
-        {isHover&&(<SignUpChangeVocalImageIcon/>)} 
       </ProfileImageContainer>
-      <FileInput type="file" id="profileImg" style={{ display: "none" }} accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={getFile} />
+      {isHover && <SignUpChangeVocalImageIcon />}
+      <FileInput
+        type="file"
+        id="profileImg"
+        style={{ display: "none" }}
+        accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG"
+        onChange={getImageFile}
+      />
+
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
           <PointIcon />
         </NameTitleWrapper>
-        <InputWrapper inputState={inputState}>
-          <NameInput onChange={checkInputName} defaultValue={prevName} />
-          {inputState !== nickName.NOTHING &&
-            (inputState === nickName.CORRECT ? <ProfileEditCheckIcon /> : <ProfileEditWarningIcon />)}
+        <InputWrapper nameState={nameState}>
+          <NameInput defaultValue={name} onChange={checkNameInput} />
+          {nameState === nickName.CORRECT && <ProfileEditCheckIcon />}
+          {nameState === nickName.ERROR && <ProfileEditWarningIcon />}
         </InputWrapper>
       </NameContainer>
       <SleepAcountContainer>
@@ -152,7 +156,7 @@ const ProfileImage = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
-  
+
   transform: rotate(45deg);
 `;
 
@@ -177,12 +181,12 @@ const ImageWrapper = styled.div`
 
   margin-left: 5rem;
   margin-top: 15rem;
-  margin-bottom:5rem;
+  margin-bottom: 5rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
-//  position: absolute;
+  //  position: absolute;
 
   border-radius: 3rem;
   overflow: hidden;
@@ -193,7 +197,7 @@ const NameContainer = styled.article`
   height: 8.8rem;
   width: 60rem;
 
-  margin: 7.6rem 0 0 6.1rem;
+  margin: 7.6rem 0 0 6.4rem;
 `;
 
 const NameTitleWrapper = styled.div`
@@ -214,16 +218,16 @@ const PointIcon = styled.div`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const InputWrapper = styled.div<{ inputState: string }>`
+const InputWrapper = styled.div<{ nameState: nickName }>`
   width: 54.9rem;
 
   display: flex;
   justify-content: space-between;
 
-  border-bottom: ${({ inputState, theme }) => {
-    if (inputState === "nothing") return "0.1rem solid white";
-    if (inputState === "correct") return "0.1rem solid #5200FF";
-    if (inputState === "error") return "0.1rem solid  #FF4F4F";
+  border-bottom: ${({ nameState }) => {
+    if (nameState === "nothing") return "0.1rem solid white";
+    if (nameState === "correct") return "0.1rem solid #5200FF";
+    if (nameState === "error") return "0.1rem solid  #FF4F4F";
   }};
 `;
 
@@ -268,33 +272,33 @@ const ProfileEditSleeperButtonIcon = styled(ProfileEditSleeperButtonIc)`
   margin-bottom: 8rem;
 `;
 
-const ProfileEditWarningIcon=styled(ProfileEditWarningIc)`
+const ProfileEditWarningIcon = styled(ProfileEditWarningIc)`
   width: 4rem;
   height: 4rem;
-`
+`;
 
-const ProfileEditCheckIcon=styled(ProfileEditCheckIc)`
+const ProfileEditCheckIcon = styled(ProfileEditCheckIc)`
   width: 4rem;
   height: 4rem;
-`
+`;
 
-const ProfileEditSleepAcountTitleIcon=styled(ProfileEditSleepAcountTitleIc)`
+const ProfileEditSleepAcountTitleIcon = styled(ProfileEditSleepAcountTitleIc)`
   width: 22rem;
-`
+`;
 
-const SignUpChangeVocalImageIcon=styled(SignUpChangeImgIc)`
+const SignUpChangeVocalImageIcon = styled(SignUpChangeImgIc)`
   height: 26.7em;
   width: 26.7em;
 
   border: 0.1rem solid rgba(30, 32, 37, 0.5);
   border-radius: 3rem;
-  
+
   backdrop-filter: blur(1.7rem);
   transform: rotate(45deg);
   position: absolute;
- 
+
   margin-top: -31.7rem;
   margin-left: 5rem;
 
   cursor: pointer;
-`
+`;

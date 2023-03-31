@@ -8,26 +8,36 @@ import {
   ProfileEditDescriptionIc,
   ProfileEditHashtagIc,
 } from "../../assets";
-import { CategoryId } from "../../core/constants/categories";
+import { CategoryId, CategoryText } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 import ProfileWarning from "./profileWarning";
 
 interface PropsType {
-  isSave: boolean;
-  editDatas: (datas: EditDataType) => void;
-  prevDatas: any;
+  contact: string;
+  categories: string[];
+  hashtags: string[];
+  description: string;
+  updateContact: (contact: string) => void;
+  updateCategory: (contact: string) => void;
+  updateHashtag: (hashtag: string) => void;
+  deleteHashtag: (index: number) => void;
+  updateDescription: (inputText: string) => void;
 }
 
 export default function ProfileEditInfo(props: PropsType) {
-  const { isSave, editDatas, prevDatas } = props;
-  const contactInputRef = useRef<HTMLInputElement | null>(null);
-  const hashtagRef = useRef<HTMLInputElement | null>(null);
-  const [hashtagInput, setHashtagInput] = useState<string>("");
-  const [hashtags, setHashtags] = useState<string[]>([]);
-  const [descriptionInput, setDescriptionInput] = useState<string>(prevDatas?.introduce);
-  const [categories, setCategories] = useState<Set<string>>(new Set());
+  const {
+    contact,
+    categories,
+    hashtags,
+    description,
+    updateContact,
+    updateCategory,
+    updateHashtag,
+    deleteHashtag,
+    updateDescription,
+  } = props;
   const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>({
     "R&B": false,
     HIPHOP: false,
@@ -39,86 +49,28 @@ export default function ProfileEditInfo(props: PropsType) {
     HOUSE: false,
     FUNK: false,
   });
-  const [contactInput, setContactInput] = useState<string>("");
-
-  useEffect(() => {
-    selectPrevCategory(prevDatas?.cagetory);
-    inputPrevHashtags(prevDatas?.keyword);
-    setHashtags(prevDatas?.keyword)
-  }, []);
-
-  console.log(prevDatas);
-  useEffect(() => {
-    editDatas(getEditDatas());
-  }, [isSave]);
-
-  function selectPrevCategory(prevCategories: string[]) {
-    prevCategories?.forEach((category) => {
-      selectCategory(category);
-    });
-  }
-
-  function inputPrevHashtags(prevHashtags: string[]) {
-    prevHashtags?.forEach((hashtag) => setHashtags((prev) => [...prev, hashtag]));
-  }
-
-  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
-    setHashtagInput(e.target.value);
-  }
-
-  function completeHashtag() {
-    if (hashtagRef.current) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-    }
-  }
-console.log(hashtags)
-
-  function deleteHashtag(index: number) {
-    const deleteTag = hashtags;
-    deleteTag.splice(index, 1);
-    setHashtags([...deleteTag]);
-    setHashtagInput("");
-  }
-
-  function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setDescriptionInput(e.target.value);
-  }
-
-  function getEditDatas() {
-    // if (contactInputRef.current !== null) {
-      return {
-        // contact: contactInputRef.current.value,
-        contact: contactInput,
-        category: Array.from(categories),
-        keyword: hashtags,
-        introduce: descriptionInput,
-      };
-    // }
-   // return editInputDatas;
-  }
+  const [hashtagText, setHashtagText] = useState<string>("");
 
   function selectCategory(category: string) {
-    changeClickedCategoryColor(category);
-    changeSelectedCategory(category);
-  }
-
-  function changeClickedCategoryColor(category: string) {
     const tempSelected = isCategorySelected;
     tempSelected[category] = !tempSelected[category];
     setIsCategorySelected({ ...tempSelected });
+    updateCategory(CategoryText[category]);
   }
 
-  function changeSelectedCategory(category: string) {
-    const tempCatgorySet = categories;
-    categories.has(CategoryId[category])
-      ? tempCatgorySet.delete(CategoryId[category])
-      : tempCatgorySet.add(CategoryId[category]);
-    setCategories(new Set(tempCatgorySet));
+  function deleteHashtagInput(index: number) {
+    deleteHashtag(index);
   }
 
-  function changeContact(e: React.ChangeEvent<HTMLInputElement>) {
-    setContactInput(e.target.value);
+  function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtagText(e.target.value);
+  }
+
+  function getHashtagInput(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.code === "Enter") {
+      updateHashtag(hashtagText);
+      setHashtagText("");
+    }
   }
 
   return (
@@ -127,10 +79,9 @@ console.log(hashtags)
         <ContactContainer>
           <ProfileEditContactIcon />
           <ContactInput
-            ref={contactInputRef}
             placeholder="Enter your phone number or SNS account"
-            defaultValue={prevDatas?.contact}
-            onChange={changeContact}
+            defaultValue={contact}
+            onChange={(e) => updateContact(e.target.value)}
             maxLength={40}
           />
         </ContactContainer>
@@ -138,13 +89,14 @@ console.log(hashtags)
           <ProfileEditCategoryIcon />
           <CategoryBox>
             {Object.keys(CategoryId).map((category, index) => {
+              if (categories.includes(CategoryText[category])) {
+                isCategorySelected[category] = true;
+              }
               return (
                 <CategoryItem
+                  key={index}
                   isSelected={isCategorySelected[category]}
-                  onClick={() => {
-                    selectCategory(category);
-                  }}
-                  key={index}>
+                  onClick={() => selectCategory(category)}>
                   {category}
                 </CategoryItem>
               );
@@ -164,7 +116,7 @@ console.log(hashtags)
                     <HashtagSharp># </HashtagSharp>
                     <CompletedHashtag>{hashtag}</CompletedHashtag>
                   </HashtagWrapper>
-                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                  <DeleteHashtagIcon onClick={() => deleteHashtagInput(index)} />
                 </Hashtag>
               );
             })}
@@ -172,35 +124,26 @@ console.log(hashtags)
               <Hashtag>
                 <HashtagWrapper>
                   <HashtagSharp># </HashtagSharp>
-                  <HashtagInput
-                    onChange={getInputText}
-                    onKeyPress={(e) => {
-                      e.key === "Enter" && completeHashtag();
-                    }}
-                    inputWidth={hashtagInput.length}
-                    ref={hashtagRef}
-                    placeholder="HashTag"
-                    maxLength={10}
-                  />
+                  <HashtagInput onChange={checkHashtagText} onKeyUp={getHashtagInput} value={hashtagText} />
                 </HashtagWrapper>
               </Hashtag>
             )}
-
-            {hashtags?.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            {hashtags.length < 3 && <AddHashtagIcon />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
           <DesciprtionInput
             typeof="text"
-            onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
-            defaultValue={prevDatas?.introduce}
             maxLength={150}
-            row={Math.floor(descriptionInput?.length / 31) + 1}
+            defaultValue={description}
+            onChange={(e) => updateDescription(e.target.value)}
+            row={Math.floor(description?.length / 31) + 1}
           />
           <TextCount>
-            {descriptionInput?.length}/<MaxCount>150</MaxCount>
+            {description.length}
+            <MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
       </InfoContainer>
@@ -319,9 +262,7 @@ const HashtagSharp = styled.p`
   margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
-
+const HashtagInput = styled.input`
   display: flex;
 
   ${({ theme }) => theme.fonts.hashtag};
@@ -356,7 +297,7 @@ const DescriptionContainer = styled.article`
 `;
 
 const DesciprtionInput = styled.textarea<{ row: number }>`
-  height: ${({row})=>row*3.4+1}rem;
+  height: ${({ row }) => row * 3.4 + 1}rem;
   width: 55.9rem;
   outline: 0;
   resize: none;

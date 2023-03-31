@@ -13,20 +13,23 @@ interface PropsType {
   profileData: ProducerProfileType;
   isMe: boolean;
   whom: string;
+  whoamI: string;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData, isMe, whom } = props;
+  const { profileData, isMe, whom, whoamI } = props;
+
   const navigate = useNavigate();
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
 
   function moveProfileEditPage() {
-    navigate(`/profile-edit/${profileData.id}`, {
-      state: {
-        profileData: profileData,
-        user: whom,
-      },
-    });
+    whoamI === "vocal"
+      ? navigate(`/profile-edit/vocal/${profileData.id}`, {
+          state: profileData,
+        })
+      : navigate(`/profile-edit/producer/${profileData.id}`, {
+          state: profileData,
+        });
   }
 
   return (
@@ -58,15 +61,9 @@ export default function ProducerInfos(props: PropsType) {
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
-            {
-              Object.values(Categories).map((value) =>
-                profileData.category.includes(value) ? (
-                  <Category>{value}</Category>
-                ) : (
-                  <NotCategory>{value}</NotCategory>
-                ),
-              )
-            }
+            {Object.values(Categories).map((value) =>
+              profileData.category.includes(value) ? <Category>{value}</Category> : <NotCategory>{value}</NotCategory>,
+            )}
           </CategoryArray>
         </CategoryBox>
 
