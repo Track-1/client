@@ -46,13 +46,12 @@ export async function postProducerPortfolio() {
 
 export async function patchProducerPortfolio(producerPortfolioId: number, editDatas: any) {
   try {
-    await axios.patch(`${process.env.REACT_APP_BASE_URL}/mypage//producer/${producerPortfolioId}`, editDatas, {
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/mypage/producer/${producerPortfolioId}`, editDatas, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(getCookie("accessToken"));
   } catch (e) {
     console.log(e);
   }
