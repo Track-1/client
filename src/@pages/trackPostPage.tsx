@@ -54,11 +54,11 @@ export default function TrackPostPage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [link, setLink] = useState<string>('');
+  const [link, setLink] = useState<string>("");
   const [download, setDownload] = useState<boolean>(false);
-  const [isClosed, setIsClosed]=useState<boolean>(false);
+  const [isClosed, setIsClosed] = useState<boolean>(false);
 
-  const { data } = useQuery(["state", state,isClosed], () => getTrackInfo(state), {
+  const { data } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
@@ -122,21 +122,20 @@ export default function TrackPostPage() {
 
   const queryClient = useQueryClient();
 
-  const {mutate} = useMutation(closeTrack, {
-      onSuccess: () => {
-        queryClient.invalidateQueries("closing");
-        console.log("성공")
-        setIsClosed(!isClosed)
-      }
+  const { mutate } = useMutation(closeTrack, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("closing");
+      console.log("성공");
+      setIsClosed(!isClosed);
+    },
   });
 
   function closeTrackPost() {
-   mutate(beatId)
+    mutate(beatId);
   }
 
   function openTrackPost() {
- 
-    mutate(beatId)
+    mutate(beatId);
   }
 
   function getAudioInfos(title: string, name: string, image: string, duration: number) {
@@ -149,72 +148,71 @@ export default function TrackPostPage() {
     setAudioInfos(tempInfos);
   }
 
- 
-const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
-  , {
-    refetchOnWindowFocus: false, 
-    retry: 0, 
-    onSuccess: data => {
-      if(download){       
-        let blob = new Blob([data?.data],{ type: "audio/mpeg" }); 
+  const { data: fileLink } = useQuery(["beatId", download], () => getFileLink(state), {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => {
+      if (download) {
+        let blob = new Blob([data?.data], { type: "audio/mpeg" });
         let url = window.URL.createObjectURL(blob); //s3링크
-        
-        console.log(url)
-        setLink(url)
-        var a = document.createElement('a');
+
+        console.log(url);
+        setLink(url);
+        var a = document.createElement("a");
         a.href = url;
         a.download = `${trackInfoData?.title}`;
-        document.body.appendChild(a); 
-        a.click();  
-        setTimeout(_ => { window.URL.revokeObjectURL(url); }, 60000); 
-        a.remove(); 
-         setDownload(false)
+        document.body.appendChild(a);
+        a.click();
+        setTimeout((_: any) => {
+          window.URL.revokeObjectURL(url);
+        }, 60000);
+        a.remove();
+        setDownload(false);
 
         // let zip = new JSZip();
         // zip.file(`${trackInfoData?.title}`, url);
         // zip.generateAsync({ type: "base64", }).then(
         //   function( url )
         //   {
-        //     var element = document.createElement('a'); 
-        //     element.setAttribute('href', 'data:application/octastream;base64,' + url ); 
-        //     element.setAttribute('download', `${trackInfoData?.title}` ); 
-        //     element.style.display = 'none'; 
-        //     document.body.appendChild(element); element.click(); 
-        //     document.body.removeChild(element);          
+        //     var element = document.createElement('a');
+        //     element.setAttribute('href', 'data:application/octastream;base64,' + url );
+        //     element.setAttribute('download', `${trackInfoData?.title}` );
+        //     element.style.display = 'none';
+        //     document.body.appendChild(element); element.click();
+        //     document.body.removeChild(element);
         //   }
         // );
-
       }
     },
-    onError: error => {
-      console.log(error)
-    }
+    onError: (error) => {
+      console.log(error);
+    },
   });
-  
-  function getFile(){
-      !download&&setDownload(true)
+
+  function getFile() {
+    !download && setDownload(true);
   }
 
-  function checkIsMeOpen(){
-    return trackInfoData?.isMe&& !trackInfoData?.isClosed
+  function checkIsMeOpen() {
+    return trackInfoData?.isMe && !trackInfoData?.isClosed;
   }
 
-  function checkIsMeClosed(){
-    return trackInfoData?.isMe&& trackInfoData?.isClosed
+  function checkIsMeClosed() {
+    return trackInfoData?.isMe && trackInfoData?.isClosed;
   }
 
-  function checkIsNotMeOpen(){
-    return !trackInfoData?.isMe&& !trackInfoData?.isClosed
+  function checkIsNotMeOpen() {
+    return !trackInfoData?.isMe && !trackInfoData?.isClosed;
   }
 
-  function checkIsNotMeClosed(){
-    return !trackInfoData?.isMe&& trackInfoData?.isClosed
+  function checkIsNotMeClosed() {
+    return !trackInfoData?.isMe && trackInfoData?.isClosed;
   }
 
   return (
     <>
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed} />}
-      {isCommentOpen ? <CommentHeader /> : <CategoryHeader />}
+      {isCommentOpen ? <CommentHeader /> : <CategoryHeader pausesPlayerAudio={pauseAudio} />}
 
       <TrackPostPageWrapper>
         {trackInfoData && (
@@ -226,17 +224,15 @@ const { data:fileLink } = useQuery(["beatId",download], ()=>getFileLink(state)
               <AudioTitle>{trackInfoData.title}</AudioTitle>
               <ProducerBox>
                 <ProfileImgWrapper>
-                <ProducerProfile
-                  src={trackInfoData.producerProfileImage}
-                  alt="프로듀서 프로필 이미지"/>
+                  <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지" />
                 </ProfileImgWrapper>
                 <NickName>{trackInfoData.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
-                {checkIsMeOpen()&&<OpenedIcon onClick={closeTrackPost} />}
-                {checkIsMeClosed()&&<ClosedWithXIcon onClick={openTrackPost} />}
-                {checkIsNotMeOpen()&&<DownloadBtnIcon onClick={getFile}/>}
-                {checkIsNotMeClosed()&&<ClosedBtnIcon />}            
+                {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
+                {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
+                {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
+                {checkIsNotMeClosed() && <ClosedBtnIcon />}
                 {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
@@ -335,22 +331,22 @@ const ProducerBox = styled.div`
   margin-bottom: 3.4rem;
 `;
 
-const ProfileImgWrapper=styled.div`
+const ProfileImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   height: 4.4rem;
   width: 4.4rem;
   margin-right: 1rem;
 
   border-radius: 6.5rem;
   overflow: hidden;
-`
+`;
 
 const ProducerProfile = styled.img`
   height: 100%;
-  width:  100%;
+  width: 100%;
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
@@ -398,7 +394,7 @@ const OpenedIcon = styled(OpenedIc)`
 const EditBtnIcon = styled(EditBtnIc)`
   margin-left: 18.2rem;
 
-cursor: pointer;
+  cursor: pointer;
 `;
 
 const InfoContainer = styled.section`
@@ -430,16 +426,16 @@ const PlayImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   overflow: hidden;
 `;
 
 const PlayerImage = styled.img`
-    width: 100%;
-    height: 100%;
-    transform: translate(50, 50);
-    object-fit: cover;
-    margin: auto;
+  width: 100%;
+  height: 100%;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const DescriptionContainer = styled.div`
@@ -507,16 +503,16 @@ const CommentBtnIcon = styled(CommentBtnIc)`
   cursor: pointer;
 `;
 
-const Video=styled.video`
+const Video = styled.video`
   background-color: pink;
-`
+`;
 
-const PauseBtnIcon=styled(PauseBtnIc)`
+const PauseBtnIcon = styled(PauseBtnIc)`
   width: 5.2rem;
   height: 5.2rem;
-`
+`;
 
-const SmallPlayBtnIcon=styled(SmallPlayBtnIc)`
+const SmallPlayBtnIcon = styled(SmallPlayBtnIc)`
   width: 5.2rem;
   height: 5.2rem;
-`
+`;

@@ -37,16 +37,14 @@ export default function ProducerProfilePage() {
   });
 
   const visible = useRecoilValue(uploadButtonClicked);
-  const showPlayer = useRecoilValue(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const { progress, audio } = usePlayer();
 
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
-
-  console.log(profileData);
 
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
@@ -102,12 +100,17 @@ export default function ProducerProfilePage() {
   }
 
   function changeToProfile() {
+    pauseAudio();
+    setShowPlayer(false);
     setProfileState("Portfolio");
     setStateChange(!stateChange);
     setSelectingTracksData([]);
   }
 
   function changeToVocalSearch() {
+    pauseAudio();
+    setShowPlayer(false);
+
     setProfileState("Vocal Searching");
     setStateChange(!stateChange);
     setPortfolioData([]);
@@ -138,7 +141,13 @@ export default function ProducerProfilePage() {
       <Outlet />
       {visible && <TracksProfileUploadModal />}
       {profileData && (
-        <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.TRACKS} whoamI={"producer"} />
+        <ProducerInfos
+          profileData={profileData}
+          isMe={isMe}
+          whom={Category.TRACKS}
+          whoamI={"producer"}
+          pauseAudio={pauseAudio}
+        />
       )}
       <PageContainer>
         <GradientBox src={producerGradientImg} />
@@ -247,4 +256,5 @@ const ProducerEmptyProfileImage = styled.img`
   position: absolute;
   top: 26.2rem;
   left: 69.6rem;
+  width: 124.2rem;
 `;

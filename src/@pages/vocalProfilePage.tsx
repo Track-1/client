@@ -20,6 +20,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { LoginUserId } from "../recoil/loginUserData";
 import { currentUser } from "../core/constants/userType";
 import { endPost } from "../recoil/postIsCompleted";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -39,18 +40,20 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
+  const { key } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
 
   const { state } = useLocation();
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["vocalPortFolio", isEnd],
+    [key, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response?.vocalPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.response?.vocalPortfolio.length % 6 == 0 ? lastPage?.nextPage : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -69,7 +72,6 @@ export default function VocalProfilePage() {
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
       setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
-
       return { response, nextPage: page + 1 };
     }
   }
@@ -102,7 +104,15 @@ export default function VocalProfilePage() {
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
       <VocalProfile>
-        {profileData && <ProducerInfos profileData={profileData} isMe={isMe} whom={Category.VOCALS} whoamI={"vocal"} />}
+        {profileData && (
+          <ProducerInfos
+            profileData={profileData}
+            isMe={isMe}
+            whom={Category.VOCALS}
+            whoamI={"vocal"}
+            pauseAudio={pauseAudio}
+          />
+        )}
       </VocalProfile>
       <VocalProfilePageWrapper>
         <VocalProfileWrapper>
@@ -176,4 +186,5 @@ const VocalEmptyProfileImage = styled.img`
   position: absolute;
   top: 26.2rem;
   left: 69.6rem;
+  width: 124.2rem;
 `;

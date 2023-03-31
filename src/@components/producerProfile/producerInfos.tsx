@@ -3,26 +3,30 @@ import { CategoryIc, DescriptionIc, HashtagIc, ProfileEditBtnIc, SleeperAccountI
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { Categories } from "../../core/constants/categories";
 import { useNavigate } from "react-router-dom";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
+import { showPlayerBar } from "../../recoil/player";
 
 interface PropsType {
   profileData: ProducerProfileType;
   isMe: boolean;
   whom: string;
   whoamI: string;
+  pauseAudio: any;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData, isMe, whom, whoamI } = props;
-
+  const { profileData, isMe, whom, pauseAudio, whoamI } = props;
   const navigate = useNavigate();
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   function moveProfileEditPage() {
+    pauseAudio();
+    setShowPlayer(false);
     whoamI === "vocal"
       ? navigate(`/profile-edit/vocal/${profileData.id}`, {
           state: profileData,
