@@ -58,7 +58,7 @@ export default function ProducerInfos(props: PropsType) {
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
-            {profileData.category.length > 0 ? (
+            {
               Object.values(Categories).map((value) =>
                 profileData.category.includes(value) ? (
                   <Category>{value}</Category>
@@ -66,17 +66,13 @@ export default function ProducerInfos(props: PropsType) {
                   <NotCategory>{value}</NotCategory>
                 ),
               )
-            ) : (
-              <EmptyProfileMessageWrapper>
-                <EmptyProfileMessage>no information</EmptyProfileMessage>
-              </EmptyProfileMessageWrapper>
-            )}
+            }
           </CategoryArray>
         </CategoryBox>
 
         <HashtagBox>
           <HashtagIcon />
-          {profileData.keyword.length > 0 ? (
+          {profileData.keyword?.length > 0 ? (
             profileData.keyword.map((word) => {
               return <HashTag text={word} />;
             })
@@ -89,7 +85,7 @@ export default function ProducerInfos(props: PropsType) {
       </DetailInfoContainer>
       <DescriptionBox>
         <DescriptionIcon />
-        {profileData.introduce.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
+        {profileData.introduce?.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
       </DescriptionBox>
       <EmptyDescriptionMessageBox>
         <EmptyDescriptionMessageWrapper>
