@@ -56,6 +56,7 @@ export default function CategoryHeader(props: any) {
     setTracksOrVocals(Category.VOCALS);
     navigate("/vocal-search");
     setIsClickedCategory(!isClickedCategory);
+    clickSameCategory();
   }
 
   function moveMainPage() {
