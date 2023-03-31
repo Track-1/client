@@ -58,7 +58,7 @@ export default function ProducerInfos(props: PropsType) {
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
-            {profileData.category.length > 0 ? (
+            {
               Object.values(Categories).map((value) =>
                 profileData.category.includes(value) ? (
                   <Category>{value}</Category>
@@ -66,11 +66,7 @@ export default function ProducerInfos(props: PropsType) {
                   <NotCategory>{value}</NotCategory>
                 ),
               )
-            ) : (
-              <EmptyProfileMessageWrapper>
-                <EmptyProfileMessage>no information</EmptyProfileMessage>
-              </EmptyProfileMessageWrapper>
-            )}
+            }
           </CategoryArray>
         </CategoryBox>
 
