@@ -6,15 +6,17 @@ import styled from 'styled-components';
 import { conventionType } from '../../core/convention/conventionType';
 import { useRecoilState } from 'recoil';
 import { openConventionModal, openConventionPolicy } from '../../recoil/conventionModal';
+import { UserDataPropsType } from '../../type/signUpStepTypes';
 
 interface PropsType{
     setCompleteCheck: React.Dispatch<React.SetStateAction<boolean>>
     checkedConventions:ConventionChecksType[]
     setCheckedConventions: React.Dispatch<React.SetStateAction<ConventionChecksType[]>>
+    setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>
 }
 
 export default function ConventionCheckBox(props:PropsType) {
-    const {setCompleteCheck, checkedConventions, setCheckedConventions}=props
+    const {setCompleteCheck, checkedConventions, setCheckedConventions,setUserData}=props
     const [checkedCount, setCheckedCount]=useState<number>(0);
     const [policy, setPolicy]=useRecoilState<string>(openConventionPolicy)
     const [showModal, setShowModal]=useRecoilState<boolean>(openConventionModal)
@@ -61,9 +63,9 @@ export default function ConventionCheckBox(props:PropsType) {
             }
           });
         setCompleteCheck(checkEssentialAgreeDone(essentialCheck))
-  
-    }, [checkedConventions])
+        setUserData((prev) => ({ ...prev, isAgree:`${checkedConventions[3].selected}` }));
 
+    }, [checkedConventions])
     
     useEffect(() => {
         checkFullChecked()?changeTotalAgree(true):changeTotalAgree(false)

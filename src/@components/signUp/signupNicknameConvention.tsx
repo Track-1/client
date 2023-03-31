@@ -4,7 +4,6 @@ import { SetUserPropsType } from '../../type/signUpStepTypes';
 import styled from 'styled-components';
 import { setInputUnderline, setMessageColor } from '../../utils/errorMessage/setInputStyle';
 import { signUpStep } from '../../core/signUp/signupStepType';
-import ContinueButton from './continueButton';
 import { nicknameValidMessage } from '../../core/userInfoErrorMessage/nicknameMessage';
 import { checkNicknameForm } from '../../utils/errorMessage/checkNicknameForm';
 import ConventionCheckBox from './conventionCheckBox';
@@ -14,7 +13,6 @@ import { UserType } from '../../recoil/main';
 import { useMutation, useQueryClient } from 'react-query';
 import { joinProducer, joinVocal } from '../../core/api/signUp';
 import { isVocal, isProducer } from '../../utils/common/userType';
-import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../utils/uploadPage/uploadImage';
 import ProfilImageContainer from './profilImageContainer';
 import { ConventionChecksType } from '../../type/conventionChecksType';
 import { conventionSelectedCheck } from '../../core/signUp/conventionSelectedCheck';
@@ -35,19 +33,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const [isSave, setIsSave]=useState<boolean>(false);
     const setLoginUserType = useSetRecoilState(LoginUserType);
     const setLoginUserId = useSetRecoilState(LoginUserId);
-  
-    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
-      const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-      if (checkImageType(uploadName) && e.target.files) {
-        const file = e.target.files[0];
-        const fileUrl: string = getFileURL(file);
-        const imageSize: number = getFileSize(file);
-        if (checkImageSize(imageSize)) {
-          setImageSrc(fileUrl);
-        }
-      }
-    }
-
+    
     function checkImageHover(){
       setIsHover(!isHover)
     }
@@ -92,10 +78,13 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     completeNicknameConventions()&&setIsSave(true);
   }
 
+  // useEffect(()=>{
+  //   setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  // },[imageSrc, nickname, completeCheck])
   useEffect(()=>{
-    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
-  },[imageSrc, nickname, completeCheck])
-  
+    setUserData((prev) => ({ ...prev, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  },[nickname, completeCheck])
+
 
   useEffect(()=>{
     completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
@@ -133,7 +122,10 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     }
   });
 
+  console.log(userData)
+  
   useEffect(() => {
+      console.log("보낻다"+userData.imageFile)
       isVocal(userType)&&JoinVocal(userData);
       isProducer(userType)&&JoinProducer(userData);
   }, [isSave]);
@@ -145,8 +137,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
 
   return (
     <>
-    <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
-    
+    <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} setImageSrc={setImageSrc} setUserData={setUserData}/>
     <NicknameWrapper>
       <WhatsYourNameTextIcon/>
       <InputWrapper>
@@ -161,7 +152,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
           {nicknameMessage}
       </MessageWrapper>
     </NicknameWrapper>
-    <ConventionCheckBox setCompleteCheck={setCompleteCheck} checkedConventions={checkedConventions} setCheckedConventions={setCheckedConventions}/>
+    <ConventionCheckBox setCompleteCheck={setCompleteCheck} checkedConventions={checkedConventions} setCheckedConventions={setCheckedConventions} setUserData={setUserData}/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
 
@@ -183,8 +174,6 @@ const ContinueButtonWrapper=styled.button<{isNotNull:boolean}>`
 
     width: 17rem;
     height: 4.6rem;
-
-    /* margin: 10.8rem 0 0 49.8rem; */
 
     border-radius: 2.5rem;
     border: 0.1rem solid ${({ theme, isNotNull }) => isNotNull?theme.colors.main:theme.colors.gray4};

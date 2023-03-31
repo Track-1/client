@@ -1,7 +1,7 @@
 import { EditDataType } from "./editDataType";
 
 export interface UserDataPropsType{
-  imageFile:string;
+  imageFile: File | Blob | FormData;
   ID:string;
   PW:string;
   name:string;
