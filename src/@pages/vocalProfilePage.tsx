@@ -51,6 +51,7 @@ export default function VocalProfilePage() {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.response?.vocalPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
 
