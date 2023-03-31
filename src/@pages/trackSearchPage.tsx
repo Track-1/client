@@ -58,6 +58,7 @@ console.log(tracksData)
     setPageParam(1)
     console.log("1단계")
   //  pageParam=1
+  
   },[filteredUrlApi])
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
@@ -67,6 +68,7 @@ console.log(tracksData)
       getNextPageParam: (lastPage, allPages) => {
         //console.log(key);
        // console.log(lastPage)
+
        console.log("3단계")
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
