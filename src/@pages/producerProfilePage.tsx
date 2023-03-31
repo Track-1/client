@@ -87,7 +87,6 @@ export default function ProducerProfilePage() {
     ({ pageParam = 1 }) => getData(pageParam, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        console.log(profileState);
         if (profileState === "Portfolio") {
           return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
             ? lastPage?.portfolioNextPage
