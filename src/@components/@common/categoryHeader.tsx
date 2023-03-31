@@ -18,9 +18,10 @@ import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { isProducer } from "../../utils/common/userType";
 import { categorySelect, clickCategoryHeader } from "../../recoil/categorySelect";
+import { showPlayerBar } from "../../recoil/player";
 
 export default function CategoryHeader(props: any) {
-  const { excuteGetData } = props;
+  const { excuteGetData, pausesPlayerAudio } = props;
   const isSameClicked = useRef(false);
 
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function CategoryHeader(props: any) {
   const loginUserId = useRecoilValue(LoginUserId);
   const loginUserImg = useRecoilValue(LoginUserImg);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
-
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const isSameCategoryCliked = () => {
     if (!isSameClicked.current) {
       isSameClicked.current = true;
@@ -46,6 +47,8 @@ export default function CategoryHeader(props: any) {
   }
 
   function moveTrackSearchPage() {
+    setShowPlayer(false);
+    pausesPlayerAudio();
     setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
     setIsClickedCategory(!isClickedCategory);
@@ -53,6 +56,8 @@ export default function CategoryHeader(props: any) {
   }
 
   function moveVocalSearchPage() {
+    setShowPlayer(false);
+    pausesPlayerAudio();
     setTracksOrVocals(Category.VOCALS);
     navigate("/vocal-search");
     setIsClickedCategory(!isClickedCategory);
@@ -60,10 +65,14 @@ export default function CategoryHeader(props: any) {
   }
 
   function moveMainPage() {
+    setShowPlayer(false);
+    pausesPlayerAudio();
     navigate("/");
   }
 
   function moveMypage() {
+    setShowPlayer(false);
+    pausesPlayerAudio();
     loginUserType === "vocal"
       ? navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId })
       : navigate(`/producer-profile/${loginUserId}`, { state: loginUserId });

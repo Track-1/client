@@ -22,8 +22,8 @@ import useModal from "../../utils/hooks/useModal";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
-export default function PortfoliosInform(props: PortfolioPropsType) {
-  const { isMe, hoverId, clickId, profileState, portfolios, whom } = props;
+export default function PortfoliosInform(props: any) {
+  const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio } = props;
 
   const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
@@ -83,7 +83,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
-    console.log("asdfjdkfjkdfj")
+    console.log("asdfjdkfjkdfj");
     navigate(`/track-post/${id}`, { state: id });
   }
 
@@ -96,8 +96,8 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
           <InformWrapper>
             <InformTitleWrapper>
               {checkIsVocalSearching() && isHoveredNClicked() && (
-                <div onClick={() => moveTrackPost(portfolios[id].id)} >
-                <PortfolioViewMoreButton/>
+                <div onClick={() => moveTrackPost(portfolios[id].id)}>
+                  <PortfolioViewMoreButton />
                 </div>
               )}
               {isProducer(whom) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
@@ -113,6 +113,7 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
                   clickedPortfolioId={id}
                   openEllipsisModal={openEllipsisModal}
                   setOpenEllipsisModal={setOpenEllipsisModal}
+                  pauseAudio={pauseAudio}
                 />
               )}
             </InformTitleWrapper>
@@ -122,11 +123,11 @@ export default function PortfoliosInform(props: PortfolioPropsType) {
 
           <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>
-            {portfolios[id].keyword.map((tag, idx) => (
+            {portfolios[id].keyword.map((tag: any, idx: any) => (
               <HashTag>
-              <InformTag key={idx} textLength={tag.length}>
-                #{tag}
-              </InformTag>
+                <InformTag key={idx} textLength={tag.length}>
+                  #{tag}
+                </InformTag>
               </HashTag>
             ))}
           </InformTagWrapper>
@@ -202,7 +203,7 @@ const InformContent = styled.p`
 
 const InformTag = styled.div<{ textLength: number }>`
   display: flex;
-  
+
   padding: 0 1.5rem;
 `;
 
@@ -215,7 +216,7 @@ const InformTagWrapper = styled.div`
   margin-top: 2.8rem;
 `;
 
-const HashTag=styled.div`
+const HashTag = styled.div`
   display: flex;
   align-items: center;
   height: 3.8rem;
@@ -225,7 +226,7 @@ const HashTag=styled.div`
   border-radius: 2.1rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
-`
+`;
 
 const EllipsisIcon = styled(EllipsisIc)`
   width: 4rem;
@@ -234,14 +235,14 @@ const EllipsisIcon = styled(EllipsisIc)`
   margin-bottom: 1rem;
 `;
 
-const ProducerPortfolioTitleTextIcon=styled(ProducerPortfolioTitleTextIc)`
+const ProducerPortfolioTitleTextIcon = styled(ProducerPortfolioTitleTextIc)`
   width: 13.4rem;
-`
+`;
 
-const VocalPortfolioTitleTextIcon=styled(VocalPortfolioTitleTextIc)`
+const VocalPortfolioTitleTextIcon = styled(VocalPortfolioTitleTextIc)`
   width: 13.4rem;
-`
+`;
 
-const BlankIcon=styled(BlankIc)`
+const BlankIcon = styled(BlankIc)`
   width: 13.4rem;
-`
+`;
