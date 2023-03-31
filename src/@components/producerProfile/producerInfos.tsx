@@ -76,7 +76,7 @@ export default function ProducerInfos(props: PropsType) {
 
         <HashtagBox>
           <HashtagIcon />
-          {profileData.keyword.length > 0 ? (
+          {profileData.keyword?.length > 0 ? (
             profileData.keyword.map((word) => {
               return <HashTag text={word} />;
             })
@@ -89,7 +89,7 @@ export default function ProducerInfos(props: PropsType) {
       </DetailInfoContainer>
       <DescriptionBox>
         <DescriptionIcon />
-        {profileData.introduce.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
+        {profileData.introduce?.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
       </DescriptionBox>
       <EmptyDescriptionMessageBox>
         <EmptyDescriptionMessageWrapper>
