@@ -59,6 +59,7 @@ export default function VocalProfilePage() {
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
+      console.log(state, "9099090999090990");
       const response = await getVocalProfile(state, page);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
