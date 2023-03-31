@@ -24,6 +24,20 @@ export async function postVocalPortfolio() {
   }
 }
 
+export async function patchVocalPortfolio({ vocalPortfolioId, editDatas }: any) {
+  try {
+    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/mypage/vocal/${vocalPortfolioId}`, editDatas, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
+    console.log(data);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export async function patchVocalrProfile(editData: any) {
   try {
     const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/profile/vocal`, editData, {
