@@ -49,7 +49,7 @@ export default function VocalProfilePage() {
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response?.vocalPortfolio.length !== 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.response?.vocalPortfolio.length % 6 == 0 ? lastPage?.nextPage : undefined;
       },
       refetchOnWindowFocus: false,
     },
@@ -69,7 +69,7 @@ export default function VocalProfilePage() {
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
       setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
-
+      // console.log(portfolioData);
       return { response, nextPage: page + 1 };
     }
   }
