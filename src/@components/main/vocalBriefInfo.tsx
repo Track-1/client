@@ -41,6 +41,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
   }
 
   function moveToMypage() {
+    console.log(userId, "ututututtututu");
     navigate(`/vocal-profile/${userId}`, { state: userId });
   }
 
