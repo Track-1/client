@@ -20,10 +20,11 @@ interface PropsType {
   pauseAudio: () => void;
   tracksData: TracksDataType[];
   getInfos: any;
+  excuteGetData: any;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, pauseAudio, tracksData, getInfos } = props;
+  const { audio, pauseAudio, tracksData, getInfos, excuteGetData } = props;
 
   const navigate = useNavigate();
 
@@ -62,6 +63,8 @@ export default function TrackList(props: PropsType) {
     resetPlayer();
     navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);
+    //여기-----
+    excuteGetData();
   }
 
   function isClickedTrack(index: number) {
