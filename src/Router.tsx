@@ -15,6 +15,7 @@ import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import TrackPostEditPage from "./@pages/trackPostEditPage";
 import { getCookie } from "./utils/cookie";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
+import VocalPortfolioEditPage from "./@pages/vocalPortfolioEditPage";
 
 export default function Router() {
   return (
@@ -27,7 +28,8 @@ export default function Router() {
         <Route path="/track-post/:beatId" element={<TrackPostPage />} />
         <Route path="/track-post/edit/:beatId" element={<TrackPostEditPage />} />
         <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
-        <Route path="/portfolio-edit/:producerId" element={<ProducerPortfolioEditPage />} />
+        <Route path="/portfolio-edit/producer/:portfolioId" element={<ProducerPortfolioEditPage />} />
+        <Route path="/portfolio-edit/vocal/:portfolioId" element={<VocalPortfolioEditPage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         <Route path="/upload/:producerUploadType" element={<UploadPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
