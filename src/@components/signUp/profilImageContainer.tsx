@@ -7,6 +7,7 @@ import { currentUser } from '../../core/constants/userType';
 import { isVocal, isProducer } from '../../utils/common/userType';
 import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../utils/uploadPage/uploadImage';
 import { UserDataPropsType } from '../../type/signUpStepTypes';
+import { v } from 'msw/lib/SetupApi-b2f0e5ac';
 
 interface ImageContainerPropsType{
     imageSrc:string;
@@ -31,7 +32,24 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
         }
     }
 
-    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
+    // const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
+    //   const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    //   if (checkImageType(uploadName) && e.target.files) {
+    //     const file = e.target.files[0];
+    //     const fileUrl: string = getFileURL(file);
+    //     const imageSize: number = getFileSize(file);
+    //     if (checkImageSize(imageSize)) {
+    //       setImageSrc(fileUrl);
+    //       setUserData((prev) => ({ ...prev, imageFile:fileUrl}));
+    //     }
+    //   }
+    // }
+
+    function uploadImage(
+      e: React.ChangeEvent<HTMLInputElement>,
+      // setImageSrc: React.Dispatch<React.SetStateAction<string>>,
+      // setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>,
+    ): void {
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
       if (checkImageType(uploadName) && e.target.files) {
         const file = e.target.files[0];
@@ -39,10 +57,14 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
         const imageSize: number = getFileSize(file);
         if (checkImageSize(imageSize)) {
           setImageSrc(fileUrl);
-          setUserData((prev) => ({ ...prev, imageFile:fileUrl}));
+          setUserData((prevState) => {
+            return { ...prevState, imageFile: file };
+          });
         }
       }
     }
+    
+
     function checkImgHover(){
       return imageSrc&&isHover;
     }

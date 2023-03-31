@@ -22,7 +22,7 @@ export default function SignUpPage() {
     const background=SignBackground
     const [step, setStep] = useState<string>(signUpStep.SIGNUP_ROLE);
     const [userData, setUserData]=useState<UserDataPropsType>({
-            imageFile:"",
+            imageFile:new FormData(),
             ID:"",
             PW:"",
             name:"",

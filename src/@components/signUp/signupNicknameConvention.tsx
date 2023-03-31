@@ -93,10 +93,13 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     completeNicknameConventions()&&setIsSave(true);
   }
 
+  // useEffect(()=>{
+  //   setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  // },[imageSrc, nickname, completeCheck])
   useEffect(()=>{
-    setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
-  },[imageSrc, nickname, completeCheck])
-  
+    setUserData((prev) => ({ ...prev, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
+  },[nickname, completeCheck])
+
 
   useEffect(()=>{
     completeNicknameConventions()?setSuccessNextStep(continueType.SUCCESS):setSuccessNextStep(continueType.FAIL);
