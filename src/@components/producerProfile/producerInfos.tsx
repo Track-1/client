@@ -67,10 +67,13 @@ export default function ProducerInfos(props: PropsType) {
                 ),
               )
             ) : (
-              <EmptyProfileMessage>no information</EmptyProfileMessage>
+              <EmptyProfileMessageWrapper>
+                <EmptyProfileMessage>no information</EmptyProfileMessage>
+              </EmptyProfileMessageWrapper>
             )}
           </CategoryArray>
         </CategoryBox>
+
         <HashtagBox>
           <HashtagIcon />
           {profileData.keyword.length > 0 ? (
@@ -78,18 +81,21 @@ export default function ProducerInfos(props: PropsType) {
               return <HashTag text={word} />;
             })
           ) : (
-            <EmptyProfileMessage>no information</EmptyProfileMessage>
+            <EmptyProfileMessageWrapper>
+              <EmptyProfileMessage>no information</EmptyProfileMessage>
+            </EmptyProfileMessageWrapper>
           )}
         </HashtagBox>
       </DetailInfoContainer>
       <DescriptionBox>
         <DescriptionIcon />
-        {profileData.introduce.length > 0 ? (
-          <Introduce>{profileData.introduce}</Introduce>
-        ) : (
-          <EmptyProfileMessage>no information</EmptyProfileMessage>
-        )}
+        {profileData.introduce.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
       </DescriptionBox>
+      <EmptyDescriptionMessageBox>
+        <EmptyDescriptionMessageWrapper>
+          <EmptyProfileMessage>no information</EmptyProfileMessage>
+        </EmptyDescriptionMessageWrapper>
+      </EmptyDescriptionMessageBox>
     </InfoContainer>
   );
 }
@@ -278,6 +284,25 @@ const CategoryIcon = styled(CategoryIc)`
   width: 10.2rem;
 `;
 
+const EmptyDescriptionMessageBox = styled.div`
+  width: 44.8rem;
+`;
+
+const EmptyProfileMessageWrapper = styled.div`
+  height: 10.3rem;
+
+  display: flex;
+  justify-content: center;
+
+  margin-top: 6.2rem;
+`;
+
+const EmptyDescriptionMessageWrapper = styled.div`
+  height: 10.3rem;
+  margin-top: 6.2rem;
+`;
+
 const EmptyProfileMessage = styled.p`
   ${({ theme }) => theme.fonts.description}
+  color: ${({ theme }) => theme.colors.gray4};
 `;
