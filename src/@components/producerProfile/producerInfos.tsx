@@ -90,7 +90,7 @@ export default function ProducerInfos(props: PropsType) {
       </DescriptionBox>
       <EmptyDescriptionMessageBox>
         <EmptyDescriptionMessageWrapper>
-          <EmptyProfileMessage>no information</EmptyProfileMessage>
+          {profileData.introduce?.length === 0 && <EmptyProfileMessage>no information</EmptyProfileMessage>}
         </EmptyDescriptionMessageWrapper>
       </EmptyDescriptionMessageBox>
     </InfoContainer>
