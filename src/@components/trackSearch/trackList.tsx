@@ -20,10 +20,11 @@ interface PropsType {
   pauseAudio: () => void;
   tracksData: TracksDataType[];
   getInfos: any;
+  excuteGetData: any;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, pauseAudio, tracksData, getInfos } = props;
+  const { audio, pauseAudio, tracksData, getInfos, excuteGetData } = props;
 
   const navigate = useNavigate();
 
@@ -61,6 +62,8 @@ export default function TrackList(props: PropsType) {
   function moveProducerProfilePage(producerId: number) {
     navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);
+    //여기
+    excuteGetData();
   }
 
   function isClickedTrack(index: number) {
@@ -103,7 +106,7 @@ export default function TrackList(props: PropsType) {
               {isPlayAgain(index) &&
                 (play ? <HoverPlayIcon onClick={pauseAudio} /> : <HoverPauseIcon onClick={() => playAudio(index)} />)}
               <ThumnailWrapper>
-              <Thumbnail src={track.jacketImage} alt="썸네일" />
+                <Thumbnail src={track.jacketImage} alt="썸네일" />
               </ThumnailWrapper>
               <TrackText width={36.8} isHoverActive={true} onClick={() => movePostPage(track.beatId)}>
                 {track.title}
@@ -129,7 +132,7 @@ const TrackListContainer = styled.section``;
 
 const HoverPauseIcon = styled(HoverPauseIc)`
   width: 8.3rem;
-  height:  8.3rem;
+  height: 8.3rem;
   position: absolute;
   z-index: 2;
 
@@ -137,7 +140,7 @@ const HoverPauseIcon = styled(HoverPauseIc)`
 `;
 const HoverPlayIcon = styled(HoverPlayIc)`
   width: 8.3rem;
-  height:  8.3rem;
+  height: 8.3rem;
   position: absolute;
   z-index: 2;
 
@@ -207,11 +210,11 @@ const TrackBox = styled.div`
   margin-left: 2.4rem;
 `;
 
-const ThumnailWrapper=styled.div`
+const ThumnailWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   width: 8.3rem;
   height: 8.3rem;
 
@@ -219,7 +222,7 @@ const ThumnailWrapper=styled.div`
 
   border-radius: 6.55rem;
   overflow: hidden;
-`
+`;
 const Thumbnail = styled.img`
   width: 100%;
   height: 100%;
