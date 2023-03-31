@@ -62,7 +62,7 @@ export default function TrackList(props: PropsType) {
   function moveProducerProfilePage(producerId: number) {
     navigate(`/producer-profile/${producerId}`, { state: producerId });
     setShowPlayer(false);
-    //여기---
+    //여기-----
     excuteGetData();
   }
 
