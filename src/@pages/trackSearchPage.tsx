@@ -21,9 +21,12 @@ import { categorySelect } from "../recoil/categorySelect";
 import usePlayer from "../utils/hooks/usePlayer";
 import { AudioInfosType } from "../type/audioTypes";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
+  const { key, excuteGetData } = useInfiniteKey();
+
   const [audioInfos, setAudioInfos] = useState({});
 
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
@@ -45,10 +48,11 @@ export default function TrackSearchPage() {
   }
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "trackSearch",
+    key,
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
+        //console.log(key);
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
       refetchOnWindowFocus: false,
@@ -68,7 +72,7 @@ export default function TrackSearchPage() {
 
   return (
     <>
-      <CategoryHeader />
+      <CategoryHeader excuteGetData={excuteGetData} />
       <TrackSearchPageWrapper>
         <CategoryListWrapper>
           <CategoryList />
