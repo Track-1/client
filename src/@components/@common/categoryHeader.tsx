@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import styled from "styled-components";
 import { Category } from "../../core/constants/categoryHeader";
 
@@ -18,24 +19,44 @@ import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUser
 import { isProducer } from "../../utils/common/userType";
 import { categorySelect, clickCategoryHeader } from "../../recoil/categorySelect";
 
-export default function CategoryHeader() {
+export default function CategoryHeader(props: any) {
+  const { excuteGetData } = props;
+  const isSameClicked = useRef(false);
+
   const navigate = useNavigate();
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const loginUserType = useRecoilValue(LoginUserType);
   const loginUserId = useRecoilValue(LoginUserId);
-  const loginUserImg=useRecoilValue(LoginUserImg);
+  const loginUserImg = useRecoilValue(LoginUserImg);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+  const isSameCategoryCliked = () => {
+    if (!isSameClicked.current) {
+      isSameClicked.current = true;
+    }
+  };
+
+  function clickSameCategory() {
+    isSameCategoryCliked();
+    if (isSameClicked.current === false) {
+      excuteGetData();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
 
   function moveTrackSearchPage() {
     setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
-    setIsClickedCategory(!isClickedCategory)
+    setIsClickedCategory(!isClickedCategory);
+    clickSameCategory();
   }
 
   function moveVocalSearchPage() {
     setTracksOrVocals(Category.VOCALS);
     navigate("/vocal-search");
-    setIsClickedCategory(!isClickedCategory)
+    setIsClickedCategory(!isClickedCategory);
+    clickSameCategory();
   }
 
   function moveMainPage() {
@@ -75,17 +96,11 @@ export default function CategoryHeader() {
               src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
               alt="프로필이미지"
             /> */}
-             {
-              isProducer(loginUserType)?(
-              <ProducerProfileImg
-                src={loginUserImg}
-                alt="프로필이미지"
-              />):(
+            {isProducer(loginUserType) ? (
+              <ProducerProfileImg src={loginUserImg} alt="프로필이미지" />
+            ) : (
               <VocalProfileImageWrapper>
-              <VocalProfileImage
-                src={loginUserImg}
-                alt="프로필이미지"
-              />
+                <VocalProfileImage src={loginUserImg} alt="프로필이미지" />
               </VocalProfileImageWrapper>
             )}
             <ToggleIc />

@@ -19,6 +19,8 @@ import { useInfiniteQuery } from "react-query";
 import { VocalsDataType } from "../type/vocalsDataType";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+
 
 export default function VocalsPage() {
   const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
@@ -37,13 +39,15 @@ export default function VocalsPage() {
   const filteredUrlApi = useRecoilValue(categorySelect);
 
   const { progress, audio } = usePlayer();
+  const { key, excuteGetData } = useInfiniteKey();
+
 
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    "vocalSearch",
+    key,
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
