@@ -5,14 +5,14 @@ import ProfileEditHeader from "../@components/profileEdit/profileEditHeader";
 import ProducerProfileEditTitle from "../@components/profileEdit/producerProfileEditTitle";
 import VocalProfileEditTitle from "../@components/profileEdit/vocalProfileEditTitle";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
+import { QueryClient, useMutation } from "react-query";
 import { patchProducerProfile } from "../core/api/producerProfile";
 import { CategoryId } from "../core/constants/categories";
 
 export default function ProducerProfileEditPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState<File>(state.profileImage);
+  const [profileImage, setProfileImage] = useState<File>(new File([state.profileImage], state.profileImage));
   const [name, setName] = useState<string>(state.name);
   const [contact, setContact] = useState<string>(state.contact);
   const [categories, setCategories] = useState<string[]>(state.category);
@@ -21,6 +21,7 @@ export default function ProducerProfileEditPage() {
   const [editReady, setEditReady] = useState<boolean>(false);
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     if (saveData === true) {
@@ -48,6 +49,7 @@ export default function ProducerProfileEditPage() {
 
   const { mutate } = useMutation(() => patchProducerProfile(updatedData), {
     onSuccess: () => {
+      queryClient.invalidateQueries("userProfile");
       console.log("ok");
     },
     onError: () => {
