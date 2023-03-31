@@ -59,7 +59,6 @@ export default function PortfolioUpdateModal(props: PropsType) {
   function deleteAPI() {
     if (isTitle && portfoliosData.length !== 1) {
       patchTitleAPI(portfoliosData[0].id, portfoliosData[1].id, loginUserType);
-      alert("확인");
       return deleteTitlePortfolio(portfolioId, loginUserType);
     } else {
       return deletePortfolio(portfolioId, loginUserType);

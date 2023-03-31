@@ -135,7 +135,7 @@ export default function ResetPasswordInput() {
             <WarningMessage isError={true}>{passwordMessage}</WarningMessage>
           ):(
             <WarningMessage isError={false}>{passwordMessage}</WarningMessage>
-          )} 
+          )}
         </InputBox>
 
         <InputBox>
@@ -244,13 +244,13 @@ const Input = styled.input`
   border: none;
 `;
 
-const WarningMessage = styled.span<{isError:boolean}>` 
+const WarningMessage = styled.span<{isError:boolean}>`
   width: 100%;
   height: 3rem;
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme,isError }) => isError?theme.colors.red:'transparent'};
 
-  margin-top: 1.1rem;  
+  margin-top: 1.1rem;
 `;
 
 const UnderLine = styled.hr<{ inputState: string }>`
@@ -295,7 +295,7 @@ const InputSuccessIcon = styled(InputSuccessIc)`
   width: 2.2rem;
   margin-right: 2rem;
 `;
-const InputWarningIcon = styled(InputWarningIc)`  
+const InputWarningIcon = styled(InputWarningIc)`
   width: 2.2rem;
   margin-right: 2rem;
 `;
@@ -306,7 +306,7 @@ const ShowPasswordIcon = styled(ShowPasswordIc)`
   cursor: pointer;
 `;
 
-const HiddenPasswordIcon = styled(HiddenPasswordIc)`  
+const HiddenPasswordIcon = styled(HiddenPasswordIc)`
   width: 2.7rem;
   height: 2.7rem;
   cursor: pointer;

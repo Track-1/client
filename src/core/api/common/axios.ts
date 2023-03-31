@@ -46,13 +46,10 @@ client.interceptors.response.use(
         });
         if (data) {
           console.log(data);
-          alert("토큰갱신 성공!!!");
           setCookie("accessToken", data.data.data, {});
-
           return await client.request(originConfig);
         }
       } catch (error) {
-        alert("토큰갱신 실패했다!");
         console.log(error);
       }
       return Promise.reject(error);

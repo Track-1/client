@@ -20,7 +20,7 @@ export default function EditDropDownComment(props: PropsType) {
   const queryClient = useQueryClient();
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const modalRef = useRef<HTMLUListElement>(null);
-  
+
   function isClickedOutside(e: MouseEvent) {
     return editModalToggle && !modalRef.current?.contains(e.target as Node);
   }
@@ -43,7 +43,6 @@ export default function EditDropDownComment(props: PropsType) {
       //다시 업로드 하는거 해줘야된다.!
       queryClient.invalidateQueries("comments");
       setIsEnd(!isEnd);
-      //alert("성공!");
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -60,7 +59,7 @@ export default function EditDropDownComment(props: PropsType) {
       mutate();
     }
   }
-  
+
   return (
     <>
     <DropDownContainer ref={modalRef}>
