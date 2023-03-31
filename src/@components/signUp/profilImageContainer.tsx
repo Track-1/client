@@ -13,7 +13,6 @@ interface ImageContainerPropsType{
     imageSrc:string;
     isHover:boolean;
     checkImageHover: () => void;
-   // uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
     setImageSrc: React.Dispatch<React.SetStateAction<string>>
     setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>
 }
@@ -31,24 +30,8 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
                 return <SignupVocalProfileImgIcon/>
         }
     }
-
-    // const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
-    //   const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-    //   if (checkImageType(uploadName) && e.target.files) {
-    //     const file = e.target.files[0];
-    //     const fileUrl: string = getFileURL(file);
-    //     const imageSize: number = getFileSize(file);
-    //     if (checkImageSize(imageSize)) {
-    //       setImageSrc(fileUrl);
-    //       setUserData((prev) => ({ ...prev, imageFile:fileUrl}));
-    //     }
-    //   }
-    // }
-
     function uploadImage(
-      e: React.ChangeEvent<HTMLInputElement>,
-      // setImageSrc: React.Dispatch<React.SetStateAction<string>>,
-      // setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>,
+      e: React.ChangeEvent<HTMLInputElement>
     ): void {
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
       if (checkImageType(uploadName) && e.target.files) {
