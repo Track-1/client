@@ -175,4 +175,6 @@ const VocalEmptyProfileImage = styled.img`
   position: absolute;
   top: 26.2rem;
   left: 69.6rem;
+  width: 124.2rem;
 `;
+
