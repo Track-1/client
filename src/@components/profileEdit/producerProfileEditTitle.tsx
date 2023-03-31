@@ -6,7 +6,7 @@ import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDef
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 interface PropsType {
-  profileImage: File;
+  profileImage: string;
   name: string;
   updateProfileImage: (imgFile: File) => void;
   updateName: (name: string) => void;

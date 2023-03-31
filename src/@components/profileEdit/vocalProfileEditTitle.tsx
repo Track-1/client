@@ -17,7 +17,7 @@ import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
-  profileImage: File;
+  profileImage: string;
   name: string;
   updateProfileImage: (imgFile: File) => void;
   updateName: (name: string) => void;

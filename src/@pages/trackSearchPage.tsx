@@ -49,7 +49,7 @@ export default function TrackSearchPage() {
     }
   }
   useEffect(() => {
-    tracksData !== [] && setTracksData([]);
+    tracksData !== undefined && setTracksData([]);
     setCategoryChanged(!categoryChanged);
     setPageParam(1);
     //  pageParam=1

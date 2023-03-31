@@ -111,7 +111,7 @@ export default function VocalProfileEditPage() {
       <Img src={background} alt="배경" />
       <EditContainer>
         <VocalProfileEditTitle
-          profileImage={profileImage}
+          profileImage={profileImage.name}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}

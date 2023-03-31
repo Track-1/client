@@ -106,7 +106,7 @@ export default function ProducerProfileEditPage() {
       <Img src={background} alt="배경" />
       <EditContainer>
         <ProducerProfileEditTitle
-          profileImage={profileImage}
+          profileImage={profileImage.name}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}
