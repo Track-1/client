@@ -35,7 +35,6 @@ client.interceptors.response.use(
     const originConfig = error.config;
 
     if (error.response && error.response.status === 401) {
-      console.log("hello");
       try {
         const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/etc/refresh`, {
           headers: {
@@ -45,7 +44,6 @@ client.interceptors.response.use(
           withCredentials: true,
         });
         if (data) {
-          console.log(data);
           setCookie("accessToken", data.data.data, {});
           return await client.request(originConfig);
         }

@@ -26,7 +26,6 @@ import { patchVocalPortfolio } from "../core/api/vocalProfile";
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
   const prevData = useLocation().state;
-  console.log(prevData);
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
   const [image, setImage] = useState<File>(new File([prevData?.jacketImage], prevData?.jacketImage));
   const [title, setTitle] = useState<string>(prevData?.title);
@@ -50,7 +49,6 @@ export default function VocalPortfolioEditPage() {
 
   const { mutate } = useMutation(patchVocalPortfolio, {
     onSuccess: () => {
-      console.log(prevData.id);
       queryClient.invalidateQueries("vocalPortFolio");
       navigate(-1);
     },

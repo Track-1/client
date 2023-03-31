@@ -1,187 +1,198 @@
-import React, { useEffect, useState } from 'react'
-import { ConventionBlanckBoxIc, ConventionFullBoxIc } from '../../assets'
-import { conventionSelectedCheck } from '../../core/signUp/conventionSelectedCheck';
-import { ConventionChecksType } from '../../type/conventionChecksType';
-import styled from 'styled-components';
-import { conventionType } from '../../core/convention/conventionType';
-import { useRecoilState } from 'recoil';
-import { openConventionModal, openConventionPolicy } from '../../recoil/conventionModal';
-import { UserDataPropsType } from '../../type/signUpStepTypes';
+import React, { useEffect, useState } from "react";
+import { ConventionBlanckBoxIc, ConventionFullBoxIc } from "../../assets";
+import { conventionSelectedCheck } from "../../core/signUp/conventionSelectedCheck";
+import { ConventionChecksType } from "../../type/conventionChecksType";
+import styled from "styled-components";
+import { conventionType } from "../../core/convention/conventionType";
+import { useRecoilState } from "recoil";
+import { openConventionModal, openConventionPolicy } from "../../recoil/conventionModal";
+import { UserDataPropsType } from "../../type/signUpStepTypes";
 
-interface PropsType{
-    setCompleteCheck: React.Dispatch<React.SetStateAction<boolean>>
-    checkedConventions:ConventionChecksType[]
-    setCheckedConventions: React.Dispatch<React.SetStateAction<ConventionChecksType[]>>
-    setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>
+interface PropsType {
+  setCompleteCheck: React.Dispatch<React.SetStateAction<boolean>>;
+  checkedConventions: ConventionChecksType[];
+  setCheckedConventions: React.Dispatch<React.SetStateAction<ConventionChecksType[]>>;
+  setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>;
 }
 
-export default function ConventionCheckBox(props:PropsType) {
-    const {setCompleteCheck, checkedConventions, setCheckedConventions,setUserData}=props
-    const [checkedCount, setCheckedCount]=useState<number>(0);
-    const [policy, setPolicy]=useRecoilState<string>(openConventionPolicy)
-    const [showModal, setShowModal]=useRecoilState<boolean>(openConventionModal)
+export default function ConventionCheckBox(props: PropsType) {
+  const { setCompleteCheck, checkedConventions, setCheckedConventions, setUserData } = props;
+  const [checkedCount, setCheckedCount] = useState<number>(0);
+  const [policy, setPolicy] = useRecoilState<string>(openConventionPolicy);
+  const [showModal, setShowModal] = useRecoilState<boolean>(openConventionModal);
 
-    function categoryClick(id: number) {
-        setCheckedConventions(
+  function categoryClick(id: number) {
+    setCheckedConventions(
+      checkedConventions.map((checkedConvention) =>
+        checkedConvention.id === id
+          ? { ...checkedConvention, selected: !checkedConvention.selected }
+          : checkedConvention,
+      ),
+    );
+
+    if (checkFirstIndex(id)) {
+      checkedConventions[id].selected
+        ? setCheckedConventions(
             checkedConventions.map((checkedConvention) =>
-            checkedConvention.id === id ? { ...checkedConvention, selected: !checkedConvention.selected } : checkedConvention,
-          ),
-        );    
+              checkedConvention.id === id
+                ? { ...checkedConvention, selected: false }
+                : { ...checkedConvention, selected: false },
+            ),
+          )
+        : setCheckedConventions(
+            checkedConventions.map((checkedConvention) =>
+              checkedConvention.id === id
+                ? { ...checkedConvention, selected: true }
+                : { ...checkedConvention, selected: true },
+            ),
+          );
+    }
+  }
 
-        if (checkFirstIndex(id)){
-            checkedConventions[id].selected?
-            setCheckedConventions(
-                checkedConventions.map((checkedConvention) =>
-                checkedConvention.id === id ? { ...checkedConvention, selected: false }:{ ...checkedConvention, selected: false }
-              ),
-            )
-            :setCheckedConventions(
-                checkedConventions.map((checkedConvention) =>
-                checkedConvention.id === id ? { ...checkedConvention, selected: true }:{ ...checkedConvention, selected: true }
-            ))    
-            
-        }
+  useEffect(() => {
+    checkedConventions.forEach((checkedConvention) => {
+      !checkFirstIndex(checkedConvention.id) && checkedConvention.selected
+        ? setCheckedCount((prev) => prev + 1)
+        : setCheckedCount((prev) => prev - 1);
+    });
+
+    let count = 0;
+    checkedConventions.forEach((checkedConvention) => {
+      if (!checkFirstIndex(checkedConvention.id) && checkedConvention.selected) {
+        count += 1;
       }
-    
-    useEffect(() => {
-        checkedConventions.forEach((checkedConvention) => {
-            (!checkFirstIndex(checkedConvention.id))&&checkedConvention.selected?setCheckedCount(prev=>prev+1):setCheckedCount(prev=>prev-1)
-        });
+    });
+    setCheckedCount(count);
 
-        let count = 0;
-        checkedConventions.forEach((checkedConvention) => {
-          if (!checkFirstIndex(checkedConvention.id)&&checkedConvention.selected) {
-            count += 1;
-          }
-        });
-        setCheckedCount(count)
+    let essentialCheck = 0;
+    checkedConventions.forEach((checkedConvention) => {
+      if (
+        !checkFirstIndex(checkedConvention.id) &&
+        !checkLastIndex(checkedConvention.id) &&
+        checkedConvention.selected
+      ) {
+        essentialCheck += 1;
+      }
+    });
+    setCompleteCheck(checkEssentialAgreeDone(essentialCheck));
+    setUserData((prev) => ({ ...prev, isAgree: `${checkedConventions[3].selected}` }));
+  }, [checkedConventions]);
 
-        let essentialCheck=0;
-        checkedConventions.forEach((checkedConvention) => {
-            if (!checkFirstIndex(checkedConvention.id)&&!checkLastIndex(checkedConvention.id)&&checkedConvention.selected) {
-                essentialCheck += 1;
-            }
-          });
-        setCompleteCheck(checkEssentialAgreeDone(essentialCheck))
-        setUserData((prev) => ({ ...prev, isAgree:`${checkedConventions[3].selected}` }));
+  useEffect(() => {
+    checkFullChecked() ? changeTotalAgree(true) : changeTotalAgree(false);
+  }, [checkFullChecked()]);
 
-    }, [checkedConventions])
-    
-    useEffect(() => {
-        checkFullChecked()?changeTotalAgree(true):changeTotalAgree(false)
-    }, [checkFullChecked()])
-    
+  function checkFirstIndex(id: number) {
+    return id === 0;
+  }
 
+  function checkLastIndex(id: number) {
+    return id === 3;
+  }
 
-    function checkFirstIndex(id:number){
-        return id===0
+  function checkFullChecked() {
+    return checkedCount === 3;
+  }
+
+  function changeTotalAgree(bool: boolean) {
+    const tempCheckedConventions = checkedConventions;
+    tempCheckedConventions[0].selected = bool;
+    setCheckedConventions([...tempCheckedConventions]);
+  }
+
+  function checkEssentialAgreeDone(essentialCheck: number) {
+    return essentialCheck === 2;
+  }
+
+  function openModal(id: number) {
+    setShowModal(true);
+    switch (id) {
+      case 1:
+        setPolicy(conventionType.PERSONAL);
+        break;
+      case 2:
+        setPolicy(conventionType.USINGSITE);
+        break;
+      case 3:
+        setPolicy(conventionType.MARKETING);
+        break;
+      default:
+        setPolicy("");
+        break;
     }
-
-    function checkLastIndex(id:number){
-        return id===3
-    }
-
-    function checkFullChecked(){
-        return checkedCount===3
-    }
-    
-    function changeTotalAgree(bool:boolean){
-        const tempCheckedConventions = checkedConventions;
-        tempCheckedConventions[0].selected = bool;
-        setCheckedConventions([...tempCheckedConventions]);
-    }
-
-    function checkEssentialAgreeDone(essentialCheck:number){
-        return essentialCheck===2
-    }
-
-    function openModal(id:number){
-        setShowModal(true)
-        switch(id){
-            case 1:
-                setPolicy(conventionType.PERSONAL)
-                break;
-            case 2:
-                setPolicy(conventionType.USINGSITE)
-                break;
-            case 3:
-                setPolicy(conventionType.MARKETING)
-                break;
-            default:
-                setPolicy('');
-                break;
-        }
-    }
+  }
 
   return (
     <ConventionCheckBoxContainer>
-    {checkedConventions.map(({id, selected, text}:ConventionChecksType)=>(
+      {checkedConventions.map(({ id, selected, text }: ConventionChecksType) => (
         <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
-            <CheckBox onClick={()=>categoryClick(id)}>
-                {selected?<ConventionFullBoxIcon/>:<ConventionBlanckBoxIcon/>}
-            </CheckBox>
-            <TextWrapper>
-                <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
-                <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={()=>openModal(id)}>전체보기</FullConvention>
-            </TextWrapper>
+          <CheckBox onClick={() => categoryClick(id)}>
+            {selected ? <ConventionFullBoxIcon /> : <ConventionBlanckBoxIcon />}
+          </CheckBox>
+          <TextWrapper>
+            <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
+            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => openModal(id)}>
+              전체보기
+            </FullConvention>
+          </TextWrapper>
         </ConventionCheckBoxWrapper>
-    ))}
+      ))}
     </ConventionCheckBoxContainer>
-  )
+  );
 }
 
-const ConventionCheckBoxContainer=styled.section`
-    margin-top: 2.6rem;
-`
+const ConventionCheckBoxContainer = styled.section`
+  margin-top: 2.6rem;
+`;
 
-const CheckBox=styled.article`
-    cursor: pointer;    
-`
+const CheckBox = styled.article`
+  cursor: pointer;
+`;
 
-const ConventionCheckBoxWrapper=styled.section<{checkFirstIndex:boolean}>`
-    display: flex;
-    align-items: center;
+const ConventionCheckBoxWrapper = styled.section<{ checkFirstIndex: boolean }>`
+  display: flex;
+  align-items: center;
 
-    width: 56rem;
-    height: ${({checkFirstIndex})=>checkFirstIndex?4.4:3.5}rem;
+  width: 56rem;
+  height: ${({ checkFirstIndex }) => (checkFirstIndex ? 4.4 : 3.5)}rem;
 
-    padding-bottom: ${({checkFirstIndex})=>checkFirstIndex&&0.4}rem;
-    margin-bottom: ${({checkFirstIndex})=>checkFirstIndex&&0.9}rem;
+  padding-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.4}rem;
+  margin-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.9}rem;
 
-    border-bottom: 0.1rem solid ${({theme, checkFirstIndex})=>checkFirstIndex?theme.colors.gray4:"transparent"};
+  border-bottom: 0.1rem solid ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray4 : "transparent")};
 
-    margin-left: 10rem;
-`
+  margin-left: 10rem;
+`;
 
-const TextWrapper=styled.div`
-    display: flex;
-    justify-content: space-between;
+const TextWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 
-    width: 100%;
-`
+  width: 100%;
+`;
 
-const Title=styled.h1<{checkFirstIndex:boolean}>`
-    color:${({theme, checkFirstIndex})=>checkFirstIndex?theme.colors.gray1:theme.colors.gray2};
-    ${({theme})=>theme.fonts.checkbox};
-`
+const Title = styled.h1<{ checkFirstIndex: boolean }>`
+  color: ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray1 : theme.colors.gray2)};
+  ${({ theme }) => theme.fonts.checkbox};
+`;
 
-const FullConvention=styled.p<{checkFirstIndex:boolean}>`
-    visibility: ${({checkFirstIndex})=>checkFirstIndex?"hidden":"visible"};
+const FullConvention = styled.p<{ checkFirstIndex: boolean }>`
+  visibility: ${({ checkFirstIndex }) => (checkFirstIndex ? "hidden" : "visible")};
 
-    border-bottom: 0.1rem solid ${({theme})=>theme.colors.gray3};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
-    color:${({theme})=>theme.colors.gray3};
-    ${({theme})=>theme.fonts.checkbox};
+  color: ${({ theme }) => theme.colors.gray3};
+  ${({ theme }) => theme.fonts.checkbox};
 
-    cursor: pointer;
-`
+  cursor: pointer;
+`;
 
-const ConventionFullBoxIcon=styled(ConventionFullBoxIc)`
-    width: 4rem;
-    height: 4rem;
-`
+const ConventionFullBoxIcon = styled(ConventionFullBoxIc)`
+  width: 4rem;
+  height: 4rem;
+`;
 
-const ConventionBlanckBoxIcon=styled(ConventionBlanckBoxIc)`
-    width: 4rem;
-    height: 4rem;
-`
+const ConventionBlanckBoxIcon = styled(ConventionBlanckBoxIc)`
+  width: 4rem;
+  height: 4rem;
+`;

@@ -16,11 +16,11 @@ interface PropsType {
   infiniteRef: React.MutableRefObject<any>;
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   vocalName: string;
-  whom:string;
+  whom: string;
 }
 
 export default function VocalProfileList(props: PropsType) {
-  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName,whom } = props;
+  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName, whom } = props;
 
   const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
@@ -46,8 +46,6 @@ export default function VocalProfileList(props: PropsType) {
   function mouseOutVocalPortfolio() {
     setHoveredIndex(-1);
   }
-
-  console.log(portfolioData[0].jacketImage);
 
   return (
     <VocalProfileListWrapper>

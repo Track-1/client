@@ -66,7 +66,6 @@ export async function patchProducerProfile(editData: any) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
   } catch (e) {
     console.log(e);
   }

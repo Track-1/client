@@ -96,17 +96,19 @@ export default function ResetPasswordInput() {
     }
   }
 
-  function checkError(messages:string){
-    if(messages===passwordInvalidMessage.NULL||messages===passwordInvalidMessage.SUCCESS||passwordInvalidMessage.SUCCESS||passwordInvalidMessage.NULL){
+  function checkError(messages: string) {
+    if (
+      messages === passwordInvalidMessage.NULL ||
+      messages === passwordInvalidMessage.SUCCESS ||
+      passwordInvalidMessage.SUCCESS ||
+      passwordInvalidMessage.NULL
+    ) {
       return false;
-    }
-    else if(messages===passwordInvalidMessage.FORM||passwordInvalidMessage.MATCH){
+    } else if (messages === passwordInvalidMessage.FORM || passwordInvalidMessage.MATCH) {
       return true;
     }
     return false;
   }
-  console.log(checkError(passwordMessage))
-  console.log(passwordMessage)
 
   return (
     <Container>
@@ -115,7 +117,7 @@ export default function ResetPasswordInput() {
           <ResetPasswordTitleIcon />
         </TitleWrapper>
         <InputBox>
-          <ChangePasswordNewPasswordIcon/>
+          <ChangePasswordNewPasswordIcon />
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
@@ -133,13 +135,13 @@ export default function ResetPasswordInput() {
           <UnderLine inputState={passwordMessage} />
           {passwordMessage !== passwordInvalidMessage.NULL && passwordMessage !== passwordInvalidMessage.SUCCESS ? (
             <WarningMessage isError={true}>{passwordMessage}</WarningMessage>
-          ):(
+          ) : (
             <WarningMessage isError={false}>{passwordMessage}</WarningMessage>
           )}
         </InputBox>
 
         <InputBox>
-          <ChangePasswordConfirmIcon/>
+          <ChangePasswordConfirmIcon />
           <InputWrapper>
             <Input
               type={showConfirmPassword ? "text" : "password"}
@@ -156,11 +158,11 @@ export default function ResetPasswordInput() {
           </InputWrapper>
           <UnderLine inputState={confirmPasswordMessage} />
           {confirmPasswordMessage !== passwordInvalidMessage.NULL &&
-            confirmPasswordMessage !== passwordInvalidMessage.SUCCESS ? (
-              <WarningMessage isError={true}>{confirmPasswordMessage}</WarningMessage>
-            ):(
-              <WarningMessage isError={false}>{confirmPasswordMessage}</WarningMessage>
-            )}
+          confirmPasswordMessage !== passwordInvalidMessage.SUCCESS ? (
+            <WarningMessage isError={true}>{confirmPasswordMessage}</WarningMessage>
+          ) : (
+            <WarningMessage isError={false}>{confirmPasswordMessage}</WarningMessage>
+          )}
         </InputBox>
         <SentenceWrapper>
           <Sentence>If you save your new password,</Sentence>
@@ -215,14 +217,14 @@ const InputBox = styled.div`
   margin-top: 1.8rem;
 `;
 
-const ChangePasswordNewPasswordIcon=styled(ChangePasswordNewPasswordIc)`
+const ChangePasswordNewPasswordIcon = styled(ChangePasswordNewPasswordIc)`
   width: 16.3rem;
   margin-top: 3rem;
-`
+`;
 
-const ChangePasswordConfirmIcon=styled(ChangePasswordConfirmIc)`
+const ChangePasswordConfirmIcon = styled(ChangePasswordConfirmIc)`
   width: 30.9rem;
-`
+`;
 
 const InputWrapper = styled.div`
   display: flex;
@@ -244,11 +246,11 @@ const Input = styled.input`
   border: none;
 `;
 
-const WarningMessage = styled.span<{isError:boolean}>`
+const WarningMessage = styled.span<{ isError: boolean }>`
   width: 100%;
   height: 3rem;
   ${({ theme }) => theme.fonts.description};
-  color: ${({ theme,isError }) => isError?theme.colors.red:'transparent'};
+  color: ${({ theme, isError }) => (isError ? theme.colors.red : "transparent")};
 
   margin-top: 1.1rem;
 `;
@@ -326,8 +328,7 @@ const SaveBtnIcon = styled(SaveBtnIc)`
   cursor: pointer;
 `;
 
-
-const ResetPasswordTitleIcon=styled(ResetPasswordTitleIc)`
+const ResetPasswordTitleIcon = styled(ResetPasswordTitleIc)`
   width: 36rem;
   margin-top: 1rem;
-`
+`;
