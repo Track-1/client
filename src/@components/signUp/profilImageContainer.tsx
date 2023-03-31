@@ -5,17 +5,21 @@ import { UserType } from '../../recoil/main';
 import { useRecoilValue } from 'recoil';
 import { currentUser } from '../../core/constants/userType';
 import { isVocal, isProducer } from '../../utils/common/userType';
+import { checkImageSize, checkImageType, getFileSize, getFileURL } from '../../utils/uploadPage/uploadImage';
+import { UserDataPropsType } from '../../type/signUpStepTypes';
 
 interface ImageContainerPropsType{
     imageSrc:string;
     isHover:boolean;
     checkImageHover: () => void;
-    uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   // uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setImageSrc: React.Dispatch<React.SetStateAction<string>>
+    setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>
 }
 
 
 export default function ProfilImageContainer(props:ImageContainerPropsType) {
-    const {imageSrc, isHover, checkImageHover, uploadImage}=props;
+    const {imageSrc, isHover, checkImageHover,setImageSrc,setUserData}=props;
     const userType=useRecoilValue(UserType)
 
     function showUploadImage(){
@@ -27,12 +31,22 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
         }
     }
 
+    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
+      const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+      if (checkImageType(uploadName) && e.target.files) {
+        const file = e.target.files[0];
+        const fileUrl: string = getFileURL(file);
+        const imageSize: number = getFileSize(file);
+        if (checkImageSize(imageSize)) {
+          setImageSrc(fileUrl);
+          setUserData((prev) => ({ ...prev, imageFile:fileUrl}));
+        }
+      }
+    }
     function checkImgHover(){
       return imageSrc&&isHover;
     }
 
-  
-    
   return (
     <ImageContainer isProducer={isProducer(userType)}>
     <Label htmlFor='profile-img' onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>

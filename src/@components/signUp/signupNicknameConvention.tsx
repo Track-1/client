@@ -36,18 +36,19 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     const setLoginUserType = useSetRecoilState(LoginUserType);
     const setLoginUserId = useSetRecoilState(LoginUserId);
   
-    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
-      const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-      if (checkImageType(uploadName) && e.target.files) {
-        const file = e.target.files[0];
-        const fileUrl: string = getFileURL(file);
-        const imageSize: number = getFileSize(file);
-        if (checkImageSize(imageSize)) {
-          setImageSrc(fileUrl);
-        }
-      }
-    }
-
+    // const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {     
+    //   const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    //   if (checkImageType(uploadName) && e.target.files) {
+    //     const file = e.target.files[0];
+    //     const fileUrl: string = getFileURL(file);
+    //     const imageSize: number = getFileSize(file);
+    //     if (checkImageSize(imageSize)) {
+    //       setImageSrc(fileUrl);
+    //       setUserData((prev) => ({ ...prev, imageFile:fileUrl}));
+    //     }
+    //   }
+    // }
+    
     function checkImageHover(){
       setIsHover(!isHover)
     }
@@ -133,7 +134,10 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
     }
   });
 
+  console.log(userData)
+  
   useEffect(() => {
+      console.log("보낻다"+userData.imageFile)
       isVocal(userType)&&JoinVocal(userData);
       isProducer(userType)&&JoinProducer(userData);
   }, [isSave]);
@@ -145,8 +149,8 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
 
   return (
     <>
-    <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage}/>
-    
+    {/* <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} uploadImage={uploadImage} setImageSrc={setImageSrc}/> */}
+    <ProfilImageContainer imageSrc={imageSrc} checkImageHover={checkImageHover} isHover={isHover} setImageSrc={setImageSrc} setUserData={setUserData}/>
     <NicknameWrapper>
       <WhatsYourNameTextIcon/>
       <InputWrapper>
@@ -161,7 +165,7 @@ export default function SignupNicknameConvention(props:SetUserPropsType) {
           {nicknameMessage}
       </MessageWrapper>
     </NicknameWrapper>
-    <ConventionCheckBox setCompleteCheck={setCompleteCheck} checkedConventions={checkedConventions} setCheckedConventions={setCheckedConventions}/>
+    <ConventionCheckBox setCompleteCheck={setCompleteCheck} checkedConventions={checkedConventions} setCheckedConventions={setCheckedConventions} setUserData={setUserData}/>
     <ArrowButtonWrapper>
       <SignUpBackArrowIcon onClick={moveBackToEmailPassword}/>
 
