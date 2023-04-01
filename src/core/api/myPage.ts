@@ -9,7 +9,6 @@ export async function getUserInfo(page: number, limit: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    data && console.log(data);
     return data;
   } catch (e) {
     console.log(e);

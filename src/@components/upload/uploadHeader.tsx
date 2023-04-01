@@ -26,7 +26,6 @@ export default function UploadHeader(props: PropsType) {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
-  console.log("loginUserId"+loginUserId)
   const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
       // alert("업로드 성공");
@@ -54,8 +53,6 @@ export default function UploadHeader(props: PropsType) {
     }
   }
 
-  console.log(uploadData)
-
   function isEmptyTitle(): boolean {
     return uploadData.title === "";
   }
@@ -80,7 +77,7 @@ export default function UploadHeader(props: PropsType) {
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
-          <BackButton/>
+          <BackButton />
           <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
         {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon />}
@@ -123,7 +120,6 @@ const CanUploadBtnIcon = styled(CanUploadBtnIc)`
   cursor: pointer;
 `;
 
-
-const UploadBtnIcon=styled(UploadBtnIc)`
+const UploadBtnIcon = styled(UploadBtnIc)`
   width: 24.6rem;
-`
+`;

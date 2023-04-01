@@ -33,7 +33,6 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   });
 
   function logout() {
-    console.log("eee");
     onLogout();
     navigate("/");
   }

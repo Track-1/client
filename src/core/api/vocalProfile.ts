@@ -9,7 +9,6 @@ export async function getVocalProfile(vocalId: number, page: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
     return data?.data.data;
   } catch (e) {
     console.log(e);
@@ -32,7 +31,6 @@ export async function patchVocalPortfolio({ vocalPortfolioId, editDatas }: any) 
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
   } catch (e) {
     console.log(e);
   }
@@ -46,7 +44,6 @@ export async function patchVocalrProfile(editData: any) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
   } catch (e) {
     console.log(e);
   }
