@@ -112,7 +112,8 @@ const ProfileImage = styled.img`
   /* height: 6rem;
   width: 6rem; */
   width: 150%;
-  //height: 135%;
+  height: 150%;
+  position: absolute;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;
