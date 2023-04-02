@@ -48,16 +48,9 @@ export default function TrackSearchPage() {
       };
     }
   }
-  useEffect(() => {
-    console.log(filteredUrlApi)
-    // tracksData !== undefined && setTracksData([]);
-    // setCategoryChanged(!categoryChanged);
-    // setPageParam(1);
-    //  pageParam=1
-  }, [filteredUrlApi]);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [key, categoryChanged],
+    key,
     ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴 console.log(lastPage)
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -111,6 +104,8 @@ export default function TrackSearchPage() {
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
+
+  background-color: aqua;
 `;
 
 const TrackSearchPageWrapper = styled.section`
