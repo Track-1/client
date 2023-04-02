@@ -17,6 +17,7 @@ import { UserType } from "../../recoil/main";
 import { isProducer } from "../../utils/common/userType";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { showPlayerBar } from "../../recoil/player";
+import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 
 export default function CategoryList(props: any) {
   const { pausesPlayerAudio } = props;
@@ -32,6 +33,7 @@ export default function CategoryList(props: any) {
   const userType = useRecoilValue(LoginUserType);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  
 
   useEffect(() => {
     setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
