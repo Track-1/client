@@ -38,7 +38,7 @@ export default function PortfoliosInform(props: any) {
   // const loginUserType = useRecoilValue(LoginUserType);
 
   function clickEllipsis() {
-    setOpenEllipsisModal(true);
+    setOpenEllipsisModal(!openEllipsisModal);
   }
 
   function checkIsVocalSearching() {
