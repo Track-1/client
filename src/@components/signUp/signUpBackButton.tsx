@@ -8,7 +8,7 @@ export default function SignUpBackButton() {
   function movePreviousPage() {
     if (window.confirm('회원가입을 종료하겠습니까?'))
     {
-        navigate(-1);
+        navigate('/');
     }
 
   }
