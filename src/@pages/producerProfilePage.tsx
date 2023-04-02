@@ -4,7 +4,7 @@ import ProducerPortFolioList from "../@components/producerProfile/producerPortFo
 import { ProducerPortfolioType, ProducerProfileType } from "../type/producerProfile";
 import producerGradientImg from "../assets/image/producerGradientImg.png";
 import ProducerEmptyProfileImg from "../assets/image/producerEmptyProfileImg.png";
-import { RightArrorIc } from "../assets";
+import { RightArrorIc, UploadButtonBlankIc, UploadButtonIc } from "../assets";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import TracksProfileUploadModal from "../@components/@common/tracksProfileUploadModal";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -140,6 +140,8 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
+      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+
       {profileData && (
         <ProducerInfos
           profileData={profileData}
@@ -257,4 +259,19 @@ const ProducerEmptyProfileImage = styled.img`
   top: 26.2rem;
   left: 69.6rem;
   width: 124.2rem;
+`;
+
+const UploadButtonIcon = styled(UploadButtonIc)`
+  position: absolute;
+  right: 0;
+  margin-top: 5.9rem;
+
+  width: 24.5rem;
+
+  cursor: pointer;
+`;
+
+
+const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
+  margin-top: 5.9rem;
 `;

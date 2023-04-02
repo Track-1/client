@@ -88,7 +88,7 @@ export default function PortfoliosInform(props: any) {
 
   return (
     <PortfolioInformWrapper>
-      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {/* {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />} */}
 
       {portfolios[id] && (
         <InformContainer>
