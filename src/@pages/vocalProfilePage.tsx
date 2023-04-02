@@ -100,7 +100,7 @@ export default function VocalProfilePage() {
     setAudioInfos(tempInfos);
   }
 
-  function clickUploadButton() {
+  function moveToUpload() {
     navigate("/upload/Portfolio");
   }
 
@@ -108,7 +108,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
       <VocalProfile>
         {profileData && (
           <ProducerInfos

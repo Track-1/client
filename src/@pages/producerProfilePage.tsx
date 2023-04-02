@@ -39,6 +39,7 @@ export default function ProducerProfilePage() {
   const visible = useRecoilValue(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
   const { progress, audio } = usePlayer();
 
@@ -136,11 +137,15 @@ export default function ProducerProfilePage() {
     setAudioInfos(tempInfos);
   }
 
+  function moveToUpload() {
+    setOpenUploadModal(true);
+  }
+
   return (
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
+      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
 
       {profileData && (
         <ProducerInfos
