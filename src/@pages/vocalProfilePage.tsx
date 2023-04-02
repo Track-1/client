@@ -101,9 +101,9 @@ export default function VocalProfilePage() {
   }
 
   function moveToUpload() {
+    console.log("ddd")
     navigate("/upload/Portfolio");
   }
-
 
   return (
     <Wrap>
@@ -197,6 +197,7 @@ const VocalEmptyProfileImage = styled.img`
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   position: absolute;
+  z-index:7;
   right: 0;
   margin-top: 5.9rem;
 
