@@ -19,11 +19,22 @@ interface PropsType {
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   producerName: string;
   whom: string;
+  changeKey: any;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
-  const { portfolioData, isMe, profileState, stateChange, audio, pauseAudio, getAudioInfos, producerName, whom } =
-    props;
+  const {
+    portfolioData,
+    isMe,
+    profileState,
+    stateChange,
+    audio,
+    pauseAudio,
+    getAudioInfos,
+    producerName,
+    whom,
+    changeKey,
+  } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [play, setPlay] = useRecoilState(playMusic);

@@ -100,6 +100,7 @@ export default function VocalProfileList(props: PropsType) {
           portfolios={portfolioData}
           profileState={"Porfolio"}
           whom={whom}
+          pauseAudio={pauseAudio}
         />
       )}
     </VocalProfileListWrapper>

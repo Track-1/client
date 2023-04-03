@@ -1,7 +1,7 @@
 import styled, { useTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
-import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../assets";
+import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, VocalUploadFrameIc } from "../assets";
 import { FileChangeIc } from "../assets";
 import {
   UploadFileUpdateIc,
@@ -40,6 +40,7 @@ export default function VocalPortfolioEditPage() {
   const [showImage, setShowImage] = useState<string | ArrayBuffer>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [hashtagText, setHashtagText] = useState<string>("");
+  const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
   const navigate = useNavigate();
   const queryClient = new QueryClient();
 
@@ -129,6 +130,10 @@ export default function VocalPortfolioEditPage() {
     setTitle(e.target.value);
   }
 
+  function hoverImage() {
+    isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
+  }
+
   useEffect(() => {
     complete && mutate({ vocalPortfolioId: prevData.id, editDatas: editData });
   }, [complete]);
@@ -146,18 +151,20 @@ export default function VocalPortfolioEditPage() {
       </Container>
       <Container2>
         <SectionWrapper>
+          <VocalUploadFrameIcon />
           <VocalImageBox>
-            <VocalImageFrame />
-            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              {isImageUploaded ? (
-                <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
-              ) : (
-                <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" />
-              )}
-            </label>
-            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <FileChangeIcon />
-            </label>
+            <VocalImageFrame onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
+              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                {isImageUploaded ? (
+                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+                ) : (
+                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" />
+                )}
+              </label>
+              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                <FileChangeIcon />
+              </label>
+            </VocalImageFrame>
           </VocalImageBox>
           <input
             type="file"
@@ -369,6 +376,7 @@ const Container2 = styled.section`
 `;
 
 const SectionWrapper = styled.div`
+  position: relative;
   height: 100%;
   /* width: 138.2rem; */
 
@@ -376,13 +384,13 @@ const SectionWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  border: 0.2rem solid transparent;
+  /* border: 0.2rem solid transparent;
   border-top-left-radius: 37.8rem;
   border-bottom-left-radius: 37.8rem;
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(to right, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
   background-origin: border-box;
-  background-clip: content-box, border-box;
+  background-clip: content-box, border-box; */
 `;
 
 const VocalImageBox = styled.div`
@@ -406,26 +414,25 @@ const VocalImageFrame = styled.div`
   transform: rotate(45deg);
   overflow: hidden;
   object-fit: cover;
+  :hover {
+    filter: blur(3rem);
+  }
 `;
 
 const TrackUploadImage = styled.img`
   width: 60.4rem;
   height: 60.4rem;
   object-fit: cover;
-  border-radius: 50%;
-
-  background: rgba(30, 32, 37, 0.5);
-  filter: blur(3rem);
-
-  background: default;
-  filter: default;
+  transform: rotate(-45deg);
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 40%;
+  left: 30%;
+  /* transform: translate(-40%, -40%); */
+  transform: rotate(-45deg);
+
   cursor: pointer;
 `;
 
@@ -639,8 +646,8 @@ const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 54.4rem;
-  left: 113.7rem;
+  top: 40.4rem;
+  left: 98rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
   border-radius: 0.5rem;
@@ -697,4 +704,10 @@ const AddHashtagIcon = styled(AddHashtagIc)`
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   margin-left: 1rem;
   cursor: pointer;
+`;
+
+const VocalUploadFrameIcon = styled(VocalUploadFrameIc)`
+  z-index: -1;
+  position: absolute;
+  top: 0;
 `;

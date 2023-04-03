@@ -5,7 +5,7 @@ import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { Categories } from "../../core/constants/categories";
+import { Categories, CategoryId, CategoryText } from "../../core/constants/categories";
 import { useNavigate } from "react-router-dom";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { showPlayerBar } from "../../recoil/player";
@@ -16,10 +16,11 @@ interface PropsType {
   whom: string;
   whoamI: string;
   pauseAudio: any;
+  changeKey: () => void;
 }
 
 export default function ProducerInfos(props: PropsType) {
-  const { profileData, isMe, whom, pauseAudio, whoamI } = props;
+  const { profileData, isMe, whom, pauseAudio, whoamI, changeKey } = props;
   const navigate = useNavigate();
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
@@ -32,7 +33,9 @@ export default function ProducerInfos(props: PropsType) {
           state: profileData,
         })
       : navigate(`/profile-edit/producer/${profileData.id}`, {
-          state: profileData,
+          state: {
+            profileData: profileData,
+          },
         });
   }
 console.log(profileData.introduce?.length)
@@ -65,13 +68,14 @@ console.log(profileData.introduce?.length)
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
+
           {profileData.category.length > 0 ? (
-              Object.values(Categories).map((value) =>
-                profileData.category.includes(value) ? (
-                  <Category>{value}</Category>
-                ) : (
-                  <NotCategory>{value}</NotCategory>
-                ),
+              {Object.keys(CategoryId).map((category) =>
+              profileData.category.includes(CategoryText[category]) ? (
+                <Category>{category}</Category>
+              ) : (
+                <NotCategory>{category}</NotCategory>
+              ),
               )
             ) : (
               <EmptyProfileMessageWrapper>

@@ -50,6 +50,7 @@ export default function ProfileEditInfo(props: PropsType) {
     FUNK: false,
   });
   const [hashtagText, setHashtagText] = useState<string>("");
+  console.log(contact);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
@@ -79,8 +80,8 @@ export default function ProfileEditInfo(props: PropsType) {
         <ContactContainer>
           <ProfileEditContactIcon />
           <ContactInput
-            placeholder="Enter your phone number or SNS account"
             defaultValue={contact}
+            placeholder="Enter your phone number or SNS account"
             onChange={(e) => updateContact(e.target.value)}
             maxLength={40}
           />
