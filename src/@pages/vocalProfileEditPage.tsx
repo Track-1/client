@@ -23,9 +23,11 @@ export default function VocalProfileEditPage() {
   const [categories, setCategories] = useState<string[]>(state?.category);
   const [hashtags, setHashtags] = useState<string[]>(state?.keyword);
   const [description, setDescription] = useState<string>(state?.introduce);
-  const [editReady, setEditReady] = useState<boolean>(false);
+  const [editReady, setEditReady] = useState<boolean>(true);
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
+
+  console.log(state);
 
   useEffect(() => {
     if (saveData === true) {
@@ -34,7 +36,8 @@ export default function VocalProfileEditPage() {
       formData.append("name", name);
       formData.append("contact", contact);
       categories.forEach((item, index) => {
-        formData.append(`category[${index}]`, CategoryId[item]);
+        console.log(item);
+        formData.append(`category[${index}]`, CategoryId[item.toUpperCase()]);
       });
       hashtags.forEach((item, index) => {
         formData.append(`keyword[${index}]`, item);
