@@ -184,7 +184,6 @@ export default function SignupEmailPassword(props: SetPropsType) {
   // sendCode나 resend 버튼 클릭
   function sendCode(e: React.MouseEvent) {
     if(isActive()){
-      console.log("클릭됨")
       setVerificationCode("");
       setVerificationCodeMessage(verificationCodeInvalidMessage.NULL);
       isSendCode && emailMessage !== emailInvalidMessage.DUPLICATION && setIsResendCode((prev) => !prev);
@@ -268,7 +267,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
   }
 
   function showTitle() {
-    if (isSendCode && !isVerify && emailMessage === emailInvalidMessage.SUCCESS) {
+      if(emailMessage===emailInvalidMessage.TIME){
       return <WeSentYouACodeTextIcon />;
     } else if (isVerify) {
       return <CreateAPasswordForYourAccountTitleIcon />;
