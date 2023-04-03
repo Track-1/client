@@ -30,7 +30,7 @@ export default function UploadHeader(props: PropsType) {
   const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
       // alert("업로드 성공");
-      checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`);
+      checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
     },
     onError: (error) => {
       console.log("에러!!", error);
