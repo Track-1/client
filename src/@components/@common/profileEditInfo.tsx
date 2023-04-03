@@ -143,7 +143,7 @@ export default function ProfileEditInfo(props: PropsType) {
             row={Math.floor(description?.length / 31) + 1}
           />
           <TextCount>
-            {description.length}
+            {description?.length}
             <MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
