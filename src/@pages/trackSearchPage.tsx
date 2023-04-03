@@ -16,8 +16,8 @@ import { useState, useEffect } from "react";
 import { getTracksData } from "../core/api/trackSearch";
 import { TracksDataType } from "../type/tracksDataType";
 
-import { useInfiniteQuery } from "react-query";
-import { categorySelect } from "../recoil/categorySelect";
+import { QueryClient, useInfiniteQuery } from "react-query";
+import { categorySelect, clickCategoryHeader } from "../recoil/categorySelect";
 import usePlayer from "../utils/hooks/usePlayer";
 import { AudioInfosType } from "../type/audioTypes";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
@@ -35,8 +35,18 @@ export default function TrackSearchPage() {
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
   const [pageParam, setPageParam] = useState<number>(1);
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+  const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+
+  useEffect(() => {
+    if (isCategorySelected) {
+      setTracksData([]);
+
+      excuteGetData();
+    }
+  }, [filteredUrlApi]);
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
@@ -76,12 +86,18 @@ export default function TrackSearchPage() {
       <CategoryHeader excuteGetData={excuteGetData} pausesPlayerAudio={pausesPlayerAudio} />
       <TrackSearchPageWrapper>
         <CategoryListWrapper>
-          <CategoryList pausesPlayerAudio={pausesPlayerAudio} />
+          <CategoryList pausesPlayerAudio={pausesPlayerAudio} setIsCategorySelected={setIsCategorySelected} />
         </CategoryListWrapper>
         <TrackListWrapper>
           <TrackListHeader />
           {tracksData && (
-            <TrackList audio={audio} pauseAudio={pausesPlayerAudio} tracksData={tracksData} getInfos={getInfos} excuteGetData={excuteGetData}/>
+            <TrackList
+              audio={audio}
+              pauseAudio={pausesPlayerAudio}
+              tracksData={tracksData}
+              getInfos={getInfos}
+              excuteGetData={excuteGetData}
+            />
           )}
         </TrackListWrapper>
       </TrackSearchPageWrapper>
