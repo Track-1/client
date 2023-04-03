@@ -20,7 +20,7 @@ import { showPlayerBar } from "../../recoil/player";
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 
 export default function CategoryList(props: any) {
-  const { pausesPlayerAudio } = props;
+  const { pausesPlayerAudio, setIsCategorySelected } = props;
   const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
@@ -33,7 +33,6 @@ export default function CategoryList(props: any) {
   const userType = useRecoilValue(LoginUserType);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  
 
   useEffect(() => {
     setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
@@ -61,6 +60,9 @@ export default function CategoryList(props: any) {
     filteredUrl === ""
       ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
       : setFilteredUrlApi(filteredUrl);
+
+    // setFilteredUrlApi(filteredUrl);
+    // console.log(filteredUrlApi);
   }, [selectedCategorys]);
 
   function selectCategory(id: number) {
@@ -69,6 +71,7 @@ export default function CategoryList(props: any) {
       ? (tempSelectedCategors[id].selected = false)
       : (tempSelectedCategors[id].selected = true);
     setSelectedCategorys([...tempSelectedCategors]);
+    setIsCategorySelected(true);
   }
 
   function moveUploadPage() {
