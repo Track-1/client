@@ -40,11 +40,17 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const { key } = useInfiniteKey();
+  const { key, excuteGetData } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
 
   const { state } = useLocation();
+
+  useEffect(() => {
+    setTimeout(() => {
+      excuteGetData();
+    }, 800);
+  }, []);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
@@ -110,6 +116,7 @@ export default function VocalProfilePage() {
             whom={Category.VOCALS}
             whoamI={"vocal"}
             pauseAudio={pauseAudio}
+            changeKey={excuteGetData}
           />
         )}
       </VocalProfile>
