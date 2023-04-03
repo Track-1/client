@@ -39,8 +39,15 @@ export default function ProducerProfilePage() {
   const visible = useRecoilValue(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [load, setLoad] = useState<boolean>(false);
 
   const { progress, audio } = usePlayer();
+
+  useEffect(() => {
+    setTimeout(() => {
+      changeKey();
+    }, 800);
+  }, []);
 
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
@@ -147,6 +154,7 @@ export default function ProducerProfilePage() {
           whom={Category.TRACKS}
           whoamI={"producer"}
           pauseAudio={pauseAudio}
+          changeKey={changeKey}
         />
       )}
       <PageContainer>
@@ -185,6 +193,7 @@ export default function ProducerProfilePage() {
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
             whom={Category.TRACKS}
+            changeKey={changeKey}
           />
         ) : (
           <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
