@@ -107,7 +107,6 @@ export default function VocalProfilePage() {
   }
 
   function moveToUpload() {
-    console.log("ddd")
     navigate("/upload/Portfolio");
   }
 

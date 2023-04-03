@@ -32,7 +32,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
       setLoginUserImg(data.vocalProfile.profileImage);
     },
     onError: (error) => {
-      console.log("실패");
+      console.log(error);
     },
   });
 

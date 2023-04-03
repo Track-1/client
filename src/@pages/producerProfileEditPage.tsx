@@ -13,11 +13,9 @@ import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 
 export default function ProducerProfileEditPage() {
-  // console.log(useLocation());
   // const { profileData } = useLocation().state;
   const location = useLocation();
   const profileData = location.state.profileData;
-  console.log(location);
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState<File>(
     new File([profileData.profileImage], profileData.profileImage),
@@ -60,10 +58,9 @@ export default function ProducerProfileEditPage() {
   const { mutate } = useMutation(() => patchProducerProfile(updatedData), {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
-      console.log("ok");
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 

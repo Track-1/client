@@ -27,8 +27,6 @@ export default function VocalProfileEditPage() {
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
 
-  console.log(state);
-
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();
@@ -36,7 +34,6 @@ export default function VocalProfileEditPage() {
       formData.append("name", name);
       formData.append("contact", contact);
       categories.forEach((item, index) => {
-        console.log(item);
         formData.append(`category[${index}]`, CategoryId[item.toUpperCase()]);
       });
       hashtags.forEach((item, index) => {
@@ -56,11 +53,11 @@ export default function VocalProfileEditPage() {
   }, [updatedData]);
 
   const { mutate } = useMutation(() => patchVocalrProfile(updatedData), {
-    onSuccess: () => {
-      console.log("ok");
+    onSuccess: (data) => {
+      console.log(data);
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 

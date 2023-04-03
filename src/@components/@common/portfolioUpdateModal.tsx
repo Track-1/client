@@ -45,7 +45,6 @@ export default function PortfolioUpdateModal(props: PropsType) {
   function askToeleteTrack(){
     if (window.confirm('게시글을 삭제하시겠습니까?'))
     {
-      console.log("asdf3")
       deleteTrack();
     }
   }
@@ -53,13 +52,13 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
-      alert("삭제되었습니다.");    
-      console.log("asdf1")
+      alert("삭제되었습니다.");
+
 
     },
     onError: (error) => {
       console.log(error);
-      console.log("asdf2")
+
 
     },
   });

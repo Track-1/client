@@ -38,7 +38,7 @@ export default function ProducerInfos(props: PropsType) {
           },
         });
   }
-  console.log(profileData.introduce?.length);
+  
   return (
     <InfoContainer>
       <InfoHeader>
