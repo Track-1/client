@@ -144,9 +144,18 @@ export default function SignupEmailPassword(props: SetPropsType) {
     if (checkPasswordForm(e.target.value)) {
       setPasswordMessage(passwordInvalidMessage.SUCCESS);
     }
+    if(passwordConfirm!==""&&password!==passwordConfirm){
+      setPasswordConfirmMessage(passwordInvalidMessage.MATCH);
+    }
 
     setPassword(e.target.value);
   }
+
+  useEffect(()=>{
+    if(password!==""&&passwordConfirm!==""&&password!==passwordConfirm){
+      setPasswordConfirmMessage(passwordInvalidMessage.MATCH);
+    }
+  },[password, passwordConfirm])
 
   function writePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.value) {
@@ -163,6 +172,12 @@ export default function SignupEmailPassword(props: SetPropsType) {
 
     setPasswordConfirm(e.target.value);
   }
+
+  useEffect(()=>{
+    console.log("password"+password)
+    console.log("passwordConfirm"+passwordConfirm)
+    
+  },[password, passwordConfirm])
 
   function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.value) {
