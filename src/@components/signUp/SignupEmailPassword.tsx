@@ -183,12 +183,15 @@ export default function SignupEmailPassword(props: SetPropsType) {
 
   // sendCode나 resend 버튼 클릭
   function sendCode(e: React.MouseEvent) {
-    setVerificationCode("");
-    setVerificationCodeMessage(verificationCodeInvalidMessage.NULL);
-    isSendCode && emailMessage !== emailInvalidMessage.DUPLICATION && setIsResendCode((prev) => !prev);
-    if (isEmailSuccess()) {
-      setIsSendCode(true);
-      setIsVerify(false);
+    if(isActive()){
+      console.log("클릭됨")
+      setVerificationCode("");
+      setVerificationCodeMessage(verificationCodeInvalidMessage.NULL);
+      isSendCode && emailMessage !== emailInvalidMessage.DUPLICATION && setIsResendCode((prev) => !prev);
+      if (isEmailSuccess()) {
+        setIsSendCode(true);
+        setIsVerify(false);
+      }
     }
   }
 
@@ -276,6 +279,14 @@ export default function SignupEmailPassword(props: SetPropsType) {
 
   function saveUserData() {
     successNextStep() && setUserData((prev) => ({ ...prev, ID: email, PW: password }));
+  }
+
+  function checkEmail(){
+    return emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.TIME||emailMessage===emailInvalidMessage.ING
+  }
+
+  function isActive(){
+    return checkEmail()&&true;
   }
 
   return (
