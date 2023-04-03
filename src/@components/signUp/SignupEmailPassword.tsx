@@ -173,12 +173,6 @@ export default function SignupEmailPassword(props: SetPropsType) {
     setPasswordConfirm(e.target.value);
   }
 
-  useEffect(()=>{
-    console.log("password"+password)
-    console.log("passwordConfirm"+passwordConfirm)
-    
-  },[password, passwordConfirm])
-
   function writeVerificationCode(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.value) {
       setVerificationCodeMessage(verificationCodeInvalidMessage.NULL);
@@ -276,7 +270,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
   }
 
   function successNextStep() {
-    return passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
+    return password===passwordConfirm&&passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
       ? continueType.SUCCESS
       : continueType.FAIL;
   }
