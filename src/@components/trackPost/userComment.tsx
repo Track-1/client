@@ -16,72 +16,84 @@ import Player from "../@common/player";
 import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
 import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
 import usePlayer from "../../utils/hooks/usePlayer";
+import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 
 interface PropsType {
   closeComment: () => void;
   beatId: number;
-  isClosed:boolean |undefined;
+  isClosed: boolean | undefined;
 }
 
 export default function UserComment(props: PropsType) {
   const { closeComment, beatId, isClosed } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
+  const { key, excuteGetData } = useInfiniteKey();
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
     content: "",
     audioFile: null,
-    fileName:"",
+    fileName: "",
   });
 
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
-  const [isUpdated, setIsUpdated]=useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [audioFile, setAudioFile] = useState(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [commentId, setCommentId]=useState<number>(0);
-  const [startUpload, setStartUpload]=useState<boolean>(false);
-  const [startUpdate, setStartUpdate]=useState<boolean>(false);
+  const [commentId, setCommentId] = useState<number>(0);
+  const [startUpload, setStartUpload] = useState<boolean>(false);
+  const [startUpdate, setStartUpdate] = useState<boolean>(false);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
- 
+
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["comments", getUploadData, isEnd],
+    [key, getUploadData, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
+        // console.log(key);
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
+
+  //에옹 여기가 문제일까?~~~!!!!!! pages[0]으로 설정되어있음!!!!
   const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
-      //setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      setComments([...response]);
-      
+      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      //setComments([...response]);
+      //console.log가 여러번 찍히는 원인을 찾아서..두둥탁..
+      //console.log(response);
       return { response, nextPage: page + 1 };
     }
   }
   // get end
 
   //post
-  const { mutate:post } = useMutation(()=>postComment(uploadData, beatId), {
+  const { mutate: post } = useMutation(() => postComment(uploadData, beatId), {
     onSuccess: () => {
+      console.log(uploadData);
       queryClient.invalidateQueries("comments");
       setContent("");
       setAudioFile(null);
-    //  setIsCompleted(false);
-      setIsEnd(!isEnd)
+      //  setIsCompleted(false);
+      setIsEnd(!isEnd);
       setStartUpload(false);
-      console.log("포스트성공")
+      console.log("포스트성공");
+      // 에옹 새로올린 파일 하나가 들어옴
+      console.log(content);
+      //에옹 comments에서 왤케 많은 6들이 생기는 걸까!
+      console.log(comments);
     },
   });
 
@@ -89,25 +101,25 @@ export default function UserComment(props: PropsType) {
 
   useEffect(() => {
     post();
-      console.log("포스트시작")
+    console.log("포스트시작");
   }, [isCompleted]);
- //post end
+  //post end
 
- //update
- const { mutate:update } = useMutation(()=>updateComment(uploadData, commentId), {
-  onSuccess: () => {
-    queryClient.invalidateQueries("comments");
-    console.log("댓글성공")
-    setIsEnd(!isEnd)
-    setIsUpdated(false)
-  },
-});
+  //update
+  const { mutate: update } = useMutation(() => updateComment(uploadData, commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comments");
+      console.log("댓글성공");
+      setIsEnd(!isEnd);
+      setIsUpdated(false);
+    },
+  });
 
-useEffect(() => {
-  update();
-  console.log("지나감2")
-}, [isUpdated]);
-//update end
+  useEffect(() => {
+    update();
+    console.log("지나감2");
+  }, [isUpdated]);
+  //update end
 
   useEffect(() => {
     if (comments) {
@@ -122,8 +134,7 @@ useEffect(() => {
     }
   }, [currentAudioFile]);
 
- 
-  function getUploadData(text: string, audioFile: File | null, fileName:string) {
+  function getUploadData(text: string, audioFile: File | null, fileName: string) {
     setUploadData({
       content: text,
       audioFile: audioFile,
@@ -132,9 +143,16 @@ useEffect(() => {
   }
 
   function uploadComment() {
+    //에옹 여기함수가 이상해
     setIsCompleted(!isCompleted);
     setStartUpload(true);
-  //  post()
+    console.log(key);
+    //에옹 여기
+    setComments([]);
+    excuteGetData();
+    console.log(key);
+
+    //  post()
   }
 
   function clickComment(index: number) {
@@ -148,11 +166,17 @@ useEffect(() => {
           <CloseBtnIcon onClick={closeComment} />
         </CloseCommentBtn>
         <form>
-          <CommentWrite getUploadData={getUploadData} isCompleted={isCompleted} setIsCompleted={setIsCompleted} content={content} audioFile={audioFile} />
+          <CommentWrite
+            getUploadData={getUploadData}
+            isCompleted={isCompleted}
+            setIsCompleted={setIsCompleted}
+            content={content}
+            audioFile={audioFile}
+          />
           <AddWrapper>
             <div></div>
 
-            {!isClosed?<AddCommentIcon onClick={uploadComment} />:<ClosedAddCommentIcon/>}
+            {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
           </AddWrapper>
         </form>
 
@@ -220,7 +244,6 @@ const CloseCommentBtn = styled.div`
   margin-bottom: 2.7rem;
 
   cursor: pointer;
-
 `;
 
 const AddWrapper = styled.div`
@@ -261,6 +284,6 @@ const InfiniteWrapper = styled.div`
   height: 2rem;
 `;
 
-const CloseBtnIcon=styled(CloseBtnIc)`
+const CloseBtnIcon = styled(CloseBtnIc)`
   width: 19.9rem;
-`
+`;
