@@ -48,16 +48,10 @@ export default function TrackSearchPage() {
       };
     }
   }
-  useEffect(() => {
-    tracksData !== undefined && setTracksData([]);
-    setCategoryChanged(!categoryChanged);
-    setPageParam(1);
-    //  pageParam=1
-  }, [filteredUrlApi]);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [key, categoryChanged],
-    ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴
+    key,
+    ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴 console.log(lastPage)
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
@@ -110,6 +104,8 @@ export default function TrackSearchPage() {
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
+
+  background-color: aqua;
 `;
 
 const TrackSearchPageWrapper = styled.section`

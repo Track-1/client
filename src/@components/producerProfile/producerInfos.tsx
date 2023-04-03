@@ -38,7 +38,7 @@ export default function ProducerInfos(props: PropsType) {
           },
         });
   }
-
+console.log(profileData.introduce?.length)
   return (
     <InfoContainer>
       <InfoHeader>
@@ -68,12 +68,19 @@ export default function ProducerInfos(props: PropsType) {
         <CategoryBox isSelected={true}>
           <CategoryIcon />
           <CategoryArray>
-            {Object.keys(CategoryId).map((category) =>
+
+          {profileData.category.length > 0 ? (
+              {Object.keys(CategoryId).map((category) =>
               profileData.category.includes(CategoryText[category]) ? (
                 <Category>{category}</Category>
               ) : (
                 <NotCategory>{category}</NotCategory>
               ),
+              )
+            ) : (
+              <EmptyProfileMessageWrapper>
+                <EmptyProfileMessage>no information</EmptyProfileMessage>
+              </EmptyProfileMessageWrapper>
             )}
           </CategoryArray>
         </CategoryBox>
@@ -97,7 +104,7 @@ export default function ProducerInfos(props: PropsType) {
       </DescriptionBox>
       <EmptyDescriptionMessageBox>
         <EmptyDescriptionMessageWrapper>
-          {profileData.introduce?.length === 0 && <EmptyProfileMessage>no information</EmptyProfileMessage>}
+          {profileData.introduce?.length  > 0 || <EmptyProfileMessage>no information</EmptyProfileMessage>}
         </EmptyDescriptionMessageWrapper>
       </EmptyDescriptionMessageBox>
     </InfoContainer>
