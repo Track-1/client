@@ -33,13 +33,13 @@ export default function TrackSearchPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const filteredUrlApi = useRecoilValue(categorySelect);
-  const [categoryChanged, setCategoryChanged]=useState<boolean>(false);
-  const [pageParam, setPageParam]=useState<number>(1);
+  const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
+  const [pageParam, setPageParam] = useState<number>(1);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
   async function getData(page: number) {
-    console.log("2단계")
+    console.log("2단계");
     if (hasNextPage !== false) {
       const response = await getTracksData(filteredUrlApi, page);
       setTracksData((prev) => [...prev, ...response]);
@@ -49,28 +49,26 @@ export default function TrackSearchPage() {
       };
     }
   }
-console.log(filteredUrlApi)
-console.log(tracksData)
-//console.log()
-  useEffect(()=>{
-    tracksData!==([])&&setTracksData([])
-    setCategoryChanged(!categoryChanged)
-    setPageParam(1)
-    console.log("1단계")
-  //  pageParam=1
-  
-  },[filteredUrlApi])
+  console.log(filteredUrlApi);
+  console.log(tracksData);
+  //console.log()
+  /*   useEffect(() => {
+    tracksData !== [] && setTracksData([]);
+    setCategoryChanged(!categoryChanged);
+    setPageParam(1);
+    console.log("1단계");
+    //  pageParam=1
+  }, [filteredUrlApi]); */
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [key,categoryChanged],
+    [key, categoryChanged],
     ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴
     {
       getNextPageParam: (lastPage, allPages) => {
-
         //console.log(key);
-       // console.log(lastPage)
+        // console.log(lastPage)
 
-       console.log("3단계")
+        console.log("3단계");
 
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
@@ -94,12 +92,18 @@ console.log(tracksData)
       <CategoryHeader excuteGetData={excuteGetData} pausesPlayerAudio={pausesPlayerAudio} />
       <TrackSearchPageWrapper>
         <CategoryListWrapper>
-          <CategoryList pausesPlayerAudio={pausesPlayerAudio} />
+          <CategoryList pausesPlayerAudio={pausesPlayerAudio} excuteGetData={excuteGetData}/>
         </CategoryListWrapper>
         <TrackListWrapper>
           <TrackListHeader />
           {tracksData && (
-            <TrackList audio={audio} pauseAudio={pausesPlayerAudio} tracksData={tracksData} getInfos={getInfos} excuteGetData={excuteGetData}/>
+            <TrackList
+              audio={audio}
+              pauseAudio={pausesPlayerAudio}
+              tracksData={tracksData}
+              getInfos={getInfos}
+              excuteGetData={excuteGetData}
+            />
           )}
         </TrackListWrapper>
       </TrackSearchPageWrapper>
@@ -122,6 +126,8 @@ console.log(tracksData)
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
+
+  color: pink;
 `;
 
 const TrackSearchPageWrapper = styled.section`

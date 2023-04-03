@@ -12,7 +12,7 @@ export async function getTrackInfo(props: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-   
+
     return data;
   } catch (e) {
     console.log(e);
@@ -25,7 +25,7 @@ export async function getComment(page: number, beatId: number) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beadId:beatId
+        beadId: beatId,
       },
     });
     return data?.data.data;
@@ -34,22 +34,21 @@ export async function getComment(page: number, beatId: number) {
   }
 }
 
-export async function postComment(formData: UploadDataType, beatId:any) {
+export async function postComment(formData: UploadDataType, beatId: any) {
   try {
     const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beatId: beatId
+        beatId: beatId,
       },
     });
-    console.log(data)
+    console.log(data);
   } catch (e) {
-    console.log("포스트")
+    console.log("포스트");
     console.log(e);
   }
 }
-
 
 export async function updateComment(formData: UploadDataType, commentId: number) {
   try {
@@ -59,9 +58,9 @@ export async function updateComment(formData: UploadDataType, commentId: number)
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data)
+    console.log(data);
   } catch (e) {
-    console.log("수정")
+    console.log("수정");
     console.log(e);
   }
 }
@@ -74,9 +73,9 @@ export async function deleteComment(commentId: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data)
+    console.log(data);
   } catch (e) {
-    console.log("삭제")
+    console.log("삭제");
     console.log(e);
   }
 }
@@ -84,13 +83,15 @@ export async function deleteComment(commentId: number) {
 export async function closeTrack(beatId: number) {
   try {
     const data = await axios.patch(
-      `${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`, {},
+      `${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`,
+      {},
       {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("accessToken")}`,
+        },
       },
-    });
+    );
     data && console.log(data);
   } catch (e) {
     console.log("문제발생");
@@ -111,25 +112,23 @@ export async function patchTrackPost(beatId: number, formData: any) {
   }
 }
 
-export async function getFileLink(beatId:number){
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/download`, 
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
-      },
-      
-    });
-    console.log(data)
-    //return data
+export async function getFileLink(beatId: number) {
+  const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/download`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getCookie("accessToken")}`,
+    },
+  });
+  console.log(data);
+  //return data
 
-    const res = await axios.get(data.data.data.wavFile, {
-      responseType: 'blob',
-    });
-    return res;
-    //  const res = await axios.get(data.data.data.wavFile, {
-    //   responseType: 'arraybuffer',
-    //   withCredentials: false,
-    // });
-    // return res;
+  const res = await axios.get(data.data.data.wavFile, {
+    responseType: "blob",
+  });
+  return res;
+  //  const res = await axios.get(data.data.data.wavFile, {
+  //   responseType: 'arraybuffer',
+  //   withCredentials: false,
+  // });
+  // return res;
 }
