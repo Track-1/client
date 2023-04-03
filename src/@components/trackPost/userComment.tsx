@@ -113,6 +113,7 @@ export default function UserComment(props: PropsType) {
       console.log("댓글성공");
       setIsEnd(!isEnd);
       setIsUpdated(false);
+      setComments([]);
     },
   });
 
@@ -150,7 +151,7 @@ export default function UserComment(props: PropsType) {
     console.log(key);
     //에옹 여기
     //setComments([]);
-    excuteGetData();
+    //excuteGetData();
     console.log(key);
 
     //  post()
