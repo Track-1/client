@@ -64,7 +64,7 @@ export default function UserComment(props: PropsType) {
   );
 
   //에옹 여기가 문제일까?~~~!!!!!! pages[0]으로 설정되어있음!!!!
-  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
+  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], key);
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
@@ -94,6 +94,7 @@ export default function UserComment(props: PropsType) {
       console.log(content);
       //에옹 comments에서 왤케 많은 6들이 생기는 걸까!
       console.log(comments);
+      setComments([]);
     },
   });
 
@@ -148,7 +149,7 @@ export default function UserComment(props: PropsType) {
     setStartUpload(true);
     console.log(key);
     //에옹 여기
-    setComments([]);
+    //setComments([]);
     excuteGetData();
     console.log(key);
 
