@@ -9,6 +9,8 @@ export function useSendNewPasswordEmail(tableName: string, userEmail: string) {
       setCookie("forgotPasswordToken", token, {});
       //이거 쿠키로 설정하는게 맞는가 찾아보고 다시 코딩해라!
     },
-    onError: (error: any) => {},
+    onError: (error: any) => {
+      error.response.status === 401 && alert(error.response.data.message);
+    },
   });
 }
