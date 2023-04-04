@@ -85,20 +85,19 @@ export default function UserComment(props: PropsType) {
   const { mutate: post } = useMutation(() => postComment(uploadData, beatId), {
     onSuccess: () => {
       console.log(uploadData);
+      setComments([]);
       if (clickPost === true) {
-      queryClient.invalidateQueries("comments");
-      setContent("");
-      setAudioFile(null);
-      //  setIsCompleted(false);
-      console.log(clickPost);
+        queryClient.invalidateQueries("comments");
+        setContent("");
+        setAudioFile(null);
+        //  setIsCompleted(false);
+        console.log(clickPost);
         setIsEnd(!isEnd);
         setComments([]);
         setClickPost(false);
         setClickPost(false);
         setStartUpload(false);
         console.log("포스트성공");
-        console.log(content);
-        console.log(comments);
         setComments([]);
       } else {
         setClickPost(false);
