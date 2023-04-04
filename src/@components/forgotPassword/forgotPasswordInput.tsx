@@ -36,6 +36,7 @@ export default function ForgotPasswordInput() {
     if (isSuccess) {
       setResendTrigger(true);
       setIsSameRecentEmail(true);
+      // setRecentEmail(email);
     }
   }, [isSuccess]);
 
