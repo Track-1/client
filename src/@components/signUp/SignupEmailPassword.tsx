@@ -148,6 +148,10 @@ export default function SignupEmailPassword(props: SetPropsType) {
       setPasswordConfirmMessage(passwordInvalidMessage.MATCH);
     }
 
+    if (e.target.value === passwordConfirm) {
+      setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS);
+    }
+
     setPassword(e.target.value);
   }
 
@@ -269,8 +273,11 @@ export default function SignupEmailPassword(props: SetPropsType) {
     return isShow ? "text" : "password";
   }
 
+  console.log(password)
+  console.log(passwordConfirm)
+
   function successNextStep() {
-    return password===passwordConfirm&&passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
+    return password===passwordConfirm&&passwordMessage === passwordInvalidMessage.SUCCESS &&passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
       ? continueType.SUCCESS
       : continueType.FAIL;
   }
