@@ -489,6 +489,8 @@ const InputBox = styled.div`
 
   display: flex;
   justify-content: space-between;
+
+  margin-left: 2rem;
 `;
 
 const InputWrapper = styled.div`

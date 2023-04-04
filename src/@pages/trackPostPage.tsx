@@ -217,7 +217,7 @@ export default function TrackPostPage() {
           <PostSection>
             <TitleContainer>
               <BackButtonWrapper>
-                <BackButton />
+                <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
               <AudioTitle>{trackInfoData.title}</AudioTitle>
               <ProducerBox>

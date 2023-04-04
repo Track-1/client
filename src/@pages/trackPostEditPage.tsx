@@ -20,7 +20,7 @@ import {
   FileChangeIc,
 } from "../assets";
 import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
-import { Categories, CategoryDropdown } from "../core/constants/categories";
+import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
 import { TrackInfoDataType } from "../type/tracksDataType";
 
 export default function TrackPostEditPage() {
@@ -29,34 +29,40 @@ export default function TrackPostEditPage() {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const hashtagText = useRef<HTMLInputElement | null>(null);
   const [category, setCategory] = useState<string>(prevData?.category);
-  const [audioFile, setAudioFile] = useState<File>();
-  const [hashtag, setHashtag] = useState<string[]>();
+  const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFie);
+  const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtegInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>();
-  const [title, setTitle] = useState<string | undefined>(prevData?.title);
+  const [description, setDescription] = useState<string>(prevData?.introduce);
+  const [title, setTitle] = useState<string>(prevData?.title);
   const [editData, setEditData] = useState<any>();
   const [showImage, setShowImage] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
+
+  console.log(prevData?.category);
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
+        console.log(data?.data.data);
         // setJacketImage(new File([data?.data.data.jacketImage], "jacket"));
-        setAudioFile(data?.data.data.audioFile);
+        // setAudioFile(data?.data.data.audioFile);
         setPrevData(data?.data.data);
+        // setTitle(data?.data);
+        // setCategory(data?.data.data.category);
+        // setDescription(data?.data.data.introduce);
       }
     },
     onError: (error) => {
       console.log(error);
     },
   });
-  const [jacketImage, setJacketImage] = useState<File>(data?.data.data.jackedImage);
 
-  const { mutate } = useMutation(() => patchTrackPost(data?.data.data.beatId, editData), {
+  const { mutate } = useMutation(() => patchTrackPost(state, editData), {
     onSuccess: () => {
       console.log("data");
     },
@@ -68,6 +74,7 @@ export default function TrackPostEditPage() {
   useEffect(() => {
     if (editData !== undefined) {
       mutate();
+      navigate("/track-search");
     }
   }, [editData]);
 
@@ -131,15 +138,20 @@ export default function TrackPostEditPage() {
   }
 
   function completeEdit() {
+    console.log(prevData);
     const formData = new FormData();
-    formData.append("jackedImage", jacketImage);
-    formData.append("title", "title");
-    formData.append("category", "0");
-    audioFile && formData.append("audioFile", audioFile);
-    formData.append("introduce", "description");
-    formData.append("keyword[0]", "hashtag");
+    isImageUploaded && formData.append("jacketImage", jacketImage);
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("audioFile", audioFile);
+    formData.append("introduce", description);
+    hashtag?.forEach((item, index) => {
+      formData.append(`keyword[${index}]`, item);
+    });
+    isImageUploaded && formData.append("isSame", String(false));
+    !isImageUploaded && formData.append("isSame", String(true));
+
     setEditData(formData);
-    // navigate(-1);
   }
 
   return (

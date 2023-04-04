@@ -41,7 +41,7 @@ export default function ProducerInfos(props: PropsType) {
   return (
     <InfoContainer>
       <InfoHeader>
-        <BackButton />
+        <BackButton pauseAudio={pauseAudio} />
         {isMe && <ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
