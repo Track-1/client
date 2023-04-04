@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   SignUpBackArrowIc,
   SignUpChangeImageIc,
+  SignupCompleteBtnIc,
   SignUpContinueButtonIc,
   SignUpErrorIc,
   SignUpUploadImageIc,
@@ -168,7 +169,7 @@ export default function SignupNicknameConvention(props: SetUserPropsType) {
 
         {/* <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/> */}
         <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
-          <SignUpContinueButtonIcon />
+          <SignupCompleteBtnIcon/>
         </ContinueButtonWrapper>
       </ArrowButtonWrapper>
     </>
@@ -249,7 +250,7 @@ const WhatsYourNameTextIcon = styled(WhatsYourNameTextIc)`
   width: 21.2rem;
 `;
 
-const SignUpContinueButtonIcon = styled(SignUpContinueButtonIc)`
+const SignupCompleteBtnIcon = styled(SignupCompleteBtnIc)`
   width: 9.7rem;
 `;
 
