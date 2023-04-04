@@ -54,6 +54,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
   const [isVerifyClicked, setIsVerifyClicked] = useState<boolean>(false);
   const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType);
 
+  console.log(email)
   function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     setIsSendCode(false);
     if (emailMessage === emailInvalidMessage.VERIFY) {
@@ -69,7 +70,6 @@ export default function SignupEmailPassword(props: SetPropsType) {
       if (!e.target.value) {
         setEmailMessage(emailInvalidMessage.NULL);
       }
-
       if (!checkEmailForm(e.target.value)) {
         setEmailMessage(emailInvalidMessage.FORM);
       }
@@ -81,6 +81,21 @@ export default function SignupEmailPassword(props: SetPropsType) {
     }
     setEmail(e.target.value);
   }
+
+  useEffect(()=>{
+    if (email==="") {
+      setEmailMessage(emailInvalidMessage.NULL);
+    }
+
+    if(password===""){
+      setPasswordMessage(passwordInvalidMessage.NULL);
+    }
+
+    if(passwordConfirm===""){
+      setPasswordConfirmMessage(passwordInvalidMessage.NULL);
+    }
+
+  },[email, password, passwordConfirm])
 
   //auth-mail post
   const PostAuthMail = useMutation(authEmail, {
@@ -272,9 +287,6 @@ export default function SignupEmailPassword(props: SetPropsType) {
   function setPasswordInputType(isShow: boolean) {
     return isShow ? "text" : "password";
   }
-
-  console.log(password)
-  console.log(passwordConfirm)
 
   function successNextStep() {
     return password===passwordConfirm&&passwordMessage === passwordInvalidMessage.SUCCESS &&passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
