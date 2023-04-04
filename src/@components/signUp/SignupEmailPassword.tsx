@@ -315,6 +315,10 @@ export default function SignupEmailPassword(props: SetPropsType) {
     return checkEmail()&&true;
   }
 
+  function isLong(){
+    return ((isSendCode && !isVerify && emailMessage === emailInvalidMessage.TIME) ||isVerify)&&true
+  }
+
   return (
     <>
       <TitleWrapper>{showTitle()}</TitleWrapper>
@@ -411,6 +415,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
           </>
         )}
       </SignupEmailWrapper>
+      <ArrowButtonContainer isLong={isLong()}>
       <ArrowButtonWrapper>
         <SignUpBackArrowIcon onClick={backToRole} />
         <div onClick={saveUserData}>
@@ -421,6 +426,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
           />
         </div>
       </ArrowButtonWrapper>
+      </ArrowButtonContainer>
     </>
   );
 }
@@ -510,14 +516,28 @@ const ArrowButtonWrapper = styled.div`
   align-items: center;
 
   width: 56rem;
-  height: 4.6rem;
+ //position: absolute;
 
-  position: absolute;
+ // height: 25rem;
+
+ // margin-left: 11rem;
+
+  //margin: 10.4rem 0 0 11rem;
+
+  /* position: absolute;
   left: 11rem;
   bottom: 7rem;
 
-  bottom: 7rem;
+  bottom: 7rem; */
 `;
+
+const ArrowButtonContainer=styled.footer<{isLong:boolean}>`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  margin-top: ${({isLong})=>isLong?7.7:23}rem;
+`
 
 const EyeIcWrapper = styled.div`
   position: absolute;
