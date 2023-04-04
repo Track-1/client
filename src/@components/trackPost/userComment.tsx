@@ -121,7 +121,8 @@ export default function UserComment(props: PropsType) {
         setIsEnd(!isEnd);
       }
       setIsUpdated(false);
-      //setComments([]);
+      excuteGetData();
+      setComments([]);
       setClickUpload(false);
     },
   });
