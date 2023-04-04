@@ -116,17 +116,17 @@ export default function UserComment(props: PropsType) {
   //update
   const { mutate: update } = useMutation(() => updateComment(uploadData, commentId), {
     onSuccess: () => {
-      queryClient.invalidateQueries("comments");
       console.log("댓글성공");
+      setComments([]);
       if (clickUpload === true) {
+        queryClient.invalidateQueries("comments");
         setIsEnd(!isEnd);
-        excuteGetData();
+        setClickUpload(false);
+        setIsUpdated(false);
+        setComments([]);
       } else {
         setClickUpload(false);
       }
-      setClickUpload(false);
-      setIsUpdated(false);
-      setComments([]);
     },
   });
 
@@ -168,8 +168,11 @@ export default function UserComment(props: PropsType) {
   }
 
   function clickComment(index: number) {
-    setClickUpload(true);
     setClickedIndex(index);
+  }
+
+  function changeClickUpload() {
+    setClickUpload(true);
   }
 
   return (
@@ -193,7 +196,7 @@ export default function UserComment(props: PropsType) {
           </AddWrapper>
         </form>
 
-        <CommentWriteWrapper>
+        <CommentWriteWrapper onClick={changeClickUpload}>
           {comments &&
             comments.map((data, index) => {
               return (
