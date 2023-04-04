@@ -66,7 +66,6 @@ export default function UserComment(props: PropsType) {
     },
   );
 
-  //에옹 여기가 문제일까?~~~!!!!!! pages[0]으로 설정되어있음!!!!
   const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], key);
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
@@ -74,9 +73,6 @@ export default function UserComment(props: PropsType) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
       setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      //setComments([...response]);
-      //console.log가 여러번 찍히는 원인을 찾아서..두둥탁..
-      //console.log(response);
       return { response, nextPage: page + 1 };
     }
   }
@@ -95,9 +91,7 @@ export default function UserComment(props: PropsType) {
       }
       setStartUpload(false);
       console.log("포스트성공");
-      // 에옹 새로올린 파일 하나가 들어옴
       console.log(content);
-      //에옹 comments에서 왤케 많은 6들이 생기는 걸까!
       console.log(comments);
       setComments([]);
       setClickPost(false);
@@ -155,14 +149,10 @@ export default function UserComment(props: PropsType) {
   }
 
   function uploadComment() {
-    //에옹 여기함수가 이상해
     setClickPost(true);
     setIsCompleted(!isCompleted);
     setStartUpload(true);
     console.log(key);
-    //에옹 여기
-    //setComments([]);
-    //excuteGetData();
     console.log(key);
 
     //  post()
