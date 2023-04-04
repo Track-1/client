@@ -88,13 +88,14 @@ export default function UserComment(props: PropsType) {
       //  setIsCompleted(false);
       if (clickPost === true) {
         setIsEnd(!isEnd);
+      } else {
+        setClickPost(false);
       }
       setStartUpload(false);
       console.log("포스트성공");
       console.log(content);
       console.log(comments);
       setComments([]);
-      setClickPost(false);
     },
   });
 
@@ -113,11 +114,12 @@ export default function UserComment(props: PropsType) {
       console.log("댓글성공");
       if (clickUpload === true) {
         setIsEnd(!isEnd);
+      } else {
+        setClickUpload(false);
       }
       setIsUpdated(false);
       excuteGetData();
       setComments([]);
-      setClickUpload(false);
     },
   });
 
@@ -166,23 +168,25 @@ export default function UserComment(props: PropsType) {
   return (
     <>
       <CommentContainer>
-        <CloseCommentBtn>
-          <CloseBtnIcon onClick={closeComment} />
-        </CloseCommentBtn>
-        <form>
-          <CommentWrite
-            getUploadData={getUploadData}
-            isCompleted={isCompleted}
-            setIsCompleted={setIsCompleted}
-            content={content}
-            audioFile={audioFile}
-          />
-          <AddWrapper>
-            <div></div>
+        <StickyContainer>
+          <CloseCommentBtn>
+            <CloseBtnIcon onClick={closeComment} />
+          </CloseCommentBtn>
+          <Form>
+            <CommentWrite
+              getUploadData={getUploadData}
+              isCompleted={isCompleted}
+              setIsCompleted={setIsCompleted}
+              content={content}
+              audioFile={audioFile}
+            />
+            <AddWrapper>
+              <div></div>
 
-            {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
-          </AddWrapper>
-        </form>
+              {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
+            </AddWrapper>
+          </Form>
+        </StickyContainer>
 
         <CommentWriteWrapper>
           {comments &&
@@ -233,7 +237,7 @@ const CommentContainer = styled.section`
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
   padding-left: 6.5rem;
-  padding-top: 6.1rem;
+  /*padding-top: 6.1rem;*/
   padding-right: 7.5rem;
   position: sticky;
   z-index: 1;
@@ -241,13 +245,24 @@ const CommentContainer = styled.section`
   right: 0;
 `;
 
+const StickyContainer = styled.div`
+  z-index: inherit;
+  background-color: rgb(13, 14, 17);
+  position: sticky;
+  top: 0;
+`;
+
 const CloseCommentBtn = styled.div`
   width: 19.8rem;
   display: flex;
   flex-direction: column;
   margin-bottom: 2.7rem;
-
+  padding-top: 6.1rem;
   cursor: pointer;
+`;
+
+const Form = styled.form`
+  top: 15rem;
 `;
 
 const AddWrapper = styled.div`
@@ -271,7 +286,7 @@ const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
 `;
 
 const BlurSection = styled.div`
-  height: 32rem;
+  height: 56rem;
   width: 107.7rem;
 
   /* position: relative; */
