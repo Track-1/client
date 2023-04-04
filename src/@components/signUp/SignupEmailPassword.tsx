@@ -516,19 +516,7 @@ const ArrowButtonWrapper = styled.div`
   align-items: center;
 
   width: 56rem;
- //position: absolute;
-
- // height: 25rem;
-
- // margin-left: 11rem;
-
-  //margin: 10.4rem 0 0 11rem;
-
-  /* position: absolute;
-  left: 11rem;
-  bottom: 7rem;
-
-  bottom: 7rem; */
+ 
 `;
 
 const ArrowButtonContainer=styled.footer<{isLong:boolean}>`

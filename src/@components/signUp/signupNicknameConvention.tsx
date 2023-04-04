@@ -238,9 +238,6 @@ const ArrowButtonWrapper = styled.div`
   height: 4.6rem;
 
   margin: 3.7rem 0 0 10.8rem;
-  /* position: absolute;
-  left: 11rem;
-  bottom: 7rem; */
 `;
 
 const NicknameWrapper = styled.section`

@@ -109,9 +109,4 @@ const ArrowButtonWrapper=styled.div`
 
     margin: 8.2rem 0 0 10.7rem;
 
-    /* position: absolute;
-    left:11rem;
-    bottom: 7rem;
-
-    bottom: 7rem; */
 `
