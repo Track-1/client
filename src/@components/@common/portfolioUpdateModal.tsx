@@ -42,10 +42,9 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
-  function askToeleteTrack(){
-    if (window.confirm('게시글을 삭제하시겠습니까?'))
-    {
-      console.log("asdf3")
+  function askToeleteTrack() {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      console.log("asdf3");
       deleteTrack();
     }
   }
@@ -53,14 +52,12 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
-      alert("삭제되었습니다.");    
-      console.log("asdf1")
-
+      alert("삭제되었습니다.");
+      console.log("asdf1");
     },
     onError: (error) => {
       console.log(error);
-      console.log("asdf2")
-
+      console.log("asdf2");
     },
   });
 
@@ -97,9 +94,14 @@ export default function PortfolioUpdateModal(props: PropsType) {
 
   function moveEditPage() {
     pauseAudio();
-    navigate(`/portfolio-edit/vocal/${portfolioId}`, {
-      state: portfoliosData[clickedPortfolioId],
-    });
+    console.log(loginUserType);
+    loginUserType === "producer"
+      ? navigate(`/portfolio-edit/producer/${portfolioId}`, {
+          state: portfoliosData[clickedPortfolioId],
+        })
+      : navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+          state: portfoliosData[clickedPortfolioId],
+        });
   }
 
   function isClickedOutside(e: MouseEvent) {

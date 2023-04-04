@@ -26,7 +26,7 @@ export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
   const prevData = useLocation().state;
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [image, setImage] = useState<File>(new File([prevData?.profileImage], prevData?.profileImage));
+  const [image, setImage] = useState<File>(prevData?.profileImage);
   const [title, setTitle] = useState<string>(prevData?.title);
   const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFile);
   const [category, setCategory] = useState<string>(prevData?.category);
@@ -41,6 +41,10 @@ export default function ProducerPortfolioEditPage() {
   const [hashtagText, setHashtagText] = useState<string>("");
 
   const navigate = useNavigate();
+
+  console.log(prevData.profileImage);
+
+  function convert() {}
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
@@ -58,7 +62,6 @@ export default function ProducerPortfolioEditPage() {
 
   function getImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFiles = e.target.files as FileList;
-    console.log(imageFiles);
     setImage(imageFiles[0]);
     showPrevImage(imageFiles);
     setIsImageUploaded(true);
@@ -384,7 +387,7 @@ const SectionWrapper = styled.div`
 `;
 
 const TrackImageBox = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   border-radius: 50%;

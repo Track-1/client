@@ -44,7 +44,7 @@ export default function VocalProfilePage() {
   const { key, excuteGetData } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { state } = useLocation();
 
   useEffect(() => {
@@ -75,6 +75,7 @@ export default function VocalProfilePage() {
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getVocalProfile(state, page);
+      console.log(response.vocalProfile);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
       setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
@@ -107,7 +108,7 @@ export default function VocalProfilePage() {
   }
 
   function moveToUpload() {
-    console.log("ddd")
+    console.log("ddd");
     navigate("/upload/Portfolio");
   }
 
@@ -140,7 +141,7 @@ export default function VocalProfilePage() {
               vocalName={profileData?.name}
               whom={Category.VOCALS}
             />
-           ) : (
+          ) : (
             <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
           )}
           <VocalProfileShadowIcon />
@@ -204,7 +205,7 @@ const VocalEmptyProfileImage = styled.img`
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   position: absolute;
-  z-index:7;
+  z-index: 7;
   right: 0;
   margin-top: 5.9rem;
 
@@ -212,7 +213,6 @@ const UploadButtonIcon = styled(UploadButtonIc)`
 
   cursor: pointer;
 `;
-
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;

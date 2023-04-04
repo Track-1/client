@@ -50,7 +50,6 @@ export default function ProfileEditInfo(props: PropsType) {
     FUNK: false,
   });
   const [hashtagText, setHashtagText] = useState<string>("");
-  console.log(contact);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;

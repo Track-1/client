@@ -20,4 +20,5 @@ export interface ProducerProfileType {
   category: string[];
   keyword: string[];
   introduce: string;
+  isSelected: boolean;
 }
