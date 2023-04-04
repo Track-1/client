@@ -40,6 +40,11 @@ export default function ForgotPasswordInput() {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    console.log();
+    error?.response.status === 401 && setEmailMessage("We don’t have an account with that email address");
+  }, [isError]);
+
   function isNotSignupEmail() {
     return isError && error?.response.status === 401;
   }
@@ -122,9 +127,6 @@ export default function ForgotPasswordInput() {
         </InputBox>
         <>
           {isNotSignupEmail() && isSameRecentEmail && <WarningMessage>{emailMessage}</WarningMessage>}
-          {isNotSignupEmail() &&
-            isSameRecentEmail &&
-            setEmailMessage("We don’t have an account with that email address")}
           {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
           {isSuccess && checkEmailForm(email) && isSameRecentEmail && (
             <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
