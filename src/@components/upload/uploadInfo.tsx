@@ -698,7 +698,7 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean; r
   width: 68rem;
   outline: 0;
   resize: none;
-  overflow: scroll;
+  overflow: hidden;
   background-color: transparent;
 
   border: none;
