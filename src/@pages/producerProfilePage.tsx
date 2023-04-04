@@ -45,12 +45,6 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  /*   useEffect(() => {
-    setTimeout(() => {
-      changeKey();
-    }, 800);
-  }, []); */
-
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
