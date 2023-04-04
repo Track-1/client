@@ -102,7 +102,6 @@ export default function ProducerProfilePage() {
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
-
   function scrollToTop() {
     window.scrollTo(0, 0);
   }
@@ -146,10 +145,6 @@ export default function ProducerProfilePage() {
 
   function moveToUpload() {
     setOpenUploadModal(true);
-  }
-
-  function moveDownUpload() {
-    setOpenUploadModal(false);
   }
 
   return (

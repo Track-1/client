@@ -26,6 +26,7 @@ export default function ProducerInfos(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   function moveProfileEditPage() {
+    changeKey();
     pauseAudio();
     setShowPlayer(false);
     whoamI === "vocal"
@@ -38,7 +39,7 @@ export default function ProducerInfos(props: PropsType) {
           },
         });
   }
-  
+
   return (
     <InfoContainer>
       <InfoHeader>
