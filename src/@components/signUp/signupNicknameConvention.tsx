@@ -58,12 +58,12 @@ export default function SignupNicknameConvention(props: SetUserPropsType) {
   }
 
   function moveBackToEmailPassword() {
-    setUserData((prev) => ({ ...prev, ID: "", PW: "", isAgree: "" }));
+    setUserData((prev) => ({ ...prev, ID: "", PW: "", isAgree: "", name:""}));
     setStep(signUpStep.SIGNUP_EMAIL_PASSWORD);
   }
 
   function completeNicknameConventions() {
-    return nicknameMessage === nicknameValidMessage.SUCCESS && completeCheck;
+    return nicknameMessage === nicknameValidMessage.SUCCESS && completeCheck&& userData.ID!==""&&userData.PW!==""&&userData.isAgree!==""&&userData.name!=="";
   }
 
   function writeNickname(e: React.ChangeEvent<HTMLInputElement>) {
