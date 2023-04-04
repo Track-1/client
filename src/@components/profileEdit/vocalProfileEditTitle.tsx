@@ -17,7 +17,7 @@ import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
-  profileImage: File;
+  profileImage: string;
   name: string;
   updateProfileImage: (imgFile: File) => void;
   updateName: (name: string) => void;
@@ -79,7 +79,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />}
         </ImageWrapper>
       </ProfileImageContainer>
-      {isHover && <SignUpChangeVocalImageIcon />}
+      {/* {isHover && <SignUpChangeVocalImageIcon />} */}
       <FileInput
         type="file"
         id="profileImg"
@@ -158,6 +158,10 @@ const ProfileImage = styled.img`
   margin: auto;
 
   transform: rotate(45deg);
+
+  :hover {
+    filter: blur(3rem);
+  }
 `;
 
 const FileInput = styled.input`

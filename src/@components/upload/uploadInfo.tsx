@@ -21,15 +21,16 @@ import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType"
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
 import { isVocal } from "../../utils/common/userType";
+import { isClickedOutside } from "../../utils/common/modal";
 
 interface propsType {
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
-  whom:string;
+  whom: string;
 }
 
 export default function UploadInfo(props: propsType) {
-  const { uploadData, setUploadData,whom } = props;
+  const { uploadData, setUploadData, whom } = props;
   const HASHTAG_WIDTH: number = 8.827;
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -64,13 +65,13 @@ export default function UploadInfo(props: propsType) {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [descriptionPlaceholder, setDescriptionPlaceholder]=useState<string>('');
+  const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
 
-  useEffect(()=>{
+  useEffect(() => {
     setUploadData((prevState) => {
       return { ...prevState, keyword: hashtags };
-    });  
-  },[hashtags])
+    });
+  }, [hashtags]);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
@@ -181,7 +182,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function checkAduioFileType(type: string) {
-    return type === ".mp3" || type === ".wav"||type === ".MP3" || type === ".WAV";
+    return type === ".mp3" || type === ".wav" || type === ".MP3" || type === ".WAV";
   }
 
   function getAudioFileName(file: string): string {
@@ -242,7 +243,7 @@ export default function UploadInfo(props: propsType) {
     //   // resetHashtagInputWidth();
     //   // resetHashtagCurrentValue();
     // }
-    if (hashtagRef.current) {
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
     }
@@ -355,10 +356,25 @@ export default function UploadInfo(props: propsType) {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
 
-  useEffect(()=>{
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+      appendHashtag();
+    }
+  }
+
+  useEffect(() => {
     setHashtags(uploadData.keyword);
-    isVocal(whom)?setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요."):setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.")
-  },[])
+    isVocal(whom)
+      ? setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요.")
+      : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
+  }, []);
 
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
@@ -428,37 +444,37 @@ export default function UploadInfo(props: propsType) {
           </NameBox>
           <InputBox>
             <InputHashtagWrapper>
-          {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
+              {hashtags.map((hashtag, index) => {
+                return (
+                  <Hashtag key={index}>
+                    <HashtagWrapper>
+                      <HashtagSharp># </HashtagSharp>
+                      <CompletedHashtag>{hashtag}</CompletedHashtag>
+                    </HashtagWrapper>
+                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                  </Hashtag>
+                );
+              })}
+              {hashtags.length < 3 && (
+                <Hashtag>
                   <HashtagWrapper>
                     <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
+                    <HashtagInput
+                      onChange={getInputText}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && completeHashtag();
+                      }}
+                      inputWidth={hashtagInput.length}
+                      ref={hashtagRef}
+                      placeholder="HashTag"
+                      maxLength={10}
+                    />
                   </HashtagWrapper>
-                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                 </Hashtag>
-              );
-            })}
-            {hashtags.length < 3 && (
-              <Hashtag>
-                <HashtagWrapper>
-                  <HashtagSharp># </HashtagSharp>
-                  <HashtagInput
-                    onChange={getInputText}
-                    onKeyPress={(e) => {
-                      e.key === "Enter" && completeHashtag();
-                    }}
-                    inputWidth={hashtagInput.length}
-                    ref={hashtagRef}
-                    placeholder="HashTag"
-                    maxLength={10}
-                  />
-                </HashtagWrapper>
-              </Hashtag>
-            )}
-            
-            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
-          </InputHashtagWrapper>
+              )}
+
+              {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            </InputHashtagWrapper>
 
             <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
               {hoverState ? (
@@ -496,8 +512,7 @@ export default function UploadInfo(props: propsType) {
               descriptionHoverState={descriptionHoverState}
               ref={introduceRef}
               onChange={resizeTextarea}
-              row={Math.floor(descriptionLength/30)+1}
-            ></InputDescriptionText>
+              row={Math.floor(descriptionLength / 30) + 1}></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
@@ -602,7 +617,7 @@ const InfoItemBox = styled.div`
 
 const NameBox = styled.div`
   width: 30rem;
- // height: 100%;
+  // height: 100%;
 
   display: flex;
   justify-content: flex-start;
@@ -679,7 +694,7 @@ const InputCategoryText = styled.div<{ categoryState: boolean }>`
   cursor: pointer;
 `;
 
-const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, row:number }>`
+const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean; row: number }>`
   width: 68rem;
   outline: 0;
   resize: none;
@@ -696,25 +711,22 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean, r
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
-  height: ${({row})=>row*3.4+1}rem;
+  height: ${({ row }) => row * 3.4 + 1}rem;
   padding-bottom: 3rem;
-  
- 
+
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-word;
 `;
 
-
-
-const WarningTextWrapper = styled.div<{isVocal:boolean}>`
+const WarningTextWrapper = styled.div<{ isVocal: boolean }>`
   height: 12.5rem;
   width: 47.2rem;
 
   position: absolute;
 
-  top: ${({isVocal})=>isVocal?47:61}rem;
-  left: ${({isVocal})=>isVocal?116:129}rem;
+  top: ${({ isVocal }) => (isVocal ? 47 : 61)}rem;
+  left: ${({ isVocal }) => (isVocal ? 116 : 129)}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.3rem);
   border-radius: 5px;
@@ -727,13 +739,13 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
-const DropMenuBox = styled.div<{ hiddenDropBox: boolean, isVocal:boolean }>`
+const DropMenuBox = styled.div<{ hiddenDropBox: boolean; isVocal: boolean }>`
   display: ${(props) => (props.hiddenDropBox ? "none" : "default")};
   width: 13rem;
 
   position: absolute;
-  top:  ${({isVocal})=>isVocal?39.5:54}rem;
-  left: ${({isVocal})=>isVocal?96.5:109.5}rem;
+  top: ${({ isVocal }) => (isVocal ? 39.5 : 54)}rem;
+  left: ${({ isVocal }) => (isVocal ? 96.5 : 109.5)}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
@@ -799,27 +811,27 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   cursor: pointer;
 `;
 
-const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+const UploadFileUpdateIcon = styled(UploadFileUpdateIc)`
   width: 13.3rem;
-`
+`;
 
-const UploadCategoryIcon=styled(UploadCategoryIc)`
+const UploadCategoryIcon = styled(UploadCategoryIc)`
   width: 12.3rem;
-`
+`;
 
-const UploadHashtagIcon=styled(UploadHashtagIc)`
+const UploadHashtagIcon = styled(UploadHashtagIc)`
   width: 11.2rem;
-`
+`;
 
-const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+const UploadDescriptionIcon = styled(UploadDescriptionIc)`
   width: 14.6rem;
   margin-right: 7.5rem;
-`
+`;
 
-const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
+const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
   width: 4rem;
   height: 4rem;
-`
+`;
 
 const InputHashtagWrapper = styled.div`
   /* display: flex;
@@ -827,7 +839,6 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-
 `;
 
 const Hashtag = styled.div`
@@ -876,8 +887,8 @@ const AddHashtagIcon = styled(AddHashtagIc)`
   cursor: pointer;
 `;
 
-const IconWrapper=styled.div`
+const IconWrapper = styled.div`
   width: 21rem;
   display: flex;
   justify-content: flex-start;
-`
+`;

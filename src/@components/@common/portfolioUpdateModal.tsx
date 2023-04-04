@@ -42,13 +42,24 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
+  function askToeleteTrack(){
+    if (window.confirm('게시글을 삭제하시겠습니까?'))
+    {
+      deleteTrack();
+    }
+  }
+
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
-      alert("삭제 성공");
+      alert("삭제되었습니다.");
+
+
     },
     onError: (error) => {
       console.log(error);
+
+
     },
   });
 
@@ -124,12 +135,12 @@ export default function PortfolioUpdateModal(props: PropsType) {
         <PencilUpdateIcon />
       </ModalBox>
       {!checkIsVocalSearching() ? (
-        <ModalBox underline={!isTitle} onClick={() => deleteTrack()}>
+        <ModalBox underline={!isTitle} onClick={askToeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>
       ) : (
-        <ModalBox underline={false} onClick={() => deleteTrack()}>
+        <ModalBox underline={false} onClick={askToeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>

@@ -29,7 +29,6 @@ export default function usePlayerInfos(clickedIndex: number, infoDatas: any, pag
           infoDatas?.vocalProfileImage,
           infoDatas?.vocalWavFileLength,
         );
-        console.log(infoDatas?.vocalWavFileLength);
     }
   }, [clickedIndex]);
 

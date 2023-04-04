@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useInfiniteQuery } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
@@ -21,6 +21,7 @@ import { LoginUserId } from "../recoil/loginUserData";
 import { currentUser } from "../core/constants/userType";
 import { endPost } from "../recoil/postIsCompleted";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import { UploadButtonBlankIc, UploadButtonIc } from "../assets";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -40,11 +41,17 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
-  const { key } = useInfiniteKey();
+  const { key, excuteGetData } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
-
+  const navigate=useNavigate();
   const { state } = useLocation();
+
+  useEffect(() => {
+    setTimeout(() => {
+      excuteGetData();
+    }, 800);
+  }, []);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
@@ -67,7 +74,6 @@ export default function VocalProfilePage() {
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
-      console.log(state, "9099090999090990");
       const response = await getVocalProfile(state, page);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
@@ -100,9 +106,14 @@ export default function VocalProfilePage() {
     setAudioInfos(tempInfos);
   }
 
+  function moveToUpload() {
+    navigate("/upload/Portfolio");
+  }
+
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
+      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
       <VocalProfile>
         {profileData && (
           <ProducerInfos
@@ -111,6 +122,7 @@ export default function VocalProfilePage() {
             whom={Category.VOCALS}
             whoamI={"vocal"}
             pauseAudio={pauseAudio}
+            changeKey={excuteGetData}
           />
         )}
       </VocalProfile>
@@ -127,7 +139,7 @@ export default function VocalProfilePage() {
               vocalName={profileData?.name}
               whom={Category.VOCALS}
             />
-          ) : (
+           ) : (
             <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
           )}
           <VocalProfileShadowIcon />
@@ -186,5 +198,21 @@ const VocalEmptyProfileImage = styled.img`
   position: absolute;
   top: 26.2rem;
   left: 69.6rem;
-  width: 124.2rem;
+  width: 123rem;
+`;
+
+const UploadButtonIcon = styled(UploadButtonIc)`
+  position: absolute;
+  z-index:7;
+  right: 0;
+  margin-top: 5.9rem;
+
+  width: 24.5rem;
+
+  cursor: pointer;
+`;
+
+
+const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
+  margin-top: 5.9rem;
 `;

@@ -32,7 +32,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
       setLoginUserImg(data.vocalProfile.profileImage);
     },
     onError: (error) => {
-      console.log("실패");
+      console.log(error);
     },
   });
 
@@ -43,7 +43,6 @@ export default function VocalBriefInfo(props: UserPropsType) {
   function moveToMypage() {
     navigate(`/vocal-profile/${userId}`, { state: userId });
   }
-  console.log(profileData);
   return (
     <div onClick={changeProfileBoxDisplay}>
       <InfoContainer>
@@ -113,7 +112,8 @@ const ProfileImage = styled.img`
   /* height: 6rem;
   width: 6rem; */
   width: 150%;
-  //height: 135%;
+  height: 150%;
+  position: absolute;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;

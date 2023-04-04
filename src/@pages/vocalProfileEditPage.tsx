@@ -23,7 +23,7 @@ export default function VocalProfileEditPage() {
   const [categories, setCategories] = useState<string[]>(state?.category);
   const [hashtags, setHashtags] = useState<string[]>(state?.keyword);
   const [description, setDescription] = useState<string>(state?.introduce);
-  const [editReady, setEditReady] = useState<boolean>(false);
+  const [editReady, setEditReady] = useState<boolean>(true);
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
 
@@ -34,7 +34,7 @@ export default function VocalProfileEditPage() {
       formData.append("name", name);
       formData.append("contact", contact);
       categories.forEach((item, index) => {
-        formData.append(`category[${index}]`, CategoryId[item]);
+        formData.append(`category[${index}]`, CategoryId[item.toUpperCase()]);
       });
       hashtags.forEach((item, index) => {
         formData.append(`keyword[${index}]`, item);
@@ -53,11 +53,11 @@ export default function VocalProfileEditPage() {
   }, [updatedData]);
 
   const { mutate } = useMutation(() => patchVocalrProfile(updatedData), {
-    onSuccess: () => {
-      console.log("ok");
+    onSuccess: (data) => {
+      console.log(data);
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 
@@ -111,7 +111,7 @@ export default function VocalProfileEditPage() {
       <Img src={background} alt="배경" />
       <EditContainer>
         <VocalProfileEditTitle
-          profileImage={profileImage}
+          profileImage={profileImage.name}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}

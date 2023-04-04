@@ -22,19 +22,15 @@ export default function SignupMessage(props: SignupMessagePropsType) {
     onSuccess: (data) => {
       queryClient.invalidateQueries("userProfile");
       setStep(signUpStep.SIGNUP_SUCCESS);
-      console.log("성공")
     },
     onError: (error) => {
-      console.log(error)
-      console.log("실패")
+      console.log(error);
     },
   });
 
   function submit() {
     mutate(userProfile);
   }
-
-  console.log(userProfile)
 
   useEffect(() => {
     if (
@@ -104,6 +100,6 @@ const MessageBox = styled.button<{ isComplete: boolean }>`
   background-color: ${({ theme, isComplete }) => (isComplete ? theme.colors.main : theme.colors.gray3)};
 `;
 
-const SignupProfileCompleteIcon=styled(SignupProfileCompleteIc)`
+const SignupProfileCompleteIcon = styled(SignupProfileCompleteIc)`
   width: 19rem;
-`
+`;

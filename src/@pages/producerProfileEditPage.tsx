@@ -13,15 +13,19 @@ import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 
 export default function ProducerProfileEditPage() {
-  const { state } = useLocation();
+  // const { profileData } = useLocation().state;
+  const location = useLocation();
+  const profileData = location.state.profileData;
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState<File>(new File([state.profileImage], state.profileImage));
-  const [name, setName] = useState<string>(state.name);
-  const [contact, setContact] = useState<string>(state.contact);
-  const [categories, setCategories] = useState<string[]>(state.category);
-  const [hashtags, setHashtags] = useState<string[]>(state.keyword);
-  const [description, setDescription] = useState<string>(state.introduce);
-  const [editReady, setEditReady] = useState<boolean>(false);
+  const [profileImage, setProfileImage] = useState<File>(
+    new File([profileData.profileImage], profileData.profileImage),
+  );
+  const [name, setName] = useState<string>(profileData.name);
+  const [contact, setContact] = useState<string>(profileData.contact);
+  const [categories, setCategories] = useState<string[]>(profileData.category);
+  const [hashtags, setHashtags] = useState<string[]>(profileData.keyword);
+  const [description, setDescription] = useState<string>(profileData.introduce);
+  const [editReady, setEditReady] = useState<boolean>(true);
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
   const queryClient = new QueryClient();
@@ -33,7 +37,7 @@ export default function ProducerProfileEditPage() {
       formData.append("name", name);
       formData.append("contact", contact);
       categories.forEach((item, index) => {
-        formData.append(`category[${index}]`, CategoryId[item]);
+        formData.append(`category[${index}]`, CategoryId[item.toUpperCase()]);
       });
       hashtags.forEach((item, index) => {
         formData.append(`keyword[${index}]`, item);
@@ -47,16 +51,16 @@ export default function ProducerProfileEditPage() {
     if (updatedData !== undefined) {
       mutate();
       navigate(-1);
+      // changeKey();
     }
   }, [updatedData]);
 
   const { mutate } = useMutation(() => patchProducerProfile(updatedData), {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
-      console.log("ok");
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 
@@ -106,7 +110,7 @@ export default function ProducerProfileEditPage() {
       <Img src={background} alt="배경" />
       <EditContainer>
         <ProducerProfileEditTitle
-          profileImage={profileImage}
+          profileImage={profileImage.name}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}

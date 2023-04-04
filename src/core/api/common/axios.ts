@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookie, setCookie } from "../../../utils/cookie";
+import { getCookie, removeCookie, setCookie } from "../../../utils/cookie";
 
 //서버통신 함수
 export const client = axios.create({
@@ -35,7 +35,6 @@ client.interceptors.response.use(
     const originConfig = error.config;
 
     if (error.response && error.response.status === 401) {
-      console.log("hello");
       try {
         const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/etc/refresh`, {
           headers: {
@@ -45,12 +44,14 @@ client.interceptors.response.use(
           withCredentials: true,
         });
         if (data) {
-          console.log(data);
           setCookie("accessToken", data.data.data, {});
           return await client.request(originConfig);
         }
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        if (error.response.data.message === "새롭게 로그인 필요") {
+          alert(error.response.data.message);
+          removeCookie("accessToken", { path: "/" });
+        }
       }
       return Promise.reject(error);
     }

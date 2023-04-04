@@ -4,7 +4,6 @@ import { getCookie } from "../../utils/cookie";
 
 export async function getTrackInfo(props: number) {
   const state = props;
-  console.log(state);
   try {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
       headers: {
@@ -43,9 +42,7 @@ export async function postComment(formData: UploadDataType, beatId: any) {
         beatId: beatId,
       },
     });
-    console.log(data);
   } catch (e) {
-    console.log("포스트");
     console.log(e);
   }
 }
@@ -58,9 +55,7 @@ export async function updateComment(formData: UploadDataType, commentId: number)
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
   } catch (e) {
-    console.log("수정");
     console.log(e);
   }
 }
@@ -73,9 +68,7 @@ export async function deleteComment(commentId: number) {
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-    console.log(data);
   } catch (e) {
-    console.log("삭제");
     console.log(e);
   }
 }
@@ -92,9 +85,7 @@ export async function closeTrack(beatId: number) {
         },
       },
     );
-    data && console.log(data);
   } catch (e) {
-    console.log("문제발생");
     console.log(e);
   }
 }
@@ -119,7 +110,6 @@ export async function getFileLink(beatId: number) {
       Authorization: `Bearer ${getCookie("accessToken")}`,
     },
   });
-  console.log(data);
   //return data
 
   const res = await axios.get(data.data.data.wavFile, {

@@ -33,14 +33,12 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   });
 
   function logout() {
-    console.log("eee");
     onLogout();
     navigate("/");
   }
 
   function moveToMypage() {
     navigate(`/producer-profile/${userId}`, { state: userId });
-    // console.log(userId);
   }
 
   return (

@@ -42,7 +42,6 @@ export default function TrackPostEditPage() {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        console.log(data?.data.data);
         setPrevData(data?.data.data);
       }
     },
@@ -55,8 +54,8 @@ export default function TrackPostEditPage() {
     onSuccess: () => {
       console.log("data");
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 

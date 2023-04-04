@@ -79,8 +79,8 @@ export default function ProfileEditInfo(props: PropsType) {
         <ContactContainer>
           <ProfileEditContactIcon />
           <ContactInput
-            placeholder="Enter your phone number or SNS account"
             defaultValue={contact}
+            placeholder="Enter your phone number or SNS account"
             onChange={(e) => updateContact(e.target.value)}
             maxLength={40}
           />
@@ -142,7 +142,7 @@ export default function ProfileEditInfo(props: PropsType) {
             row={Math.floor(description?.length / 31) + 1}
           />
           <TextCount>
-            {description.length}
+            {description?.length}
             <MaxCount>150</MaxCount>
           </TextCount>
         </DescriptionContainer>
