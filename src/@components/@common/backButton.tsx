@@ -4,15 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 export default function BackButton(props: any) {
   const { pauseAudio } = props;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  function movePreviousPage() {
-    pauseAudio();
-    navigate(-1);
-  }
+  // function movePreviousPage() {
+  //   pauseAudio();
+  //   navigate(-1);
+  // }
 
   return (
-    <ButtonContainer onClick={movePreviousPage}>
+    <ButtonContainer>
       <BackButtonIcon />
     </ButtonContainer>
   );
