@@ -52,13 +52,11 @@ export default function ProducerPortfolioEditPage() {
     },
     onError: () => {
       navigate(-1);
-      console.log(editData);
     },
   });
 
   function getImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFiles = e.target.files as FileList;
-    console.log(imageFiles);
     setImage(imageFiles[0]);
     showPrevImage(imageFiles);
     setIsImageUploaded(true);

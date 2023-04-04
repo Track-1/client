@@ -8,42 +8,23 @@ import {
   BlankIc,
   UploadButtonBlankIc,
 } from "../../assets";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 import { useEffect, useRef, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfolioViewMoreButton from "./portfolioViewMoreButton";
 import { useNavigate } from "react-router-dom";
-import { uploadButtonClicked } from "../../recoil/uploadButtonClicked";
-import { isClickedOutside } from "../../utils/common/modal";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
-import useModal from "../../utils/hooks/useModal";
-import { LoginUserType } from "../../recoil/loginUserData";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 export default function PortfoliosInform(props: any) {
   const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio } = props;
 
-  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
-  const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
-
-  const ellipsisModalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [id, setId] = useState<number>(-1);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
 
-  const { modalRef } = useModal();
-
-  const loginUserType = useRecoilValue(LoginUserType);
-
   function clickEllipsis() {
-    setOpenEllipsisModal(true);
-  }
-
-  function clickUploadButton() {
-    isProducer(whom) && setOpenUploadModal(true);
-    isVocalsPage(whom) && navigate("/upload/Portfolio");
+    setOpenEllipsisModal(!openEllipsisModal);
   }
 
   function checkIsVocalSearching() {
@@ -83,14 +64,11 @@ export default function PortfoliosInform(props: any) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
-    console.log("asdfjdkfjkdfj");
     navigate(`/track-post/${id}`, { state: id });
   }
 
   return (
     <PortfolioInformWrapper>
-      {isMe ? <UploadButtonIcon onClick={clickUploadButton} /> : <UploadButtonBlankIcon />}
-
       {portfolios[id] && (
         <InformContainer>
           <InformWrapper>

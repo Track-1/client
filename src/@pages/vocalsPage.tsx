@@ -36,6 +36,7 @@ export default function VocalsPage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
+  const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
 
   const { progress, audio } = usePlayer();
   const { key, excuteGetData } = useInfiniteKey();
@@ -43,6 +44,13 @@ export default function VocalsPage() {
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);
+
+  useEffect(() => {
+    if (isCategorySelected) {
+      setVocalsData([]);
+      excuteGetData();
+    }
+  }, [filteredUrlApi]);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     key,
@@ -90,7 +98,7 @@ export default function VocalsPage() {
       <CategoryHeader pausesPlayerAudio={pauseAudio} />
       <VocalSearchPageWrapper>
         <CategoryListWrapper>
-          <CategoryList />
+          <CategoryList setIsCategorySelected={setIsCategorySelected} />
         </CategoryListWrapper>
 
         <VocalListWrapper>

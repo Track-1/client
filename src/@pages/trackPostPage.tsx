@@ -125,7 +125,6 @@ export default function TrackPostPage() {
   const { mutate } = useMutation(closeTrack, {
     onSuccess: () => {
       queryClient.invalidateQueries("closing");
-      console.log("성공");
       setIsClosed(!isClosed);
     },
   });
@@ -156,7 +155,6 @@ export default function TrackPostPage() {
         let blob = new Blob([data?.data], { type: "audio/mpeg" });
         let url = window.URL.createObjectURL(blob); //s3링크
 
-        console.log(url);
         setLink(url);
         var a = document.createElement("a");
         a.href = url;
