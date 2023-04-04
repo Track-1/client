@@ -66,6 +66,10 @@ export default function UserComment(props: PropsType) {
     },
   );
 
+  console.log(isEnd);
+  console.log(key);
+  console.log(getUploadData);
+
   const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], key);
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
@@ -77,25 +81,28 @@ export default function UserComment(props: PropsType) {
     }
   }
   // get end
-
   //post
   const { mutate: post } = useMutation(() => postComment(uploadData, beatId), {
     onSuccess: () => {
       console.log(uploadData);
+      if (clickPost === true) {
       queryClient.invalidateQueries("comments");
       setContent("");
       setAudioFile(null);
       //  setIsCompleted(false);
-      if (clickPost === true) {
+      console.log(clickPost);
         setIsEnd(!isEnd);
+        setComments([]);
+        setClickPost(false);
+        setClickPost(false);
+        setStartUpload(false);
+        console.log("포스트성공");
+        console.log(content);
+        console.log(comments);
+        setComments([]);
       } else {
         setClickPost(false);
       }
-      setStartUpload(false);
-      console.log("포스트성공");
-      console.log(content);
-      console.log(comments);
-      setComments([]);
     },
   });
 
@@ -114,11 +121,12 @@ export default function UserComment(props: PropsType) {
       console.log("댓글성공");
       if (clickUpload === true) {
         setIsEnd(!isEnd);
+        excuteGetData();
       } else {
         setClickUpload(false);
       }
+      setClickUpload(false);
       setIsUpdated(false);
-      excuteGetData();
       setComments([]);
     },
   });
@@ -301,6 +309,7 @@ const BlurSection = styled.div`
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
+  background-color: pink;
 `;
 
 const CloseBtnIcon = styled(CloseBtnIc)`
