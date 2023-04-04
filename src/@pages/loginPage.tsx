@@ -3,11 +3,17 @@ import backgroundImg from "../assets/image/backgroundImg.png";
 import LoginInput from "../@components/login/loginInput";
 import BackButton from '../@components/@common/backButton';
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
+  function movePreviousPage() {
+    navigate(-1);
+  }
   return (
     <>
-    <BackButtonWrapper>
+    <BackButtonWrapper onClick={movePreviousPage}>
       <BackButton/>
     </BackButtonWrapper>
     
