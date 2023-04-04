@@ -41,14 +41,13 @@ export default function SignupRole(props:SetStepPropsType) {
   }
 
 
-
   return (
     <RoleWrapper>
       <SignUpSelectRoleTitleIcon/>
-      <div onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}>
+      <div onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseLeave={hoverOut}>
         {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon/>:<SignupNotSelectedProducerIcon/>}
       </div>
-      <div onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}>
+      <div onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseLeave={hoverOut}>
         {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon/>:<SignupNotSelectedVocalIcon/>}    
       </div>
       <ArrowButtonWrapper>
