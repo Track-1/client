@@ -38,6 +38,7 @@ export default function ProducerInfos(props: PropsType) {
           },
         });
   }
+
   return (
     <InfoContainer>
       <InfoHeader>

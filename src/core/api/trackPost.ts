@@ -110,6 +110,7 @@ export async function getFileLink(beatId: number) {
       Authorization: `Bearer ${getCookie("accessToken")}`,
     },
   });
+
   //return data
 
   const res = await axios.get(data.data.data.wavFile, {

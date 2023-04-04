@@ -56,7 +56,6 @@ export default function ProducerPortfolioEditPage() {
     },
     onError: () => {
       navigate(-1);
-      console.log(editData);
     },
   });
 

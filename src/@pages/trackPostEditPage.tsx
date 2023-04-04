@@ -66,8 +66,8 @@ export default function TrackPostEditPage() {
     onSuccess: () => {
       console.log("data");
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 

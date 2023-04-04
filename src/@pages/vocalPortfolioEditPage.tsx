@@ -54,7 +54,6 @@ export default function VocalPortfolioEditPage() {
       navigate(-1);
     },
     onError: () => {
-      console.log(editData);
       navigate(-1);
     },
   });

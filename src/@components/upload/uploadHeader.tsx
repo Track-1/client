@@ -26,11 +26,11 @@ export default function UploadHeader(props: PropsType) {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
 
-  console.log("loginUserId" + loginUserId);
+
   const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
-      // alert("업로드 성공");
-      checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`);
+      alert("업로드 성공");
+      checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -54,7 +54,7 @@ export default function UploadHeader(props: PropsType) {
     }
   }
 
-  console.log(uploadData);
+
 
   function isEmptyTitle(): boolean {
     return uploadData.title === "";

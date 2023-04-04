@@ -53,11 +53,11 @@ export default function VocalProfileEditPage() {
   }, [updatedData]);
 
   const { mutate } = useMutation(() => patchVocalrProfile(updatedData), {
-    onSuccess: () => {
-      console.log("ok");
+    onSuccess: (data) => {
+      console.log(data);
     },
-    onError: () => {
-      console.log("x");
+    onError: (error) => {
+      console.log(error);
     },
   });
 

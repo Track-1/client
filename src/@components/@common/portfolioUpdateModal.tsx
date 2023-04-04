@@ -42,9 +42,9 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
-  function askToeleteTrack() {
-    if (window.confirm("게시글을 삭제하시겠습니까?")) {
-      console.log("asdf3");
+  function askToeleteTrack(){
+    if (window.confirm('게시글을 삭제하시겠습니까?'))
+    {
       deleteTrack();
     }
   }
@@ -53,11 +53,11 @@ export default function PortfolioUpdateModal(props: PropsType) {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
       alert("삭제되었습니다.");
-      console.log("asdf1");
+
     },
     onError: (error) => {
       console.log(error);
-      console.log("asdf2");
+
     },
   });
 

@@ -35,6 +35,7 @@ export default function TrackSearchPage() {
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
   const [pageParam, setPageParam] = useState<number>(1);
+  
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
 
@@ -59,11 +60,13 @@ export default function TrackSearchPage() {
     }
   }
 
+
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     key,
     ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴 console.log(lastPage)
     {
       getNextPageParam: (lastPage, allPages) => {
+
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
       refetchOnWindowFocus: false,
