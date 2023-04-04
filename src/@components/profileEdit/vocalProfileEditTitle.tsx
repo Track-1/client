@@ -24,13 +24,25 @@ interface PropsType {
   changeReadyState: (isReady: boolean) => void;
   isSleep: boolean;
   changeSleepState: () => void;
+  isImageUploaded: any;
+  setIsImageUploaded: any;
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
-  const { profileImage, name, updateProfileImage, updateName, changeReadyState, isSleep, changeSleepState } = props;
+  const {
+    profileImage,
+    name,
+    updateProfileImage,
+    updateName,
+    changeReadyState,
+    isSleep,
+    changeSleepState,
+    isImageUploaded,
+    setIsImageUploaded,
+  } = props;
   const [showImage, setShowImage] = useState<string | ArrayBuffer>();
-  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  // const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [nameState, setNameState] = useState<nickName>(nickName.NOTHING);
   const [isHover, setIsHover] = useState<boolean>(false);
 

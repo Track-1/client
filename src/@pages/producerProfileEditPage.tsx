@@ -28,12 +28,14 @@ export default function ProducerProfileEditPage() {
   const [editReady, setEditReady] = useState<boolean>(true);
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
+  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+
   const queryClient = new QueryClient();
 
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();
-      formData.append("imageFile", profileImage);
+      isImageUploaded && formData.append("imageFile", profileImage);
       formData.append("name", name);
       formData.append("contact", contact);
       categories.forEach((item, index) => {
@@ -43,6 +45,7 @@ export default function ProducerProfileEditPage() {
         formData.append(`keyword[${index}]`, item);
       });
       formData.append("introduce", description);
+      isImageUploaded ? formData.append("isSame", "False") : formData.append("isSame", "True");
       setUpdatedData(formData);
     }
   }, [saveData]);
@@ -115,6 +118,8 @@ export default function ProducerProfileEditPage() {
           updateProfileImage={updateProfileImage}
           updateName={updateName}
           changeReadyState={changeReadyState}
+          isImageUploaded={isImageUploaded}
+          setIsImageUploaded={setIsImageUploaded}
         />
         <ProfileEditInfo
           contact={contact}

@@ -26,6 +26,7 @@ export default function VocalProfileEditPage() {
   const [editReady, setEditReady] = useState<boolean>(true);
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
+  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (saveData === true) {
@@ -41,6 +42,8 @@ export default function VocalProfileEditPage() {
       });
       formData.append("introduce", description);
       formData.append("isSelected", String(isSleep));
+      isImageUploaded ? formData.append("isSame", "False") : formData.append("isSame", "True");
+
       setUpdatedData(formData);
     }
   }, [saveData]);
@@ -118,6 +121,8 @@ export default function VocalProfileEditPage() {
           changeReadyState={changeReadyState}
           isSleep={isSleep}
           changeSleepState={changeSleepState}
+          isImageUploaded={isImageUploaded}
+          setIsImageUploaded={setIsImageUploaded}
         />
         <ProfileEditInfo
           contact={contact}
