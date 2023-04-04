@@ -114,7 +114,7 @@ export default function VocalProfilePage() {
   return (
     <Wrap>
       {visible && <TracksProfileUploadModalSection />}
-      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
+      {isMe && <UploadButtonIcon onClick={moveToUpload} />}
       <VocalProfile>
         {profileData && (
           <ProducerInfos
@@ -181,7 +181,6 @@ const VocalProfileWrapper = styled.article`
 
 const VocalProfile = styled.article`
   width: 60rem;
-  background-color: white;
 
   font-size: 5rem;
 `;
