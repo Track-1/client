@@ -175,25 +175,23 @@ export default function UserComment(props: PropsType) {
   return (
     <>
       <CommentContainer>
-        <StickyContainer>
-          <CloseCommentBtn>
-            <CloseBtnIcon onClick={closeComment} />
-          </CloseCommentBtn>
-          <Form>
-            <CommentWrite
-              getUploadData={getUploadData}
-              isCompleted={isCompleted}
-              setIsCompleted={setIsCompleted}
-              content={content}
-              audioFile={audioFile}
-            />
-            <AddWrapper>
-              <div></div>
+        <CloseCommentBtn>
+          <CloseBtnIcon onClick={closeComment} />
+        </CloseCommentBtn>
+        <form>
+          <CommentWrite
+            getUploadData={getUploadData}
+            isCompleted={isCompleted}
+            setIsCompleted={setIsCompleted}
+            content={content}
+            audioFile={audioFile}
+          />
+          <AddWrapper>
+            <div></div>
 
-              {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
-            </AddWrapper>
-          </Form>
-        </StickyContainer>
+            {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
+          </AddWrapper>
+        </form>
 
         <CommentWriteWrapper>
           {comments &&
@@ -244,7 +242,7 @@ const CommentContainer = styled.section`
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
   padding-left: 6.5rem;
-  /*padding-top: 6.1rem;*/
+  padding-top: 6.1rem;
   padding-right: 7.5rem;
   position: sticky;
   z-index: 1;
@@ -252,24 +250,12 @@ const CommentContainer = styled.section`
   right: 0;
 `;
 
-const StickyContainer = styled.div`
-  z-index: inherit;
-  background-color: rgb(13, 14, 17);
-  position: sticky;
-  top: 0;
-`;
-
 const CloseCommentBtn = styled.div`
   width: 19.8rem;
   display: flex;
   flex-direction: column;
   margin-bottom: 2.7rem;
-  padding-top: 6.1rem;
   cursor: pointer;
-`;
-
-const Form = styled.form`
-  top: 15rem;
 `;
 
 const AddWrapper = styled.div`
@@ -282,7 +268,6 @@ const AddCommentIcon = styled(AddCommentIc)`
   width: 19.9rem;
   margin-top: 1.9rem;
   margin-bottom: 1.4rem;
-
   cursor: pointer;
 `;
 
@@ -293,22 +278,18 @@ const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
 `;
 
 const BlurSection = styled.div`
-  height: 56rem;
+  height: 32rem;
   width: 107.7rem;
-
   /* position: relative; */
-
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
   bottom: 0;
   position: sticky;
-
   padding-left: 7.5rem;
 `;
 
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
-  background-color: pink;
 `;
 
 const CloseBtnIcon = styled(CloseBtnIc)`
