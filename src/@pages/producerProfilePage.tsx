@@ -45,7 +45,6 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  console.log(key);
   /*   useEffect(() => {
     setTimeout(() => {
       changeKey();
