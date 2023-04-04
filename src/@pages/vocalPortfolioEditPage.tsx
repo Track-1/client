@@ -22,6 +22,8 @@ import { CategoriesDropdownType, CategoryIdType } from "../type/CategoryChecksTy
 import { QueryClient, useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
 import { patchVocalPortfolio } from "../core/api/vocalProfile";
+import BackButton from "../@components/@common/backButton";
+import ProfileWarning from '../@components/@common/profileWarning';
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -114,13 +116,15 @@ export default function VocalPortfolioEditPage() {
   function conpleteEdit() {
     const formData = new FormData();
     formData.append("audioFile", audioFile);
-    formData.append("jacketImage", image);
+    isImageUploaded && formData.append("jacketImage", image);
     formData.append("title", title);
     formData.append("category", CategoryId[category?.toUpperCase()]);
     formData.append("content", description);
     hashtag.forEach((item, index) => {
       formData.append(`keyword[${index}]`, item);
     });
+    isImageUploaded ? formData.append("isSame", "False") : formData.append("isSame", "True");
+
     setEditdata(formData);
     setComplete(true);
   }
@@ -142,7 +146,7 @@ export default function VocalPortfolioEditPage() {
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
-            <UploadBackIcon />
+            <BackButton/>
             <UserClass> {}</UserClass>
           </LeftWrapper>
           <CanUploadBtnIcon onClick={conpleteEdit} />
@@ -194,7 +198,7 @@ export default function VocalPortfolioEditPage() {
             <InfoContainer>
               <InfoItemBox>
                 <NameBox>
-                  <UploadFileUpdateIc />
+                  <UploadFileUpdateIcon />
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
@@ -218,7 +222,7 @@ export default function VocalPortfolioEditPage() {
 
               <InfoItemBox>
                 <NameBox>
-                  <UploadCategoryIc />
+                  <UploadCategoryIcon />
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
@@ -232,7 +236,7 @@ export default function VocalPortfolioEditPage() {
 
               <InfoItemBox>
                 <NameBox>
-                  <UploadHashtagIc />
+                  <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
@@ -270,8 +274,10 @@ export default function VocalPortfolioEditPage() {
                       </>
                     </>
                   </InputWrapper>
-
-                  <WarningIcon>
+                  <ProfileWarningWrapper>
+                  <ProfileWarning/>
+                  </ProfileWarningWrapper>
+                  {/* <WarningIcon>
                     <>
                       <HoverHashtagWarningIc onClick={toggleHashtagWarningOpen} />
                       {hashtagWarningOpen && (
@@ -286,13 +292,13 @@ export default function VocalPortfolioEditPage() {
                         </WarningTextWrapper>
                       )}
                     </>
-                  </WarningIcon>
+                  </WarningIcon> */}
                 </InputBox>
               </InfoItemBox>
 
               <InfoItemBox>
                 <NameBox>
-                  <UploadDescriptionIc />
+                  <UploadDescriptionIcon />
                 </NameBox>
                 <InputBox>
                   <InputDescriptionText
@@ -330,6 +336,29 @@ export default function VocalPortfolioEditPage() {
   );
 }
 
+const ProfileWarningWrapper=styled.section`
+  position: absolute;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  right: 0;
+`
+
+const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+  width: 14.6rem;
+`
+
+const UploadHashtagIcon=styled(UploadHashtagIc)`
+  width: 11.2rem;
+`
+
+const UploadCategoryIcon=styled(UploadCategoryIc)`
+  width: 12.3rem;
+`
+
+const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+  width: 13.3rem;
+`;
+
 const Container = styled.header`
   height: 13.8rem;
   width: 100%;
@@ -360,10 +389,13 @@ const UploadBackIcon = styled(UploadBackIc)`
 `;
 
 const UploadBtnIcon = styled(UploadBtnIc)`
+  width: 24.6rem;
+
   cursor: pointer;
 `;
 
 const CanUploadBtnIcon = styled(CanUploadBtnIc)`
+  width: 24.6rem;
   cursor: pointer;
 `;
 
@@ -371,7 +403,7 @@ const Container2 = styled.section`
   height: 76.2rem;
   width: 171rem;
 
-  margin-left: 15rem;
+  margin-left: 10rem;
 `;
 
 const SectionWrapper = styled.div`
@@ -708,5 +740,7 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
 const VocalUploadFrameIcon = styled(VocalUploadFrameIc)`
   z-index: -1;
   position: absolute;
-  top: 0;
+
+  height: 74.6rem;
+  margin-left: -30rem;
 `;

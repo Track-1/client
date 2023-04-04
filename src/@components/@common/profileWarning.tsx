@@ -7,10 +7,10 @@ export default function ProfileWarning() {
     const { hoverState, changeHoverState } = useHover();
 
   return (
-    <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+    <WarningIcon >
     {hoverState ? (
       <>
-        <HoverHashtagWarningIcon />
+        <HoverHashtagWarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}/>
         <WarningTextWrapper>
           <WarningText>
             1. 해시태그는 최대 3개까지 추가 가능합니다.
@@ -22,7 +22,7 @@ export default function ProfileWarning() {
         </WarningTextWrapper>
       </>
     ) : (
-      <HashtagWarningIcon />
+      <HashtagWarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}/>
     )}
   </WarningIcon>
 )

@@ -17,20 +17,32 @@ import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
-  profileImage: string;
+  profileImage: any;
   name: string;
   updateProfileImage: (imgFile: File) => void;
   updateName: (name: string) => void;
   changeReadyState: (isReady: boolean) => void;
-  isSleep: string;
+  isSleep: boolean;
   changeSleepState: () => void;
+  isImageUploaded: any;
+  setIsImageUploaded: any;
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
   const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
-  const { profileImage, name, updateProfileImage, updateName, changeReadyState, isSleep, changeSleepState } = props;
+  const {
+    profileImage,
+    name,
+    updateProfileImage,
+    updateName,
+    changeReadyState,
+    isSleep,
+    changeSleepState,
+    isImageUploaded,
+    setIsImageUploaded,
+  } = props;
   const [showImage, setShowImage] = useState<string | ArrayBuffer>();
-  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  // const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [nameState, setNameState] = useState<nickName>(nickName.NOTHING);
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -76,7 +88,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
         <ImageWrapper>
-          {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />}
+          {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={profileImage} />}
         </ImageWrapper>
       </ProfileImageContainer>
       {/* {isHover && <SignUpChangeVocalImageIcon />} */}

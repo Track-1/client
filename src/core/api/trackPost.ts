@@ -92,7 +92,7 @@ export async function closeTrack(beatId: number) {
 
 export async function patchTrackPost(beatId: number, formData: any) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
