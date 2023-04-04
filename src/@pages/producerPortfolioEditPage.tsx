@@ -42,8 +42,6 @@ export default function ProducerPortfolioEditPage() {
 
   const navigate = useNavigate();
 
-  console.log(prevData.profileImage);
-
   function convert() {}
 
   function toggleHashtagWarningOpen() {
@@ -115,13 +113,14 @@ export default function ProducerPortfolioEditPage() {
   function conpleteEdit() {
     const formData = new FormData();
     formData.append("audioFile", audioFile);
-    formData.append("jacketImage", image);
+    isImageUploaded && formData.append("jacketImage", image);
     formData.append("title", title);
     formData.append("category", CategoryId[category.toUpperCase()]);
     formData.append("content", description);
     hashtag.forEach((item, index) => {
       formData.append(`keyword[${index}]`, item);
     });
+    isImageUploaded ? formData.append("isSame", "False") : formData.append("isSame", "True");
     setEditdata(formData);
     setComplete(true);
   }

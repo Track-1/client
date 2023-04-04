@@ -43,6 +43,8 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
+  console.log(portfolioData);
+
   useEffect(() => {
     setTimeout(() => {
       changeKey();
@@ -147,6 +149,7 @@ export default function ProducerProfilePage() {
     setOpenUploadModal(true);
   }
 
+  console.log(profileData);
   return (
     <>
       <Outlet />
@@ -283,7 +286,6 @@ const UploadButtonIcon = styled(UploadButtonIc)`
 
   cursor: pointer;
 `;
-
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;

@@ -138,7 +138,6 @@ export default function TrackPostEditPage() {
   }
 
   function completeEdit() {
-    console.log(prevData);
     const formData = new FormData();
     isImageUploaded && formData.append("jacketImage", jacketImage);
     formData.append("title", title);
