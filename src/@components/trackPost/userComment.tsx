@@ -48,6 +48,9 @@ export default function UserComment(props: PropsType) {
   const [startUpload, setStartUpload] = useState<boolean>(false);
   const [startUpdate, setStartUpdate] = useState<boolean>(false);
 
+  const [clickUpload, setClickUpload] = useState<boolean>(false);
+  const [clickPost, setClickPost] = useState<boolean>(false);
+
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
   //get
@@ -87,7 +90,9 @@ export default function UserComment(props: PropsType) {
       setContent("");
       setAudioFile(null);
       //  setIsCompleted(false);
-      setIsEnd(!isEnd);
+      if (clickPost === true) {
+        setIsEnd(!isEnd);
+      }
       setStartUpload(false);
       console.log("포스트성공");
       // 에옹 새로올린 파일 하나가 들어옴
@@ -95,6 +100,7 @@ export default function UserComment(props: PropsType) {
       //에옹 comments에서 왤케 많은 6들이 생기는 걸까!
       console.log(comments);
       setComments([]);
+      setClickPost(false);
     },
   });
 
@@ -111,9 +117,12 @@ export default function UserComment(props: PropsType) {
     onSuccess: () => {
       queryClient.invalidateQueries("comments");
       console.log("댓글성공");
-      setIsEnd(!isEnd);
+      if (clickUpload === true) {
+        setIsEnd(!isEnd);
+      }
       setIsUpdated(false);
-      setComments([]);
+      //setComments([]);
+      setClickUpload(false);
     },
   });
 
@@ -146,6 +155,7 @@ export default function UserComment(props: PropsType) {
 
   function uploadComment() {
     //에옹 여기함수가 이상해
+    setClickPost(true);
     setIsCompleted(!isCompleted);
     setStartUpload(true);
     console.log(key);
@@ -158,6 +168,7 @@ export default function UserComment(props: PropsType) {
   }
 
   function clickComment(index: number) {
+    setClickUpload(true);
     setClickedIndex(index);
   }
 
