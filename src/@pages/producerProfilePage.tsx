@@ -43,6 +43,7 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
+  console.log(key);
   useEffect(() => {
     setTimeout(() => {
       changeKey();
@@ -56,6 +57,7 @@ export default function ProducerProfilePage() {
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
     let selectingResponse: any;
+    setOpenUploadModal(false);
 
     if (hasNextPage !== false) {
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
@@ -145,6 +147,10 @@ export default function ProducerProfilePage() {
 
   function moveToUpload() {
     setOpenUploadModal(true);
+  }
+
+  function moveDownUpload() {
+    setOpenUploadModal(false);
   }
 
   return (
@@ -283,7 +289,6 @@ const UploadButtonIcon = styled(UploadButtonIc)`
 
   cursor: pointer;
 `;
-
 
 const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
   margin-top: 5.9rem;
