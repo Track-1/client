@@ -10,7 +10,7 @@ export async function onLogout() {
       },
     });
     if (data.status === 200) {
-      removeCookie("accessToken");
+      removeCookie("accessToken", { path: "/" });
       window.location.replace("/");
     }
   } catch (e) {
