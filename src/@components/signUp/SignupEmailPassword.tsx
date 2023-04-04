@@ -54,7 +54,6 @@ export default function SignupEmailPassword(props: SetPropsType) {
   const [isVerifyClicked, setIsVerifyClicked] = useState<boolean>(false);
   const [selectedRole, setSelectedRole] = useRecoilState<string>(UserType);
 
-  console.log(email)
   function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     setIsSendCode(false);
     if (emailMessage === emailInvalidMessage.VERIFY) {
