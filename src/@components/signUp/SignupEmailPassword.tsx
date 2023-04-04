@@ -374,6 +374,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
             underline={setInputUnderline(passwordMessage)}
             onChange={writePassword}
             value={password}
+            maxLength={25}
           />
           {setErrorIcon(passwordMessage) && (
             <IconWrapper marginLeft={-8.4}>{setErrorIcon(passwordMessage)}</IconWrapper>
@@ -395,6 +396,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
                 underline={setInputUnderline(passwordConfirmMessage)}
                 onChange={writePasswordConfirm}
                 value={passwordConfirm}
+                maxLength={25}
               />
               {setErrorIcon(passwordConfirmMessage) && (
                 <IconWrapper marginLeft={-8.4}>{setErrorIcon(passwordConfirmMessage)}</IconWrapper>

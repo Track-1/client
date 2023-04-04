@@ -34,6 +34,7 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
       e: React.ChangeEvent<HTMLInputElement>
     ): void {
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+      // if (checkImageType(uploadName) && e.target.files) {
       if (checkImageType(uploadName) && e.target.files) {
         const file = e.target.files[0];
         const fileUrl: string = getFileURL(file);
