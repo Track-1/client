@@ -35,7 +35,7 @@ export default function TrackSearchPage() {
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
   const [pageParam, setPageParam] = useState<number>(1);
-  
+
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
 
@@ -121,8 +121,6 @@ export default function TrackSearchPage() {
 const InfiniteWrapper = styled.div`
   width: 100%;
   height: 2rem;
-
-  background-color: aqua;
 `;
 
 const TrackSearchPageWrapper = styled.section`

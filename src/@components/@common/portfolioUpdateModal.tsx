@@ -54,11 +54,9 @@ export default function PortfolioUpdateModal(props: PropsType) {
       queryClient.invalidateQueries("userProfile");
       alert("삭제되었습니다.");
 
-
     },
     onError: (error) => {
       console.log(error);
-
 
     },
   });
@@ -96,9 +94,14 @@ export default function PortfolioUpdateModal(props: PropsType) {
 
   function moveEditPage() {
     pauseAudio();
-    navigate(`/portfolio-edit/vocal/${portfolioId}`, {
-      state: portfoliosData[clickedPortfolioId],
-    });
+    console.log(loginUserType);
+    loginUserType === "producer"
+      ? navigate(`/portfolio-edit/producer/${portfolioId}`, {
+          state: portfoliosData[clickedPortfolioId],
+        })
+      : navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+          state: portfoliosData[clickedPortfolioId],
+        });
   }
 
   function isClickedOutside(e: MouseEvent) {

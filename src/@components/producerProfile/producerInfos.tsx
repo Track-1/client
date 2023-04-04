@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CategoryIc, DescriptionIc, HashtagIc, ProfileEditBtnIc, SleeperAccountIc } from "../../assets";
+import { CategoryIc, DescriptionIc, HashtagIc, ProfileEditBtnIc, SleeperAccountIc, VocalSleepIc } from "../../assets";
 import { ProducerProfileType } from "../../type/producerProfile";
 import BackButton from "../@common/backButton";
 import HashTag from "../trackPost/hashTag";
@@ -38,11 +38,11 @@ export default function ProducerInfos(props: PropsType) {
           },
         });
   }
-  
+
   return (
     <InfoContainer>
       <InfoHeader>
-        <BackButton />
+        <BackButton pauseAudio={pauseAudio} />
         {isMe && <ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
       </InfoHeader>
@@ -58,11 +58,12 @@ export default function ProducerInfos(props: PropsType) {
           <ProfileImg src={profileData?.profileImage} alt="프로필이미지" />
         </ProfileImage>
       )}
-
-      <ProducerNameContainer>
-        <ProducerName>{profileData.name}</ProducerName>
-      </ProducerNameContainer>
-
+      <NameWrapper>
+        <ProducerNameContainer>
+          <ProducerName>{profileData.name}</ProducerName>
+        </ProducerNameContainer>
+        {profileData.isSelected && <SleeperAccountIcon />}
+      </NameWrapper>
       <ProducerEmail>{profileData.contact}</ProducerEmail>
       <DetailInfoContainer>
         <CategoryBox isSelected={true}>
@@ -184,11 +185,14 @@ const ProducerName = styled.h1`
 
   color: ${({ theme }) => theme.colors.white};
 
-  margin-top: 2.4rem;
+  /* margin-top: 2.4rem; */
 `;
 
 const SleeperAccountIcon = styled(SleeperAccountIc)`
   margin-left: 1.5rem;
+
+  height: 4.1rem;
+  width: 4.1rem;
 `;
 
 const ProducerEmail = styled.h2`
@@ -315,4 +319,11 @@ const EmptyDescriptionMessageWrapper = styled.div`
 const EmptyProfileMessage = styled.p`
   ${({ theme }) => theme.fonts.description}
   color: ${({ theme }) => theme.colors.gray4};
+`;
+
+const NameWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+
+  margin-top: 3rem;
 `;
