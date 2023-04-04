@@ -315,7 +315,7 @@ const HiddenPasswordIcon = styled(HiddenPasswordIc)`
 `;
 
 const SaveBtnWrapper = styled.div`
-  margin-top: 0.5rem;
+  margin-top: 2.2rem;
 `;
 
 const DefaultSaveBtnIcon = styled(DefaultSaveBtnIc)`
