@@ -72,16 +72,16 @@ export const GlobalStyle = createGlobalStyle`
       font-size: 62.5%;
     }
     @media (min-width:1300px) and (max-width:1799px){
-      font-size: 47.5%;
+      font-size: 46.8%;
     }
     @media (min-width:900px) and (max-width:1299px){
-      font-size: 40%;
+      font-size: 39.3%;
     }
     @media (min-width: 768px) and (max-width:899px){ 
-      font-size: 36.5%;
+      font-size: 35%;
     }
     @media (max-width:767px){ 
-      font-size: 33%;
+      font-size: 32%;
     }
     
 
