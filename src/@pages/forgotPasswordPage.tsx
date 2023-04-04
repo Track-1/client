@@ -3,11 +3,17 @@ import subBackgroundImg from "../assets/image/subBackgroundImg.png";
 import ForgotPasswordInput from "../@components/forgotPassword/forgotPasswordInput";
 import BackButton from "../@components/@common/backButton";
 import Footer from "../@components/@common/footer";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPasswordPage() {
+  const navigate = useNavigate();
+
+  function movePreviousPage() {
+    navigate(-1);
+  }
   return (
     <>
-      <BackButtonWrapper>
+      <BackButtonWrapper onClick={movePreviousPage}>
         <BackButton />
       </BackButtonWrapper>
       <ForgotPasswordInput />

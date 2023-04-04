@@ -76,11 +76,17 @@ export default function UploadHeader(props: PropsType) {
     checkMeetConditions();
   }, [uploadData]);
 
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
   return (
     <Container>
       <HeaderWrapper>
         <LeftWrapper>
+          <div onClick={movePreviousPage}>
           <BackButton />
+          </div>
           <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
         {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon />}

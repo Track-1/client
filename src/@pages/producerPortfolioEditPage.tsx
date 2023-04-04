@@ -21,6 +21,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CategoriesDropdownType, CategoryIdType } from "../type/CategoryChecksType";
 import { useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
+import BackButton from "../@components/@common/backButton";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -133,12 +134,18 @@ export default function ProducerPortfolioEditPage() {
     complete && mutate();
   }, [complete]);
 
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
   return (
     <>
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
-            <UploadBackIcon />
+          <div onClick={movePreviousPage}>
+            <BackButton/>
+          </div>
             <UserClass> {}</UserClass>
           </LeftWrapper>
           <CanUploadBtnIcon onClick={conpleteEdit} />

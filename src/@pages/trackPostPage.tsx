@@ -25,7 +25,7 @@ import { audioFile, playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
@@ -57,6 +57,7 @@ export default function TrackPostPage() {
   const [link, setLink] = useState<string>("");
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
+  const navigate=useNavigate();
 
   const { data } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -207,6 +208,10 @@ export default function TrackPostPage() {
     return !trackInfoData?.isMe && trackInfoData?.isClosed;
   }
 
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
   return (
     <>
       {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed} />}
@@ -216,7 +221,7 @@ export default function TrackPostPage() {
         {trackInfoData && (
           <PostSection>
             <TitleContainer>
-              <BackButtonWrapper>
+              <BackButtonWrapper onClick={movePreviousPage}>
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
               <AudioTitle>{trackInfoData.title}</AudioTitle>
