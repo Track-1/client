@@ -227,6 +227,8 @@ const CommentUpldatCompleteIcon = styled(CommentUpldatCompleteIc)`
 
   margin-left: 80rem;
   margin-top: 1.8rem;
+
+  cursor: pointer;
 `;
 
 const FileUploadButtonIcon = styled(FileUploadButtonIc)`
