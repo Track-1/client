@@ -17,15 +17,17 @@ import { useInfiniteQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { Category } from "../core/constants/categoryHeader";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
+
+  const { key, excuteGetData } = useInfiniteKey();
 
   const [profileData, setProfileData] = useState<ProducerProfileType>();
   const [portfolioData, setPortfolioData] = useState<ProducerPortfolioType[]>([]);
   const [selectingTracksData, setSelectingTracksData] = useState<ProducerPortfolioType[]>([]);
   const [profileState, setProfileState] = useState<string>("Portfolio");
-  const [key, setKey] = useState("producerPortFolio");
   const [isMe, setIsMe] = useState<boolean>(true);
   const [stateChange, setStateChange] = useState<boolean>(false);
   const [audioInfos, setAudioInfos] = useState({
@@ -43,13 +45,12 @@ export default function ProducerProfilePage() {
 
   const { progress, audio } = usePlayer();
 
-  console.log(portfolioData);
-
-  useEffect(() => {
+  console.log(key);
+  /*   useEffect(() => {
     setTimeout(() => {
       changeKey();
     }, 800);
-  }, []);
+  }, []); */
 
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
@@ -58,6 +59,7 @@ export default function ProducerProfilePage() {
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
     let selectingResponse: any;
+    setOpenUploadModal(false);
 
     if (hasNextPage !== false) {
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
@@ -99,10 +101,6 @@ export default function ProducerProfilePage() {
   );
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
-
-  const changeKey = () => {
-    setKey(Math.random().toString(36));
-  };
 
   function scrollToTop() {
     window.scrollTo(0, 0);
@@ -149,12 +147,11 @@ export default function ProducerProfilePage() {
     setOpenUploadModal(true);
   }
 
-  console.log(profileData);
   return (
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {isMe && <UploadButtonIcon onClick={moveToUpload} />}
+      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
 
       {profileData && (
         <ProducerInfos
@@ -163,7 +160,7 @@ export default function ProducerProfilePage() {
           whom={Category.TRACKS}
           whoamI={"producer"}
           pauseAudio={pauseAudio}
-          changeKey={changeKey}
+          changeKey={excuteGetData}
         />
       )}
       <PageContainer>
@@ -174,7 +171,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToProfile();
               scrollToTop();
-              changeKey();
+              excuteGetData();
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -184,7 +181,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToVocalSearch();
               scrollToTop();
-              changeKey();
+              excuteGetData();
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
@@ -202,7 +199,7 @@ export default function ProducerProfilePage() {
             getAudioInfos={getAudioInfos}
             producerName={profileData?.name}
             whom={Category.TRACKS}
-            changeKey={changeKey}
+            changeKey={excuteGetData}
           />
         ) : (
           <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
