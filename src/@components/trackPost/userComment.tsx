@@ -16,6 +16,7 @@ import Player from "../@common/player";
 import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
 import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
 import usePlayer from "../../utils/hooks/usePlayer";
+import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 
 interface PropsType {
   closeComment: () => void;
@@ -27,6 +28,7 @@ export default function UserComment(props: PropsType) {
   const { closeComment, beatId, isClosed } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
+  const { key, excuteGetData } = useInfiniteKey();
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
@@ -46,27 +48,31 @@ export default function UserComment(props: PropsType) {
   const [startUpload, setStartUpload] = useState<boolean>(false);
   const [startUpdate, setStartUpdate] = useState<boolean>(false);
 
+  const [clickUpload, setClickUpload] = useState<boolean>(false);
+  const [clickPost, setClickPost] = useState<boolean>(false);
+
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["comments", getUploadData, isEnd],
+    [key, getUploadData, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
+        // console.log(key);
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
-  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], "comment");
+
+  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], key);
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
-      //setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      setComments([...response]);
-
+      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
       return { response, nextPage: page + 1 };
     }
   }
@@ -75,12 +81,20 @@ export default function UserComment(props: PropsType) {
   //post
   const { mutate: post } = useMutation(() => postComment(uploadData, beatId), {
     onSuccess: () => {
+      console.log(uploadData);
       queryClient.invalidateQueries("comments");
       setContent("");
       setAudioFile(null);
       //  setIsCompleted(false);
-      setIsEnd(!isEnd);
+      if (clickPost === true) {
+        setIsEnd(!isEnd);
+      }
       setStartUpload(false);
+      console.log("포스트성공");
+      console.log(content);
+      console.log(comments);
+      setComments([]);
+      setClickPost(false);
     },
   });
 
@@ -88,6 +102,7 @@ export default function UserComment(props: PropsType) {
 
   useEffect(() => {
     post();
+    console.log("포스트시작");
   }, [isCompleted]);
   //post end
 
@@ -95,13 +110,20 @@ export default function UserComment(props: PropsType) {
   const { mutate: update } = useMutation(() => updateComment(uploadData, commentId), {
     onSuccess: () => {
       queryClient.invalidateQueries("comments");
-      setIsEnd(!isEnd);
+      console.log("댓글성공");
+      if (clickUpload === true) {
+        setIsEnd(!isEnd);
+      }
       setIsUpdated(false);
+      excuteGetData();
+      setComments([]);
+      setClickUpload(false);
     },
   });
 
   useEffect(() => {
     update();
+    console.log("지나감2");
   }, [isUpdated]);
   //update end
 
@@ -127,12 +149,17 @@ export default function UserComment(props: PropsType) {
   }
 
   function uploadComment() {
+    setClickPost(true);
     setIsCompleted(!isCompleted);
     setStartUpload(true);
+    console.log(key);
+    console.log(key);
+
     //  post()
   }
 
   function clickComment(index: number) {
+    setClickUpload(true);
     setClickedIndex(index);
   }
 
