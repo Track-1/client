@@ -106,9 +106,11 @@ export default function SignupEmailPassword(props: SetPropsType) {
     },
     onError: (error: any) => {
       console.log(error);
-      error.response.data.message === "중복된 이메일입니다"
-        ? setEmailMessage(emailInvalidMessage.DUPLICATION)
-        : setEmailMessage(emailInvalidMessage.SUCCESS);
+      if(error.response.data.message === "중복된 이메일입니다"){
+        setEmailMessage(emailInvalidMessage.DUPLICATION)
+      }else{
+        checkEmailForm(email)&&setEmailMessage(emailInvalidMessage.SUCCESS);
+      }
     },
   });
 
@@ -132,9 +134,11 @@ export default function SignupEmailPassword(props: SetPropsType) {
     },
     onError: (error: any) => {
       console.log(error);
-      error.response.data.message === "중복된 이메일입니다"
-        ? setEmailMessage(emailInvalidMessage.DUPLICATION)
-        : setEmailMessage(emailInvalidMessage.SUCCESS);
+      if(error.response.data.message === "중복된 이메일입니다"){
+        setEmailMessage(emailInvalidMessage.DUPLICATION)
+      }else{
+        checkEmailForm(email)&&setEmailMessage(emailInvalidMessage.SUCCESS);
+      }
     },
   });
 
@@ -151,11 +155,11 @@ export default function SignupEmailPassword(props: SetPropsType) {
       setPasswordMessage(passwordInvalidMessage.NULL);
     }
 
-    if (!checkPasswordForm(e.target.value)) {
+    if (!checkPasswordForm(e.target.value)||e.target.value.length<8||e.target.value.length>25) {
       setPasswordMessage(passwordInvalidMessage.FORM);
     }
 
-    if (checkPasswordForm(e.target.value)) {
+    if (checkPasswordForm(e.target.value)&&e.target.value.length>=8&&e.target.value.length<=25) {
       setPasswordMessage(passwordInvalidMessage.SUCCESS);
     }
     if(passwordConfirm!==""&&password!==passwordConfirm){

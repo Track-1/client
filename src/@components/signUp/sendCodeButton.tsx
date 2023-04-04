@@ -32,7 +32,7 @@ export default function SendCodeButton(props:ButtonPropsType) {
   }
 
   function checkEmail(){
-    return emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.TIME||emailMessage===emailInvalidMessage.ING
+    return (emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.TIME||emailMessage===emailInvalidMessage.ING)&&true;
   }
 
   function isActive(){

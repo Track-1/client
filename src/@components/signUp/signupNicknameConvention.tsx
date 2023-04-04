@@ -82,7 +82,7 @@ export default function SignupNicknameConvention(props: SetUserPropsType) {
   function onSaveData() {
     completeNicknameConventions() && setIsSave(true);
   }
-
+console.log(userData)
   // useEffect(()=>{
   //   setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
   // },[imageSrc, nickname, completeCheck])
