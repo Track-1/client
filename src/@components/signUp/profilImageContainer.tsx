@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { SignUpChangeImageIc, SignUpChangeImgIc, SignUpUploadImageIc,SignUpVocalChangePhotoIc,SignupVocalProfileImgIc } from '../../assets'
 import { UserType } from '../../recoil/main';
@@ -21,6 +21,7 @@ interface ImageContainerPropsType{
 export default function ProfilImageContainer(props:ImageContainerPropsType) {
     const {imageSrc, isHover, checkImageHover,setImageSrc,setUserData}=props;
     const userType=useRecoilValue(UserType)
+    const [imgfile, setImgFile]=useState<File>();
 
     function showUploadImage(){
         switch(userType){
@@ -33,20 +34,25 @@ export default function ProfilImageContainer(props:ImageContainerPropsType) {
     function uploadImage(
       e: React.ChangeEvent<HTMLInputElement>
     ): void {
+      console.log(e.target.files)
       const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-      if (checkImageType(uploadName) && e.target.files) {
-        const file = e.target.files[0];
-        const fileUrl: string = getFileURL(file);
-        const imageSize: number = getFileSize(file);
-        if (checkImageSize(imageSize)) {
-          setImageSrc(fileUrl);
-          setUserData((prevState) => {
-            return { ...prevState, imageFile: file };
-          });
+      if (e.target.files?.length===0) {
+        //alert("사진삽입이 취소되었습니다.")
+      }else{
+        if (checkImageType(uploadName) && e.target.files) {
+          const file = e.target.files[0];
+          const fileUrl: string = getFileURL(file);
+          const imageSize: number = getFileSize(file);
+          if (e.target.files[0].length!==0&&checkImageSize(imageSize)) {
+            setImageSrc(fileUrl);
+            setUserData((prevState) => {
+              return { ...prevState, imageFile: file };
+            });
+          }
         }
       }
+      
     }
-    
 
     function checkImgHover(){
       return imageSrc&&isHover;
