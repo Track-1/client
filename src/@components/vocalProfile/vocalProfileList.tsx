@@ -53,7 +53,7 @@ export default function VocalProfileList(props: PropsType) {
         {portfolioData &&
           portfolioData?.map((vocal: any, index: number) => (
             <VocalPortfolio
-              key={vocal.id}
+              key={vocal?.id}
               onMouseEnter={() => mouseOverVocalPortfolio(index)}
               onMouseLeave={mouseOutVocalPortfolio}>
               {((hoveredIndex === index && clickedIndex !== index && hoveredIndex !== -1) ||
@@ -66,7 +66,7 @@ export default function VocalProfileList(props: PropsType) {
                 hoveredIndex !== -1 &&
                 clickedIndex !== -1 && <VocalProfileBlurPlayIcon onClick={pauseAudio} />}
               <VocalPortfolioTitle>
-                {clickedIndex !== index && hoveredIndex !== index && vocal.title}
+                {clickedIndex !== index && hoveredIndex !== index && vocal?.title}
               </VocalPortfolioTitle>
               {hoveredIndex === index && hoveredIndex !== -1 && (
                 <VocalPorfolioBlur idx={index} vocalPortfolioClickBool={clickedIndex === index} />
