@@ -41,6 +41,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     FUNK: false,
   });
   const [contactInput, setContactInput]=useState<string>("");
+  const [isWrite, setIsWrite]=useState<boolean>(false);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
@@ -64,6 +65,12 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   }
 
   function changeContact(e: React.ChangeEvent<HTMLInputElement>){
+    if(e.target.value===""){
+      setIsWrite(false)
+    }
+    else{
+      setIsWrite(true)
+    }
     setContactInput(e.target.value)
   }
 
@@ -106,6 +113,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
             placeholder="Enter your phone number or SNS account"
             onChange={changeContact}
             maxLength={40}
+            isWrite={isWrite}
           />
         </ContactContainer>
         <CategoryContainer>
@@ -195,13 +203,13 @@ const ContactContainer = styled.article`
   flex-direction: column;
 `;
 
-const ContactInput = styled.input`
+const ContactInput = styled.input<{isWrite:boolean}>`
   height: 3.4rem;
   width: 55.9rem;
 
   margin-top: 3.3rem;
 
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: 0.1rem solid ${({ theme,isWrite }) => isWrite?theme.colors.white:theme.colors.gray3};
 
   padding-bottom: 0.5rem;
 
