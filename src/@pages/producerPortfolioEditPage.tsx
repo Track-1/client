@@ -26,7 +26,7 @@ export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
   const prevData = useLocation().state;
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [image, setImage] = useState<File>(new File([prevData?.profileImage], prevData?.profileImage));
+  const [image, setImage] = useState<File>(prevData?.profileImage);
   const [title, setTitle] = useState<string>(prevData?.title);
   const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFile);
   const [category, setCategory] = useState<string>(prevData?.category);
@@ -41,6 +41,10 @@ export default function ProducerPortfolioEditPage() {
   const [hashtagText, setHashtagText] = useState<string>("");
 
   const navigate = useNavigate();
+
+  console.log(prevData.profileImage);
+
+  function convert() {}
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
@@ -382,7 +386,7 @@ const SectionWrapper = styled.div`
 `;
 
 const TrackImageBox = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   border-radius: 50%;
@@ -484,6 +488,8 @@ const InputBox = styled.div`
 
   display: flex;
   justify-content: space-between;
+
+  margin-left: 2rem;
 `;
 
 const InputWrapper = styled.div`

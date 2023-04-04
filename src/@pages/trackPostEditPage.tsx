@@ -1,7 +1,7 @@
 import { file } from "@babel/types";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   UploadFileUpdateIc,
@@ -20,7 +20,7 @@ import {
   FileChangeIc,
 } from "../assets";
 import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
-import { Categories, CategoryDropdown } from "../core/constants/categories";
+import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
 import { TrackInfoDataType } from "../type/tracksDataType";
 
 export default function TrackPostEditPage() {
@@ -29,20 +29,32 @@ export default function TrackPostEditPage() {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const hashtagText = useRef<HTMLInputElement | null>(null);
   const [category, setCategory] = useState<string>(prevData?.category);
-  const [audioFile, setAudioFile] = useState<File>();
-  const [hashtag, setHashtag] = useState<string[]>();
+  const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFie);
+  const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtegInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>();
-  const [title, setTitle] = useState<string | undefined>(prevData?.title);
+  const [description, setDescription] = useState<string>(prevData?.introduce);
+  const [title, setTitle] = useState<string>(prevData?.title);
   const [editData, setEditData] = useState<any>();
+  const [showImage, setShowImage] = useState<any>();
+  const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
+  const navigate = useNavigate();
+
+  console.log(prevData?.category);
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
+        console.log(data?.data.data);
+        // setJacketImage(new File([data?.data.data.jacketImage], "jacket"));
+        // setAudioFile(data?.data.data.audioFile);
         setPrevData(data?.data.data);
+        // setTitle(data?.data);
+        // setCategory(data?.data.data.category);
+        // setDescription(data?.data.data.introduce);
       }
     },
     onError: (error) => {
@@ -50,7 +62,7 @@ export default function TrackPostEditPage() {
     },
   });
 
-  const { mutate } = useMutation(() => patchTrackPost(data?.data.data.beatId, editData), {
+  const { mutate } = useMutation(() => patchTrackPost(state, editData), {
     onSuccess: () => {
       console.log("data");
     },
@@ -60,7 +72,10 @@ export default function TrackPostEditPage() {
   });
 
   useEffect(() => {
-    mutate();
+    if (editData !== undefined) {
+      mutate();
+      navigate("/track-search");
+    }
   }, [editData]);
 
   function selectCategory(text: string) {
@@ -74,6 +89,22 @@ export default function TrackPostEditPage() {
 
   function getFileName(e: React.ChangeEvent<HTMLInputElement>) {
     setAudioFile(e.target.files![0]);
+  }
+
+  function getImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const imageFiles = e.target.files as FileList;
+    setJacketImage(imageFiles[0]);
+    showPrevImage(imageFiles);
+    setIsImageUploaded(true);
+  }
+
+  function showPrevImage(imageFiles: FileList) {
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFiles[0]);
+    reader.onloadend = () => {
+      const resultImage = reader.result;
+      resultImage && setShowImage(resultImage);
+    };
   }
 
   function deleteHashtag(deleteTarget: string) {
@@ -107,12 +138,19 @@ export default function TrackPostEditPage() {
   }
 
   function completeEdit() {
+    console.log(prevData);
     const formData = new FormData();
-    title && formData.append("title", title);
+    isImageUploaded && formData.append("jacketImage", jacketImage);
+    formData.append("title", title);
     formData.append("category", category);
-    formData.append("audioFile", String(audioFile));
-    description && formData.append("introduce", description);
-    hashtag && formData.append("keyword", hashtag[0]);
+    formData.append("audioFile", audioFile);
+    formData.append("introduce", description);
+    hashtag?.forEach((item, index) => {
+      formData.append(`keyword[${index}]`, item);
+    });
+    isImageUploaded && formData.append("isSame", String(false));
+    !isImageUploaded && formData.append("isSame", String(true));
+
     setEditData(formData);
   }
 
@@ -133,13 +171,23 @@ export default function TrackPostEditPage() {
             <SectionWrapper>
               <TrackImageBox>
                 <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                  <TrackUploadImage src={data?.data.data.beatImage} alt="썸네일 이미지" />
+                  {isImageUploaded ? (
+                    <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+                  ) : (
+                    <TrackUploadImage src={String(data?.data.data.jacketImage)} alt="썸네일 이미지" />
+                  )}
                 </label>
                 <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                   <FileChangeIcon />
                 </label>
               </TrackImageBox>
-              <input type="file" id="imageFileUpload" style={{ display: "none" }} accept=".jpg,.jpeg,.png" readOnly />
+              <input
+                type="file"
+                id="imageFileUpload"
+                style={{ display: "none" }}
+                accept=".jpg,.jpeg,.png"
+                onChange={getImageFile}
+              />
               <Container3>
                 <TitleInput
                   typeof="text"
@@ -167,7 +215,7 @@ export default function TrackPostEditPage() {
                       <InputWrapper>
                         <InputFileTextWrapper fileName={String(audioFile?.name)}>
                           {audioFile && <FileName value={String(audioFile.name)} />}
-                          {!audioFile && <FileName value={String(data?.data.data.beatFile)} />}
+                          {!audioFile && <FileName value={String(data?.data.data.beatWavFile)} />}
                           <FileAttribute>{}</FileAttribute>
                           <input
                             type="file"
@@ -393,6 +441,7 @@ const SectionWrapper = styled.div`
 `;
 
 const TrackImageBox = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   border-radius: 50%;
@@ -408,17 +457,17 @@ const TrackUploadImage = styled.img`
   object-fit: cover;
   border-radius: 50%;
 
-  background: rgba(30, 32, 37, 0.5);
-  filter: blur(3rem);
-
-  background: default;
-  filter: default;
+  :hover {
+    background: rgba(30, 32, 37, 0.5);
+    filter: blur(3rem);
+  }
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
   position: absolute;
-  top: 47.95rem;
-  left: 42.8rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
 `;
 
@@ -493,6 +542,8 @@ const InputBox = styled.div`
 
   display: flex;
   justify-content: space-between;
+
+  margin-left: 2rem;
 `;
 
 const InputWrapper = styled.div`

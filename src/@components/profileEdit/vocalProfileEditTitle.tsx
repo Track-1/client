@@ -17,12 +17,12 @@ import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 interface PropsType {
-  profileImage: string;
+  profileImage: any;
   name: string;
   updateProfileImage: (imgFile: File) => void;
   updateName: (name: string) => void;
   changeReadyState: (isReady: boolean) => void;
-  isSleep: string;
+  isSleep: boolean;
   changeSleepState: () => void;
 }
 
@@ -76,7 +76,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
     <TitleContainer>
       <ProfileImageContainer htmlFor="profileImg" onMouseEnter={trueImageHover} onMouseLeave={falseImageHover}>
         <ImageWrapper>
-          {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />}
+          {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={profileImage} />}
         </ImageWrapper>
       </ProfileImageContainer>
       {/* {isHover && <SignUpChangeVocalImageIcon />} */}

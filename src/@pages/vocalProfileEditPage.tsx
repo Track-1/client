@@ -16,8 +16,8 @@ import background from "../assets/icon/signUpBackgroundIc.svg";
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [isSleep, setIsSleep] = useState<string>(state?.isSelected);
-  const [profileImage, setProfileImage] = useState<File>(new File([state?.profileImage], state?.profileImage));
+  const [isSleep, setIsSleep] = useState<boolean>(state?.isSelected);
+  const [profileImage, setProfileImage] = useState<File>(state.profileImage);
   const [name, setName] = useState<string>(state?.name);
   const [contact, setContact] = useState<string>(state?.contact);
   const [categories, setCategories] = useState<string[]>(state?.category);
@@ -40,7 +40,7 @@ export default function VocalProfileEditPage() {
         formData.append(`keyword[${index}]`, item);
       });
       formData.append("introduce", description);
-      formData.append("isSelected", isSleep);
+      formData.append("isSelected", String(isSleep));
       setUpdatedData(formData);
     }
   }, [saveData]);
@@ -102,7 +102,7 @@ export default function VocalProfileEditPage() {
   }
 
   function changeSleepState() {
-    isSleep === "true" ? setIsSleep("false") : setIsSleep("true");
+    isSleep ? setIsSleep(false) : setIsSleep(true);
   }
 
   return (
@@ -111,7 +111,7 @@ export default function VocalProfileEditPage() {
       <Img src={background} alt="배경" />
       <EditContainer>
         <VocalProfileEditTitle
-          profileImage={profileImage.name}
+          profileImage={state.profileImage}
           name={name}
           updateProfileImage={updateProfileImage}
           updateName={updateName}
