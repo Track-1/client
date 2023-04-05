@@ -119,6 +119,7 @@ export default function TrackPostPage() {
 
   function closeComment() {
     setIsCommentOpen(false);
+    setShowPlayer(false);
   }
 
   const queryClient = useQueryClient();
