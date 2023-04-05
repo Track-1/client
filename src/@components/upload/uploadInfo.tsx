@@ -67,7 +67,7 @@ export default function UploadInfo(props: propsType) {
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
-  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
 
   useEffect(() => {
     setUploadData((prevState) => {
@@ -379,6 +379,8 @@ export default function UploadInfo(props: propsType) {
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
       appendHashtag();
+      setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
@@ -460,10 +462,10 @@ export default function UploadInfo(props: propsType) {
               {hashtags.map((hashtag, index) => {
                 return (
                   <Hashtag key={index}>
-                    <HashtagWrapper>
+                    <CompleteHashtagWrapper>
                       <HashtagSharp># </HashtagSharp>
                       <CompletedHashtag>{hashtag}</CompletedHashtag>
-                    </HashtagWrapper>
+                    </CompleteHashtagWrapper>
                     <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                   </Hashtag>
                 );
@@ -867,6 +869,12 @@ const Hashtag = styled.div`
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 0.5rem 0 1.5rem;
+`;
+
+const CompleteHashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
   padding: 0 1.5rem;
 `;
 
@@ -877,7 +885,7 @@ const HashtagSharp = styled.p`
 `;
 
 const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 1.6)}rem;
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : (inputWidth <=5 ?inputWidth * 1.5+1:inputWidth *1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
