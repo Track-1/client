@@ -80,12 +80,6 @@ export default function ProfileEditInfo(props: PropsType) {
 
   }
 
-  // function getHashtagInput(e: React.KeyboardEvent<HTMLInputElement>) {
-  //   if (e.code === "Enter") {
-  //     updateHashtag(hashtagText);
-  //     setHashtagText("");
-  //   }
-  // }
   function getHashtagInput() {
     if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
@@ -284,8 +278,6 @@ const HashtagContainer = styled.article`
 `;
 
 const InputHashtagWrapper = styled.div`
-  /* display: flex;
-  flex-wrap: wrap; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
