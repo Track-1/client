@@ -12,6 +12,7 @@ import { CategoryId, CategoryText } from "../../core/constants/categories";
 import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
+import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 import ProfileWarning from "./profileWarning";
 
 interface PropsType {
@@ -49,8 +50,11 @@ export default function ProfileEditInfo(props: PropsType) {
     HOUSE: false,
     FUNK: false,
   });
-  const [hashtagText, setHashtagText] = useState<string>("HashTag");
+  const [hashtagText, setHashtagText] = useState<string>("");
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [tagMaxLength, setTagMaxLength]=useState<number>(8);
+  const [hashtagInput, setHashtagInput] = useState<string>("");
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
@@ -65,15 +69,39 @@ export default function ProfileEditInfo(props: PropsType) {
 
   function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
+
+    setHashtagInput(e.target.value);
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    checkHashtagLength(e.target.value)?(
+      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
+    ):(
+      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
+
   }
 
-  function getHashtagInput(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code === "Enter") {
+  // function getHashtagInput(e: React.KeyboardEvent<HTMLInputElement>) {
+  //   if (e.code === "Enter") {
+  //     updateHashtag(hashtagText);
+  //     setHashtagText("");
+  //   }
+  // }
+  function getHashtagInput() {
+    if (hashtagRef.current) {
+      hashtagRef.current.value = "";
       updateHashtag(hashtagText);
       setHashtagText("");
+      setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
+  // function completeHashtag() {
+  //   // if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+  //   //   hashtagRef.current.value = "";
+  //     updateHashtag(hashtagText);
+  //     setHashtagText("");
+  //   }
   
   return (
     <>
@@ -114,10 +142,10 @@ export default function ProfileEditInfo(props: PropsType) {
              {hashtags?.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
-                  <HashtagWrapper>
+                  <CompleteHashtagWrapper>
                     <HashtagSharp># </HashtagSharp>
                     <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </HashtagWrapper>
+                  </CompleteHashtagWrapper>
                   <DeleteHashtagIcon onClick={() => deleteHashtagInput(index)} />
                 </Hashtag>
               );
@@ -125,43 +153,25 @@ export default function ProfileEditInfo(props: PropsType) {
              
             {hashtags?.length < 3 && (
               <Hashtag>
-                <CompleteHashtagWrapper>
+                <HashtagWrapper>
                   <HashtagSharp># </HashtagSharp>
-                  <HashtagInput onChange={checkHashtagText} onKeyUp={getHashtagInput} value={hashtagText} />
-                </CompleteHashtagWrapper>
+                  <HashtagInput 
+                  onChange={checkHashtagText} 
+                  // onKeyUp={getHashtagInput} 
+                  onKeyPress={(e) => {
+                    e.key === "Enter" && getHashtagInput();
+                  }}
+                  inputWidth={hashtagLength}
+                  placeholder="HashTag"
+                  maxLength={tagMaxLength}
+                  ref={hashtagRef}
+                 // value={hashtagText} 
+                  />
+                </HashtagWrapper>
               </Hashtag>
             )}
 
-
-              {/* {hashtags.map((hashtag, index) => {
-                return (
-                  <Hashtag key={index}>
-                    <CompleteHashtagWrapper>
-                      <HashtagSharp># </HashtagSharp>
-                      <CompletedHashtag>{hashtag}</CompletedHashtag>
-                    </CompleteHashtagWrapper>
-                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                  </Hashtag>
-                );
-              })} */}
-            {hashtags.length < 3 && (
-                <Hashtag>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <HashtagInput
-                      onChange={getInputText}
-                      onKeyPress={(e) => {
-                        e.key === "Enter" && completeHashtag();
-                      }}
-                      inputWidth={hashtagLength}
-                      ref={hashtagRef}
-                      placeholder="HashTag"
-                      maxLength={tagMaxLength}
-                    />
-                  </HashtagWrapper>
-                </Hashtag>
-              )}
-            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            {hashtags.length < 2 && <AddHashtagIcon onClick={getHashtagInput} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
@@ -285,7 +295,7 @@ const Hashtag = styled.div`
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 0.5rem 0 1.5rem;
 `;
 
 const HashtagSharp = styled.p`
@@ -295,17 +305,16 @@ const HashtagSharp = styled.p`
   margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input`
+const HashtagInput = styled.input<{ inputWidth: number }>`
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : (inputWidth <=5 ?inputWidth * 1.5+1:inputWidth *1.2+1))}rem;
   display: flex;
-
   ${({ theme }) => theme.fonts.hashtag};
-
   color: ${({ theme }) => theme.colors.gray1};
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
 `;
+
 
 const CompletedHashtag = styled.article`
   display: flex;
