@@ -199,7 +199,7 @@ export default function ProducerPortfolioEditPage() {
             <InfoContainer>
               <InfoItemBox>
                 <NameBox>
-                  <UploadFileUpdateIc />
+                  <UploadFileUpdateIcon />
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
@@ -223,7 +223,7 @@ export default function ProducerPortfolioEditPage() {
 
               <InfoItemBox>
                 <NameBox>
-                  <UploadCategoryIc />
+                  <UploadCategoryIcon />
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
@@ -237,7 +237,7 @@ export default function ProducerPortfolioEditPage() {
 
               <InfoItemBox>
                 <NameBox>
-                  <UploadHashtagIc />
+                  <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
@@ -297,7 +297,7 @@ export default function ProducerPortfolioEditPage() {
 
               <InfoItemBox>
                 <NameBox>
-                  <UploadDescriptionIc />
+                  <UploadDescriptionIcon />
                 </NameBox>
                 <InputBox>
                   <InputDescriptionText
@@ -335,6 +335,21 @@ export default function ProducerPortfolioEditPage() {
   );
 }
 
+const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+  width: 14.6rem;
+`
+
+const UploadHashtagIcon=styled(UploadHashtagIc)`
+  width: 11.2rem;
+`
+
+const UploadCategoryIcon=styled(UploadCategoryIc)`
+  width: 12.3rem;
+`
+const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+  width: 13.3rem;
+`
+
 const Container = styled.header`
   height: 13.8rem;
   width: 100%;
@@ -369,6 +384,7 @@ const UploadBtnIcon = styled(UploadBtnIc)`
 `;
 
 const CanUploadBtnIcon = styled(CanUploadBtnIc)`
+  width: 24.6rem;
   cursor: pointer;
 `;
 
@@ -466,6 +482,7 @@ const FileChangeIcon = styled(FileChangeIc)`
 `;
 
 const Container3 = styled.section`
+  margin-right: 3rem;
   height: 74.7rem;
   width: 88.7rem;
 `;
@@ -716,6 +733,8 @@ const WarningIcon = styled.div`
 `;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
 `;
