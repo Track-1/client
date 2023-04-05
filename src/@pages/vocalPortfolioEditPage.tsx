@@ -498,7 +498,6 @@ const TrackUploadImageWrapper=styled.label`
 `
 const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
   transform: rotate(-45deg);
-  
 
   display: flex;
   justify-content: center;

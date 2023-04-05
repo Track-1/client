@@ -40,6 +40,7 @@ export default function ProducerPortfolioEditPage() {
   const [showImage, setShowImage] = useState<string | ArrayBuffer>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [hashtagText, setHashtagText] = useState<string>("");
+  const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -138,6 +139,10 @@ export default function ProducerPortfolioEditPage() {
     navigate(-1);
   }
 
+  function hoverImage() {
+    isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
+  }
+  
   return (
     <>
       <Container>
@@ -153,14 +158,14 @@ export default function ProducerPortfolioEditPage() {
       </Container>
       <Container2>
         <SectionWrapper>
-          <TrackImageBox>
-            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+          <TrackImageBox onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
+            <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               {isImageUploaded ? (
-                <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+                <TrackUploadImage src={String(showImage)} alt="썸네일 이미지"  isImageHovered={isImageHovered}/>
               ) : (
-                <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" />
+                <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지"  isImageHovered={isImageHovered}/>
               )}
-            </label>
+            </TrackUploadImageWrapper>
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               <FileChangeIcon />
             </label>
@@ -392,30 +397,67 @@ const SectionWrapper = styled.div`
 `;
 
 const TrackImageBox = styled.div`
+  /* width: 60.4rem;
+  height: 60.4rem;
+  border-radius: 50%;
+
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  position: absolute;
+  overflow: hidden; */
+
   position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  margin-left: 6.5rem;
-  margin-right: 4.9rem;
-  overflow: hidden;
+  margin-left: 38rem;
+  /* overflow: hidden; */
   cursor: pointer;
 `;
 
-const TrackUploadImage = styled.img`
+const TrackUploadImageWrapper=styled.label`
   width: 60.4rem;
   height: 60.4rem;
-  object-fit: cover;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  position: absolute;
+  overflow: hidden;
+`
 
-  background: rgba(30, 32, 37, 0.5);
+const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
+  /* width: 60.4rem;
+  height: 60.4rem; */
+
+//  border-radius: 50%;
+
+  /* background: rgba(30, 32, 37, 0.5);
   filter: blur(3rem);
 
   background: default;
-  filter: default;
+  filter: default; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
+  filter: blur(${({isImageHovered})=>isImageHovered&&3}rem);
 `;
 
-const FileChangeIcon = styled(FileChangeIc)`
+const FileChangeIcon = styled(FileChangeIc)` 
+  width: 18.9rem;
   position: absolute;
   top: 50%;
   left: 50%;
