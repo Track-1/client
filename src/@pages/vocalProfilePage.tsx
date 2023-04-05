@@ -206,6 +206,7 @@ const UploadButtonIcon = styled(UploadButtonIc)`
   z-index: 7;
   right: 0;
   margin-top: 5.9rem;
+  margin-right: 6.9rem;
 
   width: 24.5rem;
 

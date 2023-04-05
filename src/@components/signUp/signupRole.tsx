@@ -41,14 +41,13 @@ export default function SignupRole(props:SetStepPropsType) {
   }
 
 
-
   return (
     <RoleWrapper>
       <SignUpSelectRoleTitleIcon/>
-      <div onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseOut={hoverOut}>
+      <div onClick={()=>selectRole(currentUser.PRODUCER)} onMouseEnter={()=>hoverRole(currentUser.PRODUCER)} onMouseLeave={hoverOut}>
         {checkHovered(currentUser.PRODUCER)||checkSelected(currentUser.PRODUCER)?<SignupSelectedProducerIcon/>:<SignupNotSelectedProducerIcon/>}
       </div>
-      <div onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseOut={hoverOut}>
+      <div onClick={()=>selectRole(currentUser.VOCAL)} onMouseEnter={()=>hoverRole(currentUser.VOCAL)} onMouseLeave={hoverOut}>
         {checkHovered(currentUser.VOCAL)||checkSelected(currentUser.VOCAL)?<SignupSelectedVocalIcon/>:<SignupNotSelectedVocalIcon/>}    
       </div>
       <ArrowButtonWrapper>
@@ -107,9 +106,6 @@ const ArrowButtonWrapper=styled.div`
     width: 56rem;
     height: 4.6rem;
 
-    position: absolute;
-    left:11rem;
-    bottom: 7rem;
+    margin: 8.2rem 0 0 10.7rem;
 
-    bottom: 7rem;
 `

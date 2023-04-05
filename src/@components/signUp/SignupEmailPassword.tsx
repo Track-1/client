@@ -69,7 +69,6 @@ export default function SignupEmailPassword(props: SetPropsType) {
       if (!e.target.value) {
         setEmailMessage(emailInvalidMessage.NULL);
       }
-
       if (!checkEmailForm(e.target.value)) {
         setEmailMessage(emailInvalidMessage.FORM);
       }
@@ -82,6 +81,21 @@ export default function SignupEmailPassword(props: SetPropsType) {
     setEmail(e.target.value);
   }
 
+  useEffect(()=>{
+    if (email==="") {
+      setEmailMessage(emailInvalidMessage.NULL);
+    }
+
+    if(password===""){
+      setPasswordMessage(passwordInvalidMessage.NULL);
+    }
+
+    if(passwordConfirm===""){
+      setPasswordConfirmMessage(passwordInvalidMessage.NULL);
+    }
+
+  },[email, password, passwordConfirm])
+
   //auth-mail post
   const PostAuthMail = useMutation(authEmail, {
     onSuccess: (data) => {
@@ -92,9 +106,11 @@ export default function SignupEmailPassword(props: SetPropsType) {
     },
     onError: (error: any) => {
       console.log(error);
-      error.response.data.message === "중복된 이메일입니다"
-        ? setEmailMessage(emailInvalidMessage.DUPLICATION)
-        : setEmailMessage(emailInvalidMessage.SUCCESS);
+      if(error.response.data.message === "중복된 이메일입니다"){
+        setEmailMessage(emailInvalidMessage.DUPLICATION)
+      }else{
+        checkEmailForm(email)&&setEmailMessage(emailInvalidMessage.SUCCESS);
+      }
     },
   });
 
@@ -118,9 +134,11 @@ export default function SignupEmailPassword(props: SetPropsType) {
     },
     onError: (error: any) => {
       console.log(error);
-      error.response.data.message === "중복된 이메일입니다"
-        ? setEmailMessage(emailInvalidMessage.DUPLICATION)
-        : setEmailMessage(emailInvalidMessage.SUCCESS);
+      if(error.response.data.message === "중복된 이메일입니다"){
+        setEmailMessage(emailInvalidMessage.DUPLICATION)
+      }else{
+        checkEmailForm(email)&&setEmailMessage(emailInvalidMessage.SUCCESS);
+      }
     },
   });
 
@@ -137,15 +155,19 @@ export default function SignupEmailPassword(props: SetPropsType) {
       setPasswordMessage(passwordInvalidMessage.NULL);
     }
 
-    if (!checkPasswordForm(e.target.value)) {
+    if (!checkPasswordForm(e.target.value)||e.target.value.length<8||e.target.value.length>25) {
       setPasswordMessage(passwordInvalidMessage.FORM);
     }
 
-    if (checkPasswordForm(e.target.value)) {
+    if (checkPasswordForm(e.target.value)&&e.target.value.length>=8&&e.target.value.length<=25) {
       setPasswordMessage(passwordInvalidMessage.SUCCESS);
     }
     if(passwordConfirm!==""&&password!==passwordConfirm){
       setPasswordConfirmMessage(passwordInvalidMessage.MATCH);
+    }
+
+    if (e.target.value === passwordConfirm) {
+      setPasswordConfirmMessage(passwordInvalidMessage.SUCCESS);
     }
 
     setPassword(e.target.value);
@@ -270,7 +292,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
   }
 
   function successNextStep() {
-    return password===passwordConfirm&&passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
+    return password===passwordConfirm&&passwordMessage === passwordInvalidMessage.SUCCESS &&passwordConfirmMessage === passwordInvalidMessage.SUCCESS && emailMessage === emailInvalidMessage.VERIFY
       ? continueType.SUCCESS
       : continueType.FAIL;
   }
@@ -295,6 +317,10 @@ export default function SignupEmailPassword(props: SetPropsType) {
 
   function isActive(){
     return checkEmail()&&true;
+  }
+
+  function isLong(){
+    return ((isSendCode && !isVerify && emailMessage === emailInvalidMessage.TIME) ||isVerify)&&true
   }
 
   return (
@@ -332,6 +358,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
                 width={42.2}
                 underline={setInputUnderline(verificationCodeMessage)}
                 onChange={writeVerificationCode}
+                autoComplete="off"
               />
               {setErrorIcon(verificationCodeMessage) && (
                 <IconWrapper marginLeft={-3.9}>{setErrorIcon(verificationCodeMessage)}</IconWrapper>
@@ -356,6 +383,8 @@ export default function SignupEmailPassword(props: SetPropsType) {
             underline={setInputUnderline(passwordMessage)}
             onChange={writePassword}
             value={password}
+            maxLength={25}
+            autoComplete="off"
           />
           {setErrorIcon(passwordMessage) && (
             <IconWrapper marginLeft={-8.4}>{setErrorIcon(passwordMessage)}</IconWrapper>
@@ -377,6 +406,8 @@ export default function SignupEmailPassword(props: SetPropsType) {
                 underline={setInputUnderline(passwordConfirmMessage)}
                 onChange={writePasswordConfirm}
                 value={passwordConfirm}
+                maxLength={25}
+                autoComplete="off"
               />
               {setErrorIcon(passwordConfirmMessage) && (
                 <IconWrapper marginLeft={-8.4}>{setErrorIcon(passwordConfirmMessage)}</IconWrapper>
@@ -391,6 +422,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
           </>
         )}
       </SignupEmailWrapper>
+      <ArrowButtonContainer isLong={isLong()}>
       <ArrowButtonWrapper>
         <SignUpBackArrowIcon onClick={backToRole} />
         <div onClick={saveUserData}>
@@ -401,6 +433,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
           />
         </div>
       </ArrowButtonWrapper>
+      </ArrowButtonContainer>
     </>
   );
 }
@@ -490,14 +523,16 @@ const ArrowButtonWrapper = styled.div`
   align-items: center;
 
   width: 56rem;
-  height: 4.6rem;
-
-  position: absolute;
-  left: 11rem;
-  bottom: 7rem;
-
-  bottom: 7rem;
+ 
 `;
+
+const ArrowButtonContainer=styled.footer<{isLong:boolean}>`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  margin-top: ${({isLong})=>isLong?7.7:23}rem;
+`
 
 const EyeIcWrapper = styled.div`
   position: absolute;

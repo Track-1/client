@@ -9,11 +9,16 @@ interface PropsType {
 }
 export default function ProfileEditHeader(props: PropsType) {
   const { editReady, editData } = props;
+  const navigate = useNavigate();
+
+  function movePreviousPage() {
+    navigate(-1);
+  }
   return (
     <HeaderContainer>
-      <ButtonWrapper>
-        <BackButton />
-      </ButtonWrapper>
+      <BackButtonWrapper onClick={movePreviousPage}>
+        <BackButton/>
+      </BackButtonWrapper>
       {editReady ? <ProfileEditSaveButtonActiveIcon onClick={editData} /> : <ProfileEditSaveButtonIcon />}
     </HeaderContainer>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from 'styled-components';
 import Footer from '../@components/@common/footer';
 import SignUpStepRenderer from '../@components/signUp/signUpStepRenderer';
@@ -35,7 +35,23 @@ export default function SignUpPage() {
         keyword: [],
         introduce: "",
     })
+
+    const preventGoBack = () => {
+        window.history.pushState(null, "", window.location.href);
+       // alert("종료하기를 눌러주세요 :D");
+    };
     
+    // 브라우저에 렌더링 시 한 번만 실행하는 코드
+    useEffect(() => {
+        (() => {
+            window.history.pushState(null, "", window.location.href);
+            window.addEventListener("popstate", preventGoBack);
+        })();
+    
+        return () => {
+            window.removeEventListener("popstate", preventGoBack);
+        };
+    },[]);
 
   return (
     <>

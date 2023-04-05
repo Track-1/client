@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import BackButton from "../@components/@common/backButton";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -153,6 +154,10 @@ export default function TrackPostEditPage() {
     setEditData(formData);
   }
 
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
   return (
     <>
       {data?.data && (
@@ -160,7 +165,10 @@ export default function TrackPostEditPage() {
           <Container>
             <HeaderWrapper>
               <LeftWrapper>
-                <UploadBackIcon />
+                {/* <UploadBackIcon /> */}
+                <div onClick={movePreviousPage}>
+                  <BackButton/>
+                </div>
                 <UserClass> {}</UserClass>
               </LeftWrapper>
               <CanUploadBtnIcon onClick={completeEdit} />

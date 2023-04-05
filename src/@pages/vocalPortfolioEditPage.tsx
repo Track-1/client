@@ -141,12 +141,19 @@ export default function VocalPortfolioEditPage() {
     complete && mutate({ vocalPortfolioId: prevData.id, editDatas: editData });
   }, [complete]);
 
+
+  function movePreviousPage() {
+    navigate(-1);
+  }
+
   return (
     <>
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
-            <BackButton/>
+            <div onClick={movePreviousPage}>
+              <BackButton/>
+            </div>
             <UserClass> {}</UserClass>
           </LeftWrapper>
           <CanUploadBtnIcon onClick={conpleteEdit} />

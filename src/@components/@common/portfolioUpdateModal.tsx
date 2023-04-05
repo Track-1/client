@@ -3,7 +3,7 @@ import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
 
 import { useMutation, useQueryClient } from "react-query";
-import { deletePortfolio, deleteTitlePortfolio } from "../../core/api/delete";
+import { deletePortfolio } from "../../core/api/delete";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
@@ -42,9 +42,8 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
-  function askToeleteTrack(){
-    if (window.confirm('게시글을 삭제하시겠습니까?'))
-    {
+  function askToeleteTrack() {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
       deleteTrack();
     }
   }
@@ -53,11 +52,9 @@ export default function PortfolioUpdateModal(props: PropsType) {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
       alert("삭제되었습니다.");
-
     },
     onError: (error) => {
       console.log(error);
-
     },
   });
 
@@ -75,10 +72,10 @@ export default function PortfolioUpdateModal(props: PropsType) {
     },
   );
 
-  function deleteAPI() {
+  async function deleteAPI() {
     if (isTitle && portfoliosData.length !== 1) {
-      patchTitleAPI(portfoliosData[0].id, portfoliosData[1].id, loginUserType);
-      return deleteTitlePortfolio(portfolioId, loginUserType);
+      await patchTitleAPI(portfoliosData[0].id, portfoliosData[1].id, loginUserType);
+      return deletePortfolio(portfolioId, loginUserType);
     } else {
       return deletePortfolio(portfolioId, loginUserType);
     }

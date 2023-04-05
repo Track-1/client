@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   SignUpBackArrowIc,
   SignUpChangeImageIc,
+  SignupCompleteBtnIc,
   SignUpContinueButtonIc,
   SignUpErrorIc,
   SignUpUploadImageIc,
@@ -58,12 +59,12 @@ export default function SignupNicknameConvention(props: SetUserPropsType) {
   }
 
   function moveBackToEmailPassword() {
-    setUserData((prev) => ({ ...prev, ID: "", PW: "", isAgree: "" }));
+    setUserData((prev) => ({ ...prev, ID: "", PW: "", isAgree: "", name:""}));
     setStep(signUpStep.SIGNUP_EMAIL_PASSWORD);
   }
 
   function completeNicknameConventions() {
-    return nicknameMessage === nicknameValidMessage.SUCCESS && completeCheck;
+    return nicknameMessage === nicknameValidMessage.SUCCESS && completeCheck&& userData.ID!==""&&userData.PW!==""&&userData.isAgree!==""&&userData.name!=="";
   }
 
   function writeNickname(e: React.ChangeEvent<HTMLInputElement>) {
@@ -81,7 +82,7 @@ export default function SignupNicknameConvention(props: SetUserPropsType) {
   function onSaveData() {
     completeNicknameConventions() && setIsSave(true);
   }
-
+console.log(userData)
   // useEffect(()=>{
   //   setUserData((prev) => ({ ...prev, imageFile:imageSrc, name:nickname, isAgree:`${checkedConventions[3].selected}` }));
   // },[imageSrc, nickname, completeCheck])
@@ -168,7 +169,7 @@ export default function SignupNicknameConvention(props: SetUserPropsType) {
 
         {/* <ContinueButton successNextStep={successNextStep} step={signUpStep.SIGNUP_PROFILE} setStep={setStep}/> */}
         <ContinueButtonWrapper type="button" isNotNull={!isNull(successNextStep)} onClick={onSaveData}>
-          <SignUpContinueButtonIcon />
+          <SignupCompleteBtnIcon/>
         </ContinueButtonWrapper>
       </ArrowButtonWrapper>
     </>
@@ -236,9 +237,7 @@ const ArrowButtonWrapper = styled.div`
   width: 56rem;
   height: 4.6rem;
 
-  position: absolute;
-  left: 11rem;
-  bottom: 7rem;
+  margin: 3.7rem 0 0 10.8rem;
 `;
 
 const NicknameWrapper = styled.section`
@@ -249,7 +248,7 @@ const WhatsYourNameTextIcon = styled(WhatsYourNameTextIc)`
   width: 21.2rem;
 `;
 
-const SignUpContinueButtonIcon = styled(SignUpContinueButtonIc)`
+const SignupCompleteBtnIcon = styled(SignupCompleteBtnIc)`
   width: 9.7rem;
 `;
 

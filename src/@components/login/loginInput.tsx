@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import {
   ProducerDefaultModeToggleIc,
   ProducerModeToggleIc,
-  EyeIc,
   ProducerLoginBtnIc,
   VocalLoginBtnIc,
   DefaultLoginBtnIc,
@@ -23,6 +22,8 @@ import { useMutation } from "react-query";
 import { setCookie } from "../../utils/cookie";
 import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 import { useSetRecoilState } from "recoil";
+import { checkPasswordForm } from "../../utils/errorMessage/checkPasswordForm";
+import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -34,10 +35,9 @@ export default function LoginInput() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("vocal");
   const [emailWarningMessage, setEmailWarningMessage] = useState<string>("Enter a valid email");
-  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>("start");
-
-  const EMAIL_RULE = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-  const PASSWORD_RULE = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,}$/;
+  const [passwordWarningMessage, setPasswordWarningMessage] = useState<string>(
+    "Wrong password.Try again or click Forgot password to reset it.",
+  );
 
   const FOCUS = "focus";
   const BLUR = "blur";
@@ -61,13 +61,12 @@ export default function LoginInput() {
       }
     },
     onError: (error: any) => {
-      if(error?.response.data.message==="존재하지 않는 아이디입니다."){
-        setEmailWarningMessage("We don’t have an account with that email address.")
-        setEmailInputState(WARNING)
-      }
-      else if(error?.response.data.message==="잘못된 비밀번호입니다."){
-        setPasswordWarningMessage("Wrong password.Try again or click Forgot password to reset it.")
-        setPasswordInputState(WARNING)
+      if (error?.response.data.message === "존재하지 않는 아이디입니다.") {
+        setEmailWarningMessage("We don’t have an account with that email address.");
+        setEmailInputState(WARNING);
+      } else if (error?.response.data.message === "잘못된 비밀번호입니다.") {
+        setPasswordWarningMessage("Wrong password.Try again or click Forgot password to reset it.");
+        setPasswordInputState(WARNING);
       }
     },
   });
@@ -81,13 +80,14 @@ export default function LoginInput() {
   }
 
   function changeHoverEmailState(e: React.FocusEvent<HTMLInputElement>): void {
-    const input = e.target.value;
+    const inputEmail = e.target.value;
 
-    if(!e.target.value){
-      setEmailInputState("null");
+    if (!inputEmail) {
+      setEmailInputState("");
+      return;
     }
 
-    if (!EMAIL_RULE.test(input)) {
+    if (!checkEmailForm(inputEmail)) {
       setEmailInputState(WARNING);
       return;
     }
@@ -96,13 +96,19 @@ export default function LoginInput() {
   }
 
   function changeHoverPasswordState(e: React.FocusEvent<HTMLInputElement>): void {
-    if(!e.target.value){
+    const inputPassword = e.target.value;
+
+    if (!inputPassword) {
       setPasswordInputState("");
+      return;
     }
-    else{
-      e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
+
+    if (!checkPasswordForm(inputPassword)) {
+      setPasswordInputState(WARNING);
+      return;
     }
-   
+
+    e.type === FOCUS ? setPasswordInputState(FOCUS) : setPasswordInputState(BLUR);
   }
 
   function validateEmail(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -112,16 +118,19 @@ export default function LoginInput() {
     if (isInputEmpty(emailInput)) {
       setEmailInputState(FOCUS);
     } else {
-      EMAIL_RULE.test(emailInput) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
+      checkEmailForm(emailInput) ? setEmailInputState(FOCUS) : setEmailInputState(WARNING);
     }
   }
 
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>): void {
     const passwordInput = e.target.value;
-
     setPassword(passwordInput);
-    setPasswordInputState(FOCUS)
-    
+
+    if (isInputEmpty(passwordInput)) {
+      setPasswordInputState(FOCUS);
+    } else {
+      checkPasswordForm(passwordInput) ? setPasswordInputState(FOCUS) : setPasswordInputState(WARNING);
+    }
   }
 
   function loginBtnType() {
@@ -168,9 +177,9 @@ export default function LoginInput() {
               onBlur={changeHoverEmailState}
               onChange={validateEmail}
             />
-            {isWarningState(emailInputState)&&<SignUpErrorIcon/>}
+            {isWarningState(emailInputState) && <SignUpErrorIcon />}
           </InputWrapper>
-          
+
           <UnderLine inputState={emailInputState} />
           {isWarningState(emailInputState) ? (
             <WarningMessage isWarning={true}>{emailWarningMessage}</WarningMessage>
@@ -190,18 +199,16 @@ export default function LoginInput() {
               onChange={validatePassword}
             />
             <IconWrapper>
-            {isWarningState(passwordInputState)&&<SignUpErrorIcon/>}
-            <div onClick={() => setShowPassword((prev) => !prev)}>
-              {showPassword?<SignUpEyeXIcon/>:<SignUpEyeIcon/>}
-            </div>
+              {isWarningState(passwordInputState) && <SignUpErrorIcon />}
+              <div onClick={() => setShowPassword((prev) => !prev)}>
+                {showPassword ? <SignUpEyeXIcon /> : <SignUpEyeIcon />}
+              </div>
             </IconWrapper>
           </InputWrapper>
-          
-          <UnderLine inputState={passwordInputState}/>
+
+          <UnderLine inputState={passwordInputState} />
           {isWarningState(passwordInputState) ? (
-            <WarningMessage isWarning={true}>
-              {passwordWarningMessage}
-            </WarningMessage>
+            <WarningMessage isWarning={true}>{passwordWarningMessage}</WarningMessage>
           ) : (
             <WarningMessage isWarning={false}>null</WarningMessage>
           )}
@@ -309,7 +316,7 @@ const ModeWrapper = styled.div`
   float: right;
 
   margin-top: 3rem;
-  margin-bottom:6rem;
+  margin-bottom: 6rem;
 `;
 
 const ModeText = styled.div`
@@ -328,7 +335,7 @@ const ForgotMessage = styled(Link)`
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
 
-  margin-top: 1rem;
+  margin-top: 3.2rem;
 `;
 
 const SignUpEyeIcon = styled(SignUpEyeIc)`
@@ -348,7 +355,7 @@ const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
   cursor: pointer;
 `;
 
-const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`  
+const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
   width: 5.8rem;
   cursor: pointer;
 `;
@@ -389,11 +396,11 @@ const LoginforgotpasswordIcon = styled(LoginforgotpasswordIc)`
   width: 20rem;
 `;
 
-const SignUpErrorIcon=styled(SignUpErrorIc)`
-    width: 4rem;
-    height: 4rem;
-`
+const SignUpErrorIcon = styled(SignUpErrorIc)`
+  width: 4rem;
+  height: 4rem;
+`;
 
-const IconWrapper=styled.div`
+const IconWrapper = styled.div`
   display: flex;
-`
+`;

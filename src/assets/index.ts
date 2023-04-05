@@ -242,4 +242,5 @@ export { ReactComponent as ForgotPasswordEmailAskIc } from "./icon/forgotPasswor
 export { ReactComponent as ChangePasswordNewPasswordIc } from "./icon/changePasswordNewPasswordIc.svg";
 export { ReactComponent as ChangePasswordConfirmIc } from "./icon/changePasswordConfirmIc.svg";
 export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
+export { ReactComponent as SignupCompleteBtnIc } from "./icon/signupCompleteBtnIc.svg";
 
