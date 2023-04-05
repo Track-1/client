@@ -556,6 +556,7 @@ export default function UploadInfo(props: propsType) {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
+              {/* {category === Categories[index] && <CheckCategoryIc />} */}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>

@@ -375,7 +375,7 @@ export default function VocalPortfolioEditPage() {
                   {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
                       <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>{text}</DropMenuText>
-                      {category === Categories[index] && <CheckCategoryIc />}
+                      {category === Categories[index] && <CheckCategoryIcon />}
                     </DropMenuItem>
                   ))}
                 </DropMenuWrapper>
@@ -730,8 +730,8 @@ const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 40.4rem;
-  left: 98rem;
+  top: 40.7rem;
+  left: 98.7rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
   border-radius: 0.5rem;
@@ -813,3 +813,8 @@ const CompletedHashtag = styled.article`
 
   ${({ theme }) => theme.fonts.hashtag}
 `;
+
+const CheckCategoryIcon=styled(CheckCategoryIc)`
+  width: 1.5rem;
+  height: 0.9rem;
+`
