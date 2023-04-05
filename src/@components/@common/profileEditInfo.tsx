@@ -157,15 +157,13 @@ export default function ProfileEditInfo(props: PropsType) {
                   <HashtagSharp># </HashtagSharp>
                   <HashtagInput 
                   onChange={checkHashtagText} 
-                  // onKeyUp={getHashtagInput} 
                   onKeyPress={(e) => {
                     e.key === "Enter" && getHashtagInput();
                   }}
                   inputWidth={hashtagLength}
                   placeholder="HashTag"
                   maxLength={tagMaxLength}
-                  ref={hashtagRef}
-                 // value={hashtagText} 
+                  ref={hashtagRef} 
                   />
                 </HashtagWrapper>
               </Hashtag>
