@@ -82,6 +82,7 @@ export default function VocalProfileEditPage() {
     setCategories(Array.from(tempCategorySet));
   }
 
+  //해시태그
   function updateHashtag(hashtag: string) {
     setHashtags([...hashtags, hashtag]);
   }

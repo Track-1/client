@@ -22,6 +22,7 @@ import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
 import { isVocal } from "../../utils/common/userType";
 import { isClickedOutside } from "../../utils/common/modal";
+import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 interface propsType {
   uploadData: UploadInfoDataType;
@@ -66,6 +67,7 @@ export default function UploadInfo(props: propsType) {
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
+  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
 
   useEffect(() => {
     setUploadData((prevState) => {
@@ -75,11 +77,23 @@ export default function UploadInfo(props: propsType) {
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
-  }
+    setHashtagLength(e.target.value.length);
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    console.log(e.target.value.length)
+    
+    checkHashtagLength(e.target.value)?(
+      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
+    ):(
+      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
+    }
+  
   function completeHashtag() {
-    if (hashtagRef.current) {
+    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
@@ -234,7 +248,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   //해시태그
-  function appendHashtag(): void {
+  // function appendHashtag(): void {
     // const hashtag = getEnteredHashtag();
     // if (!isDuplicateHashtag(hashtag)) {
     //   setUploadData((prevState) => {
@@ -243,23 +257,25 @@ export default function UploadInfo(props: propsType) {
     //   // resetHashtagInputWidth();
     //   // resetHashtagCurrentValue();
     // }
-    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-    }
-  }
+    // if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
+    //   hashtagRef.current.value = "";
+    //   setHashtags((prev) => [...prev, hashtagInput]);
+    //   setHashtagInput("");
+    //   setHashtagLength(0)
+    // }
+  // }
 
-  function resetHashtagInputWidth(): void {
-    setHashtagInputWidth(HASHTAG_WIDTH);
-  }
+  // function resetHashtagInputWidth(): void {
+  //   setHashtagInputWidth(HASHTAG_WIDTH);
+  // }
 
-  function resetHashtagCurrentValue(): void {
-    enteredHashtag.current!.value = "";
-  }
+  // function resetHashtagCurrentValue(): void {
+  //   enteredHashtag.current!.value = "";
+  // }
 
-  function getEnteredHashtag(): string {
-    return enteredHashtag.current!.value;
-  }
+  // function getEnteredHashtag(): string {
+  //   return enteredHashtag.current!.value;
+  // }
 
   function isDuplicateHashtag(value: string): boolean {
     const isDuplicate = uploadData.keyword.includes(value);
@@ -267,32 +283,32 @@ export default function UploadInfo(props: propsType) {
     return isDuplicate;
   }
 
-  function addHashtag(): void {
-    isMaxHashtags() && appendHashtag();
-  }
+  // function addHashtag(): void {
+  //   isMaxHashtags() && appendHashtag();
+  // }
 
-  function isMaxHashtags(): boolean {
-    return uploadData.keyword.length < 3;
-  }
+  // function isMaxHashtags(): boolean {
+  //   return uploadData.keyword.length < 3;
+  // }
 
-  function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
-    isEnterKey(e) && addHashtag();
-  }
+  // function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
+  //   isEnterKey(e) && addHashtag();
+  // }
 
   function restrictInput(ref: any): void {
     ref.current!.value = ref.current!.value.slice(0, -1);
   }
 
-  function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputLength = e.target.value.length;
+  // function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const inputLength = e.target.value.length;
 
-    if (checkMaxInputLength(inputLength, 10)) {
-      setHashtagLength(inputLength);
-      setHashtagInputWidth(Number(e.target.value));
-    } else {
-      restrictInput(enteredHashtag);
-    }
-  }
+  //   if (checkMaxInputLength(inputLength, 10)) {
+  //     setHashtagLength(inputLength);
+  //     setHashtagInputWidth(Number(e.target.value));
+  //   } else {
+  //     restrictInput(enteredHashtag);
+  //   }
+  // }
 
   // function deleteHashtag(index: number) {
   //   const deleteTag = uploadData.keyword;
@@ -312,13 +328,13 @@ export default function UploadInfo(props: propsType) {
   //   return enteredHashtag.current!.value.length === 0;
   // }
 
-  function changeHashtagInputWidth(inputWidth: number): void {
-    enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
-  }
+  // function changeHashtagInputWidth(inputWidth: number): void {
+  //   enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
+  // }
 
-  function makeZeroInputWidth(width: number): void {
-    // enteredHashtag!.current!.style.width = width + "rem";
-  }
+  // function makeZeroInputWidth(width: number): void {
+  //   // enteredHashtag!.current!.style.width = width + "rem";
+  // }
 
   //소개글
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -365,7 +381,7 @@ export default function UploadInfo(props: propsType) {
 
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      appendHashtag();
+      completeHashtag() 
     }
   }
 
@@ -375,6 +391,10 @@ export default function UploadInfo(props: propsType) {
       ? setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요.")
       : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
   }, []);
+
+  function isKorean(){
+    return tagMaxLength===5;
+  }
 
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
@@ -447,10 +467,10 @@ export default function UploadInfo(props: propsType) {
               {hashtags.map((hashtag, index) => {
                 return (
                   <Hashtag key={index}>
-                    <HashtagWrapper>
+                    <CompleteHashtagWrapper>
                       <HashtagSharp># </HashtagSharp>
                       <CompletedHashtag>{hashtag}</CompletedHashtag>
-                    </HashtagWrapper>
+                    </CompleteHashtagWrapper>
                     <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                   </Hashtag>
                 );
@@ -464,16 +484,17 @@ export default function UploadInfo(props: propsType) {
                       onKeyPress={(e) => {
                         e.key === "Enter" && completeHashtag();
                       }}
-                      inputWidth={hashtagInput.length}
+                      inputWidth={hashtagLength}
+                      isKorean={isKorean()}
                       ref={hashtagRef}
                       placeholder="HashTag"
-                      maxLength={10}
+                      maxLength={tagMaxLength}
                     />
                   </HashtagWrapper>
                 </Hashtag>
               )}
 
-              {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+              {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
             </InputHashtagWrapper>
 
             <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
@@ -491,7 +512,7 @@ export default function UploadInfo(props: propsType) {
                   </WarningTextWrapper>
                 </>
               ) : (
-                <HashtagWarningIc />
+                <HashtagWarningIcon />
               )}
             </WarningIcon>
           </InputBox>
@@ -535,6 +556,7 @@ export default function UploadInfo(props: propsType) {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
+              {/* {category === Categories[index] && <CheckCategoryIc />} */}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>
@@ -807,7 +829,7 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 // `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  margin-left: 1rem;
+  margin-right: 0.5rem;
   cursor: pointer;
 `;
 
@@ -854,6 +876,12 @@ const Hashtag = styled.div`
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 0.5rem 0 1.5rem;
+`;
+
+const CompleteHashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
   padding: 0 1.5rem;
 `;
 
@@ -863,8 +891,8 @@ const HashtagSharp = styled.p`
   margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -892,3 +920,8 @@ const IconWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
+
+const HashtagWarningIcon=styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`

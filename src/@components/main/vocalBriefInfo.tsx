@@ -54,11 +54,11 @@ export default function VocalBriefInfo(props: UserPropsType) {
       <Blank></Blank>
       {isShow && (
         <UserInfoContainer>
-          <InfoBox>
+          <InfoBox onClick={moveToMypage}>
             <ImageWrapper>
               <InfoProfileImage src={profileData?.profileImage} onClick={moveToMypage} />
             </ImageWrapper>
-            <TextWrapper onClick={moveToMypage}>
+            <TextWrapper>
               <InfoUserName>{profileData?.name}</InfoUserName>
               <MainInfoVocalIc />
               <UserEmail>{profileData?.contact}</UserEmail>

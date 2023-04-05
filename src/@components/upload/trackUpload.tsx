@@ -106,6 +106,7 @@ const TrackUploadImage = styled.img<{ hoverState: boolean }>`
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
+  width: 18.9rem;
   position: absolute;
   top: 47.95rem;
   left: 42.8rem;
