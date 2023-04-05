@@ -164,6 +164,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToProfile();
               scrollToTop();
+              setPortfolioData([]);
               excuteGetData();
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
@@ -174,6 +175,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToVocalSearch();
               scrollToTop();
+              setSelectingTracksData([]);
               excuteGetData();
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
