@@ -22,10 +22,11 @@ interface PropsType {
   closeComment: () => void;
   beatId: number;
   isClosed: boolean | undefined;
+  title: string | undefined;
 }
 
 export default function UserComment(props: PropsType) {
-  const { closeComment, beatId, isClosed } = props;
+  const { closeComment, beatId, isClosed, title } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
   const { key, excuteGetData } = useInfiniteKey();
@@ -47,6 +48,7 @@ export default function UserComment(props: PropsType) {
   const [commentId, setCommentId] = useState<number>(0);
   const [startUpload, setStartUpload] = useState<boolean>(false);
   const [startUpdate, setStartUpdate] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   const [clickUpload, setClickUpload] = useState<boolean>(false);
   const [clickPost, setClickPost] = useState<boolean>(false);
@@ -59,24 +61,20 @@ export default function UserComment(props: PropsType) {
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        // console.log(key);
         return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
       },
       refetchOnWindowFocus: false,
     },
   );
 
-  console.log(isEnd);
-  console.log(key);
-  console.log(getUploadData);
-
-  const { audioInfos } = usePlayerInfos(clickedIndex, data?.pages[0]?.response[clickedIndex], key);
+  const { audioInfos } = usePlayerInfos(clickedIndex, comments, "comment");
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
       setComments((prev) => (prev ? [...prev, ...response] : [...response]));
+      setCurrentPage(currentPage + 1);
       return { response, nextPage: page + 1 };
     }
   }
@@ -84,20 +82,16 @@ export default function UserComment(props: PropsType) {
   //post
   const { mutate: post } = useMutation(() => postComment(uploadData, beatId), {
     onSuccess: () => {
-      console.log(uploadData);
       setComments([]);
       if (clickPost === true) {
         queryClient.invalidateQueries("comments");
         setContent("");
         setAudioFile(null);
-        //  setIsCompleted(false);
-        console.log(clickPost);
         setIsEnd(!isEnd);
         setComments([]);
         setClickPost(false);
         setClickPost(false);
         setStartUpload(false);
-        console.log("포스트성공");
         setComments([]);
       } else {
         setClickPost(false);
@@ -109,14 +103,12 @@ export default function UserComment(props: PropsType) {
 
   useEffect(() => {
     post();
-    console.log("포스트시작");
   }, [isCompleted]);
   //post end
 
   //update
   const { mutate: update } = useMutation(() => updateComment(uploadData, commentId), {
     onSuccess: () => {
-      console.log("댓글성공");
       setComments([]);
       if (clickUpload === true) {
         queryClient.invalidateQueries("comments");
@@ -132,7 +124,6 @@ export default function UserComment(props: PropsType) {
 
   useEffect(() => {
     update();
-    console.log("지나감2");
   }, [isUpdated]);
   //update end
 
@@ -174,6 +165,12 @@ export default function UserComment(props: PropsType) {
   function changeClickUpload() {
     setClickUpload(true);
   }
+
+  useEffect(() => {
+    if (title) {
+      audioInfos.title = title;
+    }
+  }, [clickedIndex]);
 
   return (
     <>
@@ -237,10 +234,12 @@ export default function UserComment(props: PropsType) {
 
 const CommentWriteWrapper = styled.div`
   /* position: fixed; */
+  height: 100%;
 `;
 
 const CommentContainer = styled.section`
   width: 107.7rem;
+  min-height: 100vh;
   float: right;
   background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
@@ -282,12 +281,13 @@ const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
 
 const BlurSection = styled.div`
   height: 32rem;
-  width: 107.7rem;
+  /* width: 107.7rem; */
+  width: 100%;
   /* position: relative; */
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
   bottom: 0;
   position: sticky;
-  padding-left: 7.5rem;
+  margin-left: -6.5rem;
 `;
 
 const InfiniteWrapper = styled.div`
