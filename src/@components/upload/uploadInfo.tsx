@@ -22,6 +22,7 @@ import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
 import { isVocal } from "../../utils/common/userType";
 import { isClickedOutside } from "../../utils/common/modal";
+import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 interface propsType {
   uploadData: UploadInfoDataType;
@@ -66,6 +67,7 @@ export default function UploadInfo(props: propsType) {
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
 
   useEffect(() => {
     setUploadData((prevState) => {
@@ -75,12 +77,22 @@ export default function UploadInfo(props: propsType) {
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
-  }
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    console.log(e.target.value.length)
+    
+    checkHashtagLength(e.target.value)?(
+      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
+    ):(
+      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
+    }
+  
   function completeHashtag() {
     if (hashtagRef.current) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
       setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
@@ -465,10 +477,10 @@ export default function UploadInfo(props: propsType) {
                       onKeyPress={(e) => {
                         e.key === "Enter" && completeHashtag();
                       }}
-                      inputWidth={hashtagInput.length}
+                      inputWidth={hashtagLength}
                       ref={hashtagRef}
                       placeholder="HashTag"
-                      maxLength={10}
+                      maxLength={tagMaxLength}
                     />
                   </HashtagWrapper>
                 </Hashtag>
@@ -808,7 +820,7 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 // `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  margin-left: 1rem;
+  margin-right: 0.5rem;
   cursor: pointer;
 `;
 
@@ -865,7 +877,7 @@ const HashtagSharp = styled.p`
 `;
 
 const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 1.6)}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
