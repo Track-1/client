@@ -488,7 +488,7 @@ export default function UploadInfo(props: propsType) {
                 </Hashtag>
               )}
 
-              {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+              {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
             </InputHashtagWrapper>
 
             <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
@@ -506,7 +506,7 @@ export default function UploadInfo(props: propsType) {
                   </WarningTextWrapper>
                 </>
               ) : (
-                <HashtagWarningIc />
+                <HashtagWarningIcon />
               )}
             </WarningIcon>
           </InputBox>
@@ -913,3 +913,8 @@ const IconWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
+
+const HashtagWarningIcon=styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
