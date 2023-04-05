@@ -20,6 +20,7 @@ import { EditDataType } from "../../type/editDataType";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import useHover from "../../utils/hooks/useHover";
 import ProfileWarning from '../@common/profileWarning';
+import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 export default function SignupProfile(props:SignupProfilePropsTye) {
   const {setStep, userProfile, setUserProfile}=props;
@@ -49,8 +50,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     setHashtagInput(e.target.value);
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    console.log(e.target.value.length)
-    
     checkHashtagLength(e.target.value)?(
       e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
     ):(
@@ -58,12 +57,12 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     }
   
   function completeHashtag() {
-    if (hashtagRef.current) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-      setHashtagInput("");
-      setHashtagLength(0);
-    }
+      if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+        hashtagRef.current.value = "";
+        setHashtags((prev) => [...prev, hashtagInput]);
+        setHashtagInput("");
+        setHashtagLength(0);
+      }
   }
 
   function deleteHashtag(index: number) {
@@ -73,27 +72,27 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     setHashtagInput("");
   }
 
-  function appendHashtag(): void {
-    // const hashtag = getEnteredHashtag();
-    // if (!isDuplicateHashtag(hashtag)) {
-    //   setUploadData((prevState) => {
-    //     return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
-    //   });
-    //   // resetHashtagInputWidth();
-    //   // resetHashtagCurrentValue();
-    // }
-    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = userProfile.keyword.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+      completeHashtag() 
+      setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
-  function isDuplicateHashtag(value: string): boolean {
-    // const isDuplicate = uploadData.keyword.includes(value);
-    // isDuplicate && alert("중복된 해시태그 입니다!");
-    // return isDuplicate;
-  }
-  
   function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescriptionInput(e.target.value);
   }
@@ -202,7 +201,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
               </Hashtag>
             )} */}
             
-            {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+            {/* {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />} */}
 
             {hashtags.map((hashtag, index) => {
                 return (
@@ -335,10 +334,11 @@ const Hashtag = styled.div`
 
   height: 3.8rem;
 
-  background-color: ${({ theme }) => theme.colors.gray5};
+  background-color: ${({ theme }) => theme.colors.gray4};
   border-radius: 2.1rem;
 
   padding-right: 1rem;
+  margin-right: 1rem;  
 `;
 
 const HashtagWrapper = styled.div`
