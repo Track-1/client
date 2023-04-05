@@ -108,6 +108,10 @@ export default function ProfileEditInfo(props: PropsType) {
       getHashtagInput() 
     }
   }
+
+  function isKorean(){
+    return tagMaxLength===5;
+  }
   
   return (
     <>
@@ -167,6 +171,7 @@ export default function ProfileEditInfo(props: PropsType) {
                     e.key === "Enter" && getHashtagInput();
                   }}
                   inputWidth={hashtagLength}
+                  isKorean={isKorean()}
                   placeholder="HashTag"
                   maxLength={tagMaxLength}
                   ref={hashtagRef} 
@@ -261,6 +266,8 @@ const CategoryBox = styled.ul`
   ${({ theme }) => theme.fonts.hashtag}
 
   margin-top: 2.2rem;
+
+  cursor: pointer;
 `;
 
 const CategoryItem = styled.li<{ isSelected: boolean }>`
@@ -307,8 +314,8 @@ const HashtagSharp = styled.p`
   margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : (inputWidth <=5 ?inputWidth * 1.5+1:inputWidth *1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};

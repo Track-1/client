@@ -77,6 +77,7 @@ export default function UploadInfo(props: propsType) {
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
+    setHashtagLength(e.target.value.length);
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
     console.log(e.target.value.length)
@@ -391,6 +392,10 @@ export default function UploadInfo(props: propsType) {
       : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
   }, []);
 
+  function isKorean(){
+    return tagMaxLength===5;
+  }
+
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
@@ -480,6 +485,7 @@ export default function UploadInfo(props: propsType) {
                         e.key === "Enter" && completeHashtag();
                       }}
                       inputWidth={hashtagLength}
+                      isKorean={isKorean()}
                       ref={hashtagRef}
                       placeholder="HashTag"
                       maxLength={tagMaxLength}
@@ -884,8 +890,8 @@ const HashtagSharp = styled.p`
   margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : (inputWidth <=5 ?inputWidth * 1.5+1:inputWidth *1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
