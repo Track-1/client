@@ -101,6 +101,19 @@ export default function ProfileEditInfo(props: PropsType) {
     isDuplicate && alert("중복된 해시태그 입니다!");
     return isDuplicate;
   }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+      getHashtagInput() 
+    }
+  }
   
   return (
     <>
