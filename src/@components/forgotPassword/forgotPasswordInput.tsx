@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import { useSendNewPasswordEmail } from "../../utils/hooks/useSendNewPasswordEmail";
 import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
 import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
+import { useMutation } from "react-query";
+import { postNewPassword } from "../../core/api/newPassword";
+import { setCookie } from "../../utils/cookie";
 
 export default function ForgotPasswordInput() {
   const [email, setEmail] = useState<string>("");
@@ -24,10 +27,19 @@ export default function ForgotPasswordInput() {
   const [resendTrigger, setResendTrigger] = useState<boolean>(false);
   const [emailMessage, setEmailMessage] = useState<string>(emailInvalidMessage.NULL);
   const [recentEmail, setRecentEmail] = useState<string>("");
-  const [isSameRecentEmail, setIsSameRecentEmail] = useState<boolean>(false);
+  const [isSameRecentEmail, setIsSameRecentEmail] = useState<boolean>(true);
 
-  const { mutate, isSuccess, isError, error } = useSendNewPasswordEmail(userType, email);
-
+  const { mutate, isSuccess, isError, error } = useMutation(() => postNewPassword(userType, email), {
+    onSuccess: (data) => {
+      const token = data.data.data.token;
+      setCookie("forgotPasswordToken", token, { path: "/" });
+      setIsSameRecentEmail(true);
+      setRecentEmail(email);
+    },
+    onError: (error: any) => {
+      error.response.status === 401 && alert(error.response.data.message);
+    },
+  });
   useEffect(() => {
     isProducerMode ? setUserType("producer") : setUserType("vocal");
   }, [isProducerMode]);
@@ -35,19 +47,12 @@ export default function ForgotPasswordInput() {
   useEffect(() => {
     if (isSuccess) {
       setResendTrigger(true);
-      setIsSameRecentEmail(true);
-      // setRecentEmail(email);
     }
   }, [isSuccess]);
 
   useEffect(() => {
-    console.log();
     error?.response.status === 401 && setEmailMessage("We don’t have an account with that email address");
   }, [isError]);
-
-  function isNotSignupEmail() {
-    return isError && error?.response.status === 401;
-  }
 
   useEffect(() => {
     email === recentEmail ? setIsSameRecentEmail(true) : setIsSameRecentEmail(false);
@@ -66,7 +71,6 @@ export default function ForgotPasswordInput() {
 
   function onRequestCapsulation() {
     mutate();
-    isSuccess && setRecentEmail(email);
   }
 
   function isInputWarnning() {
@@ -76,17 +80,17 @@ export default function ForgotPasswordInput() {
     ) {
       return true;
     }
+
     if (emailMessage === emailInvalidMessage.NULL || emailMessage === emailInvalidMessage.SUCCESS) {
       return false;
     }
-    return false;
   }
 
   function requestBtnType() {
     if (!checkEmailForm(email)) {
       return <RequestResetPasswordDefaultBtnIcon />;
     } else {
-      if (resendTrigger && isSameRecentEmail && isSuccess) {
+      if (resendTrigger && isSameRecentEmail) {
         return isProducerMode ? (
           <ResendPasswordProducerBtnIcon onClick={() => onRequestCapsulation()} />
         ) : (
@@ -109,6 +113,8 @@ export default function ForgotPasswordInput() {
       <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
     );
   }
+  console.log(recentEmail);
+  console.log(emailMessage);
 
   return (
     <Container>
@@ -121,14 +127,14 @@ export default function ForgotPasswordInput() {
           <InputWrapper>
             <Input placeholder="Enter your email address" onChange={writeEmail} />
             {isInputWarnning() && <InputWarningIcon />}
-            {isError && isSameRecentEmail && <InputWarningIcon />}
           </InputWrapper>
           <UnderLine inputState={emailMessage} />
         </InputBox>
         <>
-          {isNotSignupEmail() && isSameRecentEmail && <WarningMessage>{emailMessage}</WarningMessage>}
+          {isSameRecentEmail && isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
           {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
-          {isSuccess && checkEmailForm(email) && isSameRecentEmail && (
+
+          {checkEmailForm(email) && isSameRecentEmail && (
             <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
           )}
         </>
