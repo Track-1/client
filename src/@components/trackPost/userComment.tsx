@@ -166,6 +166,11 @@ export default function UserComment(props: PropsType) {
     setClickUpload(true);
   }
 
+  function closeCommentPage() {
+    closeComment();
+    pausesPlayerAudio();
+  }
+
   useEffect(() => {
     if (title) {
       audioInfos.title = title;
@@ -176,7 +181,7 @@ export default function UserComment(props: PropsType) {
     <>
       <CommentContainer>
         <CloseCommentBtn>
-          <CloseBtnIcon onClick={closeComment} />
+          <CloseBtnIcon onClick={closeCommentPage} />
         </CloseCommentBtn>
         <form>
           <CommentWrite
