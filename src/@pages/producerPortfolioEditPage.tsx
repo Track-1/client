@@ -166,9 +166,8 @@ export default function ProducerPortfolioEditPage() {
               ) : (
                 <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지"  isImageHovered={isImageHovered}/>
               )}
-            </TrackUploadImageWrapper>
-            {isImageHovered&&(
-            <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+            </TrackUploadImageWrapper>            
+            {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
             <FileChangeIcon />
             </label>)}
           </TrackImageBox>
@@ -280,22 +279,6 @@ export default function ProducerPortfolioEditPage() {
                   <ProfileWarningWrapper>
                   <ProfileWarning/>
                   </ProfileWarningWrapper>
-                  {/* <WarningIcon>
-                    <>
-                      <HoverHashtagWarningIc onClick={toggleHashtagWarningOpen} />
-                      {hashtagWarningOpen && (
-                        <WarningTextWrapper>
-                          <WarningText>
-                            1. 해시태그는 최대 3개까지 추가 가능합니다.
-                            <br />
-                            2. 최대 10자까지 작성이 가능합니다.
-                            <br />
-                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                          </WarningText>
-                        </WarningTextWrapper>
-                      )}
-                    </>
-                  </WarningIcon> */}
                 </InputBox>
               </InfoItemBox>
 
