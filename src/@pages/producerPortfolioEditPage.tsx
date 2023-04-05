@@ -22,6 +22,7 @@ import { CategoriesDropdownType, CategoryIdType } from "../type/CategoryChecksTy
 import { useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
 import BackButton from "../@components/@common/backButton";
+import ProfileWarning from "../@components/@common/profileWarning";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -166,9 +167,10 @@ export default function ProducerPortfolioEditPage() {
                 <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지"  isImageHovered={isImageHovered}/>
               )}
             </TrackUploadImageWrapper>
+            {isImageHovered&&(
             <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-              <FileChangeIcon />
-            </label>
+            <FileChangeIcon />
+            </label>)}
           </TrackImageBox>
           <input
             type="file"
@@ -275,8 +277,10 @@ export default function ProducerPortfolioEditPage() {
                       </>
                     </>
                   </InputWrapper>
-
-                  <WarningIcon>
+                  <ProfileWarningWrapper>
+                  <ProfileWarning/>
+                  </ProfileWarningWrapper>
+                  {/* <WarningIcon>
                     <>
                       <HoverHashtagWarningIc onClick={toggleHashtagWarningOpen} />
                       {hashtagWarningOpen && (
@@ -291,7 +295,7 @@ export default function ProducerPortfolioEditPage() {
                         </WarningTextWrapper>
                       )}
                     </>
-                  </WarningIcon>
+                  </WarningIcon> */}
                 </InputBox>
               </InfoItemBox>
 
@@ -755,3 +759,10 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   margin-left: 1rem;
   cursor: pointer;
 `;
+
+const ProfileWarningWrapper=styled.section`
+  position: absolute;
+  margin-top: 1rem;
+  margin-right: 10rem;
+  right: 0;
+`
