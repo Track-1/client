@@ -87,7 +87,7 @@ export default function ProfileEditInfo(props: PropsType) {
   //   }
   // }
   function getHashtagInput() {
-    if (hashtagRef.current) {
+    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       updateHashtag(hashtagText);
       setHashtagText("");
@@ -96,12 +96,11 @@ export default function ProfileEditInfo(props: PropsType) {
     }
   }
 
-  // function completeHashtag() {
-  //   // if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
-  //   //   hashtagRef.current.value = "";
-  //     updateHashtag(hashtagText);
-  //     setHashtagText("");
-  //   }
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = hashtags.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
   
   return (
     <>
