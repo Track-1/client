@@ -80,6 +80,7 @@ export default function UploadInfo(props: propsType) {
     if (hashtagRef.current) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
     }
   }
 

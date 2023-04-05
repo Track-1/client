@@ -49,7 +49,7 @@ export default function ProfileEditInfo(props: PropsType) {
     HOUSE: false,
     FUNK: false,
   });
-  const [hashtagText, setHashtagText] = useState<string>("");
+  const [hashtagText, setHashtagText] = useState<string>("HashTag");
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
