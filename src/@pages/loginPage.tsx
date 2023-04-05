@@ -1,7 +1,6 @@
 import Footer from "../@components/@common/footer";
 import backgroundImg from "../assets/image/backgroundImg.png";
 import LoginInput from "../@components/login/loginInput";
-import BackButton from "../@components/@common/backButton";
 import styled from "styled-components";
 import { BackButtonIc } from "../assets";
 import useMovePage from "../utils/hooks/useMovePage";

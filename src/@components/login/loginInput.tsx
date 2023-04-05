@@ -83,7 +83,8 @@ export default function LoginInput() {
     const inputEmail = e.target.value;
 
     if (!inputEmail) {
-      setEmailInputState("null");
+      setEmailInputState("");
+      return;
     }
 
     if (!checkEmailForm(inputEmail)) {
@@ -99,6 +100,7 @@ export default function LoginInput() {
 
     if (!inputPassword) {
       setPasswordInputState("");
+      return;
     }
 
     if (!checkPasswordForm(inputPassword)) {
