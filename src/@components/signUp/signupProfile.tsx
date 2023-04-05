@@ -42,14 +42,27 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   });
   const [contactInput, setContactInput]=useState<string>("");
   const [isWrite, setIsWrite]=useState<boolean>(false);
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
-  }
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    console.log(e.target.value.length)
+    
+    checkHashtagLength(e.target.value)?(
+      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
+    ):(
+      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
+    }
+  
   function completeHashtag() {
     if (hashtagRef.current) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
@@ -60,6 +73,27 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     setHashtagInput("");
   }
 
+  function appendHashtag(): void {
+    // const hashtag = getEnteredHashtag();
+    // if (!isDuplicateHashtag(hashtag)) {
+    //   setUploadData((prevState) => {
+    //     return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
+    //   });
+    //   // resetHashtagInputWidth();
+    //   // resetHashtagCurrentValue();
+    // }
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
+      hashtagRef.current.value = "";
+      setHashtags((prev) => [...prev, hashtagInput]);
+    }
+  }
+
+  function isDuplicateHashtag(value: string): boolean {
+    // const isDuplicate = uploadData.keyword.includes(value);
+    // isDuplicate && alert("중복된 해시태그 입니다!");
+    // return isDuplicate;
+  }
+  
   function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescriptionInput(e.target.value);
   }
@@ -139,7 +173,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           <ProfileWarning/>
             </HashIconWrapper>
           <InputHashtagWrapper>
-          {hashtags.map((hashtag, index) => {
+          {/* {hashtags.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
                   <HashtagWrapper>
@@ -166,9 +200,40 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                   />
                 </HashtagWrapper>
               </Hashtag>
-            )}
+            )} */}
             
             {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+
+            {hashtags.map((hashtag, index) => {
+                return (
+                  <Hashtag key={index}>
+                    <CompleteHashtagWrapper>
+                      <HashtagSharp># </HashtagSharp>
+                      <CompletedHashtag>{hashtag}</CompletedHashtag>
+                    </CompleteHashtagWrapper>
+                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                  </Hashtag>
+                );
+              })}
+              {hashtags.length < 3 && (
+                <Hashtag>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <HashtagInput
+                      onChange={getInputText}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && completeHashtag();
+                      }}
+                      inputWidth={hashtagLength}
+                      ref={hashtagRef}
+                      placeholder="HashTag"
+                      maxLength={tagMaxLength}
+                    />
+                  </HashtagWrapper>
+                </Hashtag>
+              )}
+
+              {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
           
         </HashtagContainer>
@@ -279,26 +344,26 @@ const Hashtag = styled.div`
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 0.5rem 0 1.5rem;
+`;
 
+const CompleteHashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
   padding: 0 1.5rem;
 `;
 
 const HashtagSharp = styled.p`
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
-
   margin-right: 0.6rem;
 `;
 
 const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
-
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : (inputWidth <=5 ?inputWidth * 1.5+1:inputWidth *1.2+1))}rem;
   display: flex;
-
   ${({ theme }) => theme.fonts.hashtag};
-
   color: ${({ theme }) => theme.colors.gray1};
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }

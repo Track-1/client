@@ -50,6 +50,7 @@ export default function ProfileEditInfo(props: PropsType) {
     FUNK: false,
   });
   const [hashtagText, setHashtagText] = useState<string>("HashTag");
+  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
@@ -73,6 +74,7 @@ export default function ProfileEditInfo(props: PropsType) {
     }
   }
 
+  
   return (
     <>
       <InfoContainer>
@@ -109,7 +111,7 @@ export default function ProfileEditInfo(props: PropsType) {
             <ProfileWarning />
           </HashIconWrapper>
           <InputHashtagWrapper>
-            {hashtags?.map((hashtag, index) => {
+             {hashtags?.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
                   <HashtagWrapper>
@@ -120,15 +122,46 @@ export default function ProfileEditInfo(props: PropsType) {
                 </Hashtag>
               );
             })}
+             
             {hashtags?.length < 3 && (
               <Hashtag>
-                <HashtagWrapper>
+                <CompleteHashtagWrapper>
                   <HashtagSharp># </HashtagSharp>
                   <HashtagInput onChange={checkHashtagText} onKeyUp={getHashtagInput} value={hashtagText} />
-                </HashtagWrapper>
+                </CompleteHashtagWrapper>
               </Hashtag>
             )}
-            {hashtags.length < 3 && <AddHashtagIcon />}
+
+
+              {/* {hashtags.map((hashtag, index) => {
+                return (
+                  <Hashtag key={index}>
+                    <CompleteHashtagWrapper>
+                      <HashtagSharp># </HashtagSharp>
+                      <CompletedHashtag>{hashtag}</CompletedHashtag>
+                    </CompleteHashtagWrapper>
+                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                  </Hashtag>
+                );
+              })} */}
+            {hashtags.length < 3 && (
+                <Hashtag>
+                  <HashtagWrapper>
+                    <HashtagSharp># </HashtagSharp>
+                    <HashtagInput
+                      onChange={getInputText}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && completeHashtag();
+                      }}
+                      inputWidth={hashtagLength}
+                      ref={hashtagRef}
+                      placeholder="HashTag"
+                      maxLength={tagMaxLength}
+                    />
+                  </HashtagWrapper>
+                </Hashtag>
+              )}
+            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
         </HashtagContainer>
         <DescriptionContainer>
@@ -357,4 +390,10 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
 
 const HashIconWrapper = styled.div`
   display: flex;
+`;
+
+const CompleteHashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
 `;

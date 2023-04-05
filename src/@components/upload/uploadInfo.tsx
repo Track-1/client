@@ -88,7 +88,7 @@ export default function UploadInfo(props: propsType) {
     }
   
   function completeHashtag() {
-    if (hashtagRef.current) {
+    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
       setHashtagInput("");
@@ -256,10 +256,12 @@ export default function UploadInfo(props: propsType) {
     //   // resetHashtagInputWidth();
     //   // resetHashtagCurrentValue();
     // }
-    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-    }
+    // if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
+    //   hashtagRef.current.value = "";
+    //   setHashtags((prev) => [...prev, hashtagInput]);
+    //   setHashtagInput("");
+    //   setHashtagLength(0)
+    // }
   }
 
   function resetHashtagInputWidth(): void {
@@ -378,7 +380,7 @@ export default function UploadInfo(props: propsType) {
 
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      appendHashtag();
+      completeHashtag() 
       setHashtagInput("");
       setHashtagLength(0);
     }
