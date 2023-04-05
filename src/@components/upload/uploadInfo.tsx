@@ -381,8 +381,6 @@ export default function UploadInfo(props: propsType) {
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
       completeHashtag() 
-      setHashtagInput("");
-      setHashtagLength(0);
     }
   }
 

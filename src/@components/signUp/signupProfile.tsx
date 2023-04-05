@@ -88,8 +88,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
       completeHashtag() 
-      setHashtagInput("");
-      setHashtagLength(0);
     }
   }
 
@@ -172,37 +170,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
           <ProfileWarning/>
             </HashIconWrapper>
           <InputHashtagWrapper>
-          {/* {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
-                  <HashtagWrapper>
-                    <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </HashtagWrapper>
-                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                </Hashtag>
-              );
-            })}
-            {hashtags.length < 3 && (
-              <Hashtag>
-                <HashtagWrapper>
-                  <HashtagSharp># </HashtagSharp>
-                  <HashtagInput
-                    onChange={getInputText}
-                    onKeyPress={(e) => {
-                      e.key === "Enter" && completeHashtag();
-                    }}
-                    inputWidth={hashtagInput.length}
-                    ref={hashtagRef}
-                    placeholder="HashTag"
-                    maxLength={10}
-                  />
-                </HashtagWrapper>
-              </Hashtag>
-            )} */}
-            
-            {/* {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />} */}
-
             {hashtags.map((hashtag, index) => {
                 return (
                   <Hashtag key={index}>
