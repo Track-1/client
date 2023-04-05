@@ -345,22 +345,6 @@ export default function VocalPortfolioEditPage() {
                   <ProfileWarningWrapper>
                   <ProfileWarning/>
                   </ProfileWarningWrapper>
-                  {/* <WarningIcon>
-                    <>
-                      <HoverHashtagWarningIc onClick={toggleHashtagWarningOpen} />
-                      {hashtagWarningOpen && (
-                        <WarningTextWrapper>
-                          <WarningText>
-                            1. 해시태그는 최대 3개까지 추가 가능합니다.
-                            <br />
-                            2. 최대 10자까지 작성이 가능합니다.
-                            <br />
-                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                          </WarningText>
-                        </WarningTextWrapper>
-                      )}
-                    </>
-                  </WarningIcon> */}
                 </InputBox>
               </InfoItemBox>
 
@@ -390,7 +374,7 @@ export default function VocalPortfolioEditPage() {
                 <DropMenuWrapper>
                   {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
-                      <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>{text}</DropMenuText>
                       {category === Categories[index] && <CheckCategoryIc />}
                     </DropMenuItem>
                   ))}
@@ -772,7 +756,8 @@ const DropMenuItem = styled.li`
   cursor: pointer;
 `;
 
-const DropMenuText = styled.p`
+const DropMenuText = styled.p<{isClicked:boolean}>`
+  color: ${({theme,isClicked})=>isClicked?theme.colors.white:theme.colors.gray3};
   height: 2rem;
 `;
 
@@ -785,11 +770,15 @@ const WarningIcon = styled.div`
 `;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+  width: 4rem;
+  height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
 `;
@@ -819,7 +808,7 @@ const CompletedHashtag = styled.article`
   display: flex;
   align-items: center;
 
-  padding-left: 0.5rem;
+  //padding-left: 0.5rem;
   color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.fonts.hashtag}
