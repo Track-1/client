@@ -9,15 +9,19 @@ export function uploadImage(
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>,
 ): void {
   const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
-  if (checkImageType(uploadName) && e.target.files) {
-    const file = e.target.files[0];
-    const fileUrl: string = getFileURL(file);
-    const imageSize: number = getFileSize(file);
-    if (checkImageSize(imageSize)) {
-      setUploadImg(fileUrl);
-      setUploadData((prevState) => {
-        return { ...prevState, jacketImage: file };
-      });
+  if (e.target.files?.length===0) {
+    //alert("사진삽입이 취소되었습니다.")
+  }else{
+    if (checkImageType(uploadName) && e.target.files) {
+      const file = e.target.files[0];
+      const fileUrl: string = getFileURL(file);
+      const imageSize: number = getFileSize(file);
+      if (checkImageSize(imageSize)) {
+        setUploadImg(fileUrl);
+        setUploadData((prevState) => {
+          return { ...prevState, jacketImage: file };
+        });
+      }
     }
   }
 }
