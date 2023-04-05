@@ -218,15 +218,15 @@ export default function VocalPortfolioEditPage() {
           <VocalUploadFrameIcon />
           <VocalImageBox>
             <VocalImageFrame onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                 {isImageUploaded ? (
-                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
                 ) : (
-                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" />
+                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
                 )}
-              </label>
+              </TrackUploadImageWrapper>
               <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                <FileChangeIcon />
+                <FileChangeIcon/>
               </label>
             </VocalImageFrame>
           </VocalImageBox>
@@ -461,19 +461,11 @@ const Container2 = styled.section`
 const SectionWrapper = styled.div`
   position: relative;
   height: 100%;
-  /* width: 138.2rem; */
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  /* border: 0.2rem solid transparent;
-  border-top-left-radius: 37.8rem;
-  border-bottom-left-radius: 37.8rem;
-  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
-    linear-gradient(to right, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
-  background-origin: border-box;
-  background-clip: content-box, border-box; */
 `;
 
 const VocalImageBox = styled.div`
@@ -487,34 +479,49 @@ const VocalImageBox = styled.div`
 `;
 
 const VocalImageFrame = styled.div`
-  position: absolute;
-  height: 45.1rem;
-  width: 45.1rem;
-
-  margin-left: 7.8rem;
-  margin-bottom: 2rem;
-  border-radius: 5rem;
-  transform: rotate(45deg);
-  overflow: hidden;
-  object-fit: cover;
-  :hover {
-    filter: blur(3rem);
-  }
+    margin-top: -46rem;
+    margin-left: 10rem;
 `;
 
-const TrackUploadImage = styled.img`
-  width: 60.4rem;
-  height: 60.4rem;
-  object-fit: cover;
+const TrackUploadImageWrapper=styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width:45.1rem;
+  height: 45.1rem;
+  border-radius: 5rem;
+  position: absolute;
+  overflow: hidden;
+  transform: rotate(45deg);
+
+`
+const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
   transform: rotate(-45deg);
+  
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width: 150%;
+  height: 135%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
+  filter: blur(${({isImageHovered})=>isImageHovered&&3}rem);
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
+  width: 18.9rem;
   position: absolute;
-  top: 40%;
-  left: 30%;
-  /* transform: translate(-40%, -40%); */
-  transform: rotate(-45deg);
+  
+  margin-left: 12.5rem;
+  margin-top: 15rem;
+  transform: rotate(0deg);
+
 
   cursor: pointer;
 `;
