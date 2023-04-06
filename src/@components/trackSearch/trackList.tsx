@@ -120,7 +120,7 @@ export default function TrackList(props: PropsType) {
               </TrackText>
             </TrackBox>
             {track?.keyword?.map((tag, idx) => (
-              <Tag key={idx}>#{tag}</Tag>
+              <Tag key={idx}># {tag}</Tag>
             ))}
           </Tracks>
         ))}
@@ -247,10 +247,10 @@ const Tag = styled.span`
 
   height: 3.8rem;
 
-  padding: 0.9rem 1.5rem;
-  margin: 0 0.8rem 0 0;
+  padding: 0.7rem 1rem;
+  margin: 0 0.7rem 0 0;
 
-  ${({ theme }) => theme.fonts.body1};
+  ${({ theme }) => theme.fonts.hashtag};
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
 `;
