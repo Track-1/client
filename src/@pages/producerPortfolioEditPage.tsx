@@ -463,24 +463,11 @@ const SectionWrapper = styled.div`
 `;
 
 const TrackImageBox = styled.div`
-  /* width: 60.4rem;
-  height: 60.4rem;
-  border-radius: 50%;
-
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  position: absolute;
-  overflow: hidden; */
-
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 38rem;
-  /* overflow: hidden; */
   cursor: pointer;
 `;
 
@@ -497,17 +484,6 @@ const TrackUploadImageWrapper=styled.label`
 `
 
 const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
-  /* width: 60.4rem;
-  height: 60.4rem; */
-
-//  border-radius: 50%;
-
-  /* background: rgba(30, 32, 37, 0.5);
-  filter: blur(3rem);
-
-  background: default;
-  filter: default; */
-
   display: flex;
   justify-content: center;
   align-items: center;
