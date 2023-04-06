@@ -26,7 +26,7 @@ export default function VocalList(props: PropsType) {
   const { clickedIndex, playAudio } = usePlay(audio, vocalData, "vocals");
 
   function mouseOverPlayVocal(id: number) {
-    setHoverVocal(id);
+    id&&setHoverVocal(id);
   }
 
   function mouseOutPlayVocal() {
@@ -43,7 +43,7 @@ export default function VocalList(props: PropsType) {
   }, [clickedIndex]);
 
   function pauseAudio(id: number) {
-    audio.pause();
+    audio?.pause();
     setPlay(false);
   }
 
@@ -54,16 +54,16 @@ export default function VocalList(props: PropsType) {
   return (
     <VocalListContainer>
       {vocalData &&
-        vocalData.map((vocal, index) => (
+        vocalData?.map((vocal, index) => (
           <VocalContainer key={index}>
             <UsernameInformWrapper>
-              <Username onClick={() => moveVocalProfilePage(vocal.vocalId)}>{vocal.vocalName}</Username>
-              {!vocal.isSelected && <VocalSleepIcon />}
+              <Username onClick={() => moveVocalProfilePage(vocal?.vocalId)}>{vocal?.vocalName}</Username>
+              {!vocal?.isSelected && <VocalSleepIcon />}
             </UsernameInformWrapper>
 
             <CategoryTextWrapper>
-              <CategoryText>{vocal.category[0]}</CategoryText>
-              <CategoryNum>+{vocal.totalCategNum}</CategoryNum>
+              <CategoryText>{vocal?.category[0]}</CategoryText>
+              <CategoryNum>+{vocal?.totalCategNum}</CategoryNum>
             </CategoryTextWrapper>
 
             <MusicProfileWrapper
@@ -74,7 +74,7 @@ export default function VocalList(props: PropsType) {
               isClickVocal={clickedIndex === index}
               clickVocal={clickedIndex}>
               <GradientLine>
-                <AlbumCoverImg src={vocal.vocalProfileImage} alt="앨범자켓사진" />
+                <AlbumCoverImg src={vocal?.vocalProfileImage} alt="앨범자켓사진" />
               </GradientLine>
               <GradientProfile
                 isHoverVocal={hoverVocal === index}

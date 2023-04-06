@@ -18,6 +18,9 @@ import { isProducer } from "../../utils/common/userType";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { showPlayerBar } from "../../recoil/player";
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
+import { Navigate, Route, useNavigate } from "react-router-dom";
+import PrivateRoute, { blockAccess } from "../../utils/common/privateRoute";
+import { isCookieNull, isLogin } from "../../utils/common/isLogined";
 
 export default function CategoryList(props: any) {
   const { pausesPlayerAudio, setIsCategorySelected } = props;
@@ -33,6 +36,8 @@ export default function CategoryList(props: any) {
   const userType = useRecoilValue(LoginUserType);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
+  const navigate=useNavigate();
 
   useEffect(() => {
     setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
@@ -77,7 +82,7 @@ export default function CategoryList(props: any) {
   function moveUploadPage() {
     setShowPlayer(false);
     pausesPlayerAudio();
-    setOpenModal(true);
+    blockAccess()?navigate("/login"):setOpenModal(true);
   }
 
   function clickTrackSearching() {
@@ -146,11 +151,13 @@ export default function CategoryList(props: any) {
             </CategoryTextBox>
           </CategoryTextBoxWrapper>
         ))}
-        {isTracksPage(tracksOrVocals) && isProducer(userType) && (
-          <UploadButton type="button" onClick={moveUploadPage}>
-            <UploadTextIcon />
-          </UploadButton>
-        )}
+
+          {isTracksPage(tracksOrVocals) && (
+            <UploadButton type="button" onClick={moveUploadPage}>
+              <UploadTextIcon />
+            </UploadButton>
+          )}
+        
 
         {isVocalsPage(tracksOrVocals) &&
           (trackSearchingClicked ? (

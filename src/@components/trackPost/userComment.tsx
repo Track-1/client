@@ -17,6 +17,8 @@ import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
 import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
 import usePlayer from "../../utils/hooks/usePlayer";
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
+import { blockAccess } from "../../utils/common/privateRoute";
+import { useNavigate } from 'react-router-dom';
 
 interface PropsType {
   closeComment: () => void;
@@ -53,6 +55,8 @@ export default function UserComment(props: PropsType) {
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
 
+  const navigate=useNavigate();
+  
   //get
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, getUploadData, isEnd],
@@ -158,11 +162,16 @@ export default function UserComment(props: PropsType) {
   }
 
   function uploadComment() {
-    setClickPost(true);
-    setIsCompleted(!isCompleted);
-    setStartUpload(true);
-    console.log(key);
-    console.log(key);
+    if(blockAccess()){
+      navigate("/login")
+    }else{
+      setClickPost(true);
+      setIsCompleted(!isCompleted);
+      setStartUpload(true);
+      console.log(key);
+      console.log(key);
+    }
+     
 
     //  post()
   }

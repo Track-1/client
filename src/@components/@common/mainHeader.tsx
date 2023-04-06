@@ -10,6 +10,7 @@ import VocalBriefInfo from "../main/vocalBriefInfo";
 import { getCookie } from "../../utils/cookie";
 import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUserData";
 import { isProducer, isVocal } from "../../utils/common/userType";
+import { isLogin } from "../../utils/common/isLogined";
 
 export default function MainHeader() {
   const navigate = useNavigate();
@@ -26,10 +27,6 @@ export default function MainHeader() {
 
   function moveToHome() {
     navigate("/");
-  }
-
-  function isLogin() {
-    return getCookie("accessToken") !== undefined;
   }
 
   return (

@@ -34,6 +34,7 @@ import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
 import axios from "axios";
+import { blockAccess } from "../utils/common/privateRoute";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -189,7 +190,7 @@ export default function TrackPostPage() {
   });
 
   function getFile() {
-    !download && setDownload(true);
+    blockAccess()?navigate("/login"):(!download && setDownload(true));
   }
 
   function checkIsMeOpen() {
