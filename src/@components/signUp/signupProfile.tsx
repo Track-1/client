@@ -45,14 +45,19 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   const [isWrite, setIsWrite]=useState<boolean>(false);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
 
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    checkHashtagLength(e.target.value)&&
-    e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.");
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }  
   }
   
   function completeHashtag() {
@@ -133,10 +138,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     
   },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
   
-  function isKorean(){
-    return tagMaxLength===5;
-  }
-  
   return (
     <>
       <InfoContainer>
@@ -193,7 +194,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                         e.key === "Enter" && completeHashtag();
                       }}
                       inputWidth={hashtagLength}
-                      isKorean={isKorean()}
+                      isKorean={isKorean}
                       ref={hashtagRef}
                       placeholder="HashTag"
                       maxLength={tagMaxLength}

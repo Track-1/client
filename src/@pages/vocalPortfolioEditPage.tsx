@@ -52,6 +52,7 @@ export default function VocalPortfolioEditPage() {
   const [tagMaxLength, setTagMaxLength]=useState<number>(10);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   useEffect(() => {
     setHashtag(prevData.keyword);
@@ -115,9 +116,12 @@ export default function VocalPortfolioEditPage() {
 
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    checkHashtagLength(e.target.value)&&
-    e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.");
-  
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }
   }
 
   function addHashtag() {
@@ -184,10 +188,6 @@ export default function VocalPortfolioEditPage() {
 
   function movePreviousPage() {
     navigate(-1);
-  }
-
-  function isKorean(){
-    return tagMaxLength===5;
   }
 
   console.log(hashtag)
@@ -315,7 +315,7 @@ export default function VocalPortfolioEditPage() {
                                     e.key === "Enter" && addHashtag();
                                   }}
                                   inputWidth={hashtagLength}
-                                  isKorean={isKorean()}
+                                  isKorean={isKorean}
                                   ref={hashtagRef}
                                   placeholder="HashTag"
                                   maxLength={tagMaxLength}

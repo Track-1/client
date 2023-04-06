@@ -68,6 +68,7 @@ export default function UploadInfo(props: propsType) {
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
   const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   useEffect(() => {
     setUploadData((prevState) => {
@@ -79,10 +80,15 @@ export default function UploadInfo(props: propsType) {
     setHashtagInput(e.target.value);
     setHashtagLength(e.target.value.length);
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
-    
-    checkHashtagLength(e.target.value)&&
-      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.");
-    }
+
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }    
+
+  }
   
   function completeHashtag() {
     if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
@@ -296,10 +302,6 @@ export default function UploadInfo(props: propsType) {
       : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
   }, []);
 
-  function isKorean(){
-    return tagMaxLength===5;
-  }
-
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
@@ -389,7 +391,7 @@ export default function UploadInfo(props: propsType) {
                         e.key === "Enter" && completeHashtag();
                       }}
                       inputWidth={hashtagLength}
-                      isKorean={isKorean()}
+                      isKorean={isKorean}
                       ref={hashtagRef}
                       placeholder="HashTag"
                       maxLength={tagMaxLength}
