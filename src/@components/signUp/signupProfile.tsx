@@ -44,18 +44,16 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   const [contactInput, setContactInput]=useState<string>("");
   const [isWrite, setIsWrite]=useState<boolean>(false);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
 
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    checkHashtagLength(e.target.value)?(
-      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
-    ):(
-      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
-    }
+    checkHashtagLength(e.target.value)&&
+    e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.");
+  }
   
   function completeHashtag() {
       if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {

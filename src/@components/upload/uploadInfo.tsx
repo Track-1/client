@@ -67,7 +67,7 @@ export default function UploadInfo(props: propsType) {
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
-  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
 
   useEffect(() => {
     setUploadData((prevState) => {
@@ -80,12 +80,8 @@ export default function UploadInfo(props: propsType) {
     setHashtagLength(e.target.value.length);
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    console.log(e.target.value.length)
-    
-    checkHashtagLength(e.target.value)?(
-      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
-    ):(
-      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
+    checkHashtagLength(e.target.value)&&
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.");
     }
   
   function completeHashtag() {
