@@ -246,6 +246,9 @@ const ContactInput = styled.input`
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const CategoryContainer = styled.article`
@@ -365,6 +368,9 @@ const DesciprtionInput = styled.textarea<{ row: number }>`
   color: ${({ theme }) => theme.colors.white};
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
+  }
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
 
