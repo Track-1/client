@@ -1,7 +1,7 @@
 import styled, { useTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
-import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, VocalUploadFrameIc } from "../assets";
+import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, VocalUploadFrameIc, HashtagWarningIc } from "../assets";
 import { FileChangeIc } from "../assets";
 import {
   UploadFileUpdateIc,
@@ -25,6 +25,7 @@ import { patchVocalPortfolio } from "../core/api/vocalProfile";
 import BackButton from "../@components/@common/backButton";
 import ProfileWarning from '../@components/@common/profileWarning';
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
+import useHover from "../utils/hooks/useHover";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -35,7 +36,8 @@ export default function VocalPortfolioEditPage() {
   const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFile);
   const [category, setCategory] = useState<string>(prevData?.category);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
+  // const [hashtag, setHashtag] = useState<string[]>([prevData?.keyword]);
+  const [hashtag, setHashtag] = useState<string[]>([]);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [description, setDescription] = useState<string>(prevData?.content);
   const [complete, setComplete] = useState<boolean>(false);
@@ -49,7 +51,11 @@ export default function VocalPortfolioEditPage() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [tagMaxLength, setTagMaxLength]=useState<number>(8);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const { hoverState, changeHoverState } = useHover();
 
+  useEffect(() => {
+    setHashtag(prevData.keyword);
+  }, []);
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
@@ -103,6 +109,7 @@ export default function VocalPortfolioEditPage() {
   // }
 
   function deleteHashtag(index: number) {
+    console.log("클릭")
     const deleteTag = hashtag;
      deleteTag.splice(index, 1);
      setHashtag([...deleteTag]);
@@ -301,24 +308,23 @@ export default function VocalPortfolioEditPage() {
                   <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
-                  <InputWrapper>
-                    <>
-                      {hashtag?.map((item: string, index: number) => {
+                  {/* <InputWrapper> */}
+                    <InputHashtagWrapper>
+                      {hashtag.map((item,index) => {
                         return (
-                          <InputHashtagWrapper>
+                        
                             <Hashtag key={index}>
-                              <HashtagWrapper>
+                              <CompleteHashtagWrapper>
                               <HashtagSharp># </HashtagSharp>
                               <CompletedHashtag>{item}</CompletedHashtag>
-                                <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                              </HashtagWrapper>
+                              </CompleteHashtagWrapper>
+                              <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                             </Hashtag>
-                          </InputHashtagWrapper>
+                          // </InputHashtagWrapper>
                         );
-                      })}
-                      <>
+                      })}                    
                         {hashtag.length < 3 && (
-                          <InputHashtagWrapper>
+                          // <InputHashtagWrapper>
                             <Hashtag>
                               <HashtagWrapper>
                                 <HashtagSharp># </HashtagSharp>
@@ -334,18 +340,33 @@ export default function VocalPortfolioEditPage() {
                                   maxLength={tagMaxLength}
                                   //value={hashtagText}
                                 />
-                                <div style={{ width: "1" }}></div>
+                                {/* <div style={{ width: "1" }}></div> */}
                               </HashtagWrapper>
                             </Hashtag>
-                          </InputHashtagWrapper>
+                          // </InputHashtagWrapper>
                         )}
-                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}
-                      </>
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}          
+                  {/* </InputWrapper> */}
+                  </InputHashtagWrapper>
+
+                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                  {hoverState ? (
+                    <>
+                      <HoverHashtagWarningIcon />
+                      <WarningTextWrapper>
+                        <WarningText>
+                          1. 해시태그는 최대 3개까지 추가 가능합니다.
+                          <br />
+                          2. 최대 10자까지 작성이 가능합니다.
+                          <br />
+                          3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                        </WarningText>
+                      </WarningTextWrapper>
                     </>
-                  </InputWrapper>
-                  <ProfileWarningWrapper>
-                  <ProfileWarning/>
-                  </ProfileWarningWrapper>
+                  ) : (
+                    <HashtagWarningIcon />
+                  )}
+                </WarningIcon>
                 </InputBox>
               </InfoItemBox>
 
@@ -660,12 +681,21 @@ const InputCategoryText = styled.div`
   cursor: pointer;
 `;
 
+// const InputHashtagWrapper = styled.div`
+//   display: flex;
+//   margin-top: 1.4rem;
+// `;
 const InputHashtagWrapper = styled.div`
+  /* display: flex;
+  flex-wrap: wrap; */
   display: flex;
-  margin-top: 1.4rem;
+  flex-wrap: wrap;
+  align-items: center;
 `;
 
 const Hashtag = styled.div`
+  display: flex;
+  align-items: center;
   height: 3.8rem;
 
   background-color: ${({ theme }) => theme.colors.gray5};
@@ -676,9 +706,15 @@ const Hashtag = styled.div`
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 0.9rem 1.5rem;
+   padding: 0 1rem 0 1.5rem;
 `;
 
+
+const CompleteHashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+`;
 const HashtagSharp = styled.p`
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -719,8 +755,8 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  top: 48rem;
+  left: 125rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -792,7 +828,6 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 
 const AddHashtagIcon = styled(AddHashtagIc)`
   margin-left: -0.2rem;
-  margin-top: 1.3rem;
   width: 4rem;
   height: 4rem;
   cursor: pointer;
@@ -801,7 +836,7 @@ const AddHashtagIcon = styled(AddHashtagIc)`
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   width: 1rem;
   height: 1rem;
-  margin-left: 1rem;
+  margin-right: 1.5rem;
   cursor: pointer;
 `;
 
@@ -827,3 +862,13 @@ const CheckCategoryIcon=styled(CheckCategoryIc)`
   width: 1.5rem;
   height: 0.9rem;
 `
+
+const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const HashtagWarningIcon = styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
