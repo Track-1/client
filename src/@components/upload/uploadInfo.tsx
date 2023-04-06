@@ -364,7 +364,7 @@ export default function UploadInfo(props: propsType) {
           </InputBox>
         </InfoItemBox>
 
-        <InfoItemBox>
+        <HashTagInfoItemBox>
           <NameBox>
             <UploadHashtagIcon />
           </NameBox>
@@ -422,7 +422,7 @@ export default function UploadInfo(props: propsType) {
               )}
             </WarningIcon>
           </InputBox>
-        </InfoItemBox>
+        </HashTagInfoItemBox>
 
         <InfoItemBox>
           <NameBox>
@@ -543,6 +543,14 @@ const InfoItemBox = styled.div`
   margin-bottom: 0.2rem;
 `;
 
+const HashTagInfoItemBox = styled.div`
+  height: 9rem;
+  width: 100%;
+
+  display: flex;
+  margin-bottom: 0.2rem;
+`;
+
 const NameBox = styled.div`
   width: 30rem;
 
@@ -657,6 +665,7 @@ const WarningTextWrapper = styled.div<{ isVocal: boolean }>`
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.3rem);
   border-radius: 5px;
+  margin-top: 1rem;
 `;
 
 const WarningText = styled.div`
@@ -706,7 +715,7 @@ const WarningIcon = styled.div`
   width: 4rem;
   height: 4rem;
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 2.3rem;
   border-radius: 5rem;
 
   cursor: pointer;
@@ -757,6 +766,7 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  height: 9rem;
 `;
 
 const Hashtag = styled.div`
@@ -766,7 +776,7 @@ const Hashtag = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
   padding-right: 1rem;
-  margin-right: 1rem;
+  margin: 0.5rem 1rem 0.5rem 0;
 `;
 
 const HashtagWrapper = styled.div`

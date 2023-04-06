@@ -286,12 +286,11 @@ export default function VocalPortfolioEditPage() {
                 </InputBox>
               </InfoItemBox>
 
-              <InfoItemBox>
+              <HashTagInfoItemBox>
                 <NameBox>
                   <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
-                  {/* <InputWrapper> */}
                     <InputHashtagWrapper>
                       {hashtag.map((item,index) => {
                         return (
@@ -345,7 +344,7 @@ export default function VocalPortfolioEditPage() {
                   )}
                 </WarningIcon>
                 </InputBox>
-              </InfoItemBox>
+              </HashTagInfoItemBox>
 
               <InfoItemBox>
                 <NameBox>
@@ -658,26 +657,28 @@ const InputCategoryText = styled.div`
   cursor: pointer;
 `;
 
-// const InputHashtagWrapper = styled.div`
-//   display: flex;
-//   margin-top: 1.4rem;
-// `;
+const HashTagInfoItemBox = styled.div`
+  height: 9rem;
+  width: 100%;
+
+  display: flex;
+  margin-bottom: 0.2rem;
+`;
 const InputHashtagWrapper = styled.div`
-  /* display: flex;
-  flex-wrap: wrap; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  height: 9rem;
 `;
 
 const Hashtag = styled.div`
   display: flex;
   align-items: center;
   height: 3.8rem;
-
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
-  margin-right: 1rem;
+  padding-right: 1rem;
+  margin: 0.5rem 1rem 0.5rem 0;
 `;
 
 const HashtagWrapper = styled.div`
