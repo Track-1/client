@@ -13,15 +13,10 @@ import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 
 export default function ProducerProfileEditPage() {
-  // const { profileData } = useLocation().state;
   const location = useLocation();
-  //    const { state } = useLocation();
-  const params = useParams();
-
-  console.log(params.id);
-
-  const profileData = location.state.profileData;
   const navigate = useNavigate();
+  const params = useParams();
+  const profileData = location.state.profileData;
   const [profileImage, setProfileImage] = useState<File>(
     new File([profileData.profileImage], profileData.profileImage),
   );
