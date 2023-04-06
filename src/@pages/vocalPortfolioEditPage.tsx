@@ -200,6 +200,7 @@ export default function VocalPortfolioEditPage() {
     return tagMaxLength===5;
   }
 
+  console.log(hashtag)
   return (
     <>
       <Container>
@@ -225,9 +226,9 @@ export default function VocalPortfolioEditPage() {
                   <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
                 )}
               </TrackUploadImageWrapper>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                 <FileChangeIcon/>
-              </label>
+              </label>)}
             </VocalImageFrame>
           </VocalImageBox>
           <input
@@ -308,7 +309,7 @@ export default function VocalPortfolioEditPage() {
                             <Hashtag key={index}>
                               <HashtagWrapper>
                               <HashtagSharp># </HashtagSharp>
-                              <CompletedHashtag>{`${item}`}</CompletedHashtag>
+                              <CompletedHashtag>{item}</CompletedHashtag>
                                 <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                               </HashtagWrapper>
                             </Hashtag>
@@ -798,6 +799,8 @@ const AddHashtagIcon = styled(AddHashtagIc)`
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 1rem;
+  height: 1rem;
   margin-left: 1rem;
   cursor: pointer;
 `;

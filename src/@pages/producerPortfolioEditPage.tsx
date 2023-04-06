@@ -23,6 +23,7 @@ import { useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
 import BackButton from "../@components/@common/backButton";
 import ProfileWarning from "../@components/@common/profileWarning";
+import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -34,7 +35,7 @@ export default function ProducerPortfolioEditPage() {
   const [category, setCategory] = useState<string>(prevData?.category);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
-  const [hashtagInput, setHashtegInput] = useState<string>("");
+  const [hashtagInput, setHashtagInput] = useState<string>("");
   const [description, setDescription] = useState<string>(prevData?.content);
   const [complete, setComplete] = useState<boolean>(false);
   const [editData, setEditdata] = useState<any>();
@@ -42,6 +43,9 @@ export default function ProducerPortfolioEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [hashtagText, setHashtagText] = useState<string>("");
   const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -89,26 +93,57 @@ export default function ProducerPortfolioEditPage() {
     toggleDropdown();
   }
 
-  function deleteHashtag(deleteTarget: string) {
-    const temp: string[] = [];
-    hashtag.forEach((keyword) => {
-      if (keyword !== deleteTarget) temp.push(keyword);
-    });
-    setHashtag(temp);
-  }
+  function deleteHashtag(index: number) {
+    const deleteTag = hashtag;
+     deleteTag.splice(index, 1);
+     setHashtag([...deleteTag]);
+     setHashtagInput("");
+   }
 
-  function changeHashtagWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    setHashtegInput(e.target.value);
+   console.log(hashtag)
+
+  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
+
+    setHashtagInput(e.target.value);
+
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    checkHashtagLength(e.target.value)?(
+      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
+    ):(
+      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
+
   }
 
-  function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code === "Enter") {
-      setHashtag((prev) => [...prev, hashtagText]);
+  function addHashtag() {
+    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+      hashtagRef.current.value = "";
+      setHashtag((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
       setHashtagText("");
+      setHashtagLength(0);
     }
-  }
+}
 
+function isDuplicateHashtag(value: string): boolean {
+  const isDuplicate = hashtag.includes(value);
+  isDuplicate && alert("중복된 해시태그 입니다!");
+  return isDuplicate;
+}
+
+useEffect(() => {
+  document.addEventListener("mousedown", clickOutSide);
+  return () => {
+    document.removeEventListener("mousedown", clickOutSide);
+  };
+});
+
+function clickOutSide(e: any) {
+  if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+    addHashtag() 
+  }
+}
   function checkDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescription(e.target.value);
   }
@@ -144,6 +179,10 @@ export default function ProducerPortfolioEditPage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
   
+  function isKorean(){
+    return tagMaxLength===5;
+  }
+
   return (
     <>
       <Container>
@@ -242,7 +281,7 @@ export default function ProducerPortfolioEditPage() {
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
-                    <>
+                    {/* <>
                       {hashtag?.map((item: string, index: number) => {
                         return (
                           <InputHashtagWrapper>
@@ -262,7 +301,7 @@ export default function ProducerPortfolioEditPage() {
                               <HashtagWrapper>
                                 <HashtagSharp># </HashtagSharp>
                                 <HashtagInput
-                                  onChange={changeHashtagWidth}
+                                  onChange={getInputText}
                                   width={hashtagInput.length}
                                   onKeyUp={addHashtag}
                                   value={hashtagText}
@@ -273,6 +312,46 @@ export default function ProducerPortfolioEditPage() {
                           </InputHashtagWrapper>
                         )}
                         {hashtag.length < 2 && <AddHashtagIcon />}
+                      </>
+                    </> */}
+                    <>
+                      {hashtag?.map((item: string, index: number) => {
+                        return (
+                          <InputHashtagWrapper>
+                            <Hashtag key={index}>
+                              <HashtagWrapper>
+                              <HashtagSharp># </HashtagSharp>
+                              <CompletedHashtag>{item}</CompletedHashtag>
+                                <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        );
+                      })}
+                      <>
+                        {hashtag.length < 3 && (
+                          <InputHashtagWrapper>
+                            <Hashtag>
+                              <HashtagWrapper>
+                                <HashtagSharp># </HashtagSharp>
+                                <HashtagInput
+                                  onChange={getInputText}
+                                  onKeyPress={(e) => {
+                                    e.key === "Enter" && addHashtag();
+                                  }}
+                                  inputWidth={hashtagLength}
+                                  isKorean={isKorean()}
+                                  ref={hashtagRef}
+                                  placeholder="HashTag"
+                                  maxLength={tagMaxLength}
+                                  //value={hashtagText}
+                                />
+                                <div style={{ width: "1" }}></div>
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        )}
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}
                       </>
                     </>
                   </InputWrapper>
@@ -629,8 +708,9 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ width: number }>`
-  width: ${({ width }) => (width === 0 ? 3 : width)}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+  display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
   ::placeholder {
@@ -732,6 +812,8 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: -0.2rem;
   margin-top: 1.3rem;
 
@@ -739,6 +821,8 @@ const AddHashtagIcon = styled(AddHashtagIc)`
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 1rem;
+  height: 1rem;
   margin-left: 1rem;
   cursor: pointer;
 `;
@@ -749,3 +833,13 @@ const ProfileWarningWrapper=styled.section`
   margin-right: 10rem;
   right: 0;
 `
+
+const CompletedHashtag = styled.article`
+  display: flex;
+  align-items: center;
+
+  //padding-left: 0.5rem;
+  color: ${({ theme }) => theme.colors.white};
+
+  ${({ theme }) => theme.fonts.hashtag}
+`;
