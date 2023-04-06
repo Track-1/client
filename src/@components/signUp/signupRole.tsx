@@ -99,13 +99,6 @@ const SignupNotSelectedVocalIcon=styled(SignupNotSelectedVocalIc)`
 `
 
 const ArrowButtonWrapper=styled.div`
-    display: flex;
-    justify-content: right;
-    align-items: center;
-
-    width: 56rem;
-    height: 4.6rem;
-
-    margin: 8.2rem 0 0 10.7rem;
+  margin: 7.5rem 0 0 49.8rem;
 
 `
