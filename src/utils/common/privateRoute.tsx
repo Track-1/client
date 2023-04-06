@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../cookie';
-import { checkIsAuthenticated, checkIsNull, isLogin } from './isLogined';
+import { isCookieAuthenticated, isCookieNull, isLogin } from './isLogined';
 
 
 interface PrivateRouteProps {
@@ -12,12 +12,17 @@ interface PrivateRouteProps {
 
 
 export default function PrivateRoute({authentication}:PrivateRouteProps):any{
-  const isAuthenticated = getCookie("accessToken");
-
   if(authentication) {
     // 인증이 반드시 필요한 페이지
     // 인증을 안했을 경우 로그인 페이지로, 했을 경우 해당 페이지로
-    (!isLogin()||checkIsNull(isAuthenticated)|| checkIsAuthenticated(isAuthenticated))&&alert('로그인 후 이용해주세요.');
-    return (!isLogin()||checkIsNull(isAuthenticated)|| checkIsAuthenticated(isAuthenticated))?<Navigate to='/login'/>:<Outlet/>;
+    (!isLogin()||isCookieNull()|| isCookieAuthenticated())&&alert('로그인 후 이용해주세요.');
+    return (!isLogin()||isCookieNull()|| isCookieAuthenticated())?<Navigate to='/login'/>:<Outlet/>;
   } 
+}
+
+export function blockAccess():any{
+    // 인증이 반드시 필요한 페이지
+    // 인증을 안했을 경우 로그인 페이지로, 했을 경우 해당 페이지로
+  (!isLogin()||isCookieNull())&&alert('로그인 후 이용해주세요.');
+  return (!isLogin()||isCookieNull())&&true;
 }

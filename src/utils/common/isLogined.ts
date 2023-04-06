@@ -1,17 +1,15 @@
+import { Navigate, Outlet } from "react-router-dom";
 import { getCookie } from "../cookie";
 
 export function isLogin() {
     return getCookie("accessToken") !== undefined;
   }
 
-export function checkIsNull(isAuthenticated:string){
-    return isAuthenticated === null;
+export function isCookieNull(){
+    return getCookie("accessToken") === null;
 }
 
-export function checkIsAuthenticated(isAuthenticated:string){
-    return isAuthenticated==='false'
+export function isCookieAuthenticated(){
+    return getCookie("accessToken")==='false'
 }
 
-export function blockAccess(isAuthenticated:string){
-  return (!isLogin()||checkIsNull(isAuthenticated)|| checkIsAuthenticated(isAuthenticated))&&true;
-}
