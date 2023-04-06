@@ -289,7 +289,7 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 2.8rem;
+  margin-top: 1.4rem;
 `;
 
 const Hashtag = styled.div`
@@ -300,6 +300,7 @@ const Hashtag = styled.div`
   border-radius: 2.1rem;
   padding-right: 1rem;
   margin-right: 1rem;
+  margin-top: 1rem;
 `;
 
 const HashtagWrapper = styled.div`
