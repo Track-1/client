@@ -22,6 +22,7 @@ import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
 import { isVocal } from "../../utils/common/userType";
 import { isClickedOutside } from "../../utils/common/modal";
+import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 interface propsType {
   uploadData: UploadInfoDataType;
@@ -66,6 +67,8 @@ export default function UploadInfo(props: propsType) {
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   useEffect(() => {
     setUploadData((prevState) => {
@@ -75,11 +78,24 @@ export default function UploadInfo(props: propsType) {
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
+    setHashtagLength(e.target.value.length);
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }    
+
   }
+  
   function completeHashtag() {
-    if (hashtagRef.current) {
+    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       setHashtags((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
+      setHashtagLength(0);
     }
   }
 
@@ -98,19 +114,6 @@ export default function UploadInfo(props: propsType) {
       setTextareaMargin(scrollHeight);
     }
   }, [textareaHeight]);
-
-  // useEffect(() => {
-  //   if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
-  //   // if (checkMaxInputLength(uploadData.keyword.length, 1)) {
-  //     makeZeroInputWidth(0);
-  //     const inputWidth = enteredHashtag.current!.scrollWidth;
-  //     changeHashtagInputWidth(inputWidth);
-  //     setHashtagInputWidth(inputWidth);
-  //   } else {
-  //     makeZeroInputWidth(HASHTAG_WIDTH);
-  //     setHashtagInputWidth(HASHTAG_WIDTH);
-  //   }
-  // }, [hashtagInputWidth]);
 
   useEffect(() => {
     const initArray = getInitFalseArray();
@@ -233,91 +236,14 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-  //해시태그
-  function appendHashtag(): void {
-    // const hashtag = getEnteredHashtag();
-    // if (!isDuplicateHashtag(hashtag)) {
-    //   setUploadData((prevState) => {
-    //     return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
-    //   });
-    //   // resetHashtagInputWidth();
-    //   // resetHashtagCurrentValue();
-    // }
-    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-    }
-  }
-
-  function resetHashtagInputWidth(): void {
-    setHashtagInputWidth(HASHTAG_WIDTH);
-  }
-
-  function resetHashtagCurrentValue(): void {
-    enteredHashtag.current!.value = "";
-  }
-
-  function getEnteredHashtag(): string {
-    return enteredHashtag.current!.value;
-  }
-
   function isDuplicateHashtag(value: string): boolean {
     const isDuplicate = uploadData.keyword.includes(value);
     isDuplicate && alert("중복된 해시태그 입니다!");
     return isDuplicate;
   }
 
-  function addHashtag(): void {
-    isMaxHashtags() && appendHashtag();
-  }
-
-  function isMaxHashtags(): boolean {
-    return uploadData.keyword.length < 3;
-  }
-
-  function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
-    isEnterKey(e) && addHashtag();
-  }
-
   function restrictInput(ref: any): void {
     ref.current!.value = ref.current!.value.slice(0, -1);
-  }
-
-  function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputLength = e.target.value.length;
-
-    if (checkMaxInputLength(inputLength, 10)) {
-      setHashtagLength(inputLength);
-      setHashtagInputWidth(Number(e.target.value));
-    } else {
-      restrictInput(enteredHashtag);
-    }
-  }
-
-  // function deleteHashtag(index: number) {
-  //   const deleteTag = uploadData.keyword;
-  //   deleteTag.splice(index, 1);
-
-  //   setUploadData((prevState) => {
-  //     return { ...prevState, keyword: deleteTag };
-  //   });
-  //   resetHashtagInputWidth();
-  // }
-
-  // function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-  //   isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
-  // }
-
-  // function isEmptyHashtagInput(): boolean {
-  //   return enteredHashtag.current!.value.length === 0;
-  // }
-
-  function changeHashtagInputWidth(inputWidth: number): void {
-    enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
-  }
-
-  function makeZeroInputWidth(width: number): void {
-    // enteredHashtag!.current!.style.width = width + "rem";
   }
 
   //소개글
@@ -365,7 +291,7 @@ export default function UploadInfo(props: propsType) {
 
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      appendHashtag();
+      completeHashtag() 
     }
   }
 
@@ -438,7 +364,7 @@ export default function UploadInfo(props: propsType) {
           </InputBox>
         </InfoItemBox>
 
-        <InfoItemBox>
+        <HashTagInfoItemBox>
           <NameBox>
             <UploadHashtagIcon />
           </NameBox>
@@ -447,10 +373,10 @@ export default function UploadInfo(props: propsType) {
               {hashtags.map((hashtag, index) => {
                 return (
                   <Hashtag key={index}>
-                    <HashtagWrapper>
+                    <CompleteHashtagWrapper>
                       <HashtagSharp># </HashtagSharp>
                       <CompletedHashtag>{hashtag}</CompletedHashtag>
-                    </HashtagWrapper>
+                    </CompleteHashtagWrapper>
                     <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                   </Hashtag>
                 );
@@ -464,16 +390,17 @@ export default function UploadInfo(props: propsType) {
                       onKeyPress={(e) => {
                         e.key === "Enter" && completeHashtag();
                       }}
-                      inputWidth={hashtagInput.length}
+                      inputWidth={hashtagLength}
+                      isKorean={isKorean}
                       ref={hashtagRef}
                       placeholder="HashTag"
-                      maxLength={10}
+                      maxLength={tagMaxLength}
                     />
                   </HashtagWrapper>
                 </Hashtag>
               )}
 
-              {hashtags.length <= 2 && <AddHashtagIcon onClick={completeHashtag} />}
+              {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
             </InputHashtagWrapper>
 
             <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
@@ -491,11 +418,11 @@ export default function UploadInfo(props: propsType) {
                   </WarningTextWrapper>
                 </>
               ) : (
-                <HashtagWarningIc />
+                <HashtagWarningIcon />
               )}
             </WarningIcon>
           </InputBox>
-        </InfoItemBox>
+        </HashTagInfoItemBox>
 
         <InfoItemBox>
           <NameBox>
@@ -535,6 +462,7 @@ export default function UploadInfo(props: propsType) {
                 categoryRefs.current[index] = element;
               }}>
               <DropMenuText>{text}</DropMenuText>
+              {checkStateIcon[index] && <CheckCategoryIcon />}
             </DropMenuItem>
           ))}
         </DropMenuWrapper>
@@ -615,9 +543,16 @@ const InfoItemBox = styled.div`
   margin-bottom: 0.2rem;
 `;
 
+const HashTagInfoItemBox = styled.div`
+  height: 9rem;
+  width: 100%;
+
+  display: flex;
+  margin-bottom: 0.2rem;
+`;
+
 const NameBox = styled.div`
   width: 30rem;
-  // height: 100%;
 
   display: flex;
   justify-content: flex-start;
@@ -730,6 +665,7 @@ const WarningTextWrapper = styled.div<{ isVocal: boolean }>`
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.3rem);
   border-radius: 5px;
+  margin-top: 1rem;
 `;
 
 const WarningText = styled.div`
@@ -745,7 +681,7 @@ const DropMenuBox = styled.div<{ hiddenDropBox: boolean; isVocal: boolean }>`
 
   position: absolute;
   top: ${({ isVocal }) => (isVocal ? 39.5 : 54)}rem;
-  left: ${({ isVocal }) => (isVocal ? 96.5 : 109.5)}rem;
+  left: ${({ isVocal }) => (isVocal ? 96.5 : 109)}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
@@ -779,7 +715,7 @@ const WarningIcon = styled.div`
   width: 4rem;
   height: 4rem;
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 2.3rem;
   border-radius: 5rem;
 
   cursor: pointer;
@@ -799,15 +735,8 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
   cursor: pointer;
 `;
 
-// const AddHashtagIcon = styled(AddHashtagIc)`
-//   margin-left: -0.2rem;
-//   margin-top: 1.3rem;
-
-//   cursor: pointer;
-// `;
-
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  margin-left: 1rem;
+  margin-right: 0.5rem;
   cursor: pointer;
 `;
 
@@ -834,11 +763,10 @@ const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
 `;
 
 const InputHashtagWrapper = styled.div`
-  /* display: flex;
-  flex-wrap: wrap; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  height: 9rem;
 `;
 
 const Hashtag = styled.div`
@@ -848,23 +776,29 @@ const Hashtag = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
   padding-right: 1rem;
-  margin-right: 1rem;
+  margin: 0.5rem 1rem 0.5rem 0;
 `;
 
 const HashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0 1.5rem;
+`;
+
+const CompleteHashtagWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 0 1.5rem;
 `;
 
 const HashtagSharp = styled.p`
+  margin-right: 0.5rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
-  margin-right: 0.6rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 2)}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -892,3 +826,13 @@ const IconWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
+
+const HashtagWarningIcon=styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`
+
+const CheckCategoryIcon=styled(CheckCategoryIc)`
+  width: 1.5rem;
+  height: 0.9rem;
+`

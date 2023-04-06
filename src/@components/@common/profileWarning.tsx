@@ -34,7 +34,7 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  margin-top: 1.4rem;
+  margin-top: 4rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -56,6 +56,8 @@ const WarningIcon = styled.div`
 `;
 
 const HoverHashtagWarningIcon=styled(HoverHashtagWarningIc)`
+  position: absolute;
+  z-index: 1;
   width: 4rem;
   height: 4rem;
   margin-left: 42.6rem;

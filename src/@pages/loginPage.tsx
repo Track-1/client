@@ -4,13 +4,14 @@ import LoginInput from "../@components/login/loginInput";
 import styled from "styled-components";
 import { BackButtonIc } from "../assets";
 import useMovePage from "../utils/hooks/useMovePage";
+import BackButton from "../@components/@common/backButton";
 
 export default function LoginPage() {
   const [movePage] = useMovePage();
   return (
     <>
-      <BackButtonWrapper>
-        <BackButtonIcon onClick={() => movePage("/")} />
+      <BackButtonWrapper onClick={() => movePage("/")} >
+        <BackButton />
       </BackButtonWrapper>
 
       <LoginInput />
@@ -27,8 +28,4 @@ const BackButtonWrapper = styled.div`
 const BackgroundImg = styled.img`
   margin-top: 19.6rem;
   width: 192rem;
-`;
-
-const BackButtonIcon = styled(BackButtonIc)`
-  cursor: pointer;
 `;

@@ -90,8 +90,9 @@ export default function ProducerProfileEditTitle(props: PropsType) {
         <ImageWrapper>
           {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={profileImage} />}
         </ImageWrapper>
+        {isHover && <SignUpChangeVocalImageIcon />}
       </ProfileImageContainer>
-      {/* {isHover && <SignUpChangeVocalImageIcon />} */}
+      
       <FileInput
         type="file"
         id="profileImg"
@@ -303,17 +304,16 @@ const ProfileEditSleepAcountTitleIcon = styled(ProfileEditSleepAcountTitleIc)`
 `;
 
 const SignUpChangeVocalImageIcon = styled(SignUpChangeImgIc)`
-  height: 26.7em;
-  width: 26.7em;
+  height: 26.9rem;
+  width: 26.9rem;
 
-  border: 0.1rem solid rgba(30, 32, 37, 0.5);
   border-radius: 3rem;
 
   backdrop-filter: blur(1.7rem);
   transform: rotate(45deg);
   position: absolute;
 
-  margin-top: -31.7rem;
+  margin-top: -31.8rem;
   margin-left: 5rem;
 
   cursor: pointer;

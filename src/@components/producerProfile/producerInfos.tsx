@@ -244,7 +244,8 @@ const HashtagBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  margin-right: 3.59rem;
+  /* margin-right: 10rem; */
+  width: 30rem;
 `;
 
 const HashtagIcon = styled(HashtagIc)`

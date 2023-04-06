@@ -1,7 +1,7 @@
 import styled, { useTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
-import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, VocalUploadFrameIc } from "../assets";
+import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, VocalUploadFrameIc, HashtagWarningIc } from "../assets";
 import { FileChangeIc } from "../assets";
 import {
   UploadFileUpdateIc,
@@ -24,6 +24,8 @@ import { patchProducerPortfolio } from "../core/api/producerProfile";
 import { patchVocalPortfolio } from "../core/api/vocalProfile";
 import BackButton from "../@components/@common/backButton";
 import ProfileWarning from '../@components/@common/profileWarning';
+import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
+import useHover from "../utils/hooks/useHover";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -34,8 +36,9 @@ export default function VocalPortfolioEditPage() {
   const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFile);
   const [category, setCategory] = useState<string>(prevData?.category);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
-  const [hashtagInput, setHashtegInput] = useState<string>("");
+  // const [hashtag, setHashtag] = useState<string[]>([prevData?.keyword]);
+  const [hashtag, setHashtag] = useState<string[]>([]);
+  const [hashtagInput, setHashtagInput] = useState<string>("");
   const [description, setDescription] = useState<string>(prevData?.content);
   const [complete, setComplete] = useState<boolean>(false);
   const [editData, setEditdata] = useState<any>();
@@ -45,6 +48,15 @@ export default function VocalPortfolioEditPage() {
   const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
   const navigate = useNavigate();
   const queryClient = new QueryClient();
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const { hoverState, changeHoverState } = useHover();
+  const [isKorean, setIsKorean]=useState<boolean>(false);
+
+  useEffect(() => {
+    setHashtag(prevData.keyword);
+  }, []);
 
   function toggleHashtagWarningOpen() {
     setHahtagWarningOpen(!hashtagWarningOpen);
@@ -89,23 +101,55 @@ export default function VocalPortfolioEditPage() {
     toggleDropdown();
   }
 
-  function deleteHashtag(deleteTarget: string) {
-    const temp: string[] = [];
-    hashtag.forEach((keyword) => {
-      if (keyword !== deleteTarget) temp.push(keyword);
-    });
-    setHashtag(temp);
-  }
-
-  function changeHashtagWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    setHashtegInput(e.target.value);
+  function deleteHashtag(index: number) {
+    console.log("클릭")
+    const deleteTag = hashtag;
+     deleteTag.splice(index, 1);
+     setHashtag([...deleteTag]);
+     setHashtagInput("");
+   }
+ 
+  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
+
+    setHashtagInput(e.target.value);
+
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }
   }
 
-  function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code === "Enter") {
-      setHashtag((prev) => [...prev, hashtagText]);
-      setHashtagText("");
+  function addHashtag() {
+      if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+        hashtagRef.current.value = "";
+        setHashtag((prev) => [...prev, hashtagInput]);
+        setHashtagInput("");
+        setHashtagText("");
+        setHashtagLength(0);
+      }
+  }
+
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = hashtag.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+      addHashtag() 
     }
   }
 
@@ -146,6 +190,7 @@ export default function VocalPortfolioEditPage() {
     navigate(-1);
   }
 
+  console.log(hashtag)
   return (
     <>
       <Container>
@@ -164,16 +209,16 @@ export default function VocalPortfolioEditPage() {
           <VocalUploadFrameIcon />
           <VocalImageBox>
             <VocalImageFrame onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+              <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                 {isImageUploaded ? (
-                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
                 ) : (
-                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" />
+                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
                 )}
-              </label>
-              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                <FileChangeIcon />
-              </label>
+              </TrackUploadImageWrapper>
+              {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                <FileChangeIcon/>
+              </label>)}
             </VocalImageFrame>
           </VocalImageBox>
           <input
@@ -241,67 +286,65 @@ export default function VocalPortfolioEditPage() {
                 </InputBox>
               </InfoItemBox>
 
-              <InfoItemBox>
+              <HashTagInfoItemBox>
                 <NameBox>
                   <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
-                  <InputWrapper>
-                    <>
-                      {hashtag?.map((item: string, index: number) => {
+                    <InputHashtagWrapper>
+                      {hashtag.map((item,index) => {
                         return (
-                          <InputHashtagWrapper>
+                        
                             <Hashtag key={index}>
-                              <HashtagWrapper>
-                                <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                                <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
-                              </HashtagWrapper>
+                              <CompleteHashtagWrapper>
+                              <HashtagSharp># </HashtagSharp>
+                              <CompletedHashtag>{item}</CompletedHashtag>
+                              </CompleteHashtagWrapper>
+                              <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                             </Hashtag>
-                          </InputHashtagWrapper>
                         );
-                      })}
-                      <>
+                      })}                    
                         {hashtag.length < 3 && (
-                          <InputHashtagWrapper>
                             <Hashtag>
                               <HashtagWrapper>
                                 <HashtagSharp># </HashtagSharp>
                                 <HashtagInput
-                                  onChange={changeHashtagWidth}
-                                  width={hashtagInput.length}
-                                  onKeyUp={addHashtag}
-                                  value={hashtagText}
+                                  onChange={getInputText}
+                                  onKeyPress={(e) => {
+                                    e.key === "Enter" && addHashtag();
+                                  }}
+                                  inputWidth={hashtagLength}
+                                  isKorean={isKorean}
+                                  ref={hashtagRef}
+                                  placeholder="HashTag"
+                                  maxLength={tagMaxLength}
                                 />
-                                <div style={{ width: "1" }}></div>
                               </HashtagWrapper>
                             </Hashtag>
-                          </InputHashtagWrapper>
                         )}
-                        {hashtag.length < 2 && <AddHashtagIcon />}
-                      </>
-                    </>
-                  </InputWrapper>
-                  <ProfileWarningWrapper>
-                  <ProfileWarning/>
-                  </ProfileWarningWrapper>
-                  {/* <WarningIcon>
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}      
+                  </InputHashtagWrapper>
+
+                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                  {hoverState ? (
                     <>
-                      <HoverHashtagWarningIc onClick={toggleHashtagWarningOpen} />
-                      {hashtagWarningOpen && (
-                        <WarningTextWrapper>
-                          <WarningText>
-                            1. 해시태그는 최대 3개까지 추가 가능합니다.
-                            <br />
-                            2. 최대 10자까지 작성이 가능합니다.
-                            <br />
-                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                          </WarningText>
-                        </WarningTextWrapper>
-                      )}
+                      <HoverHashtagWarningIcon />
+                      <WarningTextWrapper>
+                        <WarningText>
+                          1. 해시태그는 최대 3개까지 추가 가능합니다.
+                          <br />
+                          2. 최대 10자까지 작성이 가능합니다.
+                          <br />
+                          3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                        </WarningText>
+                      </WarningTextWrapper>
                     </>
-                  </WarningIcon> */}
+                  ) : (
+                    <HashtagWarningIcon />
+                  )}
+                </WarningIcon>
                 </InputBox>
-              </InfoItemBox>
+              </HashTagInfoItemBox>
 
               <InfoItemBox>
                 <NameBox>
@@ -310,7 +353,7 @@ export default function VocalPortfolioEditPage() {
                 <InputBox>
                   <InputDescriptionText
                     typeof="text"
-                    placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                    placeholder="보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요."
                     spellCheck={false}
                     maxLength={250}
                     defaultValue={description}
@@ -329,8 +372,8 @@ export default function VocalPortfolioEditPage() {
                 <DropMenuWrapper>
                   {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
-                      <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
-                      {category === Categories[index] && <CheckCategoryIc />}
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>{text}</DropMenuText>
+                      {category === Categories[index] && <CheckCategoryIcon />}
                     </DropMenuItem>
                   ))}
                 </DropMenuWrapper>
@@ -416,19 +459,11 @@ const Container2 = styled.section`
 const SectionWrapper = styled.div`
   position: relative;
   height: 100%;
-  /* width: 138.2rem; */
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  /* border: 0.2rem solid transparent;
-  border-top-left-radius: 37.8rem;
-  border-bottom-left-radius: 37.8rem;
-  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
-    linear-gradient(to right, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
-  background-origin: border-box;
-  background-clip: content-box, border-box; */
 `;
 
 const VocalImageBox = styled.div`
@@ -442,34 +477,48 @@ const VocalImageBox = styled.div`
 `;
 
 const VocalImageFrame = styled.div`
-  position: absolute;
-  height: 45.1rem;
-  width: 45.1rem;
-
-  margin-left: 7.8rem;
-  margin-bottom: 2rem;
-  border-radius: 5rem;
-  transform: rotate(45deg);
-  overflow: hidden;
-  object-fit: cover;
-  :hover {
-    filter: blur(3rem);
-  }
+    margin-top: -46rem;
+    margin-left: 10rem;
 `;
 
-const TrackUploadImage = styled.img`
-  width: 60.4rem;
-  height: 60.4rem;
-  object-fit: cover;
+const TrackUploadImageWrapper=styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width:45.1rem;
+  height: 45.1rem;
+  border-radius: 5rem;
+  position: absolute;
+  overflow: hidden;
+  transform: rotate(45deg);
+
+`
+const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
   transform: rotate(-45deg);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width: 150%;
+  height: 135%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
+  filter: blur(${({isImageHovered})=>isImageHovered&&3}rem);
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
+  width: 18.9rem;
   position: absolute;
-  top: 40%;
-  left: 30%;
-  /* transform: translate(-40%, -40%); */
-  transform: rotate(-45deg);
+  
+  margin-left: 12.5rem;
+  margin-top: 15rem;
+  transform: rotate(0deg);
+
 
   cursor: pointer;
 `;
@@ -608,32 +657,51 @@ const InputCategoryText = styled.div`
   cursor: pointer;
 `;
 
+const HashTagInfoItemBox = styled.div`
+  height: 9rem;
+  width: 100%;
+
+  display: flex;
+  margin-bottom: 0.2rem;
+`;
 const InputHashtagWrapper = styled.div`
   display: flex;
-  margin-top: 1.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 9rem;
 `;
 
 const Hashtag = styled.div`
+  display: flex;
+  align-items: center;
   height: 3.8rem;
-
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
-  margin-right: 1rem;
+  padding-right: 1rem;
+  margin: 0.5rem 1rem 0.5rem 0;
 `;
 
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 0.9rem 1.5rem;
+   padding: 0 1rem 0 1.5rem;
 `;
 
+
+const CompleteHashtagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+`;
 const HashtagSharp = styled.p`
+  margin-right: 0.5rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ width: number }>`
-  width: ${({ width }) => (width === 0 ? 3 : width)}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+  display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
   ::placeholder {
@@ -666,8 +734,8 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  top: 48rem;
+  left: 125rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -684,8 +752,8 @@ const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 40.4rem;
-  left: 98rem;
+  top: 40.7rem;
+  left: 98.7rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
   border-radius: 0.5rem;
@@ -710,37 +778,44 @@ const DropMenuItem = styled.li`
   cursor: pointer;
 `;
 
-const DropMenuText = styled.p`
+const DropMenuText = styled.p<{isClicked:boolean}>`
+  color: ${({theme,isClicked})=>isClicked?theme.colors.white:theme.colors.gray3};
   height: 2rem;
 `;
 
 const WarningIcon = styled.div`
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 2.5rem;
   border-radius: 5rem;
 
   cursor: pointer;
 `;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+  width: 4rem;
+  height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
   margin-left: -0.2rem;
-  margin-top: 1.3rem;
-
+  width: 4rem;
+  height: 4rem;
   cursor: pointer;
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  margin-left: 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 1.5rem;
   cursor: pointer;
 `;
 
@@ -750,4 +825,29 @@ const VocalUploadFrameIcon = styled(VocalUploadFrameIc)`
 
   height: 74.6rem;
   margin-left: -30rem;
+`;
+
+const CompletedHashtag = styled.article`
+  display: flex;
+  align-items: center;
+
+  //padding-left: 0.5rem;
+  color: ${({ theme }) => theme.colors.white};
+
+  ${({ theme }) => theme.fonts.hashtag}
+`;
+
+const CheckCategoryIcon=styled(CheckCategoryIc)`
+  width: 1.5rem;
+  height: 0.9rem;
+`
+
+const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const HashtagWarningIcon = styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
 `;
