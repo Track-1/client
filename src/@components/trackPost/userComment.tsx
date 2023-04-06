@@ -10,7 +10,7 @@ import { getComment, updateComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
-import { endPost, postContent, postIsCompleted, postWavFile } from "../../recoil/postIsCompleted";
+import { endPost } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
@@ -29,7 +29,7 @@ export default function UserComment(props: PropsType) {
   const { closeComment, beatId, isClosed, title } = props;
 
   const [comments, setComments] = useState<UserCommentType[]>();
-  const { key, excuteGetData } = useInfiniteKey();
+  // const { key, excuteGetData } = useInfiniteKey();
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const [currentAudioFile, setCurrentAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<UploadDataType>({
@@ -46,22 +46,23 @@ export default function UserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [commentId, setCommentId] = useState<number>(0);
-  const [startUpload, setStartUpload] = useState<boolean>(false);
-  const [startUpdate, setStartUpdate] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const [clickUpload, setClickUpload] = useState<boolean>(false);
   const [clickPost, setClickPost] = useState<boolean>(false);
 
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+  const [key, setKey] = useState<number>(0);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   //get
-  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [key, getUploadData, isEnd],
-    ({ pageParam = 1 }) => getData(pageParam),
+  const { data, isSuccess, isFetching, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    [key],
+    async ({ pageParam = 1 }) => await getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
+        // console.log(hasNextPage);
+        return lastPage?.nextPage;
       },
       refetchOnWindowFocus: false,
     },
@@ -71,10 +72,13 @@ export default function UserComment(props: PropsType) {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
+    console.log(page, hasNextPage);
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
-      setComments((prev) => (prev ? [...prev, ...response] : [...response]));
-      setCurrentPage(currentPage + 1);
+      console.log(response, page, beatId);
+      setComments((prev) => (!isDeleted ? (prev ? [...prev, ...response] : [...response]) : [...response]));
+      isDeleted && setIsDeleted(false);
+      // setCurrentPage(currentPage + 1);
       return { response, nextPage: page + 1 };
     }
   }
@@ -85,14 +89,14 @@ export default function UserComment(props: PropsType) {
       setComments([]);
       if (clickPost === true) {
         queryClient.invalidateQueries("comments");
-        setContent("");
-        setAudioFile(null);
-        setIsEnd(!isEnd);
-        setComments([]);
+        // setContent("");
+        // setAudioFile(null);
+        // setIsEnd(true);
+        // setComments([]);
         setClickPost(false);
-        setClickPost(false);
-        setStartUpload(false);
         setComments([]);
+        // excuteGetData();
+        setKey(key + 1);
       } else {
         setClickPost(false);
       }
@@ -111,11 +115,11 @@ export default function UserComment(props: PropsType) {
     onSuccess: () => {
       setComments([]);
       if (clickUpload === true) {
-        queryClient.invalidateQueries("comments");
-        setIsEnd(!isEnd);
-        setClickUpload(false);
-        setIsUpdated(false);
-        setComments([]);
+        // queryClient.invalidateQueries("comments");
+        // setIsEnd(!isEnd);
+        // setClickUpload(false);
+        // excuteGetData();
+        setKey(key + 1);
       } else {
         setClickUpload(false);
       }
@@ -124,6 +128,8 @@ export default function UserComment(props: PropsType) {
 
   useEffect(() => {
     update();
+    setComments([]);
+    setIsUpdated(false);
   }, [isUpdated]);
   //update end
 
@@ -151,9 +157,6 @@ export default function UserComment(props: PropsType) {
   function uploadComment() {
     setClickPost(true);
     setIsCompleted(!isCompleted);
-    setStartUpload(true);
-    console.log(key);
-    console.log(key);
 
     //  post()
   }
@@ -188,8 +191,7 @@ export default function UserComment(props: PropsType) {
             getUploadData={getUploadData}
             isCompleted={isCompleted}
             setIsCompleted={setIsCompleted}
-            content={content}
-            audioFile={audioFile}
+            comments={comments}
           />
           <AddWrapper>
             <div></div>
@@ -215,6 +217,8 @@ export default function UserComment(props: PropsType) {
                   isUpdated={isUpdated}
                   setIsUpdated={setIsUpdated}
                   setCommentId={setCommentId}
+                  setKey={setKey}
+                  setIsDeleted={setIsDeleted}
                 />
               );
             })}
@@ -290,8 +294,8 @@ const BlurSection = styled.div`
   width: 100%;
   /* position: relative; */
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
-  bottom: 0;
   position: sticky;
+  bottom: 0;
   margin-left: -6.5rem;
 `;
 
