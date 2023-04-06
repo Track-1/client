@@ -17,11 +17,11 @@ import {
 
 import { Categories } from "../../core/constants/categories";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
-import { isEnterKey, isMouseEnter, isFocus } from "../../utils/common/eventType";
+import { isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import useHover from "../../utils/hooks/useHover";
 import { isVocal } from "../../utils/common/userType";
-import { isClickedOutside } from "../../utils/common/modal";
+// import { isClickedOutside } from "../../utils/common/modal";
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 interface propsType {
@@ -37,9 +37,10 @@ export default function UploadInfo(props: propsType) {
   const titleRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLDivElement | null>(null);
   const introduceRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const enteredHashtag = useRef<HTMLInputElement | null>(null);
   const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const hashtagDeleteRef = useRef<SVGSVGElement | null>(null);
+  const { hoverState, changeHoverState } = useHover();
 
   const [checkState, setCheckState] = useState<boolean[]>([]);
   const [checkHoverState, setCheckHoverState] = useState<boolean[]>([]);
@@ -61,50 +62,17 @@ export default function UploadInfo(props: propsType) {
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
 
-  // const [warningHoverState, setWarningHoverState] = useState<boolean>(false);
-  const { hoverState, changeHoverState } = useHover();
-  const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
-  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
-  const [isKorean, setIsKorean]=useState<boolean>(false);
+  const [tagMaxLength, setTagMaxLength] = useState<number>(10);
+  const [isKorean, setIsKorean] = useState<boolean>(false);
 
   useEffect(() => {
     setUploadData((prevState) => {
       return { ...prevState, keyword: hashtags };
     });
   }, [hashtags]);
-
-  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
-    setHashtagInput(e.target.value);
-    setHashtagLength(e.target.value.length);
-    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
-
-    if(checkHashtagLength(e.target.value)){
-      setIsKorean(true);
-      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
-    }else{
-      setIsKorean(false)
-    }    
-
-  }
-  
-  function completeHashtag() {
-    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-      setHashtagInput("");
-      setHashtagLength(0);
-    }
-  }
-
-  function deleteHashtag(index: number) {
-    const deleteTag = hashtags;
-    deleteTag.splice(index, 1);
-    setHashtags([...deleteTag]);
-    setHashtagInput("");
-  }
 
   useEffect(() => {
     if (introduceRef && introduceRef.current) {
@@ -119,6 +87,61 @@ export default function UploadInfo(props: propsType) {
     const initArray = getInitFalseArray();
     initArrayState(initArray);
   }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  useEffect(() => {
+    setHashtags(uploadData.keyword);
+    isVocal(whom)
+      ? setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요.")
+      : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
+  }, []);
+
+  function clickOutSide(e: any) {
+    if (
+      !hashtagRef.current?.contains(e.target) &&
+      !hashtagDeleteRef.current?.contains(e.target) &&
+      hashtagRef.current?.value
+    ) {
+      completeHashtag();
+    }
+  }
+
+  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtagInput(e.target.value);
+    setHashtagLength(e.target.value.length);
+    e.target.value !== "" ? setHashtagLength(e.target.value.length) : setHashtagLength(0);
+
+    if (checkHashtagLength(e.target.value)) {
+      setIsKorean(true);
+      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+    } else {
+      setIsKorean(false);
+    }
+  }
+
+  function completeHashtag() {
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
+      console.log("hear!!");
+      console.log(hashtagInput);
+      hashtagRef.current.value = "";
+      setHashtags((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
+      setHashtagLength(0);
+    }
+  }
+
+  function deleteHashtag(index: number) {
+    const deleteTag = hashtags;
+    deleteTag.splice(index, 1);
+    setHashtags([...deleteTag]);
+    // setHashtagInput("");
+  }
 
   function getInitFalseArray(): boolean[] {
     const initArray: boolean[] = [];
@@ -282,26 +305,6 @@ export default function UploadInfo(props: propsType) {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
 
-  useEffect(() => {
-    document.addEventListener("mousedown", clickOutSide);
-    return () => {
-      document.removeEventListener("mousedown", clickOutSide);
-    };
-  });
-
-  function clickOutSide(e: any) {
-    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      completeHashtag() 
-    }
-  }
-
-  useEffect(() => {
-    setHashtags(uploadData.keyword);
-    isVocal(whom)
-      ? setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요.")
-      : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
-  }, []);
-
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
@@ -377,7 +380,7 @@ export default function UploadInfo(props: propsType) {
                       <HashtagSharp># </HashtagSharp>
                       <CompletedHashtag>{hashtag}</CompletedHashtag>
                     </CompleteHashtagWrapper>
-                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} ref={hashtagDeleteRef} />
                   </Hashtag>
                 );
               })}
@@ -797,8 +800,9 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
-  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+  width: ${({ inputWidth, isKorean }) =>
+    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -827,12 +831,12 @@ const IconWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const HashtagWarningIcon=styled(HashtagWarningIc)`
+const HashtagWarningIcon = styled(HashtagWarningIc)`
   width: 4rem;
   height: 4rem;
-`
+`;
 
-const CheckCategoryIcon=styled(CheckCategoryIc)`
+const CheckCategoryIcon = styled(CheckCategoryIc)`
   width: 1.5rem;
   height: 0.9rem;
-`
+`;
