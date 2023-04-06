@@ -178,6 +178,9 @@ function clickOutSide(e: any) {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
   
+  function isKorean(){
+    return tagMaxLength===5;
+  }
 
   return (
     <>
@@ -303,6 +306,7 @@ function clickOutSide(e: any) {
                                     e.key === "Enter" && addHashtag();
                                   }}
                                   inputWidth={hashtagLength}
+                                  isKorean={isKorean()}
                                   ref={hashtagRef}
                                   placeholder="HashTag"
                                   maxLength={tagMaxLength}
@@ -662,8 +666,8 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number}>`
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 1.5+1)}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
