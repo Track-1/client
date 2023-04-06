@@ -104,6 +104,7 @@ export default function ProducerProfilePage() {
     setShowPlayer(false);
     setProfileState("Portfolio");
     setStateChange(!stateChange);
+    //같은 탭 클릭시 빈 배열 전달 (새로 pull받으며 재커밋)
     setSelectingTracksData([]);
   }
 

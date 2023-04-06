@@ -15,6 +15,11 @@ import background from "../assets/icon/signUpBackgroundIc.svg";
 export default function ProducerProfileEditPage() {
   // const { profileData } = useLocation().state;
   const location = useLocation();
+  //    const { state } = useLocation();
+  console.log(location.pathname);
+  console.log(location);
+  console.log(location.state.profileData.id);
+  const producerId = location.state.profileData.id;
   const profileData = location.state.profileData;
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState<File>(
@@ -54,6 +59,7 @@ export default function ProducerProfileEditPage() {
     if (updatedData !== undefined) {
       mutate();
       navigate(-1);
+      //window.location.reload();
       // changeKey();
     }
   }, [updatedData]);
