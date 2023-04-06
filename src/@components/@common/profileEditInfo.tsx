@@ -311,7 +311,7 @@ const HashtagSharp = styled.p`
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 
-  margin-right: 0.6rem;
+  margin-right: 0.5rem;
 `;
 
 const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`

@@ -695,6 +695,7 @@ const CompleteHashtagWrapper = styled.div`
   padding: 0 1.5rem;
 `;
 const HashtagSharp = styled.p`
+  margin-right: 0.5rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 `;

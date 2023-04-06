@@ -664,6 +664,7 @@ const HashtagWrapper = styled.div`
 `;
 
 const HashtagSharp = styled.p`
+  margin-right: 0.5rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 `;
