@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PauseBtnIc, PlayBtnIc, EllipsisIc, PauseButtonIc, CommentUpldatCompleteIc } from "../../assets";
+import { PlayBtnIc, EllipsisIc, PauseButtonIc, CommentUpldatCompleteIc } from "../../assets";
 import { UserCommentType } from "../../type/userCommentsType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar, playMusic } from "../../recoil/player";
@@ -16,22 +16,38 @@ interface PropsType {
   clickComment: (index: number) => void;
   currentIndex: number;
   isMe: boolean;
-  getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
-  isUpdated:boolean;
-  setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
-  setCommentId: React.Dispatch<React.SetStateAction<number>>
+  getUploadData: (content: string, audioFile: File | null, fileName: string) => any;
+  isUpdated: boolean;
+  setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+  setCommentId: React.Dispatch<React.SetStateAction<number>>;
+  setKey: any;
+  setIsDeleted: any;
 }
 
 export default function EachUserComment(props: PropsType) {
-  const { commentInfo, audio, clickedIndex, clickComment, currentIndex, pauseAudio, isMe,getUploadData, isUpdated, setIsUpdated,setCommentId } = props;
+  const {
+    commentInfo,
+    audio,
+    clickedIndex,
+    clickComment,
+    currentIndex,
+    pauseAudio,
+    isMe,
+    getUploadData,
+    isUpdated,
+    setIsUpdated,
+    setCommentId,
+    setKey,
+    setIsDeleted,
+  } = props;
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
-  const [isEdit, setIsEdit]=useState<boolean>(false);
-  
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+
   function hoverComment() {
     setIsHover(true);
   }
@@ -58,47 +74,62 @@ export default function EachUserComment(props: PropsType) {
     setEditModalToggle(true);
     setCommentId(commentInfo.commentId);
   }
-  
-  useEffect(()=>{
-    isEdit&&setEditModalToggle(false);
-  },[isEdit])
 
-  useEffect(()=>{
-    isUpdated&&setIsEdit(false)
-  },[isUpdated])
-  
+  useEffect(() => {
+    isEdit && setEditModalToggle(false);
+  }, [isEdit]);
+
+  useEffect(() => {
+    isUpdated && setIsEdit(false);
+  }, [isUpdated]);
+
   return (
     <>
-    {isEdit?
-    (
-      <CommentUpdate getUploadData={getUploadData} comment={commentInfo.comment} fileGetName={`${commentInfo.fileName}`} isUpdated={isUpdated} setIsUpdated={setIsUpdated} setIsEdit={setIsEdit}/>
-    ):(
-    <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
-     <ProfileImageWrapper>
-        {isHover && !isClickedPlayingComment() && (
-          <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
-            <PlayBtnIcon />
-            <PlayerBlur></PlayerBlur>
-          </PlayerBlurWrapper>
-        )}
-        {isClickedPlayingComment() && (
-          <PlayerBlurWrapper onClick={pauseAudio}>
-            <PauseButtonIcon />
-            <PlayerBlur></PlayerBlur>
-          </PlayerBlurWrapper>
-        )}
-         <ProfileImage src={commentInfo.vocalProfileImage}/>
-      </ProfileImageWrapper>
-      <InfoBox>
-        <InfoTopWrapper>
-          <UserName>{commentInfo.vocalName}</UserName>
-          {isMe && <EllipsisIcon onClick={changeToggleState}/>}
-        </InfoTopWrapper>
-        <CommentText>{commentInfo.comment}</CommentText>
-        {editModalToggle && (<EditDropDownComment currentId={commentInfo.commentId} setIsEdit={setIsEdit} editModalToggle={editModalToggle} setEditModalToggle={setEditModalToggle} />)}
-      </InfoBox>
-      
-    </CommentContainer>)}
+      {isEdit ? (
+        <CommentUpdate
+          getUploadData={getUploadData}
+          comment={commentInfo.comment}
+          fileGetName={`${commentInfo.fileName}`}
+          isUpdated={isUpdated}
+          setIsUpdated={setIsUpdated}
+          setIsEdit={setIsEdit}
+        />
+      ) : (
+        <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
+          <ProfileImageWrapper>
+            {isHover && !isClickedPlayingComment() && (
+              <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
+                <PlayBtnIcon />
+                <PlayerBlur></PlayerBlur>
+              </PlayerBlurWrapper>
+            )}
+            {isClickedPlayingComment() && (
+              <PlayerBlurWrapper onClick={pauseAudio}>
+                <PauseButtonIcon />
+                <PlayerBlur></PlayerBlur>
+              </PlayerBlurWrapper>
+            )}
+            <ProfileImage src={commentInfo.vocalProfileImage} />
+          </ProfileImageWrapper>
+          <InfoBox>
+            <InfoTopWrapper>
+              <UserName>{commentInfo.vocalName}</UserName>
+              {isMe && <EllipsisIcon onClick={changeToggleState} />}
+            </InfoTopWrapper>
+            <CommentText>{commentInfo.comment}</CommentText>
+            {editModalToggle && (
+              <EditDropDownComment
+                currentId={commentInfo.commentId}
+                setIsEdit={setIsEdit}
+                editModalToggle={editModalToggle}
+                setEditModalToggle={setEditModalToggle}
+                setKey={setKey}
+                setIsDeleted={setIsDeleted}
+              />
+            )}
+          </InfoBox>
+        </CommentContainer>
+      )}
     </>
   );
 }
@@ -123,22 +154,21 @@ const ProfileImage = styled.img`
   width: 100%;
 `;
 
-const ProfileImageWrapper=styled.div`
+const ProfileImageWrapper = styled.div`
   height: 9rem;
   width: 9rem;
   overflow: hidden;
   margin-right: 2rem;
   margin-left: 3.8rem;
   border-radius: 9rem;
-
-`
+`;
 const PlayerBlur = styled.div`
-  background-color: rgb(0,0,0,0.5);
+  background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
   -webkit-filter: blur(0.6rem);
 `;
 const PlayerBlurWrapper = styled.div`
- height: 9rem;
+  height: 9rem;
   width: 9rem;
   display: flex;
   justify-content: center;
@@ -178,19 +208,12 @@ const EllipsisIcon = styled(EllipsisIc)`
   cursor: pointer;
 `;
 
-const PlayBtnIcon=styled(PlayBtnIc)`
+const PlayBtnIcon = styled(PlayBtnIc)`
   position: absolute;
   height: 2.4rem;
-`
+`;
 
-const PauseButtonIcon=styled(PauseButtonIc)`
+const PauseButtonIcon = styled(PauseButtonIc)`
   position: absolute;
   height: 2.4rem;
-`
-
-const CommentUpldatCompleteIcon=styled(CommentUpldatCompleteIc)`
-    width: 13.9rem;
-
-    margin-left: 80rem;
-    margin-top: 1.8rem;
-`
+`;
