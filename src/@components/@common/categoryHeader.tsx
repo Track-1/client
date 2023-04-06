@@ -20,6 +20,7 @@ import { isProducer } from "../../utils/common/userType";
 import { categorySelect, clickCategoryHeader } from "../../recoil/categorySelect";
 import { showPlayerBar } from "../../recoil/player";
 import { getCookie } from "../../utils/cookie";
+import { isLogin } from "../../utils/common/isLogined";
 
 export default function CategoryHeader(props: any) {
   const { excuteGetData, pausesPlayerAudio } = props;
@@ -77,11 +78,6 @@ export default function CategoryHeader(props: any) {
     loginUserType === "vocal"
       ? navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId })
       : navigate(`/producer-profile/${loginUserId}`, { state: loginUserId });
-  }
-
-
-  function isLogin() {
-    return getCookie("accessToken") !== undefined;
   }
 
   return (

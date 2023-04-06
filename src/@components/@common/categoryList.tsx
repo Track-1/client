@@ -146,7 +146,7 @@ export default function CategoryList(props: any) {
             </CategoryTextBox>
           </CategoryTextBoxWrapper>
         ))}
-        {isTracksPage(tracksOrVocals) && isProducer(userType) && (
+        {isTracksPage(tracksOrVocals) && (
           <UploadButton type="button" onClick={moveUploadPage}>
             <UploadTextIcon />
           </UploadButton>
