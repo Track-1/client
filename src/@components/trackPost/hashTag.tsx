@@ -8,16 +8,11 @@ interface HashTag {
 export default function HashTag(props: HashTag) {
   const { text } = props;
 
-  function checkLength(text:string):number{
-    return checkHashtagLength(text)?text.length*2:text.length*1.6+1
-  }
-
-  return <TagBox textLength={checkLength(text)}><p>#</p>{text}</TagBox>;
+  return <TagBox><p>#</p>{text}</TagBox>;
 }
 
-const TagBox = styled.article<{textLength:number}>`
+const TagBox = styled.article`
   height: 3.8rem;
-  width: ${({textLength})=>textLength}rem;
 
   display: flex;
   align-items: center;
