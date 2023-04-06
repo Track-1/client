@@ -244,14 +244,18 @@ export default function TrackPostPage() {
                 {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
-                {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
+                {!isCommentOpen && play ? (
+                  <PauseBtnIcon onClick={pauseAudio} />
+                ) : (
+                  <SmallPlayBtnIcon onClick={playAudio} />
+                )}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
               {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>
-              <PlayImageWrapper className={play ? "playAnimation" : "pauseAnimation"}>
+              <PlayImageWrapper className={!isCommentOpen && play ? "playAnimation" : "pauseAnimation"}>
                 <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
               </PlayImageWrapper>
               <DescriptionContainer>
