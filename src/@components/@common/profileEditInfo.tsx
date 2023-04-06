@@ -52,9 +52,10 @@ export default function ProfileEditInfo(props: PropsType) {
   });
   const [hashtagText, setHashtagText] = useState<string>("");
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
@@ -73,11 +74,12 @@ export default function ProfileEditInfo(props: PropsType) {
     setHashtagInput(e.target.value);
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    checkHashtagLength(e.target.value)?(
-      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
-    ):(
-      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
-
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }
   }
 
   function getHashtagInput() {
@@ -109,10 +111,6 @@ export default function ProfileEditInfo(props: PropsType) {
     }
   }
 
-  function isKorean(){
-    return tagMaxLength===5;
-  }
-  
   return (
     <>
       <InfoContainer>
@@ -171,7 +169,7 @@ export default function ProfileEditInfo(props: PropsType) {
                     e.key === "Enter" && getHashtagInput();
                   }}
                   inputWidth={hashtagLength}
-                  isKorean={isKorean()}
+                  isKorean={isKorean}
                   placeholder="HashTag"
                   maxLength={tagMaxLength}
                   ref={hashtagRef} 
@@ -246,6 +244,9 @@ const ContactInput = styled.input`
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const CategoryContainer = styled.article`
@@ -288,7 +289,7 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 2.8rem;
+  margin-top: 1.4rem;
 `;
 
 const Hashtag = styled.div`
@@ -299,6 +300,7 @@ const Hashtag = styled.div`
   border-radius: 2.1rem;
   padding-right: 1rem;
   margin-right: 1rem;
+  margin-top: 1rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -311,7 +313,7 @@ const HashtagSharp = styled.p`
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 
-  margin-right: 0.6rem;
+  margin-right: 0.5rem;
 `;
 
 const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
@@ -365,6 +367,9 @@ const DesciprtionInput = styled.textarea<{ row: number }>`
   color: ${({ theme }) => theme.colors.white};
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
+  }
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
 

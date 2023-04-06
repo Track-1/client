@@ -44,18 +44,21 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
   const [contactInput, setContactInput]=useState<string>("");
   const [isWrite, setIsWrite]=useState<boolean>(false);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength]=useState<number>(8);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
 
     e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
     
-    checkHashtagLength(e.target.value)?(
-      e.target.value.length>5?(alert("한글 해시태그는 5자까지 작성할 수 있습니다.")):(setTagMaxLength(5))
-    ):(
-      e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
-    }
+    if(checkHashtagLength(e.target.value)){
+      setIsKorean(true);
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }  
+  }
   
   function completeHashtag() {
       if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
@@ -135,10 +138,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     
   },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
   
-  function isKorean(){
-    return tagMaxLength===5;
-  }
-  
   return (
     <>
       <InfoContainer>
@@ -149,7 +148,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
             placeholder="Enter your phone number or SNS account"
             onChange={changeContact}
             maxLength={40}
-            isWrite={isWrite}
           />
         </ContactContainer>
         <CategoryContainer>
@@ -196,7 +194,7 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                         e.key === "Enter" && completeHashtag();
                       }}
                       inputWidth={hashtagLength}
-                      isKorean={isKorean()}
+                      isKorean={isKorean}
                       ref={hashtagRef}
                       placeholder="HashTag"
                       maxLength={tagMaxLength}
@@ -240,13 +238,13 @@ const ContactContainer = styled.article`
   flex-direction: column;
 `;
 
-const ContactInput = styled.input<{isWrite:boolean}>`
+const ContactInput = styled.input`
   height: 3.4rem;
   width: 55.9rem;
 
   margin-top: 3.3rem;
 
-  border-bottom: 0.1rem solid ${({ theme,isWrite }) => isWrite?theme.colors.white:theme.colors.gray3};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
   padding-bottom: 0.5rem;
 
@@ -256,6 +254,10 @@ const ContactInput = styled.input<{isWrite:boolean}>`
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
+  }
+
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -300,7 +302,7 @@ const InputHashtagWrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
 
-  margin-top: 2.8rem;
+  margin-top: 1.4rem;
 `;
 
 const Hashtag = styled.div`
@@ -313,7 +315,8 @@ const Hashtag = styled.div`
   border-radius: 2.1rem;
 
   padding-right: 1rem;
-  margin-right: 1rem;  
+  margin-right: 1rem; 
+  margin-top : 1rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -329,9 +332,9 @@ const CompleteHashtagWrapper = styled.div`
 `;
 
 const HashtagSharp = styled.p`
+  margin-right: 0.5rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
-  margin-right: 0.6rem;
 `;
 
 const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
@@ -390,6 +393,10 @@ const DesciprtionInput = styled.textarea<{row:number}>`
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
+  }
+
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
 
