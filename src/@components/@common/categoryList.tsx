@@ -22,7 +22,6 @@ import { Navigate, Route, useNavigate } from "react-router-dom";
 import PrivateRoute, { blockAccess } from "../../utils/common/privateRoute";
 import { isCookieNull, isLogin } from "../../utils/common/isLogined";
 
-
 export default function CategoryList(props: any) {
   const { pausesPlayerAudio, setIsCategorySelected, trackSearchingClicked, setTrackSearchingClicked } = props;
   const modalRef = useRef<HTMLDivElement>(null);
@@ -37,12 +36,12 @@ export default function CategoryList(props: any) {
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
     setFilteredUrlApi("");
-    setTrackSearchingClicked(false);
+    // setTrackSearchingClicked(false);
   }, [isClickedCategory]);
 
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function CategoryList(props: any) {
   function moveUploadPage() {
     setShowPlayer(false);
     pausesPlayerAudio();
-    blockAccess()?navigate("/login"):setOpenModal(true);
+    blockAccess() ? navigate("/login") : setOpenModal(true);
   }
 
   // function searchFilterdVocals() {
@@ -135,12 +134,11 @@ export default function CategoryList(props: any) {
           </CategoryTextBoxWrapper>
         ))}
 
-          {isTracksPage(tracksOrVocals) && (
-            <UploadButton type="button" onClick={moveUploadPage}>
-              <UploadTextIcon />
-            </UploadButton>
-          )}
-        
+        {isTracksPage(tracksOrVocals) && (
+          <UploadButton type="button" onClick={moveUploadPage}>
+            <UploadTextIcon />
+          </UploadButton>
+        )}
 
         {isVocalsPage(tracksOrVocals) &&
           (trackSearchingClicked ? (
