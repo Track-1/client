@@ -12,8 +12,6 @@ interface PrivateRouteProps {
 
 
 export default function PrivateRoute({authentication}:PrivateRouteProps):any{
-  const navigate=useNavigate();
-
   const isAuthenticated = getCookie("accessToken");
 
   if(authentication) {

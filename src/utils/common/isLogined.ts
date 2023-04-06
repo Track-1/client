@@ -4,10 +4,10 @@ export function isLogin() {
     return getCookie("accessToken") !== undefined;
   }
 
-export function checkIsNull(isAuthenticated:any){
+export function checkIsNull(isAuthenticated:string){
     return isAuthenticated === null;
-  }
+}
 
-export function checkIsAuthenticated(isAuthenticated:any){
+export function checkIsAuthenticated(isAuthenticated:string){
     return isAuthenticated==='false'
-  }
+}
