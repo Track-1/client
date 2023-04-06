@@ -4,7 +4,7 @@ import ProfileEditInfo from "../@components/@common/profileEditInfo";
 import ProfileEditHeader from "../@components/profileEdit/profileEditHeader";
 import ProducerProfileEditTitle from "../@components/profileEdit/producerProfileEditTitle";
 import VocalProfileEditTitle from "../@components/profileEdit/vocalProfileEditTitle";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { QueryClient, useMutation } from "react-query";
 import { patchProducerProfile } from "../core/api/producerProfile";
 import { CategoryId } from "../core/constants/categories";
@@ -13,10 +13,10 @@ import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 
 export default function ProducerProfileEditPage() {
-  // const { profileData } = useLocation().state;
   const location = useLocation();
-  const profileData = location.state.profileData;
   const navigate = useNavigate();
+  const params = useParams();
+  const profileData = location.state.profileData;
   const [profileImage, setProfileImage] = useState<File>(
     new File([profileData.profileImage], profileData.profileImage),
   );
@@ -53,7 +53,8 @@ export default function ProducerProfileEditPage() {
   useEffect(() => {
     if (updatedData !== undefined) {
       mutate();
-      navigate(-1);
+      navigate(`/producer-profile/${params.id}`, { state: params.id, replace: true });
+      window.location.reload();
       // changeKey();
     }
   }, [updatedData]);

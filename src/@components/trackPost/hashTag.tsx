@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 interface HashTag {
   text: string;
@@ -6,12 +7,12 @@ interface HashTag {
 
 export default function HashTag(props: HashTag) {
   const { text } = props;
-  return <TagBox>#{text}</TagBox>;
+
+  return <TagBox><p>#</p>{text}</TagBox>;
 }
 
 const TagBox = styled.article`
   height: 3.8rem;
-  /* width: 17.3rem; */
 
   display: flex;
   align-items: center;
@@ -28,4 +29,8 @@ const TagBox = styled.article`
   color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.fonts.hashtag}
+
+  >p{
+    margin-right: 0.5rem;
+  }
 `;

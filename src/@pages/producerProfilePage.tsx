@@ -144,7 +144,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
+      {isMe && <UploadButtonIcon onClick={moveToUpload} />}
 
       {profileData && (
         <ProducerInfos
@@ -164,6 +164,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToProfile();
               scrollToTop();
+              setPortfolioData([]);
               excuteGetData();
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
@@ -174,6 +175,7 @@ export default function ProducerProfilePage() {
             onClick={() => {
               changeToVocalSearch();
               scrollToTop();
+              setSelectingTracksData([]);
               excuteGetData();
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
@@ -269,14 +271,12 @@ const ProducerEmptyProfileImage = styled.img`
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   position: absolute;
+  z-index: 7;
   right: 0;
   margin-top: 5.9rem;
+  margin-right: 6.9rem;
 
   width: 24.5rem;
 
   cursor: pointer;
-`;
-
-const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
-  margin-top: 5.9rem;
 `;

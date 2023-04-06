@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { UploadInfo } from "../../core/api/upload";
-import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../../assets";
+import { UploadBtnIc, CanUploadBtnIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
@@ -25,9 +25,9 @@ export default function UploadHeader(props: PropsType) {
   const loginUserId = useRecoilValue(LoginUserId);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
+  const [cursor, setCursor] = useState<string>("pointer");
 
-
-  const { mutate } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
+  const { mutate, isLoading } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
       alert("업로드 성공");
       checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
@@ -37,13 +37,19 @@ export default function UploadHeader(props: PropsType) {
     },
   });
 
-  function backPage(e: React.MouseEvent<SVGSVGElement>) {
-    navigate(-1);
-  }
+  useEffect(() => {
+    checkMeetConditions();
+  }, [uploadData]);
+
+  useEffect(() => {
+    isLoading ? setCursor("wait") : setCursor("pointer");
+  }, [isLoading]);
 
   function upload(e: React.MouseEvent<SVGSVGElement>) {
-    setOpenModal(false);
-    mutate();
+    if (!isLoading) {
+      setOpenModal(false);
+      mutate();
+    }
   }
 
   function checkMeetConditions(): void {
@@ -53,8 +59,6 @@ export default function UploadHeader(props: PropsType) {
       setIsUploadActive(false);
     }
   }
-
-
 
   function isEmptyTitle(): boolean {
     return uploadData.title === "";
@@ -72,10 +76,6 @@ export default function UploadHeader(props: PropsType) {
     return uploadData.keyword.length === 0;
   }
 
-  useEffect(() => {
-    checkMeetConditions();
-  }, [uploadData]);
-
   function movePreviousPage() {
     navigate(-1);
   }
@@ -85,11 +85,11 @@ export default function UploadHeader(props: PropsType) {
       <HeaderWrapper>
         <LeftWrapper>
           <div onClick={movePreviousPage}>
-          <BackButton />
+            <BackButton />
           </div>
           <UserClass> {producerUploadType}</UserClass>
         </LeftWrapper>
-        {isUploadActive ? <CanUploadBtnIcon onClick={upload} /> : <UploadBtnIcon />}
+        {isUploadActive ? <CanUploadBtnIcon onClick={upload} cursor={cursor} /> : <UploadBtnIcon />}
       </HeaderWrapper>
     </Container>
   );
@@ -120,13 +120,8 @@ const UserClass = styled.div`
   margin-left: 6.1rem;
 `;
 
-const UploadBackIcon = styled(UploadBackIc)`
-  cursor: pointer;
-`;
-
 const CanUploadBtnIcon = styled(CanUploadBtnIc)`
   width: 24.6rem;
-  cursor: pointer;
 `;
 
 const UploadBtnIcon = styled(UploadBtnIc)`

@@ -47,12 +47,6 @@ export default function VocalProfilePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  useEffect(() => {
-    setTimeout(() => {
-      excuteGetData();
-    }, 800);
-  }, []);
-
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
@@ -206,6 +200,7 @@ const UploadButtonIcon = styled(UploadButtonIc)`
   z-index: 7;
   right: 0;
   margin-top: 5.9rem;
+  margin-right: 6.9rem;
 
   width: 24.5rem;
 

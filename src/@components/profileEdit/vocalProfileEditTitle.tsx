@@ -90,8 +90,9 @@ export default function ProducerProfileEditTitle(props: PropsType) {
         <ImageWrapper>
           {isImageUploaded ? <UploadedImage src={String(showImage)} /> : <ProfileImage src={profileImage} />}
         </ImageWrapper>
+        {isHover && <SignUpChangeVocalImageIcon />}
       </ProfileImageContainer>
-      {/* {isHover && <SignUpChangeVocalImageIcon />} */}
+      
       <FileInput
         type="file"
         id="profileImg"
@@ -135,7 +136,8 @@ const TitleContainer = styled.section`
 
   border: 0.3rem solid transparent;
   border-radius: 5rem;
-  background-image: linear-gradient(#141517, #141517), linear-gradient(to top, transparent 0%, #3e4045 100%);
+  background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
+  linear-gradient(to top, transparent 0%, #3e4045 100%);
   background-origin: border-box;
   background-clip: content-box, border-box;
 
@@ -145,20 +147,6 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
-  /* height: 26.7em;
-  width: 26.7em;
-
-  margin-left: 5rem;
-  margin-top: 15rem;
-  margin-bottom:5rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 3rem;
-  overflow: hidden;
-  transform: rotate(-45deg); */
 `;
 
 const ProfileImage = styled.img`
@@ -303,17 +291,16 @@ const ProfileEditSleepAcountTitleIcon = styled(ProfileEditSleepAcountTitleIc)`
 `;
 
 const SignUpChangeVocalImageIcon = styled(SignUpChangeImgIc)`
-  height: 26.7em;
-  width: 26.7em;
+  height: 26.9rem;
+  width: 26.9rem;
 
-  border: 0.1rem solid rgba(30, 32, 37, 0.5);
   border-radius: 3rem;
 
   backdrop-filter: blur(1.7rem);
   transform: rotate(45deg);
   position: absolute;
 
-  margin-top: -31.7rem;
+  margin-top: -31.8rem;
   margin-left: 5rem;
 
   cursor: pointer;

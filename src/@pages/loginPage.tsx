@@ -1,22 +1,19 @@
 import Footer from "../@components/@common/footer";
 import backgroundImg from "../assets/image/backgroundImg.png";
 import LoginInput from "../@components/login/loginInput";
-import BackButton from '../@components/@common/backButton';
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { BackButtonIc } from "../assets";
+import useMovePage from "../utils/hooks/useMovePage";
+import BackButton from "../@components/@common/backButton";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-
-  function movePreviousPage() {
-    navigate(-1);
-  }
+  const [movePage] = useMovePage();
   return (
     <>
-    <BackButtonWrapper onClick={movePreviousPage}>
-      <BackButton/>
-    </BackButtonWrapper>
-    
+      <BackButtonWrapper onClick={() => movePage("/")} >
+        <BackButton />
+      </BackButtonWrapper>
+
       <LoginInput />
       <BackgroundImg src={backgroundImg} alt="배경사진" />
       <Footer />
@@ -24,11 +21,11 @@ export default function LoginPage() {
   );
 }
 
-const BackButtonWrapper=styled.div`
-  margin:5.9rem 0 0 7.9rem;
-`
+const BackButtonWrapper = styled.div`
+  margin: 5.9rem 0 0 7.9rem;
+`;
 
-const BackgroundImg=styled.img`
+const BackgroundImg = styled.img`
   margin-top: 19.6rem;
   width: 192rem;
-`
+`;
