@@ -19,6 +19,7 @@ import { LoginUserId, LoginUserImg, LoginUserType } from "../../recoil/loginUser
 import { isProducer } from "../../utils/common/userType";
 import { categorySelect, clickCategoryHeader } from "../../recoil/categorySelect";
 import { showPlayerBar } from "../../recoil/player";
+import { getCookie } from "../../utils/cookie";
 
 export default function CategoryHeader(props: any) {
   const { excuteGetData, pausesPlayerAudio } = props;
@@ -78,6 +79,11 @@ export default function CategoryHeader(props: any) {
       : navigate(`/producer-profile/${loginUserId}`, { state: loginUserId });
   }
 
+
+  function isLogin() {
+    return getCookie("accessToken") !== undefined;
+  }
+
   return (
     <CategoryHeaderContainer>
       <CategoryContainer>
@@ -97,14 +103,12 @@ export default function CategoryHeader(props: any) {
         </CategoryWrapper>
       </CategoryContainer>
 
+      
       <HeaderContainer>
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
+          {isLogin()&&(
           <ProfileWrapper onClick={moveMypage}>
-            {/* <ProfileImg
-              src={"https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png"}
-              alt="프로필이미지"
-            /> */}
             {isProducer(loginUserType) ? (
               <ProducerProfileImg src={loginUserImg} alt="프로필이미지" />
             ) : (
@@ -114,8 +118,10 @@ export default function CategoryHeader(props: any) {
             )}
             <ToggleIc />
           </ProfileWrapper>
+          )}
         </HeaderWrapper>
       </HeaderContainer>
+      
     </CategoryHeaderContainer>
   );
 }
