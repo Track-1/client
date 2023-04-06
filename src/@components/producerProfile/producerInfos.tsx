@@ -41,14 +41,16 @@ export default function ProducerInfos(props: PropsType) {
   }
 
   function movePreviousPage() {
-    navigate(-1);
+    navigate(`/track-search`);
+
+    //navigate(-1);
   }
 
   return (
     <InfoContainer>
       <InfoHeader>
         <div onClick={movePreviousPage}>
-        <BackButton pauseAudio={pauseAudio} />
+          <BackButton pauseAudio={pauseAudio} />
         </div>
         {isMe && <ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
