@@ -100,14 +100,6 @@ export default function VocalPortfolioEditPage() {
     toggleDropdown();
   }
 
-  // function deleteHashtag(deleteTarget: string) {
-  //   const temp: string[] = [];
-  //   hashtag.forEach((keyword) => {
-  //     if (keyword !== deleteTarget) temp.push(keyword);
-  //   });
-  //   setHashtag(temp);
-  // }
-
   function deleteHashtag(index: number) {
     console.log("클릭")
     const deleteTag = hashtag;
@@ -129,13 +121,6 @@ export default function VocalPortfolioEditPage() {
       e.target.value.length>10?(alert("영문 해시태그는 10자까지 작성할 수 있습니다.")):setTagMaxLength(10));
 
   }
-
-  // function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-  //   if (e.code === "Enter") {
-  //     setHashtag((prev) => [...prev, hashtagText]);
-  //     setHashtagText("");
-  //   }
-  // }
 
   function addHashtag() {
       if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
@@ -320,11 +305,9 @@ export default function VocalPortfolioEditPage() {
                               </CompleteHashtagWrapper>
                               <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                             </Hashtag>
-                          // </InputHashtagWrapper>
                         );
                       })}                    
                         {hashtag.length < 3 && (
-                          // <InputHashtagWrapper>
                             <Hashtag>
                               <HashtagWrapper>
                                 <HashtagSharp># </HashtagSharp>
@@ -338,15 +321,11 @@ export default function VocalPortfolioEditPage() {
                                   ref={hashtagRef}
                                   placeholder="HashTag"
                                   maxLength={tagMaxLength}
-                                  //value={hashtagText}
                                 />
-                                {/* <div style={{ width: "1" }}></div> */}
                               </HashtagWrapper>
                             </Hashtag>
-                          // </InputHashtagWrapper>
                         )}
-                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}          
-                  {/* </InputWrapper> */}
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}      
                   </InputHashtagWrapper>
 
                   <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>

@@ -113,19 +113,6 @@ export default function UploadInfo(props: propsType) {
     }
   }, [textareaHeight]);
 
-  // useEffect(() => {
-  //   if (checkMaxInputLength(uploadData.keyword.length, 1) && !isEmptyHashtagInput()) {
-  //   // if (checkMaxInputLength(uploadData.keyword.length, 1)) {
-  //     makeZeroInputWidth(0);
-  //     const inputWidth = enteredHashtag.current!.scrollWidth;
-  //     changeHashtagInputWidth(inputWidth);
-  //     setHashtagInputWidth(inputWidth);
-  //   } else {
-  //     makeZeroInputWidth(HASHTAG_WIDTH);
-  //     setHashtagInputWidth(HASHTAG_WIDTH);
-  //   }
-  // }, [hashtagInputWidth]);
-
   useEffect(() => {
     const initArray = getInitFalseArray();
     initArrayState(initArray);
@@ -247,94 +234,15 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-  //해시태그
-  // function appendHashtag(): void {
-    // const hashtag = getEnteredHashtag();
-    // if (!isDuplicateHashtag(hashtag)) {
-    //   setUploadData((prevState) => {
-    //     return { ...prevState, keyword: [...uploadData.keyword, hashtag] };
-    //   });
-    //   // resetHashtagInputWidth();
-    //   // resetHashtagCurrentValue();
-    // }
-    // if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
-    //   hashtagRef.current.value = "";
-    //   setHashtags((prev) => [...prev, hashtagInput]);
-    //   setHashtagInput("");
-    //   setHashtagLength(0)
-    // }
-  // }
-
-  // function resetHashtagInputWidth(): void {
-  //   setHashtagInputWidth(HASHTAG_WIDTH);
-  // }
-
-  // function resetHashtagCurrentValue(): void {
-  //   enteredHashtag.current!.value = "";
-  // }
-
-  // function getEnteredHashtag(): string {
-  //   return enteredHashtag.current!.value;
-  // }
-
   function isDuplicateHashtag(value: string): boolean {
     const isDuplicate = uploadData.keyword.includes(value);
     isDuplicate && alert("중복된 해시태그 입니다!");
     return isDuplicate;
   }
 
-  // function addHashtag(): void {
-  //   isMaxHashtags() && appendHashtag();
-  // }
-
-  // function isMaxHashtags(): boolean {
-  //   return uploadData.keyword.length < 3;
-  // }
-
-  // function addHashtagEnterKey(e: React.KeyboardEvent<HTMLInputElement>): void {
-  //   isEnterKey(e) && addHashtag();
-  // }
-
   function restrictInput(ref: any): void {
     ref.current!.value = ref.current!.value.slice(0, -1);
   }
-
-  // function changeHashtagTextWidth(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const inputLength = e.target.value.length;
-
-  //   if (checkMaxInputLength(inputLength, 10)) {
-  //     setHashtagLength(inputLength);
-  //     setHashtagInputWidth(Number(e.target.value));
-  //   } else {
-  //     restrictInput(enteredHashtag);
-  //   }
-  // }
-
-  // function deleteHashtag(index: number) {
-  //   const deleteTag = uploadData.keyword;
-  //   deleteTag.splice(index, 1);
-
-  //   setUploadData((prevState) => {
-  //     return { ...prevState, keyword: deleteTag };
-  //   });
-  //   resetHashtagInputWidth();
-  // }
-
-  // function hoverWarningState(e: React.MouseEvent<HTMLInputElement>) {
-  //   isMouseEnter(e) ? setWarningHoverState(true) : setWarningHoverState(false);
-  // }
-
-  // function isEmptyHashtagInput(): boolean {
-  //   return enteredHashtag.current!.value.length === 0;
-  // }
-
-  // function changeHashtagInputWidth(inputWidth: number): void {
-  //   enteredHashtag!.current!.style.width = inputWidth / 10 + "rem";
-  // }
-
-  // function makeZeroInputWidth(width: number): void {
-  //   // enteredHashtag!.current!.style.width = width + "rem";
-  // }
 
   //소개글
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -639,7 +547,6 @@ const InfoItemBox = styled.div`
 
 const NameBox = styled.div`
   width: 30rem;
-  // height: 100%;
 
   display: flex;
   justify-content: flex-start;
@@ -821,13 +728,6 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
   cursor: pointer;
 `;
 
-// const AddHashtagIcon = styled(AddHashtagIc)`
-//   margin-left: -0.2rem;
-//   margin-top: 1.3rem;
-
-//   cursor: pointer;
-// `;
-
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   margin-right: 0.5rem;
   cursor: pointer;
@@ -856,8 +756,6 @@ const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
 `;
 
 const InputHashtagWrapper = styled.div`
-  /* display: flex;
-  flex-wrap: wrap; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;

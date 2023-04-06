@@ -33,7 +33,6 @@ const WarningTextWrapper = styled.div`
   width: 47.2rem;
 
   position: absolute;
-  z-index: ;
 
   margin-top: 1.4rem;
   background: rgba(30, 32, 37, 0.7);
