@@ -144,7 +144,7 @@ export default function ProducerProfilePage() {
     <>
       <Outlet />
       {visible && <TracksProfileUploadModal />}
-      {isMe ? <UploadButtonIcon onClick={moveToUpload} /> : <UploadButtonBlankIcon />}
+      {isMe && <UploadButtonIcon onClick={moveToUpload} />}
 
       {profileData && (
         <ProducerInfos
@@ -277,8 +277,4 @@ const UploadButtonIcon = styled(UploadButtonIc)`
   width: 24.5rem;
 
   cursor: pointer;
-`;
-
-const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
-  margin-top: 5.9rem;
 `;
