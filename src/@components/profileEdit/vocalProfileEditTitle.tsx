@@ -136,7 +136,8 @@ const TitleContainer = styled.section`
 
   border: 0.3rem solid transparent;
   border-radius: 5rem;
-  background-image: linear-gradient(#141517, #141517), linear-gradient(to top, transparent 0%, #3e4045 100%);
+  background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
+  linear-gradient(to top, transparent 0%, #3e4045 100%);
   background-origin: border-box;
   background-clip: content-box, border-box;
 
@@ -146,20 +147,6 @@ const TitleContainer = styled.section`
 `;
 
 const ProfileImageContainer = styled.label`
-  /* height: 26.7em;
-  width: 26.7em;
-
-  margin-left: 5rem;
-  margin-top: 15rem;
-  margin-bottom:5rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 3rem;
-  overflow: hidden;
-  transform: rotate(-45deg); */
 `;
 
 const ProfileImage = styled.img`
