@@ -2,20 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FileUploadButtonIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { endPost, postContentLength, postIsCompleted } from "../../recoil/postIsCompleted";
+import { endPost, postContentLength } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
-import { UserCommentType } from "../../type/userCommentsType";
 
 interface PropsType {
-  getUploadData: (content: string, audioFile: File | null, fileName:string) => any;
-  isCompleted:boolean;
-  setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>
-  content: string;
-  audioFile: File | null;
+  getUploadData: (content: string, audioFile: File | null, fileName: string) => any;
+  isCompleted: boolean;
+  setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  comments: any;
 }
 
 export default function CommentWrite(props: PropsType) {
-  const { getUploadData, isCompleted,audioFile } = props;
+  const { getUploadData, isCompleted, comments } = props;
 
   const commentText = useRef<HTMLTextAreaElement | null>(null);
   const commentFile = useRef<HTMLInputElement | null>(null);
@@ -28,7 +26,7 @@ export default function CommentWrite(props: PropsType) {
   const imgSrc = useRecoilValue(LoginUserImg);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
-  const [ing, setIng]=useState<boolean>(false);
+  const [ing, setIng] = useState<boolean>(false);
 
   useEffect(() => {
     const currentText = commentText.current!.value;
@@ -39,65 +37,68 @@ export default function CommentWrite(props: PropsType) {
   function changeCommentLength(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const currentLength = e.target.value.length;
     setCommentLength(currentLength);
-    setIng(!ing)
+    setIng(!ing);
   }
 
   function getFile(e: React.ChangeEvent<HTMLInputElement>) {
     const currentFile = e.target.files && e.target.files[0];
     currentFile && setUploadedFile(currentFile);
     currentFile && changeFileName(currentFile.name);
-    setIng(!ing)
+    setIng(!ing);
   }
 
   function changeFileName(fileName: string) {
     setFileName(fileName);
   }
 
-  useEffect(()=>{
-    if(commentFile.current!==null){
-      commentFile.current.value = '';
+  useEffect(() => {
+    if (commentFile.current !== null) {
+      commentFile.current.value = "";
       setFileName("file_upload.mp3");
     }
-    if(commentText.current!==null){
-      commentText.current.value = '';
+    if (commentText.current !== null) {
+      commentText.current.value = "";
     }
-  },[isEnd])
-
+  }, [comments]);
 
   return (
     <form>
-    <WriteContainer>
-      <ImageContainer>
-      <ProfileImageWrapper>
-      <ProfileImage
-        src={imgSrc}
-        alt="프로필 이미지"
-      />
-      </ProfileImageWrapper>
-      </ImageContainer>
-      <InfoBox>
-        <TitleWrapper>
-          <InputTitle>{fileName}</InputTitle>
-          <label htmlFor="userFile">
-            <div>
-              <FileUploadButtonIcon />
-            </div>
-          </label>
-          <FileInput type="file" accept=".mp3, .wav" id="userFile" className="file" onChange={getFile} ref={commentFile} />
-          <CountWrapper>
-            <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
-          </CountWrapper>
-        </TitleWrapper>
-        <InputWrapper>
-          <InputBox
-            placeholder="트랙 음악을 다운받아서 보컬 녹음 파일을 업로드해보세요!"
-            maxLength={150}
-            onChange={changeCommentLength}
-            ref={commentText}
-          />
-        </InputWrapper>
-      </InfoBox>
-    </WriteContainer>
+      <WriteContainer>
+        <ImageContainer>
+          <ProfileImageWrapper>
+            <ProfileImage src={imgSrc} alt="프로필 이미지" />
+          </ProfileImageWrapper>
+        </ImageContainer>
+        <InfoBox>
+          <TitleWrapper>
+            <InputTitle>{fileName}</InputTitle>
+            <label htmlFor="userFile">
+              <div>
+                <FileUploadButtonIcon />
+              </div>
+            </label>
+            <FileInput
+              type="file"
+              accept=".mp3, .wav"
+              id="userFile"
+              className="file"
+              onChange={getFile}
+              ref={commentFile}
+            />
+            <CountWrapper>
+              <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
+            </CountWrapper>
+          </TitleWrapper>
+          <InputWrapper>
+            <InputBox
+              placeholder="트랙 음악을 다운받아서 보컬 녹음 파일을 업로드해보세요!"
+              maxLength={150}
+              onChange={changeCommentLength}
+              ref={commentText}
+            />
+          </InputWrapper>
+        </InfoBox>
+      </WriteContainer>
     </form>
   );
 }
@@ -124,14 +125,14 @@ const ProfileImageWrapper = styled.div`
   border-radius: 9rem;
 `;
 
-const ImageContainer=styled.div`
+const ImageContainer = styled.div`
   margin-right: 2rem;
   margin-left: 3.8rem;
-`
+`;
 
-const ProfileImage=styled.img`
-  width: 100%
-`
+const ProfileImage = styled.img`
+  width: 100%;
+`;
 
 const InfoBox = styled.div`
   display: flex;
@@ -162,12 +163,6 @@ const InputTitle = styled.strong`
   color: ${({ theme }) => theme.colors.gray3};
 
   border-bottom: 0.2rem solid ${({ theme }) => theme.colors.gray3};
-`;
-
-const UploadIcon = styled(UploadIc)`
-  margin-left: 1.4rem;
-
-  cursor: pointer;
 `;
 
 const CountWrapper = styled.div`
@@ -210,9 +205,7 @@ const InputBox = styled.textarea`
   resize: none;
 `;
 
-
-const FileUploadButtonIcon=styled(FileUploadButtonIc)`
+const FileUploadButtonIcon = styled(FileUploadButtonIc)`
   width: 4rem;
   margin-left: 1.2rem;
-
-`
+`;
