@@ -48,7 +48,7 @@ export default function ProducerInfos(props: PropsType) {
     <InfoContainer>
       <InfoHeader>
         <div onClick={movePreviousPage}>
-        <BackButton pauseAudio={pauseAudio} />
+          <BackButton pauseAudio={pauseAudio} />
         </div>
         {isMe && <ProfileEditBtnIcon onClick={moveProfileEditPage} />}
         <Blank />
@@ -192,7 +192,6 @@ const ProducerName = styled.h1`
 
   color: ${({ theme }) => theme.colors.white};
 
-  /* margin-top: 2.4rem; */
 `;
 
 const SleeperAccountIcon = styled(SleeperAccountIc)`
@@ -214,7 +213,6 @@ const DetailInfoContainer = styled.section`
   width: 45rem;
 
   display: flex;
-  justify-content: space-between;
 
   margin-top: 4.6rem;
 `;
@@ -235,6 +233,8 @@ const CategoryBox = styled.div<{ isSelected: boolean }>`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.hashtag};
 
+  width: 34.8rem;
+
   display: flex;
   flex-direction: column;
 `;
@@ -244,7 +244,7 @@ const HashtagBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  /* margin-right: 10rem; */
+
   width: 30rem;
 `;
 
@@ -291,7 +291,6 @@ const CategoryArray = styled.ul`
   margin-top: 2.5rem;
 `;
 const Category = styled.li`
-  //padding-bottom: 1.1rem;
   margin-bottom: 1.1rem;
 `;
 
