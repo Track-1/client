@@ -1,7 +1,7 @@
 import styled, { useTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
-import { UploadBackIc, UploadBtnIc, CanUploadBtnIc } from "../assets";
+import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, HashtagWarningIc } from "../assets";
 import { FileChangeIc } from "../assets";
 import {
   UploadFileUpdateIc,
@@ -24,6 +24,7 @@ import { patchProducerPortfolio } from "../core/api/producerProfile";
 import BackButton from "../@components/@common/backButton";
 import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
+import useHover from "../utils/hooks/useHover";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -46,6 +47,7 @@ export default function ProducerPortfolioEditPage() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [tagMaxLength, setTagMaxLength]=useState<number>(8);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const { hoverState, changeHoverState } = useHover();
 
   const navigate = useNavigate();
 
@@ -281,39 +283,6 @@ function clickOutSide(e: any) {
                 </NameBox>
                 <InputBox>
                   <InputWrapper>
-                    {/* <>
-                      {hashtag?.map((item: string, index: number) => {
-                        return (
-                          <InputHashtagWrapper>
-                            <Hashtag key={index}>
-                              <HashtagWrapper>
-                                <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                                <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
-                              </HashtagWrapper>
-                            </Hashtag>
-                          </InputHashtagWrapper>
-                        );
-                      })}
-                      <>
-                        {hashtag.length < 3 && (
-                          <InputHashtagWrapper>
-                            <Hashtag>
-                              <HashtagWrapper>
-                                <HashtagSharp># </HashtagSharp>
-                                <HashtagInput
-                                  onChange={getInputText}
-                                  width={hashtagInput.length}
-                                  onKeyUp={addHashtag}
-                                  value={hashtagText}
-                                />
-                                <div style={{ width: "1" }}></div>
-                              </HashtagWrapper>
-                            </Hashtag>
-                          </InputHashtagWrapper>
-                        )}
-                        {hashtag.length < 2 && <AddHashtagIcon />}
-                      </>
-                    </> */}
                     <>
                       {hashtag?.map((item: string, index: number) => {
                         return (
@@ -344,9 +313,7 @@ function clickOutSide(e: any) {
                                   ref={hashtagRef}
                                   placeholder="HashTag"
                                   maxLength={tagMaxLength}
-                                  //value={hashtagText}
                                 />
-                                <div style={{ width: "1" }}></div>
                               </HashtagWrapper>
                             </Hashtag>
                           </InputHashtagWrapper>
@@ -355,9 +322,26 @@ function clickOutSide(e: any) {
                       </>
                     </>
                   </InputWrapper>
-                  <ProfileWarningWrapper>
-                  <ProfileWarning/>
-                  </ProfileWarningWrapper>
+                  
+                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                  {hoverState ? (
+                    <>
+                      <HoverHashtagWarningIcon />
+                      <WarningTextWrapper>
+                        <WarningText>
+                          1. 해시태그는 최대 3개까지 추가 가능합니다.
+                          <br />
+                          2. 최대 10자까지 작성이 가능합니다.
+                          <br />
+                          3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                        </WarningText>
+                      </WarningTextWrapper>
+                    </>
+                  ) : (
+                    <HashtagWarningIcon />
+                  )}
+                </WarningIcon>
+
                 </InputBox>
               </InfoItemBox>
 
@@ -388,7 +372,7 @@ function clickOutSide(e: any) {
                   {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
                       <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
-                      {category === Categories[index] && <CheckCategoryIc />}
+                      {category === Categories[index] && <CheckCategoryIcon />}
                     </DropMenuItem>
                   ))}
                 </DropMenuWrapper>
@@ -732,6 +716,7 @@ const InputDescriptionText = styled.textarea`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
+  margin-left: 1rem;
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
@@ -743,8 +728,8 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  top: 62rem;
+  left: 136.5rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -807,6 +792,8 @@ const FolderUploadIcon = styled(FolderUploadIc)`
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+ width: 4rem;
+  height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
 `;
@@ -815,7 +802,7 @@ const AddHashtagIcon = styled(AddHashtagIc)`
   width: 4rem;
   height: 4rem;
   margin-left: -0.2rem;
-  margin-top: 1.3rem;
+  margin-top: 1.2rem;
 
   cursor: pointer;
 `;
@@ -843,3 +830,18 @@ const CompletedHashtag = styled.article`
 
   ${({ theme }) => theme.fonts.hashtag}
 `;
+
+const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const HashtagWarningIcon = styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const CheckCategoryIcon=styled(CheckCategoryIc)`
+  width: 1.5rem;
+  height: 0.9rem;
+`

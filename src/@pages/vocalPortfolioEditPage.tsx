@@ -356,7 +356,7 @@ export default function VocalPortfolioEditPage() {
                 <InputBox>
                   <InputDescriptionText
                     typeof="text"
-                    placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                    placeholder="보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요."
                     spellCheck={false}
                     maxLength={250}
                     defaultValue={description}
