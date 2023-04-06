@@ -785,7 +785,7 @@ const DropMenuText = styled.p<{isClicked:boolean}>`
 
 const WarningIcon = styled.div`
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 2.5rem;
   border-radius: 5rem;
 
   cursor: pointer;

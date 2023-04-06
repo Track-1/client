@@ -281,7 +281,7 @@ function clickOutSide(e: any) {
                   <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
-                  <InputWrapper>
+                  <InputHashtagWrapper>
                     <>
                       {hashtag?.map((item: string, index: number) => {
                         return (
@@ -320,7 +320,7 @@ function clickOutSide(e: any) {
                         {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}
                       </>
                     </>
-                  </InputWrapper>
+                  </InputHashtagWrapper>
                   
                   <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
                   {hoverState ? (
@@ -650,11 +650,12 @@ const HashTagInfoItemBox = styled.div`
   display: flex;
   margin-bottom: 0.2rem;
 `;
+
 const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  height: 9rem;
+ // height: 9rem;
 `;
 
 const Hashtag = styled.div`
@@ -765,7 +766,7 @@ const DropMenuText = styled.p`
 
 const WarningIcon = styled.div`
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 2.5rem;
   border-radius: 5rem;
 
   cursor: pointer;
