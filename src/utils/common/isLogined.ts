@@ -11,3 +11,7 @@ export function checkIsNull(isAuthenticated:string){
 export function checkIsAuthenticated(isAuthenticated:string){
     return isAuthenticated==='false'
 }
+
+export function blockAccess(isAuthenticated:string){
+  return (!isLogin()||checkIsNull(isAuthenticated)|| checkIsAuthenticated(isAuthenticated))&&true;
+}
