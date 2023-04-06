@@ -47,12 +47,6 @@ export default function VocalProfilePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  useEffect(() => {
-    setTimeout(() => {
-      excuteGetData();
-    }, 800);
-  }, []);
-
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
