@@ -149,7 +149,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
             placeholder="Enter your phone number or SNS account"
             onChange={changeContact}
             maxLength={40}
-            isWrite={isWrite}
           />
         </ContactContainer>
         <CategoryContainer>
@@ -240,13 +239,13 @@ const ContactContainer = styled.article`
   flex-direction: column;
 `;
 
-const ContactInput = styled.input<{isWrite:boolean}>`
+const ContactInput = styled.input`
   height: 3.4rem;
   width: 55.9rem;
 
   margin-top: 3.3rem;
 
-  border-bottom: 0.1rem solid ${({ theme,isWrite }) => isWrite?theme.colors.white:theme.colors.gray3};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
   padding-bottom: 0.5rem;
 
@@ -256,6 +255,10 @@ const ContactInput = styled.input<{isWrite:boolean}>`
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
+  }
+
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -390,6 +393,10 @@ const DesciprtionInput = styled.textarea<{row:number}>`
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
+  }
+
+  :focus{
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
 
