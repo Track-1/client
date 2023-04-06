@@ -4,7 +4,7 @@ import ProfileEditInfo from "../@components/@common/profileEditInfo";
 import ProfileEditHeader from "../@components/profileEdit/profileEditHeader";
 import ProducerProfileEditTitle from "../@components/profileEdit/producerProfileEditTitle";
 import VocalProfileEditTitle from "../@components/profileEdit/vocalProfileEditTitle";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "react-query";
 import { patchProducerProfile } from "../core/api/producerProfile";
 import { CategoryId } from "../core/constants/categories";
@@ -15,6 +15,7 @@ import background from "../assets/icon/signUpBackgroundIc.svg";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
+  const params = useParams();
   const navigate = useNavigate();
   const [isSleep, setIsSleep] = useState<boolean>(state?.isSelected);
   const [profileImage, setProfileImage] = useState<File>(state.profileImage);
@@ -51,7 +52,8 @@ export default function VocalProfileEditPage() {
   useEffect(() => {
     if (updatedData !== undefined) {
       mutate();
-      navigate(-1);
+      navigate(`/vocal-profile/${params.id}`, { state: params.id, replace: true });
+      window.location.reload();
     }
   }, [updatedData]);
 
