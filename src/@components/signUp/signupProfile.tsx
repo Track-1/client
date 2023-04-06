@@ -133,10 +133,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
     
   },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
   
-  function isKorean(){
-    return tagMaxLength===5;
-  }
-  
   return (
     <>
       <InfoContainer>
@@ -193,7 +189,6 @@ export default function SignupProfile(props:SignupProfilePropsTye) {
                         e.key === "Enter" && completeHashtag();
                       }}
                       inputWidth={hashtagLength}
-                      isKorean={isKorean()}
                       ref={hashtagRef}
                       placeholder="HashTag"
                       maxLength={tagMaxLength}
@@ -335,8 +330,8 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
-  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number }>`
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 1.5+1)}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
