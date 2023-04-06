@@ -18,7 +18,7 @@ import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
 import usePlayer from "../../utils/hooks/usePlayer";
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 import { blockAccess } from "../../utils/common/privateRoute";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
   closeComment: () => void;
@@ -57,8 +57,8 @@ export default function UserComment(props: PropsType) {
   const [key, setKey] = useState<number>(0);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
-  const navigate=useNavigate();
-  
+  const navigate = useNavigate();
+
   //get
   const { data, isSuccess, isFetching, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key],
@@ -159,17 +159,12 @@ export default function UserComment(props: PropsType) {
   }
 
   function uploadComment() {
-
-    if(blockAccess()){
-      navigate("/login")
-    }else{
+    if (blockAccess()) {
+      navigate("/login");
+    } else {
       setClickPost(true);
       setIsCompleted(!isCompleted);
-      setStartUpload(true);
-      console.log(key);
-      console.log(key);
     }
-     
 
     //  post()
   }
