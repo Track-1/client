@@ -101,6 +101,7 @@ export default function CategoryList(props: any) {
   }
 
   function searchFilterdVocals() {
+    setIsCategorySelected(true);
     setTrackSearchingClicked(!trackSearchingClicked);
   }
 
