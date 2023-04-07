@@ -152,6 +152,7 @@ const CommentContainer = styled.article`
 
 const ProfileImage = styled.img`
   width: 100%;
+  height: 100%;
 `;
 
 const ProfileImageWrapper = styled.div`
