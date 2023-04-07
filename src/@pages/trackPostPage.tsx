@@ -211,7 +211,7 @@ export default function TrackPostPage() {
   }
 
   function movePreviousPage() {
-    navigate(-1);
+    navigate("/");
   }
 
   return (

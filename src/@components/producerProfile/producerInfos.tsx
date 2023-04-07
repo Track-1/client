@@ -41,7 +41,7 @@ export default function ProducerInfos(props: PropsType) {
   }
 
   function movePreviousPage() {
-    navigate(`/track-search`);
+    navigate(`/`);
 
     //navigate(-1);
   }
