@@ -158,7 +158,7 @@ const LogoutBox = styled.div`
   align-items: center;
 
   height: 5.7rem;
-  padding: 0 1.1rem 0 2.2rem;
+  padding: 0 1.1rem 1rem 2.2rem;
 
   ${({ theme }) => theme.fonts.body1}
   color: ${({ theme }) => theme.colors.white};

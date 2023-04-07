@@ -102,7 +102,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
       queryClient.invalidateQueries("email");
       setEmail(email);
       setEmailMessage(emailInvalidMessage.TIME);
-      alert("Please check your email. \n If you got no mail, please check your spam mail, too.");
+      alert("인증코드를 보냈습니다. 메일함을 확인해주세요.\n(메일을 받지 못하셨다면, 스팸메일함을 확인해주세요.)");
     },
     onError: (error: any) => {
       console.log(error);

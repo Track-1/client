@@ -271,7 +271,7 @@ const ProducerEmptyProfileImage = styled.img`
 `;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
-  position: absolute;
+  position: fixed;
   z-index: 7;
   right: 0;
   margin-top: 5.9rem;
