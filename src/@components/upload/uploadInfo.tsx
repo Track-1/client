@@ -311,7 +311,7 @@ export default function UploadInfo(props: propsType) {
         typeof="text"
         placeholder="Please enter a title"
         spellCheck={false}
-        maxLength={36}
+        maxLength={28}
         onChange={changeTitleText}
         onFocus={hoverTitle}
         onBlur={hoverTitle}
