@@ -17,25 +17,22 @@ import {
 } from "../assets";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { audioFile, playMusic, showPlayerBar } from "../recoil/player";
+import { useRecoilState } from "recoil";
+import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
-import { getCookie } from "../utils/cookie";
-import axios from "axios";
 import { blockAccess } from "../utils/common/privateRoute";
-import { isCookieNull, isLogin } from "../utils/common/isLogined";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -367,8 +364,6 @@ const ProfileImgWrapper = styled.div`
   border-radius: 6.5rem;
   overflow: hidden;
 
-  
- // position: absolute;
 `;
 
 const ProducerProfile = styled.img`
@@ -377,8 +372,6 @@ const ProducerProfile = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
-
- // position: absolute;
 `;
 
 const NickName = styled.strong`
