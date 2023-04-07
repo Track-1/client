@@ -38,7 +38,7 @@ import { isCookieNull, isLogin } from "../utils/common/isLogined";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
-  const { progress, audio } = usePlayer();
+  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
   // const {beatId} = useParams();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);

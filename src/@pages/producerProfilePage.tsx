@@ -45,7 +45,7 @@ export default function ProducerProfilePage() {
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
   const { progress, audio } = usePlayer();
-
+  
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
