@@ -22,6 +22,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { AudioInfosType } from "../type/audioTypes";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import Loading from "../@components/@common/loading";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
@@ -60,7 +61,7 @@ export default function TrackSearchPage() {
     }
   }
 
-  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     key,
     ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴 console.log(lastPage)
     {
@@ -84,6 +85,7 @@ export default function TrackSearchPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <CategoryHeader excuteGetData={excuteGetData} pausesPlayerAudio={pausesPlayerAudio} />
       <TrackSearchPageWrapper>
         <CategoryListWrapper>

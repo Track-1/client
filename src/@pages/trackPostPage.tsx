@@ -35,6 +35,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
 import axios from "axios";
 import { blockAccess } from "../utils/common/privateRoute";
+import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
 
 export default function TrackPostPage() {
@@ -61,7 +62,7 @@ export default function TrackPostPage() {
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const { data } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
+  const { data, isLoading } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
@@ -192,7 +193,7 @@ export default function TrackPostPage() {
   });
 
   function getFile() {
-    blockAccess()?navigate("/login"):(!download && setDownload(true));
+    blockAccess() ? navigate("/login") : !download && setDownload(true);
   }
 
   function checkIsMeOpen() {
@@ -217,6 +218,7 @@ export default function TrackPostPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       {isCommentOpen && (
         <UserComment
           closeComment={closeComment}
