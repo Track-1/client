@@ -253,7 +253,9 @@ export default function TrackPostPage() {
                   {trackInfoData?.category}
                 </CategoryBox>
                 <HashTagBox>
+                  <HashTagIconWrapper>
                   <HashTagIcon />
+                  </HashTagIconWrapper>
                   <TagWrapper>
                     {trackInfoData?.keyword.map((tag: string) => (
                       <HashTag text={tag} />
@@ -437,6 +439,8 @@ const PlayImageWrapper = styled.div`
   align-items: center;
 
   overflow: hidden;
+
+  position: absolute;
 `;
 
 const PlayerImage = styled.img`
@@ -445,10 +449,12 @@ const PlayerImage = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+
+  position: absolute;
 `;
 
 const DescriptionContainer = styled.div`
-  margin-left: 5.1rem;
+  margin-left: 70rem;
 `;
 
 const CategoryBox = styled.article`
@@ -529,3 +535,7 @@ const SmallPlayBtnIcon = styled(SmallPlayBtnIc)`
   width: 5.2rem;
   height: 5.2rem;
 `;
+
+const HashTagIconWrapper=styled.div`
+  width: 16rem;
+`
