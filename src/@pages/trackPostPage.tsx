@@ -225,12 +225,12 @@ export default function TrackPostPage() {
               <BackButtonWrapper onClick={movePreviousPage}>
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
-              <AudioTitle>{trackInfoData.title}</AudioTitle>
+              <AudioTitle>{trackInfoData?.title}</AudioTitle>
               <ProducerBox>
                 <ProfileImgWrapper>
-                  <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지" />
+                  <ProducerProfile src={trackInfoData?.producerProfileImage} alt="프로듀서 프로필 이미지" />
                 </ProfileImgWrapper>
-                <NickName>{trackInfoData.producerName}</NickName>
+                <NickName>{trackInfoData?.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
                 {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
@@ -238,31 +238,31 @@ export default function TrackPostPage() {
                 {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
                 {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
-                {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
+                {trackInfoData?.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
               {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>
               <PlayImageWrapper className={play ? "playAnimation" : "pauseAnimation"}>
-                <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
+                <PlayerImage src={trackInfoData?.jacketImage} alt="재생 이미지" />
               </PlayImageWrapper>
               <DescriptionContainer>
                 <CategoryBox>
                   <CategoryIcon />
-                  {trackInfoData.category}
+                  {trackInfoData?.category}
                 </CategoryBox>
                 <HashTagBox>
                   <HashTagIcon />
                   <TagWrapper>
-                    {trackInfoData.keyword.map((tag: string) => (
+                    {trackInfoData?.keyword.map((tag: string) => (
                       <HashTag text={tag} />
                     ))}
                   </TagWrapper>
                 </HashTagBox>
                 <DescriptionBox>
                   <DescriptionIcon />
-                  <TextBox>{trackInfoData.introduce}</TextBox>
+                  <TextBox>{trackInfoData?.introduce}</TextBox>
                 </DescriptionBox>
               </DescriptionContainer>
             </InfoContainer>
