@@ -225,7 +225,7 @@ export default function ProducerPortfolioEditPage() {
               typeof="text"
               placeholder="Please enter a title"
               spellCheck={false}
-              maxLength={36}
+              maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
             />
@@ -234,7 +234,7 @@ export default function ProducerPortfolioEditPage() {
             <TextCount>
               <TextWrapper>
                 <InputCount>{title.length}</InputCount>
-                <LimitCount>/36</LimitCount>
+                <LimitCount>/28</LimitCount>
               </TextWrapper>
             </TextCount>
 
