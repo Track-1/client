@@ -132,6 +132,7 @@ const ImageContainer = styled.div`
 
 const ProfileImage = styled.img`
   width: 100%;
+  height: 100%;
 `;
 
 const InfoBox = styled.div`

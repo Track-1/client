@@ -258,6 +258,7 @@ const CommentWriteWrapper = styled.div`
 
 const CommentContainer = styled.section`
   width: 107.7rem;
+  height: 100%;
   min-height: 100vh;
   float: right;
   background-color: rgba(13, 14, 17, 0.75);

@@ -825,7 +825,7 @@ const VocalUploadFrameIcon = styled(VocalUploadFrameIc)`
   position: absolute;
 
   height: 74.6rem;
-  margin-left: -30rem;
+  width: 100%;
 `;
 
 const CompletedHashtag = styled.article`

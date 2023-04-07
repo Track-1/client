@@ -61,7 +61,6 @@ export default function ProducerProfilePage() {
 
       setIsMe(portfolioResponse?.isMe);
       setProfileData(portfolioResponse?.producerProfile);
-
       switch (profileState) {
         case "Portfolio":
           setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
