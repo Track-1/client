@@ -192,7 +192,6 @@ export default function TrackPostPage() {
 
   function getFile() {
     blockAccess()?navigate("/login"):(!download && setDownload(true));
-   
   }
 
   function checkIsMeOpen() {
