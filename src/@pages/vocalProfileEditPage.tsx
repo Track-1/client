@@ -12,6 +12,7 @@ import { patchVocalrProfile } from "../core/api/vocalProfile";
 import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
+import Loading from "../@components/@common/loading";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
@@ -57,7 +58,7 @@ export default function VocalProfileEditPage() {
     }
   }, [updatedData]);
 
-  const { mutate } = useMutation(() => patchVocalrProfile(updatedData), {
+  const { mutate, isLoading } = useMutation(() => patchVocalrProfile(updatedData), {
     onSuccess: (data) => {
       console.log(data);
     },
@@ -113,6 +114,7 @@ export default function VocalProfileEditPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <ProfileEditHeader editReady={editReady} editData={editData} />
       <Img src={background} alt="배경" />
       <EditContainer>
