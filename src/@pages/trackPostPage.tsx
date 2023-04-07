@@ -215,7 +215,7 @@ export default function TrackPostPage() {
   }
 
   function moveToProducerProfile(){
-    navigate(`/producer-profile/${trackInfoData?.producerId}`);
+    navigate(`/producer-profile/${trackInfoData?.producerId}`, {state:trackInfoData?.producerId});
   }
 
   return (
