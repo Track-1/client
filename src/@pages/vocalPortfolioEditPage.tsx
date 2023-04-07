@@ -23,9 +23,10 @@ import { QueryClient, useMutation } from "react-query";
 import { patchProducerPortfolio } from "../core/api/producerProfile";
 import { patchVocalPortfolio } from "../core/api/vocalProfile";
 import BackButton from "../@components/@common/backButton";
-import ProfileWarning from '../@components/@common/profileWarning';
+import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
+import Loading from "../@components/@common/loading";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -49,10 +50,10 @@ export default function VocalPortfolioEditPage() {
   const navigate = useNavigate();
   const queryClient = new QueryClient();
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [tagMaxLength, setTagMaxLength] = useState<number>(10);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
-  const [isKorean, setIsKorean]=useState<boolean>(false);
+  const [isKorean, setIsKorean] = useState<boolean>(false);
 
   useEffect(() => {
     setHashtag(prevData.keyword);
@@ -62,7 +63,7 @@ export default function VocalPortfolioEditPage() {
     setHahtagWarningOpen(!hashtagWarningOpen);
   }
 
-  const { mutate } = useMutation(patchVocalPortfolio, {
+  const { mutate, isLoading } = useMutation(patchVocalPortfolio, {
     onSuccess: () => {
       queryClient.invalidateQueries("vocalPortFolio");
       navigate(-1);
@@ -102,36 +103,36 @@ export default function VocalPortfolioEditPage() {
   }
 
   function deleteHashtag(index: number) {
-    console.log("클릭")
+    console.log("클릭");
     const deleteTag = hashtag;
-     deleteTag.splice(index, 1);
-     setHashtag([...deleteTag]);
-     setHashtagInput("");
-   }
- 
+    deleteTag.splice(index, 1);
+    setHashtag([...deleteTag]);
+    setHashtagInput("");
+  }
+
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
 
     setHashtagInput(e.target.value);
 
-    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
-    
-    if(checkHashtagLength(e.target.value)){
+    e.target.value !== "" ? setHashtagLength(e.target.value.length) : setHashtagLength(0);
+
+    if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
-    }else{
-      setIsKorean(false)
+      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+    } else {
+      setIsKorean(false);
     }
   }
 
   function addHashtag() {
-      if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
-        hashtagRef.current.value = "";
-        setHashtag((prev) => [...prev, hashtagInput]);
-        setHashtagInput("");
-        setHashtagText("");
-        setHashtagLength(0);
-      }
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
+      hashtagRef.current.value = "";
+      setHashtag((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
+      setHashtagText("");
+      setHashtagLength(0);
+    }
   }
 
   function isDuplicateHashtag(value: string): boolean {
@@ -149,7 +150,7 @@ export default function VocalPortfolioEditPage() {
 
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      addHashtag() 
+      addHashtag();
     }
   }
 
@@ -185,19 +186,19 @@ export default function VocalPortfolioEditPage() {
     complete && mutate({ vocalPortfolioId: prevData.id, editDatas: editData });
   }, [complete]);
 
-
   function movePreviousPage() {
     navigate(-1);
   }
 
-  console.log(hashtag)
+  console.log(hashtag);
   return (
     <>
+      {isLoading && <Loading />}
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
             <div onClick={movePreviousPage}>
-              <BackButton/>
+              <BackButton />
             </div>
             <UserClass> {}</UserClass>
           </LeftWrapper>
@@ -211,14 +212,16 @@ export default function VocalPortfolioEditPage() {
             <VocalImageFrame onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
               <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                 {isImageUploaded ? (
-                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
+                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                 ) : (
-                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" isImageHovered={isImageHovered}/>
+                  <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                 )}
               </TrackUploadImageWrapper>
-              {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                <FileChangeIcon/>
-              </label>)}
+              {isImageHovered && (
+                <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                  <FileChangeIcon />
+                </label>
+              )}
             </VocalImageFrame>
           </VocalImageBox>
           <input
@@ -291,58 +294,57 @@ export default function VocalPortfolioEditPage() {
                   <UploadHashtagIcon />
                 </NameBox>
                 <InputBox>
-                    <InputHashtagWrapper>
-                      {hashtag.map((item,index) => {
-                        return (
-                        
-                            <Hashtag key={index}>
-                              <CompleteHashtagWrapper>
-                              <HashtagSharp># </HashtagSharp>
-                              <CompletedHashtag>{item}</CompletedHashtag>
-                              </CompleteHashtagWrapper>
-                              <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                            </Hashtag>
-                        );
-                      })}                    
-                        {hashtag.length < 3 && (
-                            <Hashtag>
-                              <HashtagWrapper>
-                                <HashtagSharp># </HashtagSharp>
-                                <HashtagInput
-                                  onChange={getInputText}
-                                  onKeyPress={(e) => {
-                                    e.key === "Enter" && addHashtag();
-                                  }}
-                                  inputWidth={hashtagLength}
-                                  isKorean={isKorean}
-                                  ref={hashtagRef}
-                                  placeholder="HashTag"
-                                  maxLength={tagMaxLength}
-                                />
-                              </HashtagWrapper>
-                            </Hashtag>
-                        )}
-                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}      
+                  <InputHashtagWrapper>
+                    {hashtag.map((item, index) => {
+                      return (
+                        <Hashtag key={index}>
+                          <CompleteHashtagWrapper>
+                            <HashtagSharp># </HashtagSharp>
+                            <CompletedHashtag>{item}</CompletedHashtag>
+                          </CompleteHashtagWrapper>
+                          <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                        </Hashtag>
+                      );
+                    })}
+                    {hashtag.length < 3 && (
+                      <Hashtag>
+                        <HashtagWrapper>
+                          <HashtagSharp># </HashtagSharp>
+                          <HashtagInput
+                            onChange={getInputText}
+                            onKeyPress={(e) => {
+                              e.key === "Enter" && addHashtag();
+                            }}
+                            inputWidth={hashtagLength}
+                            isKorean={isKorean}
+                            ref={hashtagRef}
+                            placeholder="HashTag"
+                            maxLength={tagMaxLength}
+                          />
+                        </HashtagWrapper>
+                      </Hashtag>
+                    )}
+                    {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
                   </InputHashtagWrapper>
 
                   <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
-                  {hoverState ? (
-                    <>
-                      <HoverHashtagWarningIcon />
-                      <WarningTextWrapper>
-                        <WarningText>
-                          1. 해시태그는 최대 3개까지 추가 가능합니다.
-                          <br />
-                          2. 최대 10자까지 작성이 가능합니다.
-                          <br />
-                          3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                        </WarningText>
-                      </WarningTextWrapper>
-                    </>
-                  ) : (
-                    <HashtagWarningIcon />
-                  )}
-                </WarningIcon>
+                    {hoverState ? (
+                      <>
+                        <HoverHashtagWarningIcon />
+                        <WarningTextWrapper>
+                          <WarningText>
+                            1. 해시태그는 최대 3개까지 추가 가능합니다.
+                            <br />
+                            2. 최대 10자까지 작성이 가능합니다.
+                            <br />
+                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                          </WarningText>
+                        </WarningTextWrapper>
+                      </>
+                    ) : (
+                      <HashtagWarningIcon />
+                    )}
+                  </WarningIcon>
                 </InputBox>
               </HashTagInfoItemBox>
 
@@ -372,7 +374,9 @@ export default function VocalPortfolioEditPage() {
                 <DropMenuWrapper>
                   {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
-                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>{text}</DropMenuText>
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
+                        {text}
+                      </DropMenuText>
                       {category === Categories[index] && <CheckCategoryIcon />}
                     </DropMenuItem>
                   ))}
@@ -386,26 +390,26 @@ export default function VocalPortfolioEditPage() {
   );
 }
 
-const ProfileWarningWrapper=styled.section`
+const ProfileWarningWrapper = styled.section`
   position: absolute;
   margin-top: 1rem;
   margin-right: 1rem;
   right: 0;
-`
+`;
 
-const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+const UploadDescriptionIcon = styled(UploadDescriptionIc)`
   width: 14.6rem;
-`
+`;
 
-const UploadHashtagIcon=styled(UploadHashtagIc)`
+const UploadHashtagIcon = styled(UploadHashtagIc)`
   width: 11.2rem;
-`
+`;
 
-const UploadCategoryIcon=styled(UploadCategoryIc)`
+const UploadCategoryIcon = styled(UploadCategoryIc)`
   width: 12.3rem;
-`
+`;
 
-const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+const UploadFileUpdateIcon = styled(UploadFileUpdateIc)`
   width: 13.3rem;
 `;
 
@@ -463,7 +467,6 @@ const SectionWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
 `;
 
 const VocalImageBox = styled.div`
@@ -477,30 +480,29 @@ const VocalImageBox = styled.div`
 `;
 
 const VocalImageFrame = styled.div`
-    margin-top: -46rem;
-    margin-left: 10rem;
+  margin-top: -46rem;
+  margin-left: 10rem;
 `;
 
-const TrackUploadImageWrapper=styled.label`
+const TrackUploadImageWrapper = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  width:45.1rem;
+
+  width: 45.1rem;
   height: 45.1rem;
   border-radius: 5rem;
   position: absolute;
   overflow: hidden;
   transform: rotate(45deg);
-
-`
-const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
+`;
+const TrackUploadImage = styled.img<{ isImageHovered: boolean }>`
   transform: rotate(-45deg);
 
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   width: 150%;
   height: 135%;
   position: absolute;
@@ -508,17 +510,16 @@ const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
   object-fit: cover;
   margin: auto;
 
-  filter: blur(${({isImageHovered})=>isImageHovered&&3}rem);
+  filter: blur(${({ isImageHovered }) => isImageHovered && 3}rem);
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
   width: 18.9rem;
   position: absolute;
-  
+
   margin-left: 12.5rem;
   margin-top: 15rem;
   transform: rotate(0deg);
-
 
   cursor: pointer;
 `;
@@ -684,9 +685,8 @@ const Hashtag = styled.div`
 const HashtagWrapper = styled.div`
   display: flex;
   align-items: center;
-   padding: 0 1rem 0 1.5rem;
+  padding: 0 1rem 0 1.5rem;
 `;
-
 
 const CompleteHashtagWrapper = styled.div`
   display: flex;
@@ -699,8 +699,9 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
-  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+  width: ${({ inputWidth, isKorean }) =>
+    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -778,8 +779,8 @@ const DropMenuItem = styled.li`
   cursor: pointer;
 `;
 
-const DropMenuText = styled.p<{isClicked:boolean}>`
-  color: ${({theme,isClicked})=>isClicked?theme.colors.white:theme.colors.gray3};
+const DropMenuText = styled.p<{ isClicked: boolean }>`
+  color: ${({ theme, isClicked }) => (isClicked ? theme.colors.white : theme.colors.gray3)};
   height: 2rem;
 `;
 
@@ -837,10 +838,10 @@ const CompletedHashtag = styled.article`
   ${({ theme }) => theme.fonts.hashtag}
 `;
 
-const CheckCategoryIcon=styled(CheckCategoryIc)`
+const CheckCategoryIcon = styled(CheckCategoryIc)`
   width: 1.5rem;
   height: 0.9rem;
-`
+`;
 
 const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
   width: 4rem;
