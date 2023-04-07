@@ -59,7 +59,7 @@ export default function TrackPostPage() {
   const [link, setLink] = useState<string>("");
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const { data } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -121,6 +121,7 @@ export default function TrackPostPage() {
 
   function closeComment() {
     setIsCommentOpen(false);
+    setShowPlayer(false);
   }
 
   const queryClient = useQueryClient();
@@ -211,12 +212,19 @@ export default function TrackPostPage() {
   }
 
   function movePreviousPage() {
-    navigate(-1);
+    navigate("/");
   }
 
   return (
     <>
-      {isCommentOpen && <UserComment closeComment={closeComment} beatId={beatId} isClosed={trackInfoData?.isClosed} />}
+      {isCommentOpen && (
+        <UserComment
+          closeComment={closeComment}
+          beatId={beatId}
+          isClosed={trackInfoData?.isClosed}
+          title={trackInfoData?.title}
+        />
+      )}
       {isCommentOpen ? <CommentHeader /> : <CategoryHeader pausesPlayerAudio={pauseAudio} />}
 
       <TrackPostPageWrapper>
@@ -238,15 +246,20 @@ export default function TrackPostPage() {
                 {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
-                {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
-                {trackInfoData?.isMe && <EditBtnIcon onClick={setEditDropDown} />}
+
+                {!isCommentOpen && play ? (
+                  <PauseBtnIcon onClick={pauseAudio} />
+                ) : (
+                  <SmallPlayBtnIcon onClick={playAudio} />
+                )}
+                {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
               {isEditOpen && <EditDropDown />}
               {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>
-              <PlayImageWrapper className={play ? "playAnimation" : "pauseAnimation"}>
-                <PlayerImage src={trackInfoData?.jacketImage} alt="재생 이미지" />
+              <PlayImageWrapper className={!isCommentOpen && play ? "playAnimation" : "pauseAnimation"}>
+                <PlayerImage src={trackInfoData.jacketImage} alt="재생 이미지" />
               </PlayImageWrapper>
               <DescriptionContainer>
                 <CategoryBox>

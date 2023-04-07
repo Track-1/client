@@ -34,9 +34,10 @@ export default function VocalsPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const isSelected = useRecoilValue(trackSearching);
+  // const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
+  const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
 
   const { progress, audio } = usePlayer();
   const { key, excuteGetData } = useInfiniteKey();
@@ -50,7 +51,7 @@ export default function VocalsPage() {
       setVocalsData([]);
       excuteGetData();
     }
-  }, [filteredUrlApi]);
+  }, [filteredUrlApi, trackSearchingClicked]);
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     key,
@@ -66,8 +67,9 @@ export default function VocalsPage() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
+    console.log(trackSearchingClicked);
     if (hasNextPage !== false) {
-      const response = await getVocalsData(filteredUrlApi, isSelected, page);
+      const response = await getVocalsData(filteredUrlApi, trackSearchingClicked, page);
       setVocalsData((prev) => [...prev, ...response]);
       return { response, nextPage: page + 1 };
     }
@@ -98,7 +100,11 @@ export default function VocalsPage() {
       <CategoryHeader pausesPlayerAudio={pauseAudio} />
       <VocalSearchPageWrapper>
         <CategoryListWrapper>
-          <CategoryList setIsCategorySelected={setIsCategorySelected} />
+          <CategoryList
+            setIsCategorySelected={setIsCategorySelected}
+            trackSearchingClicked={trackSearchingClicked}
+            setTrackSearchingClicked={setTrackSearchingClicked}
+          />
         </CategoryListWrapper>
 
         <VocalListWrapper>

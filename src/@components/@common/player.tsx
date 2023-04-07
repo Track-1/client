@@ -103,7 +103,7 @@ export default function Player(props: any) {
 
         <PlayerInformWrapper>
           <ThumbnailWrapper>
-          <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
+            <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
           </ThumbnailWrapper>
           <PlayerTitleText>{audioInfos.title}</PlayerTitleText>
           <PlayerNameText>{audioInfos.name}</PlayerNameText>
@@ -198,11 +198,11 @@ const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
   z-index: 1000;
 `;
 
-const ThumbnailWrapper=styled.div`
+const ThumbnailWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   width: 5.7rem;
   height: 5.7rem;
   margin-left: 34rem;
@@ -211,11 +211,11 @@ const ThumbnailWrapper=styled.div`
   border-radius: 5rem;
 
   overflow: hidden;
-`
+`;
 
 const Thumbnail = styled.img`
   width: 100%;
-  height:100%;
+  height: 100%;
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;

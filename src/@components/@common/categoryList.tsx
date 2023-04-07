@@ -13,45 +13,36 @@ import { categorySelect, clickCategoryHeader, trackSearching } from "../../recoi
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { Category } from "../../core/constants/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
-import { UserType } from "../../recoil/main";
 import { isProducer } from "../../utils/common/userType";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { showPlayerBar } from "../../recoil/player";
+
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 import { Navigate, Route, useNavigate } from "react-router-dom";
 import PrivateRoute, { blockAccess } from "../../utils/common/privateRoute";
 import { isCookieNull, isLogin } from "../../utils/common/isLogined";
 
 export default function CategoryList(props: any) {
-  const { pausesPlayerAudio, setIsCategorySelected } = props;
+  const { pausesPlayerAudio, setIsCategorySelected, trackSearchingClicked, setTrackSearchingClicked } = props;
   const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
-  const [selectedSet, setSelectedSet] = useState<Set<number | unknown>>();
 
   const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
-  const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
+  // const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
   const userType = useRecoilValue(LoginUserType);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
     setFilteredUrlApi("");
-    setTrackSearchingClicked(false);
+    // setTrackSearchingClicked(false);
   }, [isClickedCategory]);
-
-  function categoryClick(id: number) {
-    setSelectedCategorys(
-      selectedCategorys.map((selectCateg) =>
-        selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
-      ),
-    );
-  }
 
   useEffect(() => {
     let filteredUrl = "";
@@ -82,26 +73,13 @@ export default function CategoryList(props: any) {
   function moveUploadPage() {
     setShowPlayer(false);
     pausesPlayerAudio();
-    blockAccess()?navigate("/login"):setOpenModal(true);
+    blockAccess() ? navigate("/login") : setOpenModal(true);
   }
 
-  function clickTrackSearching() {
-    setTrackSearchingClicked((prev) => !prev);
-  }
-
-  function searchFilterdVocals() {
-    setTrackSearchingClicked((prev) => !prev);
-  }
-
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e)) {
-      setOpenModal(false);
-    }
-  }
-
-  function isClickedOutside(e: MouseEvent) {
-    return openModal && !modalRef.current?.contains(e.target as Node);
-  }
+  // function searchFilterdVocals() {
+  //   console.log(trackSearchingClicked);
+  //   setTrackSearchingClicked(!trackSearchingClicked);
+  // }
 
   function changeCategoryColor(id: number) {
     if (selectedCategorys[id].selected) {
@@ -120,6 +98,11 @@ export default function CategoryList(props: any) {
 
   function checkIsSelectedVocalCategory(id: number) {
     return selectedCategorys[id].selected ? categorys[id].selectVocalCategory : categorys[id].category;
+  }
+
+  function searchFilterdVocals() {
+    setIsCategorySelected(true);
+    setTrackSearchingClicked(!trackSearchingClicked);
   }
 
   return (
@@ -152,12 +135,11 @@ export default function CategoryList(props: any) {
           </CategoryTextBoxWrapper>
         ))}
 
-          {isTracksPage(tracksOrVocals) && (
-            <UploadButton type="button" onClick={moveUploadPage}>
-              <UploadTextIcon />
-            </UploadButton>
-          )}
-        
+        {isTracksPage(tracksOrVocals) && (
+          <UploadButton type="button" onClick={moveUploadPage}>
+            <UploadTextIcon />
+          </UploadButton>
+        )}
 
         {isVocalsPage(tracksOrVocals) &&
           (trackSearchingClicked ? (
