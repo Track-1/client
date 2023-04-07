@@ -10,7 +10,8 @@ import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
 import { LoginUserId } from "../../recoil/loginUserData";
 import BackButton from "../@common/backButton";
-
+import loading from "../../assets/image/loading.gif";
+import Loading from "../@common/loading";
 interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
@@ -82,6 +83,7 @@ export default function UploadHeader(props: PropsType) {
 
   return (
     <Container>
+      {isLoading && <Loading />}
       <HeaderWrapper>
         <LeftWrapper>
           <div onClick={movePreviousPage}>

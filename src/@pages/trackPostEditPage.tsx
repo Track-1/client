@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BackButton from "../@components/@common/backButton";
+import Loading from "../@components/@common/loading";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -63,7 +64,7 @@ export default function TrackPostEditPage() {
     },
   });
 
-  const { mutate } = useMutation(() => patchTrackPost(state, editData), {
+  const { mutate, isLoading } = useMutation(() => patchTrackPost(state, editData), {
     onSuccess: () => {
       console.log("data");
     },
@@ -160,6 +161,7 @@ export default function TrackPostEditPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       {data?.data && (
         <>
           <Container>
@@ -167,7 +169,7 @@ export default function TrackPostEditPage() {
               <LeftWrapper>
                 {/* <UploadBackIcon /> */}
                 <div onClick={movePreviousPage}>
-                  <BackButton/>
+                  <BackButton />
                 </div>
                 <UserClass> {}</UserClass>
               </LeftWrapper>

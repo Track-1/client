@@ -26,6 +26,7 @@ import BackButton from "../@components/@common/backButton";
 import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
+import Loading from "../@components/@common/loading";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -62,7 +63,7 @@ export default function VocalPortfolioEditPage() {
     setHahtagWarningOpen(!hashtagWarningOpen);
   }
 
-  const { mutate } = useMutation(patchVocalPortfolio, {
+  const { mutate, isLoading } = useMutation(patchVocalPortfolio, {
     onSuccess: () => {
       queryClient.invalidateQueries("vocalPortFolio");
       navigate(-1);
@@ -192,6 +193,7 @@ export default function VocalPortfolioEditPage() {
   console.log(hashtag);
   return (
     <>
+      {isLoading && <Loading />}
       <Container>
         <HeaderWrapper>
           <LeftWrapper>

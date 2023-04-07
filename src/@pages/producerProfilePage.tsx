@@ -18,6 +18,7 @@ import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { Category } from "../core/constants/categoryHeader";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import Loading from "../@components/@common/loading";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -71,7 +72,7 @@ export default function ProducerProfilePage() {
     }
   }
 
-  const { data, hasNextPage, fetchNextPage } = useInfiniteQuery(
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
     key,
     ({ pageParam = 1 }) => getData(pageParam, pageParam),
     {
@@ -141,6 +142,7 @@ export default function ProducerProfilePage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <Outlet />
       {visible && <TracksProfileUploadModal />}
       {isMe && <UploadButtonIcon onClick={moveToUpload} />}
