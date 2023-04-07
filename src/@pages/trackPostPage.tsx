@@ -235,7 +235,7 @@ export default function TrackPostPage() {
               <ButtonWrapper>
                 {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
                 {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
-                {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
+                {/* {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />} */}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
                 {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
                 {trackInfoData?.isMe && <EditBtnIcon onClick={setEditDropDown} />}
@@ -346,6 +346,9 @@ const ProfileImgWrapper = styled.div`
 
   border-radius: 6.5rem;
   overflow: hidden;
+
+  
+ // position: absolute;
 `;
 
 const ProducerProfile = styled.img`
@@ -354,6 +357,8 @@ const ProducerProfile = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+
+ // position: absolute;
 `;
 
 const NickName = styled.strong`
@@ -455,6 +460,7 @@ const CategoryBox = styled.article`
 `;
 
 const CategoryIcon = styled(CategoryIc)`
+  width: 12.3rem;
   margin-right: 4.1rem;
 `;
 const HashTagBox = styled.article`
@@ -464,6 +470,8 @@ const HashTagBox = styled.article`
 `;
 
 const HashTagIcon = styled(HashtagIc)`
+  width: 11.2rem;
+
   height: 3.8rem;
 
   display: flex;
@@ -483,6 +491,7 @@ const DescriptionBox = styled.article`
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
+  width: 14.6rem;
   height: 3.8rem;
 
   display: flex;
