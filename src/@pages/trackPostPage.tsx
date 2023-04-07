@@ -215,6 +215,10 @@ export default function TrackPostPage() {
     navigate("/");
   }
 
+  function moveToProducerProfile(){
+    navigate(`/producer-profile/${trackInfoData?.producerId}`);
+  }
+
   return (
     <>
       {isCommentOpen && (
@@ -239,7 +243,7 @@ export default function TrackPostPage() {
                 <ProfileImgWrapper>
                   <ProducerProfile src={trackInfoData?.producerProfileImage} alt="프로듀서 프로필 이미지" />
                 </ProfileImgWrapper>
-                <NickName>{trackInfoData?.producerName}</NickName>
+                <NickName onClick={moveToProducerProfile}>{trackInfoData?.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
                 {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
@@ -380,6 +384,11 @@ const ProducerProfile = styled.img`
 const NickName = styled.strong`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.id}
+
+  cursor: pointer;
+  :hover{
+    color: ${({ theme }) => theme.colors.sub1};
+  }
 `;
 
 const ButtonWrapper = styled.div`
