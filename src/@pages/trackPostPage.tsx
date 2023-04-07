@@ -35,6 +35,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
 import axios from "axios";
 import { blockAccess } from "../utils/common/privateRoute";
+import { isCookieNull, isLogin } from "../utils/common/isLogined";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -233,18 +234,19 @@ export default function TrackPostPage() {
               <BackButtonWrapper onClick={movePreviousPage}>
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
-              <AudioTitle>{trackInfoData.title}</AudioTitle>
+              <AudioTitle>{trackInfoData?.title}</AudioTitle>
               <ProducerBox>
                 <ProfileImgWrapper>
-                  <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지" />
+                  <ProducerProfile src={trackInfoData?.producerProfileImage} alt="프로듀서 프로필 이미지" />
                 </ProfileImgWrapper>
-                <NickName>{trackInfoData.producerName}</NickName>
+                <NickName>{trackInfoData?.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
                 {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
                 {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
+
                 {!isCommentOpen && play ? (
                   <PauseBtnIcon onClick={pauseAudio} />
                 ) : (
@@ -262,19 +264,21 @@ export default function TrackPostPage() {
               <DescriptionContainer>
                 <CategoryBox>
                   <CategoryIcon />
-                  {trackInfoData.category}
+                  {trackInfoData?.category}
                 </CategoryBox>
                 <HashTagBox>
+                  <HashTagIconWrapper>
                   <HashTagIcon />
+                  </HashTagIconWrapper>
                   <TagWrapper>
-                    {trackInfoData.keyword.map((tag: string) => (
+                    {trackInfoData?.keyword.map((tag: string) => (
                       <HashTag text={tag} />
                     ))}
                   </TagWrapper>
                 </HashTagBox>
                 <DescriptionBox>
                   <DescriptionIcon />
-                  <TextBox>{trackInfoData.introduce}</TextBox>
+                  <TextBox>{trackInfoData?.introduce}</TextBox>
                 </DescriptionBox>
               </DescriptionContainer>
             </InfoContainer>
@@ -358,6 +362,9 @@ const ProfileImgWrapper = styled.div`
 
   border-radius: 6.5rem;
   overflow: hidden;
+
+  
+ // position: absolute;
 `;
 
 const ProducerProfile = styled.img`
@@ -366,6 +373,8 @@ const ProducerProfile = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+
+ // position: absolute;
 `;
 
 const NickName = styled.strong`
@@ -444,6 +453,8 @@ const PlayImageWrapper = styled.div`
   align-items: center;
 
   overflow: hidden;
+
+  position: absolute;
 `;
 
 const PlayerImage = styled.img`
@@ -452,10 +463,12 @@ const PlayerImage = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+
+  position: absolute;
 `;
 
 const DescriptionContainer = styled.div`
-  margin-left: 5.1rem;
+  margin-left: 70rem;
 `;
 
 const CategoryBox = styled.article`
@@ -467,6 +480,7 @@ const CategoryBox = styled.article`
 `;
 
 const CategoryIcon = styled(CategoryIc)`
+  width: 12.3rem;
   margin-right: 4.1rem;
 `;
 const HashTagBox = styled.article`
@@ -476,6 +490,8 @@ const HashTagBox = styled.article`
 `;
 
 const HashTagIcon = styled(HashtagIc)`
+  width: 11.2rem;
+
   height: 3.8rem;
 
   display: flex;
@@ -495,6 +511,7 @@ const DescriptionBox = styled.article`
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
+  width: 14.6rem;
   height: 3.8rem;
 
   display: flex;
@@ -532,3 +549,7 @@ const SmallPlayBtnIcon = styled(SmallPlayBtnIc)`
   width: 5.2rem;
   height: 5.2rem;
 `;
+
+const HashTagIconWrapper=styled.div`
+  width: 16rem;
+`
