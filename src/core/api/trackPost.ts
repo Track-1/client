@@ -18,7 +18,6 @@ export async function getComment(page: number, beatId: number) {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
         beadId: beatId,
       },
     });
