@@ -11,6 +11,7 @@ import { CategoryId } from "../core/constants/categories";
 import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
+import Loading from "../@components/@common/loading";
 
 export default function ProducerProfileEditPage() {
   const location = useLocation();
@@ -59,7 +60,7 @@ export default function ProducerProfileEditPage() {
     }
   }, [updatedData]);
 
-  const { mutate } = useMutation(() => patchProducerProfile(updatedData), {
+  const { mutate, isLoading } = useMutation(() => patchProducerProfile(updatedData), {
     onSuccess: () => {
       queryClient.invalidateQueries("userProfile");
     },
@@ -110,6 +111,7 @@ export default function ProducerProfileEditPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <ProfileEditHeader editReady={editReady} editData={editData} />
       <Img src={background} alt="배경" />
       <EditContainer>
