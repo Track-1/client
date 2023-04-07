@@ -321,7 +321,7 @@ export default function UploadInfo(props: propsType) {
       <TextCount font={"body"} textareaMargin={textareaMargin}>
         <TextWrapper>
           <InputCount>{titleLength}</InputCount>
-          <LimitCount>/36</LimitCount>
+          <LimitCount>/28</LimitCount>
         </TextWrapper>
       </TextCount>
 

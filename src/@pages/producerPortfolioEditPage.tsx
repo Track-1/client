@@ -224,7 +224,7 @@ function clickOutSide(e: any) {
               typeof="text"
               placeholder="Please enter a title"
               spellCheck={false}
-              maxLength={36}
+              maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
             />
@@ -233,7 +233,7 @@ function clickOutSide(e: any) {
             <TextCount>
               <TextWrapper>
                 <InputCount>{title.length}</InputCount>
-                <LimitCount>/36</LimitCount>
+                <LimitCount>/28</LimitCount>
               </TextWrapper>
             </TextCount>
 
