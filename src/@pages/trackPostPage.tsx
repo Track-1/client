@@ -57,7 +57,7 @@ export default function TrackPostPage() {
   const [link, setLink] = useState<string>("");
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const { data } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -209,7 +209,7 @@ export default function TrackPostPage() {
   }
 
   function movePreviousPage() {
-    navigate(-1);
+    navigate("/");
   }
 
   return (
