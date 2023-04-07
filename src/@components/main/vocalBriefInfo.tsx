@@ -112,13 +112,17 @@ const ProfileImage = styled.img`
   /* height: 6rem;
   width: 6rem; */
   width: 150%;
-  height: 150%;
+  height: 135%;
   position: absolute;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 50%;
 
   transform: rotate(-45deg);
+  position: absolute;
+  //transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const UserName = styled.strong`
@@ -163,20 +167,25 @@ const ImageWrapper = styled.div`
   transform: rotate(45deg);
   overflow: hidden;
   border-radius: 0.5rem;
+  position: absolute;
 `;
 
 const InfoProfileImage = styled.img`
   width: 150%;
-  //height: 135%;
+  height: 135%;
 
   transform: rotate(-45deg);
+
+  position: absolute;
+  object-fit: cover;
+  margin: auto;
 `;
 
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-left: 1.8rem;
+  margin-left: 9.5rem;
 `;
 
 const InfoUserName = styled.strong`
