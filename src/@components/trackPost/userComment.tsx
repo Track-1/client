@@ -19,6 +19,7 @@ import usePlayer from "../../utils/hooks/usePlayer";
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 import { blockAccess } from "../../utils/common/privateRoute";
 import { useNavigate } from "react-router-dom";
+import Loading from "../@common/loading";
 
 interface PropsType {
   closeComment: () => void;
@@ -115,7 +116,7 @@ export default function UserComment(props: PropsType) {
   //post end
 
   //update
-  const { mutate: update } = useMutation(() => updateComment(uploadData, commentId), {
+  const { mutate: update, isLoading } = useMutation(() => updateComment(uploadData, commentId), {
     onSuccess: () => {
       setComments([]);
       if (clickUpload === true) {
@@ -190,6 +191,7 @@ export default function UserComment(props: PropsType) {
 
   return (
     <>
+      {isLoading && <Loading />}
       <CommentContainer>
         <CloseCommentBtn>
           <CloseBtnIcon onClick={closeCommentPage} />
