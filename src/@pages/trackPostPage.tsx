@@ -35,6 +35,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
 import axios from "axios";
 import { blockAccess } from "../utils/common/privateRoute";
+import { isCookieNull, isLogin } from "../utils/common/isLogined";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -191,6 +192,7 @@ export default function TrackPostPage() {
 
   function getFile() {
     blockAccess()?navigate("/login"):(!download && setDownload(true));
+   
   }
 
   function checkIsMeOpen() {
@@ -235,7 +237,7 @@ export default function TrackPostPage() {
               <ButtonWrapper>
                 {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
                 {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
-                {/* {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />} */}
+                {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
                 {play ? <PauseBtnIcon onClick={pauseAudio} /> : <SmallPlayBtnIcon onClick={playAudio} />}
                 {trackInfoData?.isMe && <EditBtnIcon onClick={setEditDropDown} />}
