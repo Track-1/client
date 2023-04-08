@@ -56,11 +56,9 @@ export default function ProducerInfos(props: PropsType) {
         <Blank />
       </InfoHeader>
       {isVocalsPage(whom) && (
-        <VocalProfileImageContainer>
           <VocalProfileImage>
             <VocalProfileImg src={profileData?.profileImage} alt="프로필이미지" />
           </VocalProfileImage>
-        </VocalProfileImageContainer>
       )}
       {isTracksPage(whom) && (
         <ProfileImage>
@@ -183,8 +181,6 @@ const ProfileImage = styled.div`
   margin-top: 5.4rem;
 `;
 
-const VocalProfileImageContainer = styled.div``;
-
 const VocalProfileImg = styled.img`
   width: 150%;
   height: 150%;
@@ -196,6 +192,7 @@ const VocalProfileImg = styled.img`
   transform: rotate(45deg);
   position: absolute;
 `;
+
 const VocalProfileImage = styled.div`
   display: flex;
   justify-content: center;
@@ -206,8 +203,7 @@ const VocalProfileImage = styled.div`
   border-radius: 3rem;
   overflow: hidden;
   transform: rotate(-45deg);
-  margin-top: 5rem;
-  margin-bottom: 2.1rem;
+  margin-top: 11.6rem;
 
   position: absolute;
 `;
