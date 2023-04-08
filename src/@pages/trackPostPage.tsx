@@ -213,9 +213,9 @@ export default function TrackPostPage() {
   function movePreviousPage() {
     navigate("/");
   }
-
-  function moveToProducerProfile(){
-    navigate(`/producer-profile/${trackInfoData?.producerId}`);
+ 
+  function moveToProducerProfile() {
+    navigate(`/producer-profile/${trackInfoData?.producerId}`, { state: trackInfoData?.producerId });
   }
 
   return (
@@ -272,7 +272,7 @@ export default function TrackPostPage() {
                 </CategoryBox>
                 <HashTagBox>
                   <HashTagIconWrapper>
-                  <HashTagIcon />
+                    <HashTagIcon />
                   </HashTagIconWrapper>
                   <TagWrapper>
                     {trackInfoData?.keyword.map((tag: string) => (
@@ -366,7 +366,6 @@ const ProfileImgWrapper = styled.div`
 
   border-radius: 6.5rem;
   overflow: hidden;
-
 `;
 
 const ProducerProfile = styled.img`
@@ -382,7 +381,7 @@ const NickName = styled.strong`
   ${({ theme }) => theme.fonts.id}
 
   cursor: pointer;
-  :hover{
+  :hover {
     color: ${({ theme }) => theme.colors.sub1};
   }
 `;
@@ -555,6 +554,6 @@ const SmallPlayBtnIcon = styled(SmallPlayBtnIc)`
   height: 5.2rem;
 `;
 
-const HashTagIconWrapper=styled.div`
+const HashTagIconWrapper = styled.div`
   width: 16rem;
-`
+`;
