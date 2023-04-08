@@ -30,15 +30,6 @@ export default function VocalProfileEditPage() {
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
-
-  useEffect(()=>{
-    window.onpopstate = function(event) {  
-      alert("뒤로가기");
-      pausesPlayerAudio();
-      closePlayer();
-     };
-  },[])
   
   useEffect(() => {
     if (saveData === true) {

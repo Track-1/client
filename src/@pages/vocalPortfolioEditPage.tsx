@@ -55,15 +55,6 @@ export default function VocalPortfolioEditPage() {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
-
-  useEffect(()=>{
-    window.onpopstate = function(event) {  
-      alert("뒤로가기");
-      pausesPlayerAudio();
-      closePlayer();
-     };
-  },[])
   
   useEffect(() => {
     setHashtag(prevData.keyword);

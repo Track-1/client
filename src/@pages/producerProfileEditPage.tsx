@@ -33,15 +33,6 @@ export default function ProducerProfileEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
 
   const queryClient = new QueryClient();
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
-
-  useEffect(()=>{
-    window.onpopstate = function(event) {  
-      alert("뒤로가기");
-      pausesPlayerAudio();
-      closePlayer();
-     };
-  },[])
   
   useEffect(() => {
     if (saveData === true) {

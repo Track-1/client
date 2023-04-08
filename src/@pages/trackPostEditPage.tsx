@@ -43,15 +43,6 @@ export default function TrackPostEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
-
-  useEffect(()=>{
-    window.onpopstate = function(event) {  
-      alert("뒤로가기");
-      pausesPlayerAudio();
-      closePlayer();
-     };
-  },[])
 
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
