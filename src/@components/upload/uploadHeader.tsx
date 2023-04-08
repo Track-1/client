@@ -15,13 +15,14 @@ import Loading from "../@common/loading";
 interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
+  prevPage: string | undefined;
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
 }
 
 export default function UploadHeader(props: PropsType) {
-  const { userType, producerUploadType, uploadData } = props;
-
+  const { userType, producerUploadType, uploadData, prevPage } = props;
+  console.log(producerUploadType);
   const navigate = useNavigate();
   const loginUserId = useRecoilValue(LoginUserId);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
@@ -78,7 +79,11 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function movePreviousPage() {
-    navigate(-1);
+    if (prevPage === "producer-profile") {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
   }
 
   return (
