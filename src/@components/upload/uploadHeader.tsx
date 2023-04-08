@@ -79,10 +79,10 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function movePreviousPage() {
-    if (prevPage === "producer-profile") {
-      navigate(-1);
-    } else {
+    if (prevPage === "sign-up") {
       navigate("/");
+    } else {
+      navigate(-1);
     }
   }
 
