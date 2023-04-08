@@ -12,6 +12,7 @@ import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function ProducerProfileEditPage() {
   const location = useLocation();
@@ -32,7 +33,7 @@ export default function ProducerProfileEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
 
   const queryClient = new QueryClient();
-
+  
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();

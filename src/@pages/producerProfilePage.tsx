@@ -20,6 +20,7 @@ import { Category } from "../core/constants/categoryHeader";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { endPost } from "../recoil/postIsCompleted";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -45,8 +46,17 @@ export default function ProducerProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
-  const { progress, audio } = usePlayer();
+  const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
+
+    window.onpopstate = function(event) {  
+      !isReload&&window.history.back();
+      pausesPlayerAudio();
+      closePlayer();
+      setIsReload(true)
+    };
+
 
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;

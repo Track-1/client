@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import MainHeader from "../@components/@common/mainHeader";
@@ -16,6 +16,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
 import Ads from "../@components/main/ads";
+import usePlayer from "../utils/hooks/usePlayer";
+import { reload } from "../recoil/main";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -24,7 +26,13 @@ export default function MainPage() {
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
   const showModal = useRecoilValue(openConventionModal);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
+  
+  useEffect(()=>{
+    setIsReload(true)
+  },[])
 
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);

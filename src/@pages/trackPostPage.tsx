@@ -35,10 +35,11 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { blockAccess } from "../utils/common/privateRoute";
 import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
+import { reload } from "../recoil/main";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
-  const { progress, audio } = usePlayer();
   // const {beatId} = useParams();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
@@ -59,6 +60,18 @@ export default function TrackPostPage() {
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const { key, excuteGetData } = useInfiniteKey();
+  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+
+  useEffect(()=>{
+    setIsReload(true)
+  },[])
+
+  window.onpopstate = function(event) {  
+    pausesPlayerAudio();
+    closePlayer();
+  };
 
   const { data, isLoading } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
@@ -211,11 +224,11 @@ export default function TrackPostPage() {
   }
 
   function movePreviousPage() {
-    navigate("/");
+    navigate(-1);
   }
- 
-  function moveToProducerProfile() {
-    navigate(`/producer-profile/${trackInfoData?.producerId}`, { state: trackInfoData?.producerId });
+
+  function moveToProducerProfile(){
+    navigate(`/producer-profile/${trackInfoData?.producerId}`, {state:trackInfoData?.producerId});
   }
 
   return (

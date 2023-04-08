@@ -56,17 +56,16 @@ export default function ProducerInfos(props: PropsType) {
         <Blank />
       </InfoHeader>
       {isVocalsPage(whom) && (
-        <VocalProfileImageContainer>
           <VocalProfileImage>
             <VocalProfileImg src={profileData?.profileImage} alt="프로필이미지" />
           </VocalProfileImage>
-        </VocalProfileImageContainer>
       )}
       {isTracksPage(whom) && (
         <ProfileImage>
           <ProfileImg src={profileData?.profileImage} alt="프로필이미지" />
         </ProfileImage>
       )}
+      <InformationBox>
       <NameWrapper>
         <ProducerNameContainer>
           <ProducerName>{profileData.name}</ProducerName>
@@ -116,9 +115,22 @@ export default function ProducerInfos(props: PropsType) {
           {profileData.introduce?.length > 0 || <EmptyProfileMessage>no information</EmptyProfileMessage>}
         </EmptyDescriptionMessageWrapper>
       </EmptyDescriptionMessageBox>
+      </InformationBox>
     </InfoContainer>
   );
 }
+
+const InformationBox=styled.div`
+  width: 60rem;
+
+  position: fixed;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 33.8rem;
+`
 
 const InfoContainer = styled.section`
   width: 60rem;
@@ -145,19 +157,29 @@ const Blank = styled.div`
 `;
 
 const ProfileImg = styled.img`
-  height: 25.8rem;
-  width: 26.1rem;
+  height: 100%;
+  width: 100%;
 
-  border-radius: 50%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
+
 const ProfileImage = styled.div`
-  background-repeat: no-repeat;
-  background-size: contain;
+  height: 26rem;
+  width: 26rem; 
 
-  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border-radius: 50%;
+  position: absolute;
+  overflow: hidden;
+
+  margin-top: 5.4rem;
 `;
-
-const VocalProfileImageContainer = styled.div``;
 
 const VocalProfileImg = styled.img`
   width: 150%;
@@ -170,6 +192,7 @@ const VocalProfileImg = styled.img`
   transform: rotate(45deg);
   position: absolute;
 `;
+
 const VocalProfileImage = styled.div`
   display: flex;
   justify-content: center;
@@ -180,8 +203,9 @@ const VocalProfileImage = styled.div`
   border-radius: 3rem;
   overflow: hidden;
   transform: rotate(-45deg);
-  margin-top: 5rem;
-  margin-bottom: 2.1rem;
+  margin-top: 11.6rem;
+
+  position: absolute;
 `;
 
 const ProducerNameContainer = styled.div`
