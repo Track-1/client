@@ -17,9 +17,6 @@ export default function TracksProfileUploadModal() {
   const setVisible = useSetRecoilState<boolean>(uploadButtonClicked);
 
   function moveVocalSearching() {
-    console.log(location.pathname.split("/")[1]);
-    //navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
-
     navigate("/upload/Vocal Searching", { state: { data1: "Vocal Searching", data2: preLocation } });
   }
 
