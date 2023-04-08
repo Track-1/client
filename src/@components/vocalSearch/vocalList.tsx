@@ -134,6 +134,8 @@ const UsernameInformWrapper = styled.div`
 
 const Username = styled.span`
   display: flex;
+  width: 70%;
+
   line-height: 3.1rem;
   font-size: 2.4rem;
   align-items: center;
