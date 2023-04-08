@@ -17,11 +17,11 @@ export default function TracksProfileUploadModal() {
   const setVisible = useSetRecoilState<boolean>(uploadButtonClicked);
 
   function moveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: { data1: "Vocal Searching", data2: preLocation } });
+    navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfolio", { state: { data1: "Portfolio", data2: preLocation } });
+    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
   }
 
   function clickOutside() {

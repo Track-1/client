@@ -13,11 +13,11 @@ import UploadHeader from "../@components/upload/uploadHeader";
 export default function UploadPage() {
   const loginUserType = useRecoilValue(LoginUserType);
   const location = useLocation();
-  const producerUploadType = location.state.data1;
-  const prevPage = location.state.data2;
+  const producerUploadType = location.state.producerUploadType;
+  const prevPage = location.state.prevPage;
   // const { producerUploadType } = useParams();
 
-  console.log(location.state.data1);
+  console.log(location.state.producerUploadType);
   console.log(producerUploadType);
 
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
