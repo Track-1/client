@@ -235,6 +235,7 @@ const Thumbnail = styled.img`
 const TrackText = styled.div<{ width: number; isHoverActive: boolean }>`
   width: ${(props) => props.width}rem;
   ${({ theme }) => theme.fonts.body1};
+  padding-right: 3rem;
   :hover {
     color: ${({ isHoverActive, theme }) => isHoverActive && theme.colors.sub1};
     cursor: pointer;
