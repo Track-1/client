@@ -47,6 +47,15 @@ export default function VocalProfilePage() {
   const { progress, audio } = usePlayer();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { pausesPlayerAudio,closePlayer } = usePlayer();
+
+  useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
 
   const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],

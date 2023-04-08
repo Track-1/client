@@ -40,8 +40,16 @@ export default function TrackSearchPage() {
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
 
-  const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
+  const { progress, audio, playPlayerAudio, pausesPlayerAudio,closePlayer } = usePlayer();
 
+  useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
+  
   useEffect(() => {
     if (isCategorySelected) {
       setTracksData([]);

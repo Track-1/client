@@ -60,6 +60,14 @@ export default function TrackPostPage() {
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  // useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  // },[])
+
   const { data, isLoading } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -211,7 +219,7 @@ export default function TrackPostPage() {
   }
 
   function movePreviousPage() {
-    navigate("/");
+    navigate(-1);
   }
 
   function moveToProducerProfile(){

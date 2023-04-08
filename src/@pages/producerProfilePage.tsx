@@ -44,8 +44,17 @@ export default function ProducerProfilePage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
 
-  const { progress, audio } = usePlayer();
-  
+  const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
+
+  useEffect(()=>{
+    window.onpopstate = function(event) {  //뒤로가기 이벤트를 캐치합니다.
+      alert('뒤로가기 체크'); 
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
+
+
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }

@@ -12,6 +12,7 @@ import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function ProducerProfileEditPage() {
   const location = useLocation();
@@ -32,7 +33,16 @@ export default function ProducerProfileEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
 
   const queryClient = new QueryClient();
+  const { pausesPlayerAudio,closePlayer } = usePlayer();
 
+  useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
+  
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();

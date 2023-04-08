@@ -42,7 +42,16 @@ export default function VocalsPage() {
 
   const { progress, audio } = usePlayer();
   const { key, excuteGetData } = useInfiniteKey();
+  const { pausesPlayerAudio,closePlayer } = usePlayer();
 
+  // useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  // },[])
+  
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);

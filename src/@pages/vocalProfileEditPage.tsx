@@ -13,6 +13,7 @@ import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
@@ -29,7 +30,16 @@ export default function VocalProfileEditPage() {
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const { pausesPlayerAudio,closePlayer } = usePlayer();
 
+  useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
+  
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();

@@ -27,6 +27,7 @@ import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -54,7 +55,16 @@ export default function VocalPortfolioEditPage() {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
+  const { pausesPlayerAudio,closePlayer } = usePlayer();
 
+  useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
+  
   useEffect(() => {
     setHashtag(prevData.keyword);
   }, []);
