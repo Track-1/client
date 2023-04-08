@@ -11,6 +11,9 @@ import { patchTitleAPI } from "../../core/api/profile";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { endPost } from "../../recoil/postIsCompleted";
+import { VocalPortfolioType } from "../../type/vocalProfile";
+import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
+import { ProducerPortfolioType } from "../../type/producerProfile";
 
 interface PropsType {
   isTitle: boolean;
@@ -22,6 +25,9 @@ interface PropsType {
   openEllipsisModal: boolean;
   setOpenEllipsisModal: React.Dispatch<React.SetStateAction<boolean>>;
   pauseAudio: any;
+  setPortfolioData:
+    | React.Dispatch<React.SetStateAction<VocalPortfolioType[]>>
+    | React.Dispatch<React.SetStateAction<ProducerPortfolioType[]>>;
 }
 
 export default function PortfolioUpdateModal(props: PropsType) {
@@ -34,6 +40,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
     openEllipsisModal,
     setOpenEllipsisModal,
     pauseAudio,
+    setPortfolioData,
   } = props;
   const navigate = useNavigate();
 
@@ -41,16 +48,20 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const queryClient = useQueryClient();
   const modalRef = useRef<HTMLDivElement>(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const { key, excuteGetData } = useInfiniteKey();
 
   function askToeleteTrack() {
     if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      setPortfolioData([]);
+      excuteGetData();
       deleteTrack();
     }
   }
 
   const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
     onSuccess: () => {
-      queryClient.invalidateQueries("userProfile");
+      queryClient.invalidateQueries(key);
+      setIsEnd(!isEnd);
       alert("삭제되었습니다.");
     },
     onError: (error) => {
@@ -58,13 +69,13 @@ export default function PortfolioUpdateModal(props: PropsType) {
     },
   });
 
+  
   const { mutate: patchTitle } = useMutation(
     () => patchTitleAPI(portfoliosData[0].id, portfoliosData[clickedPortfolioId].id, loginUserType),
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries("userProfile");
+        queryClient.invalidateQueries(key);
         setIsEnd(!isEnd);
-        alert("타이틀이 변경되었습니다.");
       },
       onError: (error) => {
         console.log(error);
@@ -91,7 +102,6 @@ export default function PortfolioUpdateModal(props: PropsType) {
 
   function moveEditPage() {
     pauseAudio();
-    console.log(loginUserType);
     loginUserType === "producer"
       ? navigate(`/portfolio-edit/producer/${portfolioId}`, {
           state: portfoliosData[clickedPortfolioId],
@@ -146,7 +156,13 @@ export default function PortfolioUpdateModal(props: PropsType) {
         </ModalBox>
       )}
       {checkShowTitleBox() && (
-        <ModalBox underline={false} onClick={() => patchTitle()}>
+        <ModalBox
+          underline={false}
+          onClick={() => {
+            setPortfolioData([]);
+            excuteGetData();
+            patchTitle();
+          }}>
           타이틀 설정
           <SetIsTitleIcon />
         </ModalBox>

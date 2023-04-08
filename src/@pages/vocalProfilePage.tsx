@@ -39,20 +39,21 @@ export default function VocalProfilePage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const { key, excuteGetData } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
   const { progress, audio } = usePlayer();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
+  const [saveResponse, setSaveResponse] = useState<any>();
 
   const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response?.vocalPortfolio.length % 3 == 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.nextPage;
       },
       refetchOnWindowFocus: false,
     },
@@ -61,19 +62,18 @@ export default function VocalProfilePage() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   useEffect(() => {
-    // setWhom(Category.TRACKS);
-    // setShowPlayer(false);
     setTracksOrVocals(currentUser.VOCAL);
   }, []);
 
+
   async function getData(page: number) {
+    console.log("page: ", page);
     if (hasNextPage !== false) {
       const response = await getVocalProfile(state, page);
-      console.log(response.vocalProfile);
+      setSaveResponse(response);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
       setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
-      console.log(response);
       return { response, nextPage: page + 1 };
     }
   }
@@ -134,6 +134,7 @@ export default function VocalProfilePage() {
               getAudioInfos={getAudioInfos}
               vocalName={profileData?.name}
               whom={Category.VOCALS}
+              setPortfolioData={setPortfolioData}
             />
           ) : (
             <VocalEmptyProfileImage src={VocalEmptyProfileImg} />

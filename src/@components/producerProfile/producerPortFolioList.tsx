@@ -20,6 +20,7 @@ interface PropsType {
   producerName: string;
   whom: string;
   changeKey: any;
+  setPortfolioData: React.Dispatch<React.SetStateAction<ProducerPortfolioType[]>>;
 }
 
 export default function ProducerPortFolioList(props: PropsType) {
@@ -34,6 +35,7 @@ export default function ProducerPortFolioList(props: PropsType) {
     producerName,
     whom,
     changeKey,
+    setPortfolioData,
   } = props;
 
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
@@ -144,6 +146,7 @@ export default function ProducerPortFolioList(props: PropsType) {
             profileState={profileState}
             whom={currentUser.PRODUCER}
             pauseAudio={pauseAudio}
+            setPortfolioData={setPortfolioData}
           />
         </InformWrapper>
       )}

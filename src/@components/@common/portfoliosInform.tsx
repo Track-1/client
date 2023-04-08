@@ -17,7 +17,7 @@ import { profileCategory } from "../../core/constants/pageCategory";
 import { isProducer, isVocal } from "../../utils/common/userType";
 
 export default function PortfoliosInform(props: any) {
-  const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio } = props;
+  const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio, setPortfolioData } = props;
 
   const navigate = useNavigate();
   const [id, setId] = useState<number>(-1);
@@ -92,6 +92,7 @@ export default function PortfoliosInform(props: any) {
                   openEllipsisModal={openEllipsisModal}
                   setOpenEllipsisModal={setOpenEllipsisModal}
                   pauseAudio={pauseAudio}
+                  setPortfolioData={setPortfolioData}
                 />
               )}
             </InformTitleWrapper>
