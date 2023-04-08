@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   VocalSearchingIc,
   PortfolioIc,
@@ -12,14 +12,19 @@ import { useSetRecoilState } from "recoil";
 
 export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const preLocation = location.pathname.split("/")[1];
   const setVisible = useSetRecoilState<boolean>(uploadButtonClicked);
 
   function moveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
+    console.log(location.pathname.split("/")[1]);
+    //navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
+
+    navigate("/upload/Vocal Searching", { state: { data1: "Vocal Searching", data2: preLocation } });
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfolio", { state: "Portfolio" });
+    navigate("/upload/Portfolio", { state: { data1: "Portfolio", data2: preLocation } });
   }
 
   function clickOutside() {
