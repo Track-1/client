@@ -10,6 +10,7 @@ import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
 import { LoginUserId } from "../../recoil/loginUserData";
 import BackButton from "../@common/backButton";
+import { showPlayerBar } from "../../recoil/player";
 
 interface PropsType {
   userType: string;
@@ -26,10 +27,11 @@ export default function UploadHeader(props: PropsType) {
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
   const [cursor, setCursor] = useState<string>("pointer");
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const { mutate, isLoading } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
-      alert("업로드 성공");
+      setShowPlayer(false);
       checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
     },
     onError: (error) => {

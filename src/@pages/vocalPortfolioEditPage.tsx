@@ -1,5 +1,5 @@
 import styled, { useTheme } from "styled-components";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, VocalUploadFrameIc, HashtagWarningIc } from "../assets";
 import { FileChangeIc } from "../assets";
@@ -26,6 +26,7 @@ import BackButton from "../@components/@common/backButton";
 import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
+import { showPlayerBar } from "../recoil/player";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -53,6 +54,7 @@ export default function VocalPortfolioEditPage() {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   useEffect(() => {
     setHashtag(prevData.keyword);
@@ -65,6 +67,7 @@ export default function VocalPortfolioEditPage() {
   const { mutate } = useMutation(patchVocalPortfolio, {
     onSuccess: () => {
       queryClient.invalidateQueries("vocalPortFolio");
+      setShowPlayer(false);
       navigate(-1);
     },
     onError: () => {

@@ -165,6 +165,7 @@ export default function ProducerProfilePage() {
               scrollToTop();
               setPortfolioData([]);
               excuteGetData();
+              setShowPlayer(false);
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -176,6 +177,7 @@ export default function ProducerProfilePage() {
               scrollToTop();
               setSelectingTracksData([]);
               excuteGetData();
+              setShowPlayer(false);
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching

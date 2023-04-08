@@ -14,6 +14,7 @@ import { endPost } from "../../recoil/postIsCompleted";
 import { VocalPortfolioType } from "../../type/vocalProfile";
 import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
 import { ProducerPortfolioType } from "../../type/producerProfile";
+import { showPlayerBar } from "../../recoil/player";
 
 interface PropsType {
   isTitle: boolean;
@@ -49,12 +50,14 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
   const { key, excuteGetData } = useInfiniteKey();
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   function askToeleteTrack() {
     if (window.confirm("게시글을 삭제하시겠습니까?")) {
       setPortfolioData([]);
       excuteGetData();
       deleteTrack();
+      setShowPlayer(false);
     }
   }
 
@@ -62,14 +65,12 @@ export default function PortfolioUpdateModal(props: PropsType) {
     onSuccess: () => {
       queryClient.invalidateQueries(key);
       setIsEnd(!isEnd);
-      alert("삭제되었습니다.");
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
-  
   const { mutate: patchTitle } = useMutation(
     () => patchTitleAPI(portfoliosData[0].id, portfoliosData[clickedPortfolioId].id, loginUserType),
     {
@@ -162,6 +163,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
             setPortfolioData([]);
             excuteGetData();
             patchTitle();
+            setShowPlayer(false);
           }}>
           타이틀 설정
           <SetIsTitleIcon />

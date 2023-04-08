@@ -1,5 +1,5 @@
 import styled, { useTheme } from "styled-components";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, HashtagWarningIc } from "../assets";
 import { FileChangeIc } from "../assets";
@@ -25,6 +25,7 @@ import BackButton from "../@components/@common/backButton";
 import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
+import { showPlayerBar } from "../recoil/player";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -45,10 +46,11 @@ export default function ProducerPortfolioEditPage() {
   const [hashtagText, setHashtagText] = useState<string>("");
   const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [tagMaxLength, setTagMaxLength] = useState<number>(10);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
-  const [isKorean, setIsKorean]=useState<boolean>(false);
+  const [isKorean, setIsKorean] = useState<boolean>(false);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const navigate = useNavigate();
 
@@ -60,6 +62,7 @@ export default function ProducerPortfolioEditPage() {
 
   const { mutate } = useMutation(() => patchProducerPortfolio(prevData.id, editData), {
     onSuccess: () => {
+      setShowPlayer(false);
       navigate(-1);
     },
     onError: () => {
@@ -98,56 +101,56 @@ export default function ProducerPortfolioEditPage() {
 
   function deleteHashtag(index: number) {
     const deleteTag = hashtag;
-     deleteTag.splice(index, 1);
-     setHashtag([...deleteTag]);
-     setHashtagInput("");
-   }
+    deleteTag.splice(index, 1);
+    setHashtag([...deleteTag]);
+    setHashtagInput("");
+  }
 
-   console.log(hashtag)
+  console.log(hashtag);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
 
     setHashtagInput(e.target.value);
 
-    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
-    
-    if(checkHashtagLength(e.target.value)){
+    e.target.value !== "" ? setHashtagLength(e.target.value.length) : setHashtagLength(0);
+
+    if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
-    }else{
-      setIsKorean(false)
+      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+    } else {
+      setIsKorean(false);
     }
-    }
+  }
 
   function addHashtag() {
-    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       setHashtag((prev) => [...prev, hashtagInput]);
       setHashtagInput("");
       setHashtagText("");
       setHashtagLength(0);
     }
-}
-
-function isDuplicateHashtag(value: string): boolean {
-  const isDuplicate = hashtag.includes(value);
-  isDuplicate && alert("중복된 해시태그 입니다!");
-  return isDuplicate;
-}
-
-useEffect(() => {
-  document.addEventListener("mousedown", clickOutSide);
-  return () => {
-    document.removeEventListener("mousedown", clickOutSide);
-  };
-});
-
-function clickOutSide(e: any) {
-  if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-    addHashtag() 
   }
-}
+
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = hashtag.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+      addHashtag();
+    }
+  }
   function checkDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescription(e.target.value);
   }
@@ -182,16 +185,15 @@ function clickOutSide(e: any) {
   function hoverImage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
-  
 
   return (
     <>
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
-          <div onClick={movePreviousPage}>
-            <BackButton/>
-          </div>
+            <div onClick={movePreviousPage}>
+              <BackButton />
+            </div>
             <UserClass> {}</UserClass>
           </LeftWrapper>
           <CanUploadBtnIcon onClick={conpleteEdit} />
@@ -202,14 +204,16 @@ function clickOutSide(e: any) {
           <TrackImageBox onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
             <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
               {isImageUploaded ? (
-                <TrackUploadImage src={String(showImage)} alt="썸네일 이미지"  isImageHovered={isImageHovered}/>
+                <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
               ) : (
-                <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지"  isImageHovered={isImageHovered}/>
+                <TrackUploadImage src={prevData?.jacketImage} alt="썸네일 이미지" isImageHovered={isImageHovered} />
               )}
-            </TrackUploadImageWrapper>            
-            {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-            <FileChangeIcon />
-            </label>)}
+            </TrackUploadImageWrapper>
+            {isImageHovered && (
+              <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                <FileChangeIcon />
+              </label>
+            )}
           </TrackImageBox>
           <input
             type="file"
@@ -288,8 +292,8 @@ function clickOutSide(e: any) {
                           <InputHashtagWrapper>
                             <Hashtag key={index}>
                               <HashtagWrapper>
-                              <HashtagSharp># </HashtagSharp>
-                              <CompletedHashtag>{item}</CompletedHashtag>
+                                <HashtagSharp># </HashtagSharp>
+                                <CompletedHashtag>{item}</CompletedHashtag>
                                 <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
                               </HashtagWrapper>
                             </Hashtag>
@@ -317,30 +321,29 @@ function clickOutSide(e: any) {
                             </Hashtag>
                           </InputHashtagWrapper>
                         )}
-                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag}/>}
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
                       </>
                     </>
                   </InputHashtagWrapper>
-                  
-                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
-                  {hoverState ? (
-                    <>
-                      <HoverHashtagWarningIcon />
-                      <WarningTextWrapper>
-                        <WarningText>
-                          1. 해시태그는 최대 3개까지 추가 가능합니다.
-                          <br />
-                          2. 최대 10자까지 작성이 가능합니다.
-                          <br />
-                          3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                        </WarningText>
-                      </WarningTextWrapper>
-                    </>
-                  ) : (
-                    <HashtagWarningIcon />
-                  )}
-                </WarningIcon>
 
+                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                    {hoverState ? (
+                      <>
+                        <HoverHashtagWarningIcon />
+                        <WarningTextWrapper>
+                          <WarningText>
+                            1. 해시태그는 최대 3개까지 추가 가능합니다.
+                            <br />
+                            2. 최대 10자까지 작성이 가능합니다.
+                            <br />
+                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                          </WarningText>
+                        </WarningTextWrapper>
+                      </>
+                    ) : (
+                      <HashtagWarningIcon />
+                    )}
+                  </WarningIcon>
                 </InputBox>
               </HashTagInfoItemBox>
 
@@ -384,20 +387,20 @@ function clickOutSide(e: any) {
   );
 }
 
-const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+const UploadDescriptionIcon = styled(UploadDescriptionIc)`
   width: 14.6rem;
-`
+`;
 
-const UploadHashtagIcon=styled(UploadHashtagIc)`
+const UploadHashtagIcon = styled(UploadHashtagIc)`
   width: 11.2rem;
-`
+`;
 
-const UploadCategoryIcon=styled(UploadCategoryIc)`
+const UploadCategoryIcon = styled(UploadCategoryIc)`
   width: 12.3rem;
-`
-const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+`;
+const UploadFileUpdateIcon = styled(UploadFileUpdateIc)`
   width: 13.3rem;
-`
+`;
 
 const Container = styled.header`
   height: 13.8rem;
@@ -470,23 +473,23 @@ const TrackImageBox = styled.div`
   cursor: pointer;
 `;
 
-const TrackUploadImageWrapper=styled.label`
+const TrackUploadImageWrapper = styled.label`
   width: 60.4rem;
   height: 60.4rem;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   position: absolute;
   overflow: hidden;
-`
+`;
 
-const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
+const TrackUploadImage = styled.img<{ isImageHovered: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   width: 100%;
   height: 100%;
   position: absolute;
@@ -494,10 +497,10 @@ const TrackUploadImage = styled.img<{isImageHovered:boolean}>`
   object-fit: cover;
   margin: auto;
 
-  filter: blur(${({isImageHovered})=>isImageHovered&&3}rem);
+  filter: blur(${({ isImageHovered }) => isImageHovered && 3}rem);
 `;
 
-const FileChangeIcon = styled(FileChangeIc)` 
+const FileChangeIcon = styled(FileChangeIc)`
   width: 18.9rem;
   position: absolute;
   top: 50%;
@@ -655,7 +658,7 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
- // height: 9rem;
+  // height: 9rem;
 `;
 
 const Hashtag = styled.div`
@@ -680,8 +683,9 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
-  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+  width: ${({ inputWidth, isKorean }) =>
+    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -780,7 +784,7 @@ const FolderUploadIcon = styled(FolderUploadIc)`
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
- width: 4rem;
+  width: 4rem;
   height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
@@ -802,12 +806,12 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   cursor: pointer;
 `;
 
-const ProfileWarningWrapper=styled.section`
+const ProfileWarningWrapper = styled.section`
   position: absolute;
   margin-top: 1rem;
   margin-right: 10rem;
   right: 0;
-`
+`;
 
 const CompletedHashtag = styled.article`
   display: flex;
@@ -829,7 +833,7 @@ const HashtagWarningIcon = styled(HashtagWarningIc)`
   height: 4rem;
 `;
 
-const CheckCategoryIcon=styled(CheckCategoryIc)`
+const CheckCategoryIcon = styled(CheckCategoryIc)`
   width: 1.5rem;
   height: 0.9rem;
-`
+`;
