@@ -15,13 +15,14 @@ import Loading from "../@common/loading";
 interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
+  prevPage: string | undefined;
   uploadData: UploadInfoDataType;
   setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
 }
 
 export default function UploadHeader(props: PropsType) {
-  const { userType, producerUploadType, uploadData } = props;
-
+  const { userType, producerUploadType, uploadData, prevPage } = props;
+  console.log(producerUploadType);
   const navigate = useNavigate();
   const loginUserId = useRecoilValue(LoginUserId);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
@@ -31,7 +32,11 @@ export default function UploadHeader(props: PropsType) {
   const { mutate, isLoading } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
       alert("업로드되었습니다.");
-      checkUserType(userType) ? navigate(-1) : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
+      checkUserType(userType)
+        ? (prevPage === "sign-up"
+          ? navigate("/")
+          : navigate(-1))
+        : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
     },
     onError: (error) => {
       console.log("에러!!", error);
@@ -78,7 +83,11 @@ export default function UploadHeader(props: PropsType) {
   }
 
   function movePreviousPage() {
-    navigate(-1);
+    if (prevPage === "sign-up") {
+      navigate("/");
+    } else {
+      navigate(-1);
+    }
   }
 
   return (
