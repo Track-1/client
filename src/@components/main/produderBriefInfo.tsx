@@ -139,6 +139,11 @@ const TextWrapper = styled.div`
 `;
 
 const InfoUserName = styled.strong`
+  width: 22.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  
   ${({ theme }) => theme.fonts.id}
 
   color: ${({ theme }) => theme.colors.white};
@@ -146,6 +151,11 @@ const InfoUserName = styled.strong`
 
 const UserEmail = styled.strong`
   margin-top: 0.9rem;
+
+  width: 22.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   ${({ theme }) => theme.fonts.description}
 
@@ -158,7 +168,7 @@ const LogoutBox = styled.div`
   align-items: center;
 
   height: 5.7rem;
-  padding: 0 1.1rem 0 2.2rem;
+  padding: 0 1.1rem 1rem 2.2rem;
 
   ${({ theme }) => theme.fonts.body1}
   color: ${({ theme }) => theme.colors.white};

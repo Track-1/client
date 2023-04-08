@@ -17,24 +17,24 @@ import {
 } from "../assets";
 import HashTag from "../@components/trackPost/hashTag";
 import BackButton from "../@components/@common/backButton";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import EditDropDown from "../@components/trackPost/editDropDown";
 import CategoryHeader from "../@components/@common/categoryHeader";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { audioFile, playMusic, showPlayerBar } from "../recoil/player";
+import { useRecoilState } from "recoil";
+import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Category } from "../core/constants/categoryHeader";
 import usePlayer from "../utils/hooks/usePlayer";
-import { getCookie } from "../utils/cookie";
-import axios from "axios";
 import { blockAccess } from "../utils/common/privateRoute";
+import Loading from "../@components/@common/loading";
+import { isCookieNull, isLogin } from "../utils/common/isLogined";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -60,7 +60,7 @@ export default function TrackPostPage() {
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const { data } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
+  const { data, isLoading } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
@@ -191,7 +191,7 @@ export default function TrackPostPage() {
   });
 
   function getFile() {
-    blockAccess()?navigate("/login"):(!download && setDownload(true));
+    blockAccess() ? navigate("/login") : !download && setDownload(true);
   }
 
   function checkIsMeOpen() {
@@ -214,8 +214,13 @@ export default function TrackPostPage() {
     navigate("/");
   }
 
+  function moveToProducerProfile(){
+    navigate(`/producer-profile/${trackInfoData?.producerId}`);
+  }
+
   return (
     <>
+      {isLoading && <Loading />}
       {isCommentOpen && (
         <UserComment
           closeComment={closeComment}
@@ -233,18 +238,19 @@ export default function TrackPostPage() {
               <BackButtonWrapper onClick={movePreviousPage}>
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
-              <AudioTitle>{trackInfoData.title}</AudioTitle>
+              <AudioTitle>{trackInfoData?.title}</AudioTitle>
               <ProducerBox>
                 <ProfileImgWrapper>
-                  <ProducerProfile src={trackInfoData.producerProfileImage} alt="프로듀서 프로필 이미지" />
+                  <ProducerProfile src={trackInfoData?.producerProfileImage} alt="프로듀서 프로필 이미지" />
                 </ProfileImgWrapper>
-                <NickName>{trackInfoData.producerName}</NickName>
+                <NickName onClick={moveToProducerProfile}>{trackInfoData?.producerName}</NickName>
               </ProducerBox>
               <ButtonWrapper>
                 {checkIsMeOpen() && <OpenedIcon onClick={closeTrackPost} />}
                 {checkIsMeClosed() && <ClosedWithXIcon onClick={openTrackPost} />}
                 {checkIsNotMeOpen() && <DownloadBtnIcon onClick={getFile} />}
                 {checkIsNotMeClosed() && <ClosedBtnIcon />}
+
                 {!isCommentOpen && play ? (
                   <PauseBtnIcon onClick={pauseAudio} />
                 ) : (
@@ -262,19 +268,21 @@ export default function TrackPostPage() {
               <DescriptionContainer>
                 <CategoryBox>
                   <CategoryIcon />
-                  {trackInfoData.category}
+                  {trackInfoData?.category}
                 </CategoryBox>
                 <HashTagBox>
+                  <HashTagIconWrapper>
                   <HashTagIcon />
+                  </HashTagIconWrapper>
                   <TagWrapper>
-                    {trackInfoData.keyword.map((tag: string) => (
+                    {trackInfoData?.keyword.map((tag: string) => (
                       <HashTag text={tag} />
                     ))}
                   </TagWrapper>
                 </HashTagBox>
                 <DescriptionBox>
                   <DescriptionIcon />
-                  <TextBox>{trackInfoData.introduce}</TextBox>
+                  <TextBox>{trackInfoData?.introduce}</TextBox>
                 </DescriptionBox>
               </DescriptionContainer>
             </InfoContainer>
@@ -358,6 +366,7 @@ const ProfileImgWrapper = styled.div`
 
   border-radius: 6.5rem;
   overflow: hidden;
+
 `;
 
 const ProducerProfile = styled.img`
@@ -371,6 +380,11 @@ const ProducerProfile = styled.img`
 const NickName = styled.strong`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.id}
+
+  cursor: pointer;
+  :hover{
+    color: ${({ theme }) => theme.colors.sub1};
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -444,6 +458,8 @@ const PlayImageWrapper = styled.div`
   align-items: center;
 
   overflow: hidden;
+
+  position: absolute;
 `;
 
 const PlayerImage = styled.img`
@@ -452,10 +468,12 @@ const PlayerImage = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+
+  position: absolute;
 `;
 
 const DescriptionContainer = styled.div`
-  margin-left: 5.1rem;
+  margin-left: 70rem;
 `;
 
 const CategoryBox = styled.article`
@@ -467,6 +485,7 @@ const CategoryBox = styled.article`
 `;
 
 const CategoryIcon = styled(CategoryIc)`
+  width: 12.3rem;
   margin-right: 4.1rem;
 `;
 const HashTagBox = styled.article`
@@ -476,6 +495,8 @@ const HashTagBox = styled.article`
 `;
 
 const HashTagIcon = styled(HashtagIc)`
+  width: 11.2rem;
+
   height: 3.8rem;
 
   display: flex;
@@ -495,6 +516,7 @@ const DescriptionBox = styled.article`
 `;
 
 const DescriptionIcon = styled(DescriptionIc)`
+  width: 14.6rem;
   height: 3.8rem;
 
   display: flex;
@@ -532,3 +554,7 @@ const SmallPlayBtnIcon = styled(SmallPlayBtnIc)`
   width: 5.2rem;
   height: 5.2rem;
 `;
+
+const HashTagIconWrapper=styled.div`
+  width: 16rem;
+`

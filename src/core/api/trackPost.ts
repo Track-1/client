@@ -4,18 +4,13 @@ import { getCookie } from "../../utils/cookie";
 
 export async function getTrackInfo(props: number) {
   const state = props;
-  try {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-
+    console.log(data);
     return data;
-  } catch (e) {
-    console.log(e);
-  }
 }
 
 export async function getComment(page: number, beatId: number) {
@@ -23,7 +18,6 @@ export async function getComment(page: number, beatId: number) {
     const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
         beadId: beatId,
       },
     });

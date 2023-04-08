@@ -26,6 +26,7 @@ import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
+import Loading from "../@components/@common/loading";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -52,6 +53,7 @@ export default function ProducerPortfolioEditPage() {
   const [isKorean, setIsKorean] = useState<boolean>(false);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
+
   const navigate = useNavigate();
 
   function convert() {}
@@ -60,7 +62,7 @@ export default function ProducerPortfolioEditPage() {
     setHahtagWarningOpen(!hashtagWarningOpen);
   }
 
-  const { mutate } = useMutation(() => patchProducerPortfolio(prevData.id, editData), {
+  const { mutate, isLoading } = useMutation(() => patchProducerPortfolio(prevData.id, editData), {
     onSuccess: () => {
       setShowPlayer(false);
       navigate(-1);
@@ -106,7 +108,6 @@ export default function ProducerPortfolioEditPage() {
     setHashtagInput("");
   }
 
-  console.log(hashtag);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
@@ -188,6 +189,7 @@ export default function ProducerPortfolioEditPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
@@ -228,7 +230,7 @@ export default function ProducerPortfolioEditPage() {
               typeof="text"
               placeholder="Please enter a title"
               spellCheck={false}
-              maxLength={36}
+              maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
             />
@@ -237,7 +239,7 @@ export default function ProducerPortfolioEditPage() {
             <TextCount>
               <TextWrapper>
                 <InputCount>{title.length}</InputCount>
-                <LimitCount>/36</LimitCount>
+                <LimitCount>/28</LimitCount>
               </TextWrapper>
             </TextCount>
 

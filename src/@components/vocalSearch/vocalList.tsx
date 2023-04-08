@@ -26,7 +26,7 @@ export default function VocalList(props: PropsType) {
   const { clickedIndex, playAudio } = usePlay(audio, vocalData, "vocals");
 
   function mouseOverPlayVocal(id: number) {
-    id&&setHoverVocal(id);
+    setHoverVocal(id);
   }
 
   function mouseOutPlayVocal() {
@@ -35,7 +35,7 @@ export default function VocalList(props: PropsType) {
 
   useEffect(() => {
     getAudioInfos(
-      "이게 어떻게 된거냐 api에 없다",
+      vocalData[clickedIndex]?.title,
       vocalData[clickedIndex]?.vocalName,
       vocalData[clickedIndex]?.vocalProfileImage,
       vocalData[clickedIndex]?.wavFileLength,
@@ -48,6 +48,8 @@ export default function VocalList(props: PropsType) {
   }
 
   function moveVocalProfilePage(vocalId: number) {
+    pauseAudio(clickedIndex);
+    setShowPlayer(false);
     navigate(`/vocal-profile/${vocalId}`, { state: vocalId });
   }
 
@@ -58,7 +60,7 @@ export default function VocalList(props: PropsType) {
           <VocalContainer key={index}>
             <UsernameInformWrapper>
               <Username onClick={() => moveVocalProfilePage(vocal?.vocalId)}>{vocal?.vocalName}</Username>
-              {!vocal?.isSelected && <VocalSleepIcon />}
+              {vocal?.isSelected && <VocalSleepIcon />}
             </UsernameInformWrapper>
 
             <CategoryTextWrapper>

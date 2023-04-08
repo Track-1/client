@@ -19,6 +19,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { Category } from "../core/constants/categoryHeader";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { endPost } from "../recoil/postIsCompleted";
+import Loading from "../@components/@common/loading";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -73,8 +74,10 @@ export default function ProducerProfilePage() {
     }
   }
 
-  const { data, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    [key, isEnd],
+
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
+   [key, isEnd],
+
     ({ pageParam = 1 }) => getData(pageParam, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -141,6 +144,7 @@ export default function ProducerProfilePage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <Outlet />
       {visible && <TracksProfileUploadModal />}
       {isMe && <UploadButtonIcon onClick={moveToUpload} />}
@@ -272,7 +276,7 @@ const ProducerEmptyProfileImage = styled.img`
 `;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
-  position: absolute;
+  position: fixed;
   z-index: 7;
   right: 0;
   margin-top: 5.9rem;

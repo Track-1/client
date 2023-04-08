@@ -22,6 +22,7 @@ import { currentUser } from "../core/constants/userType";
 import { endPost } from "../recoil/postIsCompleted";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { UploadButtonBlankIc, UploadButtonIc } from "../assets";
+import Loading from "../@components/@common/loading";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -48,7 +49,7 @@ export default function VocalProfilePage() {
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [saveResponse, setSaveResponse] = useState<any>();
 
-  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
     ({ pageParam = 1 }) => getData(pageParam),
     {
@@ -108,6 +109,7 @@ export default function VocalProfilePage() {
 
   return (
     <Wrap>
+      {isLoading && <Loading />}
       {visible && <TracksProfileUploadModalSection />}
       {isMe && <UploadButtonIcon onClick={moveToUpload} />}
       <VocalProfile>
@@ -198,7 +200,7 @@ const VocalEmptyProfileImage = styled.img`
 `;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
-  position: absolute;
+  position: fixed;
   z-index: 7;
   right: 0;
   margin-top: 5.9rem;
@@ -207,8 +209,4 @@ const UploadButtonIcon = styled(UploadButtonIc)`
   width: 24.5rem;
 
   cursor: pointer;
-`;
-
-const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
-  margin-top: 5.9rem;
 `;

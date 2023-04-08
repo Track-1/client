@@ -1,20 +1,17 @@
 import styled from "styled-components";
-import { PortfolioPropsType } from "../../type/profilePropsType";
 import {
   VocalPortfolioTitleTextIc,
   ProducerPortfolioTitleTextIc,
-  UploadButtonIc,
   EllipsisIc,
   BlankIc,
-  UploadButtonBlankIc,
 } from "../../assets";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfolioViewMoreButton from "./portfolioViewMoreButton";
 import { useNavigate } from "react-router-dom";
-import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
+import { isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
-import { isProducer, isVocal } from "../../utils/common/userType";
+import { isProducer } from "../../utils/common/userType";
 
 export default function PortfoliosInform(props: any) {
   const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio, setPortfolioData } = props;
@@ -118,20 +115,6 @@ export default function PortfoliosInform(props: any) {
 
 const InformContainer = styled.div`
   margin-top: 11rem;
-`;
-
-const UploadButtonIcon = styled(UploadButtonIc)`
-  position: absolute;
-  right: 0;
-  margin-top: 5.9rem;
-
-  width: 24.5rem;
-
-  cursor: pointer;
-`;
-
-const UploadButtonBlankIcon = styled(UploadButtonBlankIc)`
-  margin-top: 5.9rem;
 `;
 
 const PortfolioInformWrapper = styled.section`

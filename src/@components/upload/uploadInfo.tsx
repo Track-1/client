@@ -311,7 +311,7 @@ export default function UploadInfo(props: propsType) {
         typeof="text"
         placeholder="Please enter a title"
         spellCheck={false}
-        maxLength={36}
+        maxLength={28}
         onChange={changeTitleText}
         onFocus={hoverTitle}
         onBlur={hoverTitle}
@@ -321,7 +321,7 @@ export default function UploadInfo(props: propsType) {
       <TextCount font={"body"} textareaMargin={textareaMargin}>
         <TextWrapper>
           <InputCount>{titleLength}</InputCount>
-          <LimitCount>/36</LimitCount>
+          <LimitCount>/28</LimitCount>
         </TextWrapper>
       </TextCount>
 

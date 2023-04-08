@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { UploadInfoDataType } from "../type/uploadInfoDataType";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
@@ -12,7 +12,9 @@ import UploadHeader from "../@components/upload/uploadHeader";
 
 export default function UploadPage() {
   const loginUserType = useRecoilValue(LoginUserType);
-  const { producerUploadType } = useParams();
+  const location = useLocation();
+  const producerUploadType = location.state.producerUploadType;
+  const prevPage = location.state.prevPage;
 
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
     title: "",
@@ -37,6 +39,7 @@ export default function UploadPage() {
       <UploadHeader
         userType={loginUserType}
         producerUploadType={producerUploadType}
+        prevPage= {prevPage}
         uploadData={uploadData}
         setUploadData={setUploadData}
       />

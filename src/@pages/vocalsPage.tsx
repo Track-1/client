@@ -20,6 +20,7 @@ import { VocalsDataType } from "../type/vocalsDataType";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import Loading from "../@components/@common/loading";
 
 export default function VocalsPage() {
   const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
@@ -53,7 +54,7 @@ export default function VocalsPage() {
     }
   }, [filteredUrlApi, trackSearchingClicked]);
 
-  const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     key,
     ({ pageParam = 1 }) => getData(pageParam),
     {
@@ -67,7 +68,6 @@ export default function VocalsPage() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
-    console.log(trackSearchingClicked);
     if (hasNextPage !== false) {
       const response = await getVocalsData(filteredUrlApi, trackSearchingClicked, page);
       setVocalsData((prev) => [...prev, ...response]);
@@ -97,6 +97,7 @@ export default function VocalsPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <CategoryHeader pausesPlayerAudio={pauseAudio} />
       <VocalSearchPageWrapper>
         <CategoryListWrapper>

@@ -27,6 +27,7 @@ import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
+import Loading from "../@components/@common/loading";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -64,7 +65,7 @@ export default function VocalPortfolioEditPage() {
     setHahtagWarningOpen(!hashtagWarningOpen);
   }
 
-  const { mutate } = useMutation(patchVocalPortfolio, {
+  const { mutate, isLoading } = useMutation(patchVocalPortfolio, {
     onSuccess: () => {
       queryClient.invalidateQueries("vocalPortFolio");
       setShowPlayer(false);
@@ -195,6 +196,7 @@ export default function VocalPortfolioEditPage() {
   console.log(hashtag);
   return (
     <>
+      {isLoading && <Loading />}
       <Container>
         <HeaderWrapper>
           <LeftWrapper>
@@ -238,7 +240,7 @@ export default function VocalPortfolioEditPage() {
               typeof="text"
               placeholder="Please enter a title"
               spellCheck={false}
-              maxLength={36}
+              maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
             />
@@ -247,7 +249,7 @@ export default function VocalPortfolioEditPage() {
             <TextCount>
               <TextWrapper>
                 <InputCount>{title.length}</InputCount>
-                <LimitCount>/36</LimitCount>
+                <LimitCount>/28</LimitCount>
               </TextWrapper>
             </TextCount>
 

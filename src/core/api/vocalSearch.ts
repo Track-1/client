@@ -8,7 +8,7 @@ export async function getVocalsData(filteredUrlApi: string, isSelected: boolean,
       `${process.env.REACT_APP_BASE_URL}/vocals/filter?${filteredUrlApi}&isSelected=${selected}&page=${page}&limit=3`,
       {
         headers: {
-          Authorization: `Bearer ${getCookie("accessToken")}`,
+          "Content-Type": "application/json",
         },
       },
     );
