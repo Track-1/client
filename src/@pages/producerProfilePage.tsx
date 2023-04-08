@@ -48,18 +48,14 @@ export default function ProducerProfilePage() {
 
   const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
 
-  useEffect(()=>{
-    isReload&&window.location.reload();
-    setIsReload(false)
-  },[])
-
     window.onpopstate = function(event) {  
-      // window.history.back();
-      audio.pause();
-      setPlay(false);
+      !isReload&&window.history.back();
+      // audio.pause();
+      // setPlay(false);
   
       pausesPlayerAudio();
       closePlayer();
+      setIsReload(true)
     };
 
 
