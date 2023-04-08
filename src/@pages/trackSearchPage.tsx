@@ -49,11 +49,7 @@ export default function TrackSearchPage() {
     setIsReload(false)
   },[])
 
-    window.onpopstate = function(event) {  
-      // window.history.back();
-      audio.pause();
-      setPlay(false);
-  
+    window.onpopstate = function(event) {
       pausesPlayerAudio();
       closePlayer();
     };

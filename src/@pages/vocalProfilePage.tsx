@@ -51,20 +51,9 @@ export default function VocalProfilePage() {
   const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
-  
-  // useEffect(()=>{
-  //   if(isReload){
-  //     window.location.reload();
-  //    // window.history.back();
-  //   }
-  //   setIsReload(false)
-  // },[])
 
     window.onpopstate = function(event) {  
       !isReload&&window.history.back();
-      audio.pause();
-      setPlay(false);
-  
       pausesPlayerAudio();
       closePlayer();
       setIsReload(true)

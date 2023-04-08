@@ -36,7 +36,6 @@ export default function VocalsPage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  // const isSelected = useRecoilValue(trackSearching);
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
@@ -51,11 +50,6 @@ export default function VocalsPage() {
   },[])
 
   window.onpopstate = function(event) {  
-    // window.history.back();
-
-    audio.pause();
-    setPlay(false);
-
     pausesPlayerAudio();
     closePlayer();
   };

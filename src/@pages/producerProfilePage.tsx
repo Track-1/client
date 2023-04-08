@@ -50,9 +50,6 @@ export default function ProducerProfilePage() {
 
     window.onpopstate = function(event) {  
       !isReload&&window.history.back();
-      // audio.pause();
-      // setPlay(false);
-  
       pausesPlayerAudio();
       closePlayer();
       setIsReload(true)

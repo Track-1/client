@@ -64,27 +64,13 @@ export default function TrackPostPage() {
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
 
-  // useEffect(()=>{
-  //   audio.pause();
-  //     pausesPlayerAudio();
-  //     closePlayer();   
-  //     // window.location.reload();
-  //     excuteGetData();
-  // },[isReload])
+  useEffect(()=>{
+    setIsReload(true)
+  },[])
 
-  
-  console.log(isReload)
-  
   window.onpopstate = function(event) {  
-    // alert("브라우저 뒤로가기");
-    // window.history.back();
-
-    audio.pause();
-    setPlay(false);
-
     pausesPlayerAudio();
     closePlayer();
-    // window.location.reload();
   };
 
   const { data, isLoading } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
