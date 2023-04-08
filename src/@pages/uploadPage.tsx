@@ -15,10 +15,6 @@ export default function UploadPage() {
   const location = useLocation();
   const producerUploadType = location.state.producerUploadType;
   const prevPage = location.state.prevPage;
-  // const { producerUploadType } = useParams();
-
-  console.log(location.state.producerUploadType);
-  console.log(producerUploadType);
 
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
     title: "",
