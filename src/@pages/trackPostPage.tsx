@@ -35,10 +35,11 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { blockAccess } from "../utils/common/privateRoute";
 import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
+import { reload } from "../recoil/main";
+import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
-  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
   // const {beatId} = useParams();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
@@ -59,14 +60,32 @@ export default function TrackPostPage() {
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const { key, excuteGetData } = useInfiniteKey();
+  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
 
   // useEffect(()=>{
-    window.onpopstate = function(event) {  
-      alert("뒤로가기");
-      pausesPlayerAudio();
-      closePlayer();
-     };
-  // },[])
+  //   audio.pause();
+  //     pausesPlayerAudio();
+  //     closePlayer();   
+  //     // window.location.reload();
+  //     excuteGetData();
+  // },[isReload])
+
+  
+  console.log(isReload)
+  
+  window.onpopstate = function(event) {  
+    // alert("브라우저 뒤로가기");
+    // window.history.back();
+
+    audio.pause();
+    setPlay(false);
+
+    pausesPlayerAudio();
+    closePlayer();
+    // window.location.reload();
+  };
 
   const { data, isLoading } = useQuery(["state", state, isClosed], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,

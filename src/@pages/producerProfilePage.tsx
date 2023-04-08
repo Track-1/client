@@ -19,6 +19,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { Category } from "../core/constants/categoryHeader";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -43,16 +44,23 @@ export default function ProducerProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
 
   useEffect(()=>{
-    window.onpopstate = function(event) {  //뒤로가기 이벤트를 캐치합니다.
-      alert('뒤로가기 체크'); 
+    isReload&&window.location.reload();
+    setIsReload(false)
+  },[])
+
+    window.onpopstate = function(event) {  
+      // window.history.back();
+      audio.pause();
+      setPlay(false);
+  
       pausesPlayerAudio();
       closePlayer();
-     };
-  },[])
+    };
 
 
   function isDataEmpty() {

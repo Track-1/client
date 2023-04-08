@@ -21,6 +21,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function VocalsPage() {
   const [vocalsData, setVocalsData] = useState<VocalsDataType[]>([]);
@@ -39,18 +40,25 @@ export default function VocalsPage() {
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
-  const { progress, audio } = usePlayer();
   const { key, excuteGetData } = useInfiniteKey();
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
+  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
 
-  // useEffect(()=>{
-    window.onpopstate = function(event) {  
-      alert("뒤로가기");
-      pausesPlayerAudio();
-      closePlayer();
-     };
-  // },[])
+  useEffect(()=>{
+    isReload&&window.location.reload();
+    setIsReload(false)
+  },[])
+
+  window.onpopstate = function(event) {  
+    // window.history.back();
+
+    audio.pause();
+    setPlay(false);
+
+    pausesPlayerAudio();
+    closePlayer();
+  };
   
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요

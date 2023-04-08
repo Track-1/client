@@ -23,6 +23,7 @@ import { endPost } from "../recoil/postIsCompleted";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { UploadButtonBlankIc, UploadButtonIc } from "../assets";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -44,18 +45,30 @@ export default function VocalProfilePage() {
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const { key, excuteGetData } = useInfiniteKey();
   const isEnd = useRecoilValue(endPost);
-  const { progress, audio } = usePlayer();
+
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
-  useEffect(()=>{
+  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+  
+  // useEffect(()=>{
+  //   if(isReload){
+  //     window.location.reload();
+  //    // window.history.back();
+  //   }
+  //   setIsReload(false)
+  // },[])
+
     window.onpopstate = function(event) {  
-      alert("뒤로가기");
+      !isReload&&window.history.back();
+      audio.pause();
+      setPlay(false);
+  
       pausesPlayerAudio();
       closePlayer();
-     };
-  },[])
+      setIsReload(true)
+    };
 
   const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],

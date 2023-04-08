@@ -23,6 +23,8 @@ import { AudioInfosType } from "../type/audioTypes";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
+import { useLocation } from 'react-router-dom';
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
@@ -39,16 +41,22 @@ export default function TrackSearchPage() {
 
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
-
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
   const { progress, audio, playPlayerAudio, pausesPlayerAudio,closePlayer } = usePlayer();
 
   useEffect(()=>{
+    isReload&&window.location.reload();
+    setIsReload(false)
+  },[])
+
     window.onpopstate = function(event) {  
-      alert("뒤로가기");
+      // window.history.back();
+      audio.pause();
+      setPlay(false);
+  
       pausesPlayerAudio();
       closePlayer();
-     };
-  },[])
+    };
   
   useEffect(() => {
     if (isCategorySelected) {
