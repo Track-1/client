@@ -12,6 +12,7 @@ import { getCookie, removeCookie } from "../../utils/cookie";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginUserImg } from "../../recoil/loginUserData";
+import { reload } from "../../recoil/main";
 
 export default function VocalBriefInfo(props: UserPropsType) {
   const { userId } = props;
@@ -19,6 +20,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
   const [loginUserImg, setLoginUserImg] = useRecoilState(LoginUserImg);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   function changeProfileBoxDisplay() {
     setIsShow(!isShow);
@@ -42,6 +44,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
 
   function moveToMypage() {
     navigate(`/vocal-profile/${userId}`, { state: userId });
+    setIsReload(false);
   }
   return (
     <div onClick={changeProfileBoxDisplay}>
