@@ -67,6 +67,7 @@ export default function ProducerInfos(props: PropsType) {
           <ProfileImg src={profileData?.profileImage} alt="프로필이미지" />
         </ProfileImage>
       )}
+      <InformationBox>
       <NameWrapper>
         <ProducerNameContainer>
           <ProducerName>{profileData.name}</ProducerName>
@@ -116,9 +117,22 @@ export default function ProducerInfos(props: PropsType) {
           {profileData.introduce?.length > 0 || <EmptyProfileMessage>no information</EmptyProfileMessage>}
         </EmptyDescriptionMessageWrapper>
       </EmptyDescriptionMessageBox>
+      </InformationBox>
     </InfoContainer>
   );
 }
+
+const InformationBox=styled.div`
+  width: 60rem;
+
+  position: fixed;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 33.8rem;
+`
 
 const InfoContainer = styled.section`
   width: 60rem;
@@ -145,16 +159,28 @@ const Blank = styled.div`
 `;
 
 const ProfileImg = styled.img`
-  height: 25.8rem;
-  width: 26.1rem;
+  height: 100%;
+  width: 100%;
 
-  border-radius: 50%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
-const ProfileImage = styled.div`
-  background-repeat: no-repeat;
-  background-size: contain;
 
-  margin-top: 2rem;
+const ProfileImage = styled.div`
+  height: 26rem;
+  width: 26rem; 
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border-radius: 50%;
+  position: absolute;
+  overflow: hidden;
+
+  margin-top: 5.4rem;
 `;
 
 const VocalProfileImageContainer = styled.div``;
@@ -182,6 +208,8 @@ const VocalProfileImage = styled.div`
   transform: rotate(-45deg);
   margin-top: 5rem;
   margin-bottom: 2.1rem;
+
+  position: absolute;
 `;
 
 const ProducerNameContainer = styled.div`
