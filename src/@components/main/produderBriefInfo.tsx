@@ -142,6 +142,11 @@ const TextWrapper = styled.div`
 `;
 
 const InfoUserName = styled.strong`
+  width: 22.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  
   ${({ theme }) => theme.fonts.id}
 
   color: ${({ theme }) => theme.colors.white};
@@ -149,6 +154,11 @@ const InfoUserName = styled.strong`
 
 const UserEmail = styled.strong`
   margin-top: 0.9rem;
+
+  width: 22.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   ${({ theme }) => theme.fonts.description}
 

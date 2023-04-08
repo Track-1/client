@@ -111,6 +111,11 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           {nameState === nickName.CORRECT && <ProfileEditCheckIcon />}
           {nameState === nickName.ERROR && <ProfileEditWarningIcon />}
         </InputWrapper>
+        {nameState === nickName.ERROR && (
+          <VocalEditWarningMsg>
+            1 to 16 characters(Korean, English), numbers or special characters.
+          </VocalEditWarningMsg>
+        )}
       </NameContainer>
       <SleepAcountContainer>
         <SleepAcountTextWrapper>
@@ -228,6 +233,8 @@ const InputWrapper = styled.div<{ nameState: nickName }>`
   display: flex;
   justify-content: space-between;
 
+  margin-bottom: 0.5rem;
+
   border-bottom: ${({ nameState }) => {
     if (nameState === "nothing") return "0.1rem solid white";
     if (nameState === "correct") return "0.1rem solid #5200FF";
@@ -235,9 +242,20 @@ const InputWrapper = styled.div<{ nameState: nickName }>`
   }};
 `;
 
+const VocalEditWarningMsg = styled.span`
+  width: 100%;
+  height: 3rem;
+  ${({ theme }) => theme.fonts.description};
+  color: ${({ theme }) => theme.colors.red};
+
+  margin-top: 1.1rem;
+`;
+
 const NameInput = styled.input`
   height: 4.5rem;
   width: 70%;
+
+  margin-top: 1rem;
 
   color: ${({ theme }) => theme.colors.white};
 

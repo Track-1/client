@@ -21,10 +21,11 @@ interface PropsType {
   tracksData: TracksDataType[];
   getInfos: any;
   excuteGetData: any;
+  key: string;
 }
 
 export default function TrackList(props: PropsType) {
-  const { audio, pauseAudio, tracksData, getInfos, excuteGetData } = props;
+  const { audio, pauseAudio, tracksData, getInfos, excuteGetData, key } = props;
 
   const navigate = useNavigate();
 
@@ -92,7 +93,7 @@ export default function TrackList(props: PropsType) {
         <HashtagTextIcon />
       </CategoryWrapper>
 
-      <TracksWrapper>
+      <TracksWrapper key={key}>
         {tracksData.map((track, index) => (
           <Tracks
             key={track.beatId}

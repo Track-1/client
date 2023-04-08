@@ -112,6 +112,7 @@ export default function TrackSearchPage() {
               tracksData={tracksData}
               getInfos={getInfos}
               excuteGetData={excuteGetData}
+              key={key}
             />
           )}
         </TrackListWrapper>

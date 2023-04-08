@@ -79,6 +79,11 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           {nameState === nickName.CORRECT && <ProfileEditCheckIc />}
           {nameState === nickName.ERROR && <ProfileEditWarningIc />}
         </InputWrapper>
+        {nameState === nickName.ERROR && (
+          <ProfileEditWarningMsg>
+            1 to 16 characters(Korean, English), numbers or special characters.
+          </ProfileEditWarningMsg>
+        )}
       </NameContainer>
     </TitleContainer>
   );
@@ -93,8 +98,8 @@ const TitleContainer = styled.section`
 
   border: 0.3rem solid transparent;
   border-radius: 5rem;
- background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
-  linear-gradient(to top, transparent 0%, #3e4045 100%);
+  background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
+    linear-gradient(to top, transparent 0%, #3e4045 100%);
   background-origin: border-box;
   background-clip: content-box, border-box;
 
@@ -167,6 +172,8 @@ const InputWrapper = styled.div<{ nameState: nickName }>`
   display: flex;
   justify-content: space-between;
 
+  margin-bottom: 0.5rem;
+
   border-bottom: ${({ nameState }) => {
     if (nameState === "nothing") return "0.1rem solid white";
     if (nameState === "correct") return "0.1rem solid #5200FF";
@@ -174,9 +181,20 @@ const InputWrapper = styled.div<{ nameState: nickName }>`
   }};
 `;
 
+const ProfileEditWarningMsg = styled.span`
+  width: 100%;
+  height: 3rem;
+  ${({ theme }) => theme.fonts.description};
+  color: ${({ theme }) => theme.colors.red};
+
+  margin-top: 1.1rem;
+`;
+
 const NameInput = styled.input`
   height: 4.5rem;
   width: 70%;
+
+  margin-top: 1rem;
 
   color: ${({ theme }) => theme.colors.white};
 

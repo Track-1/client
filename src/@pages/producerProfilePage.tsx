@@ -18,6 +18,7 @@ import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { Category } from "../core/constants/categoryHeader";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import { endPost } from "../recoil/postIsCompleted";
 import Loading from "../@components/@common/loading";
 import { reload } from "../recoil/main";
 
@@ -41,6 +42,7 @@ export default function ProducerProfilePage() {
   });
 
   const visible = useRecoilValue(uploadButtonClicked);
+  const isEnd = useRecoilValue(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
@@ -82,17 +84,17 @@ export default function ProducerProfilePage() {
     }
   }
 
+
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    key,
+   [key, isEnd],
+
     ({ pageParam = 1 }) => getData(pageParam, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
         if (profileState === "Portfolio") {
-          return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
-            ? lastPage?.portfolioNextPage
-            : undefined;
+          return lastPage?.portfolioNextPage;
         } else {
-          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
+          return lastPage?.selectingNextPage;
         }
       },
       refetchOnWindowFocus: false,
@@ -177,6 +179,7 @@ export default function ProducerProfilePage() {
               scrollToTop();
               setPortfolioData([]);
               excuteGetData();
+              setShowPlayer(false);
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -188,6 +191,7 @@ export default function ProducerProfilePage() {
               scrollToTop();
               setSelectingTracksData([]);
               excuteGetData();
+              setShowPlayer(false);
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
@@ -206,6 +210,7 @@ export default function ProducerProfilePage() {
             producerName={profileData?.name}
             whom={Category.TRACKS}
             changeKey={excuteGetData}
+            setPortfolioData={setPortfolioData}
           />
         ) : (
           <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
