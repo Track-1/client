@@ -104,14 +104,18 @@ export default function EachUserComment(props: PropsType) {
           <ProfileImageWrapper>
             {isHover && !isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
+                <PlayerBlur>
+                  <ProfileImage src={commentInfo.vocalProfileImage} />
+                </PlayerBlur>
                 <PlayBtnIcon />
-                <PlayerBlur></PlayerBlur>
               </PlayerBlurWrapper>
             )}
             {isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={pauseAudio}>
+                <PlayerBlur>
+                  <ProfileImage src={commentInfo.vocalProfileImage} />
+                </PlayerBlur>
                 <PauseButtonIcon />
-                <PlayerBlur></PlayerBlur>
               </PlayerBlurWrapper>
             )}
             <ProfileImage src={commentInfo.vocalProfileImage} />
