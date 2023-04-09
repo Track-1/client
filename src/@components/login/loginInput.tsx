@@ -24,6 +24,7 @@ import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
 import { useSetRecoilState } from "recoil";
 import { checkPasswordForm } from "../../utils/errorMessage/checkPasswordForm";
 import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
+import Loading from "../@common/loading";
 
 export default function LoginInput() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function LoginInput() {
     isProducerMode ? setLoginType("producer") : setLoginType("vocal");
   }, [isProducerMode]);
 
-  const { mutate } = useMutation(() => onLogin(email, password, loginType), {
+  const { mutate, isLoading } = useMutation(() => onLogin(email, password, loginType), {
     onSuccess: (data) => {
       if (data?.data.status === 200) {
         const accessToken = data.data.data.accessToken;
@@ -159,6 +160,7 @@ export default function LoginInput() {
 
   return (
     <Container>
+      {isLoading && <Loading />}
       <Wrapper>
         <LoginTitleIcon />
         <SubTitleWrapper>

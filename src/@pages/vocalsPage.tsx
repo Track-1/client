@@ -39,22 +39,22 @@ export default function VocalsPage() {
   const filteredUrlApi = useRecoilValue(categorySelect);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
   const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
 
   const { key, excuteGetData } = useInfiniteKey();
-  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+  const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-  useEffect(()=>{
+  useEffect(() => {
     // isReload&&window.location.reload();
-    isReload&&excuteGetData();
-    setIsReload(false)
-  },[])
+    isReload && excuteGetData();
+    setIsReload(false);
+  }, []);
 
-  window.onpopstate = function(event) {  
+  window.onpopstate = function (event) {
     pausesPlayerAudio();
     closePlayer();
   };
-  
+
   useEffect(() => {
     setWhom(Category.VOCALS); // 나중에 헤더에서 클릭했을 때도 변경되도록 구현해야겠어요
   }, []);

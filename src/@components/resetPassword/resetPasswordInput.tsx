@@ -19,6 +19,7 @@ import { patchResetPassword } from "../../core/api/resetPassword";
 import useMovePage from "../../utils/hooks/useMovePage";
 import { onLogout } from "../../core/api/logout";
 import { removeCookie } from "../../utils/cookie";
+import Loading from "../@common/loading";
 
 export default function ResetPasswordInput() {
   const [password, setPassword] = useState<string>("");
@@ -30,7 +31,7 @@ export default function ResetPasswordInput() {
 
   const [movePage] = useMovePage();
 
-  const { mutate } = useMutation(() => patchResetPassword(password), {
+  const { mutate, isLoading } = useMutation(() => patchResetPassword(password), {
     onSuccess: () => {
       alert("비밀번호가 변경되었습니다.");
       removeCookie("forgotPasswordToken", { path: "/" });
@@ -114,6 +115,7 @@ export default function ResetPasswordInput() {
 
   return (
     <Container>
+      {isLoading && <Loading />}
       <Wrapper>
         <TitleWrapper>
           <ResetPasswordTitleIcon />

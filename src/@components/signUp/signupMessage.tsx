@@ -7,6 +7,7 @@ import { SignupMessagePropsType } from "../../type/signUpStepTypes";
 import { isMessageLogo, isMessageWelcome } from "../../utils/signUp/checkMessageType";
 import { useState } from "react";
 import { patchJoinProfile } from "../../core/api/profile";
+import Loading from "../@common/loading";
 
 export default function SignupMessage(props: SignupMessagePropsType) {
   const { step, setStep, userProfile, setUserProfile } = props;
@@ -18,7 +19,7 @@ export default function SignupMessage(props: SignupMessagePropsType) {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(patchJoinProfile, {
+  const { mutate, isLoading } = useMutation(patchJoinProfile, {
     onSuccess: (data) => {
       queryClient.invalidateQueries("userProfile");
       setStep(signUpStep.SIGNUP_SUCCESS);
@@ -47,6 +48,7 @@ export default function SignupMessage(props: SignupMessagePropsType) {
 
   return (
     <>
+      {isLoading && <Loading />}
       {isMessageLogo(step) && <SignBgLogoIcon />}
       {isMessageWelcome(step) && (
         <WelcomeMessageWrapper>
