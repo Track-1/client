@@ -213,7 +213,7 @@ export default function TrackPostPage() {
   function movePreviousPage() {
     navigate("/");
   }
- 
+
   function moveToProducerProfile() {
     navigate(`/producer-profile/${trackInfoData?.producerId}`, { state: trackInfoData?.producerId });
   }
