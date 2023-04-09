@@ -9,6 +9,7 @@ import { Categories, CategoryId, CategoryText } from "../../core/constants/categ
 import { useNavigate } from "react-router-dom";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { showPlayerBar } from "../../recoil/player";
+import { useEffect } from "react";
 
 interface PropsType {
   profileData: ProducerProfileType;
@@ -25,8 +26,12 @@ export default function ProducerInfos(props: PropsType) {
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
+  // useEffect(() => {
+  //   changeKey();
+  // }, []);
+
   function moveProfileEditPage() {
-    changeKey();
+    // changeKey();
     pauseAudio();
     setShowPlayer(false);
     whoamI === "vocal"
@@ -79,11 +84,11 @@ export default function ProducerInfos(props: PropsType) {
           <CategoryIcon />
           <CategoryArray>
             {profileData.category.length > 0 ? (
-              Object.keys(CategoryId).map((category: any) =>
+              Object.keys(CategoryId).map((category: any, index: number) =>
                 profileData.category.includes(CategoryText[category]) ? (
-                  <Category>{category}</Category>
+                  <Category key={index}>{category}</Category>
                 ) : (
-                  <NotCategory>{category}</NotCategory>
+                  <NotCategory key={index + 9}>{category}</NotCategory>
                 ),
               )
             ) : (
@@ -97,8 +102,8 @@ export default function ProducerInfos(props: PropsType) {
         <HashtagBox>
           <HashtagIcon />
           {profileData.keyword?.length > 0 ? (
-            profileData.keyword.map((word) => {
-              return <HashTag text={word} />;
+            profileData.keyword.map((word, index) => {
+              return <HashTag text={word} key={index} />;
             })
           ) : (
             <EmptyProfileMessageWrapper>
@@ -193,7 +198,6 @@ const ProducerName = styled.h1`
   ${({ theme }) => theme.fonts.caption_large}
 
   color: ${({ theme }) => theme.colors.white};
-
 `;
 
 const SleeperAccountIcon = styled(SleeperAccountIc)`
@@ -245,7 +249,6 @@ const HashtagBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
 
   width: 30rem;
 `;
