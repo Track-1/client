@@ -99,7 +99,6 @@ export default function EachUserComment(props: PropsType) {
           onMouseOver={hoverComment}
           onMouseOut={detachComment}
           data-play={play}
-          data-hover={isHover}
           commentClickBool={isSameIndex(clickedIndex, currentIndex)}
           commentClick={clickedIndex}>
           <ProfileImageWrapper>
@@ -154,7 +153,7 @@ const CommentContainer = styled.article<{ commentClickBool: boolean; commentClic
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
   }
-  &[data-play="true"][data-hover="false"] {
+  &[data-play="true"] {
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
       linear-gradient(
         to right,
