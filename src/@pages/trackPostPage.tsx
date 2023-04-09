@@ -35,7 +35,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { blockAccess } from "../utils/common/privateRoute";
 import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
-import { reload } from "../recoil/main";
+import { reload, viewmore } from "../recoil/main";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function TrackPostPage() {
@@ -63,9 +63,14 @@ export default function TrackPostPage() {
   const [isReload, setIsReload]=useRecoilState<boolean>(reload);
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+  const [isViewMore, setIsViewMore]=useRecoilState<boolean>(viewmore)
 
   useEffect(()=>{
     setIsReload(true)
+    if(isViewMore){
+      window.location.reload();
+      setIsViewMore(false)
+    }
   },[])
 
   window.onpopstate = function(event) {  
