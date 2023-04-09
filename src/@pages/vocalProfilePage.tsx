@@ -44,7 +44,7 @@ export default function VocalProfilePage() {
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const { key, excuteGetData } = useInfiniteKey();
   const [isEnd, setIsEnd] = useRecoilState(endPost);
-  const { progress, audio } = usePlayer();
+  // const { progress, audio } = usePlayer();
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -55,16 +55,16 @@ export default function VocalProfilePage() {
   useEffect(() => {
     setTracksOrVocals(currentUser.VOCAL);
   }, []);
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
 
-  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+  const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-    window.onpopstate = function(event) {  
-      !isReload&&window.history.back();
-      pausesPlayerAudio();
-      closePlayer();
-      setIsReload(true)
-    };
+  window.onpopstate = function (event) {
+    !isReload && window.history.back();
+    pausesPlayerAudio();
+    closePlayer();
+    setIsReload(true);
+  };
 
   const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
