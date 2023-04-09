@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { isVocalsPage } from "../../utils/common/pageCategory";
 import { profileCategory } from "../../core/constants/pageCategory";
 import { isProducer } from "../../utils/common/userType";
-import usePlayer from "../../utils/hooks/usePlayer";
-import { useRecoilState } from 'recoil';
-import { viewmore } from '../../recoil/main';
+import { useRecoilState } from "recoil";
+import { showPlayerBar } from "../../recoil/player";
+
 
 export default function PortfoliosInform(props: any) {
   const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio, setPortfolioData } = props;
@@ -17,8 +17,8 @@ export default function PortfoliosInform(props: any) {
   const navigate = useNavigate();
   const [id, setId] = useState<number>(-1);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
-  const { pausesPlayerAudio,closePlayer } = usePlayer();
-  const [isViewMore, setIsViewMore]=useRecoilState<boolean>(viewmore)
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
 
   function clickEllipsis() {
     setOpenEllipsisModal(!openEllipsisModal);
@@ -61,8 +61,8 @@ export default function PortfoliosInform(props: any) {
   }, [hoverId, clickId]);
 
   function moveTrackPost(id: number) {
-    setIsViewMore(true)
-
+    pauseAudio();
+    setShowPlayer(false);
     navigate(`/track-post/${id}`, { state: id });
   }
 

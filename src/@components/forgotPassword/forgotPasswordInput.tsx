@@ -19,6 +19,7 @@ import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvali
 import { useMutation } from "react-query";
 import { postNewPassword } from "../../core/api/newPassword";
 import { setCookie } from "../../utils/cookie";
+import Loading from "../@common/loading";
 
 export default function ForgotPasswordInput() {
   const [email, setEmail] = useState<string>("");
@@ -29,7 +30,7 @@ export default function ForgotPasswordInput() {
   const [recentEmail, setRecentEmail] = useState<string>("");
   const [isSameRecentEmail, setIsSameRecentEmail] = useState<boolean>(true);
 
-  const { mutate, isSuccess, isError, error } = useMutation(() => postNewPassword(userType, email), {
+  const { mutate, isSuccess, isLoading, isError, error } = useMutation(() => postNewPassword(userType, email), {
     onSuccess: (data) => {
       const token = data.data.data.token;
       setCookie("forgotPasswordToken", token, { path: "/" });
@@ -118,6 +119,7 @@ export default function ForgotPasswordInput() {
 
   return (
     <Container>
+      {isLoading && <Loading />}
       <Wrapper>
         <TitleWrapper>
           <ForgotPasswordTitleIcon />

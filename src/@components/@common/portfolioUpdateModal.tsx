@@ -120,7 +120,9 @@ export default function PortfolioUpdateModal(props: PropsType) {
           state: portfoliosData[clickedPortfolioId],
         });
       } else {
-        navigate(`/track-post/edit/${portfolioId}`, { state: portfolioId });
+        navigate(`/track-post/edit/${portfolioId}`, {
+          state: { id: portfolioId, prevData: portfoliosData[clickedPortfolioId] },
+        });
       }
     } else {
       navigate(`/portfolio-edit/vocal/${portfolioId}`, {

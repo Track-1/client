@@ -60,20 +60,16 @@ export default function TrackPostPage() {
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
   const { key, excuteGetData } = useInfiniteKey();
-  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
-  const [isViewMore, setIsViewMore]=useRecoilState<boolean>(viewmore)
+  const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-  useEffect(()=>{
-    setIsReload(true)
-    if(isViewMore){
-      window.location.reload();
-      setIsViewMore(false)
-    }
-  },[])
+  useEffect(() => {
+    setIsReload(true);
+  }, []);
 
-  window.onpopstate = function(event) {  
+
+  window.onpopstate = function (event) {
     pausesPlayerAudio();
     closePlayer();
   };
@@ -276,7 +272,7 @@ export default function TrackPostPage() {
                 )}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
-              {isEditOpen && <EditDropDown />}
+              {isEditOpen && <EditDropDown trackInfoData={trackInfoData} />}
               {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>

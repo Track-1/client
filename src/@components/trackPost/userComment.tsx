@@ -61,12 +61,11 @@ export default function UserComment(props: PropsType) {
   const navigate = useNavigate();
 
   //get
-  const { data, isSuccess, isFetching, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, isSuccess, isFetching, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key],
     async ({ pageParam = 1 }) => await getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        // console.log(hasNextPage);
         return lastPage?.nextPage;
       },
       refetchOnWindowFocus: false,
@@ -77,7 +76,6 @@ export default function UserComment(props: PropsType) {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   async function getData(page: number) {
-    console.log(page, hasNextPage);
     if (hasNextPage !== false) {
       const response = await getComment(page, beatId);
       console.log(response, page, beatId);
@@ -116,7 +114,7 @@ export default function UserComment(props: PropsType) {
   //post end
 
   //update
-  const { mutate: update, isLoading } = useMutation(() => updateComment(uploadData, commentId), {
+  const { mutate: update } = useMutation(() => updateComment(uploadData, commentId), {
     onSuccess: () => {
       setComments([]);
       if (clickUpload === true) {
