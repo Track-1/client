@@ -1,7 +1,7 @@
 import { getCookie } from "../../utils/cookie";
 import { client } from "./common/axios";
 
-export async function deleteTrack(beatId: string | undefined) {
+export async function deleteTrack(beatId: string | number | undefined) {
   const data = await client.delete(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, {
     headers: {
       Authorization: `Bearer ${getCookie("accessToken")}`,
