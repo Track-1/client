@@ -95,7 +95,12 @@ export default function EachUserComment(props: PropsType) {
           setIsEdit={setIsEdit}
         />
       ) : (
-        <CommentContainer onMouseOver={hoverComment} onMouseOut={detachComment}>
+        <CommentContainer
+          onMouseOver={hoverComment}
+          onMouseOut={detachComment}
+          data-play={play}
+          commentClickBool={isSameIndex(clickedIndex, currentIndex)}
+          commentClick={clickedIndex}>
           <ProfileImageWrapper>
             {isHover && !isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
@@ -105,7 +110,6 @@ export default function EachUserComment(props: PropsType) {
             )}
             {isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={pauseAudio}>
-                /** 에옹 여기 */
                 <PauseButtonIcon />
                 <PlayerBlur></PlayerBlur>
               </PlayerBlurWrapper>
@@ -135,19 +139,27 @@ export default function EachUserComment(props: PropsType) {
   );
 }
 
-const CommentContainer = styled.article`
+const CommentContainer = styled.article<{ commentClickBool: boolean; commentClick: number }>`
   position: relative;
   height: 14.2rem;
   display: flex;
   align-items: center;
+  border: 0.2rem solid transparent;
+  border-top-left-radius: 11.7rem;
+  border-bottom-left-radius: 11.7rem;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
   &:hover {
-    border: 0.2rem solid transparent;
-    border-top-left-radius: 11.7rem;
-    border-bottom-left-radius: 11.7rem;
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
-    background-origin: border-box;
-    background-clip: content-box, border-box;
+  }
+  &[data-play="true"] {
+    background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
+      linear-gradient(
+        to right,
+        ${({ theme, commentClickBool, commentClick }) => commentClickBool && commentClick !== -1 && theme.colors.sub2},
+        ${({ theme }) => theme.colors.sub3}
+      );
   }
 `;
 
