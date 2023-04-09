@@ -107,7 +107,6 @@ export default function VocalPortfolioEditPage() {
   }
 
   function deleteHashtag(index: number) {
-    console.log("클릭");
     const deleteTag = hashtag;
     deleteTag.splice(index, 1);
     setHashtag([...deleteTag]);

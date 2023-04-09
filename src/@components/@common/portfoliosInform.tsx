@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import {
-  VocalPortfolioTitleTextIc,
-  ProducerPortfolioTitleTextIc,
-  EllipsisIc,
-  BlankIc,
-} from "../../assets";
+import { VocalPortfolioTitleTextIc, ProducerPortfolioTitleTextIc, EllipsisIc, BlankIc } from "../../assets";
 import { useEffect, useState } from "react";
 import PortfolioUpdateModal from "./portfolioUpdateModal";
 import PortfolioViewMoreButton from "./portfolioViewMoreButton";
@@ -100,10 +95,8 @@ export default function PortfoliosInform(props: any) {
           <InformContent>{portfolios[id].content}</InformContent>
           <InformTagWrapper>
             {portfolios[id].keyword.map((tag: any, idx: any) => (
-              <HashTag>
-                <InformTag key={idx} textLength={tag.length}>
-                  #{tag}
-                </InformTag>
+              <HashTag key={idx}>
+                <InformTag textLength={tag.length}>#{tag}</InformTag>
               </HashTag>
             ))}
           </InformTagWrapper>

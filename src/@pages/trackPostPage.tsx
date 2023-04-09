@@ -227,8 +227,8 @@ export default function TrackPostPage() {
     navigate(-1);
   }
 
-  function moveToProducerProfile(){
-    navigate(`/producer-profile/${trackInfoData?.producerId}`, {state:trackInfoData?.producerId});
+  function moveToProducerProfile() {
+    navigate(`/producer-profile/${trackInfoData?.producerId}`, { state: trackInfoData?.producerId });
   }
 
   return (

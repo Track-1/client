@@ -42,10 +42,11 @@ export default function ProducerProfilePage() {
   });
 
   const visible = useRecoilValue(uploadButtonClicked);
-  const isEnd = useRecoilValue(endPost);
+  const [isEnd, setIsEnd] = useRecoilState(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+  const [saveResponse, setSaveResponse] = useState<any>();
   const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
@@ -62,31 +63,8 @@ export default function ProducerProfilePage() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
 
-  async function getData(portfolioPage: number, selectingPage: number) {
-    let portfolioResponse: any;
-    let selectingResponse: any;
-    setOpenUploadModal(false);
-
-    if (hasNextPage !== false) {
-      portfolioResponse = await getProducerPortfolio(state, portfolioPage);
-      selectingResponse = await getSelectingTracks(state, selectingPage);
-
-      setIsMe(portfolioResponse?.isMe);
-      setProfileData(portfolioResponse?.producerProfile);
-      switch (profileState) {
-        case "Portfolio":
-          setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
-          return { portfolioResponse, selectingResponse, portfolioNextPage: portfolioPage + 1, selectingNextPage: 1 };
-        case "Vocal Searching":
-          setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
-          return { portfolioResponse, selectingResponse, portfolioNextPage: 1, selectingNextPage: selectingPage + 1 };
-      }
-    }
-  }
-
-
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
-   [key, isEnd],
+    [key, isEnd],
 
     ({ pageParam = 1 }) => getData(pageParam, pageParam),
     {
@@ -104,6 +82,41 @@ export default function ProducerProfilePage() {
       },
     },
   );
+
+  async function getData(portfolioPage: number, selectingPage: number) {
+    let portfolioResponse: any;
+    let selectingResponse: any;
+    setOpenUploadModal(false);
+
+    if (hasNextPage !== false) {
+      portfolioResponse = await getProducerPortfolio(state, portfolioPage);
+      selectingResponse = await getSelectingTracks(state, selectingPage);
+
+      setIsMe(portfolioResponse?.isMe);
+      setProfileData(portfolioResponse?.producerProfile);
+      switch (profileState) {
+        case "Portfolio":
+          isEnd
+            ? setPortfolioData((prev) => [])
+            : setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
+          setSaveResponse(portfolioResponse);
+
+          return { portfolioResponse, selectingResponse, portfolioNextPage: portfolioPage + 1, selectingNextPage: 1 };
+        case "Vocal Searching":
+          console.log(selectingResponse);
+          isEnd
+            ? setSelectingTracksData((prev) => [])
+            : setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
+          setSaveResponse(selectingResponse);
+
+          return { portfolioResponse, selectingResponse, portfolioNextPage: 1, selectingNextPage: selectingPage + 1 };
+      }
+    }
+  }
+
+  useEffect(() => {
+    setIsEnd(false);
+  }, [saveResponse]);
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 

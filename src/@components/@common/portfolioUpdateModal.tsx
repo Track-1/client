@@ -103,13 +103,19 @@ export default function PortfolioUpdateModal(props: PropsType) {
 
   function moveEditPage() {
     pauseAudio();
-    loginUserType === "producer"
-      ? navigate(`/portfolio-edit/producer/${portfolioId}`, {
-          state: portfoliosData[clickedPortfolioId],
-        })
-      : navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+    if (loginUserType === "producer") {
+      if (profileState === profileCategory.PORTFOLIO) {
+        navigate(`/portfolio-edit/producer/${portfolioId}`, {
           state: portfoliosData[clickedPortfolioId],
         });
+      } else {
+        navigate(`/track-post/edit/${portfolioId}`, { state: portfolioId });
+      }
+    } else {
+      navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+        state: portfoliosData[clickedPortfolioId],
+      });
+    }
   }
 
   function isClickedOutside(e: MouseEvent) {

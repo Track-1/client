@@ -49,7 +49,6 @@ export default function TrackPostEditPage() {
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
-        console.log(data?.data.data);
         // setJacketImage(new File([data?.data.data.jacketImage], "jacket"));
         // setAudioFile(data?.data.data.audioFile);
         setPrevData(data?.data.data);
@@ -140,7 +139,6 @@ export default function TrackPostEditPage() {
 
   function completeEdit() {
     const formData = new FormData();
-    isImageUploaded && formData.append("jacketImage", jacketImage);
     formData.append("title", title);
     formData.append("category", category);
     formData.append("audioFile", audioFile);
@@ -148,8 +146,8 @@ export default function TrackPostEditPage() {
     hashtag?.forEach((item, index) => {
       formData.append(`keyword[${index}]`, item);
     });
-    isImageUploaded && formData.append("isSame", String(false));
-    !isImageUploaded && formData.append("isSame", String(true));
+    isImageUploaded && formData.append("jacketImage", jacketImage);
+    isImageUploaded ? formData.append("isSame", "False") : formData.append("isSame", "True");
 
     setEditData(formData);
   }
@@ -265,8 +263,8 @@ export default function TrackPostEditPage() {
                           {hashtag &&
                             hashtag?.map((item: string, index: number) => {
                               return (
-                                <InputHashtagWrapper>
-                                  <Hashtag key={index}>
+                                <InputHashtagWrapper key={index}>
+                                  <Hashtag>
                                     <HashtagWrapper>
                                       <HashtagSharp>{`# ${item}`}</HashtagSharp>
                                       <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
@@ -278,8 +276,8 @@ export default function TrackPostEditPage() {
                           {!hashtag &&
                             data?.data.data.keyword.map((item: string, index: number) => {
                               return (
-                                <InputHashtagWrapper>
-                                  <Hashtag key={index}>
+                                <InputHashtagWrapper key={index}>
+                                  <Hashtag>
                                     <HashtagWrapper>
                                       <HashtagSharp>{`# ${item}`}</HashtagSharp>
                                       <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
