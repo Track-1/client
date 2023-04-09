@@ -125,7 +125,7 @@ export default function VocalProfilePage() {
 
   return (
     <Wrap>
-      {/* {isLoading && <Loading />} */}
+      {isLoading && <Loading />}
       {visible && <TracksProfileUploadModalSection />}
       {isMe && <UploadButtonIcon onClick={moveToUpload} />}
       <VocalProfile>

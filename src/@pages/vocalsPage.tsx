@@ -44,13 +44,12 @@ export default function VocalsPage() {
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-
-  useEffect(()=>{
-    isReload&&window.location.reload();
-   // isReload&&excuteGetData();
-    setIsReload(false)
-  },[])
-
+  useEffect(() => {
+    isReload && window.location.reload();
+    // isReload&&excuteGetData();
+    setIsReload(false);
+    setShowPlayer(false);
+  }, []);
 
   window.onpopstate = function (event) {
     pausesPlayerAudio();
@@ -65,6 +64,7 @@ export default function VocalsPage() {
     if (isCategorySelected) {
       setVocalsData([]);
       excuteGetData();
+      setShowPlayer(false);
     }
   }, [filteredUrlApi, trackSearchingClicked]);
 
