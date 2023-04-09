@@ -1,10 +1,8 @@
-import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { categorySelect } from "../../recoil/categorySelect";
+import { client } from "./common/axios";
 
 export async function getTracksData(filteredUrlApi: string, page: number) {
   try {
-    const data = await axios.get(
+    const data = await client.get(
       `${process.env.REACT_APP_BASE_URL}/tracks/filter?page=${page}&limit=6${filteredUrlApi}`,
       {
         headers: {
