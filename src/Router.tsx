@@ -17,6 +17,7 @@ import { getCookie } from "./utils/cookie";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import VocalPortfolioEditPage from "./@pages/vocalPortfolioEditPage";
 import PrivateRoute from "./utils/common/privateRoute";
+import ErrorPage from "./@pages/errorPage";
 
 export default function Router() {
   return (
@@ -47,6 +48,8 @@ export default function Router() {
           <Route path="/profile-edit/producer/:id" element={<ProducerProfileEditPage />} />
           <Route path="/profile-edit/vocal/:id" element={<VocalProfileEditPage />} />
         </Route>
+
+        <Route path="/*" element={<ErrorPage/>}/>
       </Routes>
     </BrowserRouter>
   );
