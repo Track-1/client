@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { getCookie } from "../../utils/cookie";
 import { client } from "./common/axios";
 
@@ -22,7 +20,7 @@ export async function getProducerPortfolio(producerId: number, page: number) {
 
 export async function getSelectingTracks(producerId: number, page: number) {
   try {
-    const data = await axios.get(
+    const data = await client.get(
       `${process.env.REACT_APP_BASE_URL}/profile/producer/${producerId}/beats?page=${page}&limit=3`,
       {
         headers: {
@@ -39,7 +37,7 @@ export async function getSelectingTracks(producerId: number, page: number) {
 
 export async function postProducerPortfolio() {
   try {
-    await axios.post(`${process.env.REACT_APP_BASE_URL}/mypage/producer`);
+    await client.post(`${process.env.REACT_APP_BASE_URL}/mypage/producer`);
   } catch (e) {
     console.log(e);
   }
@@ -47,7 +45,7 @@ export async function postProducerPortfolio() {
 
 export async function patchProducerPortfolio(producerPortfolioId: number, editDatas: any) {
   try {
-    await axios.patch(`${process.env.REACT_APP_BASE_URL}/mypage/producer/${producerPortfolioId}`, editDatas, {
+    await client.patch(`${process.env.REACT_APP_BASE_URL}/mypage/producer/${producerPortfolioId}`, editDatas, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -60,7 +58,7 @@ export async function patchProducerPortfolio(producerPortfolioId: number, editDa
 
 export async function patchProducerProfile(editData: any) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/profile/producer`, editData, {
+    const data = await client.patch(`${process.env.REACT_APP_BASE_URL}/profile/producer`, editData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
