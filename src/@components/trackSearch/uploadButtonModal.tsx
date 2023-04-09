@@ -12,11 +12,11 @@ export default function UploadButtonModal() {
   const modalRef = useRef<HTMLDivElement>(null);
 
   function moveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: "Vocal Searching" });
+    navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: `/trackSearch` } });
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfolio", { state: "Portfolio" });
+    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: `/trackSearch` } });
   }
 
   function isClickedOutside(e: MouseEvent) {
@@ -128,21 +128,20 @@ const Explain = styled.p`
   color: ${({ theme }) => theme.colors.gray3};
 `;
 
-const UnionIcon=styled(UnionIc)`
+const UnionIcon = styled(UnionIc)`
   width: 30.4rem;
 
-  @media (min-width:1200px) and (max-width:1799px){
-      margin-top: -2rem;
-    }
+  @media (min-width: 1200px) and (max-width: 1799px) {
+    margin-top: -2rem;
+  }
+`;
 
-`
-
-const VocalSearchingTextIcon=styled(VocalSearchingTextIc)`
+const VocalSearchingTextIcon = styled(VocalSearchingTextIc)`
   width: 17.7rem;
   height: 2.2rem;
-`
+`;
 
-const PortfolioTextIcon=styled(PortfolioTextIc)`
+const PortfolioTextIcon = styled(PortfolioTextIc)`
   width: 8.9rem;
   height: 2.2rem;
-`
+`;
