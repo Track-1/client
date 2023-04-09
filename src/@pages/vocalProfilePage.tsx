@@ -42,16 +42,21 @@ export default function VocalProfilePage() {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const { key, excuteGetData } = useInfiniteKey();
-  const isEnd = useRecoilValue(endPost);
+  const [isEnd, setIsEnd] = useRecoilState(endPost);
   const { progress, audio } = usePlayer();
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [saveResponse, setSaveResponse] = useState<any>();
+  const [init, setInit] = useState<boolean>(true);
+
+  useEffect(() => {
+    setTracksOrVocals(currentUser.VOCAL);
+  }, []);
 
   const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
-    ({ pageParam = 1 }) => getData(pageParam),
+    async ({ pageParam = 1 }) => await getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.nextPage;
@@ -62,22 +67,21 @@ export default function VocalProfilePage() {
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
-  useEffect(() => {
-    setTracksOrVocals(currentUser.VOCAL);
-  }, []);
-
-
   async function getData(page: number) {
-    console.log("page: ", page);
     if (hasNextPage !== false) {
       const response = await getVocalProfile(state, page);
-      setSaveResponse(response);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
-      setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
+      isEnd ? setPortfolioData((prev) => []) : setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
+      setSaveResponse(response);
+      // setIsEnd(false);
       return { response, nextPage: page + 1 };
     }
   }
+
+  useEffect(() => {
+    setIsEnd(false);
+  }, [saveResponse]);
 
   function isPortfolioDataEmpty() {
     return portfolioData.length === 0;
@@ -104,12 +108,12 @@ export default function VocalProfilePage() {
   }
 
   function moveToUpload() {
-    navigate("/upload/Portfolio");
+    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: `/vocal-profile/${state}` } });
   }
 
   return (
     <Wrap>
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       {visible && <TracksProfileUploadModalSection />}
       {isMe && <UploadButtonIcon onClick={moveToUpload} />}
       <VocalProfile>
