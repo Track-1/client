@@ -49,7 +49,7 @@ export default function Router() {
           <Route path="/profile-edit/vocal/:id" element={<VocalProfileEditPage />} />
         </Route>
 
-        <Route path="/*" element={<ErrorPage/>}/>
+        <Route path="*" element={<ErrorPage/>}/>
       </Routes>
     </BrowserRouter>
   );
