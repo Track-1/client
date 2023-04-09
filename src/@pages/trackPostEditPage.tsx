@@ -27,12 +27,12 @@ import { TrackInfoDataType } from "../type/tracksDataType";
 import usePlayer from "../utils/hooks/usePlayer";
 
 export default function TrackPostEditPage() {
-  const { state } = useLocation();
-  const [prevData, setPrevData] = useState<any>();
+  const beatId = useLocation().state.id;
+  const prevData = useLocation().state.prevData;
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const hashtagText = useRef<HTMLInputElement | null>(null);
-  const [category, setCategory] = useState<string>(prevData?.category);
-  const [audioFile, setAudioFile] = useState<File>(prevData?.beatWavFie);
+  const [category, setCategory] = useState<string>(prevData?.category.toUpperCase());
+  const [audioFile, setAudioFile] = useState<File>();
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtegInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
@@ -44,14 +44,14 @@ export default function TrackPostEditPage() {
   const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
 
-  const { data } = useQuery(["state", state], () => getTrackInfo(state), {
+  const { data } = useQuery(["state", beatId], () => getTrackInfo(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
     onSuccess: (data) => {
       if (data?.status === 200) {
         // setJacketImage(new File([data?.data.data.jacketImage], "jacket"));
         // setAudioFile(data?.data.data.audioFile);
-        setPrevData(data?.data.data);
+        // setPrevData(data?.data.data);
         // setTitle(data?.data);
         // setCategory(data?.data.data.category);
         // setDescription(data?.data.data.introduce);
@@ -62,7 +62,7 @@ export default function TrackPostEditPage() {
     },
   });
 
-  const { mutate, isLoading } = useMutation(() => patchTrackPost(state, editData), {
+  const { mutate, isLoading } = useMutation(() => patchTrackPost(beatId, editData), {
     onSuccess: () => {
       console.log("data");
     },
@@ -74,7 +74,7 @@ export default function TrackPostEditPage() {
   useEffect(() => {
     if (editData !== undefined) {
       mutate();
-      navigate("/track-search");
+      navigate(-1);
     }
   }, [editData]);
 
@@ -140,8 +140,8 @@ export default function TrackPostEditPage() {
   function completeEdit() {
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("category", category);
-    formData.append("audioFile", audioFile);
+    formData.append("category", CategoryId[category.toUpperCase()]);
+    audioFile && formData.append("audioFile", audioFile);
     formData.append("introduce", description);
     hashtag?.forEach((item, index) => {
       formData.append(`keyword[${index}]`, item);
@@ -335,17 +335,17 @@ export default function TrackPostEditPage() {
                       <UploadDescriptionIc />
                     </NameBox>
                     <InputBox>
-                      {description && (
-                        <InputDescriptionText
-                          typeof="text"
-                          placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
-                          spellCheck={false}
-                          maxLength={250}
-                          onChange={checkDescription}>
-                          {description}
-                        </InputDescriptionText>
-                      )}
-                      {!description && (
+                      {/* {description && ( */}
+                      <InputDescriptionText
+                        typeof="text"
+                        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                        spellCheck={false}
+                        maxLength={250}
+                        onChange={checkDescription}>
+                        {description}
+                      </InputDescriptionText>
+                      {/* )} */}
+                      {/* {!description && (
                         <InputDescriptionText
                           typeof="text"
                           placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
@@ -354,7 +354,7 @@ export default function TrackPostEditPage() {
                           onChange={checkDescription}>
                           {data?.data.data.introduce}
                         </InputDescriptionText>
-                      )}
+                      )} */}
                     </InputBox>
                   </InfoItemBox>
                 </InfoContainer>
