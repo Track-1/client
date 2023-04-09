@@ -12,6 +12,8 @@ import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
+import { useRecoilState } from "recoil";
+import { endPost } from "../recoil/postIsCompleted";
 
 export default function ProducerProfileEditPage() {
   const location = useLocation();
@@ -30,6 +32,7 @@ export default function ProducerProfileEditPage() {
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
   const queryClient = new QueryClient();
 
@@ -55,14 +58,15 @@ export default function ProducerProfileEditPage() {
     if (updatedData !== undefined) {
       mutate();
       navigate(`/producer-profile/${params.id}`, { state: params.id, replace: true });
-      window.location.reload();
+      // window.location.reload();
       // changeKey();
     }
   }, [updatedData]);
 
   const { mutate, isLoading } = useMutation(() => patchProducerProfile(updatedData), {
     onSuccess: () => {
-      queryClient.invalidateQueries("userProfile");
+      // queryClient.invalidateQueries("userProfile");
+      setIsEnd(true);
     },
     onError: (error) => {
       console.log(error);
