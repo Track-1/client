@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useParams, useLocation } from "react-router-dom";
 import { UploadInfoDataType } from "../type/uploadInfoDataType";
@@ -9,12 +9,14 @@ import { LoginUserType } from "../recoil/loginUserData";
 import TrackUpload from "../@components/upload/trackUpload";
 import VocalUpload from "../@components/upload/vocalUpload";
 import UploadHeader from "../@components/upload/uploadHeader";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function UploadPage() {
   const loginUserType = useRecoilValue(LoginUserType);
   const location = useLocation();
   const producerUploadType = location.state.producerUploadType;
   const prevPage = location.state.prevPage;
+  console.log(location.state);
 
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
     title: "",
@@ -24,7 +26,16 @@ export default function UploadPage() {
     keyword: [],
     jacketImage: getDefaultImage(),
   });
+  const { pausesPlayerAudio,closePlayer } = usePlayer();
 
+  useEffect(()=>{
+    window.onpopstate = function(event) {  
+      alert("뒤로가기");
+      pausesPlayerAudio();
+      closePlayer();
+     };
+  },[])
+  
   function getDefaultImage(): FormData {
     let defaultImage = new FormData();
     checkUserType(loginUserType)
@@ -39,7 +50,7 @@ export default function UploadPage() {
       <UploadHeader
         userType={loginUserType}
         producerUploadType={producerUploadType}
-        prevPage= {prevPage}
+        prevPage={prevPage}
         uploadData={uploadData}
         setUploadData={setUploadData}
       />

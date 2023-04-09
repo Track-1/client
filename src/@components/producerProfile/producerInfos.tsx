@@ -9,6 +9,7 @@ import { Categories, CategoryId, CategoryText } from "../../core/constants/categ
 import { useNavigate } from "react-router-dom";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 import { showPlayerBar } from "../../recoil/player";
+import { useEffect } from "react";
 
 interface PropsType {
   profileData: ProducerProfileType;
@@ -25,8 +26,12 @@ export default function ProducerInfos(props: PropsType) {
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
+  // useEffect(() => {
+  //   changeKey();
+  // }, []);
+
   function moveProfileEditPage() {
-    changeKey();
+    // changeKey();
     pauseAudio();
     setShowPlayer(false);
     whoamI === "vocal"
@@ -56,17 +61,16 @@ export default function ProducerInfos(props: PropsType) {
         <Blank />
       </InfoHeader>
       {isVocalsPage(whom) && (
-        <VocalProfileImageContainer>
           <VocalProfileImage>
             <VocalProfileImg src={profileData?.profileImage} alt="프로필이미지" />
           </VocalProfileImage>
-        </VocalProfileImageContainer>
       )}
       {isTracksPage(whom) && (
         <ProfileImage>
           <ProfileImg src={profileData?.profileImage} alt="프로필이미지" />
         </ProfileImage>
       )}
+      <InformationBox>
       <NameWrapper>
         <ProducerNameContainer>
           <ProducerName>{profileData.name}</ProducerName>
@@ -79,11 +83,11 @@ export default function ProducerInfos(props: PropsType) {
           <CategoryIcon />
           <CategoryArray>
             {profileData.category.length > 0 ? (
-              Object.keys(CategoryId).map((category: any) =>
+              Object.keys(CategoryId).map((category: any, index: number) =>
                 profileData.category.includes(CategoryText[category]) ? (
-                  <Category>{category}</Category>
+                  <Category key={index}>{category}</Category>
                 ) : (
-                  <NotCategory>{category}</NotCategory>
+                  <NotCategory key={index + 9}>{category}</NotCategory>
                 ),
               )
             ) : (
@@ -97,8 +101,8 @@ export default function ProducerInfos(props: PropsType) {
         <HashtagBox>
           <HashtagIcon />
           {profileData.keyword?.length > 0 ? (
-            profileData.keyword.map((word) => {
-              return <HashTag text={word} />;
+            profileData.keyword.map((word, index) => {
+              return <HashTag text={word} key={index} />;
             })
           ) : (
             <EmptyProfileMessageWrapper>
@@ -116,9 +120,22 @@ export default function ProducerInfos(props: PropsType) {
           {profileData.introduce?.length > 0 || <EmptyProfileMessage>no information</EmptyProfileMessage>}
         </EmptyDescriptionMessageWrapper>
       </EmptyDescriptionMessageBox>
+      </InformationBox>
     </InfoContainer>
   );
 }
+
+const InformationBox=styled.div`
+  width: 60rem;
+
+  position: fixed;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 33.8rem;
+`
 
 const InfoContainer = styled.section`
   width: 60rem;
@@ -145,19 +162,29 @@ const Blank = styled.div`
 `;
 
 const ProfileImg = styled.img`
-  height: 25.8rem;
-  width: 26.1rem;
+  height: 100%;
+  width: 100%;
 
-  border-radius: 50%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
+
 const ProfileImage = styled.div`
-  background-repeat: no-repeat;
-  background-size: contain;
+  height: 26rem;
+  width: 26rem; 
 
-  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border-radius: 50%;
+  position: absolute;
+  overflow: hidden;
+
+  margin-top: 5.4rem;
 `;
-
-const VocalProfileImageContainer = styled.div``;
 
 const VocalProfileImg = styled.img`
   width: 150%;
@@ -170,6 +197,7 @@ const VocalProfileImg = styled.img`
   transform: rotate(45deg);
   position: absolute;
 `;
+
 const VocalProfileImage = styled.div`
   display: flex;
   justify-content: center;
@@ -180,8 +208,9 @@ const VocalProfileImage = styled.div`
   border-radius: 3rem;
   overflow: hidden;
   transform: rotate(-45deg);
-  margin-top: 5rem;
-  margin-bottom: 2.1rem;
+  margin-top: 11.6rem;
+
+  position: absolute;
 `;
 
 const ProducerNameContainer = styled.div`
@@ -193,7 +222,6 @@ const ProducerName = styled.h1`
   ${({ theme }) => theme.fonts.caption_large}
 
   color: ${({ theme }) => theme.colors.white};
-
 `;
 
 const SleeperAccountIcon = styled(SleeperAccountIc)`
@@ -245,7 +273,6 @@ const HashtagBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
 
   width: 30rem;
 `;

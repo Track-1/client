@@ -4,13 +4,14 @@ import { client } from "./common/axios";
 
 export async function getTrackInfo(props: number) {
   const state = props;
-    const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(data);
-    return data;
+  const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getCookie("accessToken") !== undefined ? `Bearer ${getCookie("accessToken")}` : null,
+    },
+  });
+
+  return data;
 }
 
 export async function getComment(page: number, beatId: number) {
@@ -18,6 +19,7 @@ export async function getComment(page: number, beatId: number) {
     const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: getCookie("accessToken") !== undefined ? `Bearer ${getCookie("accessToken")}` : null,
         beadId: beatId,
       },
     });

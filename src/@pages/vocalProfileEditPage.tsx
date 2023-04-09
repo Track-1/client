@@ -13,6 +13,9 @@ import { isTracksPage, isVocalsPage } from "../utils/common/pageCategory";
 import Footer from "../@components/@common/footer";
 import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
+import { useRecoilState } from "recoil";
+import { endPost } from "../recoil/postIsCompleted";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
@@ -29,6 +32,7 @@ export default function VocalProfileEditPage() {
   const [saveData, setSaveData] = useState<boolean>(false);
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
   useEffect(() => {
     if (saveData === true) {
@@ -53,15 +57,18 @@ export default function VocalProfileEditPage() {
   useEffect(() => {
     if (updatedData !== undefined) {
       mutate();
+      // setTimeout(() => {
+      // }, 500);
       navigate(`/vocal-profile/${params.id}`, { state: params.id, replace: true });
-      window.location.reload();
+      // window.location.reload();
     }
   }, [updatedData]);
 
   const { mutate, isLoading } = useMutation(() => patchVocalrProfile(updatedData), {
     onSuccess: (data) => {
-      console.log(data);
+      setIsEnd(true);
     },
+
     onError: (error) => {
       console.log(error);
     },

@@ -68,6 +68,9 @@ export default function CategoryList(props: any) {
       : (tempSelectedCategors[id].selected = true);
     setSelectedCategorys([...tempSelectedCategors]);
     setIsCategorySelected(true);
+
+    pausesPlayerAudio();
+    setShowPlayer(false);
   }
 
   function moveUploadPage() {

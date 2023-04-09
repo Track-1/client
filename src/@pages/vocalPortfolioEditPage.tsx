@@ -28,6 +28,7 @@ import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -106,7 +107,6 @@ export default function VocalPortfolioEditPage() {
   }
 
   function deleteHashtag(index: number) {
-    console.log("클릭");
     const deleteTag = hashtag;
     deleteTag.splice(index, 1);
     setHashtag([...deleteTag]);
