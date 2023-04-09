@@ -44,8 +44,10 @@ export default function TrackSearchPage() {
   const [isReload, setIsReload]=useRecoilState<boolean>(reload);
   const { progress, audio, playPlayerAudio, pausesPlayerAudio,closePlayer } = usePlayer();
 
+  console.log(filteredUrlApi)
   useEffect(()=>{
-    isReload&&window.location.reload();
+     isReload&&window.location.reload();
+    //isReload&&excuteGetData();
     setIsReload(false)
   },[])
 
