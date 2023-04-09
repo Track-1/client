@@ -105,6 +105,7 @@ export default function EachUserComment(props: PropsType) {
             )}
             {isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={pauseAudio}>
+                /** 에옹 여기 */
                 <PauseButtonIcon />
                 <PlayerBlur></PlayerBlur>
               </PlayerBlurWrapper>
