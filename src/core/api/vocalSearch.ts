@@ -1,10 +1,10 @@
-import axios from "axios";
 import { getCookie } from "../../utils/cookie";
+import { client } from "./common/axios";
 
 export async function getVocalsData(filteredUrlApi: string, isSelected: boolean, page: number) {
   const selected = isSelected ? "True" : "False";
   try {
-    const data = await axios.get(
+    const data = await client.get(
       `${process.env.REACT_APP_BASE_URL}/vocals/filter?${filteredUrlApi}&isSelected=${selected}&page=${page}&limit=3`,
       {
         headers: {
