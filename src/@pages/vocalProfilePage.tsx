@@ -23,6 +23,7 @@ import { endPost } from "../recoil/postIsCompleted";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { UploadButtonBlankIc, UploadButtonIc } from "../assets";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -44,6 +45,7 @@ export default function VocalProfilePage() {
   const { key, excuteGetData } = useInfiniteKey();
   const [isEnd, setIsEnd] = useRecoilState(endPost);
   const { progress, audio } = usePlayer();
+
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
@@ -53,6 +55,16 @@ export default function VocalProfilePage() {
   useEffect(() => {
     setTracksOrVocals(currentUser.VOCAL);
   }, []);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+
+  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+
+    window.onpopstate = function(event) {  
+      !isReload&&window.history.back();
+      pausesPlayerAudio();
+      closePlayer();
+      setIsReload(true)
+    };
 
   const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],

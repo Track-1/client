@@ -14,6 +14,7 @@ import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
 import { useRecoilState } from "recoil";
 import { endPost } from "../recoil/postIsCompleted";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function ProducerProfileEditPage() {
   const location = useLocation();
@@ -35,7 +36,7 @@ export default function ProducerProfileEditPage() {
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
   const queryClient = new QueryClient();
-
+  
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();

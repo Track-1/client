@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { playMusic } from "../../recoil/player";
+import { playMusic, showPlayerBar } from "../../recoil/player";
 
 export default function usePlayer() {
   const [progress, setProgress] = useState<number>(0);
   const [play, setPlay] = useRecoilState(playMusic);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   const audio = useMemo(() => new Audio(), []);
 
@@ -16,6 +17,10 @@ export default function usePlayer() {
   function pausesPlayerAudio() {
     audio.pause();
     setPlay(false);
+  }
+
+  function closePlayer() {
+    setShowPlayer(false);
   }
 
   useEffect(() => {
@@ -42,5 +47,5 @@ export default function usePlayer() {
     audio.duration === audio.currentTime && setPlay(false);
   }
 
-  return { progress, audio, playPlayerAudio, pausesPlayerAudio };
+  return { progress, audio, playPlayerAudio, pausesPlayerAudio, closePlayer };
 }

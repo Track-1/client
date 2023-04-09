@@ -27,6 +27,7 @@ import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);

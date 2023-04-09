@@ -15,6 +15,7 @@ import background from "../assets/icon/signUpBackgroundIc.svg";
 import Loading from "../@components/@common/loading";
 import { useRecoilState } from "recoil";
 import { endPost } from "../recoil/postIsCompleted";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();

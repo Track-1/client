@@ -24,6 +24,7 @@ import {
 import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
 import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
 import { TrackInfoDataType } from "../type/tracksDataType";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function TrackPostEditPage() {
   const { state } = useLocation();
@@ -43,7 +44,6 @@ export default function TrackPostEditPage() {
   const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
 
-  console.log(state);
   const { data } = useQuery(["state", state], () => getTrackInfo(state), {
     refetchOnWindowFocus: false,
     retry: 0,

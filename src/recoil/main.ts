@@ -11,3 +11,10 @@ export const UserType = atom<string>({
   // effects_UNSTABLE:[persistAtom],
 
 });
+
+export const reload = atom<boolean>({
+  key: "reload",
+  default: false,
+  // effects_UNSTABLE:[persistAtom],
+
+});
