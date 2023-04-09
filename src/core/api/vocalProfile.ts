@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getCookie } from "../../utils/cookie";
 import { client } from "./common/axios";
 
@@ -18,7 +17,7 @@ export async function getVocalProfile(vocalId: number, page: number) {
 
 export async function postVocalPortfolio() {
   try {
-    await axios.post("/mypage/vocal");
+    await client.post("/mypage/vocal");
   } catch (e) {
     console.log(e);
   }
@@ -26,7 +25,7 @@ export async function postVocalPortfolio() {
 
 export async function patchVocalPortfolio({ vocalPortfolioId, editDatas }: any) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/mypage/vocal/${vocalPortfolioId}`, editDatas, {
+    const data = await client.patch(`${process.env.REACT_APP_BASE_URL}/mypage/vocal/${vocalPortfolioId}`, editDatas, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -39,7 +38,7 @@ export async function patchVocalPortfolio({ vocalPortfolioId, editDatas }: any) 
 
 export async function patchVocalrProfile(editData: any) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/profile/vocal`, editData, {
+    const data = await client.patch(`${process.env.REACT_APP_BASE_URL}/profile/vocal`, editData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,

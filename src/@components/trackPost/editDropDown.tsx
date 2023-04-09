@@ -4,7 +4,8 @@ import { deleteTrack } from "../../core/api/delete";
 import { useMutation } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function EditDropDown() {
+export default function EditDropDown(props: any) {
+  const { trackInfoData } = props;
   const navigate = useNavigate();
   const { beatId } = useParams();
 
@@ -26,11 +27,11 @@ export default function EditDropDown() {
   }
 
   function moveTrackPostEditPage() {
-    navigate(`/track-post/edit/${beatId}`, { state: beatId });
+    navigate(`/track-post/edit/${beatId}`, { state: { id: beatId, prevData: trackInfoData } });
   }
 
   return (
-    <DropDownContainer >
+    <DropDownContainer>
       <EditWrapper onClick={moveTrackPostEditPage}>
         <EditText>수정하기</EditText>
         <EditIc />

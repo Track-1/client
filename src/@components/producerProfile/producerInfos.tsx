@@ -47,7 +47,7 @@ export default function ProducerInfos(props: PropsType) {
 
   function movePreviousPage() {
     navigate(`/`);
-
+    setShowPlayer(false);
     //navigate(-1);
   }
 
@@ -61,9 +61,9 @@ export default function ProducerInfos(props: PropsType) {
         <Blank />
       </InfoHeader>
       {isVocalsPage(whom) && (
-          <VocalProfileImage>
-            <VocalProfileImg src={profileData?.profileImage} alt="프로필이미지" />
-          </VocalProfileImage>
+        <VocalProfileImage>
+          <VocalProfileImg src={profileData?.profileImage} alt="프로필이미지" />
+        </VocalProfileImage>
       )}
       {isTracksPage(whom) && (
         <ProfileImage>
@@ -71,61 +71,61 @@ export default function ProducerInfos(props: PropsType) {
         </ProfileImage>
       )}
       <InformationBox>
-      <NameWrapper>
-        <ProducerNameContainer>
-          <ProducerName>{profileData.name}</ProducerName>
-        </ProducerNameContainer>
-        {profileData.isSelected && <SleeperAccountIcon />}
-      </NameWrapper>
-      <ProducerEmail>{profileData.contact}</ProducerEmail>
-      <DetailInfoContainer>
-        <CategoryBox isSelected={true}>
-          <CategoryIcon />
-          <CategoryArray>
-            {profileData.category.length > 0 ? (
-              Object.keys(CategoryId).map((category: any, index: number) =>
-                profileData.category.includes(CategoryText[category]) ? (
-                  <Category key={index}>{category}</Category>
-                ) : (
-                  <NotCategory key={index + 9}>{category}</NotCategory>
-                ),
-              )
+        <NameWrapper>
+          <ProducerNameContainer>
+            <ProducerName>{profileData.name}</ProducerName>
+          </ProducerNameContainer>
+          {profileData.isSelected && <SleeperAccountIcon />}
+        </NameWrapper>
+        <ProducerEmail>{profileData.contact}</ProducerEmail>
+        <DetailInfoContainer>
+          <CategoryBox isSelected={true}>
+            <CategoryIcon />
+            <CategoryArray>
+              {profileData.category.length > 0 ? (
+                Object.keys(CategoryId).map((category: any, index: number) =>
+                  profileData.category.includes(CategoryText[category]) ? (
+                    <Category key={index}>{category}</Category>
+                  ) : (
+                    <NotCategory key={index + 9}>{category}</NotCategory>
+                  ),
+                )
+              ) : (
+                <EmptyProfileMessageWrapper>
+                  <EmptyProfileMessage>no information</EmptyProfileMessage>
+                </EmptyProfileMessageWrapper>
+              )}
+            </CategoryArray>
+          </CategoryBox>
+
+          <HashtagBox>
+            <HashtagIcon />
+            {profileData.keyword?.length > 0 ? (
+              profileData.keyword.map((word, index) => {
+                return <HashTag text={word} key={index} />;
+              })
             ) : (
               <EmptyProfileMessageWrapper>
                 <EmptyProfileMessage>no information</EmptyProfileMessage>
               </EmptyProfileMessageWrapper>
             )}
-          </CategoryArray>
-        </CategoryBox>
-
-        <HashtagBox>
-          <HashtagIcon />
-          {profileData.keyword?.length > 0 ? (
-            profileData.keyword.map((word, index) => {
-              return <HashTag text={word} key={index} />;
-            })
-          ) : (
-            <EmptyProfileMessageWrapper>
-              <EmptyProfileMessage>no information</EmptyProfileMessage>
-            </EmptyProfileMessageWrapper>
-          )}
-        </HashtagBox>
-      </DetailInfoContainer>
-      <DescriptionBox>
-        <DescriptionIcon />
-        {profileData.introduce?.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
-      </DescriptionBox>
-      <EmptyDescriptionMessageBox>
-        <EmptyDescriptionMessageWrapper>
-          {profileData.introduce?.length > 0 || <EmptyProfileMessage>no information</EmptyProfileMessage>}
-        </EmptyDescriptionMessageWrapper>
-      </EmptyDescriptionMessageBox>
+          </HashtagBox>
+        </DetailInfoContainer>
+        <DescriptionBox>
+          <DescriptionIcon />
+          {profileData.introduce?.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
+        </DescriptionBox>
+        <EmptyDescriptionMessageBox>
+          <EmptyDescriptionMessageWrapper>
+            {profileData.introduce?.length > 0 || <EmptyProfileMessage>no information</EmptyProfileMessage>}
+          </EmptyDescriptionMessageWrapper>
+        </EmptyDescriptionMessageBox>
       </InformationBox>
     </InfoContainer>
   );
 }
 
-const InformationBox=styled.div`
+const InformationBox = styled.div`
   width: 60rem;
 
   position: fixed;
@@ -135,7 +135,7 @@ const InformationBox=styled.div`
   align-items: center;
 
   margin-top: 33.8rem;
-`
+`;
 
 const InfoContainer = styled.section`
   width: 60rem;
@@ -173,12 +173,12 @@ const ProfileImg = styled.img`
 
 const ProfileImage = styled.div`
   height: 26rem;
-  width: 26rem; 
+  width: 26rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   border-radius: 50%;
   position: absolute;
   overflow: hidden;

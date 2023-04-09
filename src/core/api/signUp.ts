@@ -1,8 +1,8 @@
-import axios from "axios";
+import { client } from "./common/axios";
 
 export async function authEmail(formData: any) {
   // try{
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`, formData, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -11,7 +11,7 @@ export async function authEmail(formData: any) {
 }
 
 export async function checkEmailDuplication(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/check-email`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/etc/check-email`, formData, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -20,7 +20,7 @@ export async function checkEmailDuplication(formData: any) {
 }
 
 export async function repostAuthEmail(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/etc/auth-mail`, formData, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -29,7 +29,7 @@ export async function repostAuthEmail(formData: any) {
 }
 
 export async function postVerifyCode(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/etc/verify`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/etc/verify`, formData, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -38,7 +38,7 @@ export async function postVerifyCode(formData: any) {
 }
 
 export async function joinProducer(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/producer`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/join/producer`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -47,7 +47,7 @@ export async function joinProducer(formData: any) {
 }
 
 export async function joinVocal(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/vocal`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/join/vocal`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

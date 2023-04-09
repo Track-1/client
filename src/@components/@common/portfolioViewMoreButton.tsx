@@ -1,18 +1,17 @@
 import styled, { css, keyframes } from "styled-components";
 import { ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc } from "../../assets";
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function PortfolioViewMoreButton() {
-  const [ishoverd, setIshoverd]=useState<boolean>(false);
+  const [ishoverd, setIshoverd] = useState<boolean>(false);
 
-  function checkViewMoreHover(){
-    ishoverd?setIshoverd(false):setIshoverd(true);
+  function checkViewMoreHover() {
+    ishoverd ? setIshoverd(false) : setIshoverd(true);
   }
 
-console.log(ishoverd)
   return (
     <ViewMoreButtonWrapper onMouseEnter={checkViewMoreHover} onMouseLeave={checkViewMoreHover}>
-      <ProducerVocalSearchingArrowIcon ishoverd={ishoverd}/>
+      <ProducerVocalSearchingArrowIcon ishoverd={ishoverd} />
       <ProducerVocalSearchingViewMoreTextIcon />
     </ViewMoreButtonWrapper>
   );
@@ -33,22 +32,21 @@ const arrowSliding = keyframes`
         margin-left:2.5rem;
     }
 `;
-const ProducerVocalSearchingArrowIcon = styled(ProducerVocalSearchingArrowIc)<{ishoverd:boolean}>`
+const ProducerVocalSearchingArrowIcon = styled(ProducerVocalSearchingArrowIc)<{ ishoverd: boolean }>`
   cursor: pointer;
   overflow: visible;
   width: 19.9rem;
 
-  ${({ishoverd}) =>
-    ishoverd
-      && css`
-        animation-name: ${arrowSliding};
-        animation-duration: 0.5s;
-        animation-duration: linear;
-        animation-iteration-count: 2;
-        animation-direction: alternate;
-        animation-fill-mode: forwards;
-        `
-      }
+  ${({ ishoverd }) =>
+    ishoverd &&
+    css`
+      animation-name: ${arrowSliding};
+      animation-duration: 0.5s;
+      animation-duration: linear;
+      animation-iteration-count: 2;
+      animation-direction: alternate;
+      animation-fill-mode: forwards;
+    `}
 `;
 
 const ProducerVocalSearchingViewMoreTextIcon = styled(ProducerVocalSearchingViewMoreTextIc)`

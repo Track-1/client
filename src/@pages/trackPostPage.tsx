@@ -35,7 +35,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { blockAccess } from "../utils/common/privateRoute";
 import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
-import { reload } from "../recoil/main";
+import { reload, viewmore } from "../recoil/main";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function TrackPostPage() {
@@ -60,15 +60,16 @@ export default function TrackPostPage() {
   const [download, setDownload] = useState<boolean>(false);
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
   const { key, excuteGetData } = useInfiniteKey();
-  const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
+  const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-  useEffect(()=>{
-    setIsReload(true)
-  },[])
+  useEffect(() => {
+    setIsReload(true);
+  }, []);
 
-  window.onpopstate = function(event) {  
+
+  window.onpopstate = function (event) {
     pausesPlayerAudio();
     closePlayer();
   };
@@ -271,7 +272,7 @@ export default function TrackPostPage() {
                 )}
                 {trackInfoData.isMe && <EditBtnIcon onClick={setEditDropDown} />}
               </ButtonWrapper>
-              {isEditOpen && <EditDropDown />}
+              {isEditOpen && <EditDropDown trackInfoData={trackInfoData} />}
               {/* <EditDropDown /> */}
             </TitleContainer>
             <InfoContainer>

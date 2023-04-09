@@ -24,7 +24,7 @@ import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import Loading from "../@components/@common/loading";
 import { reload } from "../recoil/main";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 export default function TrackSearchPage() {
   const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
@@ -41,21 +41,21 @@ export default function TrackSearchPage() {
 
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
   const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
-  const { progress, audio, playPlayerAudio, pausesPlayerAudio,closePlayer } = usePlayer();
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
+  const { progress, audio, playPlayerAudio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-  console.log(filteredUrlApi)
-  useEffect(()=>{
-     isReload&&window.location.reload();
+  useEffect(() => {
+    isReload && window.location.reload();
     //isReload&&excuteGetData();
-    setIsReload(false)
-  },[])
+    setIsReload(false);
+  }, []);
 
-    window.onpopstate = function(event) {
-      pausesPlayerAudio();
-      closePlayer();
-    };
-  
+  window.onpopstate = function (event) {
+    pausesPlayerAudio();
+    closePlayer();
+  };
+
   useEffect(() => {
     if (isCategorySelected) {
       setTracksData([]);

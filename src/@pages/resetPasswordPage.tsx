@@ -6,9 +6,10 @@ import styled from "styled-components";
 import { TrackOneMainLogoIc } from "../assets";
 import useMovePage from "../utils/hooks/useMovePage";
 import Footer from "../@components/@common/footer";
+import Loading from "../@components/@common/loading";
 
 export default function ResetPasswordPage() {
-  const { isSuccess } = useQuery("validateToken", validateResetPasswordToken, {
+  const { isSuccess, isLoading } = useQuery("validateToken", validateResetPasswordToken, {
     onError: (error: any) => {
       alert(error.response.data.message);
       movePage("/");
@@ -23,6 +24,7 @@ export default function ResetPasswordPage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       {isSuccess && (
         <>
           <LogoWrapper>
