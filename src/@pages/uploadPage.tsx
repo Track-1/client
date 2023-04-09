@@ -15,6 +15,7 @@ export default function UploadPage() {
   const location = useLocation();
   const producerUploadType = location.state.producerUploadType;
   const prevPage = location.state.prevPage;
+  console.log(location.state);
 
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
     title: "",
@@ -39,7 +40,7 @@ export default function UploadPage() {
       <UploadHeader
         userType={loginUserType}
         producerUploadType={producerUploadType}
-        prevPage= {prevPage}
+        prevPage={prevPage}
         uploadData={uploadData}
         setUploadData={setUploadData}
       />
