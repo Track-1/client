@@ -47,17 +47,16 @@ export default function ProducerProfilePage() {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
   const [saveResponse, setSaveResponse] = useState<any>();
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
 
-  const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
+  const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-    window.onpopstate = function(event) {  
-      !isReload&&window.history.back();
-      pausesPlayerAudio();
-      closePlayer();
-      setIsReload(true)
-    };
-
+  window.onpopstate = function (event) {
+    !isReload && window.history.back();
+    pausesPlayerAudio();
+    closePlayer();
+    setIsReload(true);
+  };
 
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
@@ -87,7 +86,7 @@ export default function ProducerProfilePage() {
     let portfolioResponse: any;
     let selectingResponse: any;
     setOpenUploadModal(false);
-
+    console.log(selectingPage);
     if (hasNextPage !== false) {
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
       selectingResponse = await getSelectingTracks(state, selectingPage);
