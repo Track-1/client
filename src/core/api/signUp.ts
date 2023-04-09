@@ -1,4 +1,5 @@
 import axios from "axios";
+import { client } from "./common/axios";
 
 export async function authEmail(formData: any) {
   // try{
@@ -38,7 +39,7 @@ export async function postVerifyCode(formData: any) {
 }
 
 export async function joinProducer(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/producer`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/join/producer`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -47,7 +48,7 @@ export async function joinProducer(formData: any) {
 }
 
 export async function joinVocal(formData: any) {
-  const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/vocal`, formData, {
+  const data = await client.post(`${process.env.REACT_APP_BASE_URL}/user/join/vocal`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
