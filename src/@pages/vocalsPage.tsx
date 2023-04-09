@@ -45,8 +45,8 @@ export default function VocalsPage() {
   const { progress, audio, pausesPlayerAudio,closePlayer } = usePlayer();
 
   useEffect(()=>{
-    // isReload&&window.location.reload();
-    isReload&&excuteGetData();
+    isReload&&window.location.reload();
+   // isReload&&excuteGetData();
     setIsReload(false)
   },[])
 
