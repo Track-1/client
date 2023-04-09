@@ -3,7 +3,7 @@ import { PencilUpdateIc, TrashDeleteIc, SetIsTitleIc } from "../../assets";
 import { profileCategory } from "../../core/constants/pageCategory";
 
 import { useMutation, useQueryClient } from "react-query";
-import { deletePortfolio } from "../../core/api/delete";
+import { deletePortfolio, deleteTrack } from "../../core/api/delete";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { PortfolioType } from "../../type/profilePropsType";
@@ -52,17 +52,28 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const { key, excuteGetData } = useInfiniteKey();
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
-  function askToeleteTrack() {
+  function askToDeleteTrack() {
     if (window.confirm("게시글을 삭제하시겠습니까?")) {
       setPortfolioData([]);
       excuteGetData();
-      deleteTrack();
-      setShowPlayer(false);
+      profileState === "Portfolio" ? deletePortfolioTrack() : deleteVocalSearching();
     }
   }
 
-  const { mutate: deleteTrack } = useMutation(() => deleteAPI(), {
+  const { mutate: deleteVocalSearching } = useMutation(() => deleteTrack(portfoliosData[clickedPortfolioId].id), {
     onSuccess: () => {
+      setShowPlayer(false);
+      queryClient.invalidateQueries(key);
+      setIsEnd(!isEnd);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const { mutate: deletePortfolioTrack } = useMutation(() => deleteAPI(), {
+    onSuccess: () => {
+      setShowPlayer(false);
       queryClient.invalidateQueries(key);
       setIsEnd(!isEnd);
     },
@@ -154,12 +165,12 @@ export default function PortfolioUpdateModal(props: PropsType) {
         <PencilUpdateIcon />
       </ModalBox>
       {!checkIsVocalSearching() ? (
-        <ModalBox underline={!isTitle} onClick={askToeleteTrack}>
+        <ModalBox underline={!isTitle} onClick={askToDeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>
       ) : (
-        <ModalBox underline={false} onClick={askToeleteTrack}>
+        <ModalBox underline={false} onClick={askToDeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>

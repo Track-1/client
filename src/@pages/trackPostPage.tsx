@@ -35,7 +35,7 @@ import usePlayer from "../utils/hooks/usePlayer";
 import { blockAccess } from "../utils/common/privateRoute";
 import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
-import { reload } from "../recoil/main";
+import { reload, viewmore } from "../recoil/main";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 
 export default function TrackPostPage() {
@@ -67,6 +67,7 @@ export default function TrackPostPage() {
   useEffect(() => {
     setIsReload(true);
   }, []);
+
 
   window.onpopstate = function (event) {
     pausesPlayerAudio();

@@ -44,11 +44,13 @@ export default function VocalsPage() {
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-  useEffect(() => {
-    // isReload&&window.location.reload();
-    isReload && excuteGetData();
-    setIsReload(false);
-  }, []);
+
+  useEffect(()=>{
+    isReload&&window.location.reload();
+   // isReload&&excuteGetData();
+    setIsReload(false)
+  },[])
+
 
   window.onpopstate = function (event) {
     pausesPlayerAudio();

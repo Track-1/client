@@ -1,10 +1,10 @@
-import axios from "axios";
 import { UploadDataType } from "../../type/uploadDataType";
 import { getCookie } from "../../utils/cookie";
+import { client } from "./common/axios";
 
 export async function getTrackInfo(props: number) {
   const state = props;
-  const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
+  const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/${state}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: getCookie("accessToken") !== undefined ? `Bearer ${getCookie("accessToken")}` : null,
@@ -16,7 +16,7 @@ export async function getTrackInfo(props: number) {
 
 export async function getComment(page: number, beatId: number) {
   try {
-    const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
+    const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}?page=${page}&limit=5`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: getCookie("accessToken") !== undefined ? `Bearer ${getCookie("accessToken")}` : null,
@@ -31,7 +31,7 @@ export async function getComment(page: number, beatId: number) {
 
 export async function postComment(formData: UploadDataType, beatId: any) {
   try {
-    const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}`, formData, {
+    const data = await client.post(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${beatId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -45,7 +45,7 @@ export async function postComment(formData: UploadDataType, beatId: any) {
 
 export async function updateComment(formData: UploadDataType, commentId: number) {
   try {
-    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, formData, {
+    const data = await client.patch(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -58,7 +58,7 @@ export async function updateComment(formData: UploadDataType, commentId: number)
 
 export async function deleteComment(commentId: number) {
   try {
-    const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, {
+    const data = await client.delete(`${process.env.REACT_APP_BASE_URL}/tracks/comments/${commentId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -71,7 +71,7 @@ export async function deleteComment(commentId: number) {
 
 export async function closeTrack(beatId: number) {
   try {
-    const data = await axios.patch(
+    const data = await client.patch(
       `${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/closed`,
       {},
       {
@@ -88,7 +88,7 @@ export async function closeTrack(beatId: number) {
 
 export async function patchTrackPost(beatId: number, formData: any) {
   try {
-    await axios.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
+    await client.patch(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -100,7 +100,7 @@ export async function patchTrackPost(beatId: number, formData: any) {
 }
 
 export async function getFileLink(beatId: number) {
-  const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/download`, {
+  const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}/download`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getCookie("accessToken")}`,
@@ -108,7 +108,7 @@ export async function getFileLink(beatId: number) {
   });
   //return data
 
-  const res = await axios.get(data.data.data.wavFile, {
+  const res = await client.get(data.data.data.wavFile, {
     responseType: "blob",
   });
   return res;

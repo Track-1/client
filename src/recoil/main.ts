@@ -18,3 +18,10 @@ export const reload = atom<boolean>({
   // effects_UNSTABLE:[persistAtom],
 
 });
+
+export const viewmore=atom<boolean>({
+  key: "reload",
+  default: false,
+  // effects_UNSTABLE:[persistAtom],
+
+});
