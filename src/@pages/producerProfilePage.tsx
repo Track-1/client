@@ -18,7 +18,9 @@ import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
 import { Category } from "../core/constants/categoryHeader";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import { endPost } from "../recoil/postIsCompleted";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function ProducerProfilePage() {
   const { state } = useLocation();
@@ -40,15 +42,46 @@ export default function ProducerProfilePage() {
   });
 
   const visible = useRecoilValue(uploadButtonClicked);
+  const [isEnd, setIsEnd] = useRecoilState(endPost);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [openUploadModal, setOpenUploadModal] = useRecoilState<boolean>(uploadButtonClicked);
+  const [saveResponse, setSaveResponse] = useState<any>();
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
-  const { progress, audio } = usePlayer();
+  const { progress, audio,pausesPlayerAudio,closePlayer } = usePlayer();
+
+    window.onpopstate = function(event) {  
+      !isReload&&window.history.back();
+      pausesPlayerAudio();
+      closePlayer();
+      setIsReload(true)
+    };
+
 
   function isDataEmpty() {
     return profileState === "Portfolio" ? portfolioData.length === 0 : selectingTracksData.length === 0;
   }
+
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    [key, isEnd],
+
+    ({ pageParam = 1 }) => getData(pageParam, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (profileState === "Portfolio") {
+          return lastPage?.portfolioNextPage;
+        } else {
+          return lastPage?.selectingNextPage;
+        }
+      },
+      refetchOnWindowFocus: false,
+      retry: 0,
+      onError: (error) => {
+        console.log(error);
+      },
+    },
+  );
 
   async function getData(portfolioPage: number, selectingPage: number) {
     let portfolioResponse: any;
@@ -63,35 +96,27 @@ export default function ProducerProfilePage() {
       setProfileData(portfolioResponse?.producerProfile);
       switch (profileState) {
         case "Portfolio":
-          setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
+          isEnd
+            ? setPortfolioData((prev) => [])
+            : setPortfolioData((prev) => [...prev, ...portfolioResponse?.producerPortfolio]);
+          setSaveResponse(portfolioResponse);
+
           return { portfolioResponse, selectingResponse, portfolioNextPage: portfolioPage + 1, selectingNextPage: 1 };
         case "Vocal Searching":
-          setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
+          console.log(selectingResponse);
+          isEnd
+            ? setSelectingTracksData((prev) => [])
+            : setSelectingTracksData((prev) => [...prev, ...selectingResponse?.beatList]);
+          setSaveResponse(selectingResponse);
+
           return { portfolioResponse, selectingResponse, portfolioNextPage: 1, selectingNextPage: selectingPage + 1 };
       }
     }
   }
 
-  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    key,
-    ({ pageParam = 1 }) => getData(pageParam, pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        if (profileState === "Portfolio") {
-          return lastPage?.portfolioResponse.producerPortfolio.length % 4 === 0
-            ? lastPage?.portfolioNextPage
-            : undefined;
-        } else {
-          return lastPage?.selectingResponse.beatList.length !== 0 ? lastPage?.selectingNextPage : undefined;
-        }
-      },
-      refetchOnWindowFocus: false,
-      retry: 0,
-      onError: (error) => {
-        console.log(error);
-      },
-    },
-  );
+  useEffect(() => {
+    setIsEnd(false);
+  }, [saveResponse]);
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
@@ -167,6 +192,7 @@ export default function ProducerProfilePage() {
               scrollToTop();
               setPortfolioData([]);
               excuteGetData();
+              setShowPlayer(false);
             }}>
             {profileState === "Portfolio" ? <RightArrorIcon /> : <BlankDiv />}
             Portfolio
@@ -178,6 +204,7 @@ export default function ProducerProfilePage() {
               scrollToTop();
               setSelectingTracksData([]);
               excuteGetData();
+              setShowPlayer(false);
             }}>
             {profileState === "Vocal Searching" ? <RightArrorIcon /> : <BlankDiv />}
             Vocal Searching
@@ -196,6 +223,7 @@ export default function ProducerProfilePage() {
             producerName={profileData?.name}
             whom={Category.TRACKS}
             changeKey={excuteGetData}
+            setPortfolioData={setPortfolioData}
           />
         ) : (
           <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />

@@ -9,6 +9,7 @@ export async function getVocalsData(filteredUrlApi: string, isSelected: boolean,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: getCookie("accessToken") !== undefined ? `Bearer ${getCookie("accessToken")}` : null,
         },
       },
     );

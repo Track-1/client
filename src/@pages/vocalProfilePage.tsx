@@ -23,6 +23,7 @@ import { endPost } from "../recoil/postIsCompleted";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { UploadButtonBlankIc, UploadButtonIc } from "../assets";
 import Loading from "../@components/@common/loading";
+import { reload } from "../recoil/main";
 
 export default function VocalProfilePage() {
   const [isMe, setIsMe] = useState<boolean>(false);
@@ -40,20 +41,37 @@ export default function VocalProfilePage() {
   const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
   const [visible, setVisible] = useRecoilState<boolean>(uploadButtonClicked);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const loginUserId = useRecoilValue(LoginUserId);
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState<any>(tracksOrVocalsCheck);
   const { key, excuteGetData } = useInfiniteKey();
-  const isEnd = useRecoilValue(endPost);
-  const { progress, audio } = usePlayer();
+  const [isEnd, setIsEnd] = useRecoilState(endPost);
+  // const { progress, audio } = usePlayer();
+
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
+  const [saveResponse, setSaveResponse] = useState<any>();
+  const [init, setInit] = useState<boolean>(true);
+
+  useEffect(() => {
+    setTracksOrVocals(currentUser.VOCAL);
+  }, []);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
+
+  const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
+
+  window.onpopstate = function (event) {
+    !isReload && window.history.back();
+    pausesPlayerAudio();
+    closePlayer();
+    setIsReload(true);
+  };
 
   const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [key, isEnd],
-    ({ pageParam = 1 }) => getData(pageParam),
+    async ({ pageParam = 1 }) => await getData(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response?.vocalPortfolio.length % 3 == 0 ? lastPage?.nextPage : undefined;
+        return lastPage?.nextPage;
       },
       refetchOnWindowFocus: false,
     },
@@ -61,23 +79,21 @@ export default function VocalProfilePage() {
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
-  useEffect(() => {
-    // setWhom(Category.TRACKS);
-    // setShowPlayer(false);
-    setTracksOrVocals(currentUser.VOCAL);
-  }, []);
-
   async function getData(page: number) {
     if (hasNextPage !== false) {
       const response = await getVocalProfile(state, page);
-      console.log(response.vocalProfile);
       setIsMe(response?.isMe);
       setProfileData(response?.vocalProfile);
-      setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
-      console.log(response);
+      isEnd ? setPortfolioData((prev) => []) : setPortfolioData((prev) => [...prev, ...response?.vocalPortfolio]);
+      setSaveResponse(response);
+      // setIsEnd(false);
       return { response, nextPage: page + 1 };
     }
   }
+
+  useEffect(() => {
+    setIsEnd(false);
+  }, [saveResponse]);
 
   function isPortfolioDataEmpty() {
     return portfolioData.length === 0;
@@ -104,12 +120,12 @@ export default function VocalProfilePage() {
   }
 
   function moveToUpload() {
-    navigate("/upload/Portfolio");
+    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: `/vocal-profile/${state}` } });
   }
 
   return (
     <Wrap>
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       {visible && <TracksProfileUploadModalSection />}
       {isMe && <UploadButtonIcon onClick={moveToUpload} />}
       <VocalProfile>
@@ -136,6 +152,7 @@ export default function VocalProfilePage() {
               getAudioInfos={getAudioInfos}
               vocalName={profileData?.name}
               whom={Category.VOCALS}
+              setPortfolioData={setPortfolioData}
             />
           ) : (
             <VocalEmptyProfileImage src={VocalEmptyProfileImg} />

@@ -1,5 +1,5 @@
 import styled, { useTheme } from "styled-components";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, HashtagWarningIc } from "../assets";
 import { FileChangeIc } from "../assets";
@@ -25,7 +25,9 @@ import BackButton from "../@components/@common/backButton";
 import ProfileWarning from "../@components/@common/profileWarning";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
+import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
+import usePlayer from "../utils/hooks/usePlayer";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -50,6 +52,8 @@ export default function ProducerPortfolioEditPage() {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
 
   const navigate = useNavigate();
 
@@ -61,6 +65,7 @@ export default function ProducerPortfolioEditPage() {
 
   const { mutate, isLoading } = useMutation(() => patchProducerPortfolio(prevData.id, editData), {
     onSuccess: () => {
+      setShowPlayer(false);
       navigate(-1);
     },
     onError: () => {
@@ -103,6 +108,7 @@ export default function ProducerPortfolioEditPage() {
     setHashtag([...deleteTag]);
     setHashtagInput("");
   }
+
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);

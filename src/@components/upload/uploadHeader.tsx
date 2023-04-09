@@ -10,8 +10,10 @@ import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
 import { LoginUserId } from "../../recoil/loginUserData";
 import BackButton from "../@common/backButton";
+import { showPlayerBar } from "../../recoil/player";
 import loading from "../../assets/image/loading.gif";
 import Loading from "../@common/loading";
+
 interface PropsType {
   userType: string;
   producerUploadType: string | undefined;
@@ -22,20 +24,22 @@ interface PropsType {
 
 export default function UploadHeader(props: PropsType) {
   const { userType, producerUploadType, uploadData, prevPage } = props;
-  console.log(producerUploadType);
   const navigate = useNavigate();
   const loginUserId = useRecoilValue(LoginUserId);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
   const [cursor, setCursor] = useState<string>("pointer");
+  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+
+  console.log(producerUploadType, "ggg");
 
   const { mutate, isLoading } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
-      alert("업로드되었습니다.");
+      setShowPlayer(false);
       checkUserType(userType)
-        ? (prevPage === "sign-up"
+        ? prevPage === "sign-up"
           ? navigate("/")
-          : navigate(-1))
+          : navigate(-1)
         : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
     },
     onError: (error) => {

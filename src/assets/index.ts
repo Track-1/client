@@ -243,4 +243,5 @@ export { ReactComponent as ChangePasswordNewPasswordIc } from "./icon/changePass
 export { ReactComponent as ChangePasswordConfirmIc } from "./icon/changePasswordConfirmIc.svg";
 export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
 export { ReactComponent as SignupCompleteBtnIc } from "./icon/signupCompleteBtnIc.svg";
+export { ReactComponent as ErrorPageIc} from "./icon/errorPageIc.svg";
 

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import MainHeader from "../@components/@common/mainHeader";
@@ -16,6 +16,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
 import Ads from "../@components/main/ads";
+import usePlayer from "../utils/hooks/usePlayer";
+import { reload } from "../recoil/main";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -24,7 +26,13 @@ export default function MainPage() {
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
   const showModal = useRecoilValue(openConventionModal);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
+  
+  useEffect(()=>{
+    setIsReload(true)
+  },[])
 
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
@@ -54,9 +62,9 @@ export default function MainPage() {
         <Main>
           <Img src={background} alt="배경이미지" />
           <VocalsArea onMouseEnter={setVocalsImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-          <VocalsTextIcon isVocalsHover={isVocalsHover} />
+          <VocalsTextIcon isvocalshover={isVocalsHover ? "true" : "false"} />
           <TracksArea onMouseEnter={setTracksImg} onMouseLeave={setDefaultImg} onClick={movePage} />
-          <MainTracksTextIcon isTracksHover={isTracksHover} />
+          <MainTracksTextIcon istrackshover={isTracksHover ? "true" : "false"} />
           <MainSlogan src={mainSloganImg} alt="슬로건" />
         </Main>
         <Ads />
@@ -90,7 +98,7 @@ const VocalsArea = styled.div`
   cursor: pointer;
 `;
 
-const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
+const VocalsTextIcon = styled(MainVocalsTextIc)<{ isvocalshover: string }>`
   position: absolute;
   top: 77rem;
   left: 151.7rem;
@@ -100,7 +108,7 @@ const VocalsTextIcon = styled(MainVocalsTextIc)<{ isVocalsHover: boolean }>`
   background-repeat: no-repeat;
 
   ${(props) =>
-    props.isVocalsHover &&
+    props.isvocalshover === "true" &&
     css`
       transition-duration: 0.2s;
       transform-origin: 0 100%;
@@ -125,7 +133,7 @@ const TracksArea = styled.div`
   cursor: pointer;
 `;
 
-const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
+const MainTracksTextIcon = styled(MainTracksTextIc)<{ istrackshover: string }>`
   position: absolute;
 
   top: 41rem;
@@ -136,7 +144,7 @@ const MainTracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
   background-repeat: no-repeat;
 
   ${(props) =>
-    props.isTracksHover &&
+    props.istrackshover === "true" &&
     css`
       transition-duration: 0.2s;
       transform-origin: 0 100%;

@@ -8,6 +8,7 @@ import thumbnailImg from "../../assets/image/thumbnailImg.png";
 import { onLogout } from "../../core/api/logout";
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { LoginUserImg } from "../../recoil/loginUserData";
+import { reload } from "../../recoil/main";
 import { ProducerProfileType } from "../../type/producerProfile";
 import { UserPropsType } from "../../type/userPropsType";
 
@@ -16,6 +17,7 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState<boolean>(false);
   const [loginUserImg, setLoginUserImg] = useRecoilState(LoginUserImg);
+  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   function changeProfileBoxDisplay() {
     setIsShow(!isShow);
@@ -39,6 +41,7 @@ export default function ProducerBriefInfo(props: UserPropsType) {
 
   function moveToMypage() {
     navigate(`/producer-profile/${userId}`, { state: userId });
+    setIsReload(false)
   }
 
   return (

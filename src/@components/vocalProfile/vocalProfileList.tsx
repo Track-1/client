@@ -17,10 +17,12 @@ interface PropsType {
   getAudioInfos: (title: string, name: string, image: string, duration: number) => void;
   vocalName: string;
   whom: string;
+  setPortfolioData: React.Dispatch<React.SetStateAction<VocalPortfolioType[]>>;
 }
 
 export default function VocalProfileList(props: PropsType) {
-  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName, whom } = props;
+  const { audio, isMe, portfolioData, pauseAudio, infiniteRef, getAudioInfos, vocalName, whom, setPortfolioData } =
+    props;
 
   const vocalPortfolioCount = portfolioData ? portfolioData.length : 0;
 
@@ -101,6 +103,7 @@ export default function VocalProfileList(props: PropsType) {
           profileState={"Porfolio"}
           whom={whom}
           pauseAudio={pauseAudio}
+          setPortfolioData={setPortfolioData}
         />
       )}
     </VocalProfileListWrapper>
