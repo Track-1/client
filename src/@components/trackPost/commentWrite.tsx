@@ -104,6 +104,8 @@ export default function CommentWrite(props: PropsType) {
 }
 
 const WriteContainer = styled.article`
+  display:flex;
+
   height: 17.1rem;
 
   border: 0.2rem solid transparent;
@@ -119,25 +121,45 @@ const WriteContainer = styled.article`
 `;
 
 const ProfileImageWrapper = styled.div`
-  height: 9rem;
+  /* height: 9rem;
   width: 9rem;
   overflow: hidden;
+  border-radius: 9rem; */
+
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width:9rem;
+  height: 9rem;
   border-radius: 9rem;
+  position: absolute;
+  overflow: hidden;
 `;
 
 const ImageContainer = styled.div`
-  margin-right: 2rem;
-  margin-left: 3.8rem;
+  /* margin-right: 2rem;
+  margin-left: 3.8rem; */
+  margin-top:-10rem;
+  margin-left:3rem;
 `;
 
 const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
+  
+  margin-left:12rem;
 `;
 
 const TitleWrapper = styled.div`
