@@ -246,13 +246,13 @@ export default function TrackPostEditPage() {
           <Container2>
             <SectionWrapper>
               <TrackImageBox onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
-                <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                   {isImageUploaded ? (
                     <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   ) : (
                     <TrackUploadImage src={String(data?.data.data.jacketImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   )}
-                </label>
+                </TrackUploadImageWrapper>
                 {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                 <FileChangeIcon />
                 </label>)}
@@ -329,58 +329,6 @@ export default function TrackPostEditPage() {
                       <UploadHashtagIcon />
                     </NameBox>
                     <InputBox>
-                      {/* <InputWrapper>
-                        <>
-                          {hashtag &&
-                            hashtag?.map((item: string, index: number) => {
-                              return (
-                                <InputHashtagWrapper key={index}>
-                                  <Hashtag>
-                                    <HashtagWrapper>
-                                      <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                                      <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
-                                    </HashtagWrapper>
-                                  </Hashtag>
-                                </InputHashtagWrapper>
-                              );
-                            })}
-                          {!hashtag &&
-                            data?.data.data.keyword.map((item: string, index: number) => {
-                              return (
-                                <InputHashtagWrapper key={index}>
-                                  <Hashtag>
-                                    <HashtagWrapper>
-                                      <HashtagSharp>{`# ${item}`}</HashtagSharp>
-                                      <DeleteHashtagIcon onClick={() => deleteHashtag(item)} />
-                                    </HashtagWrapper>
-                                  </Hashtag>
-                                </InputHashtagWrapper>
-                              );
-                            })}
-                          {hashtag && hashtag?.length < 3 && (
-                            <>
-                              <InputHashtagWrapper>
-                                <Hashtag>
-                                  <HashtagWrapper>
-                                    <HashtagSharp># </HashtagSharp>
-                                    <HashtagInput
-                                      placeholder="Hashtag"
-                                      type="text"
-                                      defaultValue=""
-                                      onChange={changeHashtagWidth}
-                                      width={hashtagInput.length}
-                                      onKeyUp={addHashtag}
-                                      ref={hashtagText}
-                                    />
-                                    <div style={{ width: "1" }}></div>
-                                  </HashtagWrapper>
-                                </Hashtag>
-                              </InputHashtagWrapper>
-                              <AddHashtagIcon />
-                            </>
-                          )}
-                        </>
-                      </InputWrapper> */}
                       <InputHashtagWrapper>
                     <>
                       {hashtag?.map((item: string, index: number) => {
@@ -450,13 +398,12 @@ export default function TrackPostEditPage() {
                     <InputBox>
                       {/* {description && ( */}
                       <InputDescriptionText
-                        typeof="text"
-                        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
-                        spellCheck={false}
-                        maxLength={250}
-                        onChange={checkDescription}>
-                        {description}
-                      </InputDescriptionText>
+                    typeof="text"
+                    placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                    spellCheck={false}
+                    maxLength={250}
+                    defaultValue={description}
+                    onChange={checkDescription}></InputDescriptionText>
                       {/* )} */}
                       {/* {!description && (
                         <InputDescriptionText
@@ -473,7 +420,7 @@ export default function TrackPostEditPage() {
                 </InfoContainer>
                 <TextCount>
                   <TextWrapper>
-                    <InputCount>{}</InputCount>
+                    <InputCount>{description?.length}</InputCount>
                     <LimitCount>/250</LimitCount>
                   </TextWrapper>
                 </TextCount>
@@ -1298,7 +1245,7 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 62rem;
+  top: 64rem;
   left: 136.5rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);

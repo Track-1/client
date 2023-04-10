@@ -741,7 +741,7 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 62rem;
+  top: 64rem;
   left: 136.5rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
