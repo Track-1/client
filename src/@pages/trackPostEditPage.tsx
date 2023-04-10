@@ -34,7 +34,7 @@ export default function TrackPostEditPage() {
   const prevData = useLocation().state.prevData;
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   //const hashtagText = useRef<HTMLInputElement | null>(null);
-  const [category, setCategory] = useState<string>(prevData?.category.toUpperCase());
+  const [category, setCategory] = useState<string>(prevData?.category);
   const [audioFile, setAudioFile] = useState<File>();
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtagInput] = useState<string>("");
