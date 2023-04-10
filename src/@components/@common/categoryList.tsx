@@ -76,7 +76,11 @@ export default function CategoryList(props: any) {
   function moveUploadPage() {
     setShowPlayer(false);
     pausesPlayerAudio();
-    blockAccess() ? navigate("/login") : setOpenModal(true);
+    blockAccess()
+      ? navigate("/login")
+      : userType === "producer"
+      ? setOpenModal(true)
+      : alert("해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
 
   // function searchFilterdVocals() {
