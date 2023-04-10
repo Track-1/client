@@ -105,7 +105,7 @@ export default function EachUserComment(props: PropsType) {
             {isHover && !isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
                 <PlayerBlur>
-                  <ProfileImage src={commentInfo.vocalProfileImage} />
+                  <ProfileImage src={commentInfo.vocalProfileImage}/>
                 </PlayerBlur>
                 <PlayBtnIcon />
               </PlayerBlurWrapper>
@@ -175,6 +175,8 @@ const ProfileImage = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+
+  backdrop-filter: blur(3rem);
 `;
 
 const ProfileImageWrapper = styled.div`
@@ -193,9 +195,10 @@ const ProfileImageWrapper = styled.div`
   margin-left:3rem;
 `;
 const PlayerBlur = styled.div`
-  background-color: rgb(0, 0, 0, 0.5);
+
+  /* background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
-  -webkit-filter: blur(0.6rem);
+  -webkit-filter: blur(0.6rem); */
 `;
 const PlayerBlurWrapper = styled.div`
   height: 9rem;
