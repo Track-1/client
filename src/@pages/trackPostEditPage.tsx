@@ -324,7 +324,7 @@ export default function TrackPostEditPage() {
                     </InputBox>
                   </InfoItemBox>
 
-                  <InfoItemBox>
+                  <HashTagInfoItemBox>
                     <NameBox>
                       <UploadHashtagIcon />
                     </NameBox>
@@ -441,7 +441,7 @@ export default function TrackPostEditPage() {
                     )}
                   </WarningIcon>
                     </InputBox>
-                  </InfoItemBox>
+                  </HashTagInfoItemBox>
 
                   <InfoItemBox>
                     <NameBox>
@@ -1370,11 +1370,9 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
+   margin-left: -0.2rem;
   width: 4rem;
   height: 4rem;
-  margin-left: -0.2rem;
-  margin-top: 1.2rem;
-
   cursor: pointer;
 `;
 

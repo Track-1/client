@@ -815,11 +815,9 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
+   margin-left: -0.2rem;
   width: 4rem;
   height: 4rem;
-  margin-left: -0.2rem;
-  margin-top: 1.2rem;
-
   cursor: pointer;
 `;
 
