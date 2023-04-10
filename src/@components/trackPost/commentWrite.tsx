@@ -231,4 +231,6 @@ const InputBox = styled.textarea`
 const FileUploadButtonIcon = styled(FileUploadButtonIc)`
   width: 4rem;
   margin-left: 1.2rem;
+
+  cursor:pointer;
 `;

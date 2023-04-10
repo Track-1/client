@@ -170,15 +170,27 @@ const CommentContainer = styled.article<{ commentClickBool: boolean; commentClic
 const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const ProfileImageWrapper = styled.div`
   height: 9rem;
   width: 9rem;
-  overflow: hidden;
-  margin-right: 2rem;
-  margin-left: 3.8rem;
+  
   border-radius: 9rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  position: absolute;
+  overflow: hidden;
+
+  margin-left:3rem;
 `;
 const PlayerBlur = styled.div`
   background-color: rgb(0, 0, 0, 0.5);
@@ -198,6 +210,9 @@ const PlayerBlurWrapper = styled.div`
 const InfoBox = styled.div`
   height: 8rem;
   width: 78rem;
+
+  margin-left:15rem;
+  margin-top:-3rem;
 `;
 
 const InfoTopWrapper = styled.div`
