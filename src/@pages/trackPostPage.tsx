@@ -68,7 +68,6 @@ export default function TrackPostPage() {
     setIsReload(true);
   }, []);
 
-
   window.onpopstate = function (event) {
     pausesPlayerAudio();
     closePlayer();
@@ -102,6 +101,12 @@ export default function TrackPostPage() {
       );
     }
   }, [trackInfoData]);
+
+  useEffect(() => {
+    if (trackInfoData && !isCommentOpen) {
+      audio.src = trackInfoData?.beatWavFile;
+    }
+  }, [isCommentOpen]);
 
   function setEditDropDown() {
     isEditOpen ? closeEdit() : openEdit();
