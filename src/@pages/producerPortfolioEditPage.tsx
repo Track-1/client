@@ -188,6 +188,10 @@ export default function ProducerPortfolioEditPage() {
     navigate(-1);
   }
 
+  useEffect(()=>{
+    setTitleLength(prevData.title.length)
+  },[])
+
   function hoverImage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
@@ -236,7 +240,7 @@ export default function ProducerPortfolioEditPage() {
               placeholder="Please enter a title"
               spellCheck={false}
               maxLength={28}
-              defaultValue={title}
+              defaultValue={prevData.title}
               onChange={updateTitle}
               row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}
             />
@@ -244,7 +248,7 @@ export default function ProducerPortfolioEditPage() {
 
             <TextCount>
               <TextWrapper>
-                <InputCount>{title.length}</InputCount>
+                <InputCount>{prevData.title.length}</InputCount>
                 <LimitCount>/28</LimitCount>
               </TextWrapper>
             </TextCount>
