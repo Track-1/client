@@ -112,10 +112,12 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           {nameState === nickName.CORRECT && <ProfileEditCheckIcon />}
           {nameState === nickName.ERROR && <ProfileEditWarningIcon />}
         </InputWrapper>
-        {nameState === nickName.ERROR && (
+        {nameState === nickName.ERROR ? (
           <VocalEditWarningMsg>
             1 to 16 characters(Korean, English), numbers or special characters.
           </VocalEditWarningMsg>
+        ):(
+          <BlankMessage></BlankMessage>
         )}
       </NameContainer>
       <SleepAcountContainer>
@@ -251,6 +253,14 @@ const VocalEditWarningMsg = styled.span`
 
   margin-top: 1.1rem;
 `;
+
+const BlankMessage=styled.p`
+  width: 100%;
+  height: 3rem;
+
+  color:transparent;
+  margin-bottom: 2rem;
+`
 
 const NameInput = styled.input`
   height: 4.5rem;
