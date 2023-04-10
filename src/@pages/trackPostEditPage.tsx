@@ -425,7 +425,7 @@ export default function TrackPostEditPage() {
                       {/* {description && ( */}
                       <InputDescriptionText
                         typeof="text"
-                        placeholder="ddddddddd트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
                         spellCheck={false}
                         maxLength={250}
                         defaultValue={description}
