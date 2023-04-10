@@ -191,7 +191,6 @@ export default function ProducerPortfolioEditPage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
 
-  console.log(textareaHeight);
 
   return (
     <>
