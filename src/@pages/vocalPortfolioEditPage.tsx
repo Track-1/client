@@ -198,7 +198,14 @@ export default function VocalPortfolioEditPage() {
     navigate(-1);
   }
 
-  console.log(hashtag);
+  useEffect(()=>{
+    setTitleLength(title.length)
+  },[])
+
+  function checkHeight(){
+    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
+  }
+
   return (
     <>
       {isLoading && <Loading />}
@@ -248,7 +255,7 @@ export default function VocalPortfolioEditPage() {
               maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
-              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}
+              row={checkHeight()}
             />
             <Line />
 
@@ -773,7 +780,7 @@ const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 40.7rem;
+  top: 41rem;
   left: 98.7rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
