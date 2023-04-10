@@ -160,7 +160,10 @@ export default function UploadInfo(props: propsType) {
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
-    if (checkMaxInputLength(inputLength, 36)) {
+    if(inputLength>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
+    }
+    if (checkMaxInputLength(inputLength, 28)) {
       setTitleLength(inputLength);
       setUploadData((prevState) => {
         return { ...prevState, title: e.target.value };
@@ -306,19 +309,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   return (
-    <Container onClick={() => setHiddenDropBox(true)}>
-      {/* <TitleInput
-        typeof="text"
-        placeholder="Please enter a title"
-        spellCheck={false}
-        maxLength={28}
-        onChange={changeTitleText}
-        onFocus={hoverTitle}
-        onBlur={hoverTitle}
-        ref={titleRef}
-        row={titleRef.current?.value.length}
-        ></TitleInput> */}
-        
+    <Container onClick={() => setHiddenDropBox(true)}>        
         <TitleText
               typeof="text"
               placeholder="Please enter a title"
@@ -492,16 +483,6 @@ const Container = styled.section`
   height: 74.6rem;
   width: 88.7rem;
   margin-top: -2.5rem;
-`;
-
-const TitleInput = styled.textarea<{row:number}>`
-  height: 6.5rem;
-  width: 100%;
-
-  font-size: 5rem;
-  ${({ theme }) => theme.fonts.title};
-  color: ${({ theme }) => theme.colors.white};
-  margin-top: 13.6rem;
 `;
 
 const TitleText=styled.textarea<{row:number}>`
