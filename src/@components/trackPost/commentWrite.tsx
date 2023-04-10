@@ -86,7 +86,7 @@ export default function CommentWrite(props: PropsType) {
               ref={commentFile}
             />
             <CountWrapper>
-              <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
+              <InputCount commentLength={commentLength}>{commentLength}<p>/ 150</p></InputCount>
             </CountWrapper>
           </TitleWrapper>
           <InputWrapper>
@@ -121,12 +121,6 @@ const WriteContainer = styled.article`
 `;
 
 const ProfileImageWrapper = styled.div`
-  /* height: 9rem;
-  width: 9rem;
-  overflow: hidden;
-  border-radius: 9rem; */
-
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -139,9 +133,7 @@ const ProfileImageWrapper = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  /* margin-right: 2rem;
-  margin-left: 3.8rem; */
-  margin-top:-10rem;
+  margin-top:-9rem;
   margin-left:3rem;
 `;
 
@@ -199,11 +191,21 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
+   display: flex;
+  justify-content: flex-end;
+
   width: 10rem;
-  margin-left: -2rem;
+  margin-left: -10rem;
+  margin-right: 2rem;
+
   ${({ theme }) => theme.fonts.description}
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
+
+  &>p{
+    margin-left:0.5rem;
+    color: ${({ theme }) => theme.colors.gray3};
+  }
 `;
 
 const InputWrapper = styled.div`
