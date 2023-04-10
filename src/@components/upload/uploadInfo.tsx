@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, KeyboardEvent } from "react";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -33,7 +33,7 @@ interface propsType {
 export default function UploadInfo(props: propsType) {
   const { uploadData, setUploadData, whom } = props;
   const HASHTAG_WIDTH: number = 8.827;
-
+  
   const titleRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLDivElement | null>(null);
   const introduceRef = useRef<HTMLTextAreaElement | null>(null);
@@ -41,27 +41,28 @@ export default function UploadInfo(props: propsType) {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const hashtagDeleteRef = useRef<SVGSVGElement | null>(null);
   const { hoverState, changeHoverState } = useHover();
-
+  
   const [checkState, setCheckState] = useState<boolean[]>([]);
   const [checkHoverState, setCheckHoverState] = useState<boolean[]>([]);
   const [checkStateIcon, setCheckStateIcon] = useState<boolean[]>([]);
-
+  
   const [hiddenDropBox, setHiddenDropBox] = useState<boolean>(true);
   const [fileName, setFileName] = useState<string>("");
   const [isTextOverflow, setIsTextOverflow] = useState<boolean>(false);
   const [categoryState, setCategoryState] = useState<boolean>(false);
   const [audioType, setAudioType] = useState<string>("");
-
+  
   const [descriptionHoverState, setDescriptionHoverState] = useState<boolean>(false);
   const [titleHoverState, setTitleHoverState] = useState<boolean>(false);
   const [textareaHeight, setTextareaHeight] = useState<String>("33");
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
   const [hashtagInputWidth, setHashtagInputWidth] = useState<number>(HASHTAG_WIDTH);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-
+  
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
-
+  const keepKeyCodes = [8, 37, 38, 39, 40];
+  
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState<string>("");
@@ -305,6 +306,15 @@ export default function UploadInfo(props: propsType) {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
 
+  function keepHeight(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (introduceRef.current && introduceRef.current.scrollHeight >= 200) {
+      if (!keepKeyCodes.includes(event.keyCode)) {
+        event.preventDefault();
+      }
+    }
+  }
+
+
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
@@ -442,7 +452,8 @@ export default function UploadInfo(props: propsType) {
               descriptionHoverState={descriptionHoverState}
               ref={introduceRef}
               onChange={resizeTextarea}
-              row={Math.floor(descriptionLength / 30) + 1}></InputDescriptionText>
+              row={Math.floor(descriptionLength / 30) + 1}
+              onKeyDown={keepHeight}></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
