@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   AddHashtagIc,
   DeleteHashtagIc,
@@ -14,6 +14,7 @@ import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 import ProfileWarning from "./profileWarning";
+import useTextareaHeight from "../../utils/hooks/useTextareaHeight";
 
 interface PropsType {
   contact: string;
@@ -52,10 +53,11 @@ export default function ProfileEditInfo(props: PropsType) {
   });
   const [hashtagText, setHashtagText] = useState<string>("");
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [tagMaxLength, setTagMaxLength] = useState<number>(10);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const hashtagRef = useRef<HTMLInputElement | null>(null);
-  const [isKorean, setIsKorean]=useState<boolean>(false);
+  const [isKorean, setIsKorean] = useState<boolean>(false);
+  const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(200);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
@@ -72,18 +74,18 @@ export default function ProfileEditInfo(props: PropsType) {
     setHashtagText(e.target.value);
 
     setHashtagInput(e.target.value);
-    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
-    
-    if(checkHashtagLength(e.target.value)){
+    e.target.value !== "" ? setHashtagLength(e.target.value.length) : setHashtagLength(0);
+
+    if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
-    }else{
-      setIsKorean(false)
+      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+    } else {
+      setIsKorean(false);
     }
   }
 
   function getHashtagInput() {
-    if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
       updateHashtag(hashtagText);
       setHashtagText("");
@@ -107,7 +109,7 @@ export default function ProfileEditInfo(props: PropsType) {
 
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      getHashtagInput() 
+      getHashtagInput();
     }
   }
 
@@ -147,7 +149,7 @@ export default function ProfileEditInfo(props: PropsType) {
             <ProfileWarning />
           </HashIconWrapper>
           <InputHashtagWrapper>
-             {hashtags?.map((hashtag, index) => {
+            {hashtags?.map((hashtag, index) => {
               return (
                 <Hashtag key={index}>
                   <CompleteHashtagWrapper>
@@ -158,21 +160,21 @@ export default function ProfileEditInfo(props: PropsType) {
                 </Hashtag>
               );
             })}
-             
+
             {hashtags?.length < 3 && (
               <Hashtag>
                 <HashtagWrapper>
                   <HashtagSharp># </HashtagSharp>
-                  <HashtagInput 
-                  onChange={checkHashtagText} 
-                  onKeyPress={(e) => {
-                    e.key === "Enter" && getHashtagInput();
-                  }}
-                  inputWidth={hashtagLength}
-                  isKorean={isKorean}
-                  placeholder="HashTag"
-                  maxLength={tagMaxLength}
-                  ref={hashtagRef} 
+                  <HashtagInput
+                    onChange={checkHashtagText}
+                    onKeyPress={(e) => {
+                      e.key === "Enter" && getHashtagInput();
+                    }}
+                    inputWidth={hashtagLength}
+                    isKorean={isKorean}
+                    placeholder="HashTag"
+                    maxLength={tagMaxLength}
+                    ref={hashtagRef}
                   />
                 </HashtagWrapper>
               </Hashtag>
@@ -190,6 +192,7 @@ export default function ProfileEditInfo(props: PropsType) {
             defaultValue={description}
             onChange={(e) => updateDescription(e.target.value)}
             row={Math.floor(description?.length / 31) + 1}
+            ref={textareaRef}
           />
           <TextCount>
             {description?.length}
@@ -211,7 +214,7 @@ const InfoContainer = styled.section`
   border: 0.3rem solid transparent;
   border-radius: 5rem;
   background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
-  linear-gradient(to top, transparent 0%, #3e4045 100%);
+    linear-gradient(to top, transparent 0%, #3e4045 100%);
 
   background-origin: border-box;
   background-clip: content-box, border-box;
@@ -245,7 +248,7 @@ const ContactInput = styled.input`
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
-  :focus{
+  :focus {
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
@@ -317,8 +320,9 @@ const HashtagSharp = styled.p`
   margin-right: 0.5rem;
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
-  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
+const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+  width: ${({ inputWidth, isKorean }) =>
+    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -326,7 +330,6 @@ const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
     color: ${({ theme }) => theme.colors.gray3};
   }
 `;
-
 
 const CompletedHashtag = styled.article`
   display: flex;
@@ -351,8 +354,8 @@ const DescriptionContainer = styled.article`
 `;
 
 const DesciprtionInput = styled.textarea<{ row: number }>`
-  height: ${({ row }) => row * 3.4 + 1}rem;
   width: 55.9rem;
+  height: 4.5rem;
   outline: 0;
   resize: none;
   white-space: pre-wrap;
@@ -363,13 +366,12 @@ const DesciprtionInput = styled.textarea<{ row: number }>`
   margin-top: 3rem;
   overflow: hidden;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
-  padding-bottom: 3rem;
   ${({ theme }) => theme.fonts.input}
   color: ${({ theme }) => theme.colors.white};
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
-  :focus{
+  :focus {
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;

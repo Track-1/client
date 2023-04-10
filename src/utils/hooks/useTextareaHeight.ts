@@ -1,10 +1,10 @@
 import { useState, useRef, useLayoutEffect } from "react";
 
-export default function useAutoHeightTextArea(maxHeight: number){
+export default function useAutoHeightTextArea(maxHeight: number) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isMaxHeightReached, setIsMaxHeightReached] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState<number>(0);
-  
+
   useLayoutEffect(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -14,7 +14,6 @@ export default function useAutoHeightTextArea(maxHeight: number){
       textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
       setTextareaHeight(parseInt(textarea.style.height));
-    
     };
     textarea.addEventListener("input", adjustHeight);
 
@@ -33,6 +32,5 @@ export default function useAutoHeightTextArea(maxHeight: number){
     };
   }, [maxHeight]);
 
-  return { textareaRef, isMaxHeightReached, textareaHeight};
-};
-
+  return { textareaRef, isMaxHeightReached, textareaHeight };
+}
