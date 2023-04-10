@@ -15,6 +15,7 @@ import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDef
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
+import { checkNicknameForm } from "../../utils/errorMessage/checkNicknameForm";
 
 interface PropsType {
   profileImage: any;
@@ -29,7 +30,7 @@ interface PropsType {
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
-  const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
+  //const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
   const {
     profileImage,
     name,
@@ -65,12 +66,12 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   function checkNameInput(e: React.ChangeEvent<HTMLInputElement>) {
     const text = e.target.value;
     updateName(text);
-    if (NICK_NAME.test(text)) {
+    if (checkNicknameForm(text)) {
       setNameState(nickName.CORRECT);
       changeReadyState(true);
       return;
     }
-    if (!NICK_NAME.test(text)) {
+    if (!checkNicknameForm(text)) {
       setNameState(nickName.ERROR);
       changeReadyState(false);
     }
