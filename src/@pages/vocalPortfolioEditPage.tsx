@@ -57,6 +57,7 @@ export default function VocalPortfolioEditPage() {
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
+  const [titleLength, setTitleLength]=useState(0);
 
   useEffect(() => {
     setHashtag(prevData.keyword);
@@ -177,8 +178,12 @@ export default function VocalPortfolioEditPage() {
     setComplete(true);
   }
 
-  function updateTitle(e: React.ChangeEvent<HTMLInputElement>) {
+  function updateTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
+    }
     setTitle(e.target.value);
+    setTitleLength(e.target.value.length)
   }
 
   function hoverImage() {
@@ -243,6 +248,7 @@ export default function VocalPortfolioEditPage() {
               maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
+              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}
             />
             <Line />
 
@@ -532,14 +538,25 @@ const Container3 = styled.section`
   width: 88.7rem;
 `;
 
-const TitleInput = styled.input`
-  height: 6.5rem;
+const TitleInput = styled.textarea<{row:number}>`
   width: 100%;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: 13.6rem;
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+
+  border: none;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Line = styled.hr`
