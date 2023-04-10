@@ -105,7 +105,7 @@ export default function EachUserComment(props: PropsType) {
             {isHover && !isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
                 <PlayerBlur>
-                  <ProfileImage src={commentInfo.vocalProfileImage}/>
+                  <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover}/>
                 </PlayerBlur>
                 <PlayBtnIcon />
               </PlayerBlurWrapper>
@@ -113,12 +113,12 @@ export default function EachUserComment(props: PropsType) {
             {isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={pauseAudio}>
                 <PlayerBlur>
-                  <ProfileImage src={commentInfo.vocalProfileImage} />
+                  <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover}/>
                 </PlayerBlur>
                 <PauseButtonIcon />
               </PlayerBlurWrapper>
             )}
-            <ProfileImage src={commentInfo.vocalProfileImage} />
+            <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover}/>
           </ProfileImageWrapper>
           <InfoBox>
             <InfoTopWrapper>
@@ -167,7 +167,7 @@ const CommentContainer = styled.article<{ commentClickBool: boolean; commentClic
   }
 `;
 
-const ProfileImage = styled.img`
+const ProfileImage = styled.img<{isHover:boolean}>`
   width: 100%;
   height: 100%;
 
@@ -176,7 +176,10 @@ const ProfileImage = styled.img`
   object-fit: cover;
   margin: auto;
 
-  backdrop-filter: blur(3rem);
+  backdrop-filter: blur(${({isHover})=>isHover&&0.6}rem);
+  -webkit-filter: blur(${({isHover})=>isHover&&0.6}rem);
+
+  cursor:pointer;
 `;
 
 const ProfileImageWrapper = styled.div`
@@ -195,7 +198,10 @@ const ProfileImageWrapper = styled.div`
   margin-left:3rem;
 `;
 const PlayerBlur = styled.div`
+  height: 9rem;
+  width: 9rem;
 
+  position:relative;
   /* background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
   -webkit-filter: blur(0.6rem); */
@@ -246,10 +252,12 @@ const EllipsisIcon = styled(EllipsisIc)`
 
 const PlayBtnIcon = styled(PlayBtnIc)`
   position: absolute;
+  z-index:2;
   height: 2.4rem;
 `;
 
 const PauseButtonIcon = styled(PauseButtonIc)`
   position: absolute;
+  z-index:2;
   height: 2.4rem;
 `;
