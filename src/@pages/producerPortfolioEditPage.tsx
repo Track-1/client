@@ -125,6 +125,10 @@ export default function ProducerPortfolioEditPage() {
     }
   }
 
+  function checkHeight(){
+    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<25?4.5:Math.floor(titleLength/24)+6.5)
+  }
+
   function addHashtag() {
     if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
@@ -189,7 +193,7 @@ export default function ProducerPortfolioEditPage() {
   }
 
   useEffect(()=>{
-    setTitleLength(prevData.title.length)
+    setTitleLength(title.length)
   },[])
 
   function hoverImage() {
@@ -240,15 +244,15 @@ export default function ProducerPortfolioEditPage() {
               placeholder="Please enter a title"
               spellCheck={false}
               maxLength={28}
-              defaultValue={prevData.title}
+              defaultValue={title}
               onChange={updateTitle}
-              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}
+              row={checkHeight()}
             />
             <Line />
 
             <TextCount>
               <TextWrapper>
-                <InputCount>{prevData.title.length}</InputCount>
+                <InputCount>{title.length}</InputCount>
                 <LimitCount>/28</LimitCount>
               </TextWrapper>
             </TextCount>

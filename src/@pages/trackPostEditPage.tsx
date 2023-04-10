@@ -230,6 +230,10 @@ export default function TrackPostEditPage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
 
+  function checkHeight(){
+    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<25?4.5:Math.floor(titleLength/24)+6.5)
+  }
+
   return (
     <>
       {isLoading && <Loading />}
@@ -276,7 +280,7 @@ export default function TrackPostEditPage() {
                     maxLength={28}
                     defaultValue={data?.data.data.title}
                     onChange={inputTitle}
-                    row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}
+                    row={checkHeight()}
                     />
                 <Line />
 
