@@ -160,6 +160,7 @@ export default function UploadInfo(props: propsType) {
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
+   
     if(inputLength>28){
       alert("제목은 28자까지 작성할 수 있습니다.")
     }
