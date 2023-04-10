@@ -36,14 +36,15 @@ export default function TrackPostEditPage() {
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtegInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>(prevData?.introduce);
+  const [description, setDescription] = useState<string>(
+    Object.keys(prevData).includes("introduce") ? prevData?.introduce : prevData?.content,
+  );
   const [title, setTitle] = useState<string>(prevData?.title);
   const [editData, setEditData] = useState<any>();
   const [showImage, setShowImage] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
-
   const { data } = useQuery(["state", beatId], () => getTrackInfo(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
