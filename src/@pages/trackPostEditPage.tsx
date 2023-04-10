@@ -20,21 +20,23 @@ import {
   UploadBtnIc,
   CanUploadBtnIc,
   FileChangeIc,
+  HashtagWarningIc,
 } from "../assets";
 import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
 import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
 import { TrackInfoDataType } from "../type/tracksDataType";
+import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import usePlayer from "../utils/hooks/usePlayer";
 
 export default function TrackPostEditPage() {
   const beatId = useLocation().state.id;
   const prevData = useLocation().state.prevData;
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const hashtagText = useRef<HTMLInputElement | null>(null);
+  //const hashtagText = useRef<HTMLInputElement | null>(null);
   const [category, setCategory] = useState<string>(prevData?.category.toUpperCase());
   const [audioFile, setAudioFile] = useState<File>();
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
-  const [hashtagInput, setHashtegInput] = useState<string>("");
+  const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(prevData?.introduce);
   const [title, setTitle] = useState<string>(prevData?.title);
@@ -43,6 +45,14 @@ export default function TrackPostEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
+  const [titleLength, setTitleLength]=useState<number>(0);
+  const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
+  const [isKorean, setIsKorean] = useState<boolean>(false);
+  const [tagMaxLength, setTagMaxLength] = useState<number>(10);
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const [hashtagText, setHashtagText] = useState<string>("");
+  const [hashtagLength, setHashtagLength] = useState<number>(0);
+  const { hoverState, changeHoverState } = useHover();
 
   const { data } = useQuery(["state", beatId], () => getTrackInfo(beatId), {
     refetchOnWindowFocus: false,
@@ -107,21 +117,72 @@ export default function TrackPostEditPage() {
     };
   }
 
-  function deleteHashtag(deleteTarget: string) {
-    const temp: string[] = [];
-    hashtag?.forEach((keyword) => {
-      if (keyword !== deleteTarget) temp.push(keyword);
-    });
-    setHashtag(temp);
+  // function deleteHashtag(deleteTarget: string) {
+  //   const temp: string[] = [];
+  //   hashtag?.forEach((keyword) => {
+  //     if (keyword !== deleteTarget) temp.push(keyword);
+  //   });
+  //   setHashtag(temp);
+  // }
+
+  function deleteHashtag(index: number) {
+    const deleteTag = hashtag;
+    deleteTag.splice(index, 1);
+    setHashtag([...deleteTag]);
+    setHashtagInput("");
   }
 
   function changeHashtagWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    setHashtegInput(e.target.value);
+    setHashtagInput(e.target.value);
   }
 
-  function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code === "Enter" && hashtagText.current !== null) {
-      setHashtag((prev) => prev && [...prev, hashtagText.current!.value]);
+  // function addHashtag(e: React.KeyboardEvent<HTMLInputElement>) {
+  //   if (e.code === "Enter" && hashtagText.current !== null) {
+  //     setHashtag((prev) => prev && [...prev, hashtagText.current!.value]);
+  //   }
+  // }
+
+  function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
+    setHashtagText(e.target.value);
+
+    setHashtagInput(e.target.value);
+
+    e.target.value !== "" ? setHashtagLength(e.target.value.length) : setHashtagLength(0);
+
+    if (checkHashtagLength(e.target.value)) {
+      setIsKorean(true);
+      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+    } else {
+      setIsKorean(false);
+    }
+  }
+
+  function addHashtag() {
+    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
+      hashtagRef.current.value = "";
+      setHashtag((prev) => [...prev, hashtagInput]);
+      setHashtagInput("");
+      setHashtagText("");
+      setHashtagLength(0);
+    }
+  }
+
+  function isDuplicateHashtag(value: string): boolean {
+    const isDuplicate = hashtag.includes(value);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
+      addHashtag();
     }
   }
 
@@ -133,8 +194,12 @@ export default function TrackPostEditPage() {
     setDescription(e.target.value);
   }
 
-  function inputTitle(e: React.ChangeEvent<HTMLInputElement>) {
+  function inputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
+    }
     setTitle(e.target.value);
+    setTitleLength(e.target.value.length)
   }
 
   function completeEdit() {
@@ -156,6 +221,10 @@ export default function TrackPostEditPage() {
     navigate(-1);
   }
 
+  function hoverImage() {
+    isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
+  }
+
   return (
     <>
       {isLoading && <Loading />}
@@ -175,16 +244,16 @@ export default function TrackPostEditPage() {
           </Container>
           <Container2>
             <SectionWrapper>
-              <TrackImageBox>
+              <TrackImageBox onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
                 <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
                   {isImageUploaded ? (
-                    <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" />
+                    <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   ) : (
-                    <TrackUploadImage src={String(data?.data.data.jacketImage)} alt="썸네일 이미지" />
+                    <TrackUploadImage src={String(data?.data.data.jacketImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   )}
                 </label>
                 <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                  <FileChangeIcon />
+                {isImageHovered&&<FileChangeIcon />}
                 </label>
               </TrackImageBox>
               <input
@@ -196,13 +265,14 @@ export default function TrackPostEditPage() {
               />
               <Container3>
                 <TitleInput
-                  typeof="text"
-                  placeholder="Please enter a title"
-                  defaultValue={data?.data.data.title}
-                  spellCheck={false}
-                  maxLength={36}
-                  onChange={inputTitle}
-                />
+                    typeof="text"
+                    placeholder="Please enter a title"
+                    spellCheck={false}
+                    maxLength={28}
+                    defaultValue={data?.data.data.title}
+                    onChange={inputTitle}
+                    row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}
+                  />
                 <Line />
 
                 <TextCount>
@@ -215,7 +285,7 @@ export default function TrackPostEditPage() {
                 <InfoContainer>
                   <InfoItemBox>
                     <NameBox>
-                      <UploadFileUpdateIc />
+                      <UploadFileUpdateIcon />
                     </NameBox>
                     <InputBox>
                       <InputWrapper>
@@ -240,7 +310,7 @@ export default function TrackPostEditPage() {
 
                   <InfoItemBox>
                     <NameBox>
-                      <UploadCategoryIc />
+                      <UploadCategoryIcon />
                     </NameBox>
                     <InputBox>
                       <InputWrapper>
@@ -255,10 +325,10 @@ export default function TrackPostEditPage() {
 
                   <InfoItemBox>
                     <NameBox>
-                      <UploadHashtagIc />
+                      <UploadHashtagIcon />
                     </NameBox>
                     <InputBox>
-                      <InputWrapper>
+                      {/* <InputWrapper>
                         <>
                           {hashtag &&
                             hashtag?.map((item: string, index: number) => {
@@ -309,30 +379,72 @@ export default function TrackPostEditPage() {
                             </>
                           )}
                         </>
-                      </InputWrapper>
-
-                      <WarningIcon>
-                        <>
-                          <HoverHashtagWarningIc onClick={toggleHashtagWarningOpen} />
-                          {hashtagWarningOpen && (
-                            <WarningTextWrapper>
-                              <WarningText>
-                                1. 해시태그는 최대 3개까지 추가 가능합니다.
-                                <br />
-                                2. 최대 10자까지 작성이 가능합니다.
-                                <br />
-                                3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                              </WarningText>
-                            </WarningTextWrapper>
-                          )}
-                        </>
-                      </WarningIcon>
+                      </InputWrapper> */}
+                      <InputHashtagWrapper>
+                    <>
+                      {hashtag?.map((item: string, index: number) => {
+                        return (
+                          <InputHashtagWrapper>
+                            <Hashtag key={index}>
+                              <HashtagWrapper>
+                                <HashtagSharp># </HashtagSharp>
+                                <CompletedHashtag>{item}</CompletedHashtag>
+                                <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        );
+                      })}
+                      <>
+                        {hashtag.length < 3 && (
+                          <InputHashtagWrapper>
+                            <Hashtag>
+                              <HashtagWrapper>
+                                <HashtagSharp># </HashtagSharp>
+                                <HashtagInput
+                                  onChange={getInputText}
+                                  onKeyPress={(e) => {
+                                    e.key === "Enter" && addHashtag();
+                                  }}
+                                  inputWidth={hashtagLength}
+                                  isKorean={isKorean}
+                                  ref={hashtagRef}
+                                  placeholder="HashTag"
+                                  maxLength={tagMaxLength}
+                                />
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        )}
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
+                      </>
+                    </>
+                  </InputHashtagWrapper>
+                  
+                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                    {hoverState ? (
+                      <>
+                        <HoverHashtagWarningIcon />
+                        <WarningTextWrapper>
+                          <WarningText>
+                            1. 해시태그는 최대 3개까지 추가 가능합니다.
+                            <br />
+                            2. 최대 10자까지 작성이 가능합니다.
+                            <br />
+                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                          </WarningText>
+                        </WarningTextWrapper>
+                      </>
+                    ) : (
+                      <HashtagWarningIcon />
+                    )}
+                  </WarningIcon>
                     </InputBox>
                   </InfoItemBox>
 
                   <InfoItemBox>
                     <NameBox>
-                      <UploadDescriptionIc />
+                      <UploadDescriptionIcon />
                     </NameBox>
                     <InputBox>
                       {/* {description && ( */}
@@ -385,6 +497,475 @@ export default function TrackPostEditPage() {
   );
 }
 
+// const UploadFileUpdateIcon=styled(UploadFileUpdateIc)`
+//   width:13.3rem;
+// `
+
+// const UploadCategoryIcon=styled(UploadCategoryIc)`
+//   width:12.3rem;
+// `
+
+// const UploadDescriptionIcon=styled(UploadDescriptionIc)`
+//   width:14.6rem;
+// `
+
+// const UploadHashtagIcon=styled(UploadHashtagIc)`
+//   width:11.2rem;
+// `
+
+// const Container = styled.header`
+//   height: 13.8rem;
+//   width: 100%;
+// `;
+
+// const HeaderWrapper = styled.div`
+//   height: 100%;
+
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin: 0 7.5rem;
+// `;
+
+// const LeftWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;
+
+// const UserClass = styled.div`
+//   ${({ theme }) => theme.fonts.id};
+//   color: ${({ theme }) => theme.colors.gray3};
+//   margin-left: 6.1rem;
+// `;
+
+// const UploadBackIcon = styled(UploadBackIc)`
+//   cursor: pointer;
+// `;
+
+// const UploadBtnIcon = styled(UploadBtnIc)`
+//   cursor: pointer;
+// `;
+
+// const CanUploadBtnIcon = styled(CanUploadBtnIc)`
+//   width:24.6rem;
+//   cursor: pointer;
+// `;
+
+// const Container2 = styled.section`
+//   height: 76.2rem;
+//   width: 171rem;
+
+//   margin-left: 15rem;
+// `;
+
+// const SectionWrapper = styled.div`
+//   height: 100%;
+//   /* width: 138.2rem; */
+
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+
+//   border: 0.2rem solid transparent;
+//   border-top-left-radius: 37.8rem;
+//   border-bottom-left-radius: 37.8rem;
+//   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
+//     linear-gradient(to right, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
+//   background-origin: border-box;
+//   background-clip: content-box, border-box;
+// `;
+
+// const TrackImageBox = styled.div`
+//   position: relative;
+//   display: flex;
+//   align-items: center;
+//   border-radius: 50%;
+//   margin-left: 6.5rem;
+//   margin-right: 4.9rem;
+//   overflow: hidden;
+//   cursor: pointer;
+// `;
+
+// const TrackUploadImage = styled.img<{ isImageHovered: boolean }>`
+//   width: 60.4rem;
+//   height: 60.4rem;
+//   object-fit: cover;
+//   border-radius: 50%;
+
+//   filter: blur(${({ isImageHovered }) => isImageHovered && 3}rem);
+// `;
+
+// const FileChangeIcon = styled(FileChangeIc)`
+//   width:18.9rem;
+
+
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   cursor: pointer;
+// `;
+
+// const Container3 = styled.section`
+//   height: 74.7rem;
+//   width: 88.7rem;
+// `;
+
+// const TitleInput = styled.textarea<{row:number}>`
+//   width: 100%;
+//   height:${({row})=>row<1?6.5:row*2-2}rem;
+
+//   font-size: 5rem;
+//   ${({ theme }) => theme.fonts.title};
+//   color: ${({ theme }) => theme.colors.white};
+//   margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+//   outline: 0;
+//   resize: none;
+//   overflow: hidden;
+//   background-color: transparent;
+
+//   border: none;
+
+//   white-space: pre-wrap;
+//   word-wrap: break-word;
+//   word-break: break-word;
+// `;
+
+// const Line = styled.hr`
+//   width: 88.2rem;
+
+//   border: 1px solid ${({ theme }) => theme.colors.white};
+//   margin-left: 5px;
+// `;
+
+// const TextCount = styled.div`
+//   height: 2.3rem;
+//   width: 100%;
+
+//   ${({ theme }) => theme.fonts.body1};
+//   margin-top: 1.8rem;
+// `;
+
+// const TextWrapper = styled.div`
+//   display: flex;
+//   float: right;
+// `;
+
+// const InputCount = styled.p`
+//   color: ${({ theme }) => theme.colors.white};
+// `;
+
+// const LimitCount = styled.p`
+//   color: ${({ theme }) => theme.colors.gray4};
+// `;
+
+// const InfoContainer = styled.div`
+//   width: 88.7rem;
+
+//   margin-top: 3.9rem;
+// `;
+
+// const InfoItemBox = styled.div`
+//   height: 6rem;
+//   width: 100%;
+
+//   display: flex;
+//   margin-bottom: 0.2rem;
+// `;
+
+// const NameBox = styled.div`
+//   width: 20.7rem;
+//   height: 100%;
+
+//   display: flex;
+//   align-items: center;
+// `;
+
+// const InputBox = styled.div`
+//   width: 100%;
+//   height: 100%;
+
+//   display: flex;
+//   justify-content: space-between;
+
+//   margin-left: 2rem;
+// `;
+
+// const InputWrapper = styled.div`
+//   display: flex;
+// `;
+
+// const FileName = styled.input`
+//   height: 2.5rem;
+//   width: 16.4rem;
+
+//   display: flex;
+//   align-items: center;
+
+//   text-overflow: ellipsis;
+
+//   ${({ theme }) => theme.fonts.hashtag};
+//   color: ${({ theme }) => theme.colors.white};
+//   margin-top: 1.686rem;
+//   cursor: default;
+// `;
+
+// const FileAttribute = styled.div`
+//   height: 2.5rem;
+//   width: 100%;
+//   width: 100%;
+
+//   display: flex;
+//   align-items: center;
+//   ${({ theme }) => theme.fonts.hashtag};
+//   color: ${({ theme }) => theme.colors.white};
+//   margin-top: 1.686rem;
+// `;
+
+// const InputFileTextWrapper = styled.div<{ fileName: string }>`
+//   height: 4.7rem;
+//   width: 20.8rem;
+
+//   display: flex;
+//   align-items: center;
+//   border-bottom: 1px solid
+//     ${(props) => (props.fileName !== "" ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+// `;
+
+// const InputCategoryTextWrapper = styled.div`
+//   height: 4.2rem;
+//   width: 9.9rem;
+
+//   border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
+// `;
+
+// const InputCategoryText = styled.div`
+//   height: 2rem;
+//   width: 100%;
+
+//   display: flex;
+//   align-items: center;
+
+//   ${({ theme }) => theme.fonts.hashtag};
+//   color: ${({ theme }) => theme.colors.white};
+//   margin-top: 1.5rem;
+//   cursor: pointer;
+// `;
+
+// const HashTagInfoItemBox = styled.div`
+//   height: 9rem;
+//   width: 100%;
+
+//   display: flex;
+//   margin-bottom: 0.2rem;
+// `;
+
+// const InputHashtagWrapper = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   align-items: center;
+//   // height: 9rem;
+// `;
+
+// const Hashtag = styled.div`
+//   display: flex;
+//   align-items: center;
+//   height: 3.8rem;
+//   background-color: ${({ theme }) => theme.colors.gray5};
+//   border-radius: 2.1rem;
+//   padding-right: 1rem;
+//   margin: 0.5rem 1rem 0.5rem 0;
+// `;
+
+// const HashtagWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin: 0.9rem 1.5rem;
+// `;
+
+// const HashtagSharp = styled.p`
+//   margin-right: 0.5rem;
+//   ${({ theme }) => theme.fonts.hashtag};
+//   color: ${({ theme }) => theme.colors.gray1};
+// `;
+
+// const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+//   width: ${({ inputWidth, isKorean }) =>
+//     inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
+//   display: flex;
+//   ${({ theme }) => theme.fonts.hashtag};
+//   color: ${({ theme }) => theme.colors.gray1};
+//   ::placeholder {
+//     color: ${({ theme }) => theme.colors.gray3};
+//   }
+// `;
+// // const InputHashtagWrapper = styled.div`
+// //   display: flex;
+// //   margin-top: 1.4rem;
+// // `;
+
+// // const Hashtag = styled.div`
+// //   height: 3.8rem;
+
+// //   background-color: ${({ theme }) => theme.colors.gray5};
+// //   border-radius: 2.1rem;
+// //   margin-right: 1rem;
+// // `;
+
+// // const HashtagWrapper = styled.div`
+// //   display: flex;
+// //   align-items: center;
+// //   margin: 0.9rem 1.5rem;
+// // `;
+
+// // const HashtagSharp = styled.p`
+// //   ${({ theme }) => theme.fonts.hashtag};
+// //   color: ${({ theme }) => theme.colors.gray1};
+// // `;
+
+// // const HashtagInput = styled.input`
+// //   width: ${({ width }) => (width === 0 ? 3 : width)}rem;
+// //   ${({ theme }) => theme.fonts.hashtag};
+// //   color: ${({ theme }) => theme.colors.gray1};
+// //   ::placeholder {
+// //     color: ${({ theme }) => theme.colors.gray3};
+// //   }
+// // `;
+
+// const InputDescriptionText = styled.textarea`
+//   width: 72rem;
+//   height: 4rem;
+
+//   outline: 0;
+//   resize: none;
+//   overflow: hidden;
+//   background-color: transparent;
+
+//   border: none;
+//   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
+//   ${({ theme }) => theme.fonts.description};
+//   color: ${({ theme }) => theme.colors.white};
+//   margin-top: 1.7rem;
+//   ::placeholder {
+//     color: ${({ theme }) => theme.colors.gray3};
+//   }
+// `;
+
+// const WarningTextWrapper = styled.div`
+//   height: 12.5rem;
+//   width: 47.2rem;
+
+//   position: absolute;
+
+//   top: 61.2rem;
+//   left: 128.4rem;
+//   background: rgba(30, 32, 37, 0.7);
+//   backdrop-filter: blur(3px);
+//   border-radius: 5px;
+// `;
+
+// const WarningText = styled.div`
+//   ${({ theme }) => theme.fonts.description};
+//   color: ${({ theme }) => theme.colors.gray2};
+
+//   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
+// `;
+
+// const DropMenuBox = styled.div`
+//   width: 13rem;
+
+//   position: absolute;
+//   top: 54.4rem;
+//   left: 113.7rem;
+//   background: rgba(30, 32, 37, 0.7);
+//   backdrop-filter: blur(6.5px);
+//   border-radius: 0.5rem;
+// `;
+
+// const DropMenuWrapper = styled.ul`
+//   width: 100%;
+
+//   margin: 0.8rem 0;
+// `;
+
+// const DropMenuItem = styled.li`
+//   height: 3.2rem;
+//   width: 9.3rem;
+
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   ${({ theme }) => theme.fonts.hashtag};
+//   color: ${({ theme }) => theme.colors.white};
+//   margin: 0 1.9rem;
+//   cursor: pointer;
+// `;
+
+// const DropMenuText = styled.p`
+//   height: 2rem;
+// `;
+
+// const WarningIcon = styled.div`
+//   height: 3rem;
+//   margin-top: 0.7rem;
+//   border-radius: 5rem;
+
+//   cursor: pointer;
+// `;
+
+// const FolderUploadIcon = styled(FolderUploadIc)`
+//   width:4rem;
+//   height:4rem;
+
+//   margin-left: 1.2rem;
+//   margin-top: 1.3rem;
+// `;
+
+// const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+//   margin-top: 0.9rem;
+//   cursor: pointer;
+// `;
+
+// const AddHashtagIcon = styled(AddHashtagIc)`
+//    width: 4rem;
+//   height: 4rem;
+//   margin-left: -0.2rem;
+//   margin-top: 1.2rem;
+
+//   cursor: pointer;
+// `;
+
+// const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+//   margin-left: 1rem;
+//   cursor: pointer;
+// `;
+
+// const CompletedHashtag = styled.article`
+//   display: flex;
+//   align-items: center;
+
+//   //padding-left: 0.5rem;
+//   color: ${({ theme }) => theme.colors.white};
+
+//   ${({ theme }) => theme.fonts.hashtag}
+// `;
+
+const UploadDescriptionIcon = styled(UploadDescriptionIc)`
+  width: 14.6rem;
+`;
+
+const UploadHashtagIcon = styled(UploadHashtagIc)`
+  width: 11.2rem;
+`;
+
+const UploadCategoryIcon = styled(UploadCategoryIc)`
+  width: 12.3rem;
+`;
+const UploadFileUpdateIcon = styled(UploadFileUpdateIc)`
+  width: 13.3rem;
+`;
+
 const Container = styled.header`
   height: 13.8rem;
   width: 100%;
@@ -419,6 +1000,7 @@ const UploadBtnIcon = styled(UploadBtnIc)`
 `;
 
 const CanUploadBtnIcon = styled(CanUploadBtnIc)`
+  width: 24.6rem;
   cursor: pointer;
 `;
 
@@ -449,27 +1031,41 @@ const SectionWrapper = styled.div`
 const TrackImageBox = styled.div`
   position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  margin-left: 6.5rem;
-  margin-right: 4.9rem;
-  overflow: hidden;
+  margin-left: 38rem;
   cursor: pointer;
 `;
 
-const TrackUploadImage = styled.img`
+const TrackUploadImageWrapper = styled.label`
   width: 60.4rem;
   height: 60.4rem;
-  object-fit: cover;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  :hover {
-    background: rgba(30, 32, 37, 0.5);
-    filter: blur(3rem);
-  }
+  position: absolute;
+  overflow: hidden;
+`;
+
+const TrackUploadImage = styled.img<{ isImageHovered: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
+  filter: blur(${({ isImageHovered }) => isImageHovered && 3}rem);
 `;
 
 const FileChangeIcon = styled(FileChangeIc)`
+  width: 18.9rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -478,18 +1074,30 @@ const FileChangeIcon = styled(FileChangeIc)`
 `;
 
 const Container3 = styled.section`
+  margin-right: 3rem;
   height: 74.7rem;
   width: 88.7rem;
 `;
 
-const TitleInput = styled.input`
-  height: 6.5rem;
+const TitleInput = styled.textarea<{row:number}>`
   width: 100%;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: 13.6rem;
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+
+  border: none;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Line = styled.hr`
@@ -613,17 +1221,29 @@ const InputCategoryText = styled.div`
   cursor: pointer;
 `;
 
+const HashTagInfoItemBox = styled.div`
+  height: 9rem;
+  width: 100%;
+
+  display: flex;
+  margin-bottom: 0.2rem;
+`;
+
 const InputHashtagWrapper = styled.div`
   display: flex;
-  margin-top: 1.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  // height: 9rem;
 `;
 
 const Hashtag = styled.div`
+  display: flex;
+  align-items: center;
   height: 3.8rem;
-
   background-color: ${({ theme }) => theme.colors.gray5};
   border-radius: 2.1rem;
-  margin-right: 1rem;
+  padding-right: 1rem;
+  margin: 0.5rem 1rem 0.5rem 0;
 `;
 
 const HashtagWrapper = styled.div`
@@ -633,12 +1253,15 @@ const HashtagWrapper = styled.div`
 `;
 
 const HashtagSharp = styled.p`
+  margin-right: 0.5rem;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input`
-  width: ${({ width }) => (width === 0 ? 3 : width)}rem;
+const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+  width: ${({ inputWidth, isKorean }) =>
+    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
+  display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
   ::placeholder {
@@ -660,6 +1283,7 @@ const InputDescriptionText = styled.textarea`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
+  margin-left: 1rem;
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
@@ -671,8 +1295,8 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 61.2rem;
-  left: 128.4rem;
+  top: 62rem;
+  left: 136.5rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 5px;
@@ -721,30 +1345,70 @@ const DropMenuText = styled.p`
 
 const WarningIcon = styled.div`
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 2.5rem;
   border-radius: 5rem;
 
   cursor: pointer;
 `;
 
 const FolderUploadIcon = styled(FolderUploadIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
 `;
 
 const CategoryDropDownIcon = styled(CategoryDropDownIc)`
+  width: 4rem;
+  height: 4rem;
   margin-top: 0.9rem;
   cursor: pointer;
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
+  width: 4rem;
+  height: 4rem;
   margin-left: -0.2rem;
-  margin-top: 1.3rem;
+  margin-top: 1.2rem;
 
   cursor: pointer;
 `;
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 1rem;
+  height: 1rem;
   margin-left: 1rem;
   cursor: pointer;
+`;
+
+const ProfileWarningWrapper = styled.section`
+  position: absolute;
+  margin-top: 1rem;
+  margin-right: 10rem;
+  right: 0;
+`;
+
+const CompletedHashtag = styled.article`
+  display: flex;
+  align-items: center;
+
+  //padding-left: 0.5rem;
+  color: ${({ theme }) => theme.colors.white};
+
+  ${({ theme }) => theme.fonts.hashtag}
+`;
+
+const HoverHashtagWarningIcon = styled(HoverHashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const HashtagWarningIcon = styled(HashtagWarningIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const CheckCategoryIcon = styled(CheckCategoryIc)`
+  width: 1.5rem;
+  height: 0.9rem;
 `;
