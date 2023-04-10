@@ -10,7 +10,7 @@ import { getComment, updateComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
-import { endPost } from "../../recoil/postIsCompleted";
+import { endPost, postContentLength } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
@@ -57,6 +57,7 @@ export default function UserComment(props: PropsType) {
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
   const [key, setKey] = useState<number>(0);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
 
   const navigate = useNavigate();
 
@@ -98,6 +99,10 @@ export default function UserComment(props: PropsType) {
         // setComments([]);
         setClickPost(false);
         setComments([]);
+        setUploadData((prevState) => {
+          return { ...prevState, audioFile: null, content: "", fileName: "" };
+        });
+        setCommentLength(0);
         // excuteGetData();
         setKey(key + 1);
       } else {
@@ -161,8 +166,10 @@ export default function UserComment(props: PropsType) {
     if (blockAccess()) {
       navigate("/login");
     } else {
-      setClickPost(true);
-      setIsCompleted(!isCompleted);
+      if (uploadData.audioFile && uploadData.content.length > 0) {
+        setClickPost(true);
+        setIsCompleted(!isCompleted);
+      }
     }
 
     //  post()
