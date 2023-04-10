@@ -1,5 +1,7 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { categorySelectedCheck } from "../core/tracks/categorySelectedCheck";
+import { CategoryChecksType } from "../type/CategoryChecksType";
 const { persistAtom } = recoilPersist();
 
 export const categorySelect = atom({
@@ -37,4 +39,10 @@ export const vocalsData = atom({
 export const clickCategoryHeader= atom({
   key:"clickCategoryHeader",
   default:false,
+})
+
+export const categoryFinalSelectedCheck=atom<CategoryChecksType[]>({
+  key:"categoryFinalSelectedCheck",
+  default:categorySelectedCheck,
+  effects_UNSTABLE: [persistAtom],
 })
