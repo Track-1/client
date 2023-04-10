@@ -126,7 +126,7 @@ export default function ProducerPortfolioEditPage() {
   }
 
   function checkHeight(){
-    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<25?4.5:Math.floor(titleLength/24)+6.5)
+    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
   }
 
   function addHashtag() {
