@@ -93,10 +93,6 @@ export default function UserComment(props: PropsType) {
       setComments([]);
       if (clickPost === true) {
         queryClient.invalidateQueries("comments");
-        // setContent("");
-        // setAudioFile(null);
-        // setIsEnd(true);
-        // setComments([]);
         setClickPost(false);
         setComments([]);
         setUploadData((prevState) => {
