@@ -290,7 +290,8 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 1.4rem;
+
+  height:10rem;
 `;
 
 const Hashtag = styled.div`
@@ -340,7 +341,8 @@ const CompletedHashtag = styled.article`
 const AddHashtagIcon = styled(AddHashtagIc)`
   width: 4rem;
   height: 4rem;
-  margin-top: -0.5rem;
+  margin-top:1rem;
+ 
   cursor: pointer;
 `;
 
