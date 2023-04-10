@@ -98,6 +98,9 @@ export default function UserComment(props: PropsType) {
         // setComments([]);
         setClickPost(false);
         setComments([]);
+        setUploadData((prevState) => {
+          return { ...prevState, audioFile: null, content: "", fileName: "" };
+        });
         // excuteGetData();
         setKey(key + 1);
       } else {
@@ -161,8 +164,10 @@ export default function UserComment(props: PropsType) {
     if (blockAccess()) {
       navigate("/login");
     } else {
-      setClickPost(true);
-      setIsCompleted(!isCompleted);
+      if (uploadData.audioFile && uploadData.content.length > 0) {
+        setClickPost(true);
+        setIsCompleted(!isCompleted);
+      }
     }
 
     //  post()
