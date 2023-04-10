@@ -1,3 +1,4 @@
+import { getCookie } from "../../utils/cookie";
 import { client } from "./common/axios";
 
 export async function getTracksData(filteredUrlApi: string, page: number) {
@@ -7,6 +8,7 @@ export async function getTracksData(filteredUrlApi: string, page: number) {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: getCookie("accessToken") !== undefined ? `Bearer ${getCookie("accessToken")}` : null,
         },
       },
     );
