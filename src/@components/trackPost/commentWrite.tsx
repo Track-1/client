@@ -86,7 +86,7 @@ export default function CommentWrite(props: PropsType) {
               ref={commentFile}
             />
             <CountWrapper>
-              <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
+              <InputCount commentLength={commentLength}>{commentLength}<p>/ 150</p></InputCount>
             </CountWrapper>
           </TitleWrapper>
           <InputWrapper>
@@ -104,6 +104,8 @@ export default function CommentWrite(props: PropsType) {
 }
 
 const WriteContainer = styled.article`
+  display:flex;
+
   height: 17.1rem;
 
   border: 0.2rem solid transparent;
@@ -119,25 +121,37 @@ const WriteContainer = styled.article`
 `;
 
 const ProfileImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  width:9rem;
   height: 9rem;
-  width: 9rem;
-  overflow: hidden;
   border-radius: 9rem;
+  position: absolute;
+  overflow: hidden;
 `;
 
 const ImageContainer = styled.div`
-  margin-right: 2rem;
-  margin-left: 3.8rem;
+  margin-top:-9rem;
+  margin-left:3rem;
 `;
 
 const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 `;
 
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
+  
+  margin-left:12rem;
 `;
 
 const TitleWrapper = styled.div`
@@ -177,11 +191,21 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
+   display: flex;
+  justify-content: flex-end;
+
   width: 10rem;
-  margin-left: -2rem;
+  margin-left: -10rem;
+  margin-right: 2rem;
+
   ${({ theme }) => theme.fonts.description}
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
+
+  &>p{
+    margin-left:0.5rem;
+    color: ${({ theme }) => theme.colors.gray3};
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -209,4 +233,6 @@ const InputBox = styled.textarea`
 const FileUploadButtonIcon = styled(FileUploadButtonIc)`
   width: 4rem;
   margin-left: 1.2rem;
+
+  cursor:pointer;
 `;

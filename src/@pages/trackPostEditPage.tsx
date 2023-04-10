@@ -2,7 +2,7 @@ import { file } from "@babel/types";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import styled, { useTheme, css } from "styled-components";
+import styled from "styled-components";
 import BackButton from "../@components/@common/backButton";
 import Loading from "../@components/@common/loading";
 import {
@@ -28,12 +28,8 @@ import { TrackInfoDataType } from "../type/tracksDataType";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import usePlayer from "../utils/hooks/usePlayer";
-import useTextareaHeight from "../utils/hooks/useTextareaHeight";
 
 export default function TrackPostEditPage() {
-  const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
-  const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(172);
-
   const beatId = useLocation().state.id;
   const prevData = useLocation().state.prevData;
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -43,7 +39,7 @@ export default function TrackPostEditPage() {
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>(
+    const [description, setDescription] = useState<string>(
     Object.keys(prevData).includes("introduce") ? prevData?.introduce : prevData?.content,
   );
   const [title, setTitle] = useState<string>(prevData?.title);
@@ -52,7 +48,7 @@ export default function TrackPostEditPage() {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [jacketImage, setJacketImage] = useState<File>(prevData?.jacketImage);
   const navigate = useNavigate();
-  const [titleLength, setTitleLength] = useState<number>(0);
+  const [titleLength, setTitleLength]=useState<number>(0);
   const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
   const [isKorean, setIsKorean] = useState<boolean>(false);
   const [tagMaxLength, setTagMaxLength] = useState<number>(10);
@@ -206,16 +202,16 @@ export default function TrackPostEditPage() {
   // },[])
 
   function inputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if (e.target.value.length > 28) {
-      alert("제목은 28자까지 작성할 수 있습니다.");
+    if(e.target.value.length>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
     }
     setTitle(e.target.value);
-    setTitleLength(e.target.value.length);
+    setTitleLength(e.target.value.length)
   }
 
-  useEffect(() => {
-    setTitleLength(data?.data.data.title.length);
-  }, []);
+  useEffect(()=>{
+    setTitleLength(data?.data.data.title.length)
+  },[])
 
   function completeEdit() {
     const formData = new FormData();
@@ -240,15 +236,10 @@ export default function TrackPostEditPage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
 
-  function checkHeight() {
-    return checkHashtagLength(title)
-      ? titleLength < 18
-        ? 4.5
-        : Math.floor(titleLength / 17) + 6.5
-      : titleLength < 26
-      ? 4.5
-      : Math.floor(titleLength / 25) + 6.5;
+  function checkHeight(){
+    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
   }
+
 
   return (
     <>
@@ -274,18 +265,12 @@ export default function TrackPostEditPage() {
                   {isImageUploaded ? (
                     <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   ) : (
-                    <TrackUploadImage
-                      src={String(data?.data.data.jacketImage)}
-                      alt="썸네일 이미지"
-                      isImageHovered={isImageHovered}
-                    />
+                    <TrackUploadImage src={String(data?.data.data.jacketImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   )}
                 </TrackUploadImageWrapper>
-                {isImageHovered && (
-                  <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                    <FileChangeIcon />
-                  </label>
-                )}
+                {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                <FileChangeIcon />
+                </label>)}
               </TrackImageBox>
               <input
                 type="file"
@@ -296,16 +281,17 @@ export default function TrackPostEditPage() {
               />
               <Container3>
                 <TitleInput
-                  typeof="text"
-                  placeholder="Please enter a title"
-                  spellCheck={false}
-                  maxLength={28}
-                  defaultValue={data?.data.data.title}
-                  onChange={inputTitle as any}
-                />
+                    typeof="text"
+                    placeholder="Please enter a title"
+                    spellCheck={false}
+                    maxLength={28}
+                    defaultValue={data?.data.data.title}
+                    onChange={inputTitle}
+                    row={checkHeight()}
+                    />
                 <Line />
 
-                <TextCount font={"body"} textareaMargin={textareaMargin}>
+                <TextCount>
                   <TextWrapper>
                     <InputCount>{title?.length}</InputCount>
                     <LimitCount>/28</LimitCount>
@@ -359,64 +345,64 @@ export default function TrackPostEditPage() {
                     </NameBox>
                     <InputBox>
                       <InputHashtagWrapper>
-                        <>
-                          {hashtag?.map((item: string, index: number) => {
-                            return (
-                              <InputHashtagWrapper>
-                                <Hashtag key={index}>
-                                  <HashtagWrapper>
-                                    <HashtagSharp># </HashtagSharp>
-                                    <CompletedHashtag>{item}</CompletedHashtag>
-                                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                                  </HashtagWrapper>
-                                </Hashtag>
-                              </InputHashtagWrapper>
-                            );
-                          })}
-                          <>
-                            {hashtag.length < 3 && (
-                              <InputHashtagWrapper>
-                                <Hashtag>
-                                  <HashtagWrapper>
-                                    <HashtagSharp># </HashtagSharp>
-                                    <HashtagInput
-                                      onChange={getInputText}
-                                      onKeyPress={(e) => {
-                                        e.key === "Enter" && addHashtag();
-                                      }}
-                                      inputWidth={hashtagLength}
-                                      isKorean={isKorean}
-                                      ref={hashtagRef}
-                                      placeholder="HashTag"
-                                      maxLength={tagMaxLength}
-                                    />
-                                  </HashtagWrapper>
-                                </Hashtag>
-                              </InputHashtagWrapper>
-                            )}
-                            {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
-                          </>
-                        </>
-                      </InputHashtagWrapper>
-
-                      <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
-                        {hoverState ? (
-                          <>
-                            <HoverHashtagWarningIcon />
-                            <WarningTextWrapper>
-                              <WarningText>
-                                1. 해시태그는 최대 3개까지 추가 가능합니다.
-                                <br />
-                                2. 최대 10자까지 작성이 가능합니다.
-                                <br />
-                                3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                              </WarningText>
-                            </WarningTextWrapper>
-                          </>
-                        ) : (
-                          <HashtagWarningIcon />
+                    <>
+                      {hashtag?.map((item: string, index: number) => {
+                        return (
+                          <InputHashtagWrapper>
+                            <Hashtag key={index}>
+                              <HashtagWrapper>
+                                <HashtagSharp># </HashtagSharp>
+                                <CompletedHashtag>{item}</CompletedHashtag>
+                                <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
+                        );
+                      })}
+                      <>
+                        {hashtag.length < 3 && (
+                          <InputHashtagWrapper>
+                            <Hashtag>
+                              <HashtagWrapper>
+                                <HashtagSharp># </HashtagSharp>
+                                <HashtagInput
+                                  onChange={getInputText}
+                                  onKeyPress={(e) => {
+                                    e.key === "Enter" && addHashtag();
+                                  }}
+                                  inputWidth={hashtagLength}
+                                  isKorean={isKorean}
+                                  ref={hashtagRef}
+                                  placeholder="HashTag"
+                                  maxLength={tagMaxLength}
+                                />
+                              </HashtagWrapper>
+                            </Hashtag>
+                          </InputHashtagWrapper>
                         )}
-                      </WarningIcon>
+                        {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
+                      </>
+                    </>
+                  </InputHashtagWrapper>
+                  
+                  <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                    {hoverState ? (
+                      <>
+                        <HoverHashtagWarningIcon />
+                        <WarningTextWrapper>
+                          <WarningText>
+                            1. 해시태그는 최대 3개까지 추가 가능합니다.
+                            <br />
+                            2. 최대 10자까지 작성이 가능합니다.
+                            <br />
+                            3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                          </WarningText>
+                        </WarningTextWrapper>
+                      </>
+                    ) : (
+                      <HashtagWarningIcon />
+                    )}
+                  </WarningIcon>
                     </InputBox>
                   </HashTagInfoItemBox>
 
@@ -427,17 +413,16 @@ export default function TrackPostEditPage() {
                     <InputBox>
                       {/* {description && ( */}
                       <InputDescriptionText
-                        typeof="text"
-                        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
-                        spellCheck={false}
-                        maxLength={250}
-                        defaultValue={description}
-                        onChange={checkDescription}
-                        ref={textareaRef}></InputDescriptionText>
+                    typeof="text"
+                    placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                    spellCheck={false}
+                    maxLength={250}
+                    defaultValue={description}
+                    onChange={checkDescription}></InputDescriptionText>
                     </InputBox>
                   </InfoItemBox>
                 </InfoContainer>
-                <TextCount key={textareaHeight} font={"description"} textareaMargin={textareaHeight}>
+                <TextCount>
                   <TextWrapper>
                     <InputCount>{description?.length}</InputCount>
                     <LimitCount>/250</LimitCount>
@@ -446,14 +431,14 @@ export default function TrackPostEditPage() {
                 {showDropdown && (
                   <DropMenuBox>
                     <DropMenuWrapper>
-                      {Categories.map((text: string, index: number) => (
-                        <DropMenuItem>
-                          <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
-                            {text}
-                          </DropMenuText>
-                          {category === Categories[index] && <CheckCategoryIcon />}
-                        </DropMenuItem>
-                      ))}
+                    {Categories.map((text: string, index: number) => (
+                    <DropMenuItem>
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
+                        {text}
+                      </DropMenuText>
+                      {category === Categories[index] && <CheckCategoryIcon />}
+                    </DropMenuItem>
+                  ))}
                     </DropMenuWrapper>
                   </DropMenuBox>
                 )}
@@ -594,14 +579,25 @@ const Container3 = styled.section`
   width: 88.7rem;
 `;
 
-const TitleInput = styled.input`
-  height: 6.5rem;
+const TitleInput = styled.textarea<{row:number}>`
   width: 100%;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: 13.6rem;
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+
+  border: none;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Line = styled.hr`
@@ -611,22 +607,12 @@ const Line = styled.hr`
   margin-left: 5px;
 `;
 
-const TextCount = styled.div<{ font: string; textareaMargin: number }>`
+const TextCount = styled.div`
   height: 2.3rem;
   width: 100%;
 
-  ${(props) => {
-    if (props.font === "body")
-      return css`
-        ${({ theme }) => theme.fonts.body1};
-        margin-top: 1.8rem;
-      `;
-    else
-      return css`
-        ${({ theme }) => theme.fonts.description};
-        margin-top: ${props.textareaMargin / 10 - 4.3 + 0.8}rem;
-      `;
-  }}
+  ${({ theme }) => theme.fonts.body1};
+  margin-top: 1.8rem;
 `;
 
 const TextWrapper = styled.div`
@@ -881,7 +867,7 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  margin-left: -0.2rem;
+   margin-left: -0.2rem;
   width: 4rem;
   height: 4rem;
   cursor: pointer;
@@ -925,3 +911,4 @@ const CheckCategoryIcon = styled(CheckCategoryIc)`
   width: 1.5rem;
   height: 0.9rem;
 `;
+

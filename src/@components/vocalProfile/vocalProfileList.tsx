@@ -140,8 +140,8 @@ const VocalsBoxBody = styled.div<{ vocalPortfolioCount: number }>`
   z-index: 3;
 
   height: ${({ vocalPortfolioCount }) => (vocalPortfolioCount - 1) * 26 + 80}rem;
-  width: 48.4rem;
-  margin-left: 28.45rem;
+  width: 48.45rem;
+  margin-left: 28.4rem;
   margin-top: 18rem;
 
   border-left: 0.34rem solid transparent;

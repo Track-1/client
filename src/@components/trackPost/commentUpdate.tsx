@@ -92,7 +92,7 @@ export default function CommentUpdate(props: PropsType) {
             </label>
             <FileInput type="file" accept=".mp3, .wav" id="updateFile" onChange={updateFile} ref={commentFile} />
             <CountWrapper>
-              <InputCount commentLength={commentLength}>{commentLength}/ 150</InputCount>
+              <InputCount commentLength={commentLength}>{commentLength}<p>/ 150</p></InputCount>
               <QuitIcon onClick={stopUpdating} />
             </CountWrapper>
           </TitleWrapper>
@@ -121,26 +121,42 @@ const WriteContainer = styled.article`
   align-items: center;
 `;
 
-const ProfileImageWrapper = styled.div`
-  height: 9rem;
-  width: 9rem;
-  overflow: hidden;
-  border-radius: 9rem;
-`;
-
-const ImageContainer = styled.div`
-  margin-right: 2rem;
-  margin-left: 3.8rem;
-`;
-
 const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+`;
+
+const ProfileImageWrapper = styled.div`
+  height: 9rem;
+  width: 9rem;
+  
+  border-radius: 9rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  position: absolute;
+  overflow: hidden;
+
+`;
+
+const ImageContainer = styled.div`
+    margin-top:-9rem;
+  margin-left:3rem;
+
 `;
 
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
+
+  margin-left:12rem;
 `;
 
 const TitleWrapper = styled.div`
@@ -199,6 +215,11 @@ const InputCount = styled.strong<{ commentLength: number }>`
   ${({ theme }) => theme.fonts.description}
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
+
+  &>p{
+    margin-left:0.5rem;
+    color: ${({ theme }) => theme.colors.gray3};
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -239,4 +260,6 @@ const FileUploadButtonIcon = styled(FileUploadButtonIc)`
 
 const QuitIcon = styled(QuitIc)`
   width: 1.5rem;
+
+  cursor:pointer;
 `;

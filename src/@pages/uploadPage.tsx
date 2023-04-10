@@ -30,7 +30,7 @@ export default function UploadPage() {
 
   useEffect(()=>{
     window.onpopstate = function(event) {  
-      alert("뒤로가기");
+     // alert("뒤로가기");
       pausesPlayerAudio();
       closePlayer();
      };

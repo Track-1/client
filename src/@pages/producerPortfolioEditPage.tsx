@@ -56,7 +56,7 @@ export default function ProducerPortfolioEditPage() {
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
+  const [titleLength, setTitleLength]=useState<number>(0);
 
   const navigate = useNavigate();
 
@@ -128,6 +128,10 @@ export default function ProducerPortfolioEditPage() {
     }
   }
 
+  function checkHeight(){
+    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
+  }
+
   function addHashtag() {
     if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
       hashtagRef.current.value = "";
@@ -175,8 +179,12 @@ export default function ProducerPortfolioEditPage() {
     setComplete(true);
   }
 
-  function updateTitle(e: React.ChangeEvent<HTMLInputElement>) {
+  function updateTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
+    }
     setTitle(e.target.value);
+    setTitleLength(e.target.value.length);
   }
 
   useEffect(() => {
@@ -186,6 +194,10 @@ export default function ProducerPortfolioEditPage() {
   function movePreviousPage() {
     navigate(-1);
   }
+
+  useEffect(()=>{
+    setTitleLength(title.length)
+  },[])
 
   function hoverImage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
@@ -231,13 +243,14 @@ export default function ProducerPortfolioEditPage() {
             onChange={getImageFile}
           />
           <Container3>
-            <TitleInput
+          <TitleInput
               typeof="text"
               placeholder="Please enter a title"
               spellCheck={false}
               maxLength={28}
               defaultValue={title}
               onChange={updateTitle}
+              row={checkHeight()}
             />
             <Line />
 
@@ -379,9 +392,11 @@ export default function ProducerPortfolioEditPage() {
             {showDropdown && (
               <DropMenuBox>
                 <DropMenuWrapper>
-                  {Categories.map((text: string, index: number) => (
+                {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
-                      <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
+                        {text}
+                      </DropMenuText>
                       {category === Categories[index] && <CheckCategoryIcon />}
                     </DropMenuItem>
                   ))}
@@ -523,14 +538,25 @@ const Container3 = styled.section`
   width: 88.7rem;
 `;
 
-const TitleInput = styled.input`
-  height: 6.5rem;
+const TitleInput = styled.textarea<{row:number}>`
   width: 100%;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: 13.6rem;
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+
+  border: none;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Line = styled.hr`
@@ -737,7 +763,7 @@ const WarningTextWrapper = styled.div`
 
   position: absolute;
 
-  top: 62rem;
+  top: 64rem;
   left: 136.5rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(3px);
@@ -751,12 +777,14 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
+
 const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 54.4rem;
-  left: 113.7rem;
+  top: 56rem;
+  left: 112rem;
+
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
   border-radius: 0.5rem;
@@ -781,7 +809,8 @@ const DropMenuItem = styled.li`
   cursor: pointer;
 `;
 
-const DropMenuText = styled.p`
+const DropMenuText = styled.p<{ isClicked: boolean }>`
+  color: ${({ theme, isClicked }) => (isClicked ? theme.colors.white : theme.colors.gray3)};
   height: 2rem;
 `;
 
@@ -808,11 +837,9 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
+   margin-left: -0.2rem;
   width: 4rem;
   height: 4rem;
-  margin-left: -0.2rem;
-  margin-top: 1.2rem;
-
   cursor: pointer;
 `;
 

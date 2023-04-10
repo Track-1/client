@@ -34,7 +34,7 @@ export default function UploadInfo(props: propsType) {
   const { uploadData, setUploadData, whom } = props;
   const HASHTAG_WIDTH: number = 8.827;
 
-  const titleRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const categoryRef = useRef<HTMLDivElement | null>(null);
   const introduceRef = useRef<HTMLTextAreaElement | null>(null);
   const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
@@ -159,9 +159,13 @@ export default function UploadInfo(props: propsType) {
   }
 
   //타이틀
-  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
+  function changeTitleText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
-    if (checkMaxInputLength(inputLength, 36)) {
+   
+    if(inputLength>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
+    }
+    if (checkMaxInputLength(inputLength, 28)) {
       setTitleLength(inputLength);
       setUploadData((prevState) => {
         return { ...prevState, title: e.target.value };
@@ -171,7 +175,7 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
+  function hoverTitle(e: React.FocusEvent<HTMLTextAreaElement>) {
     if (isFocus(e)) {
       setTitleHoverState(true);
     } else {
@@ -316,16 +320,18 @@ export default function UploadInfo(props: propsType) {
 
 
   return (
-    <Container onClick={() => setHiddenDropBox(true)}>
-      <TitleInput
-        typeof="text"
-        placeholder="Please enter a title"
-        spellCheck={false}
-        maxLength={28}
-        onChange={changeTitleText}
-        onFocus={hoverTitle}
-        onBlur={hoverTitle}
-        ref={titleRef}></TitleInput>
+    <Container onClick={() => setHiddenDropBox(true)}>        
+        <TitleText
+              typeof="text"
+              placeholder="Please enter a title"
+              spellCheck={false}
+              maxLength={28}              
+              onFocus={hoverTitle}
+              onBlur={hoverTitle}
+              ref={titleRef}
+              onChange={changeTitleText}
+              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}></TitleText>
+
       <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
       <TextCount font={"body"} textareaMargin={textareaMargin}>
@@ -491,14 +497,25 @@ const Container = styled.section`
   margin-top: -2.5rem;
 `;
 
-const TitleInput = styled.input`
-  height: 6.5rem;
+const TitleText=styled.textarea<{row:number}>`
   width: 100%;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: 13.6rem;
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+
+  border: none;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Line = styled.hr<{ titleLength: number; titleHoverState: boolean }>`
@@ -694,7 +711,7 @@ const DropMenuBox = styled.div<{ hiddenDropBox: boolean; isVocal: boolean }>`
   width: 13rem;
 
   position: absolute;
-  top: ${({ isVocal }) => (isVocal ? 39.5 : 54)}rem;
+  top: ${({ isVocal }) => (isVocal ? 41 : 54)}rem;
   left: ${({ isVocal }) => (isVocal ? 96.5 : 109)}rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
