@@ -379,9 +379,11 @@ export default function ProducerPortfolioEditPage() {
             {showDropdown && (
               <DropMenuBox>
                 <DropMenuWrapper>
-                  {Categories.map((text: string, index: number) => (
+                {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
-                      <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
+                        {text}
+                      </DropMenuText>
                       {category === Categories[index] && <CheckCategoryIcon />}
                     </DropMenuItem>
                   ))}
@@ -753,12 +755,14 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
+
 const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 54.4rem;
-  left: 113.7rem;
+  top: 56rem;
+  left: 112rem;
+
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
   border-radius: 0.5rem;
@@ -783,7 +787,8 @@ const DropMenuItem = styled.li`
   cursor: pointer;
 `;
 
-const DropMenuText = styled.p`
+const DropMenuText = styled.p<{ isClicked: boolean }>`
+  color: ${({ theme, isClicked }) => (isClicked ? theme.colors.white : theme.colors.gray3)};
   height: 2rem;
 `;
 

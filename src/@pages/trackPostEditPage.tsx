@@ -26,6 +26,7 @@ import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
 import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
+import useHover from "../utils/hooks/useHover";
 import usePlayer from "../utils/hooks/usePlayer";
 
 export default function TrackPostEditPage() {
@@ -252,9 +253,9 @@ export default function TrackPostEditPage() {
                     <TrackUploadImage src={String(data?.data.data.jacketImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
                   )}
                 </label>
-                <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                {isImageHovered&&<FileChangeIcon />}
-                </label>
+                {isImageHovered&&(<label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                <FileChangeIcon />
+                </label>)}
               </TrackImageBox>
               <input
                 type="file"
@@ -278,7 +279,7 @@ export default function TrackPostEditPage() {
                 <TextCount>
                   <TextWrapper>
                     <InputCount>{title?.length}</InputCount>
-                    <LimitCount>/36</LimitCount>
+                    <LimitCount>/28</LimitCount>
                   </TextWrapper>
                 </TextCount>
 
@@ -479,12 +480,14 @@ export default function TrackPostEditPage() {
                 {showDropdown && (
                   <DropMenuBox>
                     <DropMenuWrapper>
-                      {Categories.map((text: string, index: number) => (
-                        <DropMenuItem>
-                          <DropMenuText onClick={() => selectCategory(text)}>{text}</DropMenuText>
-                          {category === Categories[index] && <CheckCategoryIc />}
-                        </DropMenuItem>
-                      ))}
+                    {Categories.map((text: string, index: number) => (
+                    <DropMenuItem>
+                      <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
+                        {text}
+                      </DropMenuText>
+                      {category === Categories[index] && <CheckCategoryIcon />}
+                    </DropMenuItem>
+                  ))}
                     </DropMenuWrapper>
                   </DropMenuBox>
                 )}
@@ -1313,8 +1316,8 @@ const DropMenuBox = styled.div`
   width: 13rem;
 
   position: absolute;
-  top: 54.4rem;
-  left: 113.7rem;
+  top: 56rem;
+  left: 112rem;
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(6.5px);
   border-radius: 0.5rem;
@@ -1339,7 +1342,8 @@ const DropMenuItem = styled.li`
   cursor: pointer;
 `;
 
-const DropMenuText = styled.p`
+const DropMenuText = styled.p<{ isClicked: boolean }>`
+  color: ${({ theme, isClicked }) => (isClicked ? theme.colors.white : theme.colors.gray3)};
   height: 2rem;
 `;
 
