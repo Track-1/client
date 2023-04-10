@@ -195,6 +195,10 @@ export default function TrackPostEditPage() {
     setDescription(e.target.value);
   }
 
+  useEffect(()=>{
+    setDescription(data?.data.data.introduce)
+  },[])
+
   function inputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
     if(e.target.value.length>28){
       alert("제목은 28자까지 작성할 수 있습니다.")
@@ -410,14 +414,14 @@ export default function TrackPostEditPage() {
                     placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
                     spellCheck={false}
                     maxLength={250}
-                    defaultValue={data?.data.data.introduce}
+                    defaultValue={description}
                     onChange={checkDescription}></InputDescriptionText>
                     </InputBox>
                   </InfoItemBox>
                 </InfoContainer>
                 <TextCount>
                   <TextWrapper>
-                    <InputCount>{data?.data.data.introduce?.length}</InputCount>
+                    <InputCount>{description?.length}</InputCount>
                     <LimitCount>/250</LimitCount>
                   </TextWrapper>
                 </TextCount>
