@@ -34,7 +34,7 @@ export default function UploadInfo(props: propsType) {
   const { uploadData, setUploadData, whom } = props;
   const HASHTAG_WIDTH: number = 8.827;
 
-  const titleRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const categoryRef = useRef<HTMLDivElement | null>(null);
   const introduceRef = useRef<HTMLTextAreaElement | null>(null);
   const categoryRefs = useRef<HTMLLIElement[] | null[]>([]);
@@ -158,7 +158,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   //타이틀
-  function changeTitleText(e: React.ChangeEvent<HTMLInputElement>) {
+  function changeTitleText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
     if (checkMaxInputLength(inputLength, 36)) {
       setTitleLength(inputLength);
@@ -170,7 +170,7 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-  function hoverTitle(e: React.FocusEvent<HTMLInputElement>) {
+  function hoverTitle(e: React.FocusEvent<HTMLTextAreaElement>) {
     if (isFocus(e)) {
       setTitleHoverState(true);
     } else {
@@ -307,7 +307,7 @@ export default function UploadInfo(props: propsType) {
 
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
-      <TitleInput
+      {/* <TitleInput
         typeof="text"
         placeholder="Please enter a title"
         spellCheck={false}
@@ -315,7 +315,21 @@ export default function UploadInfo(props: propsType) {
         onChange={changeTitleText}
         onFocus={hoverTitle}
         onBlur={hoverTitle}
-        ref={titleRef}></TitleInput>
+        ref={titleRef}
+        row={titleRef.current?.value.length}
+        ></TitleInput> */}
+        
+        <TitleText
+              typeof="text"
+              placeholder="Please enter a title"
+              spellCheck={false}
+              maxLength={28}              
+              onFocus={hoverTitle}
+              onBlur={hoverTitle}
+              ref={titleRef}
+              onChange={changeTitleText}
+              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}></TitleText>
+
       <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
       <TextCount font={"body"} textareaMargin={textareaMargin}>
@@ -480,7 +494,7 @@ const Container = styled.section`
   margin-top: -2.5rem;
 `;
 
-const TitleInput = styled.input`
+const TitleInput = styled.textarea<{row:number}>`
   height: 6.5rem;
   width: 100%;
 
@@ -488,6 +502,27 @@ const TitleInput = styled.input`
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 13.6rem;
+`;
+
+const TitleText=styled.textarea<{row:number}>`
+  width: 100%;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
+
+  font-size: 5rem;
+  ${({ theme }) => theme.fonts.title};
+  color: ${({ theme }) => theme.colors.white};
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+
+  border: none;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Line = styled.hr<{ titleLength: number; titleHoverState: boolean }>`
