@@ -6,10 +6,10 @@ import categorys from "../../mocks/categoryDummy.json";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
 
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
+// import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
 import { CategoryChecksType } from "../../type/CategoryChecksType";
 import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import { categorySelect, clickCategoryHeader, trackSearching } from "../../recoil/categorySelect";
+import { categoryFinalSelectedCheck, categorySelect, clickCategoryHeader, trackSearching } from "../../recoil/categorySelect";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { Category } from "../../core/constants/categoryHeader";
 import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
@@ -27,8 +27,9 @@ export default function CategoryList(props: any) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const tracksOrVocals = useRecoilValue<string>(tracksOrVocalsCheck);
+  const [selectedCategorys, setSelectedCategorys] = useRecoilState<CategoryChecksType[]>(categoryFinalSelectedCheck);
 
-  const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
+  // const [selectedCategorys, setSelectedCategorys] = useState<CategoryChecksType[]>(categorySelectedCheck);
   const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
   // const [trackSearchingClicked, setTrackSearchingClicked] = useRecoilState<boolean>(trackSearching);
   const [filteredUrlApi, setFilteredUrlApi] = useRecoilState(categorySelect);
@@ -39,8 +40,11 @@ export default function CategoryList(props: any) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
-    setFilteredUrlApi("");
+    if(isClickedCategory){
+      setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
+      setFilteredUrlApi("");
+      setIsClickedCategory(false);
+    }
     // setTrackSearchingClicked(false);
   }, [isClickedCategory]);
 
@@ -52,7 +56,7 @@ export default function CategoryList(props: any) {
         filteredUrl += `&categ=${categ.categId}`;
       }
     });
-
+   
     filteredUrl === ""
       ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
       : setFilteredUrlApi(filteredUrl);
@@ -61,12 +65,21 @@ export default function CategoryList(props: any) {
     // console.log(filteredUrlApi);
   }, [selectedCategorys]);
 
+  console.log(selectedCategorys)
   function selectCategory(id: number) {
-    const tempSelectedCategors = selectedCategorys;
-    tempSelectedCategors[id].selected
-      ? (tempSelectedCategors[id].selected = false)
-      : (tempSelectedCategors[id].selected = true);
-    setSelectedCategorys([...tempSelectedCategors]);
+    // const tempSelectedCategors = selectedCategorys;
+
+    // tempSelectedCategors[id].selected
+    //   ? (tempSelectedCategors[id].selected = false)
+    //   : (tempSelectedCategors[id].selected = true);
+    // setSelectedCategorys([...tempSelectedCategors]);
+
+    setSelectedCategorys(
+      selectedCategorys.map((selectCateg) =>
+        selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
+      ),
+    );
+
     setIsCategorySelected(true);
 
     pausesPlayerAudio();
@@ -82,11 +95,6 @@ export default function CategoryList(props: any) {
       ? setOpenModal(true)
       : alert("해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
-
-  // function searchFilterdVocals() {
-  //   console.log(trackSearchingClicked);
-  //   setTrackSearchingClicked(!trackSearchingClicked);
-  // }
 
   function changeCategoryColor(id: number) {
     if (selectedCategorys[id].selected) {

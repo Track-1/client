@@ -53,7 +53,7 @@ export default function CategoryHeader(props: any) {
     pausesPlayerAudio();
     setTracksOrVocals(Category.TRACKS);
     navigate("/track-search");
-    setIsClickedCategory(!isClickedCategory);
+    setIsClickedCategory(true);
     clickSameCategory();
   }
 
@@ -62,7 +62,7 @@ export default function CategoryHeader(props: any) {
     pausesPlayerAudio();
     setTracksOrVocals(Category.VOCALS);
     navigate("/vocal-search");
-    setIsClickedCategory(!isClickedCategory);
+    setIsClickedCategory(true);
     clickSameCategory();
   }
 

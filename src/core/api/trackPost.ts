@@ -1,3 +1,4 @@
+import axios from "axios";
 import { UploadDataType } from "../../type/uploadDataType";
 import { getCookie } from "../../utils/cookie";
 import { client } from "./common/axios";
@@ -108,7 +109,7 @@ export async function getFileLink(beatId: number) {
   });
   //return data
 
-  const res = await client.get(data.data.data.wavFile, {
+  const res = await axios.get(data.data.data.wavFile, {
     responseType: "blob",
   });
   return res;
