@@ -195,9 +195,9 @@ export default function TrackPostEditPage() {
     setDescription(e.target.value);
   }
 
-  useEffect(()=>{
-    setDescription(data?.data.data.introduce)
-  },[])
+  // useEffect(()=>{
+  //   setDescription(data?.data.data.introduce)
+  // },[])
 
   function inputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
     if(e.target.value.length>28){
@@ -237,6 +237,7 @@ export default function TrackPostEditPage() {
   function checkHeight(){
     return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
   }
+
 
   return (
     <>
