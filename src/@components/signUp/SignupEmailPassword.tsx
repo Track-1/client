@@ -385,7 +385,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
             onChange={writePassword}
             value={password}
             maxLength={25}
-            autoComplete="off"
+            autoComplete="new-password"
           />
           {setErrorIcon(passwordMessage) && (
             <IconWrapper marginLeft={-8.4}>{setErrorIcon(passwordMessage)}</IconWrapper>
@@ -408,7 +408,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
                 onChange={writePasswordConfirm}
                 value={passwordConfirm}
                 maxLength={25}
-                autoComplete="off"
+                autoComplete="new-password"
               />
               {setErrorIcon(passwordConfirmMessage) && (
                 <IconWrapper marginLeft={-8.4}>{setErrorIcon(passwordConfirmMessage)}</IconWrapper>
