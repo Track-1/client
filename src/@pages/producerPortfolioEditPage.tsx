@@ -1,4 +1,4 @@
-import styled, { useTheme } from "styled-components";
+import styled, { useTheme, css } from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, HashtagWarningIc } from "../assets";
@@ -28,6 +28,7 @@ import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
 import usePlayer from "../utils/hooks/usePlayer";
+import useTextareaHeight from "../utils/hooks/useTextareaHeight";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -53,7 +54,10 @@ export default function ProducerPortfolioEditPage() {
   const { hoverState, changeHoverState } = useHover();
   const [isKorean, setIsKorean] = useState<boolean>(false);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const [titleLength, setTitleLength]=useState<number>(0);
+  const [titleLength, setTitleLength] = useState<number>(0);
+  const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(172);
+  const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
+  const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
 
   const navigate = useNavigate();
 
@@ -109,7 +113,6 @@ export default function ProducerPortfolioEditPage() {
     setHashtagInput("");
   }
 
-
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagText(e.target.value);
 
@@ -125,8 +128,14 @@ export default function ProducerPortfolioEditPage() {
     }
   }
 
-  function checkHeight(){
-    return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
+  function checkHeight() {
+    return checkHashtagLength(title)
+      ? titleLength < 18
+        ? 4.5
+        : Math.floor(titleLength / 17) + 6.5
+      : titleLength < 26
+      ? 4.5
+      : Math.floor(titleLength / 25) + 6.5;
   }
 
   function addHashtag() {
@@ -177,8 +186,8 @@ export default function ProducerPortfolioEditPage() {
   }
 
   function updateTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if(e.target.value.length>28){
-      alert("제목은 28자까지 작성할 수 있습니다.")
+    if (e.target.value.length > 28) {
+      alert("제목은 28자까지 작성할 수 있습니다.");
     }
     setTitle(e.target.value);
     setTitleLength(e.target.value.length);
@@ -192,13 +201,19 @@ export default function ProducerPortfolioEditPage() {
     navigate(-1);
   }
 
-  useEffect(()=>{
-    setTitleLength(title.length)
-  },[])
+  useEffect(() => {
+    setTitleLength(title.length);
+  }, []);
 
   function hoverImage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
+
+  useEffect(() => {
+    if (textareaRef.current !== null) {
+      setDescriptionHeight(textareaRef.current.scrollHeight);
+    }
+  }, [description]);
 
   return (
     <>
@@ -239,7 +254,7 @@ export default function ProducerPortfolioEditPage() {
             onChange={getImageFile}
           />
           <Container3>
-          <TitleInput
+            <TitleInput
               typeof="text"
               placeholder="Please enter a title"
               spellCheck={false}
@@ -250,7 +265,7 @@ export default function ProducerPortfolioEditPage() {
             />
             <Line />
 
-            <TextCount>
+            <TextCount font={"body"} textareaMargin={textareaMargin}>
               <TextWrapper>
                 <InputCount>{title.length}</InputCount>
                 <LimitCount>/28</LimitCount>
@@ -374,11 +389,13 @@ export default function ProducerPortfolioEditPage() {
                     spellCheck={false}
                     maxLength={250}
                     defaultValue={description}
-                    onChange={checkDescription}></InputDescriptionText>
+                    onChange={checkDescription}
+                    ref={textareaRef}
+                    style={{ height: `${descriptionHeight}px` }}></InputDescriptionText>
                 </InputBox>
               </InfoItemBox>
             </InfoContainer>
-            <TextCount>
+            <TextCount key={descriptionHeight} font={"description"} textareaMargin={descriptionHeight}>
               <TextWrapper>
                 <InputCount>{description?.length}</InputCount>
                 <LimitCount>/250</LimitCount>
@@ -387,7 +404,7 @@ export default function ProducerPortfolioEditPage() {
             {showDropdown && (
               <DropMenuBox>
                 <DropMenuWrapper>
-                {Categories.map((text: string, index: number) => (
+                  {Categories.map((text: string, index: number) => (
                     <DropMenuItem>
                       <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
                         {text}
@@ -533,14 +550,14 @@ const Container3 = styled.section`
   width: 88.7rem;
 `;
 
-const TitleInput = styled.textarea<{row:number}>`
+const TitleInput = styled.textarea<{ row: number }>`
   width: 100%;
-  height:${({row})=>row<1?6.5:row*2-2}rem;
+  height: ${({ row }) => (row < 1 ? 6.5 : row * 2 - 2)}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+  margin-top: ${({ row }) => (row === 4.5 ? 13.6 : 7.6)}rem;
 
   outline: 0;
   resize: none;
@@ -561,12 +578,22 @@ const Line = styled.hr`
   margin-left: 5px;
 `;
 
-const TextCount = styled.div`
+const TextCount = styled.div<{ font: string; textareaMargin: number }>`
   height: 2.3rem;
   width: 100%;
 
-  ${({ theme }) => theme.fonts.body1};
-  margin-top: 1.8rem;
+  ${(props) => {
+    if (props.font === "body")
+      return css`
+        ${({ theme }) => theme.fonts.body1};
+        margin-top: 1.8rem;
+      `;
+    else
+      return css`
+        ${({ theme }) => theme.fonts.description};
+        margin-top: ${props.textareaMargin / 10 - 4.3 + 0.8}rem;
+      `;
+  }}
 `;
 
 const TextWrapper = styled.div`
@@ -763,7 +790,6 @@ const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
 `;
 
-
 const DropMenuBox = styled.div`
   width: 13rem;
 
@@ -823,7 +849,7 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-   margin-left: -0.2rem;
+  margin-left: -0.2rem;
   width: 4rem;
   height: 4rem;
   cursor: pointer;
