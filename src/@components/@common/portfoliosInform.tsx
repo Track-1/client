@@ -10,7 +10,6 @@ import { isProducer } from "../../utils/common/userType";
 import { useRecoilState } from "recoil";
 import { showPlayerBar } from "../../recoil/player";
 
-
 export default function PortfoliosInform(props: any) {
   const { isMe, hoverId, clickId, profileState, portfolios, whom, pauseAudio, setPortfolioData } = props;
 
@@ -18,7 +17,6 @@ export default function PortfoliosInform(props: any) {
   const [id, setId] = useState<number>(-1);
   const [openEllipsisModal, setOpenEllipsisModal] = useState<boolean>(false);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
 
   function clickEllipsis() {
     setOpenEllipsisModal(!openEllipsisModal);
@@ -66,13 +64,14 @@ export default function PortfoliosInform(props: any) {
     navigate(`/track-post/${id}`, { state: id });
   }
 
+
   return (
     <PortfolioInformWrapper>
       {portfolios[id] && (
         <InformContainer>
           <InformWrapper>
             <InformTitleWrapper>
-              {checkIsVocalSearching() && isHoveredNClicked() && (
+              {checkIsVocalSearching() && checkisEllipsis() && (
                 <div onClick={() => moveTrackPost(portfolios[id].id)}>
                   <PortfolioViewMoreButton />
                 </div>
