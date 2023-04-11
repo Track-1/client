@@ -46,9 +46,8 @@ export default function ProducerInfos(props: PropsType) {
   }
 
   function movePreviousPage() {
-    navigate(`/`);
+    isMe === true ? navigate(`/`) : navigate(-1);
     setShowPlayer(false);
-    //navigate(-1);
   }
 
   return (
@@ -73,11 +72,11 @@ export default function ProducerInfos(props: PropsType) {
       <InformationBox>
         <NameWrapper>
           <ProducerNameContainer>
-            <ProducerName>{profileData.name}</ProducerName>
+            <ProducerName>{profileData?.name}</ProducerName>
           </ProducerNameContainer>
           {profileData.isSelected && <SleeperAccountIcon />}
         </NameWrapper>
-        <ProducerEmail>{profileData.contact}</ProducerEmail>
+        <ProducerEmail>{profileData?.contact}</ProducerEmail>
         <DetailInfoContainer>
           <CategoryBox isSelected={true}>
             <CategoryIcon />
@@ -113,7 +112,7 @@ export default function ProducerInfos(props: PropsType) {
         </DetailInfoContainer>
         <DescriptionBox>
           <DescriptionIcon />
-          {profileData.introduce?.length > 0 && <Introduce>{profileData.introduce}</Introduce>}
+          {profileData.introduce?.length > 0 && <Introduce>{profileData?.introduce}</Introduce>}
         </DescriptionBox>
         <EmptyDescriptionMessageBox>
           <EmptyDescriptionMessageWrapper>

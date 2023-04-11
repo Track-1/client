@@ -16,6 +16,7 @@ import { useRecoilValue } from 'recoil';
 import { openConventionModal } from "../recoil/conventionModal";
 import { UserDataPropsType } from "../type/signUpStepTypes";
 import { EditDataType } from "../type/editDataType";
+import { UserType } from "../recoil/main";
 
 
 export default function SignUpPage() {
@@ -38,7 +39,7 @@ export default function SignUpPage() {
 
     const preventGoBack = () => {
         window.history.pushState(null, "", window.location.href);
-       // alert("종료하기를 눌러주세요 :D");
+      //  alert("종료하기를 눌러주세요 :D");
     };
     
     // 브라우저에 렌더링 시 한 번만 실행하는 코드
@@ -52,6 +53,9 @@ export default function SignUpPage() {
             window.removeEventListener("popstate", preventGoBack);
         };
     },[]);
+    const userType=useRecoilValue<string>(UserType)
+
+    console.log(userType)
 
   return (
     <>

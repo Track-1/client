@@ -4,7 +4,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { UploadInfoDataType } from "../type/uploadInfoDataType";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
 import VocalUploadDefaultImg from "../assets/image/vocalUploadDefaultImg.png";
-import { checkUserType } from "../utils/common/userType";
+import { checkUserType, isProducer } from "../utils/common/userType";
 import { LoginUserType } from "../recoil/loginUserData";
 import TrackUpload from "../@components/upload/trackUpload";
 import VocalUpload from "../@components/upload/vocalUpload";
@@ -14,8 +14,8 @@ import usePlayer from "../utils/hooks/usePlayer";
 export default function UploadPage() {
   const loginUserType = useRecoilValue(LoginUserType);
   const location = useLocation();
-  const producerUploadType = location.state.producerUploadType;
-  const prevPage = location.state.prevPage;
+  const producerUploadType = isProducer(loginUserType)?location.state.producerUploadType:"Portfolio";
+  const prevPage = location.state?.prevPage;
   console.log(location.state);
 
   const [uploadData, setUploadData] = useState<UploadInfoDataType>({
