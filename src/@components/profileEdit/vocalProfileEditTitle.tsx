@@ -146,6 +146,7 @@ const TitleContainer = styled.section`
   border-radius: 5rem;
   background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
   linear-gradient(to top, transparent 0%, #3e4045 100%);
+  
   background-origin: border-box;
   background-clip: content-box, border-box;
 
