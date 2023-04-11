@@ -314,7 +314,6 @@ export default function UploadInfo(props: propsType) {
     }
   }
 
-
   return (
     <Container onClick={() => setHiddenDropBox(true)}>
       <TitleInput
@@ -525,7 +524,7 @@ const TextCount = styled.div<{ font: string; textareaMargin: number }>`
     else
       return css`
         ${({ theme }) => theme.fonts.description};
-        margin-top: ${props.textareaMargin / 10 - 3.3 + 0.8}rem;
+        margin-top: ${props.textareaMargin / 10 - 4.3 + 0.8}rem;
       `;
   }}
 `;
@@ -656,12 +655,11 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean; r
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
-  padding-bottom: 1rem;
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
   height: ${({ row }) => row * 3.4 + 1}rem;
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
 
   white-space: pre-wrap;
   word-wrap: break-word;
