@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect, KeyboardEvent } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   UploadFileUpdateIc,
   UploadCategoryIc,
@@ -61,7 +61,6 @@ export default function UploadInfo(props: propsType) {
 
   const [titleLength, setTitleLength] = useState<number>(0);
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
-  const keepKeyCodes = [8, 37, 38, 39, 40];
 
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtags, setHashtags] = useState<string[]>([]);
@@ -161,9 +160,9 @@ export default function UploadInfo(props: propsType) {
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
-
-    if (inputLength > 28) {
-      alert("제목은 28자까지 작성할 수 있습니다.");
+   
+    if(inputLength>28){
+      alert("제목은 28자까지 작성할 수 있습니다.")
     }
     if (checkMaxInputLength(inputLength, 28)) {
       setTitleLength(inputLength);
@@ -310,26 +309,18 @@ export default function UploadInfo(props: propsType) {
     introduceRef.current!.style.height = scrollHeight / 10 + "rem";
   }
 
-  function keepHeight(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (introduceRef.current && introduceRef.current.scrollHeight >= 159) {
-      if (!keepKeyCodes.includes(event.keyCode)) {
-        event.preventDefault();
-      }
-    }
-  }
-
   return (
-    <Container onClick={() => setHiddenDropBox(true)}>
-      <TitleText
-        typeof="text"
-        placeholder="Please enter a title"
-        spellCheck={false}
-        maxLength={28}
-        onFocus={hoverTitle}
-        onBlur={hoverTitle}
-        ref={titleRef}
-        onChange={changeTitleText}
-        row={titleLength < 18 ? 4.5 : Math.floor(titleLength / 17) + 6.5}></TitleText>
+    <Container onClick={() => setHiddenDropBox(true)}>        
+        <TitleText
+              typeof="text"
+              placeholder="Please enter a title"
+              spellCheck={false}
+              maxLength={28}              
+              onFocus={hoverTitle}
+              onBlur={hoverTitle}
+              ref={titleRef}
+              onChange={changeTitleText}
+              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}></TitleText>
 
       <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
@@ -457,8 +448,7 @@ export default function UploadInfo(props: propsType) {
               descriptionHoverState={descriptionHoverState}
               ref={introduceRef}
               onChange={resizeTextarea}
-              row={Math.floor(descriptionLength / 30) + 1}
-              onKeyDown={keepHeight}></InputDescriptionText>
+              row={Math.floor(descriptionLength / 30) + 1}></InputDescriptionText>
           </InputBox>
         </InfoItemBox>
       </InfoContainer>
@@ -496,14 +486,14 @@ const Container = styled.section`
   margin-top: -2.5rem;
 `;
 
-const TitleText = styled.textarea<{ row: number }>`
+const TitleText=styled.textarea<{row:number}>`
   width: 100%;
-  height: ${({ row }) => (row < 1 ? 6.5 : row * 2 - 2)}rem;
+  height:${({row})=>row<1?6.5:row*2-2}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: ${({ row }) => (row === 4.5 ? 13.6 : 7.6)}rem;
+  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
 
   outline: 0;
   resize: none;
@@ -541,7 +531,7 @@ const TextCount = styled.div<{ font: string; textareaMargin: number }>`
     else
       return css`
         ${({ theme }) => theme.fonts.description};
-        margin-top: ${props.textareaMargin / 10 - 4.3 + 0.8}rem;
+        margin-top: ${props.textareaMargin / 10 - 3.3 + 0.8}rem;
       `;
   }}
 `;
@@ -672,12 +662,12 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean; r
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
-
+  padding-bottom: 1rem;
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
   height: ${({ row }) => row * 3.4 + 1}rem;
-  padding-bottom: 1rem;
+  padding-bottom: 3rem;
 
   white-space: pre-wrap;
   word-wrap: break-word;
