@@ -32,5 +32,5 @@ export default function useAutoHeightTextArea(maxHeight: number) {
     };
   }, [maxHeight]);
 
-  return { textareaRef, isMaxHeightReached };
+  return { textareaRef, isMaxHeightReached, textareaHeight };
 }

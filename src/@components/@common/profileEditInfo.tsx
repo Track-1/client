@@ -14,7 +14,6 @@ import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 import ProfileWarning from "./profileWarning";
-import useTextareaHeight from "../../utils/hooks/useTextareaHeight";
 
 interface PropsType {
   contact: string;
@@ -57,14 +56,6 @@ export default function ProfileEditInfo(props: PropsType) {
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [isKorean, setIsKorean]=useState<boolean>(false);
-  const { textareaRef, isMaxHeightReached } = useTextareaHeight(200);
-  const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
-
-  useEffect(() => {
-    if (textareaRef.current !== null) {
-      setDescriptionHeight(textareaRef.current.scrollHeight);
-    }
-  }, []);
 
   function selectCategory(category: string) {
     const tempSelected = isCategorySelected;
@@ -198,8 +189,7 @@ export default function ProfileEditInfo(props: PropsType) {
             maxLength={150}
             defaultValue={description}
             onChange={(e) => updateDescription(e.target.value)}
-            ref={textareaRef}
-             style={{ height: `${descriptionHeight}px` }}
+            row={Math.floor(description?.length / 31) + 1}
           />
           <TextCount>
             {description?.length}
@@ -362,7 +352,8 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.textarea`
+const DesciprtionInput = styled.textarea<{ row: number }>`
+  height: ${({ row }) => row * 3.4 + 1}rem;
   width: 55.9rem;
   outline: 0;
   resize: none;
@@ -374,7 +365,7 @@ const DesciprtionInput = styled.textarea`
   margin-top: 3rem;
   overflow: hidden;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
-  padding-bottom: 1rem;
+  padding-bottom: 3rem;
   ${({ theme }) => theme.fonts.input}
   color: ${({ theme }) => theme.colors.white};
   ::placeholder {
