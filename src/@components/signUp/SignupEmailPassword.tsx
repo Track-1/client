@@ -336,6 +336,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
             width={42.2}
             underline={setInputUnderline(emailMessage)}
             onChange={writeEmail}
+            autoComplete="off" 
           />
           {setErrorIcon(emailMessage) && <IconWrapper marginLeft={-3.9}>{setErrorIcon(emailMessage)}</IconWrapper>}
           <SendCodeButton
