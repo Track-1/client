@@ -64,7 +64,6 @@ export default function PortfoliosInform(props: any) {
     navigate(`/track-post/${id}`, { state: id });
   }
 
-
   return (
     <PortfolioInformWrapper>
       {portfolios[id] && (
@@ -78,7 +77,7 @@ export default function PortfoliosInform(props: any) {
               )}
               {isProducer(whom) && checkIsPortfolio() && checkIsTitle() && <ProducerPortfolioTitleTextIcon />}
               {isVocalsPage(whom) && !checkIsPortfolio() && checkIsTitle() && <VocalPortfolioTitleTextIcon />}
-              {!(checkIsTitle() && checkIsVocalSearching()) && <BlankIcon />}
+              {!checkIsTitle() && !checkIsVocalSearching() && <BlankIcon />}
               {checkisEllipsis() && <EllipsisIcon onClick={clickEllipsis} />}
               {openEllipsisModal && checkisEllipsis() && (
                 <PortfolioUpdateModal
