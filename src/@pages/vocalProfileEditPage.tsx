@@ -16,6 +16,7 @@ import Loading from "../@components/@common/loading";
 import { useRecoilState } from "recoil";
 import { endPost } from "../recoil/postIsCompleted";
 import usePlayer from "../utils/hooks/usePlayer";
+import { getCookie } from "../utils/cookie";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
@@ -33,13 +34,15 @@ export default function VocalProfileEditPage() {
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-
+  
   useEffect(() => {
     if (saveData === true) {
       const formData = new FormData();
       formData.append("imageFile", profileImage);
+     
       formData.append("name", name);
       formData.append("contact", contact);
+      console.log(contact)
       categories.forEach((item, index) => {
         formData.append(`category[${index}]`, CategoryId[item.toUpperCase()]);
       });
@@ -47,19 +50,20 @@ export default function VocalProfileEditPage() {
         formData.append(`keyword[${index}]`, item);
       });
       formData.append("introduce", description);
-      formData.append("isSelected", String(isSleep));
+      formData.append("isSelected", String(isSleep))
+
       isImageUploaded ? formData.append("isSame", "False") : formData.append("isSame", "True");
 
+      setSaveData(false)
       setUpdatedData(formData);
     }
   }, [saveData]);
 
-  useEffect(() => {
+useEffect(() => {
     if (updatedData !== undefined) {
       mutate();
       // setTimeout(() => {
       // }, 500);
-      navigate(`/vocal-profile/${params.id}`, { state: params.id, replace: true });
       // window.location.reload();
     }
   }, [updatedData]);
@@ -67,6 +71,7 @@ export default function VocalProfileEditPage() {
   const { mutate, isLoading } = useMutation(() => patchVocalrProfile(updatedData), {
     onSuccess: (data) => {
       setIsEnd(true);
+      navigate(`/vocal-profile/${params.id}`, { state: params.id, replace: true });
     },
 
     onError: (error) => {
@@ -121,7 +126,7 @@ export default function VocalProfileEditPage() {
   function changeSleepState() {
     isSleep ? setIsSleep(false) : setIsSleep(true);
   }
-
+  
   return (
     <>
       {isLoading && <Loading />}
