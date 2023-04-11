@@ -161,9 +161,9 @@ export default function UploadInfo(props: propsType) {
   //타이틀
   function changeTitleText(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const inputLength = e.target.value.length;
-   
-    if(inputLength>28){
-      alert("제목은 28자까지 작성할 수 있습니다.")
+
+    if (inputLength > 28) {
+      alert("제목은 28자까지 작성할 수 있습니다.");
     }
     if (checkMaxInputLength(inputLength, 28)) {
       setTitleLength(inputLength);
@@ -311,7 +311,7 @@ export default function UploadInfo(props: propsType) {
   }
 
   function keepHeight(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (introduceRef.current && introduceRef.current.scrollHeight >= 200) {
+    if (introduceRef.current && introduceRef.current.scrollHeight >= 159) {
       if (!keepKeyCodes.includes(event.keyCode)) {
         event.preventDefault();
       }
@@ -319,17 +319,17 @@ export default function UploadInfo(props: propsType) {
   }
 
   return (
-    <Container onClick={() => setHiddenDropBox(true)}>        
-        <TitleText
-              typeof="text"
-              placeholder="Please enter a title"
-              spellCheck={false}
-              maxLength={28}              
-              onFocus={hoverTitle}
-              onBlur={hoverTitle}
-              ref={titleRef}
-              onChange={changeTitleText}
-              row={titleLength<18?4.5:Math.floor(titleLength/17)+6.5}></TitleText>
+    <Container onClick={() => setHiddenDropBox(true)}>
+      <TitleText
+        typeof="text"
+        placeholder="Please enter a title"
+        spellCheck={false}
+        maxLength={28}
+        onFocus={hoverTitle}
+        onBlur={hoverTitle}
+        ref={titleRef}
+        onChange={changeTitleText}
+        row={titleLength < 18 ? 4.5 : Math.floor(titleLength / 17) + 6.5}></TitleText>
 
       <Line titleLength={titleLength} titleHoverState={titleHoverState} />
 
@@ -496,14 +496,14 @@ const Container = styled.section`
   margin-top: -2.5rem;
 `;
 
-const TitleText=styled.textarea<{row:number}>`
+const TitleText = styled.textarea<{ row: number }>`
   width: 100%;
-  height:${({row})=>row<1?6.5:row*2-2}rem;
+  height: ${({ row }) => (row < 1 ? 6.5 : row * 2 - 2)}rem;
 
   font-size: 5rem;
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
-  margin-top: ${({row})=>row===4.5?13.6:7.6}rem;
+  margin-top: ${({ row }) => (row === 4.5 ? 13.6 : 7.6)}rem;
 
   outline: 0;
   resize: none;
@@ -672,6 +672,7 @@ const InputDescriptionText = styled.textarea<{ descriptionHoverState: boolean; r
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
+
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
