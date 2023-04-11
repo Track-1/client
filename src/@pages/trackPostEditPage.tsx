@@ -2,7 +2,7 @@ import { file } from "@babel/types";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { useTheme, css } from "styled-components";
 import BackButton from "../@components/@common/backButton";
 import Loading from "../@components/@common/loading";
 import {
@@ -28,6 +28,7 @@ import { TrackInfoDataType } from "../type/tracksDataType";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
 import usePlayer from "../utils/hooks/usePlayer";
+import useTextareaHeight from "../utils/hooks/useTextareaHeight";
 
 export default function TrackPostEditPage() {
   const beatId = useLocation().state.id;
@@ -39,7 +40,9 @@ export default function TrackPostEditPage() {
   const [hashtag, setHashtag] = useState<string[]>(prevData?.keyword);
   const [hashtagInput, setHashtagInput] = useState<string>("");
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>(prevData?.introduce);
+  const [description, setDescription] = useState<string>(
+    Object.keys(prevData).includes("introduce") ? prevData?.introduce : prevData?.content,
+  );
   const [title, setTitle] = useState<string>(prevData?.title);
   const [editData, setEditData] = useState<any>();
   const [showImage, setShowImage] = useState<any>();
@@ -54,6 +57,9 @@ export default function TrackPostEditPage() {
   const [hashtagText, setHashtagText] = useState<string>("");
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const { hoverState, changeHoverState } = useHover();
+  const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
+  const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(172);
+  const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
 
   const { data } = useQuery(["state", beatId], () => getTrackInfo(beatId), {
     refetchOnWindowFocus: false,
@@ -238,7 +244,13 @@ export default function TrackPostEditPage() {
     return checkHashtagLength(title)?(titleLength<18?4.5:Math.floor(titleLength/17)+6.5):(titleLength<26?4.5:Math.floor(titleLength/25)+6.5)
   }
 
+  useEffect(() => {
+    if (textareaRef.current !== null) {
+      setDescriptionHeight(textareaRef.current.scrollHeight);
+    }
+  }, [description]);
 
+  console.log(descriptionHeight);
   return (
     <>
       {isLoading && <Loading />}
@@ -289,7 +301,7 @@ export default function TrackPostEditPage() {
                     />
                 <Line />
 
-                <TextCount>
+                <TextCount font={"body"} textareaMargin={textareaMargin}>
                   <TextWrapper>
                     <InputCount>{title?.length}</InputCount>
                     <LimitCount>/28</LimitCount>
@@ -416,11 +428,14 @@ export default function TrackPostEditPage() {
                     spellCheck={false}
                     maxLength={250}
                     defaultValue={description}
-                    onChange={checkDescription}></InputDescriptionText>
+                    onChange={checkDescription}
+                    ref={textareaRef}
+                    style={{ height: `${descriptionHeight}px` }}
+                    ></InputDescriptionText>
                     </InputBox>
                   </InfoItemBox>
                 </InfoContainer>
-                <TextCount>
+                <TextCount key={descriptionHeight} font={"description"} textareaMargin={descriptionHeight} >
                   <TextWrapper>
                     <InputCount>{description?.length}</InputCount>
                     <LimitCount>/250</LimitCount>
@@ -605,13 +620,24 @@ const Line = styled.hr`
   margin-left: 5px;
 `;
 
-const TextCount = styled.div`
+const TextCount = styled.div<{ font: string; textareaMargin: number }>`
   height: 2.3rem;
   width: 100%;
 
-  ${({ theme }) => theme.fonts.body1};
-  margin-top: 1.8rem;
+  ${(props) => {
+    if (props.font === "body")
+      return css`
+        ${({ theme }) => theme.fonts.body1};
+        margin-top: 1.8rem;
+      `;
+    else
+      return css`
+        ${({ theme }) => theme.fonts.description};
+        margin-top: ${props.textareaMargin / 10 - 4.3 + 0.8}rem;
+      `;
+  }}
 `;
+
 
 const TextWrapper = styled.div`
   display: flex;
