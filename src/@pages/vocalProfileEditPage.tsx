@@ -34,16 +34,6 @@ export default function VocalProfileEditPage() {
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-  // const [formData, setFormData]=useState<any>({
-  //   imageFile:state.profileImage,
-  //   name:name, 
-  //   contact:contact, 
-  //   category:categories, 
-  //   keyword:hashtags,
-  //   introduce:description,
-  //   isSelected:"", 
-  //   isSame:false
-  // });
   
   useEffect(() => {
     if (saveData === true) {
