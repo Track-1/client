@@ -1,7 +1,7 @@
-import React from "react";
-import { SetStepPropsType, SignupProfilePropsTye } from "../../type/signUpStepTypes";
+import React from 'react'
+import { SetStepPropsType, SignupProfilePropsTye } from '../../type/signUpStepTypes';
 import { useEffect, useRef, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import {
   AddHashtagIc,
   DeleteHashtagIc,
@@ -19,12 +19,11 @@ import { CategorySelectType } from "../../type/CategoryChecksType";
 import { EditDataType } from "../../type/editDataType";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 import useHover from "../../utils/hooks/useHover";
-import ProfileWarning from "../@common/profileWarning";
+import ProfileWarning from '../@common/profileWarning';
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
-import useTextareaHeight from "../../utils/hooks/useTextareaHeight";
 
-export default function SignupProfile(props: SignupProfilePropsTye) {
-  const { setStep, userProfile, setUserProfile } = props;
+export default function SignupProfile(props:SignupProfilePropsTye) {
+  const {setStep, userProfile, setUserProfile}=props;
   const contactInputRef = useRef<HTMLInputElement | null>(null);
   const hashtagRef = useRef<HTMLInputElement | null>(null);
   const [hashtagInput, setHashtagInput] = useState<string>("");
@@ -42,37 +41,36 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
     HOUSE: false,
     FUNK: false,
   });
-  const [contactInput, setContactInput] = useState<string>("");
-  const [isWrite, setIsWrite] = useState<boolean>(false);
+  const [contactInput, setContactInput]=useState<string>("");
+  const [isWrite, setIsWrite]=useState<boolean>(false);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [tagMaxLength, setTagMaxLength] = useState<number>(10);
-  const [isKorean, setIsKorean] = useState<boolean>(false);
-  const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(200);
+  const [tagMaxLength, setTagMaxLength]=useState<number>(10);
+  const [isKorean, setIsKorean]=useState<boolean>(false);
 
   function getInputText(e: React.ChangeEvent<HTMLInputElement>) {
     setHashtagInput(e.target.value);
 
-    e.target.value !== "" ? setHashtagLength(e.target.value.length) : setHashtagLength(0);
-
-    if (checkHashtagLength(e.target.value)) {
+    e.target.value!==""?setHashtagLength(e.target.value.length):setHashtagLength(0);
+    
+    if(checkHashtagLength(e.target.value)){
       setIsKorean(true);
-      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
-    } else {
-      setIsKorean(false);
-    }
+      e.target.value.length>10&&alert("해시태그는 10자까지 작성할 수 있습니다.")
+    }else{
+      setIsKorean(false)
+    }  
   }
-
+  
   function completeHashtag() {
-    if (hashtagRef.current && !isDuplicateHashtag(hashtagInput)) {
-      hashtagRef.current.value = "";
-      setHashtags((prev) => [...prev, hashtagInput]);
-      setHashtagInput("");
-      setHashtagLength(0);
-    }
+      if (hashtagRef.current&& !isDuplicateHashtag(hashtagInput)) {
+        hashtagRef.current.value = "";
+        setHashtags((prev) => [...prev, hashtagInput]);
+        setHashtagInput("");
+        setHashtagLength(0);
+      }
   }
 
   function deleteHashtag(index: number) {
-    const deleteTag = userProfile.keyword;
+   const deleteTag = userProfile.keyword;
     deleteTag.splice(index, 1);
     setHashtags([...deleteTag]);
     setHashtagInput("");
@@ -93,7 +91,7 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
 
   function clickOutSide(e: any) {
     if (!hashtagRef.current?.contains(e.target) && hashtagRef.current?.value) {
-      completeHashtag();
+      completeHashtag() 
     }
   }
 
@@ -101,13 +99,14 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
     setDescriptionInput(e.target.value);
   }
 
-  function changeContact(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value === "") {
-      setIsWrite(false);
-    } else {
-      setIsWrite(true);
+  function changeContact(e: React.ChangeEvent<HTMLInputElement>){
+    if(e.target.value===""){
+      setIsWrite(false)
     }
-    setContactInput(e.target.value);
+    else{
+      setIsWrite(true)
+    }
+    setContactInput(e.target.value)
   }
 
   function selectCategory(category: string) {
@@ -129,15 +128,16 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
     setCategories(new Set(tempCatgorySet));
   }
 
-  useEffect(() => {
-    setUserProfile({
-      contact: contactInput,
-      category: Array.from(categories),
-      keyword: hashtags,
-      introduce: descriptionInput,
-    });
-  }, [contactInput, categories, isCategorySelected, hashtags, descriptionInput]);
-
+  useEffect(()=>{
+      setUserProfile({
+        contact: contactInput,
+        category: Array.from(categories),
+        keyword: hashtags,
+        introduce: descriptionInput,
+     });
+    
+  },[contactInput,categories, isCategorySelected, hashtags, descriptionInput])
+  
   return (
     <>
       <InfoContainer>
@@ -169,42 +169,43 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
         </CategoryContainer>
         <HashtagContainer>
           <HashIconWrapper>
-            <ProfileEditHashtagIcon />
-            <ProfileWarning />
-          </HashIconWrapper>
+          <ProfileEditHashtagIcon />
+          <ProfileWarning/>
+            </HashIconWrapper>
           <InputHashtagWrapper>
             {hashtags.map((hashtag, index) => {
-              return (
-                <Hashtag key={index}>
-                  <CompleteHashtagWrapper>
+                return (
+                  <Hashtag key={index}>
+                    <CompleteHashtagWrapper>
+                      <HashtagSharp># </HashtagSharp>
+                      <CompletedHashtag>{hashtag}</CompletedHashtag>
+                    </CompleteHashtagWrapper>
+                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                  </Hashtag>
+                );
+              })}
+              {hashtags.length < 3 && (
+                <Hashtag>
+                  <HashtagWrapper>
                     <HashtagSharp># </HashtagSharp>
-                    <CompletedHashtag>{hashtag}</CompletedHashtag>
-                  </CompleteHashtagWrapper>
-                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                    <HashtagInput
+                      onChange={getInputText}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && completeHashtag();
+                      }}
+                      inputWidth={hashtagLength}
+                      isKorean={isKorean}
+                      ref={hashtagRef}
+                      placeholder="HashTag"
+                      maxLength={tagMaxLength}
+                    />
+                  </HashtagWrapper>
                 </Hashtag>
-              );
-            })}
-            {hashtags.length < 3 && (
-              <Hashtag>
-                <HashtagWrapper>
-                  <HashtagSharp># </HashtagSharp>
-                  <HashtagInput
-                    onChange={getInputText}
-                    onKeyPress={(e) => {
-                      e.key === "Enter" && completeHashtag();
-                    }}
-                    inputWidth={hashtagLength}
-                    isKorean={isKorean}
-                    ref={hashtagRef}
-                    placeholder="HashTag"
-                    maxLength={tagMaxLength}
-                  />
-                </HashtagWrapper>
-              </Hashtag>
-            )}
+              )}
 
-            {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
+              {hashtags.length < 2 && <AddHashtagIcon onClick={completeHashtag} />}
           </InputHashtagWrapper>
+          
         </HashtagContainer>
         <DescriptionContainer>
           <ProfileEditDescriptionIcon />
@@ -213,8 +214,7 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
             onChange={countDescriptionText}
             placeholder="What kind of work do you do?"
             maxLength={150}
-            row={Math.floor(descriptionInput.length / 31) + 1}
-            ref={textareaRef}
+            row={Math.floor(descriptionInput.length/31)+1}
           />
           <TextCount>
             {descriptionInput.length}/<MaxCount>150</MaxCount>
@@ -256,7 +256,7 @@ const ContactInput = styled.input`
     color: ${({ theme }) => theme.colors.gray3};
   }
 
-  :focus {
+  :focus{
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
@@ -315,8 +315,8 @@ const Hashtag = styled.div`
   border-radius: 2.1rem;
 
   padding-right: 1rem;
-  margin-right: 1rem;
-  margin-top: 1rem;
+  margin-right: 1rem; 
+  margin-top : 1rem;
 `;
 
 const HashtagWrapper = styled.div`
@@ -337,9 +337,8 @@ const HashtagSharp = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
-  width: ${({ inputWidth, isKorean }) =>
-    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
+const HashtagInput = styled.input<{ inputWidth: number, isKorean:boolean }>`
+  width: ${({ inputWidth,isKorean }) => (inputWidth === 0 ? 9 : (isKorean ?inputWidth * 1.5+1:inputWidth*1.2+1))}rem;
   display: flex;
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.gray1};
@@ -372,9 +371,9 @@ const DescriptionContainer = styled.article`
   margin-top: 4.8rem;
 `;
 
-const DesciprtionInput = styled.textarea<{ row: number }>`
+const DesciprtionInput = styled.textarea<{row:number}>`
+  height: ${({row})=>row*3.4+1}rem;
   width: 55.9rem;
-  height: 4.5rem;
   outline: 0;
   resize: none;
 
@@ -388,6 +387,8 @@ const DesciprtionInput = styled.textarea<{ row: number }>`
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
+  padding-bottom: 3rem;
+
   ${({ theme }) => theme.fonts.input}
 
   color: ${({ theme }) => theme.colors.white};
@@ -396,7 +397,7 @@ const DesciprtionInput = styled.textarea<{ row: number }>`
     color: ${({ theme }) => theme.colors.gray3};
   }
 
-  :focus {
+  :focus{
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.white};
   }
 `;
@@ -416,29 +417,29 @@ const MaxCount = styled.strong`
   color: ${({ theme }) => theme.colors.gray3};
 `;
 
-const ProfileEditContactIcon = styled(ProfileEditContactIc)`
+const ProfileEditContactIcon=styled(ProfileEditContactIc)`
   width: 8.8rem;
-`;
+`
 
-const ProfileEditCategoryIcon = styled(ProfileEditCategoryIc)`
+const ProfileEditCategoryIcon=styled(ProfileEditCategoryIc)`
   width: 10.3rem;
-`;
+`
 
-const ProfileEditHashtagIcon = styled(ProfileEditHashtagIc)`
+const ProfileEditHashtagIcon=styled(ProfileEditHashtagIc)`
   width: 9.3rem;
-`;
+`
 
-const ProfileEditDescriptionIcon = styled(ProfileEditDescriptionIc)`
+const ProfileEditDescriptionIcon=styled(ProfileEditDescriptionIc)`
   width: 12.6rem;
-`;
+`
 
 const DeleteHashtagIcon = styled(DeleteHashtagIc)`
   width: 2.8rem;
-
+  
   margin-left: -1rem;
   cursor: pointer;
 `;
 
-const HashIconWrapper = styled.div`
+const HashIconWrapper=styled.div`
   display: flex;
-`;
+`
