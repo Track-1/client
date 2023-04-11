@@ -5,6 +5,7 @@ import { ProfileEditCheckIc, ProfileEditWarningIc, SignUpChangeImageIc } from ".
 import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDefaultImg.png";
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
+import { checkNicknameForm } from "../../utils/errorMessage/checkNicknameForm";
 interface PropsType {
   profileImage: string;
   name: string;
@@ -16,7 +17,7 @@ interface PropsType {
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
-  const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
+  //const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
   const { profileImage, name, updateProfileImage, updateName, changeReadyState, isImageUploaded, setIsImageUploaded } =
     props;
   const [showImage, setShowImage] = useState<string | ArrayBuffer>();
@@ -43,12 +44,12 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   function checkNameInput(e: React.ChangeEvent<HTMLInputElement>) {
     const text = e.target.value;
     updateName(text);
-    if (NICK_NAME.test(text)) {
+    if (checkNicknameForm(text)) {
       setNameState(nickName.CORRECT);
       changeReadyState(true);
       return;
     }
-    if (!NICK_NAME.test(text)) {
+    if (!checkNicknameForm(text)) {
       setNameState(nickName.ERROR);
       changeReadyState(false);
     }
@@ -79,10 +80,12 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           {nameState === nickName.CORRECT && <ProfileEditCheckIc />}
           {nameState === nickName.ERROR && <ProfileEditWarningIc />}
         </InputWrapper>
-        {nameState === nickName.ERROR && (
+        {nameState === nickName.ERROR ? (
           <ProfileEditWarningMsg>
             1 to 16 characters(Korean, English), numbers or special characters.
           </ProfileEditWarningMsg>
+        ):(
+          <BlankMessage></BlankMessage>
         )}
       </NameContainer>
     </TitleContainer>
@@ -212,3 +215,11 @@ const SignUpChangeProducerImageIcon = styled(SignUpChangeImageIc)`
 
   cursor: pointer;
 `;
+
+const BlankMessage=styled.p`
+  width: 100%;
+  height: 3rem;
+
+  color:transparent;
+  margin-bottom: 2rem;
+`

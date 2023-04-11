@@ -10,7 +10,7 @@ import { getComment, updateComment } from "../../core/api/trackPost";
 import { UserCommentType } from "../../type/userCommentsType";
 import { postComment } from "../../core/api/trackPost";
 import { useRecoilState } from "recoil";
-import { endPost } from "../../recoil/postIsCompleted";
+import { endPost, postContentLength } from "../../recoil/postIsCompleted";
 import { playMusic, showPlayerBar } from "../../recoil/player";
 import Player from "../@common/player";
 import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
@@ -57,6 +57,7 @@ export default function UserComment(props: PropsType) {
   const { progress, audio, playPlayerAudio, pausesPlayerAudio } = usePlayer();
   const [key, setKey] = useState<number>(0);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [commentLength, setCommentLength] = useRecoilState<number>(postContentLength);
 
   const navigate = useNavigate();
 
@@ -92,12 +93,12 @@ export default function UserComment(props: PropsType) {
       setComments([]);
       if (clickPost === true) {
         queryClient.invalidateQueries("comments");
-        // setContent("");
-        // setAudioFile(null);
-        // setIsEnd(true);
-        // setComments([]);
         setClickPost(false);
         setComments([]);
+        setUploadData((prevState) => {
+          return { ...prevState, audioFile: null, content: "", fileName: "" };
+        });
+        setCommentLength(0);
         // excuteGetData();
         setKey(key + 1);
       } else {
@@ -161,8 +162,10 @@ export default function UserComment(props: PropsType) {
     if (blockAccess()) {
       navigate("/login");
     } else {
-      setClickPost(true);
-      setIsCompleted(!isCompleted);
+      if (uploadData.audioFile && uploadData.content.length > 0) {
+        setClickPost(true);
+        setIsCompleted(!isCompleted);
+      }
     }
 
     //  post()
@@ -191,6 +194,7 @@ export default function UserComment(props: PropsType) {
     <>
       {isLoading && <Loading />}
       <CommentContainer>
+        
         <CloseCommentBtn>
           <CloseBtnIcon onClick={closeCommentPage} />
         </CloseCommentBtn>
@@ -207,7 +211,7 @@ export default function UserComment(props: PropsType) {
             {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
           </AddWrapper>
         </form>
-
+      
         <CommentWriteWrapper onClick={changeClickUpload}>
           {comments &&
             comments.map((data, index) => {
@@ -251,7 +255,7 @@ export default function UserComment(props: PropsType) {
 
 const CommentWriteWrapper = styled.div`
   /* position: fixed; */
-  height: 100%;
+  height:100%;
 `;
 
 const CommentContainer = styled.section`
@@ -268,6 +272,7 @@ const CommentContainer = styled.section`
   z-index: 1;
   top: 0;
   right: 0;
+
 `;
 
 const CloseCommentBtn = styled.div`
@@ -276,6 +281,7 @@ const CloseCommentBtn = styled.div`
   flex-direction: column;
   margin-bottom: 2.7rem;
   cursor: pointer;
+
 `;
 
 const AddWrapper = styled.div`

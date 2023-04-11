@@ -15,6 +15,7 @@ import profileEditUploadDefaultImg from "../../assets/image/profileEditUploadDef
 import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
+import { checkNicknameForm } from "../../utils/errorMessage/checkNicknameForm";
 
 interface PropsType {
   profileImage: any;
@@ -29,7 +30,7 @@ interface PropsType {
 }
 
 export default function ProducerProfileEditTitle(props: PropsType) {
-  const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
+  //const NICK_NAME = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{1,20}$/;
   const {
     profileImage,
     name,
@@ -65,12 +66,12 @@ export default function ProducerProfileEditTitle(props: PropsType) {
   function checkNameInput(e: React.ChangeEvent<HTMLInputElement>) {
     const text = e.target.value;
     updateName(text);
-    if (NICK_NAME.test(text)) {
+    if (checkNicknameForm(text)) {
       setNameState(nickName.CORRECT);
       changeReadyState(true);
       return;
     }
-    if (!NICK_NAME.test(text)) {
+    if (!checkNicknameForm(text)) {
       setNameState(nickName.ERROR);
       changeReadyState(false);
     }
@@ -111,10 +112,12 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           {nameState === nickName.CORRECT && <ProfileEditCheckIcon />}
           {nameState === nickName.ERROR && <ProfileEditWarningIcon />}
         </InputWrapper>
-        {nameState === nickName.ERROR && (
+        {nameState === nickName.ERROR ? (
           <VocalEditWarningMsg>
             1 to 16 characters(Korean, English), numbers or special characters.
           </VocalEditWarningMsg>
+        ):(
+          <BlankMessage></BlankMessage>
         )}
       </NameContainer>
       <SleepAcountContainer>
@@ -250,6 +253,14 @@ const VocalEditWarningMsg = styled.span`
 
   margin-top: 1.1rem;
 `;
+
+const BlankMessage=styled.p`
+  width: 100%;
+  height: 3rem;
+
+  color:transparent;
+  margin-bottom: 2rem;
+`
 
 const NameInput = styled.input`
   height: 4.5rem;
