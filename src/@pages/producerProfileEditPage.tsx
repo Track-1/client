@@ -58,7 +58,6 @@ export default function ProducerProfileEditPage() {
   useEffect(() => {
     if (updatedData !== undefined) {
       mutate();
-      navigate(`/producer-profile/${params.id}`, { state: params.id, replace: true });
       // window.location.reload();
       // changeKey();
     }
@@ -68,6 +67,7 @@ export default function ProducerProfileEditPage() {
     onSuccess: () => {
       // queryClient.invalidateQueries("userProfile");
       setIsEnd(true);
+      navigate(`/producer-profile/${params.id}`, { state: params.id, replace: true });
     },
     onError: (error) => {
       console.log(error);
