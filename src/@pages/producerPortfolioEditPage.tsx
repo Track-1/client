@@ -1,4 +1,4 @@
-import styled, { useTheme, css } from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { UserType } from "../recoil/main";
 import { UploadBackIc, UploadBtnIc, CanUploadBtnIc, HashtagWarningIc } from "../assets";
@@ -28,11 +28,8 @@ import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
 import usePlayer from "../utils/hooks/usePlayer";
-import useTextareaHeight from "../utils/hooks/useTextareaHeight";
 
 export default function ProducerPortfolioEditPage() {
-  const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
-  const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(172);
   const userType = useRecoilValue(UserType);
   const prevData = useLocation().state;
   const [hashtagWarningOpen, setHahtagWarningOpen] = useState<boolean>(false);
@@ -203,7 +200,6 @@ export default function ProducerPortfolioEditPage() {
     isImageHovered ? setIsImageHovered(false) : setIsImageHovered(true);
   }
 
-
   return (
     <>
       {isLoading && <Loading />}
@@ -254,7 +250,7 @@ export default function ProducerPortfolioEditPage() {
             />
             <Line />
 
-            <TextCount font={"body"} textareaMargin={textareaMargin}>
+            <TextCount>
               <TextWrapper>
                 <InputCount>{title.length}</InputCount>
                 <LimitCount>/28</LimitCount>
@@ -378,12 +374,11 @@ export default function ProducerPortfolioEditPage() {
                     spellCheck={false}
                     maxLength={250}
                     defaultValue={description}
-                    onChange={checkDescription}
-                    ref={textareaRef} ></InputDescriptionText>
+                    onChange={checkDescription}></InputDescriptionText>
                 </InputBox>
               </InfoItemBox>
             </InfoContainer>
-            <TextCount key = {textareaHeight} font={"description"} textareaMargin={textareaHeight}>
+            <TextCount>
               <TextWrapper>
                 <InputCount>{description?.length}</InputCount>
                 <LimitCount>/250</LimitCount>
@@ -566,22 +561,12 @@ const Line = styled.hr`
   margin-left: 5px;
 `;
 
-const TextCount = styled.div<{ font: string; textareaMargin: number }>`
+const TextCount = styled.div`
   height: 2.3rem;
   width: 100%;
 
-  ${(props) => {
-    if (props.font === "body")
-      return css`
-        ${({ theme }) => theme.fonts.body1};
-        margin-top: 1.8rem;
-      `;
-    else
-      return css`
-        ${({ theme }) => theme.fonts.description};
-        margin-top: ${props.textareaMargin / 10 - 4.3 + 0.8}rem;
-      `;
-  }}
+  ${({ theme }) => theme.fonts.body1};
+  margin-top: 1.8rem;
 `;
 
 const TextWrapper = styled.div`
@@ -740,6 +725,7 @@ const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
 
 const InputDescriptionText = styled.textarea`
   width: 72rem;
+  height: 4rem;
 
   outline: 0;
   resize: none;
