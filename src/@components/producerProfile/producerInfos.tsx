@@ -46,9 +46,8 @@ export default function ProducerInfos(props: PropsType) {
   }
 
   function movePreviousPage() {
-    navigate(`/`);
+    isMe === true ? navigate(`/`) : navigate(-1);
     setShowPlayer(false);
-    //navigate(-1);
   }
 
   return (
