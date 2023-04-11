@@ -16,6 +16,7 @@ import { useRecoilValue } from 'recoil';
 import { openConventionModal } from "../recoil/conventionModal";
 import { UserDataPropsType } from "../type/signUpStepTypes";
 import { EditDataType } from "../type/editDataType";
+import { UserType } from "../recoil/main";
 
 
 export default function SignUpPage() {
@@ -52,6 +53,9 @@ export default function SignUpPage() {
             window.removeEventListener("popstate", preventGoBack);
         };
     },[]);
+    const userType=useRecoilValue<string>(UserType)
+
+    console.log(userType)
 
   return (
     <>
