@@ -248,7 +248,7 @@ export default function TrackPostPage() {
           title={trackInfoData?.title}
         />
       )}
-      {isCommentOpen ? <CommentHeader /> : <CategoryHeader pausesPlayerAudio={pauseAudio} />}
+      {isCommentOpen ? <CommentHeader pauseAudio={pauseAudio} /> : <CategoryHeader pausesPlayerAudio={pauseAudio} />}
 
       <TrackPostPageWrapper>
         {trackInfoData && (

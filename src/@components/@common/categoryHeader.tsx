@@ -99,25 +99,23 @@ export default function CategoryHeader(props: any) {
         </CategoryWrapper>
       </CategoryContainer>
 
-      
       <HeaderContainer>
         <HeaderWrapper>
           <TrackOneMainLogoIcon onClick={moveMainPage} />
-          {isLogin()&&(
-          <ProfileWrapper onClick={moveMypage}>
-            {isProducer(loginUserType) ? (
-              <ProducerProfileImg src={loginUserImg} alt="프로필이미지" />
-            ) : (
-              <VocalProfileImageWrapper>
-                <VocalProfileImage src={loginUserImg} alt="프로필이미지" />
-              </VocalProfileImageWrapper>
-            )}
-            <ToggleIc />
-          </ProfileWrapper>
+          {isLogin() && (
+            <ProfileWrapper onClick={moveMypage}>
+              {isProducer(loginUserType) ? (
+                <ProducerProfileImg src={loginUserImg} alt="프로필이미지" />
+              ) : (
+                <VocalProfileImageWrapper>
+                  <VocalProfileImage src={loginUserImg} alt="프로필이미지" />
+                </VocalProfileImageWrapper>
+              )}
+              <ToggleIc />
+            </ProfileWrapper>
           )}
         </HeaderWrapper>
       </HeaderContainer>
-      
     </CategoryHeaderContainer>
   );
 }
