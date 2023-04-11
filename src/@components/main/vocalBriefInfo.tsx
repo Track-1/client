@@ -20,7 +20,7 @@ export default function VocalBriefInfo(props: UserPropsType) {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<VocalProfileType>();
   const [loginUserImg, setLoginUserImg] = useRecoilState(LoginUserImg);
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
 
   function changeProfileBoxDisplay() {
     setIsShow(!isShow);
@@ -149,7 +149,6 @@ const UserInfoContainer = styled.section`
 const InfoBox = styled.div`
   display: flex;
 
-  margin-top: 1.7rem;
   padding-bottom: 1.7rem;
   padding-left: 2.2rem;
 
@@ -163,9 +162,10 @@ const ImageWrapper = styled.div`
 
   height: 5.5rem;
   width: 5.5rem;
-  margin-top: 1rem;
+
   margin-bottom: 1rem;
   margin-left: 1rem;
+  margin-top: 1.7rem;
 
   transform: rotate(45deg);
   overflow: hidden;
@@ -189,6 +189,7 @@ const TextWrapper = styled.div`
   flex-direction: column;
 
   margin-left: 9.5rem;
+  margin-top: 1.7rem;
 `;
 
 const InfoUserName = styled.strong`
