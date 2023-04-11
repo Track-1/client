@@ -250,7 +250,6 @@ export default function TrackPostEditPage() {
     }
   }, [description]);
 
-  console.log(descriptionHeight);
   return (
     <>
       {isLoading && <Loading />}
