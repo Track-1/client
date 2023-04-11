@@ -4,6 +4,8 @@ import { FileUploadButtonIc, UploadIc } from "../../assets";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { endPost, postContentLength } from "../../recoil/postIsCompleted";
 import { LoginUserImg } from "../../recoil/loginUserData";
+import { isLogin } from "../../utils/common/isLogined";
+import defaultImage from "../../assets/image/commentDefaultImg.png";
 
 interface PropsType {
   getUploadData: (content: string, audioFile: File | null, fileName: string) => any;
@@ -66,7 +68,11 @@ export default function CommentWrite(props: PropsType) {
       <WriteContainer>
         <ImageContainer>
           <ProfileImageWrapper>
-            <ProfileImage src={imgSrc} alt="프로필 이미지" />
+            {isLogin() ? (
+              <ProfileImage src={imgSrc} alt="프로필 이미지" />
+            ) : (
+              <ProfileImage src={defaultImage} alt="프로필 이미지" />
+            )}
           </ProfileImageWrapper>
         </ImageContainer>
         <InfoBox>
@@ -86,7 +92,10 @@ export default function CommentWrite(props: PropsType) {
               ref={commentFile}
             />
             <CountWrapper>
-              <InputCount commentLength={commentLength}>{commentLength}<p>/ 150</p></InputCount>
+              <InputCount commentLength={commentLength}>
+                {commentLength}
+                <p>/ 150</p>
+              </InputCount>
             </CountWrapper>
           </TitleWrapper>
           <InputWrapper>
@@ -104,7 +113,7 @@ export default function CommentWrite(props: PropsType) {
 }
 
 const WriteContainer = styled.article`
-  display:flex;
+  display: flex;
 
   height: 17.1rem;
 
@@ -124,8 +133,8 @@ const ProfileImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  width:9rem;
+
+  width: 9rem;
   height: 9rem;
   border-radius: 9rem;
   position: absolute;
@@ -133,8 +142,8 @@ const ProfileImageWrapper = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  margin-top:-9rem;
-  margin-left:3rem;
+  margin-top: -9rem;
+  margin-left: 3rem;
 `;
 
 const ProfileImage = styled.img`
@@ -150,8 +159,8 @@ const ProfileImage = styled.img`
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
-  
-  margin-left:12rem;
+
+  margin-left: 12rem;
 `;
 
 const TitleWrapper = styled.div`
@@ -191,7 +200,7 @@ const CountWrapper = styled.div`
 `;
 
 const InputCount = styled.strong<{ commentLength: number }>`
-   display: flex;
+  display: flex;
   justify-content: flex-end;
 
   width: 10rem;
@@ -202,8 +211,8 @@ const InputCount = styled.strong<{ commentLength: number }>`
 
   color: ${({ commentLength, theme }) => (commentLength === 0 ? theme.colors.gray3 : theme.colors.white)};
 
-  &>p{
-    margin-left:0.5rem;
+  & > p {
+    margin-left: 0.5rem;
     color: ${({ theme }) => theme.colors.gray3};
   }
 `;
@@ -234,5 +243,5 @@ const FileUploadButtonIcon = styled(FileUploadButtonIc)`
   width: 4rem;
   margin-left: 1.2rem;
 
-  cursor:pointer;
+  cursor: pointer;
 `;

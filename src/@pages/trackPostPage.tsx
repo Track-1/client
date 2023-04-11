@@ -210,7 +210,13 @@ export default function TrackPostPage() {
   });
 
   function getFile() {
-    blockAccess() ? navigate("/login") : !download && setDownload(true);
+    if (blockAccess()) {
+      pauseAudio();
+      navigate("/login");
+    } else {
+      !download && setDownload(true);
+    }
+    // blockAccess() ? navigate("/login") : !download && setDownload(true);
   }
 
   function checkIsMeOpen() {

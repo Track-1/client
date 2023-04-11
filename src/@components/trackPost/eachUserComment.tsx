@@ -7,9 +7,10 @@ import { showPlayerBar, playMusic } from "../../recoil/player";
 import { isSameIndex } from "../../utils/common/checkIndex";
 import EditDropDownComment from "./editDropDownComment";
 import CommentUpdate from "./commentUpdate";
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
-  commentInfo: UserCommentType;
+  commentInfo: any;
   audio: HTMLAudioElement;
   clickedIndex: number;
   pauseAudio: () => void;
@@ -47,6 +48,8 @@ export default function EachUserComment(props: PropsType) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const navigate = useNavigate();
+  console.log(commentInfo);
 
   function hoverComment() {
     setIsHover(true);
@@ -83,6 +86,10 @@ export default function EachUserComment(props: PropsType) {
     isUpdated && setIsEdit(false);
   }, [isUpdated]);
 
+  function moveVocalProfile() {
+    navigate(`/vocal-profile/${commentInfo?.vocalId}`, { state: commentInfo?.vocalId });
+  }
+
   return (
     <>
       {isEdit ? (
@@ -105,7 +112,7 @@ export default function EachUserComment(props: PropsType) {
             {isHover && !isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={() => playAudio(currentIndex)}>
                 <PlayerBlur>
-                  <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover}/>
+                  <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover} />
                 </PlayerBlur>
                 <PlayBtnIcon />
               </PlayerBlurWrapper>
@@ -113,16 +120,16 @@ export default function EachUserComment(props: PropsType) {
             {isClickedPlayingComment() && (
               <PlayerBlurWrapper onClick={pauseAudio}>
                 <PlayerBlur>
-                  <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover}/>
+                  <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover} />
                 </PlayerBlur>
                 <PauseButtonIcon />
               </PlayerBlurWrapper>
             )}
-            <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover}/>
+            <ProfileImage src={commentInfo.vocalProfileImage} isHover={isHover} />
           </ProfileImageWrapper>
           <InfoBox>
             <InfoTopWrapper>
-              <UserName>{commentInfo.vocalName}</UserName>
+              <UserName onClick={moveVocalProfile}>{commentInfo.vocalName}</UserName>
               {isMe && <EllipsisIcon onClick={changeToggleState} />}
             </InfoTopWrapper>
             <CommentText>{commentInfo.comment}</CommentText>
@@ -167,7 +174,7 @@ const CommentContainer = styled.article<{ commentClickBool: boolean; commentClic
   }
 `;
 
-const ProfileImage = styled.img<{isHover:boolean}>`
+const ProfileImage = styled.img<{ isHover: boolean }>`
   width: 100%;
   height: 100%;
 
@@ -176,32 +183,32 @@ const ProfileImage = styled.img<{isHover:boolean}>`
   object-fit: cover;
   margin: auto;
 
-  backdrop-filter: blur(${({isHover})=>isHover&&0.6}rem);
-  -webkit-filter: blur(${({isHover})=>isHover&&0.6}rem);
+  backdrop-filter: blur(${({ isHover }) => isHover && 0.6}rem);
+  -webkit-filter: blur(${({ isHover }) => isHover && 0.6}rem);
 
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 const ProfileImageWrapper = styled.div`
   height: 9rem;
   width: 9rem;
-  
+
   border-radius: 9rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   position: absolute;
   overflow: hidden;
 
-  margin-left:3rem;
+  margin-left: 3rem;
 `;
 const PlayerBlur = styled.div`
   height: 9rem;
   width: 9rem;
 
-  position:relative;
+  position: relative;
   /* background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: blur(0.6rem);
   -webkit-filter: blur(0.6rem); */
@@ -220,8 +227,8 @@ const InfoBox = styled.div`
   height: 8rem;
   width: 78rem;
 
-  margin-left:15rem;
-  margin-top:-3rem;
+  margin-left: 15rem;
+  margin-top: -3rem;
 `;
 
 const InfoTopWrapper = styled.div`
@@ -234,6 +241,8 @@ const InfoTopWrapper = styled.div`
 const UserName = styled.strong`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.hashtag}
+
+  cursor: pointer;
 `;
 
 const CommentText = styled.strong`
@@ -252,12 +261,12 @@ const EllipsisIcon = styled(EllipsisIc)`
 
 const PlayBtnIcon = styled(PlayBtnIc)`
   position: absolute;
-  z-index:2;
+  z-index: 2;
   height: 2.4rem;
 `;
 
 const PauseButtonIcon = styled(PauseButtonIc)`
   position: absolute;
-  z-index:2;
+  z-index: 2;
   height: 2.4rem;
 `;
