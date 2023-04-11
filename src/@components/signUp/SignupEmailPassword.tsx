@@ -359,7 +359,7 @@ export default function SignupEmailPassword(props: SetPropsType) {
                 width={42.2}
                 underline={setInputUnderline(verificationCodeMessage)}
                 onChange={writeVerificationCode}
-                autoComplete="off"
+                autoComplete="nope"
               />
               {setErrorIcon(verificationCodeMessage) && (
                 <IconWrapper marginLeft={-3.9}>{setErrorIcon(verificationCodeMessage)}</IconWrapper>
