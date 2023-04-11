@@ -3,11 +3,15 @@ import styled from "styled-components";
 
 import { Track1Ic, TrackOneMainLogoIc } from "../../assets";
 
-export default function CommentHeader() {
+export default function CommentHeader(props: any) {
+  const { pauseAudio } = props;
+
   const navigate = useNavigate();
 
   function moveMainPage() {
+    pauseAudio();
     navigate("/");
+    window.location.reload();
   }
 
   return (
@@ -55,5 +59,4 @@ const TrackOneIcon = styled(TrackOneMainLogoIc)`
   position: fixed;
 
   width: 26.3rem;
-
 `;

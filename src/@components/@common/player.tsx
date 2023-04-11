@@ -246,6 +246,8 @@ const PlayerNameText = styled.div`
   color: ${({ theme }) => theme.colors.gray2};
   pointer-events: auto;
   z-index: 1000;
+
+  margin-right: 2rem;
 `;
 
 const PauseIcon = styled(PauseIc)`
