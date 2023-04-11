@@ -10,20 +10,22 @@ import { useState } from 'react';
 import { isProducer, isVocal } from '../../utils/common/userType';
 import useModal from '../../utils/hooks/useModal';
 import ProducerUploadModal from './producerUploadModal';
+import { LoginUserType } from '../../recoil/loginUserData';
 
 export default function SignupSuccess() {
-    const userType=useRecoilValue<string>(UserType)
+    const userType = useRecoilValue(LoginUserType);
+   // const userType=useRecoilValue<string>(UserType)
     const [visible, setVisible]=useState<boolean>(false)
-    const navigate=useNavigate()
+    const navigate=useNavigate();
     // const { modalRef } = useModal();
     // const [editModalToggle, setEditModalToggle]=useState<boolean>(false)
 
     function moveToHome(){
         navigate('/')
     }
-
+console.log(userType)
     function moveToVocalUpload(){
-        navigate(`/upload/${currentUser.VOCAL}`)
+        navigate(`/upload/Portfolio`);
     }
 
     function openProducerUploadModal(){

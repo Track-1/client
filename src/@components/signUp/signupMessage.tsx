@@ -30,7 +30,7 @@ export default function SignupMessage(props: SignupMessagePropsType) {
   });
 
   function submit() {
-    mutate(userProfile);
+    isComplete&&mutate(userProfile);
   }
 
   useEffect(() => {
