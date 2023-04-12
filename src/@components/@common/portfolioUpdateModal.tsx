@@ -56,11 +56,16 @@ export default function PortfolioUpdateModal(props: PropsType) {
     if (window.confirm("게시글을 삭제하시겠습니까?")) {
       // setPortfolioData([]);
       excuteGetData();
-      loginUserType === "producer" ? deletePortfolioTrack() : deleteVocalSearching();
+      if (loginUserType === "producer") {
+        profileState === "Portfolio" ? deletePortfolioTrack() : deleteVocalSearching();
+      } else {
+        deletePortfolioTrack();
+      }
     }
   }
 
-  const { mutate: deleteVocalSearching } = useMutation(() => deleteAPI(), {
+
+  const { mutate: deleteVocalSearching } = useMutation(() => deleteTrack(portfoliosData[clickedPortfolioId].id), {
     onSuccess: () => {
       setShowPlayer(false);
       queryClient.invalidateQueries(key);
