@@ -53,7 +53,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
 
   function askToDeleteTrack() {
-    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+    if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
       // setPortfolioData([]);
       excuteGetData();
       loginUserType === "producer" ? deletePortfolioTrack() : deleteVocalSearching();
@@ -88,6 +88,7 @@ export default function PortfolioUpdateModal(props: PropsType) {
       onSuccess: (data) => {
         queryClient.invalidateQueries(key);
         setIsEnd(!isEnd);
+        alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.")
       },
       onError: (error) => {
         console.log(error);

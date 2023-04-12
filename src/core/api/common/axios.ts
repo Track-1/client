@@ -49,7 +49,7 @@ client.interceptors.response.use(
         }
       } catch (error: any) {
         if (error.response.data.message === "새롭게 로그인 필요") {
-          alert(error.response.data.message);
+          alert("Please login again\n다시 로그인해주세요.");
           removeCookie("accessToken", { path: "/" });
         }
       }

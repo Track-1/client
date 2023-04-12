@@ -120,7 +120,7 @@ export default function UploadInfo(props: propsType) {
 
     if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+      e.target.value.length > 10 && alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
     } else {
       setIsKorean(false);
     }
@@ -207,7 +207,7 @@ export default function UploadInfo(props: propsType) {
           return { ...prevState, audioFile: inputAudioFile };
         });
       } else {
-        alert("확장자를 확인해 주세요!");
+        alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
       }
     }
   }

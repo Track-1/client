@@ -43,12 +43,12 @@ export function getImageType(uploadName: string): string {
 }
 
 export function checkImageSize(imageSize: number): boolean {
-  if (imageSize > fileSize.LIMIT_IMAGE_SIZE) alert("파일용량 제한은 5MB 입니다.");
+  if (imageSize > fileSize.LIMIT_IMAGE_SIZE) alert("Only files under 5 MB can be uploaded.\n5MB 이하의 파일만 업로드 가능합니다.");
   return imageSize < fileSize.LIMIT_IMAGE_SIZE;
 }
 
 export function checkImageType(uploadName: string): boolean {
   const fileType = getImageType(uploadName);
-  !(fileType === ".jpg" || fileType === "jpeg" || fileType === ".png" || fileType === ".JPG" || fileType === ".JPEG" || fileType === ".PNG") && alert("jpg, jpeg, png 형식의 파일만 업로드할 수 있습니다.");
+  !(fileType === ".jpg" || fileType === "jpeg" || fileType === ".png" || fileType === ".JPG" || fileType === ".JPEG" || fileType === ".PNG") && alert("You can only upload images in jpg, jpeg, and png formats.\njpg, jpeg, png형식의 이미지만 업로드할 수 있습니다.");
   return fileType === ".jpg" || fileType === "jpeg" || fileType === ".png" || fileType === ".JPG" || fileType === ".JPEG" || fileType === ".PNG";
 }
