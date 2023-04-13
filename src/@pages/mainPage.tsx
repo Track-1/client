@@ -18,6 +18,7 @@ import { Category } from "../core/constants/categoryHeader";
 import Ads from "../@components/main/ads";
 import usePlayer from "../utils/hooks/usePlayer";
 import { reload } from "../recoil/main";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ export default function MainPage() {
   const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
   
   useEffect(()=>{
     setIsReload(true)

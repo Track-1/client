@@ -15,6 +15,7 @@ import Loading from "../@components/@common/loading";
 import { useRecoilState } from "recoil";
 import { endPost } from "../recoil/postIsCompleted";
 import usePlayer from "../utils/hooks/usePlayer";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function ProducerProfileEditPage() {
   const location = useLocation();
@@ -36,6 +37,11 @@ export default function ProducerProfileEditPage() {
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
 
   const queryClient = new QueryClient();
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
   
   useEffect(() => {
     if (saveData === true) {

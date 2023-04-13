@@ -2,6 +2,7 @@ import { file } from "@babel/types";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled, { useTheme, css } from "styled-components";
 import BackButton from "../@components/@common/backButton";
 import Loading from "../@components/@common/loading";
@@ -24,6 +25,7 @@ import {
 } from "../assets";
 import { getTrackInfo, patchTrackPost } from "../core/api/trackPost";
 import { Categories, CategoryDropdown, CategoryId } from "../core/constants/categories";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { checkHashtagLength } from "../utils/convention/checkHashtagLength";
 import useHover from "../utils/hooks/useHover";
@@ -60,7 +62,12 @@ export default function TrackPostEditPage() {
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
   const { textareaRef, isMaxHeightReached, textareaHeight } = useTextareaHeight(172);
   const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+  
   const { data } = useQuery(["state", beatId], () => getTrackInfo(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
