@@ -195,7 +195,7 @@ export default function LoginInput() {
           {/* <HiddenInput/>
           <HiddenInput type="password"/> */}
           {/* input */}
-          <HiddenInput type="text" autoComplete="false" required/>
+          <HiddenInput type="text" autoComplete="off"/>
             <Input
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
