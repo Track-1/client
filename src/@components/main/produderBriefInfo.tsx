@@ -47,16 +47,18 @@ export default function ProducerBriefInfo(props: UserPropsType) {
   return (
     <div onClick={changeProfileBoxDisplay}>
       <InfoContainer>
-        <div>
+        <ProfileImageWrapper>
           <ProfileImage src={data?.producerProfile?.profileImage} />
-        </div>
+        </ProfileImageWrapper>
         <UserName>{data?.producerProfile?.name}</UserName>
       </InfoContainer>
       <Blank></Blank>
       {isShow && (
         <UserInfoContainer>
           <InfoBox onClick={moveToMypage}>
+            <InfoProfileImageWrapper>
             <InfoProfileImage src={data?.producerProfile?.profileImage} onClick={moveToMypage} />
+            </InfoProfileImageWrapper>
             <TextWrapper>
               <InfoUserName>{data?.producerProfile?.name}</InfoUserName>
               <MainInfoProducerIc />
@@ -89,16 +91,33 @@ const InfoContainer = styled.article`
 `;
 
 const ProfileImage = styled.img`
+  height:100%;
+  width:100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+`;
+
+const ProfileImageWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   height: 3.2rem;
   width: 3.2rem;
 
-  margin-right: 1.2rem;
-
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
-  border-radius: 50%;
-`;
+  border-radius: 10rem;
+
+  position: absolute;
+  overflow: hidden;
+`
 
 const UserName = styled.strong`
+  margin-left:4rem;
+  
   ${({ theme }) => theme.fonts.id}
 `;
 
@@ -126,19 +145,37 @@ const InfoBox = styled.div`
 `;
 
 const InfoProfileImage = styled.img`
+  height:100%;
+  width:100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+`;
+
+const InfoProfileImageWrapper=styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+
   height: 8rem;
   width: 8rem;
+  margin: 0.5rem 0 0 2rem;
 
-  margin-left: 2.2rem;
+  border: 0.1rem solid ${({ theme }) => theme.colors.black};
+  border-radius: 10rem;
 
-  border-radius: 50%;
-`;
+  overflow: hidden;
+`
 
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-left: 1.8rem;
+  margin: 0.5rem 0 2.5rem 12rem;
 `;
 
 const InfoUserName = styled.strong`
