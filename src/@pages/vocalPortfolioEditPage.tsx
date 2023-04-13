@@ -159,6 +159,10 @@ export default function VocalPortfolioEditPage() {
   }
 
   function checkDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>250){
+      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.")
+    }
+
     setDescription(e.target.value);
   }
 
@@ -180,7 +184,7 @@ export default function VocalPortfolioEditPage() {
 
   function updateTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
     if(e.target.value.length>28){
-      alert("제목은 28자까지 작성할 수 있습니다.")
+      alert("A title can contain up to 28 characters.\n제목은 28자까지 작성할 수 있습니다.");
     }
     setTitle(e.target.value);
     setTitleLength(e.target.value.length)

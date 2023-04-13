@@ -98,6 +98,9 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>150){
+      alert("Description can contain up to 150 characters.\n설명은 150자까지 작성할 수 있습니다.")
+    }
     setDescriptionInput(e.target.value);
   }
 

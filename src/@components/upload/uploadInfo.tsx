@@ -163,7 +163,7 @@ export default function UploadInfo(props: propsType) {
     const inputLength = e.target.value.length;
 
     if (inputLength > 28) {
-      alert("제목은 28자까지 작성할 수 있습니다.");
+      alert("A title can contain up to 28 characters.\n제목은 28자까지 작성할 수 있습니다.");
     }
     if (checkMaxInputLength(inputLength, 28)) {
       setTitleLength(inputLength);
@@ -276,6 +276,10 @@ export default function UploadInfo(props: propsType) {
 
   //소개글
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>250){
+      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.")
+    }
+
     const enterCount = e.target.value.split("\n").length;
     const inputLength = e.target.value.length;
     const currentHeight = introduceRef.current!.scrollHeight;
