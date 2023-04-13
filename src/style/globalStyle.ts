@@ -110,4 +110,8 @@ export const GlobalStyle = createGlobalStyle`
       outline: none;
     }
   }
+  input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px white inset;
+	box-shadow: 0 0 0 1000px white inset;
+}
 `;

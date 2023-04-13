@@ -6,7 +6,7 @@ export default function SignUpBackButton() {
   const navigate = useNavigate();
 
   function movePreviousPage() {
-    if (window.confirm('회원가입을 종료하겠습니까?'))
+    if (window.confirm('Are you sure to terminate to signing up?\n회원가입을 종료하시겠습니까?'))
     {
         navigate('/');
     }

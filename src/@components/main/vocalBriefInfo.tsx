@@ -165,7 +165,7 @@ const ImageWrapper = styled.div`
 
   margin-bottom: 1rem;
   margin-left: 1rem;
-  margin-top: 1.7rem;
+  margin-top: 3.5rem;
 
   transform: rotate(45deg);
   overflow: hidden;
@@ -188,8 +188,7 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-left: 9.5rem;
-  margin-top: 1.7rem;
+  margin:2.5rem 0 2rem 9rem;
 `;
 
 const InfoUserName = styled.strong`

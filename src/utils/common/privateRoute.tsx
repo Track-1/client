@@ -15,7 +15,7 @@ export default function PrivateRoute({authentication}:PrivateRouteProps):any{
   if(authentication) {
     // 인증이 반드시 필요한 페이지
     // 인증을 안했을 경우 로그인 페이지로, 했을 경우 해당 페이지로
-    (!isLogin()||isCookieNull()|| isCookieAuthenticated())&&alert('로그인 후 이용해주세요.');
+    (!isLogin()||isCookieNull()|| isCookieAuthenticated())&&alert('Please use this function after logging in.\n해당 기능은 로그인 후 이용해주세요.');
     return (!isLogin()||isCookieNull()|| isCookieAuthenticated())?<Navigate to='/login'/>:<Outlet/>;
   } 
 }
@@ -23,6 +23,6 @@ export default function PrivateRoute({authentication}:PrivateRouteProps):any{
 export function blockAccess():any{
     // 인증이 반드시 필요한 페이지
     // 인증을 안했을 경우 로그인 페이지로, 했을 경우 해당 페이지로
-  (!isLogin()||isCookieNull())&&alert('로그인 후 이용해주세요.');
+  (!isLogin()||isCookieNull())&&alert('Please use this function after logging in.\n해당 기능은 로그인 후 이용해주세요.');
   return (!isLogin()||isCookieNull())&&true;
 }
