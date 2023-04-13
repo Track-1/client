@@ -194,7 +194,6 @@ export default function UserComment(props: PropsType) {
     <>
       {isLoading && <Loading />}
       <CommentContainer>
-        
         <CloseCommentBtn>
           <CloseBtnIcon onClick={closeCommentPage} />
         </CloseCommentBtn>
@@ -211,7 +210,7 @@ export default function UserComment(props: PropsType) {
             {!isClosed ? <AddCommentIcon onClick={uploadComment} /> : <ClosedAddCommentIcon />}
           </AddWrapper>
         </form>
-      
+
         <CommentWriteWrapper onClick={changeClickUpload}>
           {comments &&
             comments.map((data, index) => {
@@ -235,7 +234,7 @@ export default function UserComment(props: PropsType) {
               );
             })}
         </CommentWriteWrapper>
-        <BlurSection />
+        {comments && <BlurSection commentCnt={comments?.length} />}
         <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
       </CommentContainer>
       {showPlayer && (
@@ -255,7 +254,7 @@ export default function UserComment(props: PropsType) {
 
 const CommentWriteWrapper = styled.div`
   /* position: fixed; */
-  height:100%;
+  height: 100%;
 `;
 
 const CommentContainer = styled.section`
@@ -272,7 +271,6 @@ const CommentContainer = styled.section`
   z-index: 1;
   top: 0;
   right: 0;
-
 `;
 
 const CloseCommentBtn = styled.div`
@@ -281,7 +279,6 @@ const CloseCommentBtn = styled.div`
   flex-direction: column;
   margin-bottom: 2.7rem;
   cursor: pointer;
-
 `;
 
 const AddWrapper = styled.div`
@@ -303,13 +300,13 @@ const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
   margin-bottom: 1.4rem;
 `;
 
-const BlurSection = styled.div`
+const BlurSection = styled.div<{ commentCnt: number }>`
   height: 32rem;
   /* width: 107.7rem; */
   width: 100%;
   /* position: relative; */
   background: linear-gradient(360deg, #000000 27.81%, rgba(0, 0, 0, 0) 85.65%);
-  position: sticky;
+  position: ${({ commentCnt }) => (commentCnt < 4 ? "fixed" : "sticky")};
   bottom: 0;
   margin-left: -6.5rem;
 `;
