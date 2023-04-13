@@ -5,7 +5,7 @@ import ConventionModal from '../@components/@common/conventionModal'
 import { openConventionModal } from '../recoil/conventionModal'
 import SignBackground from "../assets/icon/signUpBackgroundIc.svg";
 import Footer from '../@components/@common/footer'
-import { ErrorPageIc } from '../assets'
+import { ErrorPageIc, ErrorPageMainIc, ErrorPageTextIc } from '../assets'
 
 export default function ErrorPage() {
     const showModal=useRecoilValue(openConventionModal);
@@ -14,12 +14,18 @@ export default function ErrorPage() {
   return (
     <>
     <SignUpPageWrapper>
+    <Img src={background} alt="배경"/>
         <SignUpContainer>
-            <Img src={background} alt="배경"/>
-            <IconWrapper>
-                <ErrorPageIcon/>
-                <ErrorMessage>Please contact us <ins>track-1@track-1.link</ins></ErrorMessage>
-            </IconWrapper>
+            <ErrorPageMainIcon/>
+            <ErrorPageTextIcon/>
+            <DescriptionWrapper>
+                <p>Something went wrong</p>
+                <p>Please Refresh Your Browser</p>
+            </DescriptionWrapper>
+            <ContactTextWrapper>
+                <p>Or Please contact us </p>
+                <p>track-1@track01.link</p>
+            </ContactTextWrapper>
         </SignUpContainer>
         <Footer/>
     </SignUpPageWrapper>
@@ -45,24 +51,11 @@ const Img=styled.img`
 
 `
 
-const ErrorPageIcon=styled(ErrorPageIc)`
-    width: 65rem;
+const ErrorPageMainIcon=styled(ErrorPageMainIc)`
+    width:21.8rem;
+    height:21.8rem;   
 `
 
-const IconWrapper=styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-    height: 100%;
-
-    margin-top: -12rem;
-    position: absolute;
-`
-
-const ErrorMessage=styled.p`
-    color: ${({theme})=>theme.colors.gray2};
-    ${({theme})=>theme.fonts.player_title};
+const ErrorPageTextIcon=styled(ErrorPageTextIc)`
+    width:49.2rem;
 `
