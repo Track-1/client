@@ -17,6 +17,7 @@ import { useRecoilState } from "recoil";
 import { endPost } from "../recoil/postIsCompleted";
 import usePlayer from "../utils/hooks/usePlayer";
 import { getCookie } from "../utils/cookie";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function VocalProfileEditPage() {
   const { state } = useLocation();
@@ -34,6 +35,11 @@ export default function VocalProfileEditPage() {
   const [updatedData, setUpdatedData] = useState<any>();
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
   
   useEffect(() => {
     if (saveData === true) {

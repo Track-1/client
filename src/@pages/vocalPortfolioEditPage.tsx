@@ -29,6 +29,7 @@ import useHover from "../utils/hooks/useHover";
 import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
 import usePlayer from "../utils/hooks/usePlayer";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function VocalPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -58,7 +59,12 @@ export default function VocalPortfolioEditPage() {
   const [isKorean, setIsKorean] = useState<boolean>(false);
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
   const [titleLength, setTitleLength]=useState(0);
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+  
   useEffect(() => {
     setHashtag(prevData.keyword);
   }, []);

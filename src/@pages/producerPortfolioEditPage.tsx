@@ -29,6 +29,7 @@ import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
 import usePlayer from "../utils/hooks/usePlayer";
 import useTextareaHeight from "../utils/hooks/useTextareaHeight";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -60,7 +61,12 @@ export default function ProducerPortfolioEditPage() {
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
 
   const navigate = useNavigate();
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+  
   function convert() {}
 
   function toggleHashtagWarningOpen() {

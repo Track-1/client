@@ -40,6 +40,7 @@ export default function CategoryList(props: any) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    //true면 필터링 초기화, false면 필터링 유지
     if(isClickedCategory){
       setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
       setFilteredUrlApi("");
