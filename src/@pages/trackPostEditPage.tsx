@@ -64,10 +64,10 @@ export default function TrackPostEditPage() {
   const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
-  useEffect(()=>{
-    setIsClickedCategory(true)
-  },[])
-  
+  useEffect(() => {
+    setIsClickedCategory(true);
+  }, []);
+
   const { data } = useQuery(["state", beatId], () => getTrackInfo(beatId), {
     refetchOnWindowFocus: false,
     retry: 0,
@@ -165,7 +165,8 @@ export default function TrackPostEditPage() {
 
     if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length > 10 && alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
+      e.target.value.length > 10 &&
+        alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
     } else {
       setIsKorean(false);
     }
@@ -205,8 +206,8 @@ export default function TrackPostEditPage() {
   }
 
   function checkDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if(e.target.value.length>250){
-      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.")
+    if (e.target.value.length > 250) {
+      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.");
     }
 
     setDescription(e.target.value);
@@ -217,7 +218,7 @@ export default function TrackPostEditPage() {
   // },[])
 
   function inputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if(e.target.value.length>28){
+    if (e.target.value.length > 28) {
       alert("A title can contain up to 28 characters.\n제목은 28자까지 작성할 수 있습니다.");
     }
     setTitle(e.target.value);
@@ -270,217 +271,215 @@ export default function TrackPostEditPage() {
   return (
     <>
       {isLoading && <Loading />}
-      {data?.data && (
-        <>
-          <Container>
-            <HeaderWrapper>
-              <LeftWrapper>
-                {/* <UploadBackIcon /> */}
-                <div onClick={movePreviousPage}>
-                  <BackButton />
-                </div>
-                <UserClass> {}</UserClass>
-              </LeftWrapper>
-              <CanUploadBtnIcon onClick={completeEdit} />
-            </HeaderWrapper>
-          </Container>
-          <Container2>
-            <SectionWrapper>
-              <TrackImageBox onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
-                <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                  {isImageUploaded ? (
-                    <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
-                  ) : (
-                    <TrackUploadImage
-                      src={String(data?.data.data.jacketImage)}
-                      alt="썸네일 이미지"
-                      isImageHovered={isImageHovered}
-                    />
-                  )}
-                </TrackUploadImageWrapper>
-                {isImageHovered && (
-                  <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-                    <FileChangeIcon />
-                  </label>
+      <>
+        <Container>
+          <HeaderWrapper>
+            <LeftWrapper>
+              {/* <UploadBackIcon /> */}
+              <div onClick={movePreviousPage}>
+                <BackButton />
+              </div>
+              <UserClass> {}</UserClass>
+            </LeftWrapper>
+            <CanUploadBtnIcon onClick={completeEdit} />
+          </HeaderWrapper>
+        </Container>
+        <Container2>
+          <SectionWrapper>
+            <TrackImageBox onMouseEnter={hoverImage} onMouseLeave={hoverImage}>
+              <TrackUploadImageWrapper htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                {isImageUploaded ? (
+                  <TrackUploadImage src={String(showImage)} alt="썸네일 이미지" isImageHovered={isImageHovered} />
+                ) : (
+                  <TrackUploadImage
+                    src={String(data?.data.data.jacketImage)}
+                    alt="썸네일 이미지"
+                    isImageHovered={isImageHovered}
+                  />
                 )}
-              </TrackImageBox>
-              <input
-                type="file"
-                id="imageFileUpload"
-                style={{ display: "none" }}
-                accept=".jpg,.jpeg,.png"
-                onChange={getImageFile}
+              </TrackUploadImageWrapper>
+              {isImageHovered && (
+                <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
+                  <FileChangeIcon />
+                </label>
+              )}
+            </TrackImageBox>
+            <input
+              type="file"
+              id="imageFileUpload"
+              style={{ display: "none" }}
+              accept=".jpg,.jpeg,.png"
+              onChange={getImageFile}
+            />
+            <Container3>
+              <TitleInput
+                typeof="text"
+                placeholder="Please enter a title"
+                spellCheck={false}
+                maxLength={28}
+                defaultValue={title}
+                onChange={inputTitle}
+                row={checkHeight()}
               />
-              <Container3>
-                <TitleInput
-                  typeof="text"
-                  placeholder="Please enter a title"
-                  spellCheck={false}
-                  maxLength={28}
-                  defaultValue={title}
-                  onChange={inputTitle}
-                  row={checkHeight()}
-                />
-                <Line />
+              <Line />
 
-                <TextCount font={"body"} textareaMargin={textareaMargin}>
-                  <TextWrapper>
-                    <InputCount>{title.length}</InputCount>
-                    <LimitCount>/28</LimitCount>
-                  </TextWrapper>
-                </TextCount>
+              <TextCount font={"body"} textareaMargin={textareaMargin}>
+                <TextWrapper>
+                  <InputCount>{title.length}</InputCount>
+                  <LimitCount>/28</LimitCount>
+                </TextWrapper>
+              </TextCount>
 
-                <InfoContainer>
-                  <InfoItemBox>
-                    <NameBox>
-                      <UploadFileUpdateIcon />
-                    </NameBox>
-                    <InputBox>
-                      <InputWrapper>
-                        <InputFileTextWrapper fileName={String(audioFile?.name)}>
-                          {audioFile && <FileName value={String(audioFile.name)} />}
-                          {!audioFile && <FileName value={String(data?.data.data.beatWavFile)} />}
-                          <FileAttribute>{}</FileAttribute>
-                          <input
-                            type="file"
-                            id="wavFileUpload"
-                            style={{ display: "none" }}
-                            accept=".wav,.mp3"
-                            onChange={getFileName}
-                          />
-                        </InputFileTextWrapper>
-                        <label htmlFor="wavFileUpload" style={{ cursor: "pointer" }}>
-                          <FolderUploadIcon />
-                        </label>
-                      </InputWrapper>
-                    </InputBox>
-                  </InfoItemBox>
+              <InfoContainer>
+                <InfoItemBox>
+                  <NameBox>
+                    <UploadFileUpdateIcon />
+                  </NameBox>
+                  <InputBox>
+                    <InputWrapper>
+                      <InputFileTextWrapper fileName={String(audioFile?.name)}>
+                        {audioFile && <FileName value={String(audioFile.name)} />}
+                        {!audioFile && <FileName value={String(data?.data.data.beatWavFile)} />}
+                        <FileAttribute>{}</FileAttribute>
+                        <input
+                          type="file"
+                          id="wavFileUpload"
+                          style={{ display: "none" }}
+                          accept=".wav,.mp3"
+                          onChange={getFileName}
+                        />
+                      </InputFileTextWrapper>
+                      <label htmlFor="wavFileUpload" style={{ cursor: "pointer" }}>
+                        <FolderUploadIcon />
+                      </label>
+                    </InputWrapper>
+                  </InputBox>
+                </InfoItemBox>
 
-                  <InfoItemBox>
-                    <NameBox>
-                      <UploadCategoryIcon />
-                    </NameBox>
-                    <InputBox>
-                      <InputWrapper>
-                        <InputCategoryTextWrapper>
-                          {category && <InputCategoryText>{category}</InputCategoryText>}
-                          {!category && <InputCategoryText>{data?.data.data.category}</InputCategoryText>}
-                        </InputCategoryTextWrapper>
-                        <CategoryDropDownIcon onClick={toggleDropdown} />
-                      </InputWrapper>
-                    </InputBox>
-                  </InfoItemBox>
+                <InfoItemBox>
+                  <NameBox>
+                    <UploadCategoryIcon />
+                  </NameBox>
+                  <InputBox>
+                    <InputWrapper>
+                      <InputCategoryTextWrapper>
+                        {category && <InputCategoryText>{category}</InputCategoryText>}
+                        {!category && <InputCategoryText>{data?.data.data.category}</InputCategoryText>}
+                      </InputCategoryTextWrapper>
+                      <CategoryDropDownIcon onClick={toggleDropdown} />
+                    </InputWrapper>
+                  </InputBox>
+                </InfoItemBox>
 
-                  <HashTagInfoItemBox>
-                    <NameBox>
-                      <UploadHashtagIcon />
-                    </NameBox>
-                    <InputBox>
-                      <InputHashtagWrapper>
+                <HashTagInfoItemBox>
+                  <NameBox>
+                    <UploadHashtagIcon />
+                  </NameBox>
+                  <InputBox>
+                    <InputHashtagWrapper>
+                      <>
+                        {hashtag?.map((item: string, index: number) => {
+                          return (
+                            <InputHashtagWrapper>
+                              <Hashtag key={index}>
+                                <HashtagWrapper>
+                                  <HashtagSharp># </HashtagSharp>
+                                  <CompletedHashtag>{item}</CompletedHashtag>
+                                  <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
+                                </HashtagWrapper>
+                              </Hashtag>
+                            </InputHashtagWrapper>
+                          );
+                        })}
                         <>
-                          {hashtag?.map((item: string, index: number) => {
-                            return (
-                              <InputHashtagWrapper>
-                                <Hashtag key={index}>
-                                  <HashtagWrapper>
-                                    <HashtagSharp># </HashtagSharp>
-                                    <CompletedHashtag>{item}</CompletedHashtag>
-                                    <DeleteHashtagIcon onClick={() => deleteHashtag(index)} />
-                                  </HashtagWrapper>
-                                </Hashtag>
-                              </InputHashtagWrapper>
-                            );
-                          })}
-                          <>
-                            {hashtag.length < 3 && (
-                              <InputHashtagWrapper>
-                                <Hashtag>
-                                  <HashtagWrapper>
-                                    <HashtagSharp># </HashtagSharp>
-                                    <HashtagInput
-                                      onChange={getInputText}
-                                      onKeyPress={(e) => {
-                                        e.key === "Enter" && addHashtag();
-                                      }}
-                                      inputWidth={hashtagLength}
-                                      isKorean={isKorean}
-                                      ref={hashtagRef}
-                                      placeholder="HashTag"
-                                      maxLength={tagMaxLength}
-                                    />
-                                  </HashtagWrapper>
-                                </Hashtag>
-                              </InputHashtagWrapper>
-                            )}
-                            {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
-                          </>
+                          {hashtag.length < 3 && (
+                            <InputHashtagWrapper>
+                              <Hashtag>
+                                <HashtagWrapper>
+                                  <HashtagSharp># </HashtagSharp>
+                                  <HashtagInput
+                                    onChange={getInputText}
+                                    onKeyPress={(e) => {
+                                      e.key === "Enter" && addHashtag();
+                                    }}
+                                    inputWidth={hashtagLength}
+                                    isKorean={isKorean}
+                                    ref={hashtagRef}
+                                    placeholder="HashTag"
+                                    maxLength={tagMaxLength}
+                                  />
+                                </HashtagWrapper>
+                              </Hashtag>
+                            </InputHashtagWrapper>
+                          )}
+                          {hashtag.length < 2 && <AddHashtagIcon onClick={addHashtag} />}
                         </>
-                      </InputHashtagWrapper>
+                      </>
+                    </InputHashtagWrapper>
 
-                      <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
-                        {hoverState ? (
-                          <>
-                            <HoverHashtagWarningIcon />
-                            <WarningTextWrapper>
-                              <WarningText>
-                                1. 해시태그는 최대 3개까지 추가 가능합니다.
-                                <br />
-                                2. 최대 10자까지 작성이 가능합니다.
-                                <br />
-                                3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-                              </WarningText>
-                            </WarningTextWrapper>
-                          </>
-                        ) : (
-                          <HashtagWarningIcon />
-                        )}
-                      </WarningIcon>
-                    </InputBox>
-                  </HashTagInfoItemBox>
+                    <WarningIcon onMouseEnter={(e) => changeHoverState(e)} onMouseLeave={(e) => changeHoverState(e)}>
+                      {hoverState ? (
+                        <>
+                          <HoverHashtagWarningIcon />
+                          <WarningTextWrapper>
+                            <WarningText>
+                              1. 해시태그는 최대 3개까지 추가 가능합니다.
+                              <br />
+                              2. 최대 10자까지 작성이 가능합니다.
+                              <br />
+                              3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
+                            </WarningText>
+                          </WarningTextWrapper>
+                        </>
+                      ) : (
+                        <HashtagWarningIcon />
+                      )}
+                    </WarningIcon>
+                  </InputBox>
+                </HashTagInfoItemBox>
 
-                  <InfoItemBox>
-                    <NameBox>
-                      <UploadDescriptionIcon />
-                    </NameBox>
-                    <InputBox>
-                      {/* {description && ( */}
-                      <InputDescriptionText
-                        typeof="text"
-                        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
-                        spellCheck={false}
-                        maxLength={250}
-                        defaultValue={description}
-                        onChange={checkDescription}
-                        ref={textareaRef}
-                        style={{ height: `${descriptionHeight}px` }}></InputDescriptionText>
-                    </InputBox>
-                  </InfoItemBox>
-                </InfoContainer>
-                <TextCount key={descriptionHeight} font={"description"} textareaMargin={descriptionHeight}>
-                  <TextWrapper>
-                    <InputCount>{description?.length}</InputCount>
-                    <LimitCount>/250</LimitCount>
-                  </TextWrapper>
-                </TextCount>
-                {showDropdown && (
-                  <DropMenuBox>
-                    <DropMenuWrapper>
-                      {Categories.map((text: string, index: number) => (
-                        <DropMenuItem>
-                          <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
-                            {text}
-                          </DropMenuText>
-                          {category === Categories[index] && <CheckCategoryIcon />}
-                        </DropMenuItem>
-                      ))}
-                    </DropMenuWrapper>
-                  </DropMenuBox>
-                )}
-              </Container3>
-            </SectionWrapper>
-          </Container2>
-        </>
-      )}
+                <InfoItemBox>
+                  <NameBox>
+                    <UploadDescriptionIcon />
+                  </NameBox>
+                  <InputBox>
+                    {/* {description && ( */}
+                    <InputDescriptionText
+                      typeof="text"
+                      placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+                      spellCheck={false}
+                      maxLength={250}
+                      defaultValue={description}
+                      onChange={checkDescription}
+                      ref={textareaRef}
+                      style={{ height: `${descriptionHeight}px` }}></InputDescriptionText>
+                  </InputBox>
+                </InfoItemBox>
+              </InfoContainer>
+              <TextCount key={descriptionHeight} font={"description"} textareaMargin={descriptionHeight}>
+                <TextWrapper>
+                  <InputCount>{description?.length}</InputCount>
+                  <LimitCount>/250</LimitCount>
+                </TextWrapper>
+              </TextCount>
+              {showDropdown && (
+                <DropMenuBox>
+                  <DropMenuWrapper>
+                    {Categories.map((text: string, index: number) => (
+                      <DropMenuItem>
+                        <DropMenuText onClick={() => selectCategory(text)} isClicked={category === Categories[index]}>
+                          {text}
+                        </DropMenuText>
+                        {category === Categories[index] && <CheckCategoryIcon />}
+                      </DropMenuItem>
+                    ))}
+                  </DropMenuWrapper>
+                </DropMenuBox>
+              )}
+            </Container3>
+          </SectionWrapper>
+        </Container2>
+      </>
     </>
   );
 }
@@ -827,6 +826,7 @@ const InputDescriptionText = styled.textarea`
   color: ${({ theme }) => theme.colors.white};
   margin-top: 1.7rem;
   margin-left: 1rem;
+  padding-bottom: 1rem;
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
