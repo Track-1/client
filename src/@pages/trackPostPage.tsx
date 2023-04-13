@@ -64,11 +64,7 @@ export default function TrackPostPage() {
   const [isReload, setIsReload] = useRecoilState<boolean>(reload);
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
-  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
-  useEffect(()=>{
-    setIsClickedCategory(true)
-  },[])
   
   useEffect(() => {
     setIsReload(true);
