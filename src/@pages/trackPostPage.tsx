@@ -365,13 +365,15 @@ const BackButtonWrapper = styled.div`
 const AudioTitleWrapper=styled.div`
   display:flex;
   flex-wrap:wrap;
-  
   width: 47rem;
 `
 
 const AudioTitle = styled.h1`
+  display:flex;
+  flex-wrap:wrap;
+
   width: 47rem;
-  overflow-wrap: break-word;
+  word-break:keep-all
 
   ${({ theme }) => theme.fonts.title}
 

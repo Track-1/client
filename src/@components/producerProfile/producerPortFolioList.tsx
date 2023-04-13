@@ -120,16 +120,20 @@ export default function ProducerPortFolioList(props: PropsType) {
                 {isSameIndex(index, 0) &&
                   isNotSameIndex(hoveredIndex, index) &&
                   isNotSameIndex(clickedIndex, index) && (
+                    <AudioTitleWrapper>
                     <AudioTitle
                       hoverBool={isSameIndex(hoveredIndex, index)}
                       clickBool={isSameIndex(clickedIndex, index)}>
                       {portfolio.title}
                     </AudioTitle>
+                    </AudioTitleWrapper>
                   )}
                 {isNotSameIndex(index, 0) && (
+                  <AudioTitleWrapper>
                   <AudioTitle hoverBool={isSameIndex(hoveredIndex, index)} clickBool={isSameIndex(clickedIndex, index)}>
                     {portfolio.title}
                   </AudioTitle>
+                  </AudioTitleWrapper>
                 )}
               </TitleWrapper>
             </PortfolioBox>
@@ -234,6 +238,7 @@ const PortfolioImageWrapper = styled.div<{
   border-radius: 25rem;
   // position: absolute;
   overflow: hidden;
+
 `;
 
 const PortfolioImage = styled.img<{
@@ -277,4 +282,15 @@ const AudioTitle = styled.h1<{ hoverBool: boolean; clickBool: boolean }>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width:15rem;
+  overflow-wrap: break-word;
 `;
+
+const AudioTitleWrapper=styled.div`
+  display:flex;
+  flex-wrap:wrap;
+  
+  text-align:center;
+
+  width:15rem;
+`
