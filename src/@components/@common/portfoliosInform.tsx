@@ -52,6 +52,10 @@ export default function PortfoliosInform(props: any) {
     return isMe && isClicked() && (isHoveredNClicked() || isNotHovered());
   }
 
+  function checkisViewMore(){
+    return isClicked() && (isHoveredNClicked() || isNotHovered());
+  }
+
   useEffect(() => {
     !isNotHovered() && setId(hoverId);
     isClicked() && isNotHovered() && setId(clickId);
@@ -70,7 +74,7 @@ export default function PortfoliosInform(props: any) {
         <InformContainer>
           <InformWrapper>
             <InformTitleWrapper>
-              {checkIsVocalSearching() && checkisEllipsis() && (
+              {checkIsVocalSearching() && checkisViewMore()&&(
                 <div onClick={() => moveTrackPost(portfolios[id].id)}>
                   <PortfolioViewMoreButton />
                 </div>
