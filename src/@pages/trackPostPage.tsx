@@ -263,7 +263,9 @@ export default function TrackPostPage() {
               <BackButtonWrapper onClick={movePreviousPage}>
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
+              <AudioTitleWrapper>
               <AudioTitle>{trackInfoData?.title}</AudioTitle>
+              </AudioTitleWrapper>
               <ProducerBox>
                 <ProfileImgWrapper>
                   <ProducerProfile src={trackInfoData?.producerProfileImage} alt="프로듀서 프로필 이미지" />
@@ -360,8 +362,16 @@ const BackButtonWrapper = styled.div`
   align-items: center;
 `;
 
+const AudioTitleWrapper=styled.div`
+  display:flex;
+  flex-wrap:wrap;
+  
+  width: 47rem;
+`
+
 const AudioTitle = styled.h1`
   width: 47rem;
+  overflow-wrap: break-word;
 
   ${({ theme }) => theme.fonts.title}
 
