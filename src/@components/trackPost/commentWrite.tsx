@@ -52,11 +52,15 @@ export default function CommentWrite(props: PropsType) {
       const file = e.target.value;
       const audioFileName: string = getAudioFileName(file);
       const audioFileType: string = getAudioFileType(file, audioFileName.length);
-
-      if (!checkAduioFileType(audioFileType)) {
-        alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
-        setUploadedFile(null);
-        changeFileName("file_upload.mp3");
+      if (e.target.files?.length === 0) {
+       // alert("파일삽입이 취소되었습니다.")
+      }
+      else{
+        if (!checkAduioFileType(audioFileType)) {
+          alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
+          setUploadedFile(null);
+          changeFileName("file_upload.mp3");
+        }
       }
     }
   }
