@@ -192,8 +192,8 @@ export default function LoginInput() {
         <InputBox marginTop={2.9}>
           <LoginPasswordIcon />
           <InputWrapper>
-          <HiddenInput/>
-          <HiddenInput type="password"/>
+          {/* <HiddenInput/>
+          <HiddenInput type="password"/> */}
           <input type="text" autoComplete="false" required/>
             <Input
               type={showPassword ? "text" : "password"}
