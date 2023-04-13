@@ -199,6 +199,7 @@ export default function LoginInput() {
               onFocus={changeHoverPasswordState}
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
+              autoComplete={}
             />
             <IconWrapper>
               {isWarningState(passwordInputState) && <SignUpErrorIcon />}

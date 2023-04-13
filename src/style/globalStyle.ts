@@ -111,8 +111,10 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   input:-webkit-autofill {
-	-webkit-box-shadow: 0 0 0 1000px white inset;
-	box-shadow: 0 0 0 1000px white inset;
+	-webkit-box-shadow: 0 0 0 1000px #16161C inset;
+	box-shadow: 0 0 0 1000px #16161C inset;
+  color:white!important;
+  -webkit-color:white;
   }
   input:-internal-autofill-selected {
     appearance: menulist-button;

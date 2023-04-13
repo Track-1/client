@@ -76,7 +76,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           <PointIcon />
         </NameTitleWrapper>
         <InputWrapper nameState={nameState}>
-          <NameInput defaultValue={name} onChange={checkNameInput} />
+          <NameInput defaultValue={name} onChange={checkNameInput}  maxLength={16}/>
           {nameState === nickName.CORRECT && <ProfileEditCheckIc />}
           {nameState === nickName.ERROR && <ProfileEditWarningIc />}
         </InputWrapper>
