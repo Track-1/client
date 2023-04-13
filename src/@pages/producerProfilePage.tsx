@@ -50,6 +50,7 @@ export default function ProducerProfilePage() {
   const [isReload, setIsReload] = useRecoilState<boolean>(reload);
 
   const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
+  const [lastClickTime, setLastClickTime] = useState(0);
 
   window.onpopstate = function (event) {
     !isReload && window.history.back();
@@ -82,12 +83,19 @@ export default function ProducerProfilePage() {
     },
   );
 
+
   async function getData(portfolioPage: number, selectingPage: number) {
+    const currentTime = new Date().getTime();
     let portfolioResponse: any;
     let selectingResponse: any;
     setOpenUploadModal(false);
     console.log(selectingPage);
-    if (hasNextPage !== false) {
+    
+    if (currentTime - lastClickTime < 500) {
+      return;
+    } else if (hasNextPage !== false) {
+      setLastClickTime(currentTime);
+
       portfolioResponse = await getProducerPortfolio(state, portfolioPage);
       selectingResponse = await getSelectingTracks(state, selectingPage);
 
