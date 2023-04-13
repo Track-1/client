@@ -113,5 +113,11 @@ export const GlobalStyle = createGlobalStyle`
   input:-webkit-autofill {
 	-webkit-box-shadow: 0 0 0 1000px white inset;
 	box-shadow: 0 0 0 1000px white inset;
-}
+  }
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: transparent !important;
+    color: white !important;
+  }
 `;
