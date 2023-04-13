@@ -6,17 +6,23 @@ import { openConventionModal } from '../recoil/conventionModal'
 import SignBackground from "../assets/icon/signUpBackgroundIc.svg";
 import Footer from '../@components/@common/footer'
 import { ErrorPageIc, ErrorPageMainIc, ErrorPageTextIc, TrackOneMainLogoIc } from '../assets'
+import { useNavigate } from 'react-router-dom';
 
 export default function ErrorPage() {
     const showModal=useRecoilValue(openConventionModal);
     const background=SignBackground;
+    const navigate=useNavigate();
+
+    function moveToMain(){
+        navigate("/")
+    }
 
   return (
     <>
     <ErrorPageContainer>
     <Img src={background} alt="배경"/>
     <Header>
-        <TrackOneMainLogoIcon/>
+        <TrackOneMainLogoIcon onClick={moveToMain}/>
     </Header>
         <ErrorPageWrapper>
             <ErrorPageMainIcon/>
@@ -50,7 +56,7 @@ const ErrorPageWrapper=styled.section`
     width: 72.7rem;
     height: 66.2rem;
 
-    margin: 12.5rem 0 20.9rem 59.7rem;
+    margin: 6.6rem 0 20.9rem 59.7rem;
 
     backdrop-filter: blur(1rem);
 
@@ -115,7 +121,7 @@ const Header=styled.header`
     position:sticky;
     top:0;
 
-    padding:5.9rem 0 0 7.9rem;
+    padding: 5.9rem 7.5rem;
 `
 
 const EmailLink=styled.a`
