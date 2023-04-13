@@ -17,6 +17,16 @@ export default function ErrorPage() {
         navigate("/")
     }
 
+    async function copyLink(text: string) {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert("Copy link completed.\n링크가 복사되었습니다. ");
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    
+
   return (
     <>
     <ErrorPageContainer>
@@ -33,7 +43,7 @@ export default function ErrorPage() {
             </DescriptionWrapper>
             <ContactTextWrapper>
                 <p>Or Please contact us </p>
-                <EmailLink href="mailto:track-1@track01.link">track-1@track01.link</EmailLink>
+                <EmailLink onClick={()=>copyLink('track-1@track-1.link')}>track-1@track-1.link</EmailLink>
             </ContactTextWrapper>
         </ErrorPageWrapper>
     </ErrorPageContainer>
@@ -128,4 +138,6 @@ const EmailLink=styled.a`
     margin-left:1rem;
 
     color:${({theme})=>theme.colors.gray2};
+
+    cursor:pointer;
 `
