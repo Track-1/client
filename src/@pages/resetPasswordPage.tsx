@@ -12,7 +12,6 @@ import { ForgotPasswordToken } from "../recoil/forgotPasswordToken";
 
 export default function ResetPasswordPage() {
   const forgotPasswordToken = useRecoilValue(ForgotPasswordToken)
-  console.log(forgotPasswordToken);
 
 
   const { isSuccess, isLoading } = useQuery("validateToken", ()=>validateResetPasswordToken(forgotPasswordToken), {
@@ -21,6 +20,7 @@ export default function ResetPasswordPage() {
       movePage("/");
     },
   });
+
 
   const [movePage] = useMovePage();
 
