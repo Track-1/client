@@ -4,9 +4,14 @@ import ForgotPasswordInput from "../@components/forgotPassword/forgotPasswordInp
 import BackButton from "../@components/@common/backButton";
 import Footer from "../@components/@common/footer";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { ForgotPasswordToken } from "../recoil/forgotPasswordToken";
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();
+
+  const token = useRecoilValue(ForgotPasswordToken);
+  console.log(token);
 
   function movePreviousPage() {
     navigate(-1);

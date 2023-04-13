@@ -18,8 +18,9 @@ import { useMutation } from "react-query";
 import { patchResetPassword } from "../../core/api/resetPassword";
 import useMovePage from "../../utils/hooks/useMovePage";
 import { onLogout } from "../../core/api/logout";
-import { removeCookie } from "../../utils/cookie";
 import Loading from "../@common/loading";
+import { ForgotPasswordToken } from "../../recoil/forgotPasswordToken";
+import { useRecoilState } from "recoil";
 
 export default function ResetPasswordInput() {
   const [password, setPassword] = useState<string>("");
@@ -28,13 +29,15 @@ export default function ResetPasswordInput() {
   const [confirmPasswordMessage, setConfirmPasswordMessage] = useState<string>(passwordInvalidMessage.NULL);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [forgotPasswordToken, setForgotPasswordToken] = useRecoilState(ForgotPasswordToken)
+  
 
   const [movePage] = useMovePage();
 
-  const { mutate, isLoading } = useMutation(() => patchResetPassword(password), {
+  const { mutate, isLoading } = useMutation(() => patchResetPassword(password,forgotPasswordToken), {
     onSuccess: () => {
       alert("Your password has been successfully changed.\n비밀번호가 성공적으로 변경되었습니다.");
-      removeCookie("forgotPasswordToken", { path: "/" });
+      setForgotPasswordToken('');
       movePage("/");
       onLogout();
     },

@@ -1,8 +1,6 @@
-import { getCookie } from "../../utils/cookie";
 import { client } from "./common/axios";
 
-export async function patchResetPassword(password: string) {
-  const token = getCookie("forgotPasswordToken");
+export async function patchResetPassword(password: string, token : string) {
   const body = {
     password: password,
   };

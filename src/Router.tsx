@@ -13,13 +13,15 @@ import LoginPage from "./@pages/loginPage";
 import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import TrackPostEditPage from "./@pages/trackPostEditPage";
-import { getCookie } from "./utils/cookie";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import VocalPortfolioEditPage from "./@pages/vocalPortfolioEditPage";
 import PrivateRoute from "./utils/common/privateRoute";
 import ErrorPage from "./@pages/errorPage";
+import { useRecoilValue } from "recoil";
+import { ForgotPasswordToken } from "./recoil/forgotPasswordToken";
 
 export default function Router() {
+  const token = useRecoilValue(ForgotPasswordToken);
   return (
     <BrowserRouter>
       <Routes>
@@ -30,7 +32,7 @@ export default function Router() {
         <Route path="/track-post/:beatId" index element={<TrackPostPage />} />
 
         {/* 반드시 인증 필요 */}
-        <Route element={<PrivateRoute authentication={true}/>}>
+        <Route element={<PrivateRoute authentication={true} />}>
           <Route path="/track-post/edit/:beatId" element={<TrackPostEditPage />} />
           <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
           <Route path="/portfolio-edit/producer/:portfolioId" element={<ProducerPortfolioEditPage />} />
@@ -40,16 +42,16 @@ export default function Router() {
         </Route>
 
         <Route path="/forgot-password" index element={<ForgotPasswordPage />} />
-        <Route path={`/reset-password/${getCookie("forgotPasswordToken")}`} index element={<ResetPasswordPage />} />
+        <Route path={`/reset-password/${token}`} index element={<ResetPasswordPage />} />
         <Route path="/sign-up" index element={<SignUpPage />} />
 
         {/* 반드시 인증 필요 */}
-        <Route element={<PrivateRoute authentication={true}/>}>
+        <Route element={<PrivateRoute authentication={true} />}>
           <Route path="/profile-edit/producer/:id" element={<ProducerProfileEditPage />} />
           <Route path="/profile-edit/vocal/:id" element={<VocalProfileEditPage />} />
         </Route>
 
-        <Route path="*" element={<ErrorPage/>}/>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
