@@ -17,11 +17,8 @@ import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import VocalPortfolioEditPage from "./@pages/vocalPortfolioEditPage";
 import PrivateRoute from "./utils/common/privateRoute";
 import ErrorPage from "./@pages/errorPage";
-import { useRecoilValue } from "recoil";
-import { ForgotPasswordToken } from "./recoil/forgotPasswordToken";
 
 export default function Router() {
-  const token = useRecoilValue(ForgotPasswordToken);
   return (
     <BrowserRouter>
       <Routes>
@@ -42,7 +39,7 @@ export default function Router() {
         </Route>
 
         <Route path="/forgot-password" index element={<ForgotPasswordPage />} />
-        <Route path={`/reset-password/${token}`} index element={<ResetPasswordPage />} />
+        <Route path={"/reset-password/:token"} index element={<ResetPasswordPage />} />
         <Route path="/sign-up" index element={<SignUpPage />} />
 
         {/* 반드시 인증 필요 */}
