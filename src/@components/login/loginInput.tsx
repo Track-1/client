@@ -126,7 +126,8 @@ export default function LoginInput() {
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>): void {
     const passwordInput = e.target.value;
     setPassword(passwordInput);
-    e.target.value=e.target.value+" "
+    e.target.value=e.target.value+" ";
+    e.target.value=passwordInput;
 
     if (isInputEmpty(passwordInput)) {
       setPasswordInputState(FOCUS);
