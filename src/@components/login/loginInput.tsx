@@ -192,13 +192,17 @@ export default function LoginInput() {
         <InputBox marginTop={2.9}>
           <LoginPasswordIcon />
           <InputWrapper>
+          <HiddenInput/>
+          <HiddenInput type="password"/>
+          <input type="text" autoComplete="false" required/>
             <Input
               type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
               placeholder="Enter your password"
               onFocus={changeHoverPasswordState}
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
+              maxLength={25}
+              autoComplete="new-password"
             />
             <IconWrapper>
               {isWarningState(passwordInputState) && <SignUpErrorIcon />}
@@ -406,3 +410,8 @@ const SignUpErrorIcon = styled(SignUpErrorIc)`
 const IconWrapper = styled.div`
   display: flex;
 `;
+
+const HiddenInput=styled.input`
+  display:none;
+  aria-hidden:true;
+`
