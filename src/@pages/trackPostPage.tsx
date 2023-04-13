@@ -37,6 +37,7 @@ import Loading from "../@components/@common/loading";
 import { isCookieNull, isLogin } from "../utils/common/isLogined";
 import { reload, viewmore } from "../recoil/main";
 import useInfiniteKey from "../utils/hooks/useInfiniteKey";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function TrackPostPage() {
   const { state } = useLocation();
@@ -63,7 +64,12 @@ export default function TrackPostPage() {
   const [isReload, setIsReload] = useRecoilState<boolean>(reload);
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+  
   useEffect(() => {
     setIsReload(true);
   }, []);
@@ -263,7 +269,9 @@ export default function TrackPostPage() {
               <BackButtonWrapper onClick={movePreviousPage}>
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
+              <AudioTitleWrapper>
               <AudioTitle>{trackInfoData?.title}</AudioTitle>
+              </AudioTitleWrapper>
               <ProducerBox>
                 <ProfileImgWrapper>
                   <ProducerProfile src={trackInfoData?.producerProfileImage} alt="프로듀서 프로필 이미지" />
@@ -360,8 +368,18 @@ const BackButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const AudioTitle = styled.h1`
+const AudioTitleWrapper=styled.div`
+  display:flex;
+  flex-wrap:wrap;
   width: 47rem;
+`
+
+const AudioTitle = styled.h1`
+  display:flex;
+  flex-wrap:wrap;
+
+  width: 47rem;
+  word-break:keep-all
 
   ${({ theme }) => theme.fonts.title}
 

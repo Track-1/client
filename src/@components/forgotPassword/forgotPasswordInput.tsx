@@ -13,13 +13,13 @@ import {
 } from "../../assets";
 
 import { useEffect, useState } from "react";
-import { useSendNewPasswordEmail } from "../../utils/hooks/useSendNewPasswordEmail";
 import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
 import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
 import { useMutation } from "react-query";
 import { postNewPassword } from "../../core/api/newPassword";
-import { setCookie } from "../../utils/cookie";
 import Loading from "../@common/loading";
+import { useRecoilState } from "recoil";
+import { ForgotPasswordToken } from "../../recoil/forgotPasswordToken";
 
 export default function ForgotPasswordInput() {
   const [email, setEmail] = useState<string>("");
@@ -29,11 +29,12 @@ export default function ForgotPasswordInput() {
   const [emailMessage, setEmailMessage] = useState<string>(emailInvalidMessage.NULL);
   const [recentEmail, setRecentEmail] = useState<string>("");
   const [isSameRecentEmail, setIsSameRecentEmail] = useState<boolean>(true);
+  const [forgotPasswordToken, setForgotPasswordToken] = useRecoilState(ForgotPasswordToken);
 
   const { mutate, isSuccess, isLoading, isError, error } = useMutation(() => postNewPassword(userType, email), {
     onSuccess: (data) => {
       const token = data.data.data.token;
-      setCookie("forgotPasswordToken", token, { path: "/" });
+      setForgotPasswordToken(token);
       setIsSameRecentEmail(true);
       setRecentEmail(email);
     },
@@ -114,8 +115,6 @@ export default function ForgotPasswordInput() {
       <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
     );
   }
-  console.log(recentEmail);
-  console.log(emailMessage);
 
   return (
     <Container>

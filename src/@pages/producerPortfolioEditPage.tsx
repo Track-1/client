@@ -29,6 +29,7 @@ import { showPlayerBar } from "../recoil/player";
 import Loading from "../@components/@common/loading";
 import usePlayer from "../utils/hooks/usePlayer";
 import useTextareaHeight from "../utils/hooks/useTextareaHeight";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function ProducerPortfolioEditPage() {
   const userType = useRecoilValue(UserType);
@@ -60,7 +61,12 @@ export default function ProducerPortfolioEditPage() {
   const [textareaMargin, setTextareaMargin] = useState<number>(33.8);
 
   const navigate = useNavigate();
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+  
   function convert() {}
 
   function toggleHashtagWarningOpen() {
@@ -122,7 +128,7 @@ export default function ProducerPortfolioEditPage() {
 
     if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+      e.target.value.length > 10 && alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
     } else {
       setIsKorean(false);
     }
@@ -150,7 +156,7 @@ export default function ProducerPortfolioEditPage() {
 
   function isDuplicateHashtag(value: string): boolean {
     const isDuplicate = hashtag.includes(value);
-    isDuplicate && alert("중복된 해시태그 입니다!");
+    isDuplicate && alert("This hashtag is already used.\n중복된 해시태그입니다.");
     return isDuplicate;
   }
 
@@ -167,6 +173,10 @@ export default function ProducerPortfolioEditPage() {
     }
   }
   function checkDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>250){
+      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.")
+    }
+
     setDescription(e.target.value);
   }
 
@@ -187,7 +197,7 @@ export default function ProducerPortfolioEditPage() {
 
   function updateTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
     if (e.target.value.length > 28) {
-      alert("제목은 28자까지 작성할 수 있습니다.");
+      alert("A title can contain up to 28 characters.\n제목은 28자까지 작성할 수 있습니다.");
     }
     setTitle(e.target.value);
     setTitleLength(e.target.value.length);

@@ -194,11 +194,12 @@ export default function LoginInput() {
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
               placeholder="Enter your password"
               onFocus={changeHoverPasswordState}
               onBlur={changeHoverPasswordState}
               onChange={validatePassword}
+              maxLength={25}
+              autoComplete="new-password"
             />
             <IconWrapper>
               {isWarningState(passwordInputState) && <SignUpErrorIcon />}

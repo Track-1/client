@@ -56,7 +56,7 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
 
     if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length > 10 && alert("해시태그는 10자까지 작성할 수 있습니다.");
+      e.target.value.length > 10 && alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
     } else {
       setIsKorean(false);
     }
@@ -80,7 +80,7 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
 
   function isDuplicateHashtag(value: string): boolean {
     const isDuplicate = userProfile.keyword.includes(value);
-    isDuplicate && alert("중복된 해시태그 입니다!");
+    isDuplicate && alert("This hashtag is already used.\n중복된 해시태그입니다.");
     return isDuplicate;
   }
 
@@ -98,6 +98,9 @@ export default function SignupProfile(props: SignupProfilePropsTye) {
   }
 
   function countDescriptionText(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if(e.target.value.length>150){
+      alert("Description can contain up to 150 characters.\n설명은 150자까지 작성할 수 있습니다.")
+    }
     setDescriptionInput(e.target.value);
   }
 

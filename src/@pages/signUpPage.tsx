@@ -12,11 +12,12 @@ import { checkStepType } from "../utils/signUp/stepType";
 import SignupSuccess from "../@components/signUp/signupSuccess";
 import SignUpBackButton from "../@components/signUp/signUpBackButton";
 import { isSignupSuccess } from "../utils/signUp/checkSignUpStep";
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { openConventionModal } from "../recoil/conventionModal";
 import { UserDataPropsType } from "../type/signUpStepTypes";
 import { EditDataType } from "../type/editDataType";
 import { UserType } from "../recoil/main";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 
 export default function SignUpPage() {
@@ -36,6 +37,11 @@ export default function SignUpPage() {
         keyword: [],
         introduce: "",
     })
+    const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+    useEffect(()=>{
+      setIsClickedCategory(true)
+    },[])
 
     const preventGoBack = () => {
         window.history.pushState(null, "", window.location.href);

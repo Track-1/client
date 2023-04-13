@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useParams, useLocation } from "react-router-dom";
 import { UploadInfoDataType } from "../type/uploadInfoDataType";
 import TrackUploadDefaultImg from "../assets/image/trackUploadDefaultImg.png";
@@ -10,6 +10,7 @@ import TrackUpload from "../@components/upload/trackUpload";
 import VocalUpload from "../@components/upload/vocalUpload";
 import UploadHeader from "../@components/upload/uploadHeader";
 import usePlayer from "../utils/hooks/usePlayer";
+import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function UploadPage() {
   const loginUserType = useRecoilValue(LoginUserType);
@@ -27,7 +28,12 @@ export default function UploadPage() {
     jacketImage: getDefaultImage(),
   });
   const { pausesPlayerAudio,closePlayer } = usePlayer();
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+  
   useEffect(()=>{
     window.onpopstate = function(event) {  
      // alert("뒤로가기");

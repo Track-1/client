@@ -110,4 +110,28 @@ export const GlobalStyle = createGlobalStyle`
       outline: none;
     }
   }
+  input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px #16161C inset;
+	box-shadow: 0 0 0 1000px #16161C inset;
+  color:white!important;
+  -webkit-color:white;
+  -webkit-text-fill-color: white !important;
+
+  font-family: "Pretendard";
+  font-weight : 400;
+  font-size : 1.8;
+  line-height : 3.5;
+  }
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: transparent !important;
+    color: white !important;
+
+    font-family: "Pretendard";
+    font-weight : 400;
+    font-size : 1.8;
+    line-height : 3.5;
+
+  }
 `;

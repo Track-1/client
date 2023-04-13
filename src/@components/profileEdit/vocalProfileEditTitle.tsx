@@ -16,6 +16,7 @@ import { getProducerPortfolio } from "../../core/api/producerProfile";
 import { nickName } from "../../type/editDataType";
 import { isProducer, isVocal } from "../../utils/common/userType";
 import { checkNicknameForm } from "../../utils/errorMessage/checkNicknameForm";
+import { checkImageSize, checkImageType, getFileSize, getFileURL } from "../../utils/uploadPage/uploadImage";
 
 interface PropsType {
   profileImage: any;
@@ -52,6 +53,15 @@ export default function ProducerProfileEditTitle(props: PropsType) {
     updateProfileImage(imageFiles[0]);
     showPrevImage(imageFiles);
     setIsImageUploaded(true);
+
+    const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    if (e.target.files?.length === 0) {
+      //alert("사진삽입이 취소되었습니다.")
+    } else {
+      if(!checkImageType(uploadName)){
+        setIsImageUploaded(false);
+      }
+    }
   }
 
   function showPrevImage(imageFiles: FileList) {
@@ -108,7 +118,7 @@ export default function ProducerProfileEditTitle(props: PropsType) {
           <PointIcon />
         </NameTitleWrapper>
         <InputWrapper nameState={nameState}>
-          <NameInput defaultValue={name} onChange={checkNameInput} />
+          <NameInput defaultValue={name} onChange={checkNameInput} maxLength={16}/>
           {nameState === nickName.CORRECT && <ProfileEditCheckIcon />}
           {nameState === nickName.ERROR && <ProfileEditWarningIcon />}
         </InputWrapper>

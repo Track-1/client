@@ -5,9 +5,18 @@ import styled from "styled-components";
 import { BackButtonIc } from "../assets";
 import useMovePage from "../utils/hooks/useMovePage";
 import BackButton from "../@components/@common/backButton";
+import { useRecoilState } from "recoil";
+import { clickCategoryHeader } from "../recoil/categorySelect";
+import { useEffect } from "react";
 
 export default function LoginPage() {
   const [movePage] = useMovePage();
+  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+
+  useEffect(()=>{
+    setIsClickedCategory(true)
+  },[])
+
   return (
     <>
       <BackButtonWrapper onClick={() => movePage("/")} >
