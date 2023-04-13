@@ -37,7 +37,6 @@ export default function ForgotPasswordInput() {
       setForgotPasswordToken(token);
       setIsSameRecentEmail(true);
       setRecentEmail(email);
-      alert("A password reset link has been sent to you. Please access the link on the same device.\n비밀번호 재설정 링크가 전송되었습니다. 동일한 기기에서 링크 접속 바랍니다.")
     },
     onError: (error: any) => {
       error.response.status === 401 && alert(error.response.data.message);
