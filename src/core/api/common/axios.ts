@@ -51,6 +51,7 @@ client.interceptors.response.use(
         if (error.response.data.message === "새롭게 로그인 필요") {
           alert("Token expired, please log in again.\n토큰이 만료되어 다시 로그인 바랍니다.");
           removeCookie("accessToken", { path: "/" });
+          window.location.replace("/login");
         }
       }
       return Promise.reject(error);
