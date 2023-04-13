@@ -7,20 +7,17 @@ import { TrackOneMainLogoIc } from "../assets";
 import useMovePage from "../utils/hooks/useMovePage";
 import Footer from "../@components/@common/footer";
 import Loading from "../@components/@common/loading";
-import { useRecoilValue } from "recoil";
-import { ForgotPasswordToken } from "../recoil/forgotPasswordToken";
+import { useParams } from "react-router-dom";
 
 export default function ResetPasswordPage() {
-  const forgotPasswordToken = useRecoilValue(ForgotPasswordToken)
+  const { token } = useParams();
 
-
-  const { isSuccess, isLoading } = useQuery("validateToken", ()=>validateResetPasswordToken(forgotPasswordToken), {
+  const { isSuccess, isLoading } = useQuery("validateToken", () => validateResetPasswordToken(token), {
     onError: (error: any) => {
       alert(error.response.data.message);
       movePage("/");
     },
   });
-
 
   const [movePage] = useMovePage();
 
