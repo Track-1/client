@@ -127,5 +127,11 @@ export const GlobalStyle = createGlobalStyle`
     background-image: none !important;
     background-color: transparent !important;
     color: white !important;
+
+    font-family: "Pretendard";
+    font-weight : 400;
+    font-size : 1.8;
+    line-height : 3.5;
+
   }
 `;
