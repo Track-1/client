@@ -116,6 +116,11 @@ export const GlobalStyle = createGlobalStyle`
   color:white!important;
   -webkit-color:white;
   -webkit-text-fill-color: white !important;
+
+  font-family: "Pretendard";
+  font-weight : 400;
+  font-size : 1.8;
+  line-height : 3.5;
   }
   input:-internal-autofill-selected {
     appearance: menulist-button;
