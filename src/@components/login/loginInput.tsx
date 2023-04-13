@@ -126,8 +126,6 @@ export default function LoginInput() {
   function validatePassword(e: React.ChangeEvent<HTMLInputElement>): void {
     const passwordInput = e.target.value;
     setPassword(passwordInput);
-    e.target.value=e.target.value+" ";
-    e.target.value=passwordInput;
 
     if (isInputEmpty(passwordInput)) {
       setPasswordInputState(FOCUS);
@@ -194,7 +192,6 @@ export default function LoginInput() {
         <InputBox marginTop={2.9}>
           <LoginPasswordIcon />
           <InputWrapper>
-          <HiddenInput type="text" autoComplete="off"/>
             <Input
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
@@ -410,8 +407,3 @@ const SignUpErrorIcon = styled(SignUpErrorIc)`
 const IconWrapper = styled.div`
   display: flex;
 `;
-
-const HiddenInput=styled.input`
-  display:none;
-  aria-hidden:true;
-`

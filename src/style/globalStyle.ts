@@ -115,6 +115,7 @@ export const GlobalStyle = createGlobalStyle`
 	box-shadow: 0 0 0 1000px #16161C inset;
   color:white!important;
   -webkit-color:white;
+  -webkit-text-fill-color: white !important;
   }
   input:-internal-autofill-selected {
     appearance: menulist-button;
