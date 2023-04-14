@@ -12,7 +12,7 @@ export default function useAutoHeightTextArea(maxHeight: number) {
     // textarea 높이 조절
     const adjustHeight = () => {
       textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.height = `${textarea.scrollHeight / 10}rem`;
       setTextareaHeight(parseInt(textarea.style.height));
     };
     textarea.addEventListener("input", adjustHeight);
