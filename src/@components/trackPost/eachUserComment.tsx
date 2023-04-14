@@ -87,6 +87,10 @@ export default function EachUserComment(props: PropsType) {
   }, [isUpdated]);
 
   function moveVocalProfile() {
+    pauseAudio();
+    setShowPlayer(false);
+    setPlay(false);
+
     navigate(`/vocal-profile/${commentInfo?.vocalId}`, { state: commentInfo?.vocalId });
   }
 
