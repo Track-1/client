@@ -70,7 +70,6 @@ export default function ProducerPortFolioList(props: PropsType) {
     setHoveredIndex(-1);
   }
 
-console.log(hoveredIndex)
   return (
     <>
       <ProfileListContainer>
