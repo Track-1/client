@@ -87,6 +87,10 @@ export default function EachUserComment(props: PropsType) {
   }, [isUpdated]);
 
   function moveVocalProfile() {
+    pauseAudio();
+    setShowPlayer(false);
+    setPlay(false);
+
     navigate(`/vocal-profile/${commentInfo?.vocalId}`, { state: commentInfo?.vocalId });
   }
 
@@ -243,6 +247,9 @@ const UserName = styled.strong`
   ${({ theme }) => theme.fonts.hashtag}
 
   cursor: pointer;
+  &:hover{
+    color: ${({ theme }) => theme.colors.sub2};
+  }
 `;
 
 const CommentText = styled.strong`
