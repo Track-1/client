@@ -25,7 +25,7 @@ import { playMusic, showPlayerBar } from "../recoil/player";
 import Player from "../@components/@common/player";
 import UserComment from "../@components/trackPost/userComment";
 import CommentHeader from "../@components/trackPost/commentHeader";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getTrackInfo, closeTrack, getFileLink } from "../core/api/trackPost";
 import { TrackInfoDataType } from "../type/tracksDataType";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
@@ -40,7 +40,9 @@ import useInfiniteKey from "../utils/hooks/useInfiniteKey";
 import { clickCategoryHeader } from "../recoil/categorySelect";
 
 export default function TrackPostPage() {
-  const { state } = useLocation();
+  const state = Number(useParams().beatId);
+  console.log(Number(useParams().beatId));
+  const { paramBeatId } = useParams();
   // const {beatId} = useParams();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
@@ -65,7 +67,6 @@ export default function TrackPostPage() {
   const { key, excuteGetData } = useInfiniteKey();
   const { progress, audio, pausesPlayerAudio, closePlayer } = usePlayer();
 
-  
   useEffect(() => {
     setIsReload(true);
   }, []);
@@ -266,7 +267,7 @@ export default function TrackPostPage() {
                 <BackButton pauseAudio={pauseAudio} />
               </BackButtonWrapper>
               <AudioTitleWrapper>
-              <AudioTitle>{trackInfoData?.title}</AudioTitle>
+                <AudioTitle>{trackInfoData?.title}</AudioTitle>
               </AudioTitleWrapper>
               <ProducerBox>
                 <ProfileImgWrapper>
@@ -364,20 +365,20 @@ const BackButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const AudioTitleWrapper=styled.div`
-  display:flex;
-  flex-wrap:wrap;
+const AudioTitleWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   width: 47rem;
-`
+`;
 
 const AudioTitle = styled.h1`
-  display:flex;
-  flex-wrap:wrap;
+  display: flex;
+  flex-wrap: wrap;
 
   width: 47rem;
-  word-break:keep-all
+  word-break: keep-all;
 
-  ${({ theme }) => theme.fonts.title}
+  ${({ theme }) => theme.fonts.title};
 
   color: ${({ theme }) => theme.colors.white};
 
