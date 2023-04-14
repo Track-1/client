@@ -247,6 +247,9 @@ const UserName = styled.strong`
   ${({ theme }) => theme.fonts.hashtag}
 
   cursor: pointer;
+  &:hover{
+    color: ${({ theme }) => theme.colors.sub2};
+  }
 `;
 
 const CommentText = styled.strong`
