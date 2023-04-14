@@ -23,7 +23,7 @@ export default function Footer() {
       </FooterTextWrapper>
       <FooterTextWrapper>
         <Text isGray={true} isStrong={false} marginRight={2.4}>Email</Text>
-        <Text isGray={true} isStrong={false} marginRight={0}>track-1@track-1.link</Text>
+        <Text isGray={true} isStrong={false} marginRight={0}>admin@track-1.link </Text>
       </FooterTextWrapper>
       <LogoWrapper>
       <a href="https://www.instagram.com/track1_official/">

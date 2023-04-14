@@ -43,7 +43,7 @@ export default function ErrorPage() {
             </DescriptionWrapper>
             <ContactTextWrapper>
                 <p>Or Please contact us </p>
-                <EmailLink onClick={()=>copyLink('track-1@track-1.link')}>track-1@track-1.link</EmailLink>
+                <EmailLink onClick={()=>copyLink('admin@track-1.link')}>admin@track-1.link </EmailLink>
             </ContactTextWrapper>
         </ErrorPageWrapper>
     </ErrorPageContainer>
