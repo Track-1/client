@@ -243,6 +243,9 @@ export default function TrackPostPage() {
   }
 
   function moveToProducerProfile() {
+    pausesPlayerAudio();
+    closePlayer();
+
     navigate(`/producer-profile/${trackInfoData?.producerId}`, { state: trackInfoData?.producerId });
   }
 
