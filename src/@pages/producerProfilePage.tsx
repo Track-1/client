@@ -11,7 +11,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { uploadButtonClicked } from "../recoil/uploadButtonClicked";
 import Player from "../@components/@common/player";
 import { playMusic, showPlayerBar } from "../recoil/player";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import usePlayer from "../utils/hooks/usePlayer";
 import { useInfiniteQuery } from "react-query";
 import { getProducerPortfolio, getSelectingTracks, patchProducerProfile } from "../core/api/producerProfile";
@@ -23,7 +23,8 @@ import Loading from "../@components/@common/loading";
 import { reload } from "../recoil/main";
 
 export default function ProducerProfilePage() {
-  const { state } = useLocation();
+  // const { state } = useLocation();
+  const state = Number(useParams().producerId);
 
   const { key, excuteGetData } = useInfiniteKey();
 
