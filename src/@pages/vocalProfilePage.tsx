@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { getVocalProfile } from "../core/api/vocalProfile";
 import { VocalPortfolioType, VocalProfileType } from "../type/vocalProfile";
 import { useInfiniteQuery } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ProducerInfos from "../@components/producerProfile/producerInfos";
 import usePlayer from "../utils/hooks/usePlayer";
 import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
@@ -47,7 +47,7 @@ export default function VocalProfilePage() {
   // const { progress, audio } = usePlayer();
 
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const state = Number(useParams().vocalId);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [saveResponse, setSaveResponse] = useState<any>();
   const [init, setInit] = useState<boolean>(true);
