@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import EditLeftContainer from "../@components/producerPortfolioEdit/editLeftContainer/editLeftContainer";
+import EditLeftContainer from "../@components/producerProfileEdit/editLeftContainer/editLeftContainer";
 import EditRightontainer from "../@components/producerPortfolioEdit/editRightContainer/editRightContainer";
 
 export default function ProducerProfileEditPage() {
