@@ -1,9 +1,0 @@
-<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<line x1="6" y1="12" x2="8" y2="12" stroke="white" stroke-width="2"/>
-<line x1="11" y1="12" x2="13" y2="12" stroke="white" stroke-width="2"/>
-<line x1="16" y1="12" x2="18" y2="12" stroke="white" stroke-width="2"/>
-<line x1="16" y1="16" x2="18" y2="16" stroke="white" stroke-width="2"/>
-<line x1="11" y1="16" x2="13" y2="16" stroke="white" stroke-width="2"/>
-<line x1="6" y1="16" x2="8" y2="16" stroke="white" stroke-width="2"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M23 1H1L1 7H23V1ZM0 8V7V1V0H1H23H24V1V7V8V21V22H23H0.999999H0V21V8ZM0.999999 21L1 8H23L23 21H0.999999Z" fill="white"/>
-</svg>
