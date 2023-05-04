@@ -1,18 +1,25 @@
 import styled from "styled-components";
 
-import EditLeftContainer from "../@components/producerProfileEdit/editLeftContainer/editLeftContainer";
-import EditRightontainer from "../@components/producerPortfolioEdit/editRightContainer/editRightContainer";
+import ProducerImageEdit from "../@components/producerProfileEdit/producerImageEdit";
+import TitleInputEdit from "../@components/@common/titleInputEdit"
+import CategoriesEdit from "../@components/@common/categoriesEdit"
+import HashtagsEdit from "../@components/@common/hashtagsEdit"
+import Info from "../@components/@common/info"
 
 export default function ProducerProfileEditPage() {
   return (
     <>
-      프로듀서프로필수정
       <Temporary>
         <TemporaryLeft>
-          <EditLeftContainer />
+          <ProducerImageEdit/>
+          <TitleInputEdit/>
         </TemporaryLeft>
         <TemporaryRight>
-          <EditRightontainer />
+          <TitleInputEdit/>
+          <CategoriesEdit/>
+          <HashtagsEdit/>
+          <Info/>
+          <TitleInputEdit/>
         </TemporaryRight>
       </Temporary>
     </>
