@@ -11,6 +11,7 @@ export default function ProducerImageEdit() {
         {/* {isImageUploaded ? <ProfileImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />} */}
         <ChangePhotoIcon />
       </ProfileImageContainer>
+      <FileInput type="file" id="profileImg" />
     </>
   );
 }
@@ -48,4 +49,7 @@ const ProfileImageContainer = styled.label`
       display: block;
     }
   }
+`;
+const FileInput = styled.input`
+  display: none;
 `;
