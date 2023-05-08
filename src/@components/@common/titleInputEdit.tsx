@@ -1,19 +1,17 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-enum nickName {
-  NOTHING = "nothing",
-  CORRECT = "correct",
-  ERROR = "error",
-}
+export const nickName: { [key: string]: string } = {
+  NOTHING: "nothing",
+  CORRECT: "correct",
+  ERROR: "error",
+};
 
 export default function TitleInputEdit() {
-  const [nameState, setNameState] = useState<nickName>(nickName.NOTHING);
+  const [nameState, setNameState] = useState<string>(nickName.NOTHING);
 
   return (
     <>
-      {" "}
-      소제목 + input창
       <NameContainer>
         <NameTitleWrapper>
           <NameTitleText>Name</NameTitleText>
@@ -57,7 +55,7 @@ const PointIcon = styled.div`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const InputWrapper = styled.div<{ nameState: nickName }>`
+const InputWrapper = styled.div<{ nameState: string }>`
   width: 54.9rem;
 
   display: flex;

@@ -18,7 +18,7 @@ export default function CategoriesEdit() {
 
   return (
     <>
-      카테고리 title + 카테고리 선택창
+     
       <CategoryContainer>
         <CategoryTitleIcon />
         <CategoryBox>
