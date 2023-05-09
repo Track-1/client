@@ -1,9 +1,12 @@
-import { BrowserRouter, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import UploadPage from "./@pages/uploadPage";
 
 export default function Router() {
   return (
     <BrowserRouter>
-      <Routes></Routes>
+      <Routes>
+        <Route path="/upload" element={<UploadPage />} />
+      </Routes>
     </BrowserRouter>
   );
 }
