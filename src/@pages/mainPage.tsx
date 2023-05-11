@@ -11,8 +11,7 @@ import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import hoverTracksImg from "../assets/image/hoverTracksImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
 import ConventionModal from "../@components/@common/conventionModal";
-import EventModal from "../@components/@common/eventModal";
-import { openConventionModal, openEventModal } from "../recoil/conventionModal";
+import { openConventionModal } from "../recoil/conventionModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 import { Category } from "../core/constants/categoryHeader";
@@ -27,9 +26,7 @@ export default function MainPage() {
   const [background, setBackground] = useState<string>(mainBackgroundImg);
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
-  const showConventionModal = useRecoilValue(openConventionModal);
-  const showEventModal = useRecoilValue(openEventModal);
-
+  const showModal = useRecoilValue(openConventionModal);
   const [isReload, setIsReload]=useRecoilState<boolean>(reload);
 
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
@@ -80,8 +77,7 @@ export default function MainPage() {
         <Footer />
       </MainPageWrapper>
 
-      {showConventionModal && <ConventionModal />}
-      { showEventModal&&<EventModal/>}
+      {showModal && <ConventionModal />}
     </>
   );
 }
