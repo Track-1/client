@@ -9,8 +9,3 @@ export const openConventionPolicy = atom({
     key: "openConventionPolicy",
     default: '',
   });
-
-  export const openEventModal = atom({
-    key: "openEventModal",
-    default: true,
-  });
