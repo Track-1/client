@@ -25,16 +25,3 @@ export const CategoryBoolean: CategorySelectType = {
   HOUSE: false,
   FUNK: false,
 };
-
-export const CategoryDropdown: CategoryIdType = {
-  "r&b": "R&B",
-  hiphop: "Hiphop",
-  ballad: "Ballad",
-  pop: "Pop",
-  rock: "Rock",
-  edm: "EDM",
-  jazz: "JAZZ",
-  house: "House",
-  funk: "Funk",
-};
-
