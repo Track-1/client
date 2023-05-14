@@ -11,16 +11,16 @@ export default function ProducerProfileEditPage() {
     <>
       <ProfileBackgroundIcon />
       <ProfileEditContainer>
-        <ProfileEditLeft>
+        <ProfileEditTitle>
           <ProducerImageEdit />
           <TitleInputEdit />
-        </ProfileEditLeft>
-        <ProfileEditRight>
+        </ProfileEditTitle>
+        <ProfileEditInfo>
           <TitleInputEdit />
           <CategoriesEdit />
           <HashtagsEdit />
           <TitleInputEdit />
-        </ProfileEditRight>
+        </ProfileEditInfo>
       </ProfileEditContainer>
     </>
   );
@@ -42,7 +42,7 @@ const ProfileEditContainer = styled.section`
   margin-bottom: 4rem;
 `;
 
-const ProfileEditLeft = styled.section`
+const ProfileEditTitle = styled.section`
   height: 88.8rem;
   width: 67.7rem;
 
@@ -60,7 +60,7 @@ const ProfileEditLeft = styled.section`
   align-items: center;
 `;
 
-const ProfileEditRight = styled.div`
+const ProfileEditInfo = styled.div`
   height: 88.8rem;
   width: 77.9rem;
 
