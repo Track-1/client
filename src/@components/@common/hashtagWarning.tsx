@@ -39,8 +39,8 @@ const WarningTextWrapper = styled.div`
 
   margin-top: 4rem;
   background: rgba(30, 32, 37, 0.7);
-  backdrop-filter: blur(3px);
-  border-radius: 5px;
+  backdrop-filter: blur(0.3rem);
+  border-radius: 0.5rem;
 `;
 
 const WarningText = styled.div`
