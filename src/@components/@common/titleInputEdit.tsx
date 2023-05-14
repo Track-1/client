@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { nameWarningMessage } from "../../core/common/warningMessage";
 
 export const nickName: { [key: string]: string } = {
   NOTHING: "nothing",
@@ -19,9 +20,7 @@ export default function TitleInputEdit() {
         </NameTitleWrapper>
         <InputWrapper nameState={nameState}></InputWrapper>
         {nameState === nickName.ERROR ? (
-          <ProfileEditWarningMsg>
-            1 to 16 characters(Korean, English), numbers or special characters.
-          </ProfileEditWarningMsg>
+          <ProfileEditWarningMsg>{nameWarningMessage}</ProfileEditWarningMsg>
         ) : (
           <BlankMessage></BlankMessage>
         )}
