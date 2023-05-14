@@ -59,8 +59,9 @@ const HashtagWarningIcon = styled(HashtagWarningIc)`
   height: 4rem;
   margin-left: 42.6rem;
   margin-top: -1rem;
-
+  opacity: 0.3;
+  
   :hover {
-    opacity: 0.3;
+    opacity: 1;
   }
 `;
