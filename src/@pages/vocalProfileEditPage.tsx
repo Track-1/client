@@ -8,23 +8,23 @@ import HashtagsEdit from "../@components/@common/hashtagsEdit";
 export default function VocalProfileEditPage() {
   return (
     <>
-      <EditContainger>
-        <TemporaryLeft>
+      <ProfileEditContainer>
+        <ProfileEditTitle>
           <VocalImageEdit />
           <TitleInputEdit />
-        </TemporaryLeft>
-        <TemporaryRight>
+        </ProfileEditTitle>
+        <ProfileEditInfo>
           <TitleInputEdit />
           <CategoriesEdit />
           <HashtagsEdit />
           <TitleInputEdit />
-        </TemporaryRight>
-      </EditContainger>
+        </ProfileEditInfo>
+      </ProfileEditContainer>
     </>
   );
 }
 
-const EditContainger = styled.section`
+const ProfileEditContainer = styled.section`
   display: flex;
   justify-content: space-between;
   width: 148rem;
@@ -33,7 +33,7 @@ const EditContainger = styled.section`
   margin-bottom: 4rem;
 `;
 
-const TemporaryLeft = styled.section`
+const ProfileEditTitle = styled.section`
   height: 88.8rem;
   width: 67.7rem;
 
@@ -52,6 +52,6 @@ const TemporaryLeft = styled.section`
   align-items: center;
 `;
 
-const TemporaryRight = styled.div`
+const ProfileEditInfo = styled.div`
   float: right;
 `;
