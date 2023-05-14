@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import VocalImageEdit from "../@components/vocalProfileEdit/vocalImageEdit";
-import TitleInputEdit from "../@components/@common/titleInputEdit";
+import TitleInputEdit from "../@components/@common/profileTitleInput";
 import CategoriesEdit from "../@components/@common/categoriesEdit";
 import HashtagsEdit from "../@components/@common/hashtagsEdit";
 

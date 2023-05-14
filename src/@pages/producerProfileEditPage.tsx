@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import ProducerImageEdit from "../@components/producerProfileEdit/producerImageEdit";
-import TitleInputEdit from "../@components/@common/titleInputEdit";
+import TitleInputEdit from "../@components/@common/profileTitleInput";
 import CategoriesEdit from "../@components/@common/categoriesEdit";
 import HashtagsEdit from "../@components/@common/hashtagsEdit";
 import { ProfileBackgroundIc } from "../assets";

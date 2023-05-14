@@ -8,7 +8,7 @@ export const nickName: { [key: string]: string } = {
   ERROR: "error",
 };
 
-export default function TitleInputEdit() {
+export default function ProfileTitleInput() {
   const [nameState, setNameState] = useState<string>(nickName.NOTHING);
 
   return (
