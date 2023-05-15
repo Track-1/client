@@ -33,7 +33,7 @@ const ProfileBackgroundIcon = styled(ProfileBackgroundIc)`
   //margin-top: -9.8rem;
 `;
 
-const ProfileEditContainer = styled.section`
+export const ProfileEditContainer = styled.section`
   display: flex;
   justify-content: space-between;
   width: 148rem;
@@ -42,7 +42,7 @@ const ProfileEditContainer = styled.section`
   margin-bottom: 4rem;
 `;
 
-const ProfileEditTitle = styled.section`
+export const ProfileEditTitle = styled.section`
   height: 88.8rem;
   width: 67.7rem;
 
