@@ -1,18 +1,13 @@
 import styled from "styled-components";
 import { HashtagWarningIc } from "../../assets";
+import { hashtagInfo } from "../../core/common/hashtagInfo";
 
 export default function ProfileWarning() {
   return (
     <WarningIcon>
       <HashtagWarningIcon />
       <WarningTextWrapper>
-        <WarningText>
-          1. 해시태그는 최대 3개까지 추가 가능합니다.
-          <br />
-          2. 최대 10자까지 작성이 가능합니다.
-          <br />
-          3. 트랙의 분위기에 대해 설명해주세요. (ex. tropical, dynamic)
-        </WarningText>
+        <WarningText>{hashtagInfo}</WarningText>
       </WarningTextWrapper>
     </WarningIcon>
   );
@@ -60,7 +55,7 @@ const HashtagWarningIcon = styled(HashtagWarningIc)`
   margin-left: 42.6rem;
   margin-top: -1rem;
   opacity: 0.3;
-  
+
   :hover {
     opacity: 1;
   }
