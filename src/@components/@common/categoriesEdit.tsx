@@ -18,17 +18,16 @@ export default function CategoriesEdit() {
 
   return (
     <>
-     
       <CategoryContainer>
         <CategoryTitleIcon />
         <CategoryBox>
-          {Object.keys(CategoryId).map((category: string, index: number) => {
+          {Object.keys(CategoryId).map((category: string, CategoryId: number) => {
             // if (categories.includes(CategoryText[category])) {
             //   isCategorySelected[category] = true;
             // }
             return (
               <CategoryItem
-                key={index}
+                key={CategoryId}
                 isSelected={isCategorySelected[category]}
                 onClick={() => handleSelectCategory(category)}>
                 {category}
