@@ -11,7 +11,7 @@ export default function CategoriesEdit() {
 
   function handleSelectCategory(category: string) {
     const tempSelected = isCategorySelected;
-    tempSelected[category] = !tempSelected[category];
+    tempSelected.category = !tempSelected.category;
     setIsCategorySelected({ ...tempSelected });
     // updateCategory(CategoryText[category]);
   }
