@@ -11,6 +11,10 @@ export const nickName: { [key: string]: string } = {
 export default function ProfileTitleInput() {
   const [nameState, setNameState] = useState<string>(nickName.NOTHING);
 
+  function checkNameIsError() {
+    return nameState === nickName.ERROR;
+  }
+
   return (
     <>
       <NameContainer>
@@ -19,7 +23,7 @@ export default function ProfileTitleInput() {
           <PointIcon />
         </NameTitleWrapper>
         <InputWrapper nameState={nameState}></InputWrapper>
-        {nameState === nickName.ERROR ? (
+        {checkNameIsError() ? (
           <ProfileEditWarningMsg>{nameWarningMessage}</ProfileEditWarningMsg>
         ) : (
           <BlankMessage></BlankMessage>
