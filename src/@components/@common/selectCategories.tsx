@@ -6,7 +6,7 @@ import { CategorySelectType } from "../../type/common/CategoryChecksType";
 import { CategoryTitleIc } from "../../assets";
 import styled from "styled-components";
 
-export default function selectCategory() {
+export default function SelectCategory() {
   const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>(CategoryBoolean);
 
   function handleSelectCategory(category: string) {
