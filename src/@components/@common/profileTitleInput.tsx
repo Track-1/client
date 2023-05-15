@@ -1,18 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { nameWarningMessage } from "../../core/common/warningMessage";
-
-export const nickName: { [key: string]: string } = {
-  NOTHING: "nothing",
-  CORRECT: "correct",
-  ERROR: "error",
-};
+import { inputState } from "../../core/common/inputState";
 
 export default function ProfileTitleInput() {
-  const [nameState, setNameState] = useState<string>(nickName.NOTHING);
+  const [nameState, setNameState] = useState<string>(inputState.NOTHING);
 
   function checkNameIsError() {
-    return nameState === nickName.ERROR;
+    return nameState === inputState.ERROR;
   }
 
   return (
