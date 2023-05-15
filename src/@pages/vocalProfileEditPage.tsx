@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import VocalImageEdit from "../@components/vocalProfileEdit/vocalImageEdit";
 import TitleInputEdit from "../@components/@common/profileTitleInput";
-import CategoriesEdit from "../@components/@common/categoriesEdit";
+import CategoriesEdit from "../@components/@common/selectCategories";
 import HashtagsEdit from "../@components/@common/hashtagsEdit";
 
 export default function VocalProfileEditPage() {
@@ -38,8 +38,7 @@ const ProfileEditTitle = styled.section`
   width: 67.7rem;
 
   backdrop-filter: blur(1rem);
-  //background-color: rgba(20, 21, 23, 0.6);
-  background-color: pink;
+  background-color: rgba(20, 21, 23, 0.6);
   border: 0.3rem solid transparent;
   border-radius: 5rem;
   background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
