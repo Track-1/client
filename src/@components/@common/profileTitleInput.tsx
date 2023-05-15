@@ -62,11 +62,9 @@ const InputWrapper = styled.div<{ nameState: string }>`
 
   margin-bottom: 0.5rem;
 
-  border-bottom: ${({ nameState }) => {
-    if (nameState === "nothing") return "0.1rem solid white";
-    if (nameState === "correct") return "0.1rem solid #5200FF";
-    if (nameState === "error") return "0.1rem solid  #FF4F4F";
-  }};
+  border-bottom: 0.1rem solid
+    ${({ nameState, theme }) =>
+      nameState === "correct" ? theme.colors.main : nameState === "error" ? theme.colors.red : theme.colors.white};
 `;
 
 const ProfileEditWarningMsg = styled.span`
