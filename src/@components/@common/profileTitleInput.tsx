@@ -4,7 +4,7 @@ import { nameWarningMessage } from "../../core/common/warningMessage";
 import { inputState } from "../../core/common/inputState";
 
 export default function ProfileTitleInput() {
-  const [nameState, setNameState] = useState<string>(inputState.NOTHING);
+  const [nameState, setNameState] = useState<string>("");
 
   function checkNameIsError() {
     return nameState === inputState.ERROR;
