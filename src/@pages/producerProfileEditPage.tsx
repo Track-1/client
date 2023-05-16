@@ -27,7 +27,7 @@ export default function ProducerProfileEditPage() {
 }
 const ProfileBackgroundIcon = styled(ProfileBackgroundIc)`
   position: absolute;
-  
+
   width: 192rem;
   height: 98rem;
 `;
@@ -35,38 +35,18 @@ const ProfileBackgroundIcon = styled(ProfileBackgroundIc)`
 export const ProfileEditContainer = styled.section`
   display: flex;
   justify-content: space-between;
-  
+
   width: 148rem;
 
   margin-left: 21.8rem;
   margin-bottom: 4rem;
 `;
 
-export const ProfileEditTitle = styled.section`
+const ProfileContainer = styled.section`
   display: flex;
   flex-direction: column;
-  
+
   width: 67.7rem;
-  height: 88.8rem;
-
-  border: 0.3rem solid transparent;
-  border-radius: 5rem;
-  
-  backdrop-filter: blur(1rem);
-  background-color: rgba(20, 21, 23, 0.6);
-  background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
-  linear-gradient(to top, transparent 0%, #3e4045 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  
-  align-items: center;
-`;
-
-const ProfileEditInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  
-  width: 77.9rem;
   height: 88.8rem;
 
   border: 0.3rem solid transparent;
@@ -80,4 +60,10 @@ const ProfileEditInfo = styled.div`
   background-clip: content-box, border-box;
 
   align-items: center;
+`;
+
+export const ProfileEditTitle = styled(ProfileContainer)``;
+
+export const ProfileEditInfo = styled(ProfileContainer)`
+  width: 77.9rem;
 `;
