@@ -27,19 +27,21 @@ const ChangePhotoIcon = styled(ChangePhotoIc)`
 `;
 
 const ProfileImageContainer = styled.label`
+  display: flex;
+  position: relative;
+  
   width: 36.8rem;
   height: 36.8rem;
 
-  display: flex;
-  position: relative;
+  margin-top: 17.8rem;
+  
+  border-radius: 50%;
+  
   align-items: center;
   justify-content: center;
 
   overflow: hidden;
-  border-radius: 50%;
   cursor: pointer;
-
-  margin-top: 17.8rem;
 
   :hover ${ChangePhotoIcon} {
     display: block;

@@ -29,8 +29,8 @@ export default function ProfileTitleInput() {
 }
 
 const NameContainer = styled.article`
-  height: 8.8rem;
   width: 60rem;
+  height: 8.8rem;
 
   margin: 7.6rem 0 0 6.4rem;
 `;
@@ -40,25 +40,24 @@ const NameTitleWrapper = styled.div`
 `;
 
 const NameTitleText = styled.strong`
+  margin-right: 0.6rem;
+
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.cations}
-
-  margin-right: 0.6rem;
 `;
 
 const PointIcon = styled.div`
-  height: 0.7rem;
   width: 0.7rem;
+  height: 0.7rem;
 
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
 const InputWrapper = styled.div<{ nameState: string }>`
-  width: 54.9rem;
-
   display: flex;
   justify-content: space-between;
 
+  width: 54.9rem;
   margin-bottom: 0.5rem;
 
   border-bottom: 0.1rem solid
@@ -69,20 +68,20 @@ const InputWrapper = styled.div<{ nameState: string }>`
 const ProfileEditWarningMsg = styled.span`
   width: 100%;
   height: 3rem;
-  ${({ theme }) => theme.fonts.description};
-  color: ${({ theme }) => theme.colors.red};
 
   margin-top: 1.1rem;
+
+  color: ${({ theme }) => theme.colors.red};
+  ${({ theme }) => theme.fonts.description};
 `;
 
 const NameInput = styled.input`
-  height: 4.5rem;
   width: 70%;
+  height: 4.5rem;
 
   margin-top: 1rem;
 
   color: ${({ theme }) => theme.colors.white};
-
   ${({ theme }) => theme.fonts.input}
 `;
 
@@ -90,6 +89,7 @@ const BlankMessage = styled.p`
   width: 100%;
   height: 3rem;
 
-  color: transparent;
   margin-bottom: 2rem;
+
+  color: transparent;
 `;

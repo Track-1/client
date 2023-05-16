@@ -51,13 +51,12 @@ const CategoryBox = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-
-  color: ${({ theme }) => theme.colors.gray4};
-
-  ${({ theme }) => theme.fonts.hashtag}
-
+  
   margin-top: 2.2rem;
+  
+  ${({ theme }) => theme.fonts.hashtag}
+  color: ${({ theme }) => theme.colors.gray4};
+  align-items: center;
 
   cursor: pointer;
 `;
