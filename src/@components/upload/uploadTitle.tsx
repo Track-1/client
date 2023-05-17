@@ -1,15 +1,19 @@
 import styled from "styled-components";
 import TextLength from "../@common/textLength";
 import { theme } from "../../style/theme";
+import useInputText from "../../hooks/common/useInputText";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
 
 export default function UploadTitle() {
+  const [titleInput, changeTitleInput] = useInputText("", TEXT_LIMIT[36]);
+  
   return (
     <Container>
       <Empty />
-      <TitleInput placeholder="Please enter a title"></TitleInput>
+      <TitleInput placeholder="Please enter a title" onChange={changeTitleInput} value={titleInput}></TitleInput>
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={0} limit={15} font={theme.fonts.body1} />
+        <TextLength inputLength={titleInput.length} limit={TEXT_LIMIT[36]} font={theme.fonts.body1} />
       </TextLengthWrapper>
     </Container>
   );
