@@ -6,11 +6,11 @@ export default function ProducerImageEdit() {
   return (
     <>
       {/* 프로듀서 프로필 이미지 업로더 */}
-      <ProfileImageContainer htmlFor="profileImg">
+      <ProfileImageContainer>
         {/* 사용자가 넣은 이미지 or 기본 사람 이미지 */}
         {/* {isImageUploaded ? <ProfileImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />} */}
         <ChangePhotoIcon />
-        <FileInput type="file" id="profileImg" />
+        <FileInput type="file" />
       </ProfileImageContainer>
     </>
   );
@@ -29,14 +29,14 @@ const ChangePhotoIcon = styled(ChangePhotoIc)`
 const ProfileImageContainer = styled.label`
   display: flex;
   position: relative;
-  
+
   width: 36.8rem;
   height: 36.8rem;
 
   margin-top: 17.8rem;
-  
+
   border-radius: 50%;
-  
+
   align-items: center;
   justify-content: center;
 
