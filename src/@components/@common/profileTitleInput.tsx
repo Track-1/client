@@ -15,6 +15,8 @@ export default function ProfileTitleInput(props: PropsType) {
     return nameState === inputState.ERROR;
   }
 
+  const inputWrapperWidth = inputTitle === "name" ? "54.9rem" : "55.9rem";
+
   return (
     <>
       <NameContainer>
@@ -22,7 +24,7 @@ export default function ProfileTitleInput(props: PropsType) {
           <NameTitleText>{inputTitle}</NameTitleText>
           <PointIcon />
         </NameTitleWrapper>
-        <InputWrapper nameState={nameState}></InputWrapper>
+        <InputWrapper nameState={nameState} width={inputWrapperWidth}></InputWrapper>
         {checkNameIsError() ? (
           <ProfileEditWarningMsg>{nameWarningMessage}</ProfileEditWarningMsg>
         ) : (
@@ -58,11 +60,11 @@ const PointIcon = styled.div`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const InputWrapper = styled.div<{ nameState: string }>`
+const InputWrapper = styled.div<{ nameState: string; width: string }>`
   display: flex;
   justify-content: space-between;
 
-  width: 54.9rem;
+  width: ${({ width }) => width};
   margin-bottom: 0.5rem;
 
   border-bottom: 0.1rem solid
