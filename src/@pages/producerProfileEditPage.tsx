@@ -13,13 +13,13 @@ export default function ProducerProfileEditPage() {
       <ProfileEditContainer>
         <ProfileEditTitle>
           <ProducerImageEdit />
-          <TitleInputEdit />
+          <TitleInputEdit inputTitle="name" />
         </ProfileEditTitle>
         <ProfileEditInfo>
-          <TitleInputEdit />
+          <TitleInputEdit inputTitle="contact" />
           <CategoriesEdit />
           <HashtagsEdit />
-          <TitleInputEdit />
+          <TitleInputEdit inputTitle="description" />
         </ProfileEditInfo>
       </ProfileEditContainer>
     </>

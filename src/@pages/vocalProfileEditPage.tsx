@@ -12,19 +12,18 @@ export default function VocalProfileEditPage() {
       <ProfileEditContainer>
         <ProfileEditTitle>
           <VocalImageEdit />
-          <TitleInputEdit />
+          <TitleInputEdit inputTitle="name" />
         </ProfileEditTitle>
         <ProfileEditInfo>
-          <TitleInputEdit />
+          <TitleInputEdit inputTitle="contact" />
           <CategoriesEdit />
           <HashtagsEdit />
-          <TitleInputEdit />
+          <TitleInputEdit inputTitle="description" />
         </ProfileEditInfo>
       </ProfileEditContainer>
     </>
   );
 }
-
 
 const ProfileEditInfo = styled.div`
   float: right;

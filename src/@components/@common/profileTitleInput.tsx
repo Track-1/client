@@ -3,7 +3,12 @@ import styled from "styled-components";
 import { nameWarningMessage } from "../../core/common/warningMessage";
 import { inputState } from "../../core/common/inputState";
 
-export default function ProfileTitleInput() {
+interface PropsType {
+  inputTitle: string;
+}
+
+export default function ProfileTitleInput(props: PropsType) {
+  const { inputTitle } = props;
   const [nameState, setNameState] = useState<string>("");
 
   function checkNameIsError() {
@@ -14,7 +19,7 @@ export default function ProfileTitleInput() {
     <>
       <NameContainer>
         <NameTitleWrapper>
-          <NameTitleText>Name</NameTitleText>
+          <NameTitleText>{inputTitle}</NameTitleText>
           <PointIcon />
         </NameTitleWrapper>
         <InputWrapper nameState={nameState}></InputWrapper>
