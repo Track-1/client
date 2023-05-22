@@ -10,12 +10,19 @@ interface PropsType {
 export default function ProfileTitleInput(props: PropsType) {
   const { inputTitle } = props;
   const [nameState, setNameState] = useState<string>("");
+  const [value, setValue] = useState<number>(0);
+
+  const inputWrapperWidth = inputTitle === "name" ? "54.9rem" : "55.9rem";
 
   function checkNameIsError() {
     return nameState === inputState.ERROR;
   }
 
-  const inputWrapperWidth = inputTitle === "name" ? "54.9rem" : "55.9rem";
+  function handleChange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>){
+    setValue(event.currentTarget.value.length);
+  };
+
+  const nameStateNothing = value === 0 ? inputState.NOTHING : inputState.CORRECT ||  inputState.ERROR;
 
   return (
     <>
@@ -24,7 +31,9 @@ export default function ProfileTitleInput(props: PropsType) {
           <NameTitleText>{inputTitle}</NameTitleText>
           <PointIcon />
         </NameTitleWrapper>
-        <InputWrapper nameState={nameState} width={inputWrapperWidth}></InputWrapper>
+        <InputWrapper nameState={nameState} width={inputWrapperWidth} nameStateNothing={nameStateNothing}>
+          <NameInput placeholder="상수로 두기" onChange={handleChange} />
+        </InputWrapper>
         {checkNameIsError() ? (
           <ProfileEditWarningMsg>{nameWarningMessage}</ProfileEditWarningMsg>
         ) : (
@@ -60,7 +69,7 @@ const PointIcon = styled.div`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const InputWrapper = styled.div<{ nameState: string; width: string }>`
+const InputWrapper = styled.div<{ nameState: string; width: string; nameStateNothing: string }>`
   display: flex;
   justify-content: space-between;
 
@@ -68,8 +77,8 @@ const InputWrapper = styled.div<{ nameState: string; width: string }>`
   margin-bottom: 0.5rem;
 
   border-bottom: 0.1rem solid
-    ${({ nameState, theme }) =>
-      nameState === "correct" ? theme.colors.main : nameState === "error" ? theme.colors.red : theme.colors.white};
+    ${({nameStateNothing, nameState, theme }) =>
+      nameStateNothing === "correct" ? theme.colors.main : nameState === "error" ? theme.colors.red : theme.colors.white};
 `;
 
 const ProfileEditWarningMsg = styled.span`
