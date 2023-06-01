@@ -14,13 +14,12 @@ export default function SignupStepPage() {
       <BackButtonWrapper>{/* <SignUpBackButton /> */}</BackButtonWrapper>
       <SignUpContainer>
         <Img src={background} alt="배경" />
-        <SignUpStepWrapper>
-          <StepBox>
-            <StepHeader step={step} />
-            <StepMain step={step} setStep={setStep} />
-            <StepFooter step={step} />
-          </StepBox>
-        </SignUpStepWrapper>
+
+        <StepBox>
+          <StepHeader step={step} />
+          <StepMain step={step} setStep={setStep} />
+          <StepFooter step={step} />
+        </StepBox>
       </SignUpContainer>
     </>
   );
@@ -41,21 +40,18 @@ const Img = styled.img`
   height: 98rem;
 `;
 
-const SignUpStepWrapper = styled.div`
-  display: flex;
-
-  position: absolute;
-`;
-
 const StepBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  position: absolute;
+  right: 18.1rem;
+
   width: 77.9rem;
   height: 88.8rem;
 
-  right: 18.1rem;
+  margin-left: 10rem;
 
   backdrop-filter: blur(1rem);
 
