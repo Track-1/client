@@ -1,10 +1,9 @@
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
+import { StepProp } from "../../type/signUp/stepProps";
 import EmailPassword from "./emailPassword";
 import NicknameConvention from "./nicknameConvention";
 import Role from "./role";
-import { StepHeaderProp } from "./stepHeader";
-
-interface StepMainProps extends StepHeaderProp {
+interface StepMainProps extends StepProp {
   setStep: React.Dispatch<React.SetStateAction<string>>;
 }
 

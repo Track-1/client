@@ -4,9 +4,10 @@ import StepFooter from "../@components/signUp/stepFooter";
 import StepHeader from "../@components/signUp/stepHeader";
 import StepMain from "../@components/signUp/stepMain";
 import background from "../assets/icon/signupBackgroundIc.svg";
+import { SIGNUP_STEP } from "../core/signUp/stepRenderer";
 
 export default function SignupStepPage() {
-  const [step, setStep] = useState<string>("");
+  const [step, setStep] = useState<string>(SIGNUP_STEP.ROLE);
 
   return (
     <>
