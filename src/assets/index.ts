@@ -4,3 +4,8 @@ export { ReactComponent as SignupHeaderStep1Ic } from "./icon/signupHeaderStep1I
 export { ReactComponent as SignupHeaderStep2Ic } from "./icon/signupHeaderStep2Ic.svg";
 export { ReactComponent as SignupHeaderStep3Ic } from "./icon/signupHeaderStep3Ic.svg";
 export { ReactComponent as SignupHeaderStepBlankIc } from "./icon/signupHeaderStepBlankIc.svg";
+export { ReactComponent as SignupRoleProducerHoverIc } from "./icon/signupRoleProducerHoverIc.svg";
+export { ReactComponent as SignupRoleProducerIc } from "./icon/signupRoleProducerIc.svg";
+export { ReactComponent as SignupRoleTitleIc } from "./icon/signupRoleTitleIc.svg";
+export { ReactComponent as SignupRoleVocalHoverIc } from "./icon/signupRoleVocalHoverIc.svg";
+export { ReactComponent as SignupRoleVocalIc } from "./icon/signupRoleVocalIc.svg";

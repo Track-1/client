@@ -26,11 +26,6 @@ export default function SignupStepPage() {
   );
 }
 
-// const SignupBackgroundIcon = styled(SignupBackgroundIc)`
-//   width: 192rem;
-//   margin-top: 26rem;
-// `;
-
 const BackButtonWrapper = styled.div`
   margin: 5.9rem 0 0 7.9rem;
 `;
@@ -53,6 +48,10 @@ const SignUpStepWrapper = styled.div`
 `;
 
 const StepBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   width: 77.9rem;
   height: 88.8rem;
 
