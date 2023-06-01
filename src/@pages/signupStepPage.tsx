@@ -1,6 +1,5 @@
-import React from "react";
-import { SignupBackgroundIc } from "../assets";
 import styled from "styled-components";
+import { SignupBackgroundIc } from "../assets";
 
 export default function SignupStepPage() {
   return (
