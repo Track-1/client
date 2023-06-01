@@ -1,3 +1,7 @@
+import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
+import EmailPassword from "./emailPassword";
+import NicknameConvention from "./nicknameConvention";
+import Role from "./role";
 import { StepHeaderProp } from "./stepHeader";
 
 interface StepMainProps extends StepHeaderProp {
@@ -7,5 +11,14 @@ interface StepMainProps extends StepHeaderProp {
 export default function StepMain(props: StepMainProps) {
   const { step, setStep } = props;
 
-  return <div>stepMain</div>;
+  switch (step) {
+    case SIGNUP_STEP.ROLE:
+      return <Role setStep={setStep} />;
+    case SIGNUP_STEP.EMAIL_PASSWORD:
+      return <EmailPassword setStep={setStep} />;
+    case SIGNUP_STEP.NICKNAME_CONVENTION:
+      return <NicknameConvention setStep={setStep} />;
+    default:
+      return <></>;
+  }
 }

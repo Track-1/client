@@ -5,5 +5,5 @@ export interface StepHeaderProp {
 export default function StepHeader(props: StepHeaderProp) {
   const { step } = props;
 
-  return <div>stepHeadeS</div>;
+  return <div>stepHeade</div>;
 }
