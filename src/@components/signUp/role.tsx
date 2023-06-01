@@ -30,23 +30,27 @@ export default function Role(props: SetStepProp) {
     return hoverRole === role || clickRole === role;
   }
 
-  console.log(hoverRole);
+  function isProducer(role: string) {
+    return role === ROLE.PRODUCER;
+  }
 
   return (
     <RoleWrapper>
-      <SignupRoleTitleIc />
-      <div
+      <SignupRoleTitleIcon />
+      <RoleBox
         onClick={() => handleClickRole(ROLE.PRODUCER)}
         onMouseEnter={() => handleHoverRole(ROLE.PRODUCER)}
-        onMouseLeave={() => handleHoverRole("")}>
+        onMouseLeave={() => handleHoverRole("")}
+        isProducer={isProducer(ROLE.PRODUCER)}>
         {isActive(ROLE.PRODUCER) ? <SignupRoleProducerHoverIc /> : <SignupRoleProducerIc />}
-      </div>
-      <div
+      </RoleBox>
+      <RoleBox
         onClick={() => handleClickRole(ROLE.VOCAL)}
         onMouseEnter={() => handleHoverRole(ROLE.VOCAL)}
-        onMouseLeave={() => handleHoverRole("")}>
+        onMouseLeave={() => handleHoverRole("")}
+        isProducer={isProducer(ROLE.VOCAL)}>
         {isActive(ROLE.VOCAL) ? <SignupRoleVocalHoverIc /> : <SignupRoleVocalIc />}
-      </div>
+      </RoleBox>
     </RoleWrapper>
   );
 }
@@ -56,7 +60,17 @@ const RoleWrapper = styled.section`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
+  /* 
   height: 49.5rem;
+  margin-top: 8rem; */
+`;
+
+const RoleBox = styled.article<{ isProducer: boolean }>`
+  margin-top: ${({ isProducer }) => (isProducer ? 3.3 : 1.4)}rem;
+
+  cursor: pointer;
+`;
+
+const SignupRoleTitleIcon = styled(SignupRoleTitleIc)`
   margin-top: 8rem;
 `;

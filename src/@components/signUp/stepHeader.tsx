@@ -69,7 +69,7 @@ const StepHeaderWrapper = styled.section`
   width: 56rem;
   height: 2.4rem;
 
-  margin: 7rem 0 0 11rem;
+  margin-top: 7rem;
 `;
 
 const SignUpStepBlanckIcon = styled(SignupHeaderStepBlankIc)`
