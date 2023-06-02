@@ -27,14 +27,38 @@ export default function StepFooter(props: StepMainProps) {
     }
   }
 
+  function checkPrevStep() {
+    switch (step) {
+      case SIGNUP_STEP.ROLE:
+        break;
+      case SIGNUP_STEP.EMAIL_PASSWORD:
+        setStep(SIGNUP_STEP.ROLE);
+        break;
+      case SIGNUP_STEP.NICKNAME_CONVENTION:
+        setStep(SIGNUP_STEP.EMAIL_PASSWORD);
+        break;
+      default:
+        break;
+    }
+  }
+
+  function handleMoveToPrevStep() {
+    setIsSuccess(false);
+    checkPrevStep();
+  }
+
   function handleMoveToNextStep() {
     setIsSuccess(false);
     checkNextStep();
   }
 
+  function checkStepRole() {
+    return step === SIGNUP_STEP.ROLE;
+  }
+
   return (
     <FooterWrapper>
-      <SignupStepBackArrowIc />
+      {checkStepRole() ? <Blank /> : <SignupStepBackArrowIc onClick={handleMoveToPrevStep} />}
       <ContinueButtonWrapper isSuccess={isSuccess}>
         <SignupStepContinueIc onClick={handleMoveToNextStep} />
       </ContinueButtonWrapper>
@@ -64,4 +88,8 @@ const ContinueButtonWrapper = styled.button<{ isSuccess: boolean }>`
 
   border-radius: 2.5rem;
   background-color: ${({ theme, isSuccess }) => (isSuccess ? theme.colors.main : theme.colors.gray4)};
+`;
+
+const Blank = styled.div`
+  width: 10.2rem;
 `;
