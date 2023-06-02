@@ -49,14 +49,14 @@ export default function Role(props: SetStepProp) {
         onMouseEnter={() => handleHoverRole(ROLE.PRODUCER)}
         onMouseLeave={() => handleHoverRole("")}
         isProducer={isProducer(ROLE.PRODUCER)}>
-        {isActive(ROLE.PRODUCER) ? <SignupRoleProducerHoverIc /> : <SignupRoleProducerIc />}
+        {isActive(ROLE.PRODUCER) ? <SignupRoleProducerHoverIcon /> : <SignupRoleProducerIcon />}
       </RoleBox>
       <RoleBox
         onClick={() => handleClickRole(ROLE.VOCAL)}
         onMouseEnter={() => handleHoverRole(ROLE.VOCAL)}
         onMouseLeave={() => handleHoverRole("")}
         isProducer={isProducer(ROLE.VOCAL)}>
-        {isActive(ROLE.VOCAL) ? <SignupRoleVocalHoverIc /> : <SignupRoleVocalIc />}
+        {isActive(ROLE.VOCAL) ? <SignupRoleVocalHoverIcon /> : <SignupRoleVocalIcon />}
       </RoleBox>
     </RoleWrapper>
   );
@@ -76,5 +76,26 @@ const RoleBox = styled.article<{ isProducer: boolean }>`
 `;
 
 const SignupRoleTitleIcon = styled(SignupRoleTitleIc)`
+  width: 48.2rem;
   margin-top: 8rem;
+`;
+
+const SignupRoleProducerHoverIcon = styled(SignupRoleProducerHoverIc)`
+  width: 62rem;
+  height: 21.5rem;
+`;
+
+const SignupRoleProducerIcon = styled(SignupRoleProducerIc)`
+  width: 62rem;
+  height: 21.5rem;
+`;
+
+const SignupRoleVocalHoverIcon = styled(SignupRoleVocalHoverIc)`
+  width: 62rem;
+  height: 21.5rem;
+`;
+
+const SignupRoleVocalIcon = styled(SignupRoleVocalIc)`
+  width: 62rem;
+  height: 21.5rem;
 `;

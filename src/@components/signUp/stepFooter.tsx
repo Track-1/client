@@ -60,7 +60,7 @@ export default function StepFooter(props: StepMainProps) {
     <FooterWrapper>
       {checkStepRole() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
       <ContinueButtonWrapper isSuccess={isSuccess}>
-        <SignupStepContinueIc onClick={handleMoveToNextStep} />
+        <SignupStepContinueIcon onClick={handleMoveToNextStep} />
       </ContinueButtonWrapper>
     </FooterWrapper>
   );
@@ -102,4 +102,8 @@ const SignupStepBackArrowIcon = styled(SignupStepBackArrowIc)`
   height: 4.5rem;
 
   cursor: pointer;
+`;
+
+const SignupStepContinueIcon = styled(SignupStepContinueIc)`
+  width: 9.7rem;
 `;
