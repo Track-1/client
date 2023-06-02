@@ -29,6 +29,4 @@ const InfoTypeText = styled.div`
 const InfoInput = styled.div`
   width: 100%;
   height: 100%;
-
-  background-color: skyblue;
 `;

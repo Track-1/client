@@ -8,4 +8,6 @@ export const TEXT_LIMIT: TextLimitType = {
   36: 36,
   150: 150,
   200: 200,
+  250: 250,
+
 };

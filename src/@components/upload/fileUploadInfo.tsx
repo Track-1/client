@@ -1,63 +1,10 @@
 import styled from "styled-components";
 import { FolderUploadIc, UploadFileIc } from "../../assets";
 import UploadInfoBox from "./UploadInfoBox";
-import { useState } from "react";
+import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 
 export default function FileUploadInfo() {
-  const [fileName, setFileName] = useState("");
-  const [isTextOverflow, setIsTextOverflow] = useState(false);
-  const [audioType, setAudioType] = useState("");
-
-  //오디오 업로드
-  function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files !== null) {
-      const file = e.target.value;
-      const inputAudioFile = e.target!.files[0];
-      const audioFileName: string = getAudioFileName(file);
-      const audioFileType: string = getAudioFileType(file, audioFileName.length);
-      const onlyFileName: string = getOnlyFileName(file);
-
-      if (checkAudioFileType(audioFileType)) {
-        setAudioAttribute(audioFileName, audioFileType, onlyFileName);
-        // setUploadData((prevState) => {
-        //   return { ...prevState, audioFile: inputAudioFile };
-        // });
-      } else {
-        alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
-      }
-    }
-  }
-
-  function checkMaxInputLength(length: number, limit: number): boolean {
-    return length <= limit;
-  }
-
-  function checkAudioFileType(type: string) {
-    return type === ".mp3" || type === ".wav" || type === ".MP3" || type === ".WAV";
-  }
-
-  function getAudioFileName(file: string): string {
-    return file.substring(file.lastIndexOf("\\") + 1);
-  }
-
-  function getAudioFileType(file: string, fileLength: number): string {
-    return file.substring(file.lastIndexOf("\\") + 1).substring(fileLength - 4);
-  }
-
-  function getOnlyFileName(file: string): string {
-    return file.substring(file.lastIndexOf("\\") + 1, file.length - 4);
-  }
-
-  function setAudioAttribute(name: string, type: string, editName: string) {
-    if (checkMaxInputLength(editName.length, 13)) {
-      setIsTextOverflow(false);
-      setFileName(name);
-    } else {
-      setIsTextOverflow(true);
-      setFileName(editName);
-    }
-    setAudioType(type);
-  }
+  const [audioFile, fileName, audioType, isTextOverflow, uploadAudiofile] = useUploadAudioFile();
 
   return (
     <UploadInfoBox>
@@ -111,7 +58,6 @@ const InfoInput = styled.div`
 `;
 
 // -------여기까지 공통----------
-
 
 const InputWrapper = styled.div`
   display: flex;

@@ -6,11 +6,15 @@ import { TEXT_LIMIT } from "../../core/common/textLimit";
 
 export default function UploadTitle() {
   const [titleInput, changeTitleInput] = useInputText("", TEXT_LIMIT[36]);
-  
+
   return (
     <Container>
       <Empty />
-      <TitleInput placeholder="Please enter a title" onChange={changeTitleInput} value={titleInput}></TitleInput>
+      <TitleInput
+        placeholder="Please enter a title"
+        spellCheck="false"
+        onChange={changeTitleInput}
+        value={titleInput}></TitleInput>
       <TextLengthWrapper>
         <Empty />
         <TextLength inputLength={titleInput.length} limit={TEXT_LIMIT[36]} font={theme.fonts.body1} />
