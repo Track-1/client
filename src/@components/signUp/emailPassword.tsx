@@ -8,14 +8,19 @@ import { checkEmailForm } from "../../utils/signUp/checkForm";
 export default function EmailPassword() {
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const [email, setEmail] = useState<string>("");
+  const [isActive, setIsActive] = useState<boolean>(false);
 
-  function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeEmail(e: any) {
     const input = e.target.value;
-    if (!input && checkEmailForm(input)) {
+    if (checkEmailForm(input)) {
       setEmail(input);
+      setIsActive(true);
+    } else {
+      setIsActive(false);
     }
   }
 
+  console.log(email);
   return (
     <>
       <SignupEmailPasswordTitleIcon />
@@ -23,7 +28,7 @@ export default function EmailPassword() {
         <EmailText>What’s your email?</EmailText>
         <EmailInputWrapper>
           <EmailInput placeholder="Enter your email address" onChange={handleChangeEmail} />
-          <EmailButton>
+          <EmailButton isActive={isActive}>
             <SignupSendCodeIc />
           </EmailButton>
         </EmailInputWrapper>
@@ -60,7 +65,7 @@ const EmailInput = styled.input`
   ${({ theme }) => theme.fonts.input};
 `;
 
-const EmailButton = styled.button`
+const EmailButton = styled.button<{ isActive: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +74,7 @@ const EmailButton = styled.button`
   height: 4rem;
 
   border-radius: 2.2rem;
-  background-color: ${({ theme }) => theme.colors.gray4};
+  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
 `;
 
 const EmailInputWrapper = styled.article`
