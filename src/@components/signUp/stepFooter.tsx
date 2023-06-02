@@ -59,8 +59,8 @@ export default function StepFooter(props: StepMainProps) {
   return (
     <FooterWrapper>
       {checkStepRole() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
-      <ContinueButtonWrapper isSuccess={isSuccess}>
-        <SignupStepContinueIcon onClick={handleMoveToNextStep} />
+      <ContinueButtonWrapper onClick={handleMoveToNextStep} isSuccess={isSuccess}>
+        <SignupStepContinueIcon />
       </ContinueButtonWrapper>
     </FooterWrapper>
   );
