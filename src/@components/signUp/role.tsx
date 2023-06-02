@@ -11,12 +11,7 @@ import {
 import { ROLE } from "../../core/signUp/roleType";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 
-export interface SetStepProp {
-  setStep: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function Role(props: SetStepProp) {
-  const { setStep } = props;
+export default function Role() {
   const [hoverRole, setHoverRole] = useState<string>("");
   const [clickRole, setClickRole] = useState<string>("");
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);

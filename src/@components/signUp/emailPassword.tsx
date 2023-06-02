@@ -1,7 +1,3 @@
-import { SetStepProp } from "./role";
-
-export default function EmailPassword(props: SetStepProp) {
-  const { setStep } = props;
-
+export default function EmailPassword() {
   return <div>emailPassword</div>;
 }

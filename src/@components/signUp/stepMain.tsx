@@ -4,20 +4,16 @@ import EmailPassword from "./emailPassword";
 import NicknameConvention from "./nicknameConvention";
 import Role from "./role";
 
-export interface StepMainProps extends StepProp {
-  setStep: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function StepMain(props: StepMainProps) {
-  const { step, setStep } = props;
+export default function StepMain(props: StepProp) {
+  const { step } = props;
 
   switch (step) {
     case SIGNUP_STEP.ROLE:
-      return <Role setStep={setStep} />;
+      return <Role />;
     case SIGNUP_STEP.EMAIL_PASSWORD:
-      return <EmailPassword setStep={setStep} />;
+      return <EmailPassword />;
     case SIGNUP_STEP.NICKNAME_CONVENTION:
-      return <NicknameConvention setStep={setStep} />;
+      return <NicknameConvention />;
     default:
       return <></>;
   }

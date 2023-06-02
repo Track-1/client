@@ -17,7 +17,7 @@ export default function SignupStepPage() {
 
         <StepBox>
           <StepHeader step={step} />
-          <StepMain step={step} setStep={setStep} />
+          <StepMain step={step} />
           <StepFooter step={step} setStep={setStep} />
         </StepBox>
       </SignUpContainer>

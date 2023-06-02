@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
-import { StepMainProps } from "./stepMain";
+import { StepMainProps } from "../../type/signUp/stepProps";
 
 export default function StepFooter(props: StepMainProps) {
   const { step, setStep } = props;

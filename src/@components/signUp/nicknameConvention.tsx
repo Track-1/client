@@ -1,7 +1,3 @@
-import { SetStepProp } from "./role";
-
-export default function NicknameConvention(props: SetStepProp) {
-  const { setStep } = props;
-
+export default function NicknameConvention() {
   return <div>nicknameConvention</div>;
 }
