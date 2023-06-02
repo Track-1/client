@@ -3,7 +3,8 @@ import { StepProp } from "../../type/signUp/stepProps";
 import EmailPassword from "./emailPassword";
 import NicknameConvention from "./nicknameConvention";
 import Role from "./role";
-interface StepMainProps extends StepProp {
+
+export interface StepMainProps extends StepProp {
   setStep: React.Dispatch<React.SetStateAction<string>>;
 }
 
