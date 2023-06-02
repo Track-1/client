@@ -58,7 +58,7 @@ export default function StepFooter(props: StepMainProps) {
 
   return (
     <FooterWrapper>
-      {checkStepRole() ? <Blank /> : <SignupStepBackArrowIc onClick={handleMoveToPrevStep} />}
+      {checkStepRole() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
       <ContinueButtonWrapper isSuccess={isSuccess}>
         <SignupStepContinueIc onClick={handleMoveToNextStep} />
       </ContinueButtonWrapper>
@@ -71,7 +71,7 @@ const FooterWrapper = styled.footer`
   justify-content: space-between;
   align-items: center;
 
-  position: absolute;
+  position: fixed;
   bottom: 7rem;
 
   width: 55.8rem;
@@ -92,4 +92,14 @@ const ContinueButtonWrapper = styled.button<{ isSuccess: boolean }>`
 
 const Blank = styled.div`
   width: 10.2rem;
+`;
+
+const SignupStepBackArrowIcon = styled(SignupStepBackArrowIc)`
+  display: flex;
+  align-items: center;
+
+  width: 10.2rem;
+  height: 4.5rem;
+
+  cursor: pointer;
 `;
