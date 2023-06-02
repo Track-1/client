@@ -9,3 +9,5 @@ export { ReactComponent as SignupRoleProducerIc } from "./icon/signupRoleProduce
 export { ReactComponent as SignupRoleTitleIc } from "./icon/signupRoleTitleIc.svg";
 export { ReactComponent as SignupRoleVocalHoverIc } from "./icon/signupRoleVocalHoverIc.svg";
 export { ReactComponent as SignupRoleVocalIc } from "./icon/signupRoleVocalIc.svg";
+export { ReactComponent as SignupStepBackArrowIc } from "./icon/signupStepBackArrowIc.svg";
+export { ReactComponent as SignupStepContinueIc } from "./icon/signupStepContinueIc.svg";
