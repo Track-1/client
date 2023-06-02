@@ -1,10 +1,20 @@
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { SignupEmailPasswordTitleIc, SignupSendCodeIc } from "../../assets";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
+import { checkEmailForm } from "../../utils/signUp/checkForm";
 
 export default function EmailPassword() {
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+  const [email, setEmail] = useState<string>("");
+
+  function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+    const input = e.target.value;
+    if (!input && checkEmailForm(input)) {
+      setEmail(input);
+    }
+  }
 
   return (
     <>
@@ -12,7 +22,7 @@ export default function EmailPassword() {
       <EmailInputContainer>
         <EmailText>What’s your email?</EmailText>
         <EmailInputWrapper>
-          <EmailInput placeholder="Enter your email address" />
+          <EmailInput placeholder="Enter your email address" onChange={handleChangeEmail} />
           <EmailButton>
             <SignupSendCodeIc />
           </EmailButton>
