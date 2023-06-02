@@ -67,9 +67,6 @@ const RoleWrapper = styled.section`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /* 
-  height: 49.5rem;
-  margin-top: 8rem; */
 `;
 
 const RoleBox = styled.article<{ isProducer: boolean }>`
