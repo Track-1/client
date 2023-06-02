@@ -16,6 +16,14 @@ export default function HashtagsEdit() {
           <HashtagWarning />
         </HashIconWrapper>
         <InputHashtagWrapper>
+
+        <Hashtag>
+          <HashtagWrapper> 
+            <HashtagSharp># </HashtagSharp>
+            <HashtagInput/>
+            </HashtagWrapper>
+        </Hashtag>
+        <AddHashtagIcon />
           {/* {hashtags?.map((hashtag, index) => {
             return (
               <Hashtag key={index}>
@@ -84,7 +92,6 @@ const Hashtag = styled.div`
   
   padding-right: 1rem;
   margin-right: 1rem;
-  margin-top: 1rem;
   
   border-radius: 2.1rem;
   background-color: ${({ theme }) => theme.colors.gray5};
