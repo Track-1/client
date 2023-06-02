@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   SignupRoleProducerHoverIc,
@@ -8,6 +9,7 @@ import {
   SignupRoleVocalIc,
 } from "../../assets";
 import { ROLE } from "../../core/signUp/roleType";
+import { isNextStep } from "../../recoil/signUp/isNextStep";
 
 export interface SetStepProp {
   setStep: React.Dispatch<React.SetStateAction<string>>;
@@ -17,6 +19,7 @@ export default function Role(props: SetStepProp) {
   const { setStep } = props;
   const [hoverRole, setHoverRole] = useState<string>("");
   const [clickRole, setClickRole] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   function handleHoverRole(role: string) {
     setHoverRole(role);
@@ -33,6 +36,10 @@ export default function Role(props: SetStepProp) {
   function isProducer(role: string) {
     return role === ROLE.PRODUCER;
   }
+
+  useEffect(() => {
+    clickRole !== "" && setIsSuccess(true);
+  }, [clickRole]);
 
   return (
     <RoleWrapper>
