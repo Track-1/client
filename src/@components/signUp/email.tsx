@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
+import { SignupEmailResendIc, SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
@@ -16,6 +16,7 @@ export default function Email(props: EmailProps) {
     verificationCode: "",
     message: VERIFICATION_CODE_MESSAGE.NULL,
   });
+  const [isSendCode, setIsSendCode] = useState<boolean>(false);
 
   function checkIsEmailActive() {
     return emails.message === EMAIL_MESSAGE.ACTIVE;
@@ -43,6 +44,10 @@ export default function Email(props: EmailProps) {
     }
   }
 
+  function handleSendCode() {
+    setIsSendCode(true);
+  }
+
   return (
     <>
       <InputContainer>
@@ -50,20 +55,26 @@ export default function Email(props: EmailProps) {
         <InputWrapper>
           <Input placeholder="Enter your email address" onChange={handleChangeEmail} />
           <Button isActive={checkIsEmailActive()}>
-            <SignupSendCodeIc />
-            {/* SignupEmailResendIc */}
+            <SignupSendCodeIc onClick={handleSendCode} />
           </Button>
+          {isSendCode && (
+            <Button isActive={true}>
+              <SignupEmailResendIc />
+            </Button>
+          )}
         </InputWrapper>
       </InputContainer>
-      <InputContainer>
-        <Text>Verification code</Text>
-        <InputWrapper>
-          <Input placeholder="Verify your email address" onChange={handleChangeVerificationCode} />
-          <Button isActive={checkIsVerificationCodeActive()}>
-            <SignupEmailVerifyIc />
-          </Button>
-        </InputWrapper>
-      </InputContainer>
+      {isSendCode && (
+        <InputContainer>
+          <Text>Verification code</Text>
+          <InputWrapper>
+            <Input placeholder="Verify your email address" onChange={handleChangeVerificationCode} />
+            <Button isActive={checkIsVerificationCodeActive()}>
+              <SignupEmailVerifyIc />
+            </Button>
+          </InputWrapper>
+        </InputContainer>
+      )}
     </>
   );
 }
