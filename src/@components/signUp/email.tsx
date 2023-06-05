@@ -38,7 +38,7 @@ export default function Email(props: EmailProps) {
 
   function handleChangeVerificationCode(e: any) {
     const input = e.target.value;
-    if (checkEmailForm(input)) {
+    if (input !== "") {
       setVerificationCodes({ verificationCode: input, message: VERIFICATION_CODE_MESSAGE.ACTIVE });
     } else {
       setVerificationCodes({ ...verificationCodes, message: VERIFICATION_CODE_MESSAGE.NULL });
@@ -47,6 +47,7 @@ export default function Email(props: EmailProps) {
 
   function handleSendCode() {
     setIsSendCode(true);
+    // 이메일 중복 검사 post
   }
 
   return (
