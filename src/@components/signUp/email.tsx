@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
-import { emailInputType } from "../../type/signUp/inputType";
+import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 
 interface EmailProps {
@@ -11,19 +12,36 @@ interface EmailProps {
 
 export default function Email(props: EmailProps) {
   const { emails, setEmails } = props;
-  const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
+  const [verificationCodes, setVerificationCodes] = useState<verificationCodeInputType>({
+    verificationCode: "",
+    message: VERIFICATION_CODE_MESSAGE.NULL,
+  });
+
+  function checkIsEmailActive() {
+    return emails.message === EMAIL_MESSAGE.ACTIVE;
+  }
+
+  function checkIsVerificationCodeActive() {
+    return verificationCodes.message === VERIFICATION_CODE_MESSAGE.ACTIVE;
+  }
 
   function handleChangeEmail(e: any) {
     const input = e.target.value;
     if (checkEmailForm(input)) {
-      setEmails(input);
-      setIsEmailActive(true);
+      setEmails({ email: input, message: EMAIL_MESSAGE.ACTIVE });
     } else {
-      setIsEmailActive(false);
+      setEmails({ ...emails, message: EMAIL_MESSAGE.NULL });
     }
   }
 
-  function handleChangeVerificationCode() {}
+  function handleChangeVerificationCode(e: any) {
+    const input = e.target.value;
+    if (checkEmailForm(input)) {
+      setVerificationCodes({ verificationCode: input, message: VERIFICATION_CODE_MESSAGE.ACTIVE });
+    } else {
+      setVerificationCodes({ ...verificationCodes, message: VERIFICATION_CODE_MESSAGE.NULL });
+    }
+  }
 
   return (
     <>
@@ -31,7 +49,7 @@ export default function Email(props: EmailProps) {
         <Text>What’s your email?</Text>
         <InputWrapper>
           <Input placeholder="Enter your email address" onChange={handleChangeEmail} />
-          <Button isActive={isEmailActive}>
+          <Button isActive={checkIsEmailActive()}>
             <SignupSendCodeIc />
             {/* SignupEmailResendIc */}
           </Button>
@@ -41,7 +59,7 @@ export default function Email(props: EmailProps) {
         <Text>Verification code</Text>
         <InputWrapper>
           <Input placeholder="Verify your email address" onChange={handleChangeVerificationCode} />
-          <Button isActive={isVerificationActive}>
+          <Button isActive={checkIsVerificationCodeActive()}>
             <SignupEmailVerifyIc />
           </Button>
         </InputWrapper>

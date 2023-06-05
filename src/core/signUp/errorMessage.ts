@@ -6,13 +6,15 @@ export const EMAIL_MESSAGE = {
   TIME: "Valid time is 30 minutes.",
   VERIFY: "email verify",
   ING: "email ing",
+  ACTIVE: "email active",
 };
 
 export const VERIFICATION_CODE_MESSAGE = {
   NULL: "verification code null",
   ERROR: "You need to check the code.",
   SUCCESS: "verification code success",
-  ING: "doing verification code chek",
+  ING: "doing verification code check",
+  ACTIVE: "verification code active",
 };
 
 export const PASSWORD_MESSAGE = {
