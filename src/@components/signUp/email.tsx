@@ -28,6 +28,7 @@ export default function Email(props: EmailProps) {
 
   function handleChangeEmail(e: any) {
     const input = e.target.value;
+    setIsSendCode(false);
     if (checkEmailForm(input)) {
       setEmails({ email: input, message: EMAIL_MESSAGE.ACTIVE });
     } else {
@@ -54,10 +55,11 @@ export default function Email(props: EmailProps) {
         <Text>What’s your email?</Text>
         <InputWrapper>
           <Input placeholder="Enter your email address" onChange={handleChangeEmail} />
-          <Button isActive={checkIsEmailActive()}>
-            <SignupSendCodeIc onClick={handleSendCode} />
-          </Button>
-          {isSendCode && (
+          {!isSendCode ? (
+            <Button isActive={checkIsEmailActive()}>
+              <SignupSendCodeIc onClick={handleSendCode} />
+            </Button>
+          ) : (
             <Button isActive={true}>
               <SignupEmailResendIc />
             </Button>
