@@ -31,6 +31,8 @@ const WarningTextWrapper = styled.div`
 const WarningText = styled.div`
   margin: 1.9rem 1.8rem 0.4rem 2.9rem;
   
+  white-space: pre-line;
+  
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.description};
 `;
