@@ -1,21 +1,22 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
+import { emailInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 
 interface EmailProps {
-  email: string;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  emails: emailInputType;
+  setEmails: React.Dispatch<React.SetStateAction<emailInputType>>;
 }
 
 export default function Email(props: EmailProps) {
-  const { email, setEmail } = props;
+  const { emails, setEmails } = props;
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
 
   function handleChangeEmail(e: any) {
     const input = e.target.value;
     if (checkEmailForm(input)) {
-      setEmail(input);
+      setEmails(input);
       setIsEmailActive(true);
     } else {
       setIsEmailActive(false);
