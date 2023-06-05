@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { UploadDescriptionIc } from "../../assets";
 import UploadInfoBox from "./UploadInfoBox";
-import Description from "./description";
 import TextareaAutosize from "react-textarea-autosize";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
 import useInputText from "../../hooks/common/useInputText";
 import TextLength from "../@common/textLength";
+import { checkEnterCount } from "../../utils/common/checkEnterCount";
 
 export default function DescriptionInfo() {
   const [dsecription, changeDescription] = useInputText("", TEXT_LIMIT[250]);
 
-  function checkEnterCount(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const enterCount = e.target.value.split("\n").length;
+  function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const enterCount = checkEnterCount(e);
     enterCount < 8 && changeDescription(e);
   }
 
@@ -27,7 +27,7 @@ export default function DescriptionInfo() {
           placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
           spellCheck="false"
           maxRows={7}
-          onChange={checkEnterCount}
+          onChange={handleDescription}
           value={dsecription}
         />
         <TextLengthWrapper>

@@ -17,18 +17,17 @@ export default function FileUploadInfo() {
           <InputFileTextWrapper fileName={fileName}>
             <FileName value={fileName} isTextOverflow={isTextOverflow} disabled />
             {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioType}</FileAttribute>}
-            <input
+            <FileInput
               type="file"
               id="wavFileUpload"
-              style={{ display: "none" }}
               accept=".wav,.mp3, .WAV, .MP3"
               onChange={uploadAudiofile}
               readOnly
             />
           </InputFileTextWrapper>
-          <label htmlFor="wavFileUpload" style={{ cursor: "pointer" }}>
+          <FileLable htmlFor="wavFileUpload">
             <FolderUploadIcon />
-          </label>
+          </FileLable>
         </InputWrapper>
       </InfoInput>
     </UploadInfoBox>
@@ -105,4 +104,12 @@ const FolderUploadIcon = styled(FolderUploadIc)`
   height: 4rem;
   margin-left: 1.2rem;
   margin-top: 1.3rem;
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
+const FileLable = styled.label`
+  cursor: pointer;
 `;

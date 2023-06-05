@@ -23,7 +23,7 @@ const Container = styled.div<{ font: string }>`
 `;
 
 const InputLength = styled.p<{ inputLength: number }>`
-  color: ${(props) => (props.inputLength > 0 ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+  color: ${({ inputLength, theme }) => (inputLength > 0 ? theme.colors.white : theme.colors.gray3)};
 `;
 
 const Limit = styled.p`
