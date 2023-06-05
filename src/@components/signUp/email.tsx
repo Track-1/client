@@ -1,9 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { SignupEmailResendIc, SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
-import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import {
+  SignupEmailResendIc,
+  SignupEmailVerifyIc,
+  SignupErrorIc,
+  SignupSendCodeIc,
+  SignupVerifyIc,
+} from "../../assets";
+import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
+import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
 
 interface EmailProps {
   emails: emailInputType;
@@ -19,7 +26,7 @@ export default function Email(props: EmailProps) {
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
 
   function checkIsEmailActive() {
-    return emails.message === EMAIL_MESSAGE.ACTIVE;
+    return emails.message === EMAIL_MESSAGE.SUCCESS;
   }
 
   function checkIsVerificationCodeActive() {
@@ -28,11 +35,16 @@ export default function Email(props: EmailProps) {
 
   function handleChangeEmail(e: any) {
     const input = e.target.value;
+    // console.log(input);
     setIsSendCode(false);
+    if (input === "") {
+      setEmails({ email: input, message: EMAIL_MESSAGE.NULL });
+    }
     if (checkEmailForm(input)) {
-      setEmails({ email: input, message: EMAIL_MESSAGE.ACTIVE });
-    } else {
-      setEmails({ ...emails, message: EMAIL_MESSAGE.NULL });
+      setEmails({ email: input, message: EMAIL_MESSAGE.SUCCESS });
+    }
+    if (input !== "" && !checkEmailForm(input)) {
+      setEmails({ ...emails, message: EMAIL_MESSAGE.FORM });
     }
   }
 
@@ -47,35 +59,83 @@ export default function Email(props: EmailProps) {
 
   function handleSendCode() {
     setIsSendCode(true);
+    setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
     // 이메일 중복 검사 post
   }
 
+  function handleVerifyCode() {
+    setIsSendCode(false);
+    // 인증 코드 검사 post
+  }
+
+  function setErrorIcon(message: string) {
+    switch (message) {
+      case EMAIL_MESSAGE.FORM:
+        return <SignUpErrorIcon />;
+      case EMAIL_MESSAGE.DUPLICATION:
+        return <SignUpErrorIcon />;
+      case VERIFICATION_CODE_MESSAGE.ERROR:
+        return <SignUpErrorIcon />;
+      case PASSWORD_MESSAGE.FORM:
+        return <SignUpErrorIcon />;
+      case PASSWORD_MESSAGE.MATCH:
+        return <SignUpErrorIcon />;
+      case EMAIL_MESSAGE.VERIFY:
+        return <SignUpVerifyIcon />;
+      case PASSWORD_MESSAGE.SUCCESS:
+        return <SignUpVerifyIcon />;
+      case EMAIL_MESSAGE.SUCCESS:
+        return;
+      default:
+        return;
+    }
+  }
+  console.log(emails.message);
   return (
     <>
       <InputContainer>
         <Text>What’s your email?</Text>
         <InputWrapper>
-          <Input placeholder="Enter your email address" onChange={handleChangeEmail} />
+          <Input
+            type="email"
+            placeholder="Enter your email address"
+            onChange={handleChangeEmail}
+            underline={checkInputUnderline(emails.message)}
+            autoComplete="off"
+          />
+          {setErrorIcon(emails.message) && <IconWrapper>{setErrorIcon(emails.message)}</IconWrapper>}
           {!isSendCode ? (
-            <Button isActive={checkIsEmailActive()}>
-              <SignupSendCodeIc onClick={handleSendCode} />
+            <Button isActive={checkIsEmailActive()} onClick={handleSendCode}>
+              <SignupSendCodeIc />
             </Button>
           ) : (
-            <Button isActive={true}>
+            <Button isActive={true} onClick={handleSendCode}>
               <SignupEmailResendIc />
             </Button>
           )}
         </InputWrapper>
+        <MessageWrapper textColor={checkMessageColor(emails.message)}>{emails.message}</MessageWrapper>
       </InputContainer>
       {isSendCode && (
         <InputContainer>
           <Text>Verification code</Text>
           <InputWrapper>
-            <Input placeholder="Verify your email address" onChange={handleChangeVerificationCode} />
+            <Input
+              type="text"
+              placeholder="Verify your email address"
+              onChange={handleChangeVerificationCode}
+              underline={checkInputUnderline(verificationCodes.message)}
+            />
+            {setErrorIcon(verificationCodes.message) && (
+              <IconWrapper>{setErrorIcon(verificationCodes.message)}</IconWrapper>
+            )}
             <Button isActive={checkIsVerificationCodeActive()}>
-              <SignupEmailVerifyIc />
+              <SignupEmailVerifyIc onClick={handleVerifyCode} />
             </Button>
           </InputWrapper>
+          <MessageWrapper textColor={checkMessageColor(verificationCodes.message)}>
+            {verificationCodes.message}
+          </MessageWrapper>
         </InputContainer>
       )}
     </>
@@ -95,11 +155,12 @@ const Text = styled.h1`
   ${({ theme }) => theme.fonts.body1};
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ underline: string }>`
   width: 42.2rem;
   height: 4rem;
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
+  border-bottom: 1px solid ${({ underline }) => underline};
+
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.input};
 `;
@@ -121,4 +182,26 @@ const InputWrapper = styled.article`
   justify-content: space-between;
 
   width: 56rem;
+`;
+
+const IconWrapper = styled.div`
+  margin: 2rem 0 0 -3.9rem;
+`;
+
+const SignUpErrorIcon = styled(SignupErrorIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const SignUpVerifyIcon = styled(SignupVerifyIc)`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const MessageWrapper = styled.p<{ textColor: string }>`
+  margin-top: 1.1rem;
+
+  color: ${({ textColor }) => textColor};
+
+  ${({ theme }) => theme.fonts.message};
 `;
