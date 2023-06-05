@@ -10,45 +10,57 @@ interface EmailProps {
 
 export default function Email(props: EmailProps) {
   const { email, setEmail } = props;
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
 
   function handleChangeEmail(e: any) {
     const input = e.target.value;
     if (checkEmailForm(input)) {
       setEmail(input);
-      setIsActive(true);
+      setIsEmailActive(true);
     } else {
-      setIsActive(false);
+      setIsEmailActive(false);
     }
   }
 
   return (
-    <EmailInputContainer>
-      <EmailText>What’s your email?</EmailText>
-      <EmailInputWrapper>
-        <EmailInput placeholder="Enter your email address" onChange={handleChangeEmail} />
-        <EmailButton isActive={isActive}>
-          <SignupSendCodeIc />
-        </EmailButton>
-      </EmailInputWrapper>
-    </EmailInputContainer>
+    <>
+      <InputContainer>
+        <Text>What’s your email?</Text>
+        <InputWrapper>
+          <Input placeholder="Enter your email address" onChange={handleChangeEmail} />
+          <Button isActive={isEmailActive}>
+            <SignupSendCodeIc />
+            SignupEmailResendIc
+          </Button>
+        </InputWrapper>
+      </InputContainer>
+      <InputContainer>
+        <Text>Verification code</Text>
+        <InputWrapper>
+          <Input placeholder="Verify your email address" onChange={handleChangeVerificationCode} />
+          <Button isActive={isVerificationActive}>
+            <SignupEmailVerifyIc />
+          </Button>
+        </InputWrapper>
+      </InputContainer>
+    </>
   );
 }
 
-const EmailInputContainer = styled.section`
+const InputContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 `;
 
-const EmailText = styled.h1`
+const Text = styled.h1`
   margin: 13.4rem 0 3rem 0;
 
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
 `;
 
-const EmailInput = styled.input`
+const Input = styled.input`
   width: 42.2rem;
   height: 4rem;
 
@@ -57,7 +69,7 @@ const EmailInput = styled.input`
   ${({ theme }) => theme.fonts.input};
 `;
 
-const EmailButton = styled.button<{ isActive: boolean }>`
+const Button = styled.button<{ isActive: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +81,7 @@ const EmailButton = styled.button<{ isActive: boolean }>`
   background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
 `;
 
-const EmailInputWrapper = styled.article`
+const InputWrapper = styled.article`
   display: flex;
   justify-content: space-between;
 

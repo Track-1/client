@@ -1,5 +1,7 @@
 export { ReactComponent as SignupBackgroundIc } from "./icon/signupBackgroundIc.svg";
 export { ReactComponent as SignupEmailPasswordTitleIc } from "./icon/signupEmailPasswordTitleIc.svg";
+export { ReactComponent as SignupEmailResendIc } from "./icon/signupEmailResendIc.svg";
+export { ReactComponent as SignupEmailVerifyIc } from "./icon/signupEmailVerifyIc.svg";
 export { ReactComponent as SignupHeaderLogInHereIc } from "./icon/signupHeaderLogInHereIc.svg";
 export { ReactComponent as SignupHeaderStep1Ic } from "./icon/signupHeaderStep1Ic.svg";
 export { ReactComponent as SignupHeaderStep2Ic } from "./icon/signupHeaderStep2Ic.svg";
