@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { SignupSendCodeIc } from "../../assets";
+import { SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 
 interface EmailProps {
@@ -22,6 +22,8 @@ export default function Email(props: EmailProps) {
     }
   }
 
+  function handleChangeVerificationCode() {}
+
   return (
     <>
       <InputContainer>
@@ -30,7 +32,7 @@ export default function Email(props: EmailProps) {
           <Input placeholder="Enter your email address" onChange={handleChangeEmail} />
           <Button isActive={isEmailActive}>
             <SignupSendCodeIc />
-            SignupEmailResendIc
+            {/* SignupEmailResendIc */}
           </Button>
         </InputWrapper>
       </InputContainer>
