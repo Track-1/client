@@ -3,15 +3,24 @@ import { useState } from "react";
 
 import { AddHashtagIc, DeleteHashtagIc, HashtagTitleIc } from "../../assets";
 import HashtagWarning from "./hashtagWarning";
+import { checkKorean } from "../../utils/common/checkKorean";
 
 export default function HashtagsEdit() {
-  const [isKorean, setIsKorean] = useState<boolean>(false);
   const [hashtagLength, setHashtagLength] = useState<number>(0);
 
   function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
     let hashtagValue = e.target.value;
-    hashtagValue !== "" ? setHashtagLength(hashtagValue.length) : setHashtagLength(0);
+    let koreanLength = hashtagValue.length * 1.5 + 1;
+    let nonKoreanLength = hashtagValue.length * 1.2 + 1;
+
+    hashtagValue !== ""
+      ? checkKorean(hashtagValue)
+        ? setHashtagLength(koreanLength)
+        : setHashtagLength(nonKoreanLength)
+      : setHashtagLength(0);
   }
+
+
 
   return (
     <>
@@ -24,11 +33,7 @@ export default function HashtagsEdit() {
           <Hashtag>
             <HashtagWrapper>
               <HashtagSharp># </HashtagSharp>
-              <HashtagInput
-                placeholder="Hashtag"
-                onChange={checkHashtagText}
-                inputWidth={hashtagLength}
-              />
+              <HashtagInput placeholder="Hashtag" onChange={checkHashtagText} inputWidth={hashtagLength} />
             </HashtagWrapper>
           </Hashtag>
           <AddHashtagIcon />
@@ -122,11 +127,10 @@ const HashtagSharp = styled.p`
   ${({ theme }) => theme.fonts.hashtag};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number; isKorean: boolean }>`
+const HashtagInput = styled.input<{ inputWidth: number }>`
   display: flex;
 
-  width: ${({ inputWidth, isKorean }) =>
-    inputWidth === 0 ? 9 : isKorean ? inputWidth * 1.5 + 1 : inputWidth * 1.2 + 1}rem;
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth)}rem;
   ${({ theme }) => theme.fonts.hashtag};
 
   color: ${({ theme }) => theme.colors.gray1};
