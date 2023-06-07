@@ -60,7 +60,6 @@ export default function Email(props: EmailProps) {
 
   function handleSendCode() {
     if (checkEmailForm(emails.email)) {
-      setIsSendCode(true);
       // 이메일 중복 검사 post
       authMail({ tableName: role, userEmail: emails.email });
     }
@@ -73,6 +72,7 @@ export default function Email(props: EmailProps) {
     }
     if (isSendCodeSuccess) {
       setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
+      setIsSendCode(true);
     }
   }, [isSendCodeError, isSendCodeSuccess]);
 
