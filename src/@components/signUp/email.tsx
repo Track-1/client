@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
   SignupEmailResendIc,
@@ -10,6 +11,7 @@ import {
 import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import useSendCode from "../../hooks/signUp/useSendCode";
 import useVerifyCode from "../../hooks/signUp/useVerifyCode";
+import { signupRole } from "../../recoil/signUp/role";
 import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
@@ -28,6 +30,7 @@ export default function Email(props: EmailProps) {
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
   const { authMail, sendCodeError, isSendCodeError, isSendCodeSuccess }: any = useSendCode();
   const { verifyCode, isVerifyError, verifyError, isVerifySuccess } = useVerifyCode();
+  const role = useRecoilValue<string>(signupRole);
 
   function checkIsEmailActive() {
     return emails.message === EMAIL_MESSAGE.SUCCESS;
@@ -64,7 +67,7 @@ export default function Email(props: EmailProps) {
     if (checkEmailForm(emails.email)) {
       setIsSendCode(true);
       // 이메일 중복 검사 post
-      authMail({ tableName: "vocal", userEmail: emails.email });
+      authMail({ tableName: role, userEmail: emails.email });
     }
   }
 
@@ -81,7 +84,7 @@ export default function Email(props: EmailProps) {
   function handleVerifyCode() {
     // 인증 코드 검사 post
     verifyCode({
-      tableName: "vocal",
+      tableName: role,
       userEmail: emails.email,
       verificationCode: verificationCodes.verificationCode,
     });
