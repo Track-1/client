@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import SignUpBackButton from "../@components/signUp/signUpBackButton";
 import StepFooter from "../@components/signUp/stepFooter";
 import StepHeader from "../@components/signUp/stepHeader";
 import StepMain from "../@components/signUp/stepMain";
@@ -11,7 +12,9 @@ export default function SignupStepPage() {
 
   return (
     <>
-      <BackButtonWrapper>{/* <SignUpBackButton /> */}</BackButtonWrapper>
+      <BackButtonWrapper>
+        <SignUpBackButton />
+      </BackButtonWrapper>
       <SignUpContainer>
         <Img src={background} alt="배경" />
 
