@@ -1,3 +1,10 @@
+export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
+export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
+export { ReactComponent as ChangePhotoIc } from "./icon/changePhotoIc.svg";
+export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
+export { ReactComponent as HashtagTitleIc } from "./icon/hashtagTitleIc.svg";
+export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
+export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as SignupBackgroundIc } from "./icon/signupBackgroundIc.svg";
 export { ReactComponent as SignupHeaderLogInHereIc } from "./icon/signupHeaderLogInHereIc.svg";
 export { ReactComponent as SignupHeaderStep1Ic } from "./icon/signupHeaderStep1Ic.svg";
