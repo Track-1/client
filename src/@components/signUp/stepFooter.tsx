@@ -12,33 +12,37 @@ export default function StepFooter(props: StepMainProps) {
   const navigate = useNavigate();
 
   function checkNextStep() {
-    switch (step) {
-      case SIGNUP_STEP.ROLE:
-        setStep(SIGNUP_STEP.EMAIL_PASSWORD);
-        break;
-      case SIGNUP_STEP.EMAIL_PASSWORD:
-        setStep(SIGNUP_STEP.NICKNAME_CONVENTION);
-        break;
-      case SIGNUP_STEP.NICKNAME_CONVENTION:
-        navigate("/signup/profile");
-        break;
-      default:
-        break;
+    if (isSuccess) {
+      switch (step) {
+        case SIGNUP_STEP.ROLE:
+          setStep(SIGNUP_STEP.EMAIL_PASSWORD);
+          break;
+        case SIGNUP_STEP.EMAIL_PASSWORD:
+          setStep(SIGNUP_STEP.NICKNAME_CONVENTION);
+          break;
+        case SIGNUP_STEP.NICKNAME_CONVENTION:
+          navigate("/signup/profile");
+          break;
+        default:
+          break;
+      }
     }
   }
 
   function checkPrevStep() {
-    switch (step) {
-      case SIGNUP_STEP.ROLE:
-        break;
-      case SIGNUP_STEP.EMAIL_PASSWORD:
-        setStep(SIGNUP_STEP.ROLE);
-        break;
-      case SIGNUP_STEP.NICKNAME_CONVENTION:
-        setStep(SIGNUP_STEP.EMAIL_PASSWORD);
-        break;
-      default:
-        break;
+    if (isSuccess) {
+      switch (step) {
+        case SIGNUP_STEP.ROLE:
+          break;
+        case SIGNUP_STEP.EMAIL_PASSWORD:
+          setStep(SIGNUP_STEP.ROLE);
+          break;
+        case SIGNUP_STEP.NICKNAME_CONVENTION:
+          setStep(SIGNUP_STEP.EMAIL_PASSWORD);
+          break;
+        default:
+          break;
+      }
     }
   }
 
