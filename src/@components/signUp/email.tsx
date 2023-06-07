@@ -58,9 +58,11 @@ export default function Email(props: EmailProps) {
   }
 
   function handleSendCode() {
-    setIsSendCode(true);
-    setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
-    // 이메일 중복 검사 post
+    if (checkEmailForm(emails.email)) {
+      setIsSendCode(true);
+      setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
+      // 이메일 중복 검사 post
+    }
   }
 
   function handleVerifyCode() {
