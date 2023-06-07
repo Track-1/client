@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   SignupEmailResendIc,
@@ -8,6 +8,7 @@ import {
   SignupVerifyIc,
 } from "../../assets";
 import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import useSendCode from "../../hooks/signUp/useSendCode";
 import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
@@ -24,6 +25,7 @@ export default function Email(props: EmailProps) {
     message: VERIFICATION_CODE_MESSAGE.NULL,
   });
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
+  const { authMail, error, isError } = useSendCode();
 
   function checkIsEmailActive() {
     return emails.message === EMAIL_MESSAGE.SUCCESS;
@@ -60,10 +62,21 @@ export default function Email(props: EmailProps) {
   function handleSendCode() {
     if (checkEmailForm(emails.email)) {
       setIsSendCode(true);
-      setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
+      authMail({ tableName: "vocal", userEmail: emails.email });
+      //
+
       // 이메일 중복 검사 post
     }
   }
+
+  useEffect(() => {
+    if (isError) {
+      error.response.data.message === "중복된 이메일입니다" &&
+        setEmails({ ...emails, message: EMAIL_MESSAGE.DUPLICATION });
+    } else {
+      setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
+    }
+  }, [error]);
 
   function handleVerifyCode() {
     setIsSendCode(false);
@@ -92,7 +105,7 @@ export default function Email(props: EmailProps) {
         return;
     }
   }
-  console.log(emails.message);
+
   return (
     <>
       <InputContainer>
