@@ -35,9 +35,8 @@ export default function Email(props: EmailProps) {
     return verificationCodes.message === VERIFICATION_CODE_MESSAGE.ACTIVE;
   }
 
-  function handleChangeEmail(e: any) {
+  function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
-    // console.log(input);
     setIsSendCode(false);
     if (input === "") {
       setEmails({ email: input, message: EMAIL_MESSAGE.NULL });
@@ -50,7 +49,7 @@ export default function Email(props: EmailProps) {
     }
   }
 
-  function handleChangeVerificationCode(e: any) {
+  function handleChangeVerificationCode(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
     if (input !== "") {
       setVerificationCodes({ verificationCode: input, message: VERIFICATION_CODE_MESSAGE.ACTIVE });
@@ -63,7 +62,6 @@ export default function Email(props: EmailProps) {
     if (checkEmailForm(emails.email)) {
       setIsSendCode(true);
       authMail({ tableName: "vocal", userEmail: emails.email });
-      //
 
       // 이메일 중복 검사 post
     }

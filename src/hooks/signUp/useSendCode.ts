@@ -3,13 +3,6 @@ import { useMutation } from "react-query";
 import { authEmail } from "../../api/signup";
 
 export default function useSendCode() {
-  // const { mutate: checkDuplicate } = useMutation(checkEmailDuplication, {
-  //   onSuccess: (response) => {
-  //     setIsDuplication(response);
-  //   },
-  //   onError: () => {},
-  // });
-
   const [isError, setIsError] = useState<boolean>(false);
   const [error, setError] = useState<any>();
 
@@ -22,11 +15,6 @@ export default function useSendCode() {
       setError(err);
     },
   });
-
-  // const { mutate: reAuthMail } = useMutation(repostAuthEmail, {
-  //   onSuccess: () => {},
-  //   onError: () => {},
-  // });
 
   return { authMail, error, isError };
 }
