@@ -9,6 +9,7 @@ import {
 } from "../../assets";
 import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import useSendCode from "../../hooks/signUp/useSendCode";
+import useVerifyCode from "../../hooks/signUp/useVerifyCode";
 import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
@@ -25,7 +26,8 @@ export default function Email(props: EmailProps) {
     message: VERIFICATION_CODE_MESSAGE.NULL,
   });
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
-  const { authMail, error, isError, isSuccess } = useSendCode();
+  const { authMail, sendCodeError, isSendCodeError, isSendCodeSuccess }: any = useSendCode();
+  const { verifyCode, isVerifyError, verifyError, isVerifySuccess } = useVerifyCode();
 
   function checkIsEmailActive() {
     return emails.message === EMAIL_MESSAGE.SUCCESS;
@@ -61,26 +63,38 @@ export default function Email(props: EmailProps) {
   function handleSendCode() {
     if (checkEmailForm(emails.email)) {
       setIsSendCode(true);
-      authMail({ tableName: "vocal", userEmail: emails.email });
-
       // 이메일 중복 검사 post
+      authMail({ tableName: "vocal", userEmail: emails.email });
     }
   }
 
   useEffect(() => {
-    if (isError) {
-      error.response.data.message === "중복된 이메일입니다" &&
+    if (isSendCodeError) {
+      sendCodeError.response.data.message === "중복된 이메일입니다" &&
         setEmails({ ...emails, message: EMAIL_MESSAGE.DUPLICATION });
     }
-    if (isSuccess) {
+    if (isSendCodeSuccess) {
       setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
     }
-  }, [isError, isSuccess]);
+  }, [isSendCodeError, isSendCodeSuccess]);
 
   function handleVerifyCode() {
-    setIsSendCode(false);
     // 인증 코드 검사 post
+    verifyCode({
+      tableName: "vocal",
+      userEmail: emails.email,
+      verificationCode: verificationCodes.verificationCode,
+    });
   }
+
+  useEffect(() => {
+    if (isVerifyError) {
+      setVerificationCodes({ ...verificationCodes, message: VERIFICATION_CODE_MESSAGE.ERROR });
+    }
+    if (isVerifySuccess) {
+      setIsSendCode(false);
+    }
+  }, [isVerifyError, isVerifySuccess]);
 
   function setErrorIcon(message: string) {
     switch (message) {
@@ -143,8 +157,8 @@ export default function Email(props: EmailProps) {
             {setErrorIcon(verificationCodes.message) && (
               <IconWrapper>{setErrorIcon(verificationCodes.message)}</IconWrapper>
             )}
-            <Button isActive={checkIsVerificationCodeActive()}>
-              <SignupEmailVerifyIc onClick={handleVerifyCode} />
+            <Button isActive={checkIsVerificationCodeActive()} onClick={handleVerifyCode}>
+              <SignupEmailVerifyIc />
             </Button>
           </InputWrapper>
           <MessageWrapper textColor={checkMessageColor(verificationCodes.message)}>
