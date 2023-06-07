@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {
-  SignupEmailResendIc,
-  SignupEmailVerifyIc,
-  SignupErrorIc,
-  SignupSendCodeIc,
-  SignupVerifyIc,
-} from "../../assets";
-import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import { SignupEmailResendIc, SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
+import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import useSendCode from "../../hooks/signUp/useSendCode";
 import useVerifyCode from "../../hooks/signUp/useVerifyCode";
 import { signupRole } from "../../recoil/signUp/role";
 import { emailInputType, verificationCodeInputType } from "../../type/signUp/inputType";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
+import CheckErrorIcon from "./checkErrorIcon";
 
 interface EmailProps {
   emails: emailInputType;
@@ -99,29 +94,6 @@ export default function Email(props: EmailProps) {
     }
   }, [isVerifyError, isVerifySuccess]);
 
-  function setErrorIcon(message: string) {
-    switch (message) {
-      case EMAIL_MESSAGE.FORM:
-        return <SignUpErrorIcon />;
-      case EMAIL_MESSAGE.DUPLICATION:
-        return <SignUpErrorIcon />;
-      case VERIFICATION_CODE_MESSAGE.ERROR:
-        return <SignUpErrorIcon />;
-      case PASSWORD_MESSAGE.FORM:
-        return <SignUpErrorIcon />;
-      case PASSWORD_MESSAGE.MATCH:
-        return <SignUpErrorIcon />;
-      case EMAIL_MESSAGE.VERIFY:
-        return <SignUpVerifyIcon />;
-      case PASSWORD_MESSAGE.SUCCESS:
-        return <SignUpVerifyIcon />;
-      case EMAIL_MESSAGE.SUCCESS:
-        return;
-      default:
-        return;
-    }
-  }
-
   return (
     <>
       <InputContainer>
@@ -134,7 +106,7 @@ export default function Email(props: EmailProps) {
             underline={checkInputUnderline(emails.message)}
             autoComplete="off"
           />
-          {setErrorIcon(emails.message) && <IconWrapper>{setErrorIcon(emails.message)}</IconWrapper>}
+          {CheckErrorIcon(emails.message) && <IconWrapper>{CheckErrorIcon(emails.message)}</IconWrapper>}
           {!isSendCode ? (
             <Button isActive={checkIsEmailActive()} onClick={handleSendCode}>
               <SignupSendCodeIc />
@@ -157,8 +129,8 @@ export default function Email(props: EmailProps) {
               onChange={handleChangeVerificationCode}
               underline={checkInputUnderline(verificationCodes.message)}
             />
-            {setErrorIcon(verificationCodes.message) && (
-              <IconWrapper>{setErrorIcon(verificationCodes.message)}</IconWrapper>
+            {CheckErrorIcon(verificationCodes.message) && (
+              <IconWrapper>{CheckErrorIcon(verificationCodes.message)}</IconWrapper>
             )}
             <Button isActive={checkIsVerificationCodeActive()} onClick={handleVerifyCode}>
               <SignupEmailVerifyIc />
@@ -217,16 +189,6 @@ const InputWrapper = styled.article`
 
 const IconWrapper = styled.div`
   margin: 2rem 0 0 -3.9rem;
-`;
-
-const SignUpErrorIcon = styled(SignupErrorIc)`
-  width: 4rem;
-  height: 4rem;
-`;
-
-const SignUpVerifyIcon = styled(SignupVerifyIc)`
-  width: 4rem;
-  height: 4rem;
 `;
 
 const MessageWrapper = styled.p<{ textColor: string }>`
