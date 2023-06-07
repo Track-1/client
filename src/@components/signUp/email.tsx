@@ -25,7 +25,7 @@ export default function Email(props: EmailProps) {
     message: VERIFICATION_CODE_MESSAGE.NULL,
   });
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
-  const { authMail, error, isError } = useSendCode();
+  const { authMail, error, isError, isSuccess } = useSendCode();
 
   function checkIsEmailActive() {
     return emails.message === EMAIL_MESSAGE.SUCCESS;
@@ -71,10 +71,11 @@ export default function Email(props: EmailProps) {
     if (isError) {
       error.response.data.message === "중복된 이메일입니다" &&
         setEmails({ ...emails, message: EMAIL_MESSAGE.DUPLICATION });
-    } else {
+    }
+    if (isSuccess) {
       setEmails({ ...emails, message: EMAIL_MESSAGE.TIME });
     }
-  }, [error]);
+  }, [isError, isSuccess]);
 
   function handleVerifyCode() {
     setIsSendCode(false);
