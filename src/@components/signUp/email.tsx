@@ -185,10 +185,11 @@ const InputWrapper = styled.article`
   justify-content: space-between;
 
   width: 56rem;
+  height: 3.5rem;
 `;
 
 const IconWrapper = styled.div`
-  margin: 2rem 0 0 -3.9rem;
+  margin-left: -3.9rem;
 `;
 
 const MessageWrapper = styled.p<{ textColor: string }>`
