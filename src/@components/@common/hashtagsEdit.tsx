@@ -10,16 +10,17 @@ export default function HashtagsEdit() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [hashtagText, setHashtagText] = useState<string[]>([]);
 
-  function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
-    const hashtagValue = e.target.value;
+  function calculateHashtagLength(hashtagValue: string) {
     const koreanLength = hashtagValue.length * 1.5 + 1;
     const nonKoreanLength = hashtagValue.length * 1.2 + 1;
 
-    hashtagValue.trim() !== ""
-      ? checkKorean(hashtagValue)
-        ? setHashtagLength(koreanLength)
-        : setHashtagLength(nonKoreanLength)
-      : setHashtagLength(0);
+    return checkKorean(hashtagValue) ? koreanLength : nonKoreanLength;
+  }
+
+  function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
+    const hashtagValue = e.target.value;
+    const hashtagLength = hashtagValue.trim() !== "" ? calculateHashtagLength(hashtagValue) : 0;
+    setHashtagLength(hashtagLength);
   }
 
   function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
