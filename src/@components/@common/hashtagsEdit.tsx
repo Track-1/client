@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React, { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import { AddHashtagIc, DeleteHashtagIc, HashtagTitleIc } from "../../assets";
@@ -7,20 +8,28 @@ import { checkKorean } from "../../utils/common/checkKorean";
 
 export default function HashtagsEdit() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
+  const [hashtagText, setHashtagText] = useState<string[]>([]);
 
   function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
-    let hashtagValue = e.target.value;
-    let koreanLength = hashtagValue.length * 1.5 + 1;
-    let nonKoreanLength = hashtagValue.length * 1.2 + 1;
+    const hashtagValue = e.target.value;
+    const koreanLength = hashtagValue.length * 1.5 + 1;
+    const nonKoreanLength = hashtagValue.length * 1.2 + 1;
 
-    hashtagValue !== ""
+    hashtagValue.trim() !== ""
       ? checkKorean(hashtagValue)
         ? setHashtagLength(koreanLength)
         : setHashtagLength(nonKoreanLength)
       : setHashtagLength(0);
   }
 
-
+  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== "Enter") return;
+    const value = (e.target as HTMLInputElement).value;
+    if (!value.trim()) return;
+    setHashtagText([...hashtagText, value]);
+    (e.target as HTMLInputElement).value = "";
+    setHashtagLength(0);
+  }
 
   return (
     <>
@@ -30,25 +39,29 @@ export default function HashtagsEdit() {
           <HashtagWarning />
         </HashIconWrapper>
         <InputHashtagWrapper>
+          {hashtagText.map((tag, index) => (
+            <Hashtag>
+              <CompleteHashtagWrapper>
+                <HashtagSharp># </HashtagSharp>
+                <CompletedHashtag>{tag}</CompletedHashtag>
+              </CompleteHashtagWrapper>
+              <DeleteHashtagIcon />
+            </Hashtag>
+          ))}
           <Hashtag>
             <HashtagWrapper>
               <HashtagSharp># </HashtagSharp>
-              <HashtagInput placeholder="Hashtag" onChange={checkHashtagText} inputWidth={hashtagLength} />
+              <HashtagInput
+                placeholder="Hashtag"
+                onKeyDown={handleEnterHashtag}
+                onChange={checkHashtagText}
+                inputWidth={hashtagLength}
+              />
             </HashtagWrapper>
           </Hashtag>
           <AddHashtagIcon />
-          {/* {hashtags?.map((hashtag, index) => {
-            return (
-              <Hashtag key={index}>
-                <CompleteHashtagWrapper>
-                  <HashtagSharp># </HashtagSharp>
-                  <CompletedHashtag>{hashtag}</CompletedHashtag>
-                </CompleteHashtagWrapper>
-                <DeleteHashtagIcon onClick={() => deleteHashtagInput(index)} />
-              </Hashtag>
-            );
-          })}
 
+          {/* 
           {hashtags?.length < 3 && (
             <Hashtag>
               <HashtagWrapper>
