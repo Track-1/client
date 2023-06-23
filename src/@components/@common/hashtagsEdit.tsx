@@ -10,7 +10,7 @@ export default function HashtagsEdit() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [hashtagText, setHashtagText] = useState<string[]>([]);
 
-  function calculateHashtagLength(hashtagValue: string) {
+  function calculateHashtagLength(hashtagValue: string): number {
     const koreanLength = hashtagValue.length * 1.5 + 1;
     const nonKoreanLength = hashtagValue.length * 1.2 + 1;
 
@@ -32,6 +32,10 @@ export default function HashtagsEdit() {
     setHashtagLength(0);
   }
 
+  function removeHashtag(index: number) {
+    setHashtagText(hashtagText.filter((el, i) => i !== index));
+  }
+
   return (
     <>
       <HashtagContainer>
@@ -46,7 +50,7 @@ export default function HashtagsEdit() {
                 <HashtagSharp># </HashtagSharp>
                 <CompletedHashtag>{tag}</CompletedHashtag>
               </CompleteHashtagWrapper>
-              <DeleteHashtagIcon />
+              <DeleteHashtagIcon onClick={() => removeHashtag(index)} />
             </Hashtag>
           ))}
           <Hashtag>
