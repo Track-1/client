@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import { FontsTypes } from "../../style/theme";
 
 interface TextLengthProps {
   inputLength: number;
   limit: number;
-  font: string;
+  font: keyof FontsTypes;
 }
 
 export default function TextLength(props: TextLengthProps) {
@@ -19,6 +20,7 @@ export default function TextLength(props: TextLengthProps) {
 
 const Container = styled.div<{ font: string }>`
   display: flex;
+
   ${(props) => props.font};
 `;
 
