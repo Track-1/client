@@ -1,5 +1,5 @@
-import UploadBody from "../@components/upload/uploadBody";
-import UploadHeader from "../@components/upload/uploadHeader";
+import UploadBody from "../@components/@common/upload/uploadBody";
+import UploadHeader from "../@components/@common/upload/uploadHeader";
 
 export default function UploadPage() {
   return (

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import uploadAbleBtnImg from "../../assets/image/uploadAbleBtnImg.png";
-import uploadUnableBtnImg from "../../assets/image/uploadUnableBtnImg.png";
+import uploadAbleBtnImg from "../../../assets/image/uploadAbleBtnImg.png";
+import uploadUnableBtnImg from "../../../assets/image/uploadUnableBtnImg.png";
 
 interface UploadHeaderProps {
   // userType: string;
@@ -8,6 +8,7 @@ interface UploadHeaderProps {
 }
 export default function UploadHeader(props: UploadHeaderProps) {
   const { isUploadActive } = props;
+
   return (
     <Container>
       {/* back버튼 */}

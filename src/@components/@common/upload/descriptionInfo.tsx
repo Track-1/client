@@ -1,19 +1,27 @@
 import styled from "styled-components";
-import { UploadDescriptionIc } from "../../assets";
+import { UploadDescriptionIc } from "../../../assets";
 import UploadInfoBox from "./UploadInfoBox";
 import TextareaAutosize from "react-textarea-autosize";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { theme } from "../../style/theme";
-import useInputText from "../../hooks/common/useInputText";
-import TextLength from "../@common/textLength";
-import { checkEnterCount } from "../../utils/common/checkEnterCount";
+import { TEXT_LIMIT } from "../../../core/common/textLimit";
+import useInputText from "../../../hooks/common/useInputText";
+import TextLength from "../textLength";
+import { checkEnterCount } from "../../../utils/common/checkEnterCount";
+import { useLocation } from "react-router-dom";
 
 export default function DescriptionInfo() {
-  const [dsecription, changeDescription] = useInputText("", TEXT_LIMIT[250]);
+  const location = useLocation();
+  const [description, changeDescription] = useInputText(initValue(), TEXT_LIMIT.DESCRIPTION);
+
+  function initValue() {
+    if (location.pathname.includes("portfolio-edit")) {
+      return "portfolio-edit";
+    }
+    return "";
+  }
 
   function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = checkEnterCount(e);
-    enterCount < 8 && changeDescription(e);
+    enterCount < TEXT_LIMIT.ENTER_COUNT && changeDescription(e);
   }
 
   return (
@@ -23,16 +31,17 @@ export default function DescriptionInfo() {
         <InfoTypeText>Description</InfoTypeText>
       </InfoType>
       <InfoInput>
-        <DescriptionTest
+        <DescriptionText
+          //따로 폴더를 만들어서 상수로 빼서 작업하기
           placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
           spellCheck="false"
           maxRows={7}
           onChange={handleDescription}
-          value={dsecription}
+          value={description}
         />
         <TextLengthWrapper>
           <Empty />
-          <TextLength inputLength={dsecription.length} limit={TEXT_LIMIT[250]} font={theme.fonts.description} />
+          <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} />
         </TextLengthWrapper>
       </InfoInput>
     </UploadInfoBox>
@@ -49,7 +58,7 @@ const InfoType = styled.div`
   ${({ theme }) => theme.fonts.body1};
 `;
 
-const InfoTypeText = styled.div`
+const InfoTypeText = styled.p`
   margin-left: 1rem;
 `;
 
@@ -58,9 +67,8 @@ const InfoInput = styled.div`
   height: 100%;
 `;
 
-const DescriptionTest = styled(TextareaAutosize)`
+const DescriptionText = styled(TextareaAutosize)`
   width: 100%;
-  /* height :  */
 
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.description};

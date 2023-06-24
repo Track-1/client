@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ProducerLayout from "./producerLayout";
 import UploadData from "./uploadData";
+import VocalLayout from "./vocalLayout";
 
 export default function UploadBody() {
   return (
@@ -8,6 +9,9 @@ export default function UploadBody() {
       <ProducerLayout>
         <UploadData />
       </ProducerLayout>
+      {/* <VocalLayout>
+        <UploadData />
+      </VocalLayout> */}
     </Container>
   );
 }

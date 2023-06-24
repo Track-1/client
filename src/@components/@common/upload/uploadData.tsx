@@ -3,6 +3,7 @@ import UploadTitle from "./uploadTitle";
 import UploadInfo from "./uploadInfo";
 
 export default function UploadData() {
+  //커스텀 훅
   return (
     <Container>
       <UploadTitle />

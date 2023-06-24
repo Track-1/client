@@ -1,25 +1,36 @@
 import styled, { css } from "styled-components";
-import { UploadFileChangeIc } from "../../assets";
-import UploadProducerDefaultImg from "../../assets/image/uploadProducerDefaultImg .png";
-// import { useState } from "react";
-// import { uploadImage } from "../../utils/uploadPage/uploadImage";
+import { UploadFileChangeIc } from "../../../assets";
+import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg .png";
+import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
+import { useState } from "react";
 
 export default function ProducerUploadImage() {
-  //changeHoverState 적용하기
   // const [producerUploadImg, setproducerUploadImg] = useState<string>(UploadProducerDefaultImg);
+  const [imageFile, previewImage, uploadImageFile] = useUploadImageFile();
+  const [hoverState, setHoverState] = useState(false);
+
+  function isImageFileEmpty() {
+    return imageFile === null;
+  }
+  function changeHoverState() {
+    setHoverState(!hoverState);
+  }
 
   return (
     <Container>
       <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
         <TrackUploadImage
-          src={UploadProducerDefaultImg}
+          src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
           alt="썸네일 이미지"
-          hoverState={false} //기능 변경해야됨
+          onMouseEnter={changeHoverState}
+          onMouseLeave={changeHoverState}
+          hoverState={hoverState} //기능 변경해야됨
+          isImageFileEmpty={isImageFileEmpty()}
         />
       </label>
       <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
         {
-          true && <FileChangeIcon /> //hoverState 기능추가해야됨
+          imageFile && hoverState && <FileChangeIcon /> //hoverState 기능추가해야됨
         }
       </label>
       <input
@@ -27,8 +38,7 @@ export default function ProducerUploadImage() {
         id="imageFileUpload"
         style={{ display: "none" }}
         accept=".jpg,.jpeg,.png"
-        // onChange={(e) => uploadImage(e, setTrackUploadImg, setUploadData)}
-        onChange={(e) => alert("업로드 기능구현해야됨")}
+        onChange={uploadImageFile}
         readOnly
       />
     </Container>
@@ -46,15 +56,18 @@ const Container = styled.div`
 
   overflow: hidden;
   cursor: pointer;
+
+  &:hover {
+  }
 `;
 
-const TrackUploadImage = styled.img<{ hoverState: boolean }>`
+const TrackUploadImage = styled.img<{ hoverState: boolean; isImageFileEmpty: boolean }>`
   width: 60.4rem;
   height: 60.4rem;
   object-fit: cover;
   border-radius: 50%;
   ${(props) =>
-    props.hoverState
+    props.hoverState && !props.isImageFileEmpty
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

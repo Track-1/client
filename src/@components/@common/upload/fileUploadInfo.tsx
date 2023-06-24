@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { FolderUploadIc, UploadFileIc } from "../../assets";
+import { FolderUploadIc, UploadFileIc } from "../../../assets";
 import UploadInfoBox from "./UploadInfoBox";
-import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
+import useUploadAudioFile from "../../../hooks/common/useUploadAudioFile";
 
 export default function FileUploadInfo() {
-  const [audioFile, fileName, audioType, isTextOverflow, uploadAudiofile] = useUploadAudioFile();
+  const { audioFile, fileName, audioType, isTextOverflow, uploadAudiofile } = useUploadAudioFile();
 
   return (
     <UploadInfoBox>
@@ -44,7 +44,7 @@ const InfoType = styled.div`
   ${({ theme }) => theme.fonts.body1};
 `;
 
-const InfoTypeText = styled.div`
+const InfoTypeText = styled.p`
   margin-left: 1rem;
 `;
 

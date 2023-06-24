@@ -1,12 +1,8 @@
-import { ReactNode } from "react";
 import styled from "styled-components";
 import ProducerUploadImage from "./producerUploadImage";
+import { PropsWithChildren } from "react";
 
-interface ProducerLayoutProps {
-  children: ReactNode;
-}
-
-export default function ProducerLayout(props: ProducerLayoutProps) {
+export default function ProducerLayout(props: PropsWithChildren) {
   const { children } = props;
   return (
     <Container>

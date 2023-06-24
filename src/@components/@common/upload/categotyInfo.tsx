@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import UploadInfoBox from "./UploadInfoBox";
-import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
+import { CategoryDropDownIc, UploadCategoryIc } from "../../../assets";
 import { useState } from "react";
 
 export default function CategoryInfo() {
@@ -64,7 +64,7 @@ const InfoType = styled.div`
   ${({ theme }) => theme.fonts.body1};
 `;
 
-const InfoTypeText = styled.div`
+const InfoTypeText = styled.p`
   margin-left: 1rem;
 `;
 
