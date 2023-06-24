@@ -1,10 +1,11 @@
 export interface TextLimitType {
-  none: number;
+  ENTER_COUNT: number;
   "10": number;
+  "13": number;
   "15": number;
   "20": number;
-  "36": number;
+  UPLOAD_TITLE: number;
   "150": number;
   "200": number;
-  "250": number;
+  DESCRIPTION: number;
 }

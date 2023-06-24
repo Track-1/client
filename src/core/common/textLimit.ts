@@ -1,13 +1,13 @@
 import { TextLimitType } from "../../type/common/textLimitType";
 
 export const TEXT_LIMIT: TextLimitType = {
-  none: -1,
+  ENTER_COUNT: 8,
   10: 10,
+  13: 13,
   15: 15,
   20: 20,
-  36: 36,
+  UPLOAD_TITLE: 36,
   150: 150,
   200: 200,
-  250: 250,
-
+  DESCRIPTION: 250,
 };
