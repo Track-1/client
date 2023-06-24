@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import { AudioType } from "../../type/common/audioType";
 
 export default function useUploadAudioFile() {
   const [fileName, setFileName] = useState("");
@@ -8,8 +10,10 @@ export default function useUploadAudioFile() {
 
   //오디오 업로드
   function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+
     const filePath = e.target.value;
-    const audioFile = e.target.files && e.target.files[0];
+    const audioFile = e.target.files[0];
     const { audioFullFileName, audioOnlyFileName, audioFileType } = getAudioFileInfo(filePath);
 
     if (checkAudioFileType(audioFileType)) {
@@ -22,22 +26,22 @@ export default function useUploadAudioFile() {
 
   function getAudioFileInfo(file: string) {
     const audioFullFileName = file.substring(file.lastIndexOf("\\") + 1);
-    const audioOnlyFileName = file.substring(file.lastIndexOf("\\") + 1, file.length - 4);
-    const audioFileType = file.substring(file.lastIndexOf("\\") + 1).substring(audioFullFileName.length - 4);
+    const audioOnlyFileName = audioFullFileName.substring(audioFullFileName.length - 4, -1);
+    const audioFileType = audioFullFileName.substring(audioFullFileName.length - 4);
 
     return { audioFullFileName, audioOnlyFileName, audioFileType };
   }
 
-  function checkMaxInputLength(length: number, limit: number): boolean {
-    return length <= limit;
+  function checkMaxInputLength(textLength: number) {
+    return textLength <= TEXT_LIMIT[13];
   }
 
-  function checkAudioFileType(type: string) {
-    return type === ".mp3" || type === ".wav" || type === ".MP3" || type === ".WAV";
+  function checkAudioFileType(audioType: string): audioType is AudioType {
+    return [".mp3", ".wav", "MP3", ".WAV"].includes(audioType);
   }
 
   function setAudioFileInfo(name: string, editName: string, type: string) {
-    if (checkMaxInputLength(editName.length, 13)) {
+    if (checkMaxInputLength(editName.length)) {
       setIsTextOverflow(false);
       setFileName(name);
     } else {
@@ -47,5 +51,5 @@ export default function useUploadAudioFile() {
     setAudioType(type);
   }
 
-  return [audioFile, fileName, audioType, isTextOverflow, uploadAudiofile] as const;
+  return { audioFile, fileName, audioType, isTextOverflow, uploadAudiofile };
 }
