@@ -1,11 +1,5 @@
-import UploadBody from "../@components/@common/upload/uploadBody";
-import UploadHeader from "../@components/@common/upload/uploadHeader";
+import Upload from "../@components/@common/upload";
 
 export default function UploadPage() {
-  return (
-    <>
-      <UploadHeader isUploadActive={true} />
-      <UploadBody />
-    </>
-  );
+  return <Upload />;
 }
