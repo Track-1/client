@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React, { KeyboardEvent } from "react";
-import { useState } from "react";
+import React from "react";
+import { useState, useRef, KeyboardEvent } from "react";
 
 import { AddHashtagIc, DeleteHashtagIc, HashtagTitleIc } from "../../assets";
 import HashtagWarning from "./hashtagWarning";
@@ -9,6 +9,7 @@ import { checkKorean } from "../../utils/common/checkKorean";
 export default function HashtagsEdit() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [hashtagText, setHashtagText] = useState<string[]>([]);
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
 
   function calculateHashtagLength(hashtagValue: string): number {
     const koreanLength = hashtagValue.length * 1.5 + 1;
@@ -23,13 +24,18 @@ export default function HashtagsEdit() {
     setHashtagLength(hashtagLength);
   }
 
+  function handleAddHashtag() {
+    const value = hashtagRef.current?.value.trim();
+    if (value) {
+      setHashtagText([...hashtagText, value]);
+      hashtagRef.current!.value = "";
+      setHashtagLength(0);
+    }
+  }
+
   function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key !== "Enter") return;
-    const value = (e.target as HTMLInputElement).value;
-    if (!value.trim()) return;
-    setHashtagText([...hashtagText, value]);
-    (e.target as HTMLInputElement).value = "";
-    setHashtagLength(0);
+    handleAddHashtag();
   }
 
   function removeHashtag(index: number) {
@@ -53,40 +59,21 @@ export default function HashtagsEdit() {
               <DeleteHashtagIcon onClick={() => removeHashtag(index)} />
             </Hashtag>
           ))}
-          <Hashtag>
-            <HashtagWrapper>
-              <HashtagSharp># </HashtagSharp>
-              <HashtagInput
-                placeholder="Hashtag"
-                onKeyDown={handleEnterHashtag}
-                onChange={checkHashtagText}
-                inputWidth={hashtagLength}
-              />
-            </HashtagWrapper>
-          </Hashtag>
-          <AddHashtagIcon />
-
-          {/* 
-          {hashtags?.length < 3 && (
+          {hashtagText?.length < 3 && (
             <Hashtag>
               <HashtagWrapper>
                 <HashtagSharp># </HashtagSharp>
                 <HashtagInput
+                  placeholder="Hashtag"
+                  onKeyDown={handleEnterHashtag}
                   onChange={checkHashtagText}
-                  onKeyPress={(e) => {
-                    e.key === "Enter" && getHashtagInput();
-                  }}
                   inputWidth={hashtagLength}
-                  isKorean={isKorean}
-                  placeholder="HashTag"
-                  maxLength={tagMaxLength}
                   ref={hashtagRef}
                 />
               </HashtagWrapper>
             </Hashtag>
           )}
-
-          {hashtags.length < 2 && <AddHashtagIcon onClick={getHashtagInput} />} */}
+          {hashtagText?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
         </InputHashtagWrapper>
       </HashtagContainer>
     </>
