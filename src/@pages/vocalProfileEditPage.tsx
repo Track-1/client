@@ -3,7 +3,7 @@ import styled from "styled-components";
 import VocalImageEdit from "../@components/vocalProfileEdit/vocalImageEdit";
 import TitleInputEdit from "../@components/@common/profileTitleInput";
 import CategoriesEdit from "../@components/@common/selectCategories";
-import HashtagsEdit from "../@components/@common/hashtagsEdit";
+import HashtagsEdit from "../@components/@common/hashtag/hashtagsEdit";
 import { ProfileEditTitle, ProfileEditContainer } from "./producerProfileEditPage";
 
 export default function VocalProfileEditPage() {

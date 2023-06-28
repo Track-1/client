@@ -2,9 +2,9 @@ import styled from "styled-components";
 import React from "react";
 import { useState, useRef, KeyboardEvent } from "react";
 
-import { AddHashtagIc, DeleteHashtagIc, HashtagTitleIc } from "../../assets";
+import { AddHashtagIc, DeleteHashtagIc, HashtagTitleIc } from "../../../assets";
 import HashtagWarning from "./hashtagWarning";
-import { checkKorean } from "../../utils/common/checkKorean";
+import { checkKorean } from "../../../utils/common/checkKorean";
 
 export default function HashtagsEdit() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
@@ -38,12 +38,12 @@ export default function HashtagsEdit() {
     handleAddHashtag();
   }
 
-  function removeHashtag(index: number) {
-    setHashtagText(hashtagText.filter((el, i) => i !== index));
-  }
-
   function handleOutsideClick() {
     handleAddHashtag();
+  }
+
+  function removeHashtag(index: number) {
+    setHashtagText(hashtagText.filter((el, i) => i !== index));
   }
 
   return (
@@ -161,8 +161,6 @@ const CompletedHashtag = styled.article`
 const AddHashtagIcon = styled(AddHashtagIc)`
   width: 4rem;
   height: 4rem;
-
-  margin-top: 1rem;
 
   cursor: pointer;
 `;
