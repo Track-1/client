@@ -42,6 +42,10 @@ export default function HashtagsEdit() {
     setHashtagText(hashtagText.filter((el, i) => i !== index));
   }
 
+  function handleOutsideClick() {
+    handleAddHashtag();
+  }
+
   return (
     <>
       <HashtagContainer>
@@ -67,6 +71,7 @@ export default function HashtagsEdit() {
                   placeholder="Hashtag"
                   onKeyDown={handleEnterHashtag}
                   onChange={checkHashtagText}
+                  onBlur={handleOutsideClick}
                   inputWidth={hashtagLength}
                   ref={hashtagRef}
                 />
