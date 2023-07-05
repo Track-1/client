@@ -1,26 +1,25 @@
-import React from "react";
+import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect, KeyboardEvent } from "react";
 import {
-  UploadFileUpdateIc,
-  UploadCategoryIc,
-  UploadHashtagIc,
-  UploadDescriptionIc,
-  FolderUploadIc,
-  CategoryDropDownIc,
   AddHashtagIc,
+  CategoryDropDownIc,
+  CheckCategoryIc,
+  DeleteHashtagIc,
+  FolderUploadIc,
   HashtagWarningIc,
   HoverHashtagWarningIc,
-  DeleteHashtagIc,
-  CheckCategoryIc,
+  UploadCategoryIc,
+  UploadDescriptionIc,
+  UploadFileUpdateIc,
+  UploadHashtagIc,
 } from "../../assets";
 
 import { Categories } from "../../core/constants/categories";
-import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
-import { isMouseEnter, isFocus } from "../../utils/common/eventType";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
-import useHover from "../../utils/hooks/useHover";
+import { isFocus, isMouseEnter } from "../../utils/common/eventType";
 import { isVocal } from "../../utils/common/userType";
+import useHover from "../../utils/hooks/useHover";
+import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 // import { isClickedOutside } from "../../utils/common/modal";
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
@@ -120,7 +119,8 @@ export default function UploadInfo(props: propsType) {
 
     if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length > 10 && alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
+      e.target.value.length > 10 &&
+        alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
     } else {
       setIsKorean(false);
     }
@@ -276,8 +276,8 @@ export default function UploadInfo(props: propsType) {
 
   //소개글
   function resizeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if(e.target.value.length>250){
-      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.")
+    if (e.target.value.length > 250) {
+      alert("Description can contain up to 250 characters.\n설명은 250자까지 작성할 수 있습니다.");
     }
 
     const enterCount = e.target.value.split("\n").length;
