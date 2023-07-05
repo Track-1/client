@@ -1,25 +1,25 @@
 import styled, { css } from "styled-components";
 import {
-  RequestResetPasswordDefaultBtnIc,
+  ForgotPasswordEmailAskIc,
   ForgotPasswordTitleIc,
+  InputWarningIc,
+  ProducerDefaultModeToggleIc,
+  ProducerModeToggleIc,
+  RequestResetPasswordDefaultBtnIc,
   RequestResetPasswordProducerBtnIc,
   RequestResetPasswordVocalBtnIc,
   ResendPasswordProducerBtnIc,
   ResendPasswordVocalBtnIc,
-  ProducerModeToggleIc,
-  ProducerDefaultModeToggleIc,
-  InputWarningIc,
-  ForgotPasswordEmailAskIc,
 } from "../../assets";
 
 import { useEffect, useState } from "react";
-import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
-import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
 import { useMutation } from "react-query";
-import { postNewPassword } from "../../core/api/newPassword";
-import Loading from "../@common/loading";
 import { useRecoilState } from "recoil";
+import { postNewPassword } from "../../core/api/newPassword";
+import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
 import { ForgotPasswordToken } from "../../recoil/forgotPasswordToken";
+import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
+import Loading from "../@common/loading";
 
 export default function ForgotPasswordInput() {
   const [email, setEmail] = useState<string>("");
@@ -73,6 +73,9 @@ export default function ForgotPasswordInput() {
 
   function onRequestCapsulation() {
     mutate();
+    alert(
+      "Authentication mail sent. Please check your mailbox. \nIf you haven't received the mail, please check your spam mail box.\n인증 메일을 보냈습니다. 메일함을 확인해주세요. \n메일을 받지 못하셨다면 스팸메일함을 확인해주세요.",
+    );
   }
 
   function isInputWarnning() {
