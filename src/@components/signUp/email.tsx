@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { SignupEmailResendIc, SignupEmailVerifyIc, SignupSendCodeIc } from "../../assets";
+import { SignupEmailResendIc, SignupSendCodeIc } from "../../assets";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import useSendCode from "../../hooks/signUp/useSendCode";
 import useVerifyCode from "../../hooks/signUp/useVerifyCode";
@@ -119,7 +119,7 @@ export default function Email(props: EmailProps) {
         </InputWrapper>
         <MessageWrapper textColor={checkMessageColor(emails.message)}>{emails.message}</MessageWrapper>
       </InputContainer>
-      {isSendCode && (
+      {/* {isSendCode && (
         <InputContainer>
           <Text>Verification code</Text>
           <InputWrapper>
@@ -140,7 +140,7 @@ export default function Email(props: EmailProps) {
             {verificationCodes.message}
           </MessageWrapper>
         </InputContainer>
-      )}
+      )} */}
     </>
   );
 }

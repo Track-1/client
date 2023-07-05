@@ -6,8 +6,10 @@ import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { emailInputType } from "../../type/signUp/inputType";
 import Email from "./email";
+import VerifyCode from "./verifyCode";
 
 export default function EmailPassword() {
+  const [isSendCode, setIsSendCode] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const [emails, setEmails] = useState<emailInputType>({
     email: "",
@@ -18,6 +20,7 @@ export default function EmailPassword() {
     <>
       <SignupEmailPasswordTitleIcon />
       <Email emails={emails} setEmails={setEmails} />
+      <VerifyCode />
     </>
   );
 }
