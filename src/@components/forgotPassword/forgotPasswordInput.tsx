@@ -37,6 +37,9 @@ export default function ForgotPasswordInput() {
       setForgotPasswordToken(token);
       setIsSameRecentEmail(true);
       setRecentEmail(email);
+      alert(
+        "Authentication mail sent. Please check your mailbox. \nIf you haven't received the mail, please check your spam mail box.\n인증 메일을 보냈습니다. 메일함을 확인해주세요. \n메일을 받지 못하셨다면 스팸메일함을 확인해주세요.",
+      );
     },
     onError: (error: any) => {
       error.response.status === 401 && alert(error.response.data.message);
@@ -73,9 +76,6 @@ export default function ForgotPasswordInput() {
 
   function onRequestCapsulation() {
     mutate();
-    alert(
-      "Authentication mail sent. Please check your mailbox. \nIf you haven't received the mail, please check your spam mail box.\n인증 메일을 보냈습니다. 메일함을 확인해주세요. \n메일을 받지 못하셨다면 스팸메일함을 확인해주세요.",
-    );
   }
 
   function isInputWarnning() {
