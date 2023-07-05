@@ -124,8 +124,8 @@ export default function CategoryList(props: any) {
         {categorys.map((category) => (
           <CategoryTextBoxWrapper
             key={category.id}
-            onClick={() => selectCategory(category.id)}
-            isSelected={selectedCategorys[category.id].selected}
+            onClick={() => selectCategory(category?.id)}
+            isSelected={selectedCategorys[category?.id]?.selected}
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
               {isTracksPage(tracksOrVocals) && (
