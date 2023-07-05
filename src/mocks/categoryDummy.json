@@ -61,5 +61,12 @@
     "selectTrackCategory": "FunkSelectTextIc",
     "selectVocalCategory": "FunkPinkTextIc",
     "width": 6.39
+  },
+  {
+    "id": 9,
+    "category": "eventTextIc",
+    "selectTrackCategory": "eventSelectTextIc",
+    "selectVocalCategory": "eventPinkTextIc",
+    "width": 7.34
   }
 ]

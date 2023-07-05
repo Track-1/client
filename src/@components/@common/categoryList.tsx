@@ -56,14 +56,13 @@ export default function CategoryList(props: any) {
     });
 
     filteredUrl === ""
-      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
+      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8&categ=9")
       : setFilteredUrlApi(filteredUrl);
 
     // setFilteredUrlApi(filteredUrl);
     // console.log(filteredUrlApi);
   }, [selectedCategorys]);
 
-  console.log(selectedCategorys);
   function selectCategory(id: number) {
     // const tempSelectedCategors = selectedCategorys;
 
