@@ -38,7 +38,7 @@ export default function ForgotPasswordInput() {
       setIsSameRecentEmail(true);
       setRecentEmail(email);
       alert(
-        "Authentication mail sent. Please check your mailbox. \nIf you haven't received the mail, please check your spam mail box.\n인증 메일을 보냈습니다. 메일함을 확인해주세요. \n메일을 받지 못하셨다면 스팸메일함을 확인해주세요.",
+        "A password reset link has been emailed to you. Please check your mailbox. \nIf you haven't received the mail, please check your spam mail box.\n비밀번호 재설정 링크를 이메일로 전송하였습니다. 메일함을 확인해주세요. \n메일을 받지 못하셨다면 스팸메일함을 확인해주세요.",
       );
     },
     onError: (error: any) => {
