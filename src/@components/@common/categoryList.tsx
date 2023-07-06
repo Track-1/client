@@ -117,6 +117,12 @@ export default function CategoryList(props: any) {
     setTrackSearchingClicked(!trackSearchingClicked);
   }
 
+  useEffect(() => {
+    {
+      categorys.map(({ id, width }) => console.log(id));
+    }
+  }, []);
+
   return (
     <>
       {openModal && <UploadButtonModal />}
