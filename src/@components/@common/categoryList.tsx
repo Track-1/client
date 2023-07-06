@@ -73,6 +73,7 @@ export default function CategoryList(props: any) {
 
     console.log(id);
     console.log(selectedCategorys[id]?.selected);
+    console.log(selectedCategorys);
 
     setSelectedCategorys(
       selectedCategorys.map((selectCateg) =>
