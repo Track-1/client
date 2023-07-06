@@ -11,4 +11,5 @@ export const categorySelectedCheck: CategoryChecksType[] = [
   { categId: 7, selected: false },
   { categId: 8, selected: false },
   { categId: 9, selected: false },
+  { categId: 10, selected: false },
 ];
