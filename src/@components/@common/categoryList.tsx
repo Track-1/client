@@ -94,7 +94,7 @@ export default function CategoryList(props: any) {
   }
 
   function changeCategoryColor(id: number) {
-    if (selectedCategorys[id].selected) {
+    if (selectedCategorys[id]?.selected) {
       switch (tracksOrVocals) {
         case Category.TRACKS:
           return <NeonXIcon />;
@@ -105,11 +105,11 @@ export default function CategoryList(props: any) {
   }
 
   function checkIsSelectedTrackCategory(id: number) {
-    return selectedCategorys[id].selected ? categorys[id].selectTrackCategory : categorys[id].category;
+    return selectedCategorys[id]?.selected ? categorys[id].selectTrackCategory : categorys[id].category;
   }
 
   function checkIsSelectedVocalCategory(id: number) {
-    return selectedCategorys[id].selected ? categorys[id].selectVocalCategory : categorys[id].category;
+    return selectedCategorys[id]?.selected ? categorys[id].selectVocalCategory : categorys[id].category;
   }
 
   function searchFilterdVocals() {
