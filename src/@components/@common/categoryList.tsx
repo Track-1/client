@@ -121,28 +121,28 @@ export default function CategoryList(props: any) {
     <>
       {openModal && <UploadButtonModal />}
       <CategoryListWrapper>
-        {categorys.map((category) => (
+        {categorys.map(({ id, width }) => (
           <CategoryTextBoxWrapper
-            key={category.id}
-            onClick={() => selectCategory(category?.id)}
-            isSelected={selectedCategorys[category?.id]?.selected}
+            key={id}
+            onClick={() => selectCategory(id)}
+            isSelected={selectedCategorys[id]?.selected}
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
               {isTracksPage(tracksOrVocals) && (
                 <Img
-                  width={category.width}
-                  src={require(`../../assets/icon/${checkIsSelectedTrackCategory(category.id)}.svg`)}
+                  width={width}
+                  src={require(`../../assets/icon/${checkIsSelectedTrackCategory(id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
               )}
               {isVocalsPage(tracksOrVocals) && (
                 <Img
-                  width={category.width}
-                  src={require(`../../assets/icon/${checkIsSelectedVocalCategory(category.id)}.svg`)}
+                  width={width}
+                  src={require(`../../assets/icon/${checkIsSelectedVocalCategory(id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
               )}
-              {changeCategoryColor(category.id)}
+              {changeCategoryColor(id)}
             </CategoryTextBox>
           </CategoryTextBoxWrapper>
         ))}
