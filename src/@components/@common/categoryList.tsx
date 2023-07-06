@@ -71,10 +71,6 @@ export default function CategoryList(props: any) {
     //   : (tempSelectedCategors[id].selected = true);
     // setSelectedCategorys([...tempSelectedCategors]);
 
-    console.log(id);
-    console.log(selectedCategorys[id]?.selected);
-    console.log(selectedCategorys);
-
     setSelectedCategorys(
       selectedCategorys.map((selectCateg) =>
         selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
