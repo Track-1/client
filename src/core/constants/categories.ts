@@ -12,7 +12,7 @@ import { CategoryIdType } from "../../type/CategoryChecksType";
 //   FUNK = "Funk",
 // }
 
-export const Categories: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
+export const Categories: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk", "EVENT"];
 
 export const CategoryId: CategoryIdType = {
   "R&B": "0",
@@ -24,6 +24,7 @@ export const CategoryId: CategoryIdType = {
   JAZZ: "6",
   HOUSE: "7",
   FUNK: "8",
+  EVENT: "9",
 };
 
 export const CategoryDropdown: CategoryIdType = {
@@ -36,6 +37,7 @@ export const CategoryDropdown: CategoryIdType = {
   jazz: "JAZZ",
   house: "House",
   funk: "Funk",
+  event: "event",
 };
 
 export const CategoryText: CategoryIdType = {
@@ -48,4 +50,5 @@ export const CategoryText: CategoryIdType = {
   JAZZ: "JAZZ",
   HOUSE: "House",
   FUNK: "Funk",
+  EVENT: "Event",
 };

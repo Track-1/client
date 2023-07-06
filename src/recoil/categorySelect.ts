@@ -6,7 +6,7 @@ const { persistAtom } = recoilPersist();
 
 export const categorySelect = atom({
   key: "categorySelect",
-  default: "&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8",
+  default: "&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8&categ=9",
   effects_UNSTABLE: [persistAtom],
 });
 
@@ -30,19 +30,19 @@ export const TracksData = atom({
 });
 
 export const vocalsData = atom({
-  key:"VocalsData",
-  default:{
+  key: "VocalsData",
+  default: {
     isSelected: true,
-  }
-})
+  },
+});
 
-export const clickCategoryHeader= atom({
-  key:"clickCategoryHeader",
-  default:false,
-})
+export const clickCategoryHeader = atom({
+  key: "clickCategoryHeader",
+  default: false,
+});
 
-export const categoryFinalSelectedCheck=atom<CategoryChecksType[]>({
-  key:"categoryFinalSelectedCheck",
-  default:categorySelectedCheck,
+export const categoryFinalSelectedCheck = atom<CategoryChecksType[]>({
+  key: "categoryFinalSelectedCheck",
+  default: categorySelectedCheck,
   effects_UNSTABLE: [persistAtom],
-})
+});

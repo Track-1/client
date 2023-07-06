@@ -9,12 +9,10 @@ import {
   ProfileEditHashtagIc,
 } from "../../assets";
 import { CategoryId, CategoryText } from "../../core/constants/categories";
-import { editInputDatas } from "../../core/editProfile/editData";
 import { CategorySelectType } from "../../type/CategoryChecksType";
-import { EditDataType } from "../../type/editDataType";
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
-import ProfileWarning from "./profileWarning";
 import useTextareaHeight from "../../utils/hooks/useTextareaHeight";
+import ProfileWarning from "./profileWarning";
 
 interface PropsType {
   contact: string;
@@ -85,7 +83,8 @@ export default function ProfileEditInfo(props: PropsType) {
 
     if (checkHashtagLength(e.target.value)) {
       setIsKorean(true);
-      e.target.value.length > 10 && alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
+      e.target.value.length > 10 &&
+        alert("Hashtags can contain up to 10 characters.\n해시태그는 10자까지 작성할 수 있습니다.");
     } else {
       setIsKorean(false);
     }
@@ -270,7 +269,7 @@ const CategoryContainer = styled.article`
 const CategoryBox = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 
   color: ${({ theme }) => theme.colors.gray4};

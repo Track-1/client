@@ -1,26 +1,23 @@
 import styled from "styled-components";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import categorys from "../../mocks/categoryDummy.json";
 import UploadButtonModal from "../trackSearch/uploadButtonModal";
 
 import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
 // import { categorySelectedCheck } from "../../core/tracks/categorySelectedCheck";
-import { CategoryChecksType } from "../../type/CategoryChecksType";
-import { UploadTextIc, NeonXIc, TrackSearchingTextIc, TrackSearchingPinkIc, PinkXIc } from "../../assets";
-import { categoryFinalSelectedCheck, categorySelect, clickCategoryHeader, trackSearching } from "../../recoil/categorySelect";
-import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
+import { NeonXIc, PinkXIc, TrackSearchingPinkIc, TrackSearchingTextIc, UploadTextIc } from "../../assets";
 import { Category } from "../../core/constants/categoryHeader";
-import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
-import { isProducer } from "../../utils/common/userType";
+import { categoryFinalSelectedCheck, categorySelect, clickCategoryHeader } from "../../recoil/categorySelect";
 import { LoginUserType } from "../../recoil/loginUserData";
 import { showPlayerBar } from "../../recoil/player";
+import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
+import { CategoryChecksType } from "../../type/CategoryChecksType";
+import { isTracksPage, isVocalsPage } from "../../utils/common/pageCategory";
 
-import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
-import { Navigate, Route, useNavigate } from "react-router-dom";
-import PrivateRoute, { blockAccess } from "../../utils/common/privateRoute";
-import { isCookieNull, isLogin } from "../../utils/common/isLogined";
+import { useNavigate } from "react-router-dom";
+import { blockAccess } from "../../utils/common/privateRoute";
 
 export default function CategoryList(props: any) {
   const { pausesPlayerAudio, setIsCategorySelected, trackSearchingClicked, setTrackSearchingClicked } = props;
@@ -41,7 +38,7 @@ export default function CategoryList(props: any) {
 
   useEffect(() => {
     //true면 필터링 초기화, false면 필터링 유지
-    if(isClickedCategory){
+    if (isClickedCategory) {
       setSelectedCategorys(selectedCategorys.map((selectCateg) => ({ ...selectCateg, selected: false })));
       setFilteredUrlApi("");
       setIsClickedCategory(false);
@@ -57,16 +54,15 @@ export default function CategoryList(props: any) {
         filteredUrl += `&categ=${categ.categId}`;
       }
     });
-   
+
     filteredUrl === ""
-      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8")
+      ? setFilteredUrlApi("&categ=0&categ=1&categ=2&categ=3&categ=4&categ=5&categ=6&categ=7&categ=8&categ=9")
       : setFilteredUrlApi(filteredUrl);
 
     // setFilteredUrlApi(filteredUrl);
     // console.log(filteredUrlApi);
   }, [selectedCategorys]);
 
-  console.log(selectedCategorys)
   function selectCategory(id: number) {
     // const tempSelectedCategors = selectedCategorys;
 
@@ -98,7 +94,7 @@ export default function CategoryList(props: any) {
   }
 
   function changeCategoryColor(id: number) {
-    if (selectedCategorys[id].selected) {
+    if (selectedCategorys[id]?.selected) {
       switch (tracksOrVocals) {
         case Category.TRACKS:
           return <NeonXIcon />;
@@ -109,11 +105,11 @@ export default function CategoryList(props: any) {
   }
 
   function checkIsSelectedTrackCategory(id: number) {
-    return selectedCategorys[id].selected ? categorys[id].selectTrackCategory : categorys[id].category;
+    return selectedCategorys[id]?.selected ? categorys[id].selectTrackCategory : categorys[id].category;
   }
 
   function checkIsSelectedVocalCategory(id: number) {
-    return selectedCategorys[id].selected ? categorys[id].selectVocalCategory : categorys[id].category;
+    return selectedCategorys[id]?.selected ? categorys[id].selectVocalCategory : categorys[id].category;
   }
 
   function searchFilterdVocals() {
@@ -125,32 +121,31 @@ export default function CategoryList(props: any) {
     <>
       {openModal && <UploadButtonModal />}
       <CategoryListWrapper>
-        {categorys.map((category) => (
+        {categorys.map(({ id, width }) => (
           <CategoryTextBoxWrapper
-            key={category.id}
-            onClick={() => selectCategory(category.id)}
-            isSelected={selectedCategorys[category.id].selected}
+            key={id}
+            onClick={() => selectCategory(id)}
+            isSelected={selectedCategorys[id]?.selected}
             tracksOrVocals={tracksOrVocals}>
             <CategoryTextBox>
               {isTracksPage(tracksOrVocals) && (
                 <Img
-                  width={category.width}
-                  src={require(`../../assets/icon/${checkIsSelectedTrackCategory(category.id)}.svg`)}
+                  width={width}
+                  src={require(`../../assets/icon/${checkIsSelectedTrackCategory(id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
               )}
               {isVocalsPage(tracksOrVocals) && (
                 <Img
-                  width={category.width}
-                  src={require(`../../assets/icon/${checkIsSelectedVocalCategory(category.id)}.svg`)}
+                  width={width}
+                  src={require(`../../assets/icon/${checkIsSelectedVocalCategory(id)}.svg`)}
                   alt="선택된 카테고리 텍스트"
                 />
               )}
-              {changeCategoryColor(category.id)}
+              {changeCategoryColor(id)}
             </CategoryTextBox>
           </CategoryTextBoxWrapper>
         ))}
-
         {isTracksPage(tracksOrVocals) && (
           <UploadButton type="button" onClick={moveUploadPage}>
             <UploadTextIcon />

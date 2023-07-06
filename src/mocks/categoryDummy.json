@@ -3,63 +3,70 @@
     "id": 0,
     "category": "R&BTextIc",
     "selectTrackCategory": "R&BSelectTextIc",
-    "selectVocalCategory": "R&BPinkTextIc", 
-    "width":5.516
+    "selectVocalCategory": "R&BPinkTextIc",
+    "width": 5.516
   },
   {
     "id": 1,
     "category": "HiphopTextIc",
     "selectTrackCategory": "HiphopSelectTextIc",
-    "selectVocalCategory": "HiphopPinkTextIc", 
-    "width":9.135
+    "selectVocalCategory": "HiphopPinkTextIc",
+    "width": 9.135
   },
   {
     "id": 2,
     "category": "BalladTextIc",
     "selectTrackCategory": "BalladSelectTextIc",
-    "selectVocalCategory": "BalladPinkTextIc", 
-    "width":7.8
+    "selectVocalCategory": "BalladPinkTextIc",
+    "width": 7.8
   },
   {
     "id": 3,
     "category": "PopTextIc",
     "selectTrackCategory": "PopSelectTextIc",
-    "selectVocalCategory": "PopPinkTextIc", 
-    "width":4.936
+    "selectVocalCategory": "PopPinkTextIc",
+    "width": 4.936
   },
   {
     "id": 4,
     "category": "RockTextIc",
     "selectTrackCategory": "RockSelectTextIc",
-    "selectVocalCategory": "RockPinkTextIc", 
-    "width":6.535
+    "selectVocalCategory": "RockPinkTextIc",
+    "width": 6.535
   },
   {
     "id": 5,
     "category": "EDMTextIc",
     "selectTrackCategory": "EDMSelectTextIc",
-    "selectVocalCategory": "EDMPinkTextIc", 
-    "width":5.74
+    "selectVocalCategory": "EDMPinkTextIc",
+    "width": 5.74
   },
   {
     "id": 6,
     "category": "JazzTextIc",
     "selectTrackCategory": "JazzSelectTextIc",
-    "selectVocalCategory": "JazzPinkTextIc", 
-    "width":6.215
+    "selectVocalCategory": "JazzPinkTextIc",
+    "width": 6.215
   },
   {
     "id": 7,
     "category": "HouseTextIc",
     "selectTrackCategory": "HouseSelectTextIc",
-    "selectVocalCategory": "HousePinkTextIc", 
-    "width":8.241
+    "selectVocalCategory": "HousePinkTextIc",
+    "width": 8.241
   },
   {
     "id": 8,
     "category": "FunkTextIc",
     "selectTrackCategory": "FunkSelectTextIc",
-    "selectVocalCategory": "FunkPinkTextIc", 
-    "width":6.39
+    "selectVocalCategory": "FunkPinkTextIc",
+    "width": 6.39
+  },
+  {
+    "id": 9,
+    "category": "eventTextIc",
+    "selectTrackCategory": "eventSelectTextIc",
+    "selectVocalCategory": "eventPinkTextIc",
+    "width": 7.34
   }
 ]
