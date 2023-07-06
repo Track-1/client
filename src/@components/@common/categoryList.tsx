@@ -71,6 +71,8 @@ export default function CategoryList(props: any) {
     //   : (tempSelectedCategors[id].selected = true);
     // setSelectedCategorys([...tempSelectedCategors]);
 
+    console.log(id);
+
     setSelectedCategorys(
       selectedCategorys.map((selectCateg) =>
         selectCateg.categId === id ? { ...selectCateg, selected: !selectCateg.selected } : selectCateg,
@@ -116,12 +118,6 @@ export default function CategoryList(props: any) {
     setIsCategorySelected(true);
     setTrackSearchingClicked(!trackSearchingClicked);
   }
-
-  useEffect(() => {
-    {
-      categorys.map(({ id, width }) => console.log(id));
-    }
-  }, []);
 
   return (
     <>
