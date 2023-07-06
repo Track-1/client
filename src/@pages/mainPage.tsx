@@ -1,24 +1,23 @@
-import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled, { css } from "styled-components";
 
-import MainHeader from "../@components/@common/mainHeader";
 import Footer from "../@components/@common/footer";
+import MainHeader from "../@components/@common/mainHeader";
 
-import { MainTracksTextIc, MainVocalsTextIc } from "../assets";
-import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
-import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
-import hoverTracksImg from "../assets/image/hoverTracksImg.png";
-import mainSloganImg from "../assets/image/mainSloganImg.png";
-import ConventionModal from "../@components/@common/conventionModal";
-import { openConventionModal } from "../recoil/conventionModal";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
-import { Category } from "../core/constants/categoryHeader";
+import ConventionModal from "../@components/@common/conventionModal";
 import Ads from "../@components/main/ads";
-import usePlayer from "../utils/hooks/usePlayer";
-import { reload } from "../recoil/main";
+import { MainTracksTextIc, MainVocalsTextIc } from "../assets";
+import hoverTracksImg from "../assets/image/hoverTracksImg.png";
+import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
+import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
+import mainSloganImg from "../assets/image/mainSloganImg.png";
+import { Category } from "../core/constants/categoryHeader";
 import { clickCategoryHeader } from "../recoil/categorySelect";
+import { openConventionModal } from "../recoil/conventionModal";
+import { reload } from "../recoil/main";
+import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -27,18 +26,22 @@ export default function MainPage() {
   const [isTracksHover, setIsTracksHover] = useState<boolean>(false);
   const [isVocalsHover, setIsVocalsHover] = useState<boolean>(false);
   const showModal = useRecoilValue(openConventionModal);
-  const [isReload, setIsReload]=useRecoilState<boolean>(reload);
+  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
 
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
 
-  useEffect(()=>{
-    setIsClickedCategory(true)
-  },[])
-  
-  useEffect(()=>{
-    setIsReload(true)
-  },[])
+  useEffect(() => {
+    localStorage.removeItem("recoil-persist");
+  }, []);
+
+  useEffect(() => {
+    setIsClickedCategory(true);
+  }, []);
+
+  useEffect(() => {
+    setIsReload(true);
+  }, []);
 
   function setVocalsImg(e: React.MouseEvent<HTMLDivElement>) {
     setBackground(hoverVocalsImg);
