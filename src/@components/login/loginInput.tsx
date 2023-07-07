@@ -1,29 +1,29 @@
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled, { css } from "styled-components";
 import {
-  ProducerDefaultModeToggleIc,
-  ProducerModeToggleIc,
-  ProducerLoginBtnIc,
-  VocalLoginBtnIc,
   DefaultLoginBtnIc,
-  LoginTitleIc,
   IfyourareanewuserIc,
-  SignuphereIc,
-  LoginforgotpasswordIc,
   LoginEmailIc,
   LoginPasswordIc,
+  LoginTitleIc,
+  LoginforgotpasswordIc,
+  ProducerDefaultModeToggleIc,
+  ProducerLoginBtnIc,
+  ProducerModeToggleIc,
+  SignUpErrorIc,
   SignUpEyeIc,
   SignUpEyeXIc,
-  SignUpErrorIc,
+  SignuphereIc,
+  VocalLoginBtnIc,
 } from "../../assets";
-import { useEffect, useState } from "react";
 import { onLogin } from "../../core/api/login";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import { setCookie } from "../../utils/cookie";
 import { LoginUserId, LoginUserType } from "../../recoil/loginUserData";
-import { useSetRecoilState } from "recoil";
-import { checkPasswordForm } from "../../utils/errorMessage/checkPasswordForm";
+import { setCookie } from "../../utils/cookie";
 import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
+import { checkPasswordForm } from "../../utils/errorMessage/checkPasswordForm";
 import Loading from "../@common/loading";
 
 export default function LoginInput() {
@@ -54,6 +54,7 @@ export default function LoginInput() {
   const { mutate, isLoading } = useMutation(() => onLogin(email, password, loginType), {
     onSuccess: (data) => {
       if (data?.data.status === 200) {
+        console.log(data);
         const accessToken = data.data.data.accessToken;
         setLoginUserType(data.data.data.tableName);
         setLoginUserId(data.data.data.id);

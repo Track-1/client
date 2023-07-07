@@ -14,10 +14,11 @@ import hoverVocalsImg from "../assets/image/hoverVocalsImg.png";
 import mainBackgroundImg from "../assets/image/mainBackgroundImg.png";
 import mainSloganImg from "../assets/image/mainSloganImg.png";
 import { Category } from "../core/constants/categoryHeader";
-import { clickCategoryHeader } from "../recoil/categorySelect";
+import { categoryFinalSelectedCheck, clickCategoryHeader } from "../recoil/categorySelect";
 import { openConventionModal } from "../recoil/conventionModal";
 import { reload } from "../recoil/main";
 import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+import { CategoryChecksType } from "../type/CategoryChecksType";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -30,9 +31,22 @@ export default function MainPage() {
 
   const [tracksOrVocals, setTracksOrVocals] = useRecoilState(tracksOrVocalsCheck);
   const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
+  const [selectedCategorys, setSelectedCategorys] = useRecoilState<CategoryChecksType[]>(categoryFinalSelectedCheck);
 
   useEffect(() => {
-    localStorage.removeItem("recoil-persist");
+    // localStorage.removeItem("recoil-persist");
+    setSelectedCategorys([
+      { categId: 0, selected: false },
+      { categId: 1, selected: false },
+      { categId: 2, selected: false },
+      { categId: 3, selected: false },
+      { categId: 4, selected: false },
+      { categId: 5, selected: false },
+      { categId: 6, selected: false },
+      { categId: 7, selected: false },
+      { categId: 8, selected: false },
+      { categId: 9, selected: false },
+    ]);
   }, []);
 
   useEffect(() => {

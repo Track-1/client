@@ -93,6 +93,8 @@ export default function CategoryList(props: any) {
       : alert("Please use this function after producer logging in.\n해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
 
+  // console.log(userType);
+
   function changeCategoryColor(id: number) {
     if (selectedCategorys[id]?.selected) {
       switch (tracksOrVocals) {
