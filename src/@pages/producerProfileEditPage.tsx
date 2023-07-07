@@ -17,11 +17,11 @@ export default function ProducerProfileEditPage() {
     description: "맛있는 오이",
   });
 
-  const handleInputChange = (inputTitle: string, value: any) => {
-    // 입력 필드 값이 변경될 때 호출되는 핸들러
+  // input값이 변경될 때 호출
+  const handleInputChange = (value: string) => {
     setProfileData((prevState) => ({
       ...prevState,
-      [inputTitle]: value,
+      name: value,
     }));
   };
 
@@ -34,21 +34,21 @@ export default function ProducerProfileEditPage() {
           <TitleInputEdit
             inputTitle="name"
             data={profileData.name}
-            onChangeProps={(value: any) => handleInputChange("name", value)}
+            onChangeProps={(value) => handleInputChange(value)}
           />
         </ProfileEditTitle>
         <ProfileEditInfo>
           <TitleInputEdit
             inputTitle="contact"
             data={profileData.name}
-            onChangeProps={(value: any) => handleInputChange("name", value)}
+            onChangeProps={(value) => handleInputChange(value)}
           />
           <CategoriesEdit />
           <HashtagsEdit />
           <TitleInputEdit
             inputTitle="description"
             data={profileData.name}
-            onChangeProps={(value: any) => handleInputChange("name", value)}
+            onChangeProps={(value) => handleInputChange(value)}
           />
         </ProfileEditInfo>
       </ProfileEditContainer>
