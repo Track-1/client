@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
-import { UploadFileChangeIc } from "../../../assets";
-import UploadVocalDefaultImg from "../../../assets/image/uploadVocalDefaultImg.png";
-import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
+import { UploadFileChangeIc } from "../../../../assets";
+import UploadVocalDefaultImg from "../../../../assets/image/uploadVocalDefaultImg.png";
+import useUploadImageFile from "../../../../hooks/common/useUploadImageFile";
 import { useState } from "react";
 
 export default function VocalUploadImage() {
   // const [producerUploadImg, setproducerUploadImg] = useState<string>(UploadProducerDefaultImg);
-  const [imageFile, previewImage, uploadImageFile] = useUploadImageFile();
+  const { imageFile, previewImage, uploadImageFile } = useUploadImageFile();
   const [hoverState, setHoverState] = useState(false);
 
   function isImageFileEmpty() {

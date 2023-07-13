@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
-import { UploadFileChangeIc } from "../../../assets";
-import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg .png";
-import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
+import UploadProducerDefaultImg from "../../../../assets/image/uploadProducerDefaultImg .png";
+import useUploadImageFile from "../../../../hooks/common/useUploadImageFile";
 import { useState } from "react";
+import { UploadFileChangeIc } from "../../../../assets";
 
 export default function ProducerUploadImage() {
   // const [producerUploadImg, setproducerUploadImg] = useState<string>(UploadProducerDefaultImg);
-  const [imageFile, previewImage, uploadImageFile] = useUploadImageFile();
+  const { imageFile, previewImage, uploadImageFile } = useUploadImageFile();
   const [hoverState, setHoverState] = useState(false);
 
   function isImageFileEmpty() {

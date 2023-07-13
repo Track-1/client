@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import FileUploadInfo from "./fileUploadInfo";
-import CategoryInfo from "./categotyInfo";
-import HashtagInfo from "./hashtagInfo";
-import DescriptionInfo from "./descriptionInfo";
+import FileUploadInfo from "./FileUploadInfo";
+import CategoryInfo from "./CategotyInfo";
+import HashtagInfo from "./HashtagInfo";
+import DescriptionInfo from "./DescriptionInfo";
 
 export default function UploadInfo() {
   return (

@@ -1,13 +1,19 @@
 import styled from "styled-components";
-import uploadAbleBtnImg from "../../../assets/image/uploadAbleBtnImg.png";
-import uploadUnableBtnImg from "../../../assets/image/uploadUnableBtnImg.png";
+import uploadAbleBtnImg from "../../../../assets/image/uploadAbleBtnImg.png";
+import uploadUnableBtnImg from "../../../../assets/image/uploadUnableBtnImg.png";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { UploadData } from "../../../../recoil/upload/uploadData";
 
-interface UploadHeaderProps {
-  // userType: string;
-  isUploadActive: boolean;
-}
-export default function UploadHeader(props: UploadHeaderProps) {
-  const { isUploadActive } = props;
+export default function UploadHeader() {
+  const [isUploadActive, setIsUploadActive] = useState(false);
+
+  const uploadData = useRecoilValue(UploadData);
+  console.log(uploadData);
+
+  useEffect(() => {
+    uploadData.audioFile && uploadData.title ? setIsUploadActive(true) : setIsUploadActive(false);
+  }, [uploadData]);
 
   return (
     <Container>

@@ -1,23 +1,27 @@
 import styled from "styled-components";
-import { UploadDescriptionIc } from "../../../assets";
+import { UploadDescriptionIc } from "../../../../assets";
 import UploadInfoBox from "./UploadInfoBox";
 import TextareaAutosize from "react-textarea-autosize";
-import { TEXT_LIMIT } from "../../../core/common/textLimit";
-import useInputText from "../../../hooks/common/useInputText";
-import TextLength from "../textLength";
-import { checkEnterCount } from "../../../utils/common/checkEnterCount";
-import { useLocation } from "react-router-dom";
+import { TEXT_LIMIT } from "../../../../core/common/textLimit";
+import useInputText from "../../../../hooks/common/useInputText";
+import TextLength from "./TextLength";
+import { checkEnterCount } from "../../../../utils/common/checkEnterCount";
+import useUploadInitValue from "../../../../hooks/upload/useUploadInitValue";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { UploadData } from "../../../../recoil/upload/uploadData";
 
 export default function DescriptionInfo() {
-  const location = useLocation();
-  const [description, changeDescription] = useInputText(initValue(), TEXT_LIMIT.DESCRIPTION);
+  const [uploadInit] = useUploadInitValue();
+  const [description, changeDescription] = useInputText(uploadInit.description, TEXT_LIMIT.DESCRIPTION);
+  const setUploadData = useSetRecoilState(UploadData);
 
-  function initValue() {
-    if (location.pathname.includes("portfolio-edit")) {
-      return "portfolio-edit";
-    }
-    return "";
-  }
+  useEffect(() => {
+    setUploadData((prev) => ({
+      ...prev,
+      content: description,
+    }));
+  }, [description]);
 
   function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = checkEnterCount(e);

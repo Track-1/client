@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ProducerUploadImage from "./producerUploadImage";
+import ProducerUploadImage from "./ProducerUploadImage";
 import { PropsWithChildren } from "react";
 
 export default function ProducerLayout(props: PropsWithChildren) {

@@ -1,10 +1,23 @@
 import styled from "styled-components";
-import TextLength from "../textLength";
-import useInputText from "../../../hooks/common/useInputText";
-import { TEXT_LIMIT } from "../../../core/common/textLimit";
+import TextLength from "./TextLength";
+import useInputText from "../../../../hooks/common/useInputText";
+import { TEXT_LIMIT } from "../../../../core/common/textLimit";
+import useUploadInitValue from "../../../../hooks/upload/useUploadInitValue";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { UploadData } from "../../../../recoil/upload/uploadData";
 
 export default function UploadTitle() {
-  const [titleInput, changeTitleInput] = useInputText("", TEXT_LIMIT.UPLOAD_TITLE);
+  const [uploadInit] = useUploadInitValue();
+  const [title, changeTitle] = useInputText(uploadInit.title, TEXT_LIMIT.UPLOAD_TITLE);
+  const setUploadData = useSetRecoilState(UploadData);
+
+  useEffect(() => {
+    setUploadData((prev) => ({
+      ...prev,
+      title: title,
+    }));
+  }, [title]);
 
   return (
     <Container>
@@ -12,11 +25,11 @@ export default function UploadTitle() {
       <TitleInput
         placeholder="Please enter a title"
         spellCheck="false"
-        onChange={changeTitleInput}
-        value={titleInput}></TitleInput>
+        onChange={changeTitle}
+        defaultValue={title}></TitleInput>
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={titleInput.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={"body1"} />
+        <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={"body1"} />
       </TextLengthWrapper>
     </Container>
   );

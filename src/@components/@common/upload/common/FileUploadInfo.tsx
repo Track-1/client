@@ -1,10 +1,28 @@
 import styled from "styled-components";
-import { FolderUploadIc, UploadFileIc } from "../../../assets";
+import { FolderUploadIc, UploadFileIc } from "../../../../assets";
 import UploadInfoBox from "./UploadInfoBox";
-import useUploadAudioFile from "../../../hooks/common/useUploadAudioFile";
+import useUploadAudioFile from "../../../../hooks/common/useUploadAudioFile";
+import { useEffect, useState } from "react";
+import { TEXT_LIMIT } from "../../../../core/common/textLimit";
+import { checkMaxInputLength } from "../../../../utils/common/checkMaxInputLength";
+import { useSetRecoilState } from "recoil";
+import { UploadData } from "../../../../recoil/upload/uploadData";
 
 export default function FileUploadInfo() {
-  const { audioFile, fileName, audioType, isTextOverflow, uploadAudiofile } = useUploadAudioFile();
+  const { audioInit, uploadAudiofile } = useUploadAudioFile();
+  const [isTextOverflow, setIsTextOverflow] = useState(false);
+  const setUploadData = useSetRecoilState(UploadData);
+
+  useEffect(() => {
+    checkMaxInputLength(audioInit.fileName.length, TEXT_LIMIT.UPLOAD_AUDIO)
+      ? setIsTextOverflow(false)
+      : setIsTextOverflow(true);
+
+    setUploadData((prev) => ({
+      ...prev,
+      audioFile: audioInit.audioFile,
+    }));
+  }, [audioInit]);
 
   return (
     <UploadInfoBox>
@@ -14,9 +32,9 @@ export default function FileUploadInfo() {
       </InfoType>
       <InfoInput>
         <InputWrapper>
-          <InputFileTextWrapper fileName={fileName}>
-            <FileName value={fileName} isTextOverflow={isTextOverflow} disabled />
-            {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioType}</FileAttribute>}
+          <InputFileTextWrapper fileName={audioInit.fileName}>
+            <FileName value={audioInit.fileName} isTextOverflow={isTextOverflow} disabled />
+            {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioInit.audioType}</FileAttribute>}
             <FileInput
               type="file"
               id="wavFileUpload"
