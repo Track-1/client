@@ -1,11 +1,10 @@
-import UploadBody from "./uploadBody";
-import UploadHeader from "./uploadHeader";
+import UploadBody from "./common/UploadBody";
+import UploadHeader from "./common/UploadHeader";
 
 export default function Upload() {
-  
   return (
     <>
-      <UploadHeader isUploadActive={true} />
+      <UploadHeader />
       <UploadBody />
     </>
   );

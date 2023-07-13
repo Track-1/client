@@ -58,5 +58,5 @@ export default function useUploadImageFile() {
     );
   }
 
-  return [imageFile, previewImage, uploadImageFile] as const;
+  return { imageFile, previewImage, uploadImageFile };
 }

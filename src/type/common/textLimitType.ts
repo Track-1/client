@@ -1,7 +1,7 @@
 export interface TextLimitType {
   ENTER_COUNT: number;
   "10": number;
-  "13": number;
+  UPLOAD_AUDIO: number;
   "15": number;
   "20": number;
   UPLOAD_TITLE: number;
