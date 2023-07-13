@@ -82,7 +82,7 @@ const InputHashtagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  height: 10rem;
+  height: 100%;
 
   align-items: center;
 `;
