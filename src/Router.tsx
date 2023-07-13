@@ -6,6 +6,8 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/upload" element={<UploadPage />} />
+        <Route path="/portfolio-edit/producer/:portfolioId" element={<UploadPage />} />
+        <Route path="/portfolio-edit/vocal/:portfolioId" element={<UploadPage />} />
       </Routes>
     </BrowserRouter>
   );
