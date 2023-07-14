@@ -53,7 +53,6 @@ const fonts = {
   typography_intro: FONT({ family: false, weight: 600, size: 1.5, lineHeight: 2.4 }),
   typography_content: FONT({ family: false, weight: 500, size: 1.5, lineHeight: 2.4 }),
   checkbox: FONT({ family: false, weight: 400, size: 1.6, lineHeight: 1.6 }),
-
 };
 
 export type FontsTypes = typeof fonts;

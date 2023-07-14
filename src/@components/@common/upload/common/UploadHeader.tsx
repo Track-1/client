@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import uploadAbleBtnImg from "../../../../assets/image/uploadAbleBtnImg.png";
 import uploadUnableBtnImg from "../../../../assets/image/uploadUnableBtnImg.png";
+import BackButton from "../../backButton";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { UploadData } from "../../../../recoil/upload/uploadData";
@@ -18,7 +19,7 @@ export default function UploadHeader() {
   return (
     <Container>
       {/* back버튼 */}
-      <UploadTypeText>Back</UploadTypeText>
+      <BackButton />
       <Wrapper>
         <UploadTypeText>Vocal Searching</UploadTypeText>
         {isUploadActive ? (

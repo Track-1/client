@@ -4,8 +4,10 @@ import ProducerImageEdit from "../@components/producerProfileEdit/producerImageE
 import TitleInputEdit from "../@components/@common/profileTitleInput";
 import CategoriesEdit from "../@components/@common/selectCategories";
 import HashtagsEdit from "../@components/@common/hashtag/hashtagsEdit";
+import ProducerProfileEditHeader from "../@components/producerProfileEdit/producerProfileEditHeader";
 import { ProfileBackgroundIc } from "../assets";
 import { useState } from "react";
+import DescriptionInput from "../@components/@common/upload/common/DescriptionInput";
 
 export default function ProducerProfileEditPage() {
   // 더미 데이터로 초기 설정
@@ -27,6 +29,7 @@ export default function ProducerProfileEditPage() {
 
   return (
     <>
+    <ProducerProfileEditHeader/>
       <ProfileBackgroundIcon />
       <ProfileEditContainer>
         <ProfileEditTitle>
@@ -45,11 +48,7 @@ export default function ProducerProfileEditPage() {
           />
           <CategoriesEdit />
           <HashtagsEdit />
-          <TitleInputEdit
-            inputTitle="description"
-            data={profileData.name}
-            onChangeProps={(value) => handleInputChange(value)}
-          />
+          <DescriptionInput />
         </ProfileEditInfo>
       </ProfileEditContainer>
     </>

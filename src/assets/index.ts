@@ -11,3 +11,4 @@ export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
 export { ReactComponent as HashtagTitleIc } from "./icon/hashtagTitleIc.svg";
 export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
+export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
