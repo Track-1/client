@@ -301,7 +301,7 @@ const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
 `;
 
 const BlurSection = styled.div<{ commentCnt: number }>`
-  height: 32rem;
+  height: 8rem;
   /* width: 107.7rem; */
   width: 100%;
   /* position: relative; */
