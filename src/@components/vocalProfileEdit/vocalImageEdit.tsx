@@ -19,7 +19,6 @@ export default function VocalImageEdit() {
       {/* 프로듀서 프로필 이미지 업로더 */}
       <ProfileImageContainer>
         {/* 사용자가 넣은 이미지 or 기본 사람 이미지 */}
-        {/* {isImageUploaded ? <ProfileImage src={String(showImage)} /> : <ProfileImage src={String(profileImage)} />} */}
         <ImageWrapper>
           <ProfileImage src={String(showImage)} />
         </ImageWrapper>
@@ -61,37 +60,51 @@ const ProfileImageContainer = styled.label`
 `;
 
 const ImageWrapper = styled.div`
- height: 26.7em;
   width: 26.7em;
-
-  margin-left: 5rem;
-  margin-top: 15rem;
-  margin-bottom: 5rem;
+  height: 26.7em;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  //  position: absolute;
 
   border-radius: 3rem;
   overflow: hidden;
 
   transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg); /* IE 9 */
-  -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 15%;
+    z-index: -1;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
 `;
 
 const ProfileImage = styled.img`
-  width: 100%;
-  height: 100%;
-
   margin: auto;
 
-
-  /* transform: rotate(-45deg); */
-
-  /* transform: translate(50, 50); */
   object-fit: cover;
+
+  transform: rotate(45deg);
+  position: absolute;
+  width: 141%;
+  height: 141%;
 `;
 
 const FileInput = styled.input`
