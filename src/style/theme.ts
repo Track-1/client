@@ -41,6 +41,7 @@ const fonts = {
   cations: FONT({ family: true, weight: 400, size: 1.6, lineHeight: 1.9 }),
   body1: FONT({ family: true, weight: 300, size: 1.8, lineHeight: 2.3 }),
   comment: FONT({ family: false, weight: 400, size: 1.8, lineHeight: 3.5 }),
+  inputTitle: FONT({ family: true, weight: 400, size: 1.7, lineHeight:1.9 }),
   description: FONT({ family: false, weight: 400, size: 1.6, lineHeight: 2.8 }),
   player_title: FONT({ family: true, weight: 700, size: 2, lineHeight: 2.6 }),
   id: FONT({ family: true, weight: 300, size: 2, lineHeight: 2.6 }),
