@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import { HashtagTitleIc } from "../../../assets";
 import HashtagWarning from "./hashtagWarning";
 import HashtagInput from "./hashtagInput";
 
@@ -9,7 +8,7 @@ export default function HashtagsEdit() {
     <>
       <HashtagContainer>
         <HashIconWrapper>
-          <HashtagTitleIcon />
+          <HashtagTitle>Hashtag</HashtagTitle>
           <HashtagWarning />
         </HashIconWrapper>
         <HashtagInput />
@@ -28,6 +27,7 @@ const HashIconWrapper = styled.div`
   display: flex;
 `;
 
-const HashtagTitleIcon = styled(HashtagTitleIc)`
-  width: 9.3rem;
+const HashtagTitle = styled.div`
+  color: ${({ theme }) => theme.colors.gray2};
+  ${({ theme }) => theme.fonts.inputTitle};
 `;
