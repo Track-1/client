@@ -1,16 +1,9 @@
 import styled from "styled-components";
 import { SignupErrorIc, SignupVerifyIc } from "../../assets";
-import {
-  EMAIL_MESSAGE,
-  ERROR_STATUS,
-  PASSWORD_MESSAGE,
-  VERIFICATION_CODE_MESSAGE,
-} from "../../core/signUp/errorMessage";
+import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 
-export default function CheckErrorIcon(message: string) {
+export default function CheckErrorIcon(message: string | undefined) {
   switch (message) {
-    case ERROR_STATUS.ERROR:
-      return <SignUpErrorIcon />;
     case EMAIL_MESSAGE.FORM:
       return <SignUpErrorIcon />;
     case EMAIL_MESSAGE.DUPLICATION:

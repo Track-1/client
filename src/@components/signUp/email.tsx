@@ -16,6 +16,7 @@ interface EmailInputType {
 
 export default function Email() {
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
+  // const [emailMessage, setEmailMessage] = useState<string>(EMAIL_MESSAGE.NULL);
   const [clickRole, setClickRole] = useRecoilState<string>(signupRole);
 
   const methods = useForm<EmailInputType>({
@@ -39,7 +40,7 @@ export default function Email() {
 
   const { mutate: sendCode } = useMutation(authEmail, {
     onSuccess: () => {
-      setIsSendCode(true);
+      setError("email", { message: EMAIL_MESSAGE.TIME });
     },
     onError: (error: any) => {
       if (error.response.data.message === "중복된 이메일입니다") {

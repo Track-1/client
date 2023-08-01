@@ -1,6 +1,6 @@
 import { FieldError, FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
-import { ERROR_STATUS } from "../../core/signUp/errorMessage";
+import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
 import CheckErrorIcon from "./checkErrorIcon";
 
 interface InputProps<
@@ -26,6 +26,8 @@ export default function Input<
     return error !== undefined;
   }
 
+  console.log(fieldState?.error?.message);
+
   return (
     <InputContainer>
       <InputWrapper
@@ -35,15 +37,16 @@ export default function Input<
         isError={checkIsError(fieldState.error)}
         width={width}
         autoComplete="off"
+        color={checkInputUnderline(fieldState?.error?.message)}
       />
-      <ErrorMessage>
-        {fieldState.error && (
-          <>
+      <ErrorMessageWrapper>
+        {fieldState?.error && (
+          <ErrorMessage color={checkMessageColor(fieldState?.error?.message)}>
             {fieldState.error.message}
-            <IconWrapper>{CheckErrorIcon(ERROR_STATUS.ERROR)}</IconWrapper>
-          </>
+            <IconWrapper>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
+          </ErrorMessage>
         )}
-      </ErrorMessage>
+      </ErrorMessageWrapper>
     </InputContainer>
   );
 }
@@ -57,23 +60,25 @@ const InputContainer = styled.article`
   flex-direction: column;
 `;
 
-const InputWrapper = styled.input<{ isError: boolean; width: number }>`
+const InputWrapper = styled.input<{ isError: boolean; width: number; color: string | undefined }>`
   margin-top: 3rem;
   padding: 0.5rem 0;
 
   color: white;
 
-  border-bottom: 1px solid ${({ theme, isError }) => (isError ? theme.colors.red : theme.colors.white)};
+  border-bottom: 1px solid ${({ color }) => color};
 
   width: ${({ width }) => width}rem;
 
   ${({ theme }) => theme.fonts.input}
 `;
 
-const ErrorMessage = styled.p`
+const ErrorMessage = styled.p<{ color: string }>`
+  color: ${({ color }) => color};
+  ${({ theme }) => theme.fonts.message};
+`;
+
+const ErrorMessageWrapper = styled.div`
   margin-top: 1.1rem;
   height: 1.9rem;
-
-  color: ${({ theme }) => theme.colors.red};
-  ${({ theme }) => theme.fonts.message};
 `;

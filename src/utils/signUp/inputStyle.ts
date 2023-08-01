@@ -6,7 +6,7 @@ import {
   VERIFICATION_CODE_MESSAGE,
 } from "../../core/signUp/errorMessage";
 
-export function checkInputUnderline(message: string) {
+export function checkInputUnderline(message: string | undefined) {
   switch (message) {
     case EMAIL_MESSAGE.NULL:
       return ERROR_COLOR.GRAY;
@@ -41,7 +41,7 @@ export function checkInputUnderline(message: string) {
   }
 }
 
-export function checkMessageColor(message: string) {
+export function checkMessageColor(message: string | undefined) {
   switch (message) {
     case EMAIL_MESSAGE.NULL:
       return ERROR_COLOR.TRANSPARENT;
