@@ -1,4 +1,4 @@
-export default function VerifyCode() {
+export default function VerifyCodeOld() {
   return (
     <>
       {/* {isSendCode && (

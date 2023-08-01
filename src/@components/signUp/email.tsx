@@ -9,6 +9,7 @@ import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
 import Input from "./Input";
+import InputTitle from "./inputTitle";
 import SendCodeButton from "./sendCodeButton";
 
 interface EmailInputType {
@@ -95,11 +96,6 @@ const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
 const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
   width: 30.7418rem;
   margin: 8rem 0 5.9rem 12rem;
-`;
-
-const InputTitle = styled.h1`
-  color: ${({ theme }) => theme.colors.gray2};
-  ${({ theme }) => theme.fonts.body1};
 `;
 
 const EmailInputWrapper = styled.section`
