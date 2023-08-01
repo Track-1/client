@@ -42,10 +42,6 @@ export default function Email() {
     return errors?.email?.message === EMAIL_MESSAGE.TIME;
   }
 
-  // function showVerifyCodeInput() {
-  //   return errors?.email?.message === EMAIL_MESSAGE.ACTIVE;
-  // }
-
   function handleSendCode(data: any) {
     // send code post 로직
     sendCode({
