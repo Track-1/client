@@ -4,7 +4,7 @@ import { useMutation } from "react-query";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { authEmail } from "../../api/signup";
-import { SignupEmailPasswordTitleIc } from "../../assets";
+import { SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
@@ -30,7 +30,6 @@ export default function EmailPassword() {
 
   function handleSendCode(data: any) {
     // send code post 로직
-
     sendCode({
       tableName: clickRole,
       userEmail: data?.email,
@@ -40,7 +39,9 @@ export default function EmailPassword() {
   }
 
   const { mutate: sendCode } = useMutation(authEmail, {
-    onSuccess: () => {},
+    onSuccess: () => {
+      setIsSendCode(true);
+    },
     onError: (error: any) => {
       if (error.response.data.message === "중복된 이메일입니다") {
         setError("email", { message: EMAIL_MESSAGE.DUPLICATION });
@@ -51,9 +52,9 @@ export default function EmailPassword() {
   return (
     <FormProvider {...methods}>
       <EmailPasswordWrapper>
-        <SignupEmailPasswordTitleIcon />
+        {isSendCode ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
         <form onSubmit={handleSubmit(handleSendCode)}>
-          <Email />
+          <Email isSendCode={isSendCode} />
         </form>
       </EmailPasswordWrapper>
     </FormProvider>
@@ -64,6 +65,11 @@ const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
   width: 48.3rem;
 
   margin: 8rem 0 13.4rem 3.4rem;
+`;
+
+const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
+  width: 30.7418rem;
+  margin: 8rem 0 5.9rem 12rem;
 `;
 
 const EmailPasswordWrapper = styled.div`

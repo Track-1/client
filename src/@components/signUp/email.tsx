@@ -1,10 +1,16 @@
 import styled from "styled-components";
-import { SendCodeSignupIc } from "../../assets";
+import { ResendSignupIc, SendCodeSignupIc } from "../../assets";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import Input from "./Input";
 
-export default function Email() {
+interface EmailProp {
+  isSendCode: boolean;
+}
+
+export default function Email(props: EmailProp) {
+  const { isSendCode } = props;
+
   return (
     <>
       <InputTitle>What’s your email?</InputTitle>
@@ -22,9 +28,7 @@ export default function Email() {
           placeholder="Enter your email address"
           width={42.2}
         />
-        <SendCodButton htmlFor="sendCode">
-          <SendCodeSignupIcon />
-        </SendCodButton>
+        <SendCodButton htmlFor="sendCode">{isSendCode ? <ResendSignupIcon /> : <SendCodeSignupIcon />}</SendCodButton>
         <input type="submit" id="sendCode" />
       </EmailInputWrapper>
     </>
@@ -42,8 +46,8 @@ const EmailInputWrapper = styled.section`
 `;
 
 const SendCodButton = styled.label`
-  width: 12.7rem;
   height: 4rem;
+  margin-left: 1rem;
   padding: 1.5rem 1.6rem;
 
   background-color: ${({ theme }) => theme.colors.gray4};
@@ -53,6 +57,19 @@ const SendCodButton = styled.label`
 `;
 
 const SendCodeSignupIcon = styled(SendCodeSignupIc)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 9.3761rem;
   height: 0.9906rem;
+`;
+
+const ResendSignupIcon = styled(ResendSignupIc)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 6.3393rem;
+  height: 0.988rem;
 `;
