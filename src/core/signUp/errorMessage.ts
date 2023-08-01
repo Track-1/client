@@ -37,3 +37,8 @@ export const ERROR_COLOR = {
   WHITE: "white",
   TRANSPARENT: "transparent",
 };
+
+export const ERROR_STATUS = {
+  ERROR: "error",
+  VERIFY: "verify",
+};

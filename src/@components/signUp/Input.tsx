@@ -1,6 +1,6 @@
 import { FieldError, FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { ERROR_STATUS } from "../../core/signUp/errorMessage";
 import CheckErrorIcon from "./checkErrorIcon";
 
 interface InputProps<
@@ -41,7 +41,7 @@ export default function Input<
         {fieldState.error && (
           <>
             {fieldState.error.message}
-            <IconWrapper>{CheckErrorIcon(EMAIL_MESSAGE.FORM)}</IconWrapper>
+            <IconWrapper>{CheckErrorIcon(ERROR_STATUS.ERROR)}</IconWrapper>
           </>
         )}
       </ErrorMessage>
