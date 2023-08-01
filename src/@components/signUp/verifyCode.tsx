@@ -1,9 +1,9 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, UseFormSetError, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postVerifyCode } from "../../api/signup";
-import { VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
@@ -13,12 +13,16 @@ interface VerifyCodeType {
   verifyCode: string;
 }
 
-interface VerifyCodeProps {
+interface EmailInputType {
   email: string;
 }
 
+interface VerifyCodeProps extends EmailInputType {
+  setEmailMessage: UseFormSetError<EmailInputType>;
+}
+
 export default function VerifyCode(props: VerifyCodeProps) {
-  const { email } = props;
+  const { email, setEmailMessage } = props;
   const clickRole = useRecoilValue<string>(signupRole);
 
   const methods = useForm<VerifyCodeType>({
@@ -38,10 +42,10 @@ export default function VerifyCode(props: VerifyCodeProps) {
   const { mutate: verifyEmail } = useMutation(postVerifyCode, {
     onSuccess: () => {
       // password 등장 하도록 변경
+      setEmailMessage("email", { message: EMAIL_MESSAGE.ACTIVE });
     },
     onError: (error: any) => {
       console.log(error.response.data.message);
-
       setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.ERROR });
     },
   });
