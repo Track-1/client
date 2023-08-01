@@ -1,5 +1,7 @@
 import { FieldError, FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
+import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import CheckErrorIcon from "./checkErrorIcon";
 
 interface InputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -32,11 +34,24 @@ export default function Input<
         placeholder={placeholder}
         isError={checkIsError(fieldState.error)}
         width={width}
+        autoComplete="off"
       />
-      <ErrorMessage> {fieldState.error && fieldState.error.message}</ErrorMessage>
+
+      <ErrorMessage>
+        {fieldState.error && (
+          <>
+            {fieldState.error.message}
+            <IconWrapper>{CheckErrorIcon(EMAIL_MESSAGE.FORM)}</IconWrapper>
+          </>
+        )}
+      </ErrorMessage>
     </InputContainer>
   );
 }
+
+const IconWrapper = styled.div`
+  margin: -7.5rem 0 0 38rem;
+`;
 
 const InputContainer = styled.article`
   display: flex;
