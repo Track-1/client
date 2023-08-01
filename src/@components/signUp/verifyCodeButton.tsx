@@ -9,11 +9,16 @@ export default function VerifyCodeButton(props: VerifyCodeButtonProp) {
   const { isActive } = props;
 
   return (
-    <VerifyCodeButtonWrapper type="button" isActive={isActive}>
+    <VerifyCodeButtonWrapper isActive={isActive}>
       <VerifySignupIcon />
+      <VerifyCodeBtn type="submit" />
     </VerifyCodeButtonWrapper>
   );
 }
+
+const VerifyCodeBtn = styled.input`
+  display: none;
+`;
 
 const VerifySignupIcon = styled(VerifySignupIc)`
   width: 5rem;

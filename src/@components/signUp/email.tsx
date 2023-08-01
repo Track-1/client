@@ -11,6 +11,7 @@ import { signupRole } from "../../recoil/signUp/role";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 import SendCodeButton from "./sendCodeButton";
+import VerifyCode from "./verifyCode";
 
 interface EmailInputType {
   email: string;
@@ -62,28 +63,31 @@ export default function Email() {
   });
 
   return (
-    <FormProvider {...methods}>
-      {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
-      <form onSubmit={handleSubmit(handleSendCode)}>
-        <InputTitle>What’s your email?</InputTitle>
-        <EmailInputWrapper>
-          <Input
-            name="email"
-            rules={{
-              required: true,
-              pattern: {
-                value: CHECK_EMAIL_FORM,
-                message: EMAIL_MESSAGE.FORM,
-              },
-            }}
-            type="text"
-            placeholder="Enter your email address"
-            width={42.2}
-          />
-          <SendCodeButton isActive={checkIsActive()} isResend={checkIsResend()} />
-        </EmailInputWrapper>
-      </form>
-    </FormProvider>
+    <>
+      <FormProvider {...methods}>
+        {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
+        <form onSubmit={handleSubmit(handleSendCode)}>
+          <InputTitle>What’s your email?</InputTitle>
+          <EmailInputWrapper>
+            <Input
+              name="email"
+              rules={{
+                required: true,
+                pattern: {
+                  value: CHECK_EMAIL_FORM,
+                  message: EMAIL_MESSAGE.FORM,
+                },
+              }}
+              type="text"
+              placeholder="Enter your email address"
+              width={42.2}
+            />
+            <SendCodeButton isActive={checkIsActive()} isResend={checkIsResend()} />
+          </EmailInputWrapper>
+        </form>
+      </FormProvider>
+      <VerifyCode email={watch("email")} />
+    </>
   );
 }
 
