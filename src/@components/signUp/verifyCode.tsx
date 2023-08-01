@@ -23,10 +23,12 @@ export default function VerifyCode() {
     watch,
   } = methods;
 
-  function handleVerifyCode() {}
+  function handleVerifyCode() {
+    //verify code post
+  }
 
   function checkIsActive() {
-    return true;
+    return watch("verifyCode") !== "";
   }
 
   return (
