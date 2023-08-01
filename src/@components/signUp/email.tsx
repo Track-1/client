@@ -34,13 +34,6 @@ export default function Email() {
     watch,
   } = methods;
 
-  // useEffect(()=>{
-  //   fieldState?.error?.message===undefined&&
-  // },[fieldState?.error?.message])
-
-  // console.log(watch("email"));
-  // console.log(errors?.email?.message);
-
   function checkIsActive() {
     return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend();
   }
@@ -90,7 +83,6 @@ export default function Email() {
           />
           <SendCodButtonWrapper isActive={checkIsActive()}>
             {checkIsResend() ? <ResendSignupIcon /> : <SendCodeSignupIcon />}
-
             <SendCodeButton type="submit" />
           </SendCodButtonWrapper>
         </EmailInputWrapper>
