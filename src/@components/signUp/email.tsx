@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { authEmail } from "../../api/signup";
 import { ResendSignupIc, SendCodeSignupIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
+import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
@@ -54,13 +55,12 @@ export default function Email() {
       tableName: clickRole,
       userEmail: data?.email,
     });
-
-    // console.log("회원가입" + data?.email);
   }
 
   const { mutate: sendCode } = useMutation(authEmail, {
     onSuccess: () => {
       setError("email", { message: EMAIL_MESSAGE.TIME });
+      alert(SIGNUP_SENDCODE);
     },
     onError: (error: any) => {
       if (error.response.data.message === "중복된 이메일입니다") {
