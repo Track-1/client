@@ -1,4 +1,4 @@
-import { FieldError, FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
+import { FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
 import CheckErrorIcon from "./checkErrorIcon";
@@ -22,11 +22,7 @@ export default function Input<
     rules: rules,
   });
 
-  function checkIsError(error: FieldError | undefined) {
-    return error !== undefined;
-  }
-
-  console.log(fieldState?.error?.message);
+  // console.log(fieldState?.error?.message);
 
   return (
     <InputContainer>
@@ -34,7 +30,6 @@ export default function Input<
         {...field}
         type={type}
         placeholder={placeholder}
-        isError={checkIsError(fieldState.error)}
         width={width}
         autoComplete="off"
         color={checkInputUnderline(fieldState?.error?.message)}
@@ -60,7 +55,7 @@ const InputContainer = styled.article`
   flex-direction: column;
 `;
 
-const InputWrapper = styled.input<{ isError: boolean; width: number; color: string | undefined }>`
+const InputWrapper = styled.input<{ width: number; color: string | undefined }>`
   margin-top: 3rem;
   padding: 0.5rem 0;
 

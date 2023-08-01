@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilState } from "recoil";
@@ -26,7 +26,29 @@ export default function Email() {
     mode: "onChange",
   });
 
-  const { handleSubmit, setError } = methods;
+  const {
+    handleSubmit,
+    setError,
+    formState: { errors },
+    watch,
+  } = methods;
+
+  // useEffect(()=>{
+  //   fieldState?.error?.message===undefined&&
+  // },[fieldState?.error?.message])
+
+  // console.log(watch("email"));
+  // console.log(errors?.email?.message);
+
+  useEffect(() => {
+    if (watch("email") !== "" && errors?.email?.message === undefined) {
+      // setError;
+    }
+  }, [errors?.email?.message]);
+
+  function checkIsResend() {
+    return errors?.email?.message === EMAIL_MESSAGE.TIME;
+  }
 
   function handleSendCode(data: any) {
     // send code post 로직
@@ -51,7 +73,7 @@ export default function Email() {
 
   return (
     <FormProvider {...methods}>
-      {isSendCode ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
+      {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
       <form onSubmit={handleSubmit(handleSendCode)}>
         <InputTitle>What’s your email?</InputTitle>
         <EmailInputWrapper>
