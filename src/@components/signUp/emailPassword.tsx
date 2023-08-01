@@ -3,10 +3,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { SignupEmailPasswordTitleIc } from "../../assets";
-import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
-import Input from "./Input";
+import Email from "./email";
 
 type Inputs = {
   email: string;
@@ -52,33 +50,9 @@ export default function EmailPassword() {
       <EmailPasswordWrapper>
         <SignupEmailPasswordTitleIcon />
         <form onSubmit={handleSubmit(hadleSignup)}>
-          {/* <Input
-          type="text"
-          {...register("email", {
-            pattern: {
-              value: CHECK_EMAIL_FORM,
-              message: EMAIL_MESSAGE.FORM,
-            },
-          })}
-          placeholder="dfdfdfdfd"
-        />
-        <ErrorMessage>{errors?.email ? <>{errors.email?.message}</> : null}</ErrorMessage> */}
-          {/* <Email /> */}
-          <Input
-            {...register("email", {
-              pattern: {
-                value: CHECK_EMAIL_FORM,
-                message: EMAIL_MESSAGE.FORM,
-              },
-              required: true,
-            })}
-            type="text"
-            placeholder="닉네임을 입력해주세요."
-          />
+          <Email />
           <SubmitButton type="submit" />
         </form>
-        {/* <Email emails={emails} setEmails={setEmails} />
-      <VerifyCode /> */}
       </EmailPasswordWrapper>
     </FormProvider>
   );
@@ -94,18 +68,6 @@ const EmailPasswordWrapper = styled.div`
   color: white;
 `;
 
-// const Input = styled.input`
-//   color: white;
-//   border-bottom: 1px solid white;
-
-//   width: 45rem;
-// `;
-
 const SubmitButton = styled.input`
   color: white;
-`;
-
-const ErrorMessage = styled.p`
-  margin-top: 1.1rem;
-  height: 1.9rem;
 `;

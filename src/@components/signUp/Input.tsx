@@ -7,13 +7,14 @@ interface InputProps<
 > extends UseControllerProps<TFieldValues, TName> {
   type?: string;
   placeholder?: string;
+  title?: string;
 }
 
 export default function Input<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: InputProps<TFieldValues, TName>) {
-  const { name, rules, type, placeholder } = props;
+  const { name, rules, type, placeholder, title } = props;
   const { field, fieldState } = useController({
     name,
     rules: rules,
@@ -21,8 +22,9 @@ export default function Input<
 
   return (
     <>
+      <h1>{title}</h1>
       <InputWrapper {...field} type={type} placeholder={placeholder} />
-      {fieldState.error && fieldState.error.message}
+      <ErrorMessage> {fieldState.error && fieldState.error.message}</ErrorMessage>
     </>
   );
 }
@@ -32,4 +34,9 @@ const InputWrapper = styled.input`
   border-bottom: 1px solid white;
 
   width: 45rem;
+`;
+
+const ErrorMessage = styled.p`
+  margin-top: 1.1rem;
+  height: 1.9rem;
 `;
