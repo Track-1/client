@@ -53,16 +53,16 @@ export const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-  
+
   /* 위에가 styled-reset 내용 */
 
   * {
     box-sizing: border-box;
-  } 
+  }
   html {
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
-    
+
     scroll-behavior: smooth;
 
     font-family: sans-serif;
@@ -77,13 +77,13 @@ export const GlobalStyle = createGlobalStyle`
     @media (min-width:900px) and (max-width:1419px){
       font-size: 42%;
     }
-    @media (min-width: 768px) and (max-width:899px){ 
+    @media (min-width: 768px) and (max-width:899px){
       font-size: 35%;
     }
-    @media (max-width:767px){ 
+    @media (max-width:767px){
       font-size: 32%;
     }
-    
+
 
   }
   ul, li {
@@ -94,8 +94,8 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
-  input, button {
-    outline: none; 
+  input, button, textarea {
+    outline: none;
     border: none;
     background-color: transparent;
   }
@@ -105,7 +105,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   input {
     appearance: none;
-    
+
     &:focus {
       outline: none;
     }
