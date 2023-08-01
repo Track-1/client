@@ -36,7 +36,6 @@ export default function Input<
         width={width}
         autoComplete="off"
       />
-
       <ErrorMessage>
         {fieldState.error && (
           <>
