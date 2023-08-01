@@ -42,7 +42,7 @@ export default function VerifyCode(props: VerifyCodeProps) {
   const { mutate: verifyEmail } = useMutation(postVerifyCode, {
     onSuccess: () => {
       // password 등장 하도록 변경
-      setEmailMessage("email", { message: EMAIL_MESSAGE.ACTIVE });
+      setEmailMessage("email", { message: EMAIL_MESSAGE.VERIFY });
     },
     onError: (error: any) => {
       console.log(error.response.data.message);
@@ -65,7 +65,7 @@ export default function VerifyCode(props: VerifyCodeProps) {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(handleVerifyCode)}>
+      <VerifyCodeContainer onSubmit={handleSubmit(handleVerifyCode)}>
         <InputTitle>Verification code</InputTitle>
         <VerifyCodeWrapper>
           <Input
@@ -79,7 +79,7 @@ export default function VerifyCode(props: VerifyCodeProps) {
           />
           <VerifyCodeButton isActive={checkIsActive()} />
         </VerifyCodeWrapper>
-      </form>
+      </VerifyCodeContainer>
     </FormProvider>
   );
 }
@@ -87,4 +87,8 @@ export default function VerifyCode(props: VerifyCodeProps) {
 const VerifyCodeWrapper = styled.section`
   display: flex;
   align-items: center;
+`;
+
+const VerifyCodeContainer = styled.form`
+  margin-top: 3.2rem;
 `;
