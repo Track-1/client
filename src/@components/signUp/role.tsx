@@ -25,16 +25,18 @@ export default function Role() {
     setClickRole(role);
   }
 
-  function isActive(role: string) {
+  function checkIsActive(role: string) {
     return hoverRole === role || clickRole === role;
   }
 
-  function isProducer(role: string) {
+  function checkIsProducer(role: string) {
     return role === ROLE.PRODUCER;
   }
 
   useEffect(() => {
-    clickRole !== "" && setIsSuccess(true);
+    if (clickRole !== "") {
+      setIsSuccess(true);
+    }
   }, [clickRole]);
 
   return (
@@ -44,15 +46,15 @@ export default function Role() {
         onClick={() => handleClickRole(ROLE.PRODUCER)}
         onMouseEnter={() => handleHoverRole(ROLE.PRODUCER)}
         onMouseLeave={() => handleHoverRole("")}
-        isProducer={isProducer(ROLE.PRODUCER)}>
-        {isActive(ROLE.PRODUCER) ? <SignupRoleProducerHoverIcon /> : <SignupRoleProducerIcon />}
+        isProducer={checkIsProducer(ROLE.PRODUCER)}>
+        {checkIsActive(ROLE.PRODUCER) ? <SignupRoleProducerHoverIcon /> : <SignupRoleProducerIcon />}
       </RoleBox>
       <RoleBox
         onClick={() => handleClickRole(ROLE.VOCAL)}
         onMouseEnter={() => handleHoverRole(ROLE.VOCAL)}
         onMouseLeave={() => handleHoverRole("")}
-        isProducer={isProducer(ROLE.VOCAL)}>
-        {isActive(ROLE.VOCAL) ? <SignupRoleVocalHoverIcon /> : <SignupRoleVocalIcon />}
+        isProducer={checkIsProducer(ROLE.VOCAL)}>
+        {checkIsActive(ROLE.VOCAL) ? <SignupRoleVocalHoverIcon /> : <SignupRoleVocalIcon />}
       </RoleBox>
     </RoleWrapper>
   );
