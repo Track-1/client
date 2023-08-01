@@ -1,24 +1,22 @@
-import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { authEmail } from "../../api/signup";
-import { ResendSignupIc, SendCodeSignupIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
+import { SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
 import Input from "./Input";
+import SendCodeButton from "./sendCodeButton";
 
 interface EmailInputType {
   email: string;
 }
 
 export default function Email() {
-  const [isSendCode, setIsSendCode] = useState<boolean>(false);
-  // const [emailMessage, setEmailMessage] = useState<string>(EMAIL_MESSAGE.NULL);
-  const [clickRole, setClickRole] = useRecoilState<string>(signupRole);
+  const clickRole = useRecoilValue<string>(signupRole);
 
   const methods = useForm<EmailInputType>({
     defaultValues: {
@@ -81,10 +79,7 @@ export default function Email() {
             placeholder="Enter your email address"
             width={42.2}
           />
-          <SendCodButtonWrapper isActive={checkIsActive()}>
-            {checkIsResend() ? <ResendSignupIcon /> : <SendCodeSignupIcon />}
-            <SendCodeButton type="submit" />
-          </SendCodButtonWrapper>
+          <SendCodeButton isActive={checkIsActive()} isResend={checkIsResend()} />
         </EmailInputWrapper>
       </form>
     </FormProvider>
@@ -110,40 +105,4 @@ const InputTitle = styled.h1`
 const EmailInputWrapper = styled.section`
   display: flex;
   align-items: center;
-`;
-
-const SendCodButtonWrapper = styled.label<{ isActive: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-left: 1rem;
-
-  width: 12.7rem;
-  height: 4rem;
-
-  border-radius: 5rem;
-
-  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
-  border-radius: 2.2rem;
-
-  cursor: pointer;
-`;
-
-const SendCodeButton = styled.input`
-  display: none;
-`;
-
-const SendCodeSignupIcon = styled(SendCodeSignupIc)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 9.3rem;
-`;
-
-const ResendSignupIcon = styled(ResendSignupIc)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 6.3rem;
 `;
