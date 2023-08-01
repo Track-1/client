@@ -42,11 +42,11 @@ export default function Email() {
     return errors?.email?.message === EMAIL_MESSAGE.TIME;
   }
 
-  function handleSendCode(data: any) {
+  function handleSendCode() {
     // send code post 로직
     sendCode({
       tableName: clickRole,
-      userEmail: data?.email,
+      userEmail: watch("email"),
     });
   }
 
