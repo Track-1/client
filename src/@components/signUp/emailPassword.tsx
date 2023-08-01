@@ -43,7 +43,7 @@ export default function EmailPassword() {
 const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
   width: 48.3rem;
 
-  margin-top: 8rem;
+  margin: 8rem 0 13.4rem 3.4rem;
 `;
 
 const EmailPasswordWrapper = styled.div`

@@ -1,4 +1,4 @@
-import { FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
+import { FieldError, FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
 
 interface InputProps<
@@ -7,36 +7,59 @@ interface InputProps<
 > extends UseControllerProps<TFieldValues, TName> {
   type?: string;
   placeholder?: string;
-  title?: string;
+  width: number;
 }
 
 export default function Input<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: InputProps<TFieldValues, TName>) {
-  const { name, rules, type, placeholder, title } = props;
+  const { name, rules, type, placeholder, width } = props;
   const { field, fieldState } = useController({
     name,
     rules: rules,
   });
 
+  function checkIsError(error: FieldError | undefined) {
+    return error !== undefined;
+  }
+
   return (
-    <>
-      <h1>{title}</h1>
-      <InputWrapper {...field} type={type} placeholder={placeholder} />
+    <InputContainer>
+      <InputWrapper
+        {...field}
+        type={type}
+        placeholder={placeholder}
+        isError={checkIsError(fieldState.error)}
+        width={width}
+      />
       <ErrorMessage> {fieldState.error && fieldState.error.message}</ErrorMessage>
-    </>
+    </InputContainer>
   );
 }
 
-const InputWrapper = styled.input`
-  color: white;
-  border-bottom: 1px solid white;
+const InputContainer = styled.article`
+  display: flex;
+  flex-direction: column;
+`;
 
-  width: 45rem;
+const InputWrapper = styled.input<{ isError: boolean; width: number }>`
+  margin-top: 3rem;
+  padding: 0.5rem 0;
+
+  color: white;
+
+  border-bottom: 1px solid ${({ theme, isError }) => (isError ? theme.colors.red : theme.colors.white)};
+
+  width: ${({ width }) => width}rem;
+
+  ${({ theme }) => theme.fonts.input}
 `;
 
 const ErrorMessage = styled.p`
   margin-top: 1.1rem;
   height: 1.9rem;
+
+  color: ${({ theme }) => theme.colors.red};
+  ${({ theme }) => theme.fonts.message};
 `;
