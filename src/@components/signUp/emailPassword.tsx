@@ -6,11 +6,6 @@ import { SignupEmailPasswordTitleIc } from "../../assets";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import Email from "./email";
 
-type Inputs = {
-  email: string;
-  emailRequired: string;
-};
-
 interface IFormInputs {
   email: string;
 }
@@ -18,17 +13,6 @@ interface IFormInputs {
 export default function EmailPassword() {
   const [isSendCode, setIsSendCode] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
-  // const [emails, setEmails] = useState<emailInputType>({
-  //   email: "",
-  //   message: EMAIL_MESSAGE.NULL,
-  // });
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   formState: { errors },
-  //   control,
-  // } = useForm<Inputs>();
 
   const methods = useForm<IFormInputs>({
     defaultValues: {
@@ -37,21 +21,19 @@ export default function EmailPassword() {
     mode: "onChange",
   });
 
-  const { handleSubmit, register } = methods;
+  const { handleSubmit } = methods;
 
-  function hadleSignup(data: any) {
+  function handleSendCode(data: any) {
+    // send code post 로직
     console.log("회원가입" + data?.email);
   }
-
-  // console.log(watch("email"));
 
   return (
     <FormProvider {...methods}>
       <EmailPasswordWrapper>
         <SignupEmailPasswordTitleIcon />
-        <form onSubmit={handleSubmit(hadleSignup)}>
+        <form onSubmit={handleSubmit(handleSendCode)}>
           <Email />
-          <SubmitButton type="submit" />
         </form>
       </EmailPasswordWrapper>
     </FormProvider>
@@ -65,9 +47,5 @@ const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
 `;
 
 const EmailPasswordWrapper = styled.div`
-  color: white;
-`;
-
-const SubmitButton = styled.input`
   color: white;
 `;
