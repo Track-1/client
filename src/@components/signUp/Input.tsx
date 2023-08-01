@@ -22,8 +22,6 @@ export default function Input<
     rules: rules,
   });
 
-  // console.log(fieldState?.error?.message);
-
   return (
     <InputContainer>
       <InputWrapper
