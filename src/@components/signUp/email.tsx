@@ -1,39 +1,90 @@
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { ResendSignupIc, SendCodeSignupIc } from "../../assets";
+import { authEmail } from "../../api/signup";
+import { ResendSignupIc, SendCodeSignupIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { signupRole } from "../../recoil/signUp/role";
 import Input from "./Input";
 
-interface EmailProp {
-  isSendCode: boolean;
+interface EmailInputType {
+  email: string;
 }
 
-export default function Email(props: EmailProp) {
-  const { isSendCode } = props;
+export default function Email() {
+  const [isSendCode, setIsSendCode] = useState<boolean>(false);
+  const [clickRole, setClickRole] = useRecoilState<string>(signupRole);
+
+  const methods = useForm<EmailInputType>({
+    defaultValues: {
+      email: "",
+    },
+    mode: "onChange",
+  });
+
+  const { handleSubmit, setError } = methods;
+
+  function handleSendCode(data: any) {
+    // send code post 로직
+    sendCode({
+      tableName: clickRole,
+      userEmail: data?.email,
+    });
+
+    // console.log("회원가입" + data?.email);
+  }
+
+  const { mutate: sendCode } = useMutation(authEmail, {
+    onSuccess: () => {
+      setIsSendCode(true);
+    },
+    onError: (error: any) => {
+      if (error.response.data.message === "중복된 이메일입니다") {
+        setError("email", { message: EMAIL_MESSAGE.DUPLICATION });
+      }
+    },
+  });
 
   return (
-    <>
-      <InputTitle>What’s your email?</InputTitle>
-      <EmailInputWrapper>
-        <Input
-          name="email"
-          rules={{
-            required: true,
-            pattern: {
-              value: CHECK_EMAIL_FORM,
-              message: EMAIL_MESSAGE.FORM,
-            },
-          }}
-          type="text"
-          placeholder="Enter your email address"
-          width={42.2}
-        />
-        <SendCodButton htmlFor="sendCode">{isSendCode ? <ResendSignupIcon /> : <SendCodeSignupIcon />}</SendCodButton>
-        <input type="submit" id="sendCode" />
-      </EmailInputWrapper>
-    </>
+    <FormProvider {...methods}>
+      {isSendCode ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
+      <form onSubmit={handleSubmit(handleSendCode)}>
+        <InputTitle>What’s your email?</InputTitle>
+        <EmailInputWrapper>
+          <Input
+            name="email"
+            rules={{
+              required: true,
+              pattern: {
+                value: CHECK_EMAIL_FORM,
+                message: EMAIL_MESSAGE.FORM,
+              },
+            }}
+            type="text"
+            placeholder="Enter your email address"
+            width={42.2}
+          />
+          <SendCodButton htmlFor="sendCode">{isSendCode ? <ResendSignupIcon /> : <SendCodeSignupIcon />}</SendCodButton>
+          <input type="submit" id="sendCode" />
+        </EmailInputWrapper>
+      </form>
+    </FormProvider>
   );
 }
+
+const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
+  width: 48.3rem;
+
+  margin: 8rem 0 13.4rem 3.4rem;
+`;
+
+const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
+  width: 30.7418rem;
+  margin: 8rem 0 5.9rem 12rem;
+`;
 
 const InputTitle = styled.h1`
   color: ${({ theme }) => theme.colors.gray2};
