@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilState } from "recoil";
@@ -40,11 +40,9 @@ export default function Email() {
   // console.log(watch("email"));
   // console.log(errors?.email?.message);
 
-  useEffect(() => {
-    if (watch("email") !== "" && errors?.email?.message === undefined) {
-      // setError;
-    }
-  }, [errors?.email?.message]);
+  function checkIsActive() {
+    return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend();
+  }
 
   function checkIsResend() {
     return errors?.email?.message === EMAIL_MESSAGE.TIME;
@@ -90,8 +88,11 @@ export default function Email() {
             placeholder="Enter your email address"
             width={42.2}
           />
-          <SendCodButton htmlFor="sendCode">{isSendCode ? <ResendSignupIcon /> : <SendCodeSignupIcon />}</SendCodButton>
-          <input type="submit" id="sendCode" />
+          <SendCodButtonWrapper isActive={checkIsActive()}>
+            {checkIsResend() ? <ResendSignupIcon /> : <SendCodeSignupIcon />}
+
+            <SendCodeButton type="submit" />
+          </SendCodButtonWrapper>
         </EmailInputWrapper>
       </form>
     </FormProvider>
@@ -119,31 +120,38 @@ const EmailInputWrapper = styled.section`
   align-items: center;
 `;
 
-const SendCodButton = styled.label`
-  height: 4rem;
-  margin-left: 1rem;
-  padding: 1.5rem 1.6rem;
+const SendCodButtonWrapper = styled.label<{ isActive: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  background-color: ${({ theme }) => theme.colors.gray4};
+  margin-left: 1rem;
+
+  width: 12.7rem;
+  height: 4rem;
+
+  border-radius: 5rem;
+
+  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
   border-radius: 2.2rem;
 
   cursor: pointer;
+`;
+
+const SendCodeButton = styled.input`
+  display: none;
 `;
 
 const SendCodeSignupIcon = styled(SendCodeSignupIc)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: 9.3761rem;
-  height: 0.9906rem;
+  width: 9.3rem;
 `;
 
 const ResendSignupIcon = styled(ResendSignupIc)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: 6.3393rem;
-  height: 0.988rem;
+  width: 6.3rem;
 `;
