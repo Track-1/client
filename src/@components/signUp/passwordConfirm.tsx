@@ -3,12 +3,12 @@ import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 
-export default function Password() {
+export default function PasswordConfirm() {
   return (
     <>
-      <InputTitle>Password</InputTitle>
+      <InputTitle>Password Confirm</InputTitle>
       <Input
-        name="password"
+        name="passwordConfirm"
         rules={{
           required: true,
           pattern: {
@@ -17,7 +17,7 @@ export default function Password() {
           },
         }}
         type="password"
-        placeholder="Create a password"
+        placeholder="Enter a password again"
         width={42.2}
       />
     </>
