@@ -1,4 +1,4 @@
-import { FormProvider, UseFormReturn } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -8,26 +8,15 @@ import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
-import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 import SendCodeButton from "./sendCodeButton";
 
-interface EmailProps {
-  methods: UseFormReturn<EmailPasswordInputType, any, undefined>;
-}
-
-export default function Email(props: EmailProps) {
+export default function Email(props: SignupInputProps) {
   const { methods } = props;
   const clickRole = useRecoilValue<string>(signupRole);
-
-  // const methods = useForm<EmailInputType>({
-  //   defaultValues: {
-  //     email: "",
-  //   },
-  //   mode: "onChange",
-  // });
 
   const {
     handleSubmit,
@@ -41,6 +30,7 @@ export default function Email(props: EmailProps) {
   }
 
   function handleSendCode() {
+    console.log("버튼 눌림");
     // send code post 로직
     sendCode({
       tableName: clickRole,

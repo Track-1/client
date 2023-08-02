@@ -1,41 +1,22 @@
-import { FormProvider, UseFormSetError, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postVerifyCode } from "../../api/signup";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
-import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { SignupInputProps } from "../../type/signUp/inputProps";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 import VerifyCodeButton from "./verifyCodeButton";
 
-interface VerifyCodeType {
-  verifyCode: string;
-}
-
-interface EmailInputType {
-  email: string;
-}
-
-interface VerifyCodeProps extends EmailInputType {
-  setError: UseFormSetError<EmailPasswordInputType>;
-}
-
-export default function VerifyCode(props: VerifyCodeProps) {
-  const { email, setError } = props;
+export default function VerifyCode(props: SignupInputProps) {
+  const { methods } = props;
   const clickRole = useRecoilValue<string>(signupRole);
-
-  const methods = useForm<VerifyCodeType>({
-    defaultValues: {
-      verifyCode: "",
-    },
-    mode: "onChange",
-  });
 
   const {
     handleSubmit,
-    // setError,
+    setError,
     formState: { errors },
     watch,
   } = methods;
@@ -56,7 +37,7 @@ export default function VerifyCode(props: VerifyCodeProps) {
     //verify code post
     verifyEmail({
       tableName: clickRole,
-      userEmail: email,
+      userEmail: watch("email"),
       verificationCode: watch("verifyCode"),
     });
   }

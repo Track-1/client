@@ -6,6 +6,8 @@ import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import Email from "./email";
+import Password from "./password";
+import PasswordConfirm from "./passwordConfirm";
 import VerifyCode from "./verifyCode";
 
 export default function EmailPassword() {
@@ -31,11 +33,17 @@ export default function EmailPassword() {
     return errors?.email?.message === EMAIL_MESSAGE.TIME;
   }
 
+  console.log(watch("email"));
+  console.log(errors?.password?.message);
+  // console.log(errors?.email?.message);
+
   return (
     <>
       {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
-      {checkIsResend() && <VerifyCode email={watch("email")} setError={setError} />}
       <Email methods={methods} />
+      {checkIsResend() && <VerifyCode methods={methods} />}
+      <Password methods={methods} />
+      <PasswordConfirm methods={methods} />
     </>
   );
 }
