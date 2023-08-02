@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
+import { CreateAPasswordForYourAccountIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
@@ -39,9 +39,20 @@ export default function EmailPassword() {
     return errors?.email?.message === EMAIL_MESSAGE.VERIFY;
   }
 
+  function checkTitle() {
+    if (checkIsResend()) {
+      return <WeSentYouACodeIcon />;
+    } else {
+      if (checkEmailVerified()) {
+        return <CreateAPasswordForYourAccountIcon />;
+      }
+      return <SignupEmailPasswordTitleIcon />;
+    }
+  }
+
   return (
     <>
-      {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
+      {checkTitle()}
       <Email methods={methods} />
       {checkIsResend() && <VerifyCode methods={methods} />}
       <Password methods={methods} />
@@ -58,6 +69,12 @@ const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
 
 const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
   width: 30.7418rem;
+
+  margin: 8rem 0 2.8rem 0;
+`;
+
+const CreateAPasswordForYourAccountIcon = styled(CreateAPasswordForYourAccountIc)`
+  width: 55.6rem;
 
   margin: 8rem 0 2.8rem 0;
 `;

@@ -1,3 +1,4 @@
+export { ReactComponent as CreateAPasswordForYourAccountIc } from "./icon/createAPasswordForYourAccountIc.svg";
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
 export { ReactComponent as SignupBackBtnIc } from "./icon/signupBackBtnIc.svg";
