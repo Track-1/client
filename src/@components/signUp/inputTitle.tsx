@@ -12,6 +12,8 @@ export default function InputTitle(props: InputTitleProp) {
 }
 
 const Title = styled.h1`
+  margin-top: 3.2rem;
+
   color: ${({ theme }) => theme.colors.gray2};
   ${({ theme }) => theme.fonts.body1};
 `;

@@ -35,9 +35,9 @@ export default function EmailPassword() {
     return errors?.email?.message === EMAIL_MESSAGE.TIME;
   }
 
-  // console.log(watch("email"));
-  // console.log(errors?.password?.message);
-  // console.log(errors?.email?.message);
+  function checkEmailVerified() {
+    return errors?.email?.message === EMAIL_MESSAGE.VERIFY;
+  }
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function EmailPassword() {
       <Email methods={methods} />
       {checkIsResend() && <VerifyCode methods={methods} />}
       <Password methods={methods} />
-      <PasswordConfirm methods={methods} />
+      {checkEmailVerified() && <PasswordConfirm methods={methods} />}
     </>
   );
 }
@@ -53,10 +53,11 @@ export default function EmailPassword() {
 const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
   width: 48.3rem;
 
-  margin: 8rem 0 13.4rem 3.4rem;
+  margin: 8rem 0 10.3rem 0;
 `;
 
 const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
   width: 30.7418rem;
-  margin: 8rem 0 5.9rem 12rem;
+
+  margin: 8rem 0 2.8rem 0;
 `;

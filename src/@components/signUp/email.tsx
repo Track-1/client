@@ -3,7 +3,6 @@ import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { authEmail } from "../../api/signup";
-import { SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
@@ -50,7 +49,6 @@ export default function Email(props: SignupInputProps) {
       }
     },
   });
-  console.log(errors);
 
   return (
     <>
@@ -78,17 +76,6 @@ export default function Email(props: SignupInputProps) {
     </>
   );
 }
-
-const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
-  width: 48.3rem;
-
-  margin: 8rem 0 13.4rem 3.4rem;
-`;
-
-const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
-  width: 30.7418rem;
-  margin: 8rem 0 5.9rem 12rem;
-`;
 
 const EmailInputWrapper = styled.section`
   display: flex;
