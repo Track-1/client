@@ -1,7 +1,5 @@
 export const SIGNUP_STEP = {
-  ROLE: "role",
-  EMAIL_PASSWORD: "email password",
-  NICKNAME_CONVENTION: "nickname convention",
-  PROFILE: "profile",
-  SUCCESS: "signup success",
+  ROLE: 1,
+  EMAIL_PASSWORD: 2,
+  NICKNAME_CONVENTION: 3,
 };

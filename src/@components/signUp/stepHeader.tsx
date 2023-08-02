@@ -7,7 +7,6 @@ import {
   SignupHeaderStep3Ic,
   SignupHeaderStepBlankIc,
 } from "../../assets";
-import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
 import { StepProp } from "../../type/signUp/stepProps";
 
 export default function StepHeader(props: StepProp) {
@@ -18,21 +17,8 @@ export default function StepHeader(props: StepProp) {
     navigate("/login");
   }
 
-  function checkStep() {
-    switch (step) {
-      case SIGNUP_STEP.ROLE:
-        return 1;
-      case SIGNUP_STEP.EMAIL_PASSWORD:
-        return 2;
-      case SIGNUP_STEP.NICKNAME_CONVENTION:
-        return 3;
-      default:
-        return;
-    }
-  }
-
   function checkStepNumber(stepNumber: number) {
-    return stepNumber === checkStep();
+    return stepNumber === step;
   }
 
   return (
