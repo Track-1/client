@@ -8,6 +8,7 @@ import { SignupInputProps } from "../../type/signUp/inputProps";
 import { showPassword } from "../../utils/signUp/showPassword";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
+import PasswordShowIcons from "./passwordShowIcons";
 
 export default function Password(props: SignupInputProps) {
   const { methods } = props;
@@ -18,10 +19,6 @@ export default function Password(props: SignupInputProps) {
     watch,
   } = methods;
   const [isShow, setIsShow] = useState(false);
-
-  function handleShowPassword() {
-    setIsShow(!isShow);
-  }
 
   return (
     <>
@@ -41,9 +38,7 @@ export default function Password(props: SignupInputProps) {
             placeholder="Create a password"
             width={56}
           />
-          <EyeWrapper onClick={handleShowPassword}>
-            {isShow ? <ShowPasswordSignupIcon /> : <UnshowPasswordSignupIcon />}
-          </EyeWrapper>
+          <PasswordShowIcons isShow={isShow} setIsShow={setIsShow} />
         </form>
       </FormProvider>
     </>
