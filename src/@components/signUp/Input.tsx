@@ -22,6 +22,14 @@ export default function Input<
     rules: rules,
   });
 
+  function calculateMarginLeft() {
+    if (width === 42.2) {
+      return 38;
+    } else {
+      return 48;
+    }
+  }
+
   return (
     <InputContainer>
       <InputWrapper
@@ -36,7 +44,7 @@ export default function Input<
         {fieldState?.error && (
           <ErrorMessage color={checkMessageColor(fieldState?.error?.message)}>
             {fieldState.error.message}
-            <IconWrapper marginLeft={width - 4}>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
+            <IconWrapper marginLeft={calculateMarginLeft()}>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
           </ErrorMessage>
         )}
       </ErrorMessageWrapper>
