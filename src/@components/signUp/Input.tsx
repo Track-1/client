@@ -36,7 +36,7 @@ export default function Input<
         {fieldState?.error && (
           <ErrorMessage color={checkMessageColor(fieldState?.error?.message)}>
             {fieldState.error.message}
-            <IconWrapper>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
+            <IconWrapper marginLeft={width - 4}>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
           </ErrorMessage>
         )}
       </ErrorMessageWrapper>
@@ -44,8 +44,8 @@ export default function Input<
   );
 }
 
-const IconWrapper = styled.div`
-  margin: -7.5rem 0 0 38rem;
+const IconWrapper = styled.div<{ marginLeft: number }>`
+  margin: -7.5rem 0 0 ${({ marginLeft }) => marginLeft}rem;
 `;
 
 const InputContainer = styled.article`
