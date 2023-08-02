@@ -64,6 +64,8 @@ export default function EmailPassword() {
     }
   }, [errors]);
 
+  console.log(isSuccess);
+
   return (
     <>
       {checkTitle()}

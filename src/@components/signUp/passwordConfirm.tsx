@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
+import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { showPassword } from "../../utils/signUp/showPassword";
 import Input from "./Input";
@@ -9,6 +11,8 @@ import PasswordShowIcons from "./passwordShowIcons";
 
 export default function PasswordConfirm(props: SignupInputProps) {
   const { methods } = props;
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+
   const {
     handleSubmit,
     setError,
@@ -28,8 +32,12 @@ export default function PasswordConfirm(props: SignupInputProps) {
               required: true,
               validate: {
                 check: (val) => {
-                  if (watch("password") !== val) {
-                    return PASSWORD_MESSAGE.MATCH;
+                  if (watch("password")) {
+                    if (watch("password") !== val) {
+                      return PASSWORD_MESSAGE.MATCH;
+                    } else {
+                      setIsSuccess(true);
+                    }
                   }
                 },
               },
