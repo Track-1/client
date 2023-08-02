@@ -20,11 +20,13 @@ export default function Email(props: SignupInputProps) {
   const {
     handleSubmit,
     setError,
+    resetField,
     formState: { errors },
     watch,
   } = methods;
 
   function checkIsActive() {
+    resetField("passwordConfirm");
     return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
   }
 

@@ -17,6 +17,7 @@ export default function VerifyCode(props: SignupInputProps) {
   const {
     handleSubmit,
     setError,
+    resetField,
     formState: { errors },
     watch,
   } = methods;
@@ -25,6 +26,7 @@ export default function VerifyCode(props: SignupInputProps) {
     onSuccess: () => {
       // password 등장 하도록 변경
       setError("email", { message: EMAIL_MESSAGE.VERIFY });
+      resetField("verifyCode");
     },
     onError: () => {
       setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.ERROR });
