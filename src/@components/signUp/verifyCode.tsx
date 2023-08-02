@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { postVerifyCode } from "../../api/signup";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
+import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 import VerifyCodeButton from "./verifyCodeButton";
@@ -18,11 +19,11 @@ interface EmailInputType {
 }
 
 interface VerifyCodeProps extends EmailInputType {
-  setEmailMessage: UseFormSetError<EmailInputType>;
+  setError: UseFormSetError<EmailPasswordInputType>;
 }
 
 export default function VerifyCode(props: VerifyCodeProps) {
-  const { email, setEmailMessage } = props;
+  const { email, setError } = props;
   const clickRole = useRecoilValue<string>(signupRole);
 
   const methods = useForm<VerifyCodeType>({
@@ -34,7 +35,7 @@ export default function VerifyCode(props: VerifyCodeProps) {
 
   const {
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors },
     watch,
   } = methods;
@@ -42,7 +43,8 @@ export default function VerifyCode(props: VerifyCodeProps) {
   const { mutate: verifyEmail } = useMutation(postVerifyCode, {
     onSuccess: () => {
       // password 등장 하도록 변경
-      setEmailMessage("email", { message: EMAIL_MESSAGE.VERIFY });
+      setError("email", { message: EMAIL_MESSAGE.VERIFY });
+      setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.ACTIVE });
     },
     onError: (error: any) => {
       console.log(error.response.data.message);

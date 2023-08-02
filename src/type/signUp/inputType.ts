@@ -1,16 +1,6 @@
-export interface message {
-  message: string;
-}
-
-export interface emailInputType extends message {
+export interface EmailPasswordInputType {
   email: string;
-}
-
-export interface verificationCodeInputType extends message {
-  verificationCode: string;
-}
-
-export interface passwordInputType extends message {
+  verifyCode: string;
   password: string;
   passwordConfirm: string;
 }

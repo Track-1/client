@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, UseFormReturn } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -8,24 +8,26 @@ import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { signupRole } from "../../recoil/signUp/role";
+import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 import SendCodeButton from "./sendCodeButton";
-import VerifyCode from "./verifyCode";
 
-interface EmailInputType {
-  email: string;
+interface EmailProps {
+  methods: UseFormReturn<EmailPasswordInputType, any, undefined>;
 }
 
-export default function Email() {
+export default function Email(props: EmailProps) {
+  const { methods } = props;
   const clickRole = useRecoilValue<string>(signupRole);
 
-  const methods = useForm<EmailInputType>({
-    defaultValues: {
-      email: "",
-    },
-    mode: "onChange",
-  });
+  // const methods = useForm<EmailInputType>({
+  //   defaultValues: {
+  //     email: "",
+  //   },
+  //   mode: "onChange",
+  // });
 
   const {
     handleSubmit,
@@ -35,11 +37,7 @@ export default function Email() {
   } = methods;
 
   function checkIsActive() {
-    return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend();
-  }
-
-  function checkIsResend() {
-    return errors?.email?.message === EMAIL_MESSAGE.TIME;
+    return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
   }
 
   function handleSendCode() {
@@ -82,11 +80,10 @@ export default function Email() {
               placeholder="Enter your email address"
               width={42.2}
             />
-            <SendCodeButton isActive={checkIsActive()} isResend={checkIsResend()} />
+            <SendCodeButton isActive={checkIsActive()} isResend={checkIsResend(errors?.email?.message)} />
           </EmailInputWrapper>
         </form>
       </FormProvider>
-      {checkIsResend() && <VerifyCode email={watch("email")} setEmailMessage={setError} />}
     </>
   );
 }
