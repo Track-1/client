@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormProvider } from "react-hook-form";
-import styled from "styled-components";
-import { ShowPasswordSignupIc, UnshowPasswordSignupIc } from "../../assets";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { showPassword } from "../../utils/signUp/showPassword";
@@ -19,16 +17,6 @@ export default function PasswordConfirm(props: SignupInputProps) {
   } = methods;
   const [isShow, setIsShow] = useState(false);
 
-  function checkPasswordMatch() {
-    return watch("password") === watch("passwordConfirm");
-  }
-
-  useEffect(() => {
-    if (!checkPasswordMatch() && watch("passwordConfirm")) {
-      setError("passwordConfirm", { message: PASSWORD_MESSAGE.MATCH });
-    }
-  }, [watch("passwordConfirm")]);
-
   return (
     <>
       <FormProvider {...methods}>
@@ -38,6 +26,13 @@ export default function PasswordConfirm(props: SignupInputProps) {
             name="passwordConfirm"
             rules={{
               required: true,
+              validate: {
+                check: (val) => {
+                  if (watch("password") !== val) {
+                    return PASSWORD_MESSAGE.MATCH;
+                  }
+                },
+              },
             }}
             type={showPassword(isShow)}
             placeholder="Enter a password again"
@@ -49,20 +44,3 @@ export default function PasswordConfirm(props: SignupInputProps) {
     </>
   );
 }
-
-const EyeWrapper = styled.i`
-  margin: -7.5rem 0 0 52rem;
-  position: absolute;
-
-  cursor: pointer;
-`;
-
-const ShowPasswordSignupIcon = styled(ShowPasswordSignupIc)`
-  width: 4rem;
-  height: 4rem;
-`;
-
-const UnshowPasswordSignupIcon = styled(UnshowPasswordSignupIc)`
-  width: 4rem;
-  height: 4rem;
-`;

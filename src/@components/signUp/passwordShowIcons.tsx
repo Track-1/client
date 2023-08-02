@@ -15,7 +15,7 @@ export default function PasswordShowIcons(props: PasswordShowIconsProps) {
 
   return (
     <EyeWrapper onClick={handleShowPassword}>
-      {isShow ? <ShowPasswordSignupIcon /> : <UnshowPasswordSignupIcon />}
+      {isShow ? <UnshowPasswordSignupIcon /> : <ShowPasswordSignupIcon />}
     </EyeWrapper>
   );
 }

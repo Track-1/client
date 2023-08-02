@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
-import styled from "styled-components";
-import { ShowPasswordSignupIc, UnshowPasswordSignupIc } from "../../assets";
 import { CHECK_PASSWORD_FORM } from "../../core/signUp/checkForm";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { SignupInputProps } from "../../type/signUp/inputProps";
@@ -44,20 +42,3 @@ export default function Password(props: SignupInputProps) {
     </>
   );
 }
-
-const EyeWrapper = styled.i`
-  margin: -7.5rem 0 0 52rem;
-  position: absolute;
-
-  cursor: pointer;
-`;
-
-const ShowPasswordSignupIcon = styled(ShowPasswordSignupIc)`
-  width: 4rem;
-  height: 4rem;
-`;
-
-const UnshowPasswordSignupIcon = styled(UnshowPasswordSignupIc)`
-  width: 4rem;
-  height: 4rem;
-`;

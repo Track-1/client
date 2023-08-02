@@ -29,7 +29,6 @@ export default function Email(props: SignupInputProps) {
   }
 
   function handleSendCode() {
-    console.log("버튼 눌림");
     // send code post 로직
     sendCode({
       tableName: clickRole,

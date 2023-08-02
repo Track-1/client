@@ -26,9 +26,9 @@ export default function VerifyCode(props: SignupInputProps) {
       // password 등장 하도록 변경
       setError("email", { message: EMAIL_MESSAGE.VERIFY });
     },
-    onError: (error: any) => {
-      console.log(error.response.data.message);
+    onError: () => {
       setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.ERROR });
+      setError("email", { message: EMAIL_MESSAGE.TIME });
     },
   });
 
@@ -47,7 +47,7 @@ export default function VerifyCode(props: SignupInputProps) {
 
   return (
     <FormProvider {...methods}>
-      <VerifyCodeContainer onSubmit={handleSubmit(handleVerifyCode)}>
+      <form onSubmit={handleSubmit(handleVerifyCode)}>
         <InputTitle>Verification code</InputTitle>
         <VerifyCodeWrapper>
           <Input
@@ -61,7 +61,7 @@ export default function VerifyCode(props: SignupInputProps) {
           />
           <VerifyCodeButton isActive={checkIsActive()} />
         </VerifyCodeWrapper>
-      </VerifyCodeContainer>
+      </form>
     </FormProvider>
   );
 }
@@ -69,8 +69,4 @@ export default function VerifyCode(props: SignupInputProps) {
 const VerifyCodeWrapper = styled.section`
   display: flex;
   align-items: center;
-`;
-
-const VerifyCodeContainer = styled.form`
-  margin-top: 3.2rem;
 `;

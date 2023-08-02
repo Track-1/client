@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { CreateAPasswordForYourAccountIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { EMAIL_MESSAGE, PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
@@ -49,6 +50,19 @@ export default function EmailPassword() {
       return <SignupEmailPasswordTitleIcon />;
     }
   }
+  // 전체 로직 생각하기!!!
+
+  function checkPasswordMatch() {
+    return errors?.password?.message === PASSWORD_MESSAGE.SUCCESS;
+  }
+
+  useEffect(() => {
+    if (checkEmailVerified() && checkPasswordMatch()) {
+      setIsSuccess(true);
+    } else {
+      setIsSuccess(false);
+    }
+  }, [errors]);
 
   return (
     <>
