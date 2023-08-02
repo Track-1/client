@@ -65,7 +65,7 @@ export default function Email() {
   return (
     <>
       <FormProvider {...methods}>
-        {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />}
+        {/* {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />} */}
         <form onSubmit={handleSubmit(handleSendCode)}>
           <InputTitle>What’s your email?</InputTitle>
           <EmailInputWrapper>

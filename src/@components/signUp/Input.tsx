@@ -66,7 +66,7 @@ const InputWrapper = styled.input<{ width: number; color: string | undefined }>`
   ${({ theme }) => theme.fonts.input}
 `;
 
-const ErrorMessage = styled.p<{ color: string }>`
+const ErrorMessage = styled.h1<{ color: string }>`
   color: ${({ color }) => color};
   ${({ theme }) => theme.fonts.message};
 `;
