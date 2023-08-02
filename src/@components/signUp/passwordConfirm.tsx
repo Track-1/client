@@ -24,13 +24,15 @@ export default function PasswordConfirm(props: SignupInputProps) {
           <InputTitle>Password Confirm</InputTitle>
           <Input
             name="passwordConfirm"
-            rules={{
-              required: true,
-              //   pattern: {
-              //     value: checkPasswordMatch(),
-              //     message: PASSWORD_MESSAGE.MATCH,
-              //   },
-            }}
+            rules={
+              {
+                //   required: true,
+                //   pattern: {
+                //     value: checkPasswordMatch(),
+                //     message: PASSWORD_MESSAGE.MATCH,
+                //   },
+              }
+            }
             type="password"
             placeholder="Enter a password again"
             width={56}

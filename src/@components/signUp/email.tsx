@@ -44,16 +44,17 @@ export default function Email(props: SignupInputProps) {
       alert(SIGNUP_SENDCODE);
     },
     onError: (error: any) => {
+      console.log("Asdsdasaff");
       if (error.response.data.message === "중복된 이메일입니다") {
         setError("email", { message: EMAIL_MESSAGE.DUPLICATION });
       }
     },
   });
+  console.log(errors);
 
   return (
     <>
       <FormProvider {...methods}>
-        {/* {checkIsResend() ? <WeSentYouACodeIcon /> : <SignupEmailPasswordTitleIcon />} */}
         <form onSubmit={handleSubmit(handleSendCode)}>
           <InputTitle>What’s your email?</InputTitle>
           <EmailInputWrapper>

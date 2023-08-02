@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
+import { signupRole } from "../../recoil/signUp/role";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import Email from "./email";
 import Password from "./password";
@@ -12,6 +13,7 @@ import VerifyCode from "./verifyCode";
 
 export default function EmailPassword() {
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+  const clickRole = useRecoilValue<string>(signupRole);
   const methods = useForm<EmailPasswordInputType>({
     defaultValues: {
       email: "",
@@ -33,8 +35,8 @@ export default function EmailPassword() {
     return errors?.email?.message === EMAIL_MESSAGE.TIME;
   }
 
-  console.log(watch("email"));
-  console.log(errors?.password?.message);
+  // console.log(watch("email"));
+  // console.log(errors?.password?.message);
   // console.log(errors?.email?.message);
 
   return (

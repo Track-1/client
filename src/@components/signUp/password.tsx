@@ -22,7 +22,7 @@ export default function Password(props: SignupInputProps) {
           <Input
             name="password"
             rules={{
-              required: true,
+              // required: true,
               pattern: {
                 value: CHECK_PASSWORD_FORM,
                 message: PASSWORD_MESSAGE.FORM,
