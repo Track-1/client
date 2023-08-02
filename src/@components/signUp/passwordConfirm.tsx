@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
+import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
@@ -17,6 +19,12 @@ export default function PasswordConfirm(props: SignupInputProps) {
     return watch("password") === watch("passwordConfirm");
   }
 
+  useEffect(() => {
+    if (!checkPasswordMatch() && watch("passwordConfirm")) {
+      setError("passwordConfirm", { message: PASSWORD_MESSAGE.MATCH });
+    }
+  }, [watch("passwordConfirm")]);
+
   return (
     <>
       <FormProvider {...methods}>
@@ -24,15 +32,9 @@ export default function PasswordConfirm(props: SignupInputProps) {
           <InputTitle>Password Confirm</InputTitle>
           <Input
             name="passwordConfirm"
-            rules={
-              {
-                //   required: true,
-                //   pattern: {
-                //     value: checkPasswordMatch(),
-                //     message: PASSWORD_MESSAGE.MATCH,
-                //   },
-              }
-            }
+            rules={{
+              required: true,
+            }}
             type="password"
             placeholder="Enter a password again"
             width={56}
