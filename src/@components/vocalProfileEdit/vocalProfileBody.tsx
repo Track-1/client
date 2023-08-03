@@ -7,7 +7,7 @@ import HashtagsEdit from "../@common/hashtag/hashtagsEdit";
 import VocalSleeper from "../vocalProfileEdit/vocalSleeper";
 import { ProfileBackgroundIc } from "../../assets";
 import { useState } from "react";
-import DescriptionInput from "../@common/upload/common/DescriptionInput";
+import DescriptionInfo from "../producerProfileEdit/DescriptionInfo";
 
 export default function VocalProfileEditPage() {
   // 더미 데이터로 초기 설정
@@ -56,7 +56,7 @@ export default function VocalProfileEditPage() {
           />
           <CategoriesEdit />
           <HashtagsEdit />
-          <DescriptionInput />
+          <DescriptionInfo />
         </ProfileEditInfo>
       </ProfileEditContainer>
     </>

@@ -6,7 +6,7 @@ import CategoriesEdit from "../../@components/@common/selectCategories";
 import HashtagsEdit from "../../@components/@common/hashtag/hashtagsEdit";
 import { ProfileBackgroundIc } from "../../assets";
 import { useState } from "react";
-import DescriptionInput from "../../@components/@common/upload/common/DescriptionInput";
+import DescriptionInfo from "./DescriptionInfo";
 
 export default function ProducerProfileEditPage() {
   // 더미 데이터로 초기 설정
@@ -34,7 +34,7 @@ export default function ProducerProfileEditPage() {
           <ProducerImageEdit />
           <TitleInputEdit
             inputTitle="name"
-            data  ={profileData.name}
+            data={profileData.name}
             onChangeProps={(value) => handleInputChange(value)}
           />
         </ProfileEditTitle>
@@ -46,7 +46,7 @@ export default function ProducerProfileEditPage() {
           />
           <CategoriesEdit />
           <HashtagsEdit />
-          <DescriptionInput />
+          <DescriptionInfo />
         </ProfileEditInfo>
       </ProfileEditContainer>
     </>
