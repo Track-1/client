@@ -4,6 +4,7 @@ import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
 import useUploadInitValue from "../upload/useUploadInitValue";
 import { AudioElement } from "../../type/upload/uploadinitType";
 import { checkAudioFileType } from "../../utils/common/checkAudioFileType";
+import { uploadAudioFileSizeWarningMessage } from "../../core/common/warningMessage";
 
 export default function useUploadAudioFile() {
   const [uploadInit] = useUploadInitValue();
@@ -27,7 +28,7 @@ export default function useUploadAudioFile() {
         audioType: audioFileType,
       }));
     } else {
-      alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
+      alert(uploadAudioFileSizeWarningMessage);
     }
   }
 
