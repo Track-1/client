@@ -52,7 +52,7 @@ const NameContainer = styled.article`
   width: 60rem;
   height: 8.8rem;
 
-  margin: 7.6rem 0 0 6.4rem;
+  margin: 6.3rem 0 0 6.4rem;
 `;
 
 const NameTitleWrapper = styled.div`
