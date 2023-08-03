@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { ChangePhotoIc } from "../../assets";
+import { ChangePhotoProducerIc } from "../../assets";
 import useImagePreview from "../../hooks/common/useShowImage";
 
 export default function ProducerImageEdit() {
@@ -28,7 +28,7 @@ export default function ProducerImageEdit() {
   );
 }
 
-const ChangePhotoIcon = styled(ChangePhotoIc)`
+const ChangePhotoIcon = styled(ChangePhotoProducerIc)`
   width: 36.8rem;
   height: 36.8rem;
 
