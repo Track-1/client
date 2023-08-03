@@ -29,7 +29,7 @@ export default function Input<
       return 48;
     }
   }
-  console.log(fieldState?.error?.message);
+
   return (
     <InputContainer>
       <InputWrapper

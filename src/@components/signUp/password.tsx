@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import { CHECK_PASSWORD_FORM } from "../../core/signUp/checkForm";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
+import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
+import { checkPasswordForm } from "../../utils/signUp/checkForm";
+import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { showPassword } from "../../utils/signUp/showPassword";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
@@ -10,9 +14,12 @@ import PasswordShowIcons from "./passwordShowIcons";
 
 export default function Password(props: SignupInputProps) {
   const { methods } = props;
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+
   const {
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
     watch,
   } = methods;
@@ -26,10 +33,29 @@ export default function Password(props: SignupInputProps) {
           <Input
             name="password"
             rules={{
-              required: false,
               pattern: {
                 value: CHECK_PASSWORD_FORM,
                 message: PASSWORD_MESSAGE.FORM,
+              },
+              validate: {
+                check: (value) => {
+                  console.log(checkPasswordMatch(getValues("passwordConfirm"), watch("password")));
+
+                  if (!checkPasswordMatch(getValues("passwordConfirm"), value)) {
+                    setError("passwordConfirm", { message: PASSWORD_MESSAGE.MATCH });
+                    setIsSuccess(false);
+                  } else {
+                    if (checkPasswordForm(value)) {
+                      setError("passwordConfirm", { message: PASSWORD_MESSAGE.SUCCESS });
+                      setIsSuccess(true);
+                    }
+                  }
+                  if (checkPasswordForm(value)) {
+                    return PASSWORD_MESSAGE.SUCCESS;
+                  } else {
+                    setIsSuccess(false);
+                  }
+                },
               },
             }}
             type={showPassword(isShow)}

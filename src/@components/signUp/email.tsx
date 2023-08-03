@@ -21,17 +21,20 @@ export default function Email(props: SignupInputProps) {
     handleSubmit,
     setError,
     resetField,
+    getValues,
     formState: { errors },
     watch,
   } = methods;
 
   function checkIsActive() {
-    resetField("passwordConfirm");
     return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
   }
 
+  console.log(errors);
+
   function handleSendCode() {
     // send code post 로직
+    console.log("Asdf");
     sendCode({
       tableName: clickRole,
       userEmail: watch("email"),
@@ -44,7 +47,6 @@ export default function Email(props: SignupInputProps) {
       alert(SIGNUP_SENDCODE);
     },
     onError: (error: any) => {
-      console.log("Asdsdasaff");
       if (error.response.data.message === "중복된 이메일입니다") {
         setError("email", { message: EMAIL_MESSAGE.DUPLICATION });
       }

@@ -27,6 +27,7 @@ export default function EmailPassword() {
   const {
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
     watch,
   } = methods;

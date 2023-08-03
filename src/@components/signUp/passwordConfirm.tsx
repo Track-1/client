@@ -4,6 +4,8 @@ import { useRecoilState } from "recoil";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
+import { checkPasswordForm } from "../../utils/signUp/checkForm";
+import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { showPassword } from "../../utils/signUp/showPassword";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
@@ -16,6 +18,7 @@ export default function PasswordConfirm(props: SignupInputProps) {
   const {
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
     watch,
   } = methods;
@@ -29,14 +32,15 @@ export default function PasswordConfirm(props: SignupInputProps) {
           <Input
             name="passwordConfirm"
             rules={{
-              required: true,
               validate: {
-                check: (val) => {
-                  if (watch("password")) {
-                    if (watch("password") !== val) {
-                      return PASSWORD_MESSAGE.MATCH;
-                    } else {
+                check: (value) => {
+                  if (!checkPasswordMatch(getValues("password"), value)) {
+                    setIsSuccess(false);
+                    return PASSWORD_MESSAGE.MATCH;
+                  } else {
+                    if (checkPasswordForm(getValues("password"))) {
                       setIsSuccess(true);
+                      return PASSWORD_MESSAGE.SUCCESS;
                     }
                   }
                 },
