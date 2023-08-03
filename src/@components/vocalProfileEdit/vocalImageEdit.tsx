@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { ChangePhotoIc } from "../../assets";
+import { ChangePhotoVocalIc } from "../../assets";
 import useImagePreview from "../../hooks/common/useShowImage";
 
 export default function VocalImageEdit() {
@@ -21,47 +21,32 @@ export default function VocalImageEdit() {
         {/* 사용자가 넣은 이미지 or 기본 사람 이미지 */}
         <ImageWrapper>
           <ProfileImage src={String(showImage)} />
+          <ChangePhotoIcon />
+          <FileInput type="file" onChange={getImageFile} />
         </ImageWrapper>
-        <ChangePhotoIcon />
-        <FileInput type="file" onChange={getImageFile} />
       </ProfileImageContainer>
     </>
   );
 }
 
-const ChangePhotoIcon = styled(ChangePhotoIc)`
-  width: 36.8rem;
-  height: 36.8rem;
-
-  display: none;
-  position: absolute;
-
-  pointer-events: none;
-`;
-
 const ProfileImageContainer = styled.label`
   display: flex;
   position: relative;
 
-  width: 36.8rem;
-  height: 36.8rem;
+  width: 38.8rem;
+  height: 38.8rem;
 
-  margin-top: 17.8rem;
+  margin-top: 7.8rem;
 
   align-items: center;
   justify-content: center;
 
   overflow: hidden;
-  cursor: pointer;
-
-  :hover ${ChangePhotoIcon} {
-    display: block;
-  }
 `;
 
 const ImageWrapper = styled.div`
-  width: 26.7em;
-  height: 26.7em;
+  width: 28.7em;
+  height: 28.7em;
 
   display: flex;
   justify-content: center;
@@ -82,7 +67,6 @@ const ImageWrapper = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: white;
     border-radius: 15%;
     z-index: -1;
   }
@@ -93,6 +77,24 @@ const ImageWrapper = styled.div`
 
   &::after {
     transform: rotate(-45deg);
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: rgba(30, 32, 37, 0.5);
+    backdrop-filter: blur(18.830060958862305px);
+  }
+`;
+
+const ChangePhotoIcon = styled(ChangePhotoVocalIc)`
+  display: none;
+  position: absolute;
+
+  pointer-events: none;
+
+  ${ImageWrapper}:hover & {
+    display: block;
+    transform: rotate(45deg);
   }
 `;
 
