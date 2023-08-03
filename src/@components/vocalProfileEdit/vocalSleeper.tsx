@@ -6,10 +6,17 @@ import {
   ProfileEditActiveButtonIc,
 } from "../../assets";
 
-export default function VocalProfileEditPage() {
-  const isSleep = true;
+interface PropsType {
+  isSleep: boolean;
+  onChangeSleepState: () => void;
+}
 
-  function changeSleepState() {}
+export default function VocalProfileEditPage(props: PropsType) {
+  const { isSleep, onChangeSleepState } = props;
+
+  function changeSleepState() {
+    onChangeSleepState();
+  }
 
   return (
     <>

@@ -17,15 +17,23 @@ export default function VocalProfileEditPage() {
     categories: ["R&B", "Jazz"],
     hashtags: ["얏호", "오이"],
     description: "맛있는 오이",
+    isSleep: false,
   });
 
   // input값이 변경될 때 호출
-  const handleInputChange = (value: string) => {
+  function handleInputChange(value: string) {
     setProfileData((prevState) => ({
       ...prevState,
       name: value,
     }));
-  };
+  }
+
+  function changeIsSleep() {
+    setProfileData((prevState) => ({
+      ...prevState,
+      isSleep: !prevState.isSleep,
+    }));
+  }
 
   return (
     <>
@@ -38,7 +46,7 @@ export default function VocalProfileEditPage() {
             data={profileData.name}
             onChangeProps={(value) => handleInputChange(value)}
           />
-          <VocalSleeper />
+          <VocalSleeper isSleep={profileData.isSleep} onChangeSleepState={changeIsSleep} />
         </ProfileEditTitle>
         <ProfileEditInfo>
           <TitleInputEdit
