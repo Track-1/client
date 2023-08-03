@@ -4,6 +4,7 @@ import VocalImageEdit from "../vocalProfileEdit/vocalImageEdit";
 import TitleInputEdit from "../@common/profileTitleInput";
 import CategoriesEdit from "../@common/selectCategories";
 import HashtagsEdit from "../@common/hashtag/hashtagsEdit";
+import VocalSleeper from "../vocalProfileEdit/vocalSleeper";
 import { ProfileBackgroundIc } from "../../assets";
 import { useState } from "react";
 import DescriptionInput from "../@common/upload/common/DescriptionInput";
@@ -37,6 +38,7 @@ export default function VocalProfileEditPage() {
             data={profileData.name}
             onChangeProps={(value) => handleInputChange(value)}
           />
+          <VocalSleeper />
         </ProfileEditTitle>
         <ProfileEditInfo>
           <TitleInputEdit
@@ -88,7 +90,6 @@ const ProfileContainer = styled.section`
 
   align-items: center;
 `;
-
 
 export const ProfileEditTitle = styled(ProfileContainer)``;
 
