@@ -8,7 +8,6 @@ import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
-import { checkEmailVerified } from "../../utils/signUp/checkEmailVerified";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
 import Input from "./Input";
@@ -31,10 +30,6 @@ export default function Email(props: SignupInputProps) {
 
   function checkIsActive() {
     return (getValues("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
-  }
-
-  function checkRewriteEmail() {
-    return errors?.email?.message === undefined || !checkEmailVerified(errors.email?.message);
   }
 
   function handleSendCode() {
