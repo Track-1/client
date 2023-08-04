@@ -1,4 +1,13 @@
+export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
+export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
+export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
+export { ReactComponent as ChangePhotoIc } from "./icon/changePhotoIc.svg";
 export { ReactComponent as CreateAPasswordForYourAccountIc } from "./icon/createAPasswordForYourAccountIc.svg";
+export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
+export { ReactComponent as FolderUploadIc } from "./icon/folderUploadIc.svg";
+export { ReactComponent as HashtagTitleIc } from "./icon/hashtagTitleIc.svg";
+export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
+export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
 export { ReactComponent as ShowPasswordSignupIc } from "./icon/showPasswordSignupIc.svg";
@@ -24,5 +33,9 @@ export { ReactComponent as SignupStepBackArrowIc } from "./icon/signupStepBackAr
 export { ReactComponent as SignupStepContinueIc } from "./icon/signupStepContinueIc.svg";
 export { ReactComponent as SignupVerifyIc } from "./icon/signupVerifyIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
+export { ReactComponent as UploadCategoryIc } from "./icon/uploadCategoryIc.svg";
+export { ReactComponent as UploadDescriptionIc } from "./icon/uploadDescriptionIc.svg";
+export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.svg";
+export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
