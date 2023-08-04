@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { SignUpChangeImageIc, SignUpChangeImgIc, SignUpUploadImageIc, SignupVocalProfileImgIc } from "../../assets";
+import {
+  SignUpChangeImageProducerIc,
+  SignUpChangeImageVocalIc,
+  SignUpUploadImageProducerIc,
+  SignUpUploadImageVocalIc,
+} from "../../assets";
 
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";
 import { signupRole } from "../../recoil/common/role";
@@ -16,19 +21,15 @@ export default function ProfilImageContainer() {
   const [imageSrc, setImageSrc] = useState<string>("");
   const [isHover, setIsHover] = useState(false);
 
-  function checkImageHover() {
+  function handleImageHover() {
     setIsHover(!isHover);
   }
 
-  function showUploadImage() {
-    if (isProducer(userType)) {
-      return <SignUpUploadImageIcon />;
-    } else if (isVocal(userType)) {
-      return <SignupVocalProfileImgIcon />;
-    }
+  function checkImageHover() {
+    return imageSrc && isHover;
   }
 
-  function uploadImage(e: React.ChangeEvent<HTMLInputElement>): void {
+  function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
     if (e.target.files?.length === 0) {
       //alert("사진삽입이 취소되었습니다.")
@@ -47,33 +48,23 @@ export default function ProfilImageContainer() {
     }
   }
 
-  function checkImgHover() {
-    return imageSrc && isHover;
-  }
-
   return (
     <>
       {/* 프로듀서 프로필 이미지 업로드 */}
       {isProducer(userType) && (
         <ImageContainer>
-          <ImageUploadBox onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
+          <ImageUploadBox onMouseEnter={handleImageHover} onMouseLeave={handleImageHover}>
             {imageSrc ? (
-              <ProducerImgWrapper>
-                <ProducerImg src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
-              </ProducerImgWrapper>
+              <ProducerImageWrapper>
+                <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
+              </ProducerImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
-                <SignUpUploadImageIcon />
+                <SignUpUploadImageProducerIcon />
               </SignUpUploadImageWrapper>
             )}
-            {checkImgHover() && <SignUpChangeProducerImageIcon />}
-            <ImageInput
-              type="file"
-              accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG"
-              onChange={(e) => {
-                uploadImage(e);
-              }}
-            />
+            {checkImageHover() && <SignUpChangeProducerImageIcon />}
+            <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
       )}
@@ -81,24 +72,18 @@ export default function ProfilImageContainer() {
       {/* 보컬 프로필 이미지 업로드 */}
       {isVocal(userType) && (
         <ImageContainer>
-          <ImageUploadBox onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
+          <ImageUploadBox onMouseEnter={handleImageHover} onMouseLeave={handleImageHover}>
             {imageSrc ? (
-              <VocalImgWrapper>
-                <VocalImg src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
-              </VocalImgWrapper>
+              <VocalImageWrapper>
+                <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
+              </VocalImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
-                <SignUpUploadImageIcon />
+                <SignUpUploadImageVocalIcon />
               </SignUpUploadImageWrapper>
             )}
-            {checkImgHover() && <SignUpChangeVocalImageIcon />}
-            <ImageInput
-              type="file"
-              accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG"
-              onChange={(e) => {
-                uploadImage(e);
-              }}
-            />
+            {checkImageHover() && <SignUpChangeVocalImageIcon />}
+            <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
       )}
@@ -120,7 +105,7 @@ const ImageContainer = styled.section`
   height: 21.7rem;
 `;
 
-const ProducerImgWrapper = styled.div`
+const ProducerImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -134,7 +119,7 @@ const ProducerImgWrapper = styled.div`
   overflow: hidden;
 `;
 
-const VocalImgWrapper = styled.div`
+const VocalImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -152,7 +137,7 @@ const VocalImgWrapper = styled.div`
   top: 18.45rem;
 `;
 
-const ProducerImg = styled.img`
+const ProducerImage = styled.img`
   width: 100%;
   height: 100%;
 
@@ -163,7 +148,7 @@ const ProducerImg = styled.img`
   margin: auto;
 `;
 
-const VocalImg = styled.img`
+const VocalImage = styled.img`
   width: 150%;
   height: 135%;
 
@@ -176,7 +161,7 @@ const VocalImg = styled.img`
   transform: rotate(45deg);
 `;
 
-const SignUpChangeProducerImageIcon = styled(SignUpChangeImageIc)`
+const SignUpChangeProducerImageIcon = styled(SignUpChangeImageProducerIc)`
   width: 21.7rem;
   height: 21.7rem;
 
@@ -188,7 +173,7 @@ const SignUpChangeProducerImageIcon = styled(SignUpChangeImageIc)`
   backdrop-filter: blur(1.7rem);
 `;
 
-const SignUpChangeVocalImageIcon = styled(SignUpChangeImgIc)`
+const SignUpChangeVocalImageIcon = styled(SignUpChangeImageVocalIc)`
   width: 16.5rem;
   height: 16.5rem;
 
@@ -209,12 +194,12 @@ const SignUpUploadImageWrapper = styled.div`
   position: absolute;
 `;
 
-const SignUpUploadImageIcon = styled(SignUpUploadImageIc)`
+const SignUpUploadImageProducerIcon = styled(SignUpUploadImageProducerIc)`
   width: 21.7rem;
   height: 21.7rem;
 `;
 
-const SignupVocalProfileImgIcon = styled(SignupVocalProfileImgIc)`
+const SignUpUploadImageVocalIcon = styled(SignUpUploadImageVocalIc)`
   width: 21.7rem;
   height: 21.7rem;
 `;

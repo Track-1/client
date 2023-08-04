@@ -11,9 +11,10 @@ export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundI
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
 export { ReactComponent as ShowPasswordSignupIc } from "./icon/showPasswordSignupIc.svg";
-export { ReactComponent as SignUpChangeImageIc } from "./icon/signUpChangeImageIc.svg";
-export { ReactComponent as SignUpChangeImgIc } from "./icon/signUpChangeImgIc.svg";
-export { ReactComponent as SignUpUploadImageIc } from "./icon/signUpUploadImageIc.svg";
+export { ReactComponent as SignUpChangeImageProducerIc } from "./icon/signUpChangeImageProducerIc.svg";
+export { ReactComponent as SignUpChangeImageVocalIc } from "./icon/signUpChangeImageVocalIc.svg";
+export { ReactComponent as SignUpUploadImageProducerIc } from "./icon/signUpUploadImageProducerIc.svg";
+export { ReactComponent as SignUpUploadImageVocalIc } from "./icon/signUpUploadImageVocalIc.svg";
 export { ReactComponent as SignupBackBtnIc } from "./icon/signupBackBtnIc.svg";
 export { ReactComponent as SignupBackgroundIc } from "./icon/signupBackgroundIc.svg";
 export { ReactComponent as SignupEmailPasswordTitleIc } from "./icon/signupEmailPasswordTitleIc.svg";
@@ -35,7 +36,6 @@ export { ReactComponent as SignupSendCodeIc } from "./icon/signupSendCodeIc.svg"
 export { ReactComponent as SignupStepBackArrowIc } from "./icon/signupStepBackArrowIc.svg";
 export { ReactComponent as SignupStepContinueIc } from "./icon/signupStepContinueIc.svg";
 export { ReactComponent as SignupVerifyIc } from "./icon/signupVerifyIc.svg";
-export { ReactComponent as SignupVocalProfileImgIc } from "./icon/signupVocalProfileImgIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
 export { ReactComponent as UploadCategoryIc } from "./icon/uploadCategoryIc.svg";
 export { ReactComponent as UploadDescriptionIc } from "./icon/uploadDescriptionIc.svg";
