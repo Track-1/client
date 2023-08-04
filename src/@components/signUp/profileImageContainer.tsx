@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {
-  SignUpChangeImageProducerIc,
-  SignUpChangeImageVocalIc,
-  SignUpUploadImageProducerIc,
-  SignUpUploadImageVocalIc,
-} from "../../assets";
+import { SignUpUploadImageProducerIc, SignUpUploadImageVocalIc, SignupChangePhotoIc } from "../../assets";
 
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";
 import { role } from "../../recoil/common/role";
@@ -43,6 +38,8 @@ export default function ProfilImageContainer() {
     }
   }
 
+  console.log(isHover);
+
   return (
     <>
       {/* 프로듀서 프로필 이미지 업로드 */}
@@ -52,7 +49,7 @@ export default function ProfilImageContainer() {
             {imageSrc ? (
               <ProducerImageWrapper>
                 <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
-                {isHover && <SignUpChangeProducerImageIcon />}
+                {isHover && <SignupChangePhotoProducerIcon />}
               </ProducerImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
@@ -71,7 +68,7 @@ export default function ProfilImageContainer() {
             {imageSrc ? (
               <VocalImageWrapper>
                 <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
-                {isHover && <SignUpChangeVocalImageIcon />}
+                {isHover && <SignupChangePhotoVocalIcon />}
               </VocalImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
@@ -143,7 +140,7 @@ const ProducerImage = styled.img`
   margin: auto;
 
   &:hover {
-    backdrop-filter: blur(1.7rem);
+    filter: blur(1.7rem);
   }
 `;
 
@@ -160,33 +157,8 @@ const VocalImage = styled.img`
   transform: rotate(45deg);
 
   &:hover {
-    backdrop-filter: blur(1.7rem);
+    filter: blur(1.7rem);
   }
-`;
-
-const SignUpChangeProducerImageIcon = styled(SignUpChangeImageProducerIc)`
-  width: 21.7rem;
-  height: 21.7rem;
-
-  border: 0.1rem solid rgba(30, 32, 37, 0.5);
-  border-radius: 25rem;
-
-  position: relative;
-`;
-
-const SignUpChangeVocalImageIcon = styled(SignUpChangeImageVocalIc)`
-  width: 16.5rem;
-  height: 16.5rem;
-
-  border: 0.1rem solid rgba(30, 32, 37, 0.5);
-  border-radius: 1.8rem;
-
-  position: relative;
-
-  transform: rotate(45deg);
-  position: absolute;
-  right: 30.15rem;
-  top: 18.45rem;
 `;
 
 const SignUpUploadImageWrapper = styled.div`
@@ -201,4 +173,18 @@ const SignUpUploadImageProducerIcon = styled(SignUpUploadImageProducerIc)`
 const SignUpUploadImageVocalIcon = styled(SignUpUploadImageVocalIc)`
   width: 21.7rem;
   height: 21.7rem;
+`;
+
+const SignupChangePhotoProducerIcon = styled(SignupChangePhotoIc)`
+  width: 11.1rem;
+  height: 5.7rem;
+
+  position: relative;
+`;
+
+const SignupChangePhotoVocalIcon = styled(SignupChangePhotoIc)`
+  width: 11.1rem;
+  height: 5.7rem;
+  transform: rotate(45deg);
+  position: relative;
 `;
