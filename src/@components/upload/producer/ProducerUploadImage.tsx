@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
-import UploadProducerDefaultImg from "../../../../assets/image/uploadProducerDefaultImg .png";
-import useUploadImageFile from "../../../../hooks/common/useUploadImageFile";
-import { UploadFileChangeIc } from "../../../../assets";
-import useFileHover from "../../../../hooks/common/useFileHover";
+import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg .png";
+import useFileHover from "../../../hooks/common/useFileHover";
+import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
+import { UploadFileChangeIc } from "../../../assets";
 
 export default function ProducerUploadImage() {
   const { imageFile, previewImage, uploadImageFile } = useUploadImageFile();

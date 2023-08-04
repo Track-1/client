@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { FolderUploadIc, UploadFileIc } from "../../../../assets";
-import UploadInfoBox from "./UploadInfoBox";
-import useUploadAudioFile from "../../../../hooks/common/useUploadAudioFile";
+import { FolderUploadIc, UploadFileIc } from "../../assets";
+import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { useEffect, useState } from "react";
-import { TEXT_LIMIT } from "../../../../core/common/textLimit";
-import { checkMaxInputLength } from "../../../../utils/common/checkMaxInputLength";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
 import { useSetRecoilState } from "recoil";
-import { UploadData } from "../../../../recoil/upload/uploadData";
+import { UploadData } from "../../recoil/upload/uploadData";
+import UploadInfoBox from "./UploadInfoBox";
 
 export default function FileUploadInfo() {
   const { audioInit, uploadAudiofile } = useUploadAudioFile();

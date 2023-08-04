@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import ProducerLayout from "../producer/ProducerLayout";
-import VocalLayout from "../vocal/VocalLayout";
+import ProducerLayout from "./producer/ProducerLayout";
+import VocalLayout from "./vocal/VocalLayout";
+import { USER_DATA } from "../../core/common/userData";
 import UploadTitle from "./UploadTitle";
 import UploadInfo from "./UploadInfo";
-import { USER_DATA } from "../../../../core/common/userData";
 
 export default function UploadBody() {
   const loginUserType = "producer"; // 임시 데이터 (이후에는 recoil값으로 변경할 예정)

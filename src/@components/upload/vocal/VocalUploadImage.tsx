@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
-import { UploadFileChangeIc } from "../../../../assets";
-import UploadVocalDefaultImg from "../../../../assets/image/uploadVocalDefaultImg.png";
-import useUploadImageFile from "../../../../hooks/common/useUploadImageFile";
-import useFileHover from "../../../../hooks/common/useFileHover";
+import UploadVocalDefaultImg from "../../../assets/image/uploadVocalDefaultImg.png";
+import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
+import useFileHover from "../../../hooks/common/useFileHover";
+import { UploadFileChangeIc } from "../../../assets";
 
 export default function VocalUploadImage() {
   const { imageFile, previewImage, uploadImageFile } = useUploadImageFile();

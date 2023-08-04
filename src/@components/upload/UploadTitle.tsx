@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import TextLength from "./TextLength";
-import useInputText from "../../../../hooks/common/useInputText";
-import { TEXT_LIMIT } from "../../../../core/common/textLimit";
-import useUploadInitValue from "../../../../hooks/upload/useUploadInitValue";
+import useInputText from "../../hooks/common/useInputText";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import useUploadInitValue from "../../hooks/upload/useUploadInitValue";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { UploadData } from "../../../../recoil/upload/uploadData";
+import { UploadData } from "../../recoil/upload/uploadData";
 
 export default function UploadTitle() {
   const [uploadInit] = useUploadInitValue();

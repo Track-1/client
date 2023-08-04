@@ -1,28 +1,34 @@
 import styled from "styled-components";
-import uploadAbleBtnImg from "../../../../assets/image/uploadAbleBtnImg.png";
-import uploadUnableBtnImg from "../../../../assets/image/uploadUnableBtnImg.png";
+import uploadAbleBtnImg from "../../assets/image/uploadAbleBtnImg.png";
+import uploadUnableBtnImg from "../../assets/image/uploadUnableBtnImg.png";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { UploadData } from "../../../../recoil/upload/uploadData";
+import { UploadData } from "../../recoil/upload/uploadData";
 
 export default function UploadHeader() {
+  const uploadData = useRecoilValue(UploadData);
+
   const [isUploadActive, setIsUploadActive] = useState(false);
 
-  const uploadData = useRecoilValue(UploadData);
-  console.log(uploadData);
+  function isActive() {
+    return uploadData.audioFile && uploadData.title;
+  }
+
+  function handleUploadAPI() {
+    alert("hello");
+  }
 
   useEffect(() => {
-    uploadData.audioFile && uploadData.title ? setIsUploadActive(true) : setIsUploadActive(false);
+    isActive() ? setIsUploadActive(true) : setIsUploadActive(false);
   }, [uploadData]);
 
   return (
     <Container>
-      {/* back버튼 */}
       <UploadTypeText>Back</UploadTypeText>
       <Wrapper>
         <UploadTypeText>Vocal Searching</UploadTypeText>
         {isUploadActive ? (
-          <img src={uploadAbleBtnImg} alt="업로드 버튼" />
+          <UploadAbleBtn src={uploadAbleBtnImg} alt="업로드 버튼" onClick={handleUploadAPI} />
         ) : (
           <img src={uploadUnableBtnImg} alt="업로드 버튼" />
         )}
@@ -51,4 +57,8 @@ const Wrapper = styled.div`
 const UploadTypeText = styled.div`
   color: ${({ theme }) => theme.colors.gray3};
   ${({ theme }) => theme.fonts.id};
+`;
+
+const UploadAbleBtn = styled.img`
+  cursor: pointer;
 `;

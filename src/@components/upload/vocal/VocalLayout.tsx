@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
 import VocalUploadImage from "./VocalUploadImage";
-import UploadVocalLayoutImg from "../../../../assets/image/uploadVocalLayoutImg.png";
+import UploadVocalLayoutImg from "../../../assets/image/uploadVocalLayoutImg.png";
 
 interface VocalLayoutProps {
   children: ReactNode;

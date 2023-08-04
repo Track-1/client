@@ -1,5 +1,5 @@
-import UploadBody from "./common/UploadBody";
-import UploadHeader from "./common/UploadHeader";
+import UploadBody from "./UploadBody";
+import UploadHeader from "./UploadHeader";
 
 export default function Upload() {
   return (
