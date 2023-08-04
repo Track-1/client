@@ -55,15 +55,7 @@ export default function VerifyCode(props: SignupInputProps) {
       <form onSubmit={handleSubmit(handleVerifyCode)}>
         <InputTitle>Verification code</InputTitle>
         <VerifyCodeWrapper>
-          <Input
-            name="verifyCode"
-            rules={{
-              required: true,
-            }}
-            type="text"
-            placeholder="Verify your email address"
-            width={42.2}
-          />
+          <Input name="verifyCode" rules={{}} type="text" placeholder="Verify your email address" width={42.2} />
           <VerifyCodeButton isActive={checkIsActive()} />
         </VerifyCodeWrapper>
       </form>
