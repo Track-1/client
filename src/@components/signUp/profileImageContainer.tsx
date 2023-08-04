@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { SignUpChangeImageIc, SignUpChangeImgIc, SignUpUploadImageIc, SignupVocalProfileImgIc } from "../../assets";
@@ -9,20 +9,17 @@ import { signupRole } from "../../recoil/common/role";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { isProducer, isVocal } from "../../utils/common/checkUserType";
-// import { checkImageSize, checkImageType, getFileSize, getFileURL } from "../../utils/uploadPage/uploadImage";
 
-interface ImageContainerPropsType {
-  imageSrc: string;
-  isHover: boolean;
-  checkImageHover: () => void;
-  setImageSrc: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function ProfilImageContainer(props: ImageContainerPropsType) {
-  const { imageSrc, isHover, checkImageHover, setImageSrc } = props;
+export default function ProfilImageContainer() {
   const userType = useRecoilValue(signupRole);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
   const { checkImageSize, checkImageType, getFileSize, getFileURL } = useUploadImageFile();
+  const [imageSrc, setImageSrc] = useState<string>("");
+  const [isHover, setIsHover] = useState(false);
+
+  function checkImageHover() {
+    setIsHover(!isHover);
+  }
 
   function showUploadImage() {
     switch (userType) {
