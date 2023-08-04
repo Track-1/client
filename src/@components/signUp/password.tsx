@@ -3,7 +3,9 @@ import { FormProvider } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
+import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { SignupInputProps } from "../../type/signUp/inputProps";
+import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { checkEmailVerifyOKToSuccess } from "../../utils/signUp/checkEmailVerifyOKToSuccess";
 import { checkPasswordForm } from "../../utils/signUp/checkForm";
 import { checkInputEmpty } from "../../utils/signUp/checkInputEmpty";
@@ -16,6 +18,7 @@ import PasswordShowIcons from "./passwordShowIcons";
 export default function Password(props: SignupInputProps) {
   const { methods } = props;
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+  const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
 
   const {
     handleSubmit,
@@ -49,6 +52,7 @@ export default function Password(props: SignupInputProps) {
                         setError("passwordConfirm", { message: PASSWORD_MESSAGE.SUCCESS });
                         if (checkEmailVerifyOKToSuccess(errors.email?.message)) {
                           setIsSuccess(true);
+                          setUserData({ ...userData, ID: getValues("email"), PW: getValues("password") });
                         }
                       }
                     }

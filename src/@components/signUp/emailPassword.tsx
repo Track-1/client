@@ -45,8 +45,6 @@ export default function EmailPassword() {
     }
   }
 
-  console.log(errors);
-
   function checkEmailRewrite() {
     return (
       errors?.verifyCode?.message === VERIFICATION_CODE_MESSAGE.SUCCESS || checkEmailVerified(errors?.email?.message)
