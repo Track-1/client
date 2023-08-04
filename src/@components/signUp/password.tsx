@@ -25,9 +25,7 @@ export default function Password(props: SignupInputProps) {
     watch,
   } = methods;
   const [isShow, setIsShow] = useState(false);
-  console.log(errors.email?.message);
 
-  console.log(errors);
   return (
     <>
       <FormProvider {...methods}>

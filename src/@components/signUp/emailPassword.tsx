@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { CreateAPasswordForYourAccountIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
+import { VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
@@ -44,15 +45,22 @@ export default function EmailPassword() {
     }
   }
 
+  console.log(errors);
+
+  function checkEmailRewrite() {
+    return (
+      (getValues("email") !== "" && errors?.verifyCode?.message === VERIFICATION_CODE_MESSAGE.SUCCESS) ||
+      checkEmailVerified(errors?.email?.message)
+    );
+  }
+
   return (
     <>
       {checkTitle()}
       <Email methods={methods} />
       {checkIsResend(errors?.email?.message) && <VerifyCode methods={methods} />}
       <Password methods={methods} />
-      {checkEmailVerified(errors?.email?.message) && !checkIsResend(errors?.email?.message) && (
-        <PasswordConfirm methods={methods} />
-      )}
+      {checkEmailRewrite() && <PasswordConfirm methods={methods} />}
     </>
   );
 }
