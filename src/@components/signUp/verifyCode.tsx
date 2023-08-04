@@ -13,7 +13,6 @@ import VerifyCodeButton from "./verifyCodeButton";
 export default function VerifyCode(props: SignupInputProps) {
   const { methods } = props;
   const clickRole = useRecoilValue<string>(signupRole);
-
   const {
     handleSubmit,
     setError,
@@ -40,8 +39,8 @@ export default function VerifyCode(props: SignupInputProps) {
     //verify code post
     verifyEmail({
       tableName: clickRole,
-      userEmail: watch("email"),
-      verificationCode: watch("verifyCode"),
+      userEmail: getValues("email"),
+      verificationCode: getValues("verifyCode"),
     });
   }
 

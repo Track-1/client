@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
+import { checkEmailVerifyOKToSuccess } from "../../utils/signUp/checkEmailVerifyOKToSuccess";
 import { checkPasswordForm } from "../../utils/signUp/checkForm";
 import { checkInputEmpty } from "../../utils/signUp/checkInputEmpty";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
@@ -41,7 +42,9 @@ export default function PasswordConfirm(props: SignupInputProps) {
                       return PASSWORD_MESSAGE.MATCH;
                     } else {
                       if (checkPasswordForm(getValues("password"))) {
-                        setIsSuccess(true);
+                        if (checkEmailVerifyOKToSuccess(errors.email?.message)) {
+                          setIsSuccess(true);
+                        }
                         return PASSWORD_MESSAGE.SUCCESS;
                       }
                     }

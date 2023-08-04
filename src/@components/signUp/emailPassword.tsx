@@ -2,10 +2,11 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { CreateAPasswordForYourAccountIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { checkEmailVerified } from "../../utils/signUp/checkEmailVerified";
+import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
 import Email from "./email";
 import Password from "./password";
 import PasswordConfirm from "./passwordConfirm";
@@ -32,19 +33,11 @@ export default function EmailPassword() {
     watch,
   } = methods;
 
-  function checkIsResend() {
-    return errors?.email?.message === EMAIL_MESSAGE.TIME;
-  }
-
-  function checkEmailVerified() {
-    return errors?.email?.message === EMAIL_MESSAGE.VERIFY;
-  }
-
   function checkTitle() {
-    if (checkIsResend()) {
+    if (checkIsResend(errors?.email?.message)) {
       return <WeSentYouACodeIcon />;
     } else {
-      if (checkEmailVerified()) {
+      if (checkEmailVerified(errors?.email?.message)) {
         return <CreateAPasswordForYourAccountIcon />;
       }
       return <SignupEmailPasswordTitleIcon />;
@@ -55,9 +48,11 @@ export default function EmailPassword() {
     <>
       {checkTitle()}
       <Email methods={methods} />
-      {checkIsResend() && <VerifyCode methods={methods} />}
+      {checkIsResend(errors?.email?.message) && <VerifyCode methods={methods} />}
       <Password methods={methods} />
-      {checkEmailVerified() && <PasswordConfirm methods={methods} />}
+      {checkEmailVerified(errors?.email?.message) && !checkIsResend(errors?.email?.message) && (
+        <PasswordConfirm methods={methods} />
+      )}
     </>
   );
 }

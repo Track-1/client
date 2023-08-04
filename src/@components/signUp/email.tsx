@@ -1,13 +1,15 @@
 import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { authEmail } from "../../api/signup";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
-import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { signupRole } from "../../recoil/signUp/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
+import { checkEmailVerified } from "../../utils/signUp/checkEmailVerified";
+import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
@@ -16,6 +18,7 @@ import SendCodeButton from "./sendCodeButton";
 export default function Email(props: SignupInputProps) {
   const { methods } = props;
   const clickRole = useRecoilValue<string>(signupRole);
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   const {
     handleSubmit,
@@ -27,17 +30,18 @@ export default function Email(props: SignupInputProps) {
   } = methods;
 
   function checkIsActive() {
-    return (watch("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
+    return (getValues("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
   }
 
-  console.log(errors);
+  function checkRewriteEmail() {
+    return errors?.email?.message === undefined || !checkEmailVerified(errors.email?.message);
+  }
 
   function handleSendCode() {
     // send code post 로직
-    console.log("Asdf");
     sendCode({
       tableName: clickRole,
-      userEmail: watch("email"),
+      userEmail: getValues("email"),
     });
   }
 
@@ -63,9 +67,20 @@ export default function Email(props: SignupInputProps) {
               name="email"
               rules={{
                 required: true,
-                pattern: {
-                  value: CHECK_EMAIL_FORM,
-                  message: EMAIL_MESSAGE.FORM,
+                // pattern: {
+                //   value: CHECK_EMAIL_FORM,
+                //   message: EMAIL_MESSAGE.FORM,
+                // },
+                validate: {
+                  check: (value) => {
+                    resetField("password");
+                    resetField("passwordConfirm");
+                    if (!checkEmailForm(value)) {
+                      return EMAIL_MESSAGE.FORM;
+                    } else {
+                      setIsSuccess(false);
+                    }
+                  },
                 },
               }}
               type="text"
