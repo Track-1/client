@@ -63,7 +63,7 @@ export default function ProfilImageContainer() {
                 <SignUpUploadImageProducerIcon />
               </SignUpUploadImageWrapper>
             )}
-            {checkImageHover() && <SignUpChangeProducerImageIcon />}
+            {/* {checkImageHover() && <SignUpChangeProducerImageIcon />} */}
             <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
@@ -82,7 +82,7 @@ export default function ProfilImageContainer() {
                 <SignUpUploadImageVocalIcon />
               </SignUpUploadImageWrapper>
             )}
-            {checkImageHover() && <SignUpChangeVocalImageIcon />}
+            {/* {checkImageHover() && <SignUpChangeVocalImageIcon />} */}
             <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
@@ -92,7 +92,7 @@ export default function ProfilImageContainer() {
 }
 
 const ImageInput = styled.input`
-  visibility: "hidden";
+  display: none;
 `;
 
 const ImageUploadBox = styled.label`
@@ -146,6 +146,10 @@ const ProducerImage = styled.img`
 
   object-fit: cover;
   margin: auto;
+
+  &:hover {
+    backdrop-filter: blur(1.7rem);
+  }
 `;
 
 const VocalImage = styled.img`
