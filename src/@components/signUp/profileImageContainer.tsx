@@ -25,9 +25,9 @@ export default function ProfilImageContainer() {
     setIsHover(!isHover);
   }
 
-  //   function checkImageHover() {
-  //     return imageSrc && isHover;
-  //   }
+  function checkImageHover() {
+    return imageSrc && isHover;
+  }
 
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const fileType = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).split(".")[1];
@@ -64,7 +64,7 @@ export default function ProfilImageContainer() {
                 <SignUpUploadImageProducerIcon />
               </SignUpUploadImageWrapper>
             )}
-            {/* {checkImageHover() && <SignUpChangeProducerImageIcon />} */}
+            {checkImageHover() && <SignUpChangeProducerImageIcon />}
             <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
@@ -83,7 +83,7 @@ export default function ProfilImageContainer() {
                 <SignUpUploadImageVocalIcon />
               </SignUpUploadImageWrapper>
             )}
-            {/* {checkImageHover() && <SignUpChangeVocalImageIcon />} */}
+            {checkImageHover() && <SignUpChangeVocalImageIcon />}
             <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
@@ -164,6 +164,10 @@ const VocalImage = styled.img`
   margin: auto;
 
   transform: rotate(45deg);
+
+  &:hover {
+    backdrop-filter: blur(1.7rem);
+  }
 `;
 
 const SignUpChangeProducerImageIcon = styled(SignUpChangeImageProducerIc)`
@@ -174,8 +178,6 @@ const SignUpChangeProducerImageIcon = styled(SignUpChangeImageProducerIc)`
   border-radius: 25rem;
 
   position: relative;
-
-  backdrop-filter: blur(1.7rem);
 `;
 
 const SignUpChangeVocalImageIcon = styled(SignUpChangeImageVocalIc)`
@@ -186,8 +188,6 @@ const SignUpChangeVocalImageIcon = styled(SignUpChangeImageVocalIc)`
   border-radius: 1.8rem;
 
   position: relative;
-
-  backdrop-filter: blur(1.7rem);
 
   transform: rotate(45deg);
   position: absolute;
