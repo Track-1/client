@@ -3,12 +3,11 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { SignUpChangeImageIc, SignUpChangeImgIc, SignUpUploadImageIc, SignupVocalProfileImgIc } from "../../assets";
 
-import { ROLE } from "../../core/common/roleType";
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";
 import { signupRole } from "../../recoil/common/role";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
-import { isProducer, isVocal } from "../../utils/common/checkUserType";
+import { isProducer, isVocal } from "../../utils/common/checkRoleType";
 
 export default function ProfilImageContainer() {
   const userType = useRecoilValue(signupRole);
@@ -22,13 +21,13 @@ export default function ProfilImageContainer() {
   }
 
   function showUploadImage() {
-    switch (userType) {
-      case ROLE.PRODUCER:
-        return <SignUpUploadImageIcon />;
-      case ROLE.VOCAL:
-        return <SignupVocalProfileImgIcon />;
+    if (isProducer(userType)) {
+      return <SignUpUploadImageIcon />;
+    } else if (isVocal(userType)) {
+      return <SignupVocalProfileImgIcon />;
     }
   }
+
   function uploadImage(e: React.ChangeEvent<HTMLInputElement>): void {
     const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
     if (e.target.files?.length === 0) {
@@ -53,62 +52,120 @@ export default function ProfilImageContainer() {
   }
 
   return (
-    <ImageContainer isProducer={isProducer(userType)}>
-      <Label htmlFor="profile-img" onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
-        {imageSrc ? (
-          <ImgWrapper isProducer={isProducer(userType)}>
-            <Img src={imageSrc} alt="preview-img" isProducer={isProducer(userType)} />
-          </ImgWrapper>
-        ) : (
-          <SignUpUploadImageWrapper>{showUploadImage()}</SignUpUploadImageWrapper>
-        )}
-        {checkImgHover() && isProducer(userType) && <SignUpChangeProducerImageIcon />}
-        {checkImgHover() && isVocal(userType) && <SignUpChangeVocalImageIcon />}
-      </Label>
-      <input
-        type="file"
-        id="profile-img"
-        style={{ visibility: "hidden" }}
-        accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG"
-        onChange={(e) => {
-          uploadImage(e);
-        }}
-      />
-    </ImageContainer>
+    <>
+      {/* 프로듀서 프로필 이미지 업로드 */}
+      {isProducer(userType) && (
+        <ImageContainer>
+          <ImageUploadBox onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
+            {imageSrc ? (
+              <ProducerImgWrapper>
+                <ProducerImg src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
+              </ProducerImgWrapper>
+            ) : (
+              <SignUpUploadImageWrapper>
+                <SignUpUploadImageIcon />
+              </SignUpUploadImageWrapper>
+            )}
+            {checkImgHover() && <SignUpChangeProducerImageIcon />}
+            <ImageInput
+              type="file"
+              accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG"
+              onChange={(e) => {
+                uploadImage(e);
+              }}
+            />
+          </ImageUploadBox>
+        </ImageContainer>
+      )}
+
+      {/* 보컬 프로필 이미지 업로드 */}
+      {isVocal(userType) && (
+        <ImageContainer>
+          <ImageUploadBox onMouseEnter={checkImageHover} onMouseLeave={checkImageHover}>
+            {imageSrc ? (
+              <VocalImgWrapper>
+                <VocalImg src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
+              </VocalImgWrapper>
+            ) : (
+              <SignUpUploadImageWrapper>
+                <SignUpUploadImageIcon />
+              </SignUpUploadImageWrapper>
+            )}
+            {checkImgHover() && <SignUpChangeVocalImageIcon />}
+            <ImageInput
+              type="file"
+              accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG"
+              onChange={(e) => {
+                uploadImage(e);
+              }}
+            />
+          </ImageUploadBox>
+        </ImageContainer>
+      )}
+    </>
   );
 }
 
-const Label = styled.label`
+const ImageInput = styled.input`
+  visibility: "hidden";
+`;
+
+const ImageUploadBox = styled.label`
   cursor: pointer;
 `;
 
-const ImageContainer = styled.section<{ isProducer: boolean }>`
+const ImageContainer = styled.section`
   margin: 6.4rem 28.1rem 4.1rem 28.1rem;
   width: 21.7rem;
   height: 21.7rem;
 `;
 
-const ImgWrapper = styled.div<{ isProducer: boolean }>`
+const ProducerImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: ${({ isProducer }) => (isProducer ? 21.7 : 16.4)}rem;
-  height: ${({ isProducer }) => (isProducer ? 21.7 : 16.4)}rem;
+  width: 21.7rem;
+  height: 21.7rem;
 
-  border-radius: ${({ isProducer }) => (isProducer ? 25 : 1.8)}rem;
+  border-radius: 25rem;
+
+  position: absolute;
+  overflow: hidden;
+`;
+
+const VocalImgWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 16.4rem;
+  height: 16.4rem;
+
+  border-radius: 1.8rem;
 
   position: absolute;
   overflow: hidden;
 
-  transform: rotate(${({ isProducer }) => !isProducer && -45}deg);
-  right: ${({ isProducer }) => !isProducer && 30.16}rem;
-  top: ${({ isProducer }) => !isProducer && 18.45}rem;
+  transform: rotate(-45deg);
+  right: 30.16rem;
+  top: 18.45rem;
 `;
 
-const Img = styled.img<{ isProducer: boolean }>`
-  width: ${({ isProducer }) => (isProducer ? 100 : 150)}%;
-  height: ${({ isProducer }) => (isProducer ? 100 : 135)}%;
+const ProducerImg = styled.img`
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+
+  object-fit: cover;
+  margin: auto;
+`;
+
+const VocalImg = styled.img`
+  width: 150%;
+  height: 135%;
 
   position: absolute;
   transform: translate(50, 50);
@@ -116,7 +173,7 @@ const Img = styled.img<{ isProducer: boolean }>`
   object-fit: cover;
   margin: auto;
 
-  transform: rotate(${({ isProducer }) => !isProducer && 45}deg);
+  transform: rotate(45deg);
 `;
 
 const SignUpChangeProducerImageIcon = styled(SignUpChangeImageIc)`
