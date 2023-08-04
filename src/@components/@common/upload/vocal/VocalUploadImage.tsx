@@ -2,65 +2,66 @@ import styled, { css } from "styled-components";
 import { UploadFileChangeIc } from "../../../../assets";
 import UploadVocalDefaultImg from "../../../../assets/image/uploadVocalDefaultImg.png";
 import useUploadImageFile from "../../../../hooks/common/useUploadImageFile";
-import { useState } from "react";
+import useFileHover from "../../../../hooks/common/useFileHover";
 
 export default function VocalUploadImage() {
-  // const [producerUploadImg, setproducerUploadImg] = useState<string>(UploadProducerDefaultImg);
   const { imageFile, previewImage, uploadImageFile } = useUploadImageFile();
-  const [hoverState, setHoverState] = useState(false);
-
-  function isImageFileEmpty() {
-    return imageFile === null;
-  }
-  function changeHoverState() {
-    setHoverState(!hoverState);
-  }
+  const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
   return (
     <Container>
-      <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-        <TrackUploadImage
-          src={previewImage === "" ? UploadVocalDefaultImg : previewImage}
-          alt="썸네일 이미지"
-          onMouseEnter={changeHoverState}
-          onMouseLeave={changeHoverState}
-          hoverState={hoverState} //기능 변경해야됨
-          isImageFileEmpty={isImageFileEmpty()}
-        />
-      </label>
-      <label htmlFor="imageFileUpload" style={{ cursor: "pointer" }}>
-        {
-          imageFile && hoverState && <FileChangeIcon /> //hoverState 기능추가해야됨
-        }
-      </label>
-      <FileInput type="file" id="imageFileUpload" accept=".jpg,.jpeg,.png" onChange={uploadImageFile} readOnly />
+      <VocalImageFrame onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
+        <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
+          <VocalUploadImageLayout
+            src={previewImage === "" ? UploadVocalDefaultImg : previewImage}
+            alt="썸네일 이미지"
+            fileHoverState={fileHoverState} //기능 변경해야됨
+          />
+          {imageFile && fileHoverState && <FileChangeIcon />}
+          <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={uploadImageFile} readOnly />
+        </Label>
+      </VocalImageFrame>
     </Container>
   );
 }
 
-const Container = styled.div`
+const Container = styled.section`
+  width: 59.8rem;
+
   display: flex;
   align-items: center;
+  transform: rotate(0deg);
 
-  margin-left: 6.5rem;
-  margin-right: 4.9rem;
-
-  border-radius: 50%;
-
-  overflow: hidden;
-  cursor: pointer;
-
-  &:hover {
-  }
+  margin-left: 7.3rem;
+  margin-right: 7.5rem;
 `;
 
-const TrackUploadImage = styled.img<{ hoverState: boolean; isImageFileEmpty: boolean }>`
-  width: 60.4rem;
-  height: 60.4rem;
+const VocalImageFrame = styled.div`
+  height: 45.1rem;
+  width: 45.1rem;
+
+  margin-left: 7.8rem;
+  margin-bottom: 2rem;
+
+  border-radius: 5rem;
+  transform: rotate(45deg);
+
+  overflow: hidden;
   object-fit: cover;
-  border-radius: 50%;
+`;
+
+const VocalUploadImageLayout = styled.img<{ fileHoverState: boolean }>`
+  width: 59.8rem;
+  height: 59.8rem;
+
+  margin-left: -7.4rem;
+  margin-top: -7.4rem;
+
+  transform: rotate(-45deg);
+  object-fit: cover;
+
   ${(props) =>
-    props.hoverState && !props.isImageFileEmpty
+    props.fileHoverState
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);
@@ -72,10 +73,17 @@ const TrackUploadImage = styled.img<{ hoverState: boolean; isImageFileEmpty: boo
 `;
 
 const FileChangeIcon = styled(UploadFileChangeIc)`
-  width: 18.9rem;
   position: absolute;
-  top: 47.95rem;
-  left: 42.8rem;
+  top: 14rem;
+  left: 12rem;
+
+  width: 18.9rem;
+
+  transform: rotate(-45deg);
+  cursor: pointer;
+`;
+
+const Label = styled.label`
   cursor: pointer;
 `;
 
