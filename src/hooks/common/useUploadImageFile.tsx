@@ -50,7 +50,7 @@ export default function useUploadImageFile() {
       );
     return (
       fileType === ".jpg" ||
-      fileType === "jpeg" ||
+      fileType === ".jpeg" ||
       fileType === ".png" ||
       fileType === ".JPG" ||
       fileType === ".JPEG" ||

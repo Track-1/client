@@ -25,16 +25,17 @@ export default function ProfilImageContainer() {
     setIsHover(!isHover);
   }
 
-  function checkImageHover() {
-    return imageSrc && isHover;
-  }
+  //   function checkImageHover() {
+  //     return imageSrc && isHover;
+  //   }
 
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    const uploadName = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    const fileType = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).split(".")[1];
+
     if (e.target.files?.length === 0) {
       //alert("사진삽입이 취소되었습니다.")
     } else {
-      if (checkImageType(uploadName) && e.target.files) {
+      if (checkImageType("." + fileType) && e.target.files) {
         const file = e.target.files[0];
         const fileUrl: string = getFileURL(file);
         const imageSize: number = getFileSize(file);
