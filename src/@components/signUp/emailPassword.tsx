@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { CreateAPasswordForYourAccountIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
-import { signupRole } from "../../recoil/common/role";
-import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { checkEmailVerified } from "../../utils/signUp/checkEmailVerified";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
@@ -14,8 +11,6 @@ import PasswordConfirm from "./passwordConfirm";
 import VerifyCode from "./verifyCode";
 
 export default function EmailPassword() {
-  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
-  const clickRole = useRecoilValue<string>(signupRole);
   const methods = useForm<EmailPasswordInputType>({
     defaultValues: {
       email: "",

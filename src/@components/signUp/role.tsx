@@ -9,12 +9,12 @@ import {
   SignupRoleVocalIc,
 } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
-import { signupRole } from "../../recoil/common/role";
+import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 
 export default function Role() {
   const [hoverRole, setHoverRole] = useState<string>("");
-  const [clickRole, setClickRole] = useRecoilState<string>(signupRole);
+  const [clickRole, setClickRole] = useRecoilState<string>(role);
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   function handleHoverRole(role: string) {

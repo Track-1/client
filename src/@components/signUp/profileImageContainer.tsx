@@ -9,13 +9,13 @@ import {
 } from "../../assets";
 
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";
-import { signupRole } from "../../recoil/common/role";
+import { role } from "../../recoil/common/role";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { isProducer, isVocal } from "../../utils/common/checkRoleType";
 
 export default function ProfilImageContainer() {
-  const userType = useRecoilValue(signupRole);
+  const userType = useRecoilValue(role);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
   const { checkImageSize, checkImageType, getFileSize, getFileURL } = useUploadImageFile();
   const [imageSrc, setImageSrc] = useState<string>("");
@@ -23,10 +23,6 @@ export default function ProfilImageContainer() {
 
   function handleImageHover() {
     setIsHover(!isHover);
-  }
-
-  function checkImageHover() {
-    return imageSrc && isHover;
   }
 
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -41,9 +37,7 @@ export default function ProfilImageContainer() {
         const imageSize: number = getFileSize(file);
         if (e.target.files[0] && checkImageSize(imageSize)) {
           setImageSrc(fileUrl);
-          setUserData((prevState) => {
-            return { ...prevState, imageFile: file };
-          });
+          setUserData({ ...userData, imageFile: file });
         }
       }
     }
@@ -58,13 +52,13 @@ export default function ProfilImageContainer() {
             {imageSrc ? (
               <ProducerImageWrapper>
                 <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
+                {isHover && <SignUpChangeProducerImageIcon />}
               </ProducerImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
                 <SignUpUploadImageProducerIcon />
               </SignUpUploadImageWrapper>
             )}
-            {checkImageHover() && <SignUpChangeProducerImageIcon />}
             <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>
@@ -77,13 +71,13 @@ export default function ProfilImageContainer() {
             {imageSrc ? (
               <VocalImageWrapper>
                 <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
+                {isHover && <SignUpChangeVocalImageIcon />}
               </VocalImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
                 <SignUpUploadImageVocalIcon />
               </SignUpUploadImageWrapper>
             )}
-            {checkImageHover() && <SignUpChangeVocalImageIcon />}
             <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
           </ImageUploadBox>
         </ImageContainer>

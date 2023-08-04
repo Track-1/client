@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { authEmail } from "../../api/signup";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
-import { signupRole } from "../../recoil/common/role";
+import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
@@ -16,7 +16,7 @@ import SendCodeButton from "./sendCodeButton";
 
 export default function Email(props: SignupInputProps) {
   const { methods } = props;
-  const clickRole = useRecoilValue<string>(signupRole);
+  const clickRole = useRecoilValue<string>(role);
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   const {
