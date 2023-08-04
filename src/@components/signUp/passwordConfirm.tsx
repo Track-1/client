@@ -5,6 +5,7 @@ import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkPasswordForm } from "../../utils/signUp/checkForm";
+import { checkInputEmpty } from "../../utils/signUp/checkInputEmpty";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { showPassword } from "../../utils/signUp/showPassword";
 import Input from "./Input";
@@ -34,13 +35,15 @@ export default function PasswordConfirm(props: SignupInputProps) {
             rules={{
               validate: {
                 check: (value) => {
-                  if (!checkPasswordMatch(getValues("password"), value)) {
-                    setIsSuccess(false);
-                    return PASSWORD_MESSAGE.MATCH;
-                  } else {
-                    if (checkPasswordForm(getValues("password"))) {
-                      setIsSuccess(true);
-                      return PASSWORD_MESSAGE.SUCCESS;
+                  if (!checkInputEmpty(value)) {
+                    if (!checkPasswordMatch(getValues("password"), value)) {
+                      setIsSuccess(false);
+                      return PASSWORD_MESSAGE.MATCH;
+                    } else {
+                      if (checkPasswordForm(getValues("password"))) {
+                        setIsSuccess(true);
+                        return PASSWORD_MESSAGE.SUCCESS;
+                      }
                     }
                   }
                 },

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
 import { useRecoilState } from "recoil";
-import { CHECK_PASSWORD_FORM } from "../../core/signUp/checkForm";
 import { PASSWORD_MESSAGE } from "../../core/signUp/errorMessage";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkPasswordForm } from "../../utils/signUp/checkForm";
+import { checkInputEmpty } from "../../utils/signUp/checkInputEmpty";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { showPassword } from "../../utils/signUp/showPassword";
 import Input from "./Input";
@@ -33,27 +33,33 @@ export default function Password(props: SignupInputProps) {
           <Input
             name="password"
             rules={{
-              pattern: {
-                value: CHECK_PASSWORD_FORM,
-                message: PASSWORD_MESSAGE.FORM,
-              },
+              // pattern: {
+              //   value: CHECK_PASSWORD_FORM,
+              //   message: PASSWORD_MESSAGE.FORM,
+              // },
+              required: false,
               validate: {
                 check: (value) => {
-                  console.log(checkPasswordMatch(getValues("passwordConfirm"), watch("password")));
-
-                  if (!checkPasswordMatch(getValues("passwordConfirm"), value)) {
-                    setError("passwordConfirm", { message: PASSWORD_MESSAGE.MATCH });
-                    setIsSuccess(false);
-                  } else {
-                    if (checkPasswordForm(value)) {
-                      setError("passwordConfirm", { message: PASSWORD_MESSAGE.SUCCESS });
-                      setIsSuccess(true);
+                  if (!checkInputEmpty(getValues("passwordConfirm"))) {
+                    if (!checkPasswordMatch(getValues("passwordConfirm"), value)) {
+                      setError("passwordConfirm", { message: PASSWORD_MESSAGE.MATCH });
+                      setIsSuccess(false);
+                    } else {
+                      if (checkPasswordForm(value)) {
+                        setError("passwordConfirm", { message: PASSWORD_MESSAGE.SUCCESS });
+                        setIsSuccess(true);
+                      }
                     }
                   }
                   if (checkPasswordForm(value)) {
                     return PASSWORD_MESSAGE.SUCCESS;
                   } else {
+                    if (!checkInputEmpty(value)) {
+                      return PASSWORD_MESSAGE.FORM;
+                    }
                     setIsSuccess(false);
+
+                    //
                   }
                 },
               },
