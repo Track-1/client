@@ -82,6 +82,8 @@ const DescriptionText = styled(TextareaAutosize)`
   margin-top: 1.7rem;
   padding-bottom: 1rem;
 
+  overflow: hidden;
+
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-word;

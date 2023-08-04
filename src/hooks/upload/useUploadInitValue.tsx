@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { UploadInitType } from "../../type/upload/uploadinitType";
-import { useGetPortfolioInfo } from "../queries/upload/upload";
+import { useGetPortfolioInfo } from "../queries/upload/useGetPortfolioInfo";
 
 export default function useUploadInitValue() {
   const location = useLocation();
