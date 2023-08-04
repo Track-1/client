@@ -67,11 +67,15 @@ const InputWrapper = styled.input<{ width: number; color: string | undefined }>`
 
   color: white;
 
-  border-bottom: 1px solid ${({ color }) => color};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
 
   width: ${({ width }) => width}rem;
 
   ${({ theme }) => theme.fonts.input}
+
+  &:focus {
+    border-bottom: 1px solid ${({ color }) => color};
+  }
 `;
 
 const ErrorMessage = styled.h1<{ color: string }>`

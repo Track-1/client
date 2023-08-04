@@ -41,7 +41,7 @@ export default function EmailPassword() {
       if (checkEmailVerified(errors?.email?.message)) {
         return <CreateAPasswordForYourAccountIcon />;
       }
-      return <SignupEmailPasswordTitleIcon />;
+      return <SignupEmailPasswordTitleIcon isRewrite={checkEmailRewrite()} />;
     }
   }
 
@@ -49,8 +49,7 @@ export default function EmailPassword() {
 
   function checkEmailRewrite() {
     return (
-      (getValues("email") !== "" && errors?.verifyCode?.message === VERIFICATION_CODE_MESSAGE.SUCCESS) ||
-      checkEmailVerified(errors?.email?.message)
+      errors?.verifyCode?.message === VERIFICATION_CODE_MESSAGE.SUCCESS || checkEmailVerified(errors?.email?.message)
     );
   }
 
@@ -65,10 +64,10 @@ export default function EmailPassword() {
   );
 }
 
-const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)`
+const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)<{ isRewrite: boolean }>`
   width: 48.3rem;
 
-  margin: 8rem 0 10.3rem 0;
+  margin: 8rem 0 ${({ isRewrite }) => (isRewrite ? 2.8 : 10.3)}rem 0;
 `;
 
 const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
