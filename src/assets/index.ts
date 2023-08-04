@@ -11,8 +11,6 @@ export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundI
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
 export { ReactComponent as ShowPasswordSignupIc } from "./icon/showPasswordSignupIc.svg";
-export { ReactComponent as SignUpChangeImageProducerIc } from "./icon/signUpChangeImageProducerIc.svg";
-export { ReactComponent as SignUpChangeImageVocalIc } from "./icon/signUpChangeImageVocalIc.svg";
 export { ReactComponent as SignUpUploadImageProducerIc } from "./icon/signUpUploadImageProducerIc.svg";
 export { ReactComponent as SignUpUploadImageVocalIc } from "./icon/signUpUploadImageVocalIc.svg";
 export { ReactComponent as SignupBackBtnIc } from "./icon/signupBackBtnIc.svg";
