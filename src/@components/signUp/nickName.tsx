@@ -2,6 +2,7 @@ import { FormProvider } from "react-hook-form";
 import { CHECK_NICKNAME_FORM } from "../../core/signUp/checkForm";
 import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
 import { NickNameProp } from "../../type/signUp/nickNameProp";
+import { checkNicknamForm } from "../../utils/signUp/checkForm";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
 
@@ -30,7 +31,13 @@ export default function NickName(props: NickNameProp) {
                 value: CHECK_NICKNAME_FORM,
                 message: NICKNAME_MESSAGE.ERROR,
               },
-              validate: {},
+              validate: {
+                check: (value) => {
+                  if (checkNicknamForm(value)) {
+                    return NICKNAME_MESSAGE.SUCCESS;
+                  }
+                },
+              },
             }}
             type="text"
             placeholder="Enter your user name"
