@@ -8,9 +8,9 @@ import {
   SignupRoleVocalHoverIc,
   SignupRoleVocalIc,
 } from "../../assets";
-import { ROLE } from "../../core/signUp/roleType";
+import { ROLE } from "../../core/common/roleType";
+import { signupRole } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
-import { signupRole } from "../../recoil/signUp/role";
 
 export default function Role() {
   const [hoverRole, setHoverRole] = useState<string>("");
