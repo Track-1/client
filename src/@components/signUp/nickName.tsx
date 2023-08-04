@@ -1,4 +1,5 @@
 import { FormProvider } from "react-hook-form";
+import styled from "styled-components";
 import { CHECK_NICKNAME_FORM } from "../../core/signUp/checkForm";
 import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
 import { NickNameProp } from "../../type/signUp/nickNameProp";
@@ -22,7 +23,10 @@ export default function NickName(props: NickNameProp) {
     <>
       <FormProvider {...methods}>
         <form>
-          <InputTitle>What’s your name?*</InputTitle>
+          <InputTitle>
+            <p>What’s your name?</p>
+            <ImportantIcon>*</ImportantIcon>
+          </InputTitle>
           <Input
             name="nickName"
             rules={{
@@ -48,3 +52,9 @@ export default function NickName(props: NickNameProp) {
     </>
   );
 }
+
+const ImportantIcon = styled.i`
+  margin-left: 0.47rem;
+
+  color: ${({ theme }) => theme.colors.main};
+`;
