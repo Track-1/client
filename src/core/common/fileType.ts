@@ -6,3 +6,10 @@ export const IMAGE_FILE_TYPE = {
   JPEG: ".jpeg",
   JPEG_UPPER: ".JPEG",
 };
+
+export const AUDIO_FILE_TYPE = {
+  MP3: ".mp3",
+  WAV: ".wav",
+  MP3_UPPER: ".MP3",
+  WAV_UPPER: ".WAV",
+};
