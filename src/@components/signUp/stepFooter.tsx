@@ -1,15 +1,17 @@
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { join } from "../../api/signup/join";
 import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { StepMainProps } from "../../type/signUp/stepProps";
+import { setCookie } from "../../utils/common/cookie";
 
 export default function StepFooter(props: StepMainProps) {
   const { step, setStep } = props;
@@ -17,6 +19,8 @@ export default function StepFooter(props: StepMainProps) {
   const navigate = useNavigate();
   const [roleType, setRoleType] = useRecoilState<string>(role);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
+  const setLoginUserType = useSetRecoilState(loginUserType);
+  const setLoginUserId = useSetRecoilState(loginUserId);
 
   function checkNextStep() {
     if (isSuccess) {
@@ -47,11 +51,12 @@ export default function StepFooter(props: StepMainProps) {
   console.log(userData);
 
   const { mutate: signup } = useMutation(() => join(userData, roleType), {
-    onSuccess: () => {
+    onSuccess: (data) => {
       navigate("/signup/profile");
-      // setCookie("accessToken", accessToken, {});
-      // setLoginUserType(data.data.data.userResult.tableName);
-      // setLoginUserId(data.data.data.userResult.id);
+      const accessToken = data.data.data.accessToken;
+      setCookie("accessToken", accessToken, {});
+      setLoginUserType(data.data.data.userResult.tableName);
+      setLoginUserId(data.data.data.userResult.id);
     },
     onError: (error) => {
       console.log(error);
