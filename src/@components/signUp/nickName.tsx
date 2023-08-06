@@ -48,10 +48,10 @@ export default function NickName(props: NickNameProps) {
               // },
               validate: {
                 check: (value) => {
-                  console.log(value);
                   if (checkNicknamForm(value)) {
                     if (checkEssentialAgree(checkedConventions)) {
                       setIsSuccess(true);
+                      setUserData({ ...userData, name: value });
                     } else {
                       setIsSuccess(false);
                     }
