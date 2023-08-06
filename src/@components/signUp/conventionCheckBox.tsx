@@ -93,7 +93,7 @@ export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
   return (
     <ConventionCheckBoxContainer>
       {checkedConventions.map(({ id, selected, text, policy }: ConventionChecksType) => (
-        <ConventionCheckBoxWrapper checkTotalAgree={checkTotalAgree(id)}>
+        <ConventionCheckBoxWrapper key={id} checkTotalAgree={checkTotalAgree(id)}>
           <CheckBox onClick={() => clickCategory(id)}>
             {selected ? <ConventionFullBoxIcon /> : <ConventionBlankBoxIcon />}
           </CheckBox>
