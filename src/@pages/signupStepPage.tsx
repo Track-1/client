@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import ConventionModal from "../@components/@common/conventionModal";
 import Footer from "../@components/@common/footer";
 import SignUpBackButton from "../@components/signUp/signUpBackButton";
 import StepFooter from "../@components/signUp/stepFooter";
@@ -7,12 +9,15 @@ import StepHeader from "../@components/signUp/stepHeader";
 import StepMain from "../@components/signUp/stepMain";
 import background from "../assets/icon/signupBackgroundIc.svg";
 import { SIGNUP_STEP } from "../core/signUp/stepRenderer";
+import { openConventionModal } from "../recoil/common/conventionModal";
 
 export default function SignupStepPage() {
   const [step, setStep] = useState(SIGNUP_STEP.ROLE);
+  const showModal = useRecoilValue(openConventionModal);
 
   return (
     <>
+      {showModal && <ConventionModal />}
       <BackButtonWrapper>
         <SignUpBackButton />
       </BackButtonWrapper>

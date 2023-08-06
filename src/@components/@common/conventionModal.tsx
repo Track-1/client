@@ -44,8 +44,8 @@ const ModalBackground = styled.div`
   justify-content: center;
   align-items: center;
 
-  position: relative;
-  z-index: 100;
+  position: absolute;
+  z-index: 20;
 
   width: 192rem;
   height: 108rem;
