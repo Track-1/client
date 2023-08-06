@@ -27,12 +27,3 @@ export async function join(formData: JoinUserDataPropsType, role: string) {
   });
   return data;
 }
-
-// export async function joinVocal(formData: any) {
-//   const data = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/join/vocal`, formData, {
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//     },
-//   });
-//   return data;
-// }
