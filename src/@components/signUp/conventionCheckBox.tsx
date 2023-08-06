@@ -11,9 +11,8 @@ import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 export default function ConventionCheckBox() {
   const [checkedCount, setCheckedCount] = useState<number>(0);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
-  const [completeCheck, setCompleteCheck] = useState<boolean>(false);
   const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(CONVENTION_SELECTED_CHECK);
-  const { conventionModalInform, showConventionModal } = useConventionModal();
+  const { showConventionModal } = useConventionModal();
 
   function clickCategory(id: number) {
     setCheckedConventions(
@@ -57,18 +56,6 @@ export default function ConventionCheckBox() {
       }
     });
     setCheckedCount(count);
-
-    let essentialCheck = 0;
-    checkedConventions.forEach((checkedConvention) => {
-      if (
-        !checkFirstIndex(checkedConvention.id) &&
-        !checkLastIndex(checkedConvention.id) &&
-        checkedConvention.selected
-      ) {
-        essentialCheck += 1;
-      }
-    });
-    setCompleteCheck(checkEssentialAgreeDone(essentialCheck));
     setUserData({ ...userData, isAgree: `${checkedConventions[3].selected}` });
   }, [checkedConventions]);
 
@@ -80,10 +67,6 @@ export default function ConventionCheckBox() {
     return id === 0;
   }
 
-  function checkLastIndex(id: number) {
-    return id === 3;
-  }
-
   function checkFullChecked() {
     return checkedCount === 3;
   }
@@ -92,10 +75,6 @@ export default function ConventionCheckBox() {
     const tempCheckedConventions = checkedConventions;
     tempCheckedConventions[0].selected = bool;
     setCheckedConventions([...tempCheckedConventions]);
-  }
-
-  function checkEssentialAgreeDone(essentialCheck: number) {
-    return essentialCheck === 2;
   }
 
   return (
