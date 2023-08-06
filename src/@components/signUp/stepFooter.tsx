@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
+import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { StepMainProps } from "../../type/signUp/stepProps";
@@ -31,15 +31,19 @@ export default function StepFooter(props: StepMainProps) {
     checkNextStep();
   }
 
-  function checkStepRole() {
+  function checkFirstStep() {
     return step === SIGNUP_STEP.ROLE;
+  }
+
+  function checkFinalStep() {
+    return step === SIGNUP_STEP.NICKNAME_CONVENTION;
   }
 
   return (
     <FooterWrapper>
-      {checkStepRole() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
+      {checkFirstStep() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
       <ContinueButtonWrapper onClick={handleMoveToNextStep} isSuccess={isSuccess}>
-        <SignupStepContinueIcon />
+        {checkFinalStep() ? <SignupCompleteIcon /> : <SignupStepContinueIcon />}
       </ContinueButtonWrapper>
     </FooterWrapper>
   );
@@ -84,5 +88,9 @@ const SignupStepBackArrowIcon = styled(SignupStepBackArrowIc)`
 `;
 
 const SignupStepContinueIcon = styled(SignupStepContinueIc)`
+  width: 9.7rem;
+`;
+
+const SignupCompleteIcon = styled(SignupCompleteIc)`
   width: 9.7rem;
 `;

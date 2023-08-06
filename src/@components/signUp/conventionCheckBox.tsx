@@ -3,16 +3,24 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ConventionBlankBoxIc, ConventionFullBoxIc } from "../../assets";
 import { CONVENTION_SELECTED_CHECK } from "../../core/common/convention/conventionSelectedCheck";
+import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
 import useConventionModal from "../../hooks/common/useConventionModal";
+import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { ConventionChecksType } from "../../type/signUp/conventionChecksType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 
-export default function ConventionCheckBox() {
+interface ConventionCheckBoxProp {
+  nickNameMessage: string | undefined;
+}
+
+export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
+  const { nickNameMessage } = props;
   const [checkedCount, setCheckedCount] = useState<number>(0);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
   const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(CONVENTION_SELECTED_CHECK);
   const { showConventionModal } = useConventionModal();
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   function clickCategory(id: number) {
     setCheckedConventions(
@@ -58,6 +66,10 @@ export default function ConventionCheckBox() {
     });
     setCheckedCount(count);
     setUserData({ ...userData, isAgree: `${checkedConventions[3].selected}` });
+    //  //닉네임이 success이고 필수가 다 체크됨
+    if (nickNameMessage === NICKNAME_MESSAGE.SUCCESS && userData.isAgree !== "") {
+      setIsSuccess(true);
+    }
   }, [checkedConventions]);
 
   useEffect(() => {

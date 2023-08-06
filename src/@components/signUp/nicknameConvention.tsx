@@ -23,7 +23,7 @@ export default function NicknameConvention() {
     <>
       <ProfilImageContainer />
       <NickName methods={methods} />
-      <ConventionCheckBox />
+      <ConventionCheckBox nickNameMessage={errors.nickName?.message} />
     </>
   );
 }
