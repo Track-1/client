@@ -2,6 +2,8 @@ export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
 export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
 export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
 export { ReactComponent as ChangePhotoIc } from "./icon/changePhotoIc.svg";
+export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckBoxIc.svg";
+export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";
 export { ReactComponent as CreateAPasswordForYourAccountIc } from "./icon/createAPasswordForYourAccountIc.svg";
 export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
 export { ReactComponent as FolderUploadIc } from "./icon/folderUploadIc.svg";
