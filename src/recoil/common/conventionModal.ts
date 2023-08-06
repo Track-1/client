@@ -1,11 +1,10 @@
 import { atom } from "recoil";
+import { ConventionModalType } from "../../type/common/conventionModalType";
 
-export const openConventionModal = atom({
+export const openConventionModal = atom<ConventionModalType>({
   key: "openConventionModal",
-  default: false,
-});
-
-export const openConventionPolicy = atom({
-  key: "openConventionPolicy",
-  default: "",
+  default: {
+    policy: "",
+    isOpen: false,
+  },
 });

@@ -3,18 +3,17 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ConventionBlankBoxIc, ConventionFullBoxIc } from "../../assets";
 import { CONVENTION_SELECTED_CHECK } from "../../core/common/convention/conventionSelectedCheck";
-import { openConventionModal, openConventionPolicy } from "../../recoil/common/conventionModal";
+import useConventionModal from "../../hooks/common/useConventionModal";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { ConventionChecksType } from "../../type/signUp/conventionChecksType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 
 export default function ConventionCheckBox() {
   const [checkedCount, setCheckedCount] = useState<number>(0);
-  const [policy, setPolicy] = useRecoilState<string>(openConventionPolicy);
-  const [showModal, setShowModal] = useRecoilState<boolean>(openConventionModal);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
   const [completeCheck, setCompleteCheck] = useState<boolean>(false);
   const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(CONVENTION_SELECTED_CHECK);
+  const { conventionModalInform, showConventionModal } = useConventionModal();
 
   function categoryClick(id: number) {
     setCheckedConventions(
@@ -99,11 +98,6 @@ export default function ConventionCheckBox() {
     return essentialCheck === 2;
   }
 
-  function openModal(policyCategory: string) {
-    setShowModal(true);
-    setPolicy(policyCategory);
-  }
-
   return (
     <ConventionCheckBoxContainer>
       {checkedConventions.map(({ id, selected, text, policy }: ConventionChecksType) => (
@@ -113,7 +107,7 @@ export default function ConventionCheckBox() {
           </CheckBox>
           <TextWrapper>
             <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
-            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => openModal(policy)}>
+            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => showConventionModal(policy, true)}>
               전체보기
             </FullConvention>
           </TextWrapper>

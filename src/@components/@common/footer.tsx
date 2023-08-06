@@ -3,15 +3,13 @@ import styled, { keyframes } from "styled-components";
 import { FacebookLogoIc, InstagramLogoIc } from "../../assets";
 import bannerImg from "../../assets/image/bannerImg.png";
 import { CONVENTION_TYPE } from "../../core/common/convention/conventionType";
-import { openConventionModal, openConventionPolicy } from "../../recoil/common/conventionModal";
+import { openConventionModal } from "../../recoil/common/conventionModal";
 
 export default function Footer() {
-  const [policy, setPolicy] = useRecoilState<string>(openConventionPolicy);
-  const [showModal, setShowModal] = useRecoilState<boolean>(openConventionModal);
+  const [conventionModalInform, setConventionModalInform] = useRecoilState(openConventionModal);
 
-  function openModal(conventionType: string) {
-    setPolicy(conventionType);
-    setShowModal(true);
+  function openModal(policyCategory: string) {
+    setConventionModalInform({ policy: policyCategory, isOpen: true });
   }
 
   return (

@@ -1,19 +1,17 @@
-import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { SignUpModalXIc } from "../../assets";
-import { openConventionModal, openConventionPolicy } from "../../recoil/common/conventionModal";
+import useConventionModal from "../../hooks/common/useConventionModal";
 import { checkConventionType } from "../../utils/common/convention/checkConventionType";
 
 export default function ConventionModal() {
-  const [showModal, setShowModal] = useRecoilState<boolean>(openConventionModal);
-  const policy = useRecoilValue<string>(openConventionPolicy);
+  const { conventionModalInform, showConventionModal } = useConventionModal();
 
   function isIntroNotNull() {
-    return checkConventionType(policy)?.INTRO !== "";
+    return checkConventionType(conventionModalInform?.policy)?.INTRO !== "";
   }
 
   function closeModal() {
-    setShowModal(false);
+    showConventionModal(conventionModalInform?.policy, false);
   }
 
   return (
@@ -22,11 +20,11 @@ export default function ConventionModal() {
         <ModalWrapper>
           <ModalHeader>
             <SignUpModalXIcon onClick={closeModal} />
-            <Title>{checkConventionType(policy)?.TITLE}</Title>
+            <Title>{checkConventionType(conventionModalInform?.policy)?.TITLE}</Title>
           </ModalHeader>
-          <Intro intro={isIntroNotNull()}>{checkConventionType(policy)?.INTRO}</Intro>
+          <Intro intro={isIntroNotNull()}>{checkConventionType(conventionModalInform?.policy)?.INTRO}</Intro>
           <Contents intro={isIntroNotNull()}>
-            {checkConventionType(policy)?.CONTENTS.map((content, index) => (
+            {checkConventionType(conventionModalInform?.policy)?.CONTENTS.map((content, index) => (
               <div>
                 <p dangerouslySetInnerHTML={{ __html: content }}></p>
                 <br />
