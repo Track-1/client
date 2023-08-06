@@ -30,11 +30,11 @@ export default function Footer() {
           Email
         </Text>
         <Text isGray={true} isStrong={false} marginRight={0}>
-          admin@track-1.link{" "}
+          admin@track-1.link
         </Text>
       </FooterTextWrapper>
       <LogoWrapper>
-        <a href="https://www.instagram.com/track1_official/">
+        <a href="https://www.instagram.com/track1.official/">
           <InstagramLogoIcon />
         </a>
         <a href="https://www.facebook.com/people/Track-1/100088269640316/">
