@@ -15,7 +15,7 @@ export default function ConventionCheckBox() {
   const [checkedConventions, setCheckedConventions] = useState<ConventionChecksType[]>(CONVENTION_SELECTED_CHECK);
   const { conventionModalInform, showConventionModal } = useConventionModal();
 
-  function categoryClick(id: number) {
+  function clickCategory(id: number) {
     setCheckedConventions(
       checkedConventions.map((checkedConvention) =>
         checkedConvention.id === id
@@ -46,8 +46,8 @@ export default function ConventionCheckBox() {
   useEffect(() => {
     checkedConventions.forEach((checkedConvention) => {
       !checkFirstIndex(checkedConvention.id) && checkedConvention.selected
-        ? setCheckedCount((prev) => prev + 1)
-        : setCheckedCount((prev) => prev - 1);
+        ? setCheckedCount(checkedCount + 1)
+        : setCheckedCount(checkedCount - 1);
     });
 
     let count = 0;
@@ -102,7 +102,7 @@ export default function ConventionCheckBox() {
     <ConventionCheckBoxContainer>
       {checkedConventions.map(({ id, selected, text, policy }: ConventionChecksType) => (
         <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
-          <CheckBox onClick={() => categoryClick(id)}>
+          <CheckBox onClick={() => clickCategory(id)}>
             {selected ? <ConventionFullBoxIcon /> : <ConventionBlankBoxIcon />}
           </CheckBox>
           <TextWrapper>
