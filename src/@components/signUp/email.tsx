@@ -2,7 +2,7 @@ import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { authEmail } from "../../api/signup";
+import { authEmail } from "../../api/signup/authEmail";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { role } from "../../recoil/common/role";

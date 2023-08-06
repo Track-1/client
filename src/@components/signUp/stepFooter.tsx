@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { join } from "../../api/signup";
+import { join } from "../../api/signup/join";
 import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
 import { role } from "../../recoil/common/role";
