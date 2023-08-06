@@ -39,7 +39,7 @@ export default function useUploadImageFile() {
   function checkImageType(fileType: string | undefined) {
     !(
       fileType === ".jpg" ||
-      fileType === "jpeg" ||
+      fileType === ".jpeg" ||
       fileType === ".png" ||
       fileType === ".JPG" ||
       fileType === ".JPEG" ||

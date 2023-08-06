@@ -23,6 +23,8 @@ export default function ProfilImageContainer() {
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const fileType = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).split(".")[1];
 
+    console.log(fileType);
+
     if (e.target.files?.length === 0) {
       //alert("사진삽입이 취소되었습니다.")
     } else {
@@ -37,8 +39,6 @@ export default function ProfilImageContainer() {
       }
     }
   }
-
-  console.log(isHover);
 
   return (
     <>
