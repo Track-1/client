@@ -3,7 +3,6 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ConventionBlankBoxIc, ConventionFullBoxIc } from "../../assets";
 import { CONVENTION_SELECTED_CHECK } from "../../core/common/convention/conventionSelectedCheck";
-import { CONVENTION_TYPE } from "../../core/common/convention/conventionType";
 import { openConventionModal, openConventionPolicy } from "../../recoil/common/conventionModal";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
 import { ConventionChecksType } from "../../type/signUp/conventionChecksType";
@@ -100,34 +99,21 @@ export default function ConventionCheckBox() {
     return essentialCheck === 2;
   }
 
-  function openModal(id: number) {
+  function openModal(policyCategory: string) {
     setShowModal(true);
-    switch (id) {
-      case 1:
-        setPolicy(CONVENTION_TYPE.PERSONAL);
-        break;
-      case 2:
-        setPolicy(CONVENTION_TYPE.USINGSITE);
-        break;
-      case 3:
-        setPolicy(CONVENTION_TYPE.MARKETING);
-        break;
-      default:
-        setPolicy("");
-        break;
-    }
+    setPolicy(policyCategory);
   }
 
   return (
     <ConventionCheckBoxContainer>
-      {checkedConventions.map(({ id, selected, text }: ConventionChecksType) => (
+      {checkedConventions.map(({ id, selected, text, policy }: ConventionChecksType) => (
         <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
           <CheckBox onClick={() => categoryClick(id)}>
             {selected ? <ConventionFullBoxIcon /> : <ConventionBlankBoxIcon />}
           </CheckBox>
           <TextWrapper>
             <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
-            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => openModal(id)}>
+            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => openModal(policy)}>
               전체보기
             </FullConvention>
           </TextWrapper>
