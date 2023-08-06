@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
+import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { StepMainProps } from "../../type/signUp/stepProps";
 
@@ -10,6 +11,7 @@ export default function StepFooter(props: StepMainProps) {
   const { step, setStep } = props;
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const navigate = useNavigate();
+  const [roleType, setRoleType] = useRecoilState<string>(role);
 
   function checkNextStep() {
     if (isSuccess) {
@@ -18,6 +20,9 @@ export default function StepFooter(props: StepMainProps) {
   }
 
   function checkPrevStep() {
+    if (step === SIGNUP_STEP.EMAIL_PASSWORD) {
+      setRoleType("");
+    }
     setStep(step - 1);
   }
 
