@@ -23,7 +23,8 @@ export default function ConventionCheckBox() {
       ),
     );
 
-    if (checkFirstIndex(id)) {
+    //전체 동의하기 클릭한 경우
+    if (checkTotalAgree(id)) {
       checkedConventions[id].selected
         ? setCheckedConventions(
             checkedConventions.map((checkedConvention) =>
@@ -44,14 +45,14 @@ export default function ConventionCheckBox() {
 
   useEffect(() => {
     checkedConventions.forEach((checkedConvention) => {
-      !checkFirstIndex(checkedConvention.id) && checkedConvention.selected
+      !checkTotalAgree(checkedConvention.id) && checkedConvention.selected
         ? setCheckedCount(checkedCount + 1)
         : setCheckedCount(checkedCount - 1);
     });
 
     let count = 0;
     checkedConventions.forEach((checkedConvention) => {
-      if (!checkFirstIndex(checkedConvention.id) && checkedConvention.selected) {
+      if (!checkTotalAgree(checkedConvention.id) && checkedConvention.selected) {
         count += 1;
       }
     });
@@ -63,7 +64,7 @@ export default function ConventionCheckBox() {
     checkFullChecked() ? changeTotalAgree(true) : changeTotalAgree(false);
   }, [checkFullChecked()]);
 
-  function checkFirstIndex(id: number) {
+  function checkTotalAgree(id: number) {
     return id === 0;
   }
 
@@ -80,13 +81,13 @@ export default function ConventionCheckBox() {
   return (
     <ConventionCheckBoxContainer>
       {checkedConventions.map(({ id, selected, text, policy }: ConventionChecksType) => (
-        <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
+        <ConventionCheckBoxWrapper checkTotalAgree={checkTotalAgree(id)}>
           <CheckBox onClick={() => clickCategory(id)}>
             {selected ? <ConventionFullBoxIcon /> : <ConventionBlankBoxIcon />}
           </CheckBox>
           <TextWrapper>
-            <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
-            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => showConventionModal(policy, true)}>
+            <Title checkTotalAgree={checkTotalAgree(id)}>{text}</Title>
+            <FullConvention checkTotalAgree={checkTotalAgree(id)} onClick={() => showConventionModal(policy, true)}>
               전체보기
             </FullConvention>
           </TextWrapper>
@@ -105,17 +106,17 @@ const CheckBox = styled.article`
   cursor: pointer;
 `;
 
-const ConventionCheckBoxWrapper = styled.section<{ checkFirstIndex: boolean }>`
+const ConventionCheckBoxWrapper = styled.section<{ checkTotalAgree: boolean }>`
   display: flex;
   align-items: center;
 
   width: 56rem;
-  height: ${({ checkFirstIndex }) => (checkFirstIndex ? 4.4 : 3.5)}rem;
+  height: ${({ checkTotalAgree }) => (checkTotalAgree ? 4.4 : 3.5)}rem;
 
-  padding-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.4}rem;
-  margin-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.9}rem;
+  padding-bottom: ${({ checkTotalAgree }) => checkTotalAgree && 0.4}rem;
+  margin-bottom: ${({ checkTotalAgree }) => checkTotalAgree && 0.9}rem;
 
-  border-bottom: 0.1rem solid ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray4 : "transparent")};
+  border-bottom: 0.1rem solid ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray4 : "transparent")};
 `;
 
 const TextWrapper = styled.div`
@@ -125,13 +126,13 @@ const TextWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h1<{ checkFirstIndex: boolean }>`
-  color: ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray1 : theme.colors.gray2)};
+const Title = styled.h1<{ checkTotalAgree: boolean }>`
+  color: ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray1 : theme.colors.gray2)};
   ${({ theme }) => theme.fonts.checkbox};
 `;
 
-const FullConvention = styled.p<{ checkFirstIndex: boolean }>`
-  visibility: ${({ checkFirstIndex }) => (checkFirstIndex ? "hidden" : "visible")};
+const FullConvention = styled.p<{ checkTotalAgree: boolean }>`
+  visibility: ${({ checkTotalAgree }) => (checkTotalAgree ? "hidden" : "visible")};
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
