@@ -1,4 +1,4 @@
-export const MarketingInformationAgreePolicy = {
+export const MARKETING_INFORMATION_AGREE_POLICY = {
   TITLE: "마케팅 정보 수신 동의",
   INTRO:
     "서비스 제공 및 이용과 관련하여 Track 1이 취득한 개인정보는 “개인정보보호법” 및 “정보통신망 이용촉진 및 정보보호 등에 관한 법률” 등 정보통신서비스제공자가 준수하여야 할 관련 법령상의 개인정보 보호 규정을 준수합니다.",

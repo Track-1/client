@@ -1,4 +1,4 @@
-export const UsingSitePolicy = {
+export const USING_SITE_POLICY = {
   TITLE: "사이트 이용약관",
   INTRO: "",
   CONTENTS: [

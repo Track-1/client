@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import ConventionCheckBox from "./conventionCheckBox";
 import NickName from "./nickName";
 import ProfilImageContainer from "./profileImageContainer";
 
@@ -22,6 +23,7 @@ export default function NicknameConvention() {
     <>
       <ProfilImageContainer />
       <NickName methods={methods} />
+      <ConventionCheckBox />
     </>
   );
 }
