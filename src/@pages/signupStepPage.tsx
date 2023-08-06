@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import Footer from "../@components/@common/footer";
 import SignUpBackButton from "../@components/signUp/signUpBackButton";
 import StepFooter from "../@components/signUp/stepFooter";
 import StepHeader from "../@components/signUp/stepHeader";
@@ -24,6 +25,7 @@ export default function SignupStepPage() {
           <StepFooter step={step} setStep={setStep} />
         </StepBox>
       </SignUpContainer>
+      <Footer />
     </>
   );
 }

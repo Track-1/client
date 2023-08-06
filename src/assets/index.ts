@@ -6,9 +6,11 @@ export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckB
 export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";
 export { ReactComponent as CreateAPasswordForYourAccountIc } from "./icon/createAPasswordForYourAccountIc.svg";
 export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
+export { ReactComponent as FacebookLogoIc } from "./icon/facebookLogoIc.svg";
 export { ReactComponent as FolderUploadIc } from "./icon/folderUploadIc.svg";
 export { ReactComponent as HashtagTitleIc } from "./icon/hashtagTitleIc.svg";
 export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
+export { ReactComponent as InstagramLogoIc } from "./icon/instagramLogoIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
