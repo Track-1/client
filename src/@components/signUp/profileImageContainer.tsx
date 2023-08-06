@@ -23,8 +23,6 @@ export default function ProfilImageContainer() {
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const fileType = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).split(".")[1];
 
-    console.log(fileType);
-
     if (e.target.files?.length === 0) {
       //alert("사진삽입이 취소되었습니다.")
     } else {
@@ -92,7 +90,7 @@ const ImageUploadBox = styled.label`
 `;
 
 const ImageContainer = styled.section`
-  margin: 6.4rem 28.1rem 4.1rem 28.1rem;
+  margin: 6.4rem 28.1rem 0.9rem 28.1rem;
   width: 21.7rem;
   height: 21.7rem;
 `;

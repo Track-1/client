@@ -139,6 +139,7 @@ export default function ConventionCheckBox() {
 
 const ConventionCheckBoxContainer = styled.section`
   margin-top: 2.6rem;
+  margin-left: -2rem;
 `;
 
 const CheckBox = styled.article`
@@ -156,8 +157,6 @@ const ConventionCheckBoxWrapper = styled.section<{ checkFirstIndex: boolean }>`
   margin-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.9}rem;
 
   border-bottom: 0.1rem solid ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray4 : "transparent")};
-
-  margin-left: 10rem;
 `;
 
 const TextWrapper = styled.div`
