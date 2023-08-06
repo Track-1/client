@@ -1,10 +1,14 @@
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { join } from "../../api/signup";
 import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
 import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
+import { joinUserData } from "../../recoil/signUp/joinUserData";
+import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { StepMainProps } from "../../type/signUp/stepProps";
 
 export default function StepFooter(props: StepMainProps) {
@@ -12,6 +16,7 @@ export default function StepFooter(props: StepMainProps) {
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const navigate = useNavigate();
   const [roleType, setRoleType] = useRecoilState<string>(role);
+  const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
 
   function checkNextStep() {
     if (isSuccess) {
@@ -26,22 +31,38 @@ export default function StepFooter(props: StepMainProps) {
     setStep(step - 1);
   }
 
-  function handleMoveToPrevStep() {
-    setIsSuccess(false);
-    checkPrevStep();
-  }
-
-  function handleMoveToNextStep() {
-    setIsSuccess(false);
-    checkNextStep();
-  }
-
   function checkFirstStep() {
     return step === SIGNUP_STEP.ROLE;
   }
 
   function checkFinalStep() {
     return step === SIGNUP_STEP.NICKNAME_CONVENTION;
+  }
+
+  function handleMoveToPrevStep() {
+    setIsSuccess(false);
+    checkPrevStep();
+  }
+
+  const { mutate: signup } = useMutation(() => join(userData, roleType), {
+    onSuccess: () => {
+      navigate("/signup/profile");
+      // setCookie("accessToken", accessToken, {});
+      // setLoginUserId(data.data.data.userResult.id);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  function handleMoveToNextStep() {
+    if (checkFinalStep()) {
+      // post
+      signup();
+    } else {
+      setIsSuccess(false);
+      checkNextStep();
+    }
   }
 
   return (
