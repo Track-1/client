@@ -50,6 +50,7 @@ export default function StepFooter(props: StepMainProps) {
     onSuccess: () => {
       navigate("/signup/profile");
       // setCookie("accessToken", accessToken, {});
+      // setLoginUserType(data.data.data.userResult.tableName);
       // setLoginUserId(data.data.data.userResult.id);
     },
     onError: (error) => {
