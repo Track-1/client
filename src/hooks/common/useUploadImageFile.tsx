@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { IMAGE_FILE_TYPE } from "../../core/common/fileType";
 import { uploadImageTypeWarningMessage } from "../../core/common/warningMessage";
 import { checkFileSize } from "../../utils/common/checkFileSize";
+import { checkImageFileType } from "../../utils/common/checkFileType";
 
 export default function useUploadImageFile() {
   const [imageFile, setImageFile] = useState<File | Blob | null>(null);
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
 
-  
   function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFile = e.target.files && e.target.files[0];
     const imageSize = imageFile && checkFileSize(imageFile.size) ? imageFile.size : 0;
-    const imageType = imageFile ? getImageType(imageFile.name) : "";
+    const imageType = imageFile ? getImageType(imageFile) : "";
 
     if (imageSize && imageType) {
       setImageFile(imageFile);
@@ -24,15 +23,10 @@ export default function useUploadImageFile() {
     }
   }
 
-  function getImageType(uploadName: string) {
-    const type = uploadName.substring(uploadName.length - 4);
-    console.log(type);
-    return checkImageType(type) ? type : alert(uploadImageTypeWarningMessage);
+  function getImageType(imageFile: File) {
+    const type = imageFile.type.toString().replace("image/", ".");
+    return checkImageFileType(type) ? type : alert(uploadImageTypeWarningMessage);
   }
 
-  function checkImageType(fileType: string) {
-    return Object.keys(IMAGE_FILE_TYPE).includes(fileType);
-  }
-
-  return { imageFile, previewImage, uploadImageFile };
+  return { imageFile, previewImage, setPreviewImage, uploadImageFile };
 }
