@@ -34,5 +34,5 @@ export default function useUploadAudioFile() {
     }
   }
 
-  return { audioFile, audioFileName, audioFileType, isTextOverflow, uploadAudioFile };
+  return { audioFile, audioFileName, setAudioFileName, audioFileType, isTextOverflow, uploadAudioFile };
 }
