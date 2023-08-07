@@ -13,5 +13,5 @@ export default function useInputText(initValue: string, inputLimit?: number) {
     }
   }, []);
 
-  return [value, changeInput] as const;
+  return [value, changeInput, setValue] as const;
 }
