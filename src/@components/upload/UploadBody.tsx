@@ -9,14 +9,18 @@ import HashtagInfo from "./HashtagInfo";
 import DescriptionInfo from "./DescriptionInfo";
 import useUploadValue from "../../hooks/common/useUploadValue";
 
-export default function UploadBody() {
-  const loginUserType = "producer"; // 임시 데이터 (이후에는 recoil값으로 변경할 예정)
+interface UploadBodyProps {
+  userType: string;
+  uploadInitData: any | null; //타입설정할 예정
+}
 
-  const { title, image, audio, description } = useUploadValue();
+export default function UploadBody(props: UploadBodyProps) {
+  const { userType, uploadInitData } = props;
+  const { title, image, audio, description } = useUploadValue(uploadInitData);
 
   return (
     <Container>
-      {loginUserType === USER_DATA.PRODUCER ? (
+      {userType === USER_DATA.PRODUCER ? (
         <ProducerLayout
           imageFile={image.imageFile}
           previewImage={image.previewImage}
