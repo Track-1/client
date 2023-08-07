@@ -1,28 +1,16 @@
 import styled from "styled-components";
 import { FolderUploadIc, UploadFileIc } from "../../assets";
-import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
-import { useEffect, useState } from "react";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
-import { useSetRecoilState } from "recoil";
-import { UploadData } from "../../recoil/upload/uploadData";
 import UploadInfoBox from "./UploadInfoBox";
 
-export default function FileUploadInfo() {
-  const { audioInit, uploadAudiofile } = useUploadAudioFile();
-  const [isTextOverflow, setIsTextOverflow] = useState(false);
-  const setUploadData = useSetRecoilState(UploadData);
+interface FileUploadInfoProps {
+  audioFileName: string;
+  audioFileType: string;
+  isTextOverflow: boolean;
+  uploadAudioFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  useEffect(() => {
-    checkMaxInputLength(audioInit.fileName.length, TEXT_LIMIT.UPLOAD_AUDIO)
-      ? setIsTextOverflow(false)
-      : setIsTextOverflow(true);
-
-    setUploadData((prev) => ({
-      ...prev,
-      audioFile: audioInit.audioFile,
-    }));
-  }, [audioInit]);
+export default function FileUploadInfo(props: FileUploadInfoProps) {
+  const { audioFileName, audioFileType, isTextOverflow, uploadAudioFile } = props;
 
   return (
     <UploadInfoBox>
@@ -32,14 +20,14 @@ export default function FileUploadInfo() {
       </InfoType>
       <InfoInput>
         <InputWrapper>
-          <InputFileTextWrapper fileName={audioInit.fileName}>
-            <FileName value={audioInit.fileName} isTextOverflow={isTextOverflow} disabled />
-            {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioInit.audioType}</FileAttribute>}
+          <InputFileTextWrapper fileName={audioFileName}>
+            <FileName value={audioFileName} isTextOverflow={isTextOverflow} disabled />
+            {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioFileType}</FileAttribute>}
             <FileInput
               type="file"
               id="wavFileUpload"
               accept=".wav,.mp3, .WAV, .MP3"
-              onChange={uploadAudiofile}
+              onChange={uploadAudioFile}
               readOnly
             />
           </InputFileTextWrapper>

@@ -1,44 +1,38 @@
 import { useState } from "react";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
-import useUploadInitValue from "../upload/useUploadInitValue";
-import { AudioElement } from "../../type/upload/uploadinitType";
-import { checkAudioFileType } from "../../utils/common/checkAudioFileType";
-import { uploadAudioFileSizeWarningMessage } from "../../core/common/warningMessage";
+import { checkAudioFileType } from "../../utils/common/checkFileType";
+import { uploadAudioTypeWarningMessage } from "../../core/common/warningMessage";
 
 export default function useUploadAudioFile() {
-  const [uploadInit] = useUploadInitValue();
-  const [audioInit, setAudioInit] = useState<AudioElement>({ ...uploadInit.audio });
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [audioFileName, setAudioFileName] = useState("");
+  const [audioFileType, setAudioFileType] = useState("");
+  const [isTextOverflow, setIsTextOverflow] = useState(false);
 
   //오디오 업로드
-  function uploadAudiofile(e: React.ChangeEvent<HTMLInputElement>) {
+  function uploadAudioFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
 
-    const filePath = e.target.value;
     const audioFile = e.target.files[0];
-    const { audioFullFileName, audioOnlyFileName, audioFileType } = getAudioFileInfo(filePath);
+    const audioOnlyFileName = audioFile.name.substring(audioFile.name.length - 4, -1);
+    const audioFileType = audioFile.name.substring(audioFile.name.length - 4);
 
     if (checkAudioFileType(audioFileType)) {
-      setAudioInit((prev) => ({
-        ...prev,
-        audioFile: audioFile,
-        fileName: checkMaxInputLength(audioOnlyFileName.length, TEXT_LIMIT.UPLOAD_AUDIO)
-          ? audioFullFileName
-          : audioOnlyFileName,
-        audioType: audioFileType,
-      }));
+      setAudioFile(audioFile);
+      setAudioFileType(audioFileType);
+
+      if (checkMaxInputLength(audioOnlyFileName.length, TEXT_LIMIT.UPLOAD_AUDIO)) {
+        setAudioFileName(audioFile.name);
+        setIsTextOverflow(false);
+      } else {
+        setAudioFileName(audioOnlyFileName);
+        setIsTextOverflow(true);
+      }
     } else {
-      alert(uploadAudioFileSizeWarningMessage);
+      alert(uploadAudioTypeWarningMessage);
     }
   }
 
-  function getAudioFileInfo(file: string) {
-    const audioFullFileName = file.substring(file.lastIndexOf("\\") + 1);
-    const audioOnlyFileName = audioFullFileName.substring(audioFullFileName.length - 4, -1);
-    const audioFileType = audioFullFileName.substring(audioFullFileName.length - 4);
-
-    return { audioFullFileName, audioOnlyFileName, audioFileType };
-  }
-
-  return { audioInit, uploadAudiofile };
+  return { audioFile, audioFileName, audioFileType, isTextOverflow, uploadAudioFile };
 }

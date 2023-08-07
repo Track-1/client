@@ -1,24 +1,14 @@
 import styled from "styled-components";
 import TextLength from "./TextLength";
-import useInputText from "../../hooks/common/useInputText";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
-import useUploadInitValue from "../../hooks/upload/useUploadInitValue";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { UploadData } from "../../recoil/upload/uploadData";
 
-export default function UploadTitle() {
-  const [uploadInit] = useUploadInitValue();
-  const [title, changeTitle] = useInputText(uploadInit.title, TEXT_LIMIT.UPLOAD_TITLE);
-  const setUploadData = useSetRecoilState(UploadData);
+interface UploadTitleProps {
+  title: string;
+  changeTitle: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  useEffect(() => {
-    setUploadData((prev) => ({
-      ...prev,
-      title: title,
-    }));
-  }, [title]);
-
+export default function UploadTitle(props: UploadTitleProps) {
+  const { title, changeTitle } = props;
   return (
     <Container>
       <Empty />
