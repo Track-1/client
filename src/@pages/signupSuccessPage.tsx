@@ -8,8 +8,6 @@ import { isProducer, isVocal } from "../utils/common/checkRoleType";
 export default function SignupSuccessPage() {
   const userType = useRecoilValue(role);
 
-  console.log(userType);
-
   return (
     <>
       {isProducer(userType) && <ProducerSuccess />}

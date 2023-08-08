@@ -24,6 +24,8 @@ export { ReactComponent as SignUpProducerQuestionIc } from "./icon/signUpProduce
 export { ReactComponent as SignUpSuccessBackgroundIc } from "./icon/signUpSuccessBackgroundIc.svg";
 export { ReactComponent as SignUpUploadImageProducerIc } from "./icon/signUpUploadImageProducerIc.svg";
 export { ReactComponent as SignUpUploadImageVocalIc } from "./icon/signUpUploadImageVocalIc.svg";
+export { ReactComponent as SignUpVocalButtonIc } from "./icon/signUpVocalButtonIc.svg";
+export { ReactComponent as SignUpVocalQuestionIc } from "./icon/signUpVocalQIc.svg";
 export { ReactComponent as SignupBackBtnIc } from "./icon/signupBackBtnIc.svg";
 export { ReactComponent as SignupBackgroundIc } from "./icon/signupBackgroundIc.svg";
 export { ReactComponent as SignupChangePhotoIc } from "./icon/signupChangePhotoIc.svg";

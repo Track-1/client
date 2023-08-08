@@ -65,16 +65,7 @@ const UploadButtonWrapper = styled.div`
 `;
 
 const UploadButton = styled.div`
-  margin-top: 1rem;
-  cursor: pointer;
-`;
-
-const ModalWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-
-  margin: 2.5rem 0 0 13.6rem;
-
+  margin-top: 2.5rem;
   cursor: pointer;
 `;
 
@@ -95,4 +86,5 @@ const SignUpProducerQuestionIcon = styled(SignUpProducerQuestionIc)`
 
 const SignUpProducerButtonIcon = styled(SignUpProducerButtonIc)`
   width: 55.5rem;
+  height: 6.7rem;
 `;
