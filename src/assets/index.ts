@@ -11,6 +11,8 @@ export { ReactComponent as FolderUploadIc } from "./icon/folderUploadIc.svg";
 export { ReactComponent as HashtagTitleIc } from "./icon/hashtagTitleIc.svg";
 export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
 export { ReactComponent as InstagramLogoIc } from "./icon/instagramLogoIc.svg";
+export { ReactComponent as MoveTouploadPortfolioButtonIc } from "./icon/moveTouploadPortfolioButtonIc.svg";
+export { ReactComponent as MoveTouploadVocalSearchingButtonIc } from "./icon/moveTouploadVocalSearchingButtonIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
