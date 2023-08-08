@@ -1,12 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { MoveTouploadPortfolioButtonIc, MoveTouploadVocalSearchingButtonIc } from "../../assets";
 import useModal from "../../hooks/common/useModal";
-import { isModalOpen } from "../../recoil/common/isModalOpen";
 
 export default function ProducerUploadModal() {
-  const [isOpenModal, setIsOpenModal] = useRecoilState(isModalOpen);
   const { modalRef, closeModal, openModal } = useModal();
   const location = useLocation();
   const preLocation = location.pathname.split("/")[1];

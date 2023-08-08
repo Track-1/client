@@ -8,6 +8,7 @@ import {
   SignUpSuccessBackgroundIc,
 } from "../../assets";
 import { isModalOpen } from "../../recoil/common/isModalOpen";
+import ProducerUploadModal from "./producerUploadModal";
 
 export default function ProducerSuccess() {
   const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
