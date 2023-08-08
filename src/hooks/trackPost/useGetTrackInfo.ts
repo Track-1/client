@@ -11,7 +11,5 @@ export default function useGetTrackInfo() {
     },
     staleTime: 3000,
   });
-  console.log(trackInfo);
-
   return { trackInfo };
 }

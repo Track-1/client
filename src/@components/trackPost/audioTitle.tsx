@@ -3,12 +3,11 @@ import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function AudioTitle() {
   const { trackInfo } = useGetTrackInfo();
-  // console.log(trackInfo);
-  // const { title } = trackInfo;
+  const { title } = trackInfo !== undefined && trackInfo;
 
   return (
     <AudioTitleWrapper>
-      <Title>{}</Title>
+      <Title>{title}</Title>
     </AudioTitleWrapper>
   );
 }
