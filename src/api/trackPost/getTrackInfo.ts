@@ -1,7 +1,7 @@
 import { getCookie } from "../../utils/common/cookie";
 import { client } from "../common/client";
 
-export async function getTrackInfo(beatId: number) {
+export async function getTrackInfo(beatId: number | undefined) {
   const data = await client.get(`${process.env.REACT_APP_BASE_URL}/tracks/${beatId}`, {
     headers: {
       "Content-Type": "application/json",
@@ -9,5 +9,5 @@ export async function getTrackInfo(beatId: number) {
     },
   });
 
-  return data;
+  return data?.data?.data;
 }
