@@ -2,8 +2,7 @@ import styled from "styled-components";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function AudioTitle() {
-  const { trackInfo } = useGetTrackInfo();
-  const { title } = trackInfo !== undefined && trackInfo;
+  const { title } = useGetTrackInfo();
 
   return (
     <AudioTitleWrapper>

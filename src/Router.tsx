@@ -14,7 +14,7 @@ export default function Router() {
         {/* [ 예원 ] 리팩토링 임시 라우터 */}
         <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
         <Route path="/vocal/profile-edit" element={<VocalProfileEditPage />} />
-        <Route path="/track-post/:beatId" index element={<TrackPostPage />} />
+        <Route path="/track-post/:id" index element={<TrackPostPage />} />
       </Routes>
     </BrowserRouter>
   );
