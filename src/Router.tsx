@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UploadPage from "./@pages/uploadPage";
 import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
+import TrackPostPage from "./@pages/trackPostPage";
+import UploadPage from "./@pages/uploadPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 
 export default function Router() {
@@ -13,6 +14,7 @@ export default function Router() {
         {/* [ 예원 ] 리팩토링 임시 라우터 */}
         <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
         <Route path="/vocal/profile-edit" element={<VocalProfileEditPage />} />
+        <Route path="/track-post/:beatId" index element={<TrackPostPage />} />
       </Routes>
     </BrowserRouter>
   );
