@@ -11,7 +11,7 @@ export default function SignupSuccessPage() {
 
   return (
     <>
-      {isProducer("producer") && <ProducerSuccess />}
+      {isProducer(userType) && <ProducerSuccess />}
       {isVocal(userType) && <VocalSuccess />}
     </>
   );
