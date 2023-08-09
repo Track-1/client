@@ -1,14 +1,14 @@
 import { useMutation } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { deleteTrack } from "../../api/trackPost/deleteTrack";
 import { DeleteIc, EditIc } from "../../assets";
-import { deleteTrack } from "../../core/api/delete";
 
 export default function EditDropDown() {
   const { beatId } = useParams();
   const navigate = useNavigate();
 
-  const { mutate } = useMutation(deleteTrackAPI, {
+  const { mutate: handleDeleteOwnTrack } = useMutation(() => deleteTrack(beatId), {
     onSuccess: () => {
       navigate(-1);
     },
@@ -16,14 +16,6 @@ export default function EditDropDown() {
       console.log(error);
     },
   });
-
-  async function deleteTrackAPI() {
-    return await deleteTrack(beatId);
-  }
-
-  function handleDeleteOwnTrack(): void {
-    mutate();
-  }
 
   function handleMoveTrackPostEditPage() {
     navigate(`/track-post/edit/${beatId}`);
@@ -36,7 +28,7 @@ export default function EditDropDown() {
         <EditIc />
       </EditWrapper>
       <DivisionBar />
-      <DeleteWrapper onClick={handleDeleteOwnTrack}>
+      <DeleteWrapper onClick={() => handleDeleteOwnTrack()}>
         <DeleteText>삭제하기</DeleteText>
         <DeleteIc />
       </DeleteWrapper>
