@@ -1,4 +1,6 @@
+import AudioInfo from "../@components/trackPost/audioInfo";
 import AudioTitle from "../@components/trackPost/audioTitle";
+import Download from "../@components/trackPost/download";
 import ProducerProfile from "../@components/trackPost/producerProfile";
 
 export default function TrackPostPage() {
@@ -6,6 +8,8 @@ export default function TrackPostPage() {
     <>
       <AudioTitle />
       <ProducerProfile />
+      <Download />
+      <AudioInfo />
     </>
   );
 }
