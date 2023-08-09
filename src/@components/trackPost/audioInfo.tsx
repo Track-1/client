@@ -1,12 +1,18 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { CategoryIc, DescriptionIc, HashtagIc } from "../../assets";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import HashTag from "../@common/hashTag";
 
 export default function AudioInfo() {
   const { jacketImage, category, keyword, introduce } = useGetTrackInfo();
+  const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
+  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   return (
     <InfoContainer>
-      <PlayImageWrapper className={!isCommentOpen && play ? "playAnimation" : "pauseAnimation"}>
+      {/* <PlayImageWrapper className={!isCommentOpen && play ? "playAnimation" : "pauseAnimation"}> */}
+      <PlayImageWrapper className={!isCommentOpen ? "playAnimation" : "pauseAnimation"}>
         <PlayerImage src={jacketImage} alt="재생 이미지" />
       </PlayImageWrapper>
       <DescriptionContainer>
@@ -20,7 +26,7 @@ export default function AudioInfo() {
           </HashTagIconWrapper>
           <TagWrapper>
             {keyword?.map((tag: string) => (
-              <HashTag text={tag} />
+              <HashTag key={tag} tag={tag} />
             ))}
           </TagWrapper>
         </HashTagBox>
@@ -135,4 +141,8 @@ const TextBox = styled.div`
   font-family: "pretended";
 
   color: ${({ theme }) => theme.colors.gray2};
+`;
+
+const HashTagIconWrapper = styled.div`
+  width: 16rem;
 `;
