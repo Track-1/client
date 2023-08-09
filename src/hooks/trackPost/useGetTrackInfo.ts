@@ -30,6 +30,7 @@ export default function useGetTrackInfo() {
   } = trackInfo !== undefined && trackInfo;
 
   return {
+    trackInfo,
     beatId,
     jacketImage,
     beatWavFile,
