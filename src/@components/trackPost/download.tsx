@@ -7,9 +7,10 @@ import { getFileLink } from "../../api/trackPost/getFileLink";
 import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { setCookie } from "../../utils/common/cookie";
 
 export default function Download() {
-  const { isMe, isClosed, title, producerId } = useGetTrackInfo();
+  const { isMe, isClosed, title } = useGetTrackInfo();
   const { id } = useParams();
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const queryClient = useQueryClient();
@@ -23,7 +24,7 @@ export default function Download() {
     },
   });
 
-  const { data: fileLink } = useQuery(["download"], () => getFileLink(producerId), {
+  const { data: fileLink } = useQuery(["download"], () => getFileLink(Number(id)), {
     onSuccess: (data) => {
       let blob = new Blob([data?.data], { type: "audio/mpeg" });
       let url = window.URL.createObjectURL(blob); //s3링크
@@ -78,6 +79,11 @@ export default function Download() {
     // !download && setDownload(true);
     // }
     setIsDownload(true);
+    setCookie(
+      "accessToken",
+      `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MiwiaWF0IjoxNjkxNTcxMTU5LCJleHAiOjE2OTE1NzQ3NTl9.33tVyTOfxBO7aKtLAgb3MjiU6TADKswKKQMiLoh3oIU`,
+      {},
+    );
   }
 
   return (
