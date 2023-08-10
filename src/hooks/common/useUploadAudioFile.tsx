@@ -11,7 +11,7 @@ export default function useUploadAudioFile() {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
 
   //오디오 업로드
-  function uploadAudioFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadAudioFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
 
     const audioFile = e.target.files[0];
@@ -34,5 +34,5 @@ export default function useUploadAudioFile() {
     }
   }
 
-  return { audioFile, audioFileName, setAudioFileName, audioFileType, isTextOverflow, uploadAudioFile };
+  return { audioFile, audioFileName, setAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile };
 }

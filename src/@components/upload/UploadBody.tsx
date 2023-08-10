@@ -24,7 +24,7 @@ export default function UploadBody(props: UploadBodyProps) {
         <ProducerLayout
           imageFile={image.imageFile}
           previewImage={image.previewImage}
-          uploadImageFile={image.uploadImageFile}>
+          handleUploadImageFile={image.handleUploadImageFile}>
           <UploadDataWrapper>
             <UploadTitle title={title.title} changeTitle={title.changeTitle} />
             <UploadInfoWrapper>
@@ -32,7 +32,7 @@ export default function UploadBody(props: UploadBodyProps) {
                 audioFileName={audio.audioFileName}
                 audioFileType={audio.audioFileType}
                 isTextOverflow={audio.isTextOverflow}
-                uploadAudioFile={audio.uploadAudioFile}
+                handleUploadAudioFile={audio.handleUploadAudioFile}
               />
               <CategoryInfo />
               <HashtagInfo />
@@ -47,7 +47,7 @@ export default function UploadBody(props: UploadBodyProps) {
         <VocalLayout
           imageFile={image.imageFile}
           previewImage={image.previewImage}
-          uploadImageFile={image.uploadImageFile}>
+          handleUploadImageFile={image.handleUploadImageFile}>
           <UploadDataWrapper>
             <UploadTitle title={title.title} changeTitle={title.changeTitle} />
             <UploadInfoWrapper>
@@ -55,7 +55,7 @@ export default function UploadBody(props: UploadBodyProps) {
                 audioFileName={audio.audioFileName}
                 audioFileType={audio.audioFileType}
                 isTextOverflow={audio.isTextOverflow}
-                uploadAudioFile={audio.uploadAudioFile}
+                handleUploadAudioFile={audio.handleUploadAudioFile}
               />
               <CategoryInfo />
               <HashtagInfo />

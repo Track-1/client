@@ -7,7 +7,7 @@ export default function useUploadImageFile() {
   const [imageFile, setImageFile] = useState<File | Blob | null>(null);
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
 
-  function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFile = e.target.files && e.target.files[0];
     const imageSize = imageFile && checkFileSize(imageFile.size) ? imageFile.size : 0;
     const imageType = imageFile ? getImageType(imageFile) : "";
@@ -28,5 +28,5 @@ export default function useUploadImageFile() {
     return checkImageFileType(type) ? type : alert(uploadImageTypeWarningMessage);
   }
 
-  return { imageFile, previewImage, setPreviewImage, uploadImageFile };
+  return { imageFile, previewImage, setPreviewImage, handleUploadImageFile };
 }

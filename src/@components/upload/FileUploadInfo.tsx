@@ -6,11 +6,11 @@ interface FileUploadInfoProps {
   audioFileName: string;
   audioFileType: string;
   isTextOverflow: boolean;
-  uploadAudioFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleUploadAudioFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function FileUploadInfo(props: FileUploadInfoProps) {
-  const { audioFileName, audioFileType, isTextOverflow, uploadAudioFile } = props;
+  const { audioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } = props;
 
   return (
     <UploadInfoBox>
@@ -27,7 +27,7 @@ export default function FileUploadInfo(props: FileUploadInfoProps) {
               type="file"
               id="wavFileUpload"
               accept=".wav,.mp3, .WAV, .MP3"
-              onChange={uploadAudioFile}
+              onChange={handleUploadAudioFile}
               readOnly
             />
           </InputFileTextWrapper>
