@@ -40,8 +40,8 @@ export default function HashtagsEdit() {
     handleAddHashtag();
   }
 
-  function handleRemoveHashtag(index: number) {
-    setHashtagText(hashtagText.filter((el, i) => i !== index));
+  function handleRemoveHashtag(tag: string) {
+    setHashtagText(hashtagText.filter((item) => item !== tag));
   }
 
   return (
