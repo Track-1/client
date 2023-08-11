@@ -21,8 +21,8 @@ export default function ProfileTitleInput(props: ProfileTitleInputProps) {
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
-    setValue(event.currentTarget.value.length);
     const newValue = event.target.value;
+    setValue(event.currentTarget.value.length);
     onChangeProps(newValue);
   }
 
