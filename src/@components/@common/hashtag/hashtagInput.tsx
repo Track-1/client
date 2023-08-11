@@ -11,10 +11,7 @@ export default function HashtagsEdit() {
   const hashtagRef = useRef<HTMLInputElement | null>(null);
 
   function calculateHashtagLength(hashtagValue: string): number {
-    const koreanLength = hashtagValue.length * 1.5 + 1;
-    const nonKoreanLength = hashtagValue.length * 1.2 + 1;
-
-    return checkKorean(hashtagValue) ? koreanLength : nonKoreanLength;
+    return checkKorean(hashtagValue) ? hashtagValue.length * 1.5 + 1 : hashtagValue.length * 1.2 + 1;
   }
 
   function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
