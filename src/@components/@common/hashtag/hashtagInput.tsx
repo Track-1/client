@@ -53,7 +53,7 @@ export default function HashtagsEdit() {
               <HashtagSharp># </HashtagSharp>
               <CompletedHashtag>{tag}</CompletedHashtag>
             </CompleteHashtagWrapper>
-            <DeleteHashtagIcon onClick={() => handleRemoveHashtag(index)} />
+            <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} />
           </Hashtag>
         ))}
         {hashtagText?.length < 3 && (
