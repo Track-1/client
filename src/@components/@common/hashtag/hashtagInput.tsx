@@ -41,39 +41,39 @@ export default function HashtagsEdit() {
     handleAddHashtag();
   }
 
-  function removeHashtag(index: number) {
+  function handleRemoveHashtag(index: number) {
     setHashtagText(hashtagText.filter((el, i) => i !== index));
   }
 
   return (
     <>
-        <InputHashtagWrapper>
-          {hashtagText.map((tag, index) => (
-            <Hashtag>
-              <CompleteHashtagWrapper>
-                <HashtagSharp># </HashtagSharp>
-                <CompletedHashtag>{tag}</CompletedHashtag>
-              </CompleteHashtagWrapper>
-              <DeleteHashtagIcon onClick={() => removeHashtag(index)} />
-            </Hashtag>
-          ))}
-          {hashtagText?.length < 3 && (
-            <Hashtag>
-              <HashtagWrapper>
-                <HashtagSharp># </HashtagSharp>
-                <HashtagInput
-                  placeholder="Hashtag"
-                  onKeyDown={handleEnterHashtag}
-                  onChange={checkHashtagText}
-                  onBlur={handleOutsideClick}
-                  inputWidth={hashtagLength}
-                  ref={hashtagRef}
-                />
-              </HashtagWrapper>
-            </Hashtag>
-          )}
-          {hashtagText?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
-        </InputHashtagWrapper>
+      <InputHashtagWrapper>
+        {hashtagText.map((tag, index) => (
+          <Hashtag key={tag}>
+            <CompleteHashtagWrapper>
+              <HashtagSharp># </HashtagSharp>
+              <CompletedHashtag>{tag}</CompletedHashtag>
+            </CompleteHashtagWrapper>
+            <DeleteHashtagIcon onClick={() => handleRemoveHashtag(index)} />
+          </Hashtag>
+        ))}
+        {hashtagText?.length < 3 && (
+          <Hashtag>
+            <HashtagWrapper>
+              <HashtagSharp># </HashtagSharp>
+              <HashtagInput
+                placeholder="Hashtag"
+                onKeyDown={handleEnterHashtag}
+                onChange={checkHashtagText}
+                onBlur={handleOutsideClick}
+                inputWidth={hashtagLength}
+                ref={hashtagRef}
+              />
+            </HashtagWrapper>
+          </Hashtag>
+        )}
+        {hashtagText?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
+      </InputHashtagWrapper>
     </>
   );
 }
