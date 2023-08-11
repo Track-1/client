@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { nameWarningMessage } from "../../core/common/warningMessage";
 import { inputState } from "../../core/common/inputState";
 
-interface PropsType {
+interface ProfileTitleInputProps {
   inputTitle: string;
   data: string;
   onChangeProps: (value: string) => void;
 }
 
-export default function ProfileTitleInput(props: PropsType) {
+export default function ProfileTitleInput(props: ProfileTitleInputProps) {
   const { inputTitle, data, onChangeProps } = props;
   const [nameState, setNameState] = useState<string>("");
   const [value, setValue] = useState<number>(0);
