@@ -21,9 +21,11 @@ export default function HashtagsEdit() {
   }
 
   function handleAddHashtag() {
-    const value = hashtagRef.current?.value.trim();
+    if (hashtagRef.current === null) return;
+
+    const value = hashtagRef.current.value.trim();
     if (value) {
-      setHashtagText([...hashtagText, value]);
+      setHashtagText((prev) => [...prev, value]);
       hashtagRef.current!.value = "";
       setHashtagLength(0);
     }
