@@ -36,7 +36,7 @@ export default function EmailPassword() {
       if (checkEmailVerified(errors?.email?.message)) {
         return <CreateAPasswordForYourAccountIcon />;
       }
-      return <SignupEmailPasswordTitleIcon isRewrite={checkEmailRewrite()} />;
+      return <SignupEmailPasswordTitleIcon $isRewrite={checkEmailRewrite()} />;
     }
   }
 
@@ -57,10 +57,10 @@ export default function EmailPassword() {
   );
 }
 
-const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)<{ isRewrite: boolean }>`
+const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)<{ $isRewrite: boolean }>`
   width: 48.3rem;
 
-  margin: 8rem 0 ${({ isRewrite }) => (isRewrite ? 2.8 : 10.3)}rem 0;
+  margin: 8rem 0 ${({ $isRewrite }) => ($isRewrite ? 2.8 : 10.3)}rem 0;
 `;
 
 const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`

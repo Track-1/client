@@ -3,5 +3,5 @@ export interface JoinUserDataPropsType {
   ID: string;
   PW: string;
   name: string;
-  isAgree: String;
+  isAgree: string;
 }
