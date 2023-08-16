@@ -5,6 +5,7 @@ export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
 export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
 export { ReactComponent as ChangePhotoProducerIc } from "./icon/changePhotoProducerIc.svg";
 export { ReactComponent as ChangePhotoVocalIc } from "./icon/changePhotoVocalIc.svg";
+export { ReactComponent as CloseCommentsBtnIc } from "./icon/closeCommentsBtnIc.svg";
 export { ReactComponent as ClosedDownloadIc } from "./icon/closedBtnIc.svg";
 export { ReactComponent as CloseDownloadIc } from "./icon/closedWithXIc.svg";
 export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckBoxIc.svg";
