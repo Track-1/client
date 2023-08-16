@@ -16,8 +16,8 @@ export default function ProfilImageContainer() {
   const [imageSrc, setImageSrc] = useState<string>("");
   const [isHover, setIsHover] = useState(false);
 
-  function handleImageHover() {
-    setIsHover(!isHover);
+  function handleImageHover(isHoverValue: boolean) {
+    setIsHover(isHoverValue);
   }
 
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,14 +38,12 @@ export default function ProfilImageContainer() {
     }
   }
 
-  console.log(isHover);
-
   return (
     <>
       {/* 프로듀서 프로필 이미지 업로드 */}
       {isProducer(userType) && (
         <ImageContainer>
-          <ImageUploadBox onMouseEnter={handleImageHover} onMouseLeave={handleImageHover}>
+          <ImageUploadBox onMouseEnter={() => handleImageHover(true)} onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <ProducerImageWrapper>
                 <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
@@ -64,7 +62,7 @@ export default function ProfilImageContainer() {
       {/* 보컬 프로필 이미지 업로드 */}
       {isVocal(userType) && (
         <ImageContainer>
-          <ImageUploadBox onMouseEnter={handleImageHover} onMouseLeave={handleImageHover}>
+          <ImageUploadBox onMouseEnter={() => handleImageHover(true)} onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <VocalImageWrapper>
                 <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
@@ -92,7 +90,7 @@ const ImageUploadBox = styled.label`
 `;
 
 const ImageContainer = styled.section`
-  margin: 6.4rem 28.1rem 4.1rem 28.1rem;
+  margin: 6.4rem 28.1rem 0.9rem 28.1rem;
   width: 21.7rem;
   height: 21.7rem;
 `;

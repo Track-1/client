@@ -2,7 +2,7 @@ import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { postVerifyCode } from "../../api/signup";
+import { postVerifyCode } from "../../api/signup/postVerifyCode";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { role } from "../../recoil/common/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
