@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import AudioInfo from "./audioInfo";
 import AudioTitle from "./audioTitle";
 import Download from "./download";
@@ -10,10 +11,16 @@ export default function TrackPost() {
     <>
       <AudioTitle />
       <ProducerProfile />
-      <Download />
-      <PlayButton />
-      <ShowMore />
+      <MusicPlayingWrapper>
+        <Download />
+        <PlayButton />
+        <ShowMore />
+      </MusicPlayingWrapper>
       <AudioInfo />
     </>
   );
 }
+
+const MusicPlayingWrapper = styled.section`
+  display: flex;
+`;
