@@ -1,4 +1,5 @@
 export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
+export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
 export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
 export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
 export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
@@ -17,6 +18,8 @@ export { ReactComponent as HashtagTitleIc } from "./icon/hashtagTitleIc.svg";
 export { ReactComponent as HashtagWarningIc } from "./icon/hashtagWarningIc.svg";
 export { ReactComponent as OpenDownloadIc } from "./icon/openedIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
+export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
+export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";
 export { ReactComponent as UploadCategoryIc } from "./icon/uploadCategoryIc.svg";
 export { ReactComponent as UploadDescriptionIc } from "./icon/uploadDescriptionIc.svg";
 export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.svg";
