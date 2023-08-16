@@ -48,8 +48,6 @@ export default function StepFooter(props: StepMainProps) {
     checkPrevStep();
   }
 
-  console.log(userData);
-
   const { mutate: signup } = useMutation(() => join(userData, roleType), {
     onSuccess: (data) => {
       navigate("/signup/profile");

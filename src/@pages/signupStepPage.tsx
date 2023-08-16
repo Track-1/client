@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import ConventionModal from "../@components/@common/conventionModal";
 import Footer from "../@components/@common/footer";
@@ -9,10 +10,16 @@ import StepMain from "../@components/signUp/stepMain";
 import background from "../assets/icon/signupBackgroundIc.svg";
 import { SIGNUP_STEP } from "../core/signUp/stepRenderer";
 import useConventionModal from "../hooks/common/useConventionModal";
+import { role } from "../recoil/common/role";
 
 export default function SignupStepPage() {
   const [step, setStep] = useState(SIGNUP_STEP.ROLE);
   const { conventionModalInform } = useConventionModal();
+  const [userType, setUserType] = useRecoilState(role);
+
+  useEffect(() => {
+    setUserType("");
+  }, []);
 
   return (
     <>
