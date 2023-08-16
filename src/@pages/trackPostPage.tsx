@@ -1,5 +1,5 @@
-import AudioTitle from "../@components/trackPost/audioTitle";
+import TrackPost from "../@components/trackPost";
 
 export default function TrackPostPage() {
-  return <AudioTitle />;
+  return <TrackPost />;
 }
