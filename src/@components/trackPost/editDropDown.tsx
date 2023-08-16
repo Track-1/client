@@ -71,6 +71,7 @@ const DivisionBar = styled.div`
 
   background-color: ${({ theme }) => theme.colors.gray3};
 `;
+
 const DeleteWrapper = styled.li`
   height: 50%;
 
