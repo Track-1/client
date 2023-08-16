@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import UploadInfoBox from "./UploadInfoBox";
+import HashtagInput from "../../hashtag/hashtagInput";
+import HashtagWarning from "../../hashtag/hashtagWarning";
 
 export default function HashtagInfo() {
   return (
@@ -7,7 +9,12 @@ export default function HashtagInfo() {
       <InfoType>
         #<InfoTypeText> Hashtag</InfoTypeText>
       </InfoType>
-      <InfoInput>hello</InfoInput>
+      <InfoInput>
+        <HashtagInput />
+        <CustomHashtagWarning>
+          <HashtagWarning />
+        </CustomHashtagWarning>
+      </InfoInput>
     </UploadInfoBox>
   );
 }
@@ -29,4 +36,13 @@ const InfoTypeText = styled.p`
 const InfoInput = styled.div`
   width: 100%;
   height: 100%;
+
+  margin-top: 0.3rem;
+
+  display: flex;
+  align-items: center;
+`;
+
+const CustomHashtagWarning = styled.div`
+  margin-left: 16rem;
 `;
