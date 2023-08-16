@@ -1,9 +1,9 @@
+import { RecoilEnv, RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
-import { GlobalStyle } from "./style/globalStyle";
 import Router from "./Router";
+import { GlobalStyle } from "./style/globalStyle";
 import { theme } from "./style/theme";
-import { RecoilRoot } from "recoil";
-import React from "react";
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 function App() {
   return (

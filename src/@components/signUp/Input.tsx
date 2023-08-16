@@ -22,11 +22,19 @@ export default function Input<
     rules: rules,
   });
 
+  function checkPasswordMessage() {
+    return placeholder === "Create a password" || placeholder === "Enter a password again";
+  }
+
   function calculateMarginLeft() {
     if (width === 42.2) {
       return 38;
     } else {
-      return 48;
+      if (checkPasswordMessage()) {
+        return 48;
+      } else {
+        return 52;
+      }
     }
   }
 

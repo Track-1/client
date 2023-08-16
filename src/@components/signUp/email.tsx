@@ -2,11 +2,11 @@ import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { authEmail } from "../../api/signup";
+import { authEmail } from "../../api/signup/authEmail";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
-import { signupRole } from "../../recoil/signUp/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
@@ -16,7 +16,7 @@ import SendCodeButton from "./sendCodeButton";
 
 export default function Email(props: SignupInputProps) {
   const { methods } = props;
-  const clickRole = useRecoilValue<string>(signupRole);
+  const clickRole = useRecoilValue<string>(role);
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   const {

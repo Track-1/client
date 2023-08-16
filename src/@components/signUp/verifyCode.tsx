@@ -2,9 +2,9 @@ import { FormProvider } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { postVerifyCode } from "../../api/signup";
+import { postVerifyCode } from "../../api/signup/postVerifyCode";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
-import { signupRole } from "../../recoil/signUp/role";
+import { role } from "../../recoil/common/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import Input from "./Input";
 import InputTitle from "./inputTitle";
@@ -12,7 +12,7 @@ import VerifyCodeButton from "./verifyCodeButton";
 
 export default function VerifyCode(props: SignupInputProps) {
   const { methods } = props;
-  const clickRole = useRecoilValue<string>(signupRole);
+  const clickRole = useRecoilValue<string>(role);
   const {
     handleSubmit,
     setError,
@@ -55,15 +55,7 @@ export default function VerifyCode(props: SignupInputProps) {
       <form onSubmit={handleSubmit(handleVerifyCode)}>
         <InputTitle>Verification code</InputTitle>
         <VerifyCodeWrapper>
-          <Input
-            name="verifyCode"
-            rules={{
-              required: true,
-            }}
-            type="text"
-            placeholder="Verify your email address"
-            width={42.2}
-          />
+          <Input name="verifyCode" rules={{}} type="text" placeholder="Verify your email address" width={42.2} />
           <VerifyCodeButton isActive={checkIsActive()} />
         </VerifyCodeWrapper>
       </form>

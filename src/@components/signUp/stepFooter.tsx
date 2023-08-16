@@ -1,15 +1,26 @@
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
+import { join } from "../../api/signup/join";
+import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
+import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
+import { joinUserData } from "../../recoil/signUp/joinUserData";
+import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { StepMainProps } from "../../type/signUp/stepProps";
+import { setCookie } from "../../utils/common/cookie";
 
 export default function StepFooter(props: StepMainProps) {
   const { step, setStep } = props;
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const navigate = useNavigate();
+  const [roleType, setRoleType] = useRecoilState<string>(role);
+  const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
+  const setLoginUserType = useSetRecoilState(loginUserType);
+  const setLoginUserId = useSetRecoilState(loginUserId);
 
   function checkNextStep() {
     if (isSuccess) {
@@ -18,7 +29,18 @@ export default function StepFooter(props: StepMainProps) {
   }
 
   function checkPrevStep() {
+    if (step === SIGNUP_STEP.EMAIL_PASSWORD) {
+      setRoleType("");
+    }
     setStep(step - 1);
+  }
+
+  function checkFirstStep() {
+    return step === SIGNUP_STEP.ROLE;
+  }
+
+  function checkFinalStep() {
+    return step === SIGNUP_STEP.NICKNAME_CONVENTION;
   }
 
   function handleMoveToPrevStep() {
@@ -26,20 +48,34 @@ export default function StepFooter(props: StepMainProps) {
     checkPrevStep();
   }
 
-  function handleMoveToNextStep() {
-    setIsSuccess(false);
-    checkNextStep();
-  }
+  const { mutate: signup } = useMutation(() => join(userData, roleType), {
+    onSuccess: (data) => {
+      navigate("/signup/profile");
+      const accessToken = data.data.data.accessToken;
+      setCookie("accessToken", accessToken, {});
+      setLoginUserType(data.data.data.userResult.tableName);
+      setLoginUserId(data.data.data.userResult.id);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-  function checkStepRole() {
-    return step === SIGNUP_STEP.ROLE;
+  function handleMoveToNextStep() {
+    if (checkFinalStep()) {
+      // post
+      signup();
+    } else {
+      setIsSuccess(false);
+      checkNextStep();
+    }
   }
 
   return (
     <FooterWrapper>
-      {checkStepRole() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
+      {checkFirstStep() ? <Blank /> : <SignupStepBackArrowIcon onClick={handleMoveToPrevStep} />}
       <ContinueButtonWrapper onClick={handleMoveToNextStep} isSuccess={isSuccess}>
-        <SignupStepContinueIcon />
+        {checkFinalStep() ? <SignupCompleteIcon /> : <SignupStepContinueIcon />}
       </ContinueButtonWrapper>
     </FooterWrapper>
   );
@@ -84,5 +120,9 @@ const SignupStepBackArrowIcon = styled(SignupStepBackArrowIc)`
 `;
 
 const SignupStepContinueIcon = styled(SignupStepContinueIc)`
+  width: 9.7rem;
+`;
+
+const SignupCompleteIcon = styled(SignupCompleteIc)`
   width: 9.7rem;
 `;

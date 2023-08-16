@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { SignupErrorIc, SignupVerifyIc } from "../../assets";
-import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import {
+  EMAIL_MESSAGE,
+  NICKNAME_MESSAGE,
+  PASSWORD_MESSAGE,
+  VERIFICATION_CODE_MESSAGE,
+} from "../../core/signUp/errorMessage";
 
 export default function CheckErrorIcon(message: string | undefined) {
   switch (message) {
@@ -17,6 +22,10 @@ export default function CheckErrorIcon(message: string | undefined) {
     case EMAIL_MESSAGE.VERIFY:
       return <SignUpVerifyIcon />;
     case PASSWORD_MESSAGE.SUCCESS:
+      return <SignUpVerifyIcon />;
+    case NICKNAME_MESSAGE.ERROR:
+      return <SignUpErrorIcon />;
+    case NICKNAME_MESSAGE.SUCCESS:
       return <SignUpVerifyIcon />;
     case EMAIL_MESSAGE.SUCCESS:
       return;

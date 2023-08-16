@@ -39,7 +39,7 @@ export default function useUploadImageFile() {
   function checkImageType(fileType: string | undefined) {
     !(
       fileType === ".jpg" ||
-      fileType === "jpeg" ||
+      fileType === ".jpeg" ||
       fileType === ".png" ||
       fileType === ".JPG" ||
       fileType === ".JPEG" ||
@@ -50,7 +50,7 @@ export default function useUploadImageFile() {
       );
     return (
       fileType === ".jpg" ||
-      fileType === "jpeg" ||
+      fileType === ".jpeg" ||
       fileType === ".png" ||
       fileType === ".JPG" ||
       fileType === ".JPEG" ||
@@ -58,5 +58,13 @@ export default function useUploadImageFile() {
     );
   }
 
-  return { imageFile, previewImage, uploadImageFile };
+  function getFileURL(file: File): string {
+    return URL.createObjectURL(file);
+  }
+
+  function getFileSize(file: File): number {
+    return file.size;
+  }
+
+  return { imageFile, previewImage, uploadImageFile, checkImageType, checkImageSize, getFileURL, getFileSize };
 }

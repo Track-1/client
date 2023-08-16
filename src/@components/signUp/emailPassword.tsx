@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { CreateAPasswordForYourAccountIc, SignupEmailPasswordTitleIc, WeSentYouACodeIc } from "../../assets";
 import { VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
-import { isNextStep } from "../../recoil/signUp/isNextStep";
-import { signupRole } from "../../recoil/signUp/role";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { checkEmailVerified } from "../../utils/signUp/checkEmailVerified";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
@@ -14,8 +11,6 @@ import PasswordConfirm from "./passwordConfirm";
 import VerifyCode from "./verifyCode";
 
 export default function EmailPassword() {
-  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
-  const clickRole = useRecoilValue<string>(signupRole);
   const methods = useForm<EmailPasswordInputType>({
     defaultValues: {
       email: "",
@@ -41,7 +36,7 @@ export default function EmailPassword() {
       if (checkEmailVerified(errors?.email?.message)) {
         return <CreateAPasswordForYourAccountIcon />;
       }
-      return <SignupEmailPasswordTitleIcon isRewrite={checkEmailRewrite()} />;
+      return <SignupEmailPasswordTitleIcon $isRewrite={checkEmailRewrite()} />;
     }
   }
 
@@ -62,10 +57,10 @@ export default function EmailPassword() {
   );
 }
 
-const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)<{ isRewrite: boolean }>`
+const SignupEmailPasswordTitleIcon = styled(SignupEmailPasswordTitleIc)<{ $isRewrite: boolean }>`
   width: 48.3rem;
 
-  margin: 8rem 0 ${({ isRewrite }) => (isRewrite ? 2.8 : 10.3)}rem 0;
+  margin: 8rem 0 ${({ $isRewrite }) => ($isRewrite ? 2.8 : 10.3)}rem 0;
 `;
 
 const WeSentYouACodeIcon = styled(WeSentYouACodeIc)`
