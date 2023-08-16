@@ -2,6 +2,7 @@ import styled from "styled-components";
 import BackButton from "../@common/backButton";
 import AudioInfo from "./audioInfo";
 import AudioTitle from "./audioTitle";
+import Comments from "./comments";
 import Download from "./download";
 import PlayButton from "./playButton";
 import ProducerProfile from "./producerProfile";
@@ -9,19 +10,23 @@ import ShowMore from "./showMore";
 
 export default function TrackPost() {
   return (
-    <TrackPostWrapper>
-      <AudioBasicInfoWrapper>
-        <BackButton />
-        <AudioTitle />
-        <ProducerProfile />
-        <MusicPlayingWrapper>
-          <Download />
-          <PlayButton />
-          <ShowMore />
-        </MusicPlayingWrapper>
-      </AudioBasicInfoWrapper>
-      <AudioInfo />
-    </TrackPostWrapper>
+    <>
+      <Comments />
+
+      <TrackPostWrapper>
+        <AudioBasicInfoWrapper>
+          <BackButton />
+          <AudioTitle />
+          <ProducerProfile />
+          <MusicPlayingWrapper>
+            <Download />
+            <PlayButton />
+            <ShowMore />
+          </MusicPlayingWrapper>
+        </AudioBasicInfoWrapper>
+        <AudioInfo />
+      </TrackPostWrapper>
+    </>
   );
 }
 
