@@ -1,42 +1,31 @@
 import styled from "styled-components";
 import { BackButtonIc } from "../../assets";
-import { useNavigate } from "react-router-dom";
 
-export default function BackButton() {
-  const navigate = useNavigate();
+export default function BackButton(props: any) {
+  const { pauseAudio } = props;
+  // const navigate = useNavigate();
 
-  function clickBackButton() {
-    navigate(-1);
+  function movePreviousPage() {
+    pauseAudio();
+    // navigate(-1);
   }
 
   return (
-    <BackButtonWrapper>
-      <BackButtonDiv onClick={clickBackButton}>
-        <BackButtonIc />
-        <BackText>Back</BackText>;
-      </BackButtonDiv>
-    </BackButtonWrapper>
+    <ButtonContainer onClick={movePreviousPage}>
+      <BackButtonIcon />
+    </ButtonContainer>
   );
 }
 
-const BackButtonWrapper = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
-  height: 17rem;
-
-  padding: 0 7.5rem;
-`;
-
-const BackButtonDiv = styled.div`
-  display: contents;
-  
   cursor: pointer;
 `;
 
-const BackText = styled.div`
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.id};
-
-  padding-left: 1.8rem;
+const BackButtonIcon = styled(BackButtonIc)`
+  width: 11.4rem;
+  cursor: pointer;
 `;
