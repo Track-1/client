@@ -1,11 +1,12 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getTrackInfo } from "../../api/trackPost/getTrackInfo";
+import { QUERIES_KEY } from "../../core/common/queriesKey";
 
 export default function useGetTrackInfo() {
   const { id } = useParams();
 
-  const { data: trackInfo } = useQuery(["getTrackInfo"], () => getTrackInfo(Number(id)), {
+  const { data: trackInfo } = useQuery([QUERIES_KEY.GET_TRACK_INFO], () => getTrackInfo(Number(id)), {
     onError: (error) => {
       console.log(error);
     },
@@ -29,6 +30,7 @@ export default function useGetTrackInfo() {
   } = trackInfo !== undefined && trackInfo;
 
   return {
+    trackInfo,
     beatId,
     jacketImage,
     beatWavFile,
