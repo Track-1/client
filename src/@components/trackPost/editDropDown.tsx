@@ -37,8 +37,12 @@ export default function EditDropDown() {
 }
 
 const DropDownContainer = styled.ul`
+  position: absolute;
+
   height: 11.2rem;
   width: 20.1rem;
+
+  margin: 6rem 0 0 26rem;
 
   background-color: ${({ theme }) => theme.colors.gray4};
 
@@ -46,8 +50,6 @@ const DropDownContainer = styled.ul`
   ${({ theme }) => theme.fonts.comment}
 
   border-radius: 0.5rem;
-
-  margin-left: 25rem;
 
   cursor: pointer;
 `;

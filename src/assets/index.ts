@@ -1,4 +1,5 @@
 export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
+export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
 export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
 export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
 export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
