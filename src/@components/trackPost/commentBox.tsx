@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { PauseButtonIc, PlayButtonIc } from "../../assets";
 import { CommentType } from "../../type/trackPost/commentType";
 import CommentInfo from "./commentInfo";
+import CommentProfileEventBox from "./commentProfileEventBox";
 
 interface CommentBoxProps {
   eachComment: CommentType;
@@ -22,58 +21,39 @@ export default function CommentBox(props: CommentBoxProps) {
     commentAudioFileLength,
     commentFileName,
   } = eachComment;
-
+  const [clickId, setClickId] = useState(-1);
+  const [hoverId, setHoverId] = useState(-1);
   //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [play, setPlay] = useState<boolean>(false);
-  const [isHover, setIsHover] = useState<boolean>(false);
-  const [isClick, setIsClick] = useState<boolean>(false);
-  const navigate = useNavigate();
 
-  function moveVocalProfile() {
-    // pauseAudio();
-    // setShowPlayer(false);
-    // setPlay(false);
+  function hoverComment() {
+    setHoverId(commentId);
+  }
 
-    navigate(`/vocal-profile/${commentUserId}`);
+  function detachComment() {
+    setHoverId(-1);
   }
 
   return (
-    <CommentContainer>
+    <CommentContainer
+      onMouseOver={hoverComment}
+      onMouseOut={detachComment}
+      // data-play={play}
+      commentClickBool={isSameIndex(clickedIndex, currentIndex)}
+      commentClick={clickId}>
       <ProfileImageWrapper>
-        <ProfileImageBox>
+        <CommentProfileEventBox currentId={commentId} clickId={clickId} hoverId={hoverId}>
           <ProfileImage src={userImageFile} />
-        </ProfileImageBox>
-        {play ? <PauseButtonIcon /> : <PlayButtonIcon />}
+        </CommentProfileEventBox>
       </ProfileImageWrapper>
-      <CommentInfo userName={userName} userSelf={userSelf} commentContent={commentContent} />
+      <CommentInfo
+        userName={userName}
+        userSelf={userSelf}
+        commentContent={commentContent}
+        commentUserId={commentUserId}
+      />
     </CommentContainer>
   );
 }
-
-const IconWrapper = styled.i``;
-
-const PlayButtonIcon = styled(PlayButtonIc)`
-  position: absolute;
-  z-index: 2;
-  height: 2.4rem;
-`;
-
-const PauseButtonIcon = styled(PauseButtonIc)`
-  position: absolute;
-  z-index: 2;
-  height: 2.4rem;
-`;
-
-const ProfileImageBox = styled.div`
-  height: 9rem;
-  width: 9rem;
-
-  position: relative;
-
-  &:hover {
-    filter: blur(0.6rem);
-  }
-`;
 
 const ProfileImage = styled.img`
   width: 100%;

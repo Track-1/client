@@ -1,15 +1,15 @@
-export function checkIsSameIndex(index: number, target: number): boolean {
-  return index === target;
+export function checkIsSameId(currentId: number, targetId: number): boolean {
+  return currentId === targetId;
 }
 
-export function checkIsNotSameIndex(index: number, target: number): boolean {
-  return index !== target;
+export function checkIsNotSameId(currentId: number, targetId: number): boolean {
+  return currentId !== targetId;
 }
 
-export function checkIsHoveredNothing(hoveredIndex: number) {
-  return hoveredIndex === -1;
+export function checkIsHoveredNothing(hoveredId: number) {
+  return hoveredId === -1;
 }
 
-export function checkIsClickedNothing(clickedIndex: number) {
-  return clickedIndex === -1;
+export function checkIsClickedNothing(clickedId: number) {
+  return clickedId === -1;
 }
