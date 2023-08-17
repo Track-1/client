@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { CloseCommentsBtnIc } from "../../assets";
 import useGetComment from "../../hooks/trackPost/useGetComment";
-import { CommentType } from "../../type/trackPost/commentType";
 import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
 
@@ -11,7 +10,7 @@ export default function Comments() {
   return (
     <CommentLayout>
       <CloseCommentsBtnIcon />
-      {trackComments?.map((eachComment: CommentType) => (
+      {trackComments?.map((eachComment: any) => (
         <CommentBox key={eachComment?.commentId} eachComment={eachComment} />
       ))}
     </CommentLayout>

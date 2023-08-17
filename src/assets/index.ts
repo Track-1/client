@@ -17,6 +17,7 @@ export { ReactComponent as DescriptionIc } from "./icon/descriptionIc.svg";
 export { ReactComponent as DownloadIc } from "./icon/downloadBtnIc.svg";
 export { ReactComponent as EditBtnIc } from "./icon/editBtnIc.svg";
 export { ReactComponent as EditIc } from "./icon/editIc.svg";
+export { ReactComponent as EllipsisIc } from "./icon/ellipsisIc.svg";
 export { ReactComponent as FacebookLogoIc } from "./icon/facebookLogoIc.svg";
 export { ReactComponent as FolderUploadIc } from "./icon/folderUploadIc.svg";
 export { ReactComponent as HashtagIc } from "./icon/hashtagIc.svg";
