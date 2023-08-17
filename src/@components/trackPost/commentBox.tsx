@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { EllipsisIc } from "../../assets";
 import { CommentType } from "../../type/trackPost/commentType";
+import CommentProfileContainer from "./commentProfileContainer";
 
 interface CommentBoxProps {
   eachComment: CommentType;
@@ -33,6 +34,7 @@ export default function CommentBox(props: any) {
 
   return (
     <CommentContainer>
+      <CommentProfileContainer vocalProfileImage={vocalProfileImage} />
       <CommentWrapper>
         <InfoTopWrapper>
           <UserName>{vocalName}</UserName>
