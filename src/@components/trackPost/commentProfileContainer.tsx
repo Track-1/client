@@ -6,37 +6,23 @@ interface CommentProfileContainerProp {
 
 export default function CommentProfileContainer(props: CommentProfileContainerProp) {
   const { vocalProfileImage } = props;
+  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   return (
     <ProfileImageWrapper>
-      <PlayerBlurWrapper>
-        <PlayerBlur>
-          <ProfileImage src={vocalProfileImage} />
-        </PlayerBlur>
-        {/* {play?<PlayBtnIcon />:<PauseButtonIcon/>} */}
-      </PlayerBlurWrapper>
+      <ProfileImageBox>
+        <ProfileImage src={vocalProfileImage} />
+      </ProfileImageBox>
+      {/* {play?<PlayBtnIcon />:<PauseButtonIcon/>} */}
     </ProfileImageWrapper>
   );
 }
 
-const PlayerBlurWrapper = styled.div`
-  /* height: 9rem;
-  width: 9rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  cursor: pointer; */
-`;
-
-const PlayerBlur = styled.div`
+const ProfileImageBox = styled.div`
   height: 9rem;
   width: 9rem;
 
   position: relative;
-  /* background-color: rgb(0, 0, 0, 0.5);
-  backdrop-filter: blur(0.6rem);
-  -webkit-filter: blur(0.6rem); */
 `;
 
 const ProfileImage = styled.img`
