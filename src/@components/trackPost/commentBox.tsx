@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { PauseButtonIc, PlayButtonIc } from "../../assets";
 import { CommentType } from "../../type/trackPost/commentType";
@@ -26,6 +27,15 @@ export default function CommentBox(props: CommentBoxProps) {
   const [play, setPlay] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  function moveVocalProfile() {
+    // pauseAudio();
+    // setShowPlayer(false);
+    // setPlay(false);
+
+    navigate(`/vocal-profile/${commentUserId}`);
+  }
 
   return (
     <CommentContainer>
@@ -33,7 +43,7 @@ export default function CommentBox(props: CommentBoxProps) {
         <ProfileImageBox>
           <ProfileImage src={userImageFile} />
         </ProfileImageBox>
-        {play ? <PlayButtonIcon /> : <PauseButtonIcon />}
+        {play ? <PauseButtonIcon /> : <PlayButtonIcon />}
       </ProfileImageWrapper>
       <CommentInfo userName={userName} userSelf={userSelf} commentContent={commentContent} />
     </CommentContainer>
@@ -91,6 +101,8 @@ const ProfileImageWrapper = styled.div`
   overflow: hidden;
 
   margin-left: 3rem;
+
+  cursor: pointer;
 `;
 
 const CommentContainer = styled.article`
