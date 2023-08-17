@@ -1,71 +1,96 @@
+import { useState } from "react";
 import styled from "styled-components";
-import { EllipsisIc } from "../../assets";
+import { PauseButtonIc, PlayButtonIc } from "../../assets";
 import { CommentType } from "../../type/trackPost/commentType";
-import CommentProfileContainer from "./commentProfileContainer";
+import CommentInfo from "./commentInfo";
 
 interface CommentBoxProps {
   eachComment: CommentType;
 }
 
-export default function CommentBox(props: any) {
+export default function CommentBox(props: CommentBoxProps) {
   const { eachComment } = props;
-  //   const {
-  //     commentUserId,
-  //     commentId,
-  //     commentAudioFile,
-  //     userName,
-  //     userImageFile,
-  //     commentContent,
-  //     userSelf,
-  //     commentAudioFileLength,
-  //     commentFileName,
-  //   } = eachComment;
   const {
-    comment,
+    commentUserId,
     commentId,
-    fileName,
-    isMe,
-    vocalId,
-    vocalName,
-    vocalProfileImage,
-    vocalWavFile,
-    vocalWavFileLength,
+    commentAudioFile,
+    userName,
+    userImageFile,
+    commentContent,
+    userSelf,
+    commentAudioFileLength,
+    commentFileName,
   } = eachComment;
+
+  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [play, setPlay] = useState<boolean>(false);
+  const [isHover, setIsHover] = useState<boolean>(false);
+  const [isClick, setIsClick] = useState<boolean>(false);
 
   return (
     <CommentContainer>
-      <CommentProfileContainer vocalProfileImage={vocalProfileImage} />
-      <CommentWrapper>
-        <InfoTopWrapper>
-          <UserName>{vocalName}</UserName>
-          {isMe && <EllipsisIcon />}
-        </InfoTopWrapper>
-        <CommentText>{comment}</CommentText>
-      </CommentWrapper>
+      <ProfileImageWrapper>
+        <ProfileImageBox>
+          <ProfileImage src={userImageFile} />
+        </ProfileImageBox>
+        {play ? <PlayButtonIcon /> : <PauseButtonIcon />}
+      </ProfileImageWrapper>
+      <CommentInfo userName={userName} userSelf={userSelf} commentContent={commentContent} />
     </CommentContainer>
   );
 }
 
-const EllipsisIcon = styled(EllipsisIc)`
-  width: 4rem;
-  margin-top: -2rem;
-  float: right;
+const IconWrapper = styled.i``;
+
+const PlayButtonIcon = styled(PlayButtonIc)`
+  position: absolute;
+  z-index: 2;
+  height: 2.4rem;
+`;
+
+const PauseButtonIcon = styled(PauseButtonIc)`
+  position: absolute;
+  z-index: 2;
+  height: 2.4rem;
+`;
+
+const ProfileImageBox = styled.div`
+  height: 9rem;
+  width: 9rem;
+
+  position: relative;
+
+  &:hover {
+    filter: blur(0.6rem);
+  }
+`;
+
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+
   cursor: pointer;
 `;
 
-const InfoTopWrapper = styled.div`
-  height: 2rem;
-  margin-bottom: 1.2rem;
+const ProfileImageWrapper = styled.div`
+  height: 9rem;
+  width: 9rem;
+
+  border-radius: 9rem;
+
   display: flex;
-  justify-content: space-between;
-`;
+  justify-content: center;
+  align-items: center;
 
-const CommentWrapper = styled.li`
-  height: 8rem;
-  width: 78rem;
+  position: absolute;
+  overflow: hidden;
 
-  margin-left: 15rem;
-  /* margin-top: -3rem; */
+  margin-left: 3rem;
 `;
 
 const CommentContainer = styled.article`
@@ -87,22 +112,5 @@ const CommentContainer = styled.article`
   &:hover {
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
-  }
-`;
-
-const CommentText = styled.strong`
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.description}
-  margin-top: 1.2rem;
-  line-height: 2.88rem;
-`;
-
-const UserName = styled.strong`
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.hashtag}
-
-  cursor: pointer;
-  &:hover {
-    color: ${({ theme }) => theme.colors.sub2};
   }
 `;

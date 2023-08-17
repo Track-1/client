@@ -26,6 +26,8 @@ export { ReactComponent as InstagramLogoIc } from "./icon/instagramLogoIc.svg";
 export { ReactComponent as MoveTouploadPortfolioButtonIc } from "./icon/moveTouploadPortfolioButtonIc.svg";
 export { ReactComponent as MoveTouploadVocalSearchingButtonIc } from "./icon/moveTouploadVocalSearchingButtonIc.svg";
 export { ReactComponent as OpenDownloadIc } from "./icon/openedIc.svg";
+export { ReactComponent as PauseButtonIc } from "./icon/pauseButtonIc.svg";
+export { ReactComponent as PlayButtonIc } from "./icon/playButtonIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
 export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
