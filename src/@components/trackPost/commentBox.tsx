@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { CommentType } from "../../type/trackPost/commentType";
+import { checkIsSameId } from "../../utils/common/checkHover";
 import CommentInfo from "./commentInfo";
 import CommentProfileEventBox from "./commentProfileEventBox";
 
@@ -25,22 +26,26 @@ export default function CommentBox(props: CommentBoxProps) {
   const [hoverId, setHoverId] = useState(-1);
   //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  function hoverComment() {
+  function handleHoverComment() {
     setHoverId(commentId);
   }
 
-  function detachComment() {
+  function handleDetachComment() {
     setHoverId(-1);
+  }
+
+  function handlePlayComment() {
+    setClickId(commentId);
   }
 
   return (
     <CommentContainer
-      onMouseOver={hoverComment}
-      onMouseOut={detachComment}
       // data-play={play}
-      commentClickBool={isSameIndex(clickedIndex, currentIndex)}
-      commentClick={clickId}>
-      <ProfileImageWrapper>
+      commentActive={checkIsSameId(commentId, clickId) || checkIsSameId(commentId, hoverId)}>
+      <ProfileImageWrapper
+        onMouseOver={handleHoverComment}
+        onMouseOut={handleDetachComment}
+        onClick={handlePlayComment}>
         <CommentProfileEventBox currentId={commentId} clickId={clickId} hoverId={hoverId}>
           <ProfileImage src={userImageFile} />
         </CommentProfileEventBox>
@@ -85,7 +90,7 @@ const ProfileImageWrapper = styled.div`
   cursor: pointer;
 `;
 
-const CommentContainer = styled.article`
+const CommentContainer = styled.article<{ commentActive: boolean }>`
   display: flex;
   align-items: center;
 
@@ -105,4 +110,14 @@ const CommentContainer = styled.article`
     background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
   }
+
+  background-image: linear-gradient(
+      ${({ theme, commentActive }) => commentActive && theme.colors.sub3},
+      ${({ theme, commentActive }) => commentActive && theme.colors.sub3}
+    ),
+    linear-gradient(
+      to right,
+      ${({ theme, commentActive }) => commentActive && theme.colors.sub2},
+      ${({ theme, commentActive }) => commentActive && theme.colors.sub3}
+    );
 `;

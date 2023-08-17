@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
 import { PauseButtonIc, PlayButtonIc } from "../../assets";
+import { checkIsSameId } from "../../utils/common/checkHover";
 
 interface CommentProfileEventBoxProps {
   currentId: number;
@@ -14,11 +15,13 @@ export default function CommentProfileEventBox(props: CommentProfileEventBoxProp
   //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   return (
-    <ProfileImageBox>
-      {children}
-      <PauseButtonIcon />
-      {/* {play ? <PauseButtonIcon /> : <PlayButtonIcon />} */}
-    </ProfileImageBox>
+    <>
+      <ProfileImageBox>
+        {children}
+        {/* {play ? <PauseButtonIcon /> : <PlayButtonIcon />} */}
+      </ProfileImageBox>
+      {checkIsSameId(currentId, clickId) || (checkIsSameId(currentId, hoverId) && <PlayButtonIcon />)}
+    </>
   );
 }
 
