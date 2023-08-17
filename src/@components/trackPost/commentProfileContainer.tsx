@@ -49,7 +49,7 @@ const ProfileImage = styled.img`
   margin: auto;
 
   &:hover {
-    backdrop-filter: blur(0.6rem);
+    filter: blur(0.6rem);
   }
 
   cursor: pointer;
