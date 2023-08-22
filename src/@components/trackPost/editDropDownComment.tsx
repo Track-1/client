@@ -13,32 +13,14 @@ export default function EditDropDownComment(props: EditDropDownCommentProp) {
   const { modalRef, closeModal, openModal } = useModal();
 
   const queryClient = useQueryClient();
-  //   const modalRef = useRef<HTMLUListElement>(null);
 
-  //   function isClickedOutside(e: MouseEvent) {
-  //     return editModalToggle && !modalRef.current?.contains(e.target as Node);
-  //   }
-
-  //   function closeModal(e: MouseEvent) {
-  //     if (isClickedOutside(e)) {
-  //       setEditModalToggle(false);
-  //     }
-  //   }
-
-  //   useEffect(() => {
-  //     document.addEventListener("mousedown", closeModal);
-  //     return () => {
-  //       document.removeEventListener("mousedown", closeModal);
-  //     };
-  //   }, [editModalToggle]);
-
-  //   const { mutate } = useMutation(() => deleteComment(currentId), {
+  //   const { mutate:delete } = useMutation(() => deleteComment(currentId), {
   //     onSuccess: () => {
   //       //다시 업로드 하는거 해줘야된다.!
   //       // queryClient.invalidateQueries("comments");
   //       // setIsEnd(!isEnd);
-  //       setEditModalToggle(false);
-  //       setKey((prev: any) => prev + 1);
+  //       closeModal();
+  //       //   setKey((prev: any) => prev + 1);
   //       setIsDeleted(true);
   //     },
   //     onError: (error) => {
