@@ -104,7 +104,7 @@ export default function UploadInfo(props: propsType) {
       ? setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요.")
       : producerUploadType !== "Vocal Searching"
       ? setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.")
-      : setDescriptionPlaceholder("1. 어떤 주제의 곡인가요? 2. 작업 목표는 무엇인가요? 3. 작업 계획이 어떻게 되나요?");
+      : setDescriptionPlaceholder("어떤 주제의 곡인가요? 작업 목표와 계획은 어떻게 되나요?");
   }, []);
 
   function clickOutSide(e: any) {
