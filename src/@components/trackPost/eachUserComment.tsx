@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { PlayBtnIc, EllipsisIc, PauseButtonIc, CommentUpldatCompleteIc } from "../../assets";
-import { UserCommentType } from "../../type/userCommentsType";
-import { useRecoilState } from "recoil";
-import { showPlayerBar, playMusic } from "../../recoil/player";
-import { isSameIndex } from "../../utils/common/checkIndex";
-import EditDropDownComment from "./editDropDownComment";
-import CommentUpdate from "./commentUpdate";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import styled from "styled-components";
+import { EllipsisIc, PauseButtonIc, PlayBtnIc } from "../../assets";
+import { playMusic, showPlayerBar } from "../../recoil/player";
+import { isSameIndex } from "../../utils/common/checkIndex";
+import CommentUpdate from "./commentUpdate";
+import EditDropDownComment from "./editDropDownComment";
 
 interface PropsType {
   commentInfo: any;
@@ -247,7 +246,7 @@ const UserName = styled.strong`
   ${({ theme }) => theme.fonts.hashtag}
 
   cursor: pointer;
-  &:hover{
+  &:hover {
     color: ${({ theme }) => theme.colors.sub2};
   }
 `;
