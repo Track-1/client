@@ -64,6 +64,7 @@ export default function CommentBox(props: CommentBoxProps) {
         userSelf={userSelf}
         commentContent={commentContent}
         commentUserId={commentUserId}
+        commentId={commentId}
       />
     </CommentContainer>
   );

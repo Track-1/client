@@ -1,9 +1,17 @@
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
+import useModal from "../../hooks/common/useModal";
 // import { deleteComment } from "../../core/api/trackPost";
 
-export default function EditDropDownComment() {
+interface EditDropDownCommentProp {
+  commentId: number;
+}
+
+export default function EditDropDownComment(props: EditDropDownCommentProp) {
+  const { commentId } = props;
+  const { modalRef, closeModal, openModal } = useModal();
+
   const queryClient = useQueryClient();
   //   const modalRef = useRef<HTMLUListElement>(null);
 
@@ -49,21 +57,25 @@ export default function EditDropDownComment() {
   //   }
 
   return (
-    <DropDownContainer>
-      <EditWrapper>
-        <EditText>수정하기</EditText>
-        <EditIcon />
-      </EditWrapper>
-      <DivisionBar />
-      <DeleteWrapper>
-        <DeleteText>삭제하기</DeleteText>
-        <DeleteIcon />
-      </DeleteWrapper>
+    <DropDownContainer ref={modalRef}>
+      <DropDownWrapper>
+        <EditWrapper>
+          <EditText>수정하기</EditText>
+          <EditIcon />
+        </EditWrapper>
+        <DivisionBar />
+        <DeleteWrapper>
+          <DeleteText>삭제하기</DeleteText>
+          <DeleteIcon />
+        </DeleteWrapper>
+      </DropDownWrapper>
     </DropDownContainer>
   );
 }
 
-const DropDownContainer = styled.ul`
+const DropDownContainer = styled.section``;
+
+const DropDownWrapper = styled.ul`
   position: absolute;
   top: 5.8rem;
   right: 0;

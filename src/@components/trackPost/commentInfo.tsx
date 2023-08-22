@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EllipsisIc } from "../../assets";
@@ -8,11 +9,13 @@ interface CommentInfoProps {
   userSelf: boolean;
   commentContent: string;
   commentUserId: number;
+  commentId: number;
 }
 
 export default function CommentInfo(props: CommentInfoProps) {
-  const { userName, userSelf, commentContent, commentUserId } = props;
+  const { userName, userSelf, commentContent, commentUserId, commentId } = props;
   const navigate = useNavigate();
+  const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function handleMoveVocalProfile() {
@@ -23,12 +26,16 @@ export default function CommentInfo(props: CommentInfoProps) {
     navigate(`/vocal-profile/${commentUserId}`);
   }
 
+  function handleShowEditDropDownComment() {
+    setEditModalToggle(true);
+  }
+
   return (
     <CommentWrapper>
       <InfoTopWrapper>
         <UserName onClick={handleMoveVocalProfile}>{userName}</UserName>
-        {userSelf && <EllipsisIcon />}
-        <EditDropDownComment />
+        {userSelf && <EllipsisIcon onClick={handleShowEditDropDownComment} />}
+        {editModalToggle && <EditDropDownComment commentId={commentId} />}
       </InfoTopWrapper>
       <CommentText>{commentContent}</CommentText>
     </CommentWrapper>
