@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EllipsisIc } from "../../assets";
+import EditDropDownComment from "./editDropDownComment";
 
 interface CommentInfoProps {
   userName: string;
@@ -27,6 +28,7 @@ export default function CommentInfo(props: CommentInfoProps) {
       <InfoTopWrapper>
         <UserName onClick={handleMoveVocalProfile}>{userName}</UserName>
         {userSelf && <EllipsisIcon />}
+        <EditDropDownComment />
       </InfoTopWrapper>
       <CommentText>{commentContent}</CommentText>
     </CommentWrapper>
