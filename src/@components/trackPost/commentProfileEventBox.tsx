@@ -15,7 +15,6 @@ interface CommentProfileEventBoxProps {
 export default function CommentProfileEventBox(props: CommentProfileEventBoxProps) {
   const { currentId, children, hoverState } = props;
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  //   const { hoverState, changeHoverState } = useHover();
   const [clickId, setClickId] = useRecoilState(clickedTrackId);
 
   function checkIsPause() {
@@ -28,14 +27,14 @@ export default function CommentProfileEventBox(props: CommentProfileEventBoxProp
 
   return (
     <>
-      <ProfileImageBox>{children}</ProfileImageBox>
+      <ProfileImageBox hoverState={hoverState}>{children}</ProfileImageBox>
       {checkIsPause() && <PauseButtonIcon />}
       {checkIsPlay() && <PlayButtonIcon />}
     </>
   );
 }
 
-const ProfileImageBox = styled.div`
+const ProfileImageBox = styled.div<{ hoverState: boolean }>`
   height: 9rem;
   width: 9rem;
 
@@ -44,6 +43,8 @@ const ProfileImageBox = styled.div`
   &:hover {
     filter: blur(0.6rem);
   }
+
+  filter: blur(${({ hoverState }) => hoverState && 0.6}rem);
 `;
 
 const IconWrapper = styled.i``;
