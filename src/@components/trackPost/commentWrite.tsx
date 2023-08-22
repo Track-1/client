@@ -1,3 +1,5 @@
+import CommentWriteLayout from "./commentWriteLayout";
+
 export default function CommentWrite() {
-  return <div>commentWrite</div>;
+  return <CommentWriteLayout>d</CommentWriteLayout>;
 }

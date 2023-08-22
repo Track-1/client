@@ -4,6 +4,7 @@ import useGetComment from "../../hooks/trackPost/useGetComment";
 import { CommentType } from "../../type/trackPost/commentType";
 import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
+import CommentWrite from "./commentWrite";
 
 export default function Comments() {
   const { trackComments } = useGetComment(1);
@@ -11,6 +12,7 @@ export default function Comments() {
   return (
     <CommentLayout>
       <CloseCommentsBtnIcon />
+      <CommentWrite />
       {trackComments?.map((eachComment: CommentType) => (
         <CommentBox key={eachComment?.commentId} eachComment={eachComment} />
       ))}
