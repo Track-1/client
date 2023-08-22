@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { playMusic } from "../../recoil/common/playMusic";
+import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
 import { CommentType } from "../../type/trackPost/commentType";
-import { checkIsSameId } from "../../utils/common/checkHover";
+import { checkIsClickedNothing, checkIsSameId } from "../../utils/common/checkHover";
 import CommentInfo from "./commentInfo";
 import CommentProfileEventBox from "./commentProfileEventBox";
 
@@ -22,31 +25,37 @@ export default function CommentBox(props: CommentBoxProps) {
     commentAudioFileLength,
     commentFileName,
   } = eachComment;
-  const [clickId, setClickId] = useState(-1);
-  const [hoverId, setHoverId] = useState(-1);
-  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  function handleHoverComment() {
-    setHoverId(commentId);
-  }
-
-  function handleDetachComment() {
-    setHoverId(-1);
-  }
+  const [clickId, setClickId] = useRecoilState(clickedTrackId);
+  const [hoverState, setHoverState] = useState<boolean>(false);
+  // const [hoverId, setHoverId] = useState(-1);
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function handlePlayComment() {
     setClickId(commentId);
+    if (play) {
+      setPlay(false);
+      // pauseAudio;
+    } else {
+      setPlay(true);
+      // checkIsSameId(commentId, clickId) ? audio.play() : setClickId(commentId);
+      // setClickId(commentId);
+    }
+  }
+
+  function handleHoverEvent(isHover: boolean) {
+    setHoverState(isHover);
   }
 
   return (
     <CommentContainer
-      // data-play={play}
-      commentActive={checkIsSameId(commentId, clickId) || checkIsSameId(commentId, hoverId)}>
+      data-play={play}
+      commentActive={checkIsSameId(commentId, clickId) && !checkIsClickedNothing(clickId)}>
       <ProfileImageWrapper
-        onMouseOver={handleHoverComment}
-        onMouseOut={handleDetachComment}
+        onMouseOver={() => handleHoverEvent(true)}
+        onMouseOut={() => handleHoverEvent(false)}
         onClick={handlePlayComment}>
-        <CommentProfileEventBox currentId={commentId} clickId={clickId} hoverId={hoverId}>
+        <CommentProfileEventBox currentId={commentId} hoverState={hoverState}>
           <ProfileImage src={userImageFile} />
         </CommentProfileEventBox>
       </ProfileImageWrapper>
@@ -111,13 +120,12 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
   }
 
-  background-image: linear-gradient(
-      ${({ theme, commentActive }) => commentActive && theme.colors.sub3},
-      ${({ theme, commentActive }) => commentActive && theme.colors.sub3}
-    ),
+  /* &[data-play="true"] { */
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to right,
       ${({ theme, commentActive }) => commentActive && theme.colors.sub2},
-      ${({ theme, commentActive }) => commentActive && theme.colors.sub3}
+      ${({ theme }) => theme.colors.sub3}
     );
+  /* } */
 `;

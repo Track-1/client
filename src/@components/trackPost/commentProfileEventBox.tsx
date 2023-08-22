@@ -1,26 +1,40 @@
 import { ReactNode } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PauseButtonIc, PlayButtonIc } from "../../assets";
+import { playMusic } from "../../recoil/common/playMusic";
+import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
 import { checkIsSameId } from "../../utils/common/checkHover";
 
 interface CommentProfileEventBoxProps {
   currentId: number;
-  clickId: number;
-  hoverId: number;
   children: ReactNode;
+  hoverState: boolean;
 }
 
 export default function CommentProfileEventBox(props: CommentProfileEventBoxProps) {
-  const { currentId, clickId, hoverId, children } = props;
-  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const { currentId, children, hoverState } = props;
+  const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  //   const { hoverState, changeHoverState } = useHover();
+  const [clickId, setClickId] = useRecoilState(clickedTrackId);
+
+  function checkIsPause() {
+    return play && checkIsSameId(currentId, clickId);
+  }
+
+  function checkIsPlay() {
+    return (!checkIsSameId(currentId, clickId) && hoverState) || (checkIsSameId(currentId, clickId) && !play);
+  }
+
+  console.log(clickId);
+  console.log(hoverState);
 
   return (
     <>
-      <ProfileImageBox>
-        {children}
-        {/* {play ? <PauseButtonIcon /> : <PlayButtonIcon />} */}
-      </ProfileImageBox>
-      {checkIsSameId(currentId, clickId) || (checkIsSameId(currentId, hoverId) && <PlayButtonIcon />)}
+      <ProfileImageBox>{children}</ProfileImageBox>
+      {/* {checkIsSameId(currentId, clickId) || (checkIsSameId(currentId, hoverId) && <PlayButtonIcon />)} */}
+      {checkIsPause() && <PauseButtonIcon />}
+      {checkIsPlay() && <PlayButtonIcon />}
     </>
   );
 }
