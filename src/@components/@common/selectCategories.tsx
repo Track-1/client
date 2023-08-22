@@ -10,10 +10,10 @@ export default function SelectCategory() {
   const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>(CategoryBoolean);
 
   function handleSelectCategory(category: string) {
-    const tempSelected = isCategorySelected;
-    tempSelected.category = !tempSelected.category;
-    setIsCategorySelected({ ...tempSelected });
-    // updateCategory(CategoryText[category]);
+    setIsCategorySelected((prevState) => ({
+      ...prevState,
+      [category]: !prevState[category],
+    }));
   }
 
   return (
@@ -22,9 +22,6 @@ export default function SelectCategory() {
         <CategoryTitleIcon />
         <CategoryBox>
           {Object.keys(CategoryId).map((category: string, CategoryId: number) => {
-            // if (categories.includes(CategoryText[category])) {
-            //   isCategorySelected[category] = true;
-            // }
             return (
               <CategoryItem
                 key={CategoryId}
@@ -51,9 +48,9 @@ const CategoryBox = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  
+
   margin-top: 2.2rem;
-  
+
   ${({ theme }) => theme.fonts.hashtag}
   color: ${({ theme }) => theme.colors.gray4};
   align-items: center;

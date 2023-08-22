@@ -4,6 +4,7 @@ import uploadUnableBtnImg from "../../assets/image/uploadUnableBtnImg.png";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { UploadData } from "../../recoil/upload/uploadData";
+import BackButton from "../@common/backButton";
 
 export default function UploadHeader() {
   const uploadData = useRecoilValue(UploadData);
@@ -24,7 +25,7 @@ export default function UploadHeader() {
 
   return (
     <Container>
-      <UploadTypeText>Back</UploadTypeText>
+      <BackButton />
       <Wrapper>
         <UploadTypeText>Vocal Searching</UploadTypeText>
         {isUploadActive ? (
