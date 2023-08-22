@@ -21,6 +21,7 @@ import { isVocal } from "../../utils/common/userType";
 import useHover from "../../utils/hooks/useHover";
 import { checkMaxInputLength } from "../../utils/uploadPage/maxLength";
 // import { isClickedOutside } from "../../utils/common/modal";
+import { useParams } from "react-router-dom";
 import { checkHashtagLength } from "../../utils/convention/checkHashtagLength";
 
 interface propsType {
@@ -68,6 +69,8 @@ export default function UploadInfo(props: propsType) {
   const [tagMaxLength, setTagMaxLength] = useState<number>(10);
   const [isKorean, setIsKorean] = useState<boolean>(false);
 
+  const { producerUploadType } = useParams();
+
   useEffect(() => {
     setUploadData((prevState) => {
       return { ...prevState, keyword: hashtags };
@@ -99,7 +102,9 @@ export default function UploadInfo(props: propsType) {
     setHashtags(uploadData.keyword);
     isVocal(whom)
       ? setDescriptionPlaceholder("보컬 느낌과 작업 목표 등 보컬에 대해서 자세히 설명해주세요.")
-      : setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.");
+      : producerUploadType !== "Vocal Searching"
+      ? setDescriptionPlaceholder("트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요.")
+      : setDescriptionPlaceholder("1. 어떤 주제의 곡인가요? 2. 작업 목표는 무엇인가요? 3. 작업 계획이 어떻게 되나요?");
   }, []);
 
   function clickOutSide(e: any) {
