@@ -69,7 +69,7 @@ export const GlobalStyle = createGlobalStyle`
     /* font-size: 62.5%; */
     user-select: none;
     @media (min-width:2001px){
-      font-size: 68%;
+      font-size: 68%!important;
     }
     @media (min-width:1800px) and (max-width:2000px){
       font-size: 62.5%;
