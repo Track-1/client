@@ -26,13 +26,9 @@ export default function CommentProfileEventBox(props: CommentProfileEventBoxProp
     return (!checkIsSameId(currentId, clickId) && hoverState) || (checkIsSameId(currentId, clickId) && !play);
   }
 
-  console.log(clickId);
-  console.log(hoverState);
-
   return (
     <>
       <ProfileImageBox>{children}</ProfileImageBox>
-      {/* {checkIsSameId(currentId, clickId) || (checkIsSameId(currentId, hoverId) && <PlayButtonIcon />)} */}
       {checkIsPause() && <PauseButtonIcon />}
       {checkIsPlay() && <PlayButtonIcon />}
     </>

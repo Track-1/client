@@ -32,14 +32,14 @@ export default function CommentBox(props: CommentBoxProps) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function handlePlayComment() {
-    setClickId(commentId);
+    setClickId(commentId); //나중에 지우기
+
     if (play) {
       setPlay(false);
       // pauseAudio;
     } else {
       setPlay(true);
       // checkIsSameId(commentId, clickId) ? audio.play() : setClickId(commentId);
-      // setClickId(commentId);
     }
   }
 
