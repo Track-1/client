@@ -5,6 +5,7 @@ import { FileUploadButtonIc } from "../../assets";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { checkAudioFileType } from "../../utils/common/checkAudioFileType";
 import { getAudioFileName } from "../../utils/common/getAudioFileName";
+import { getAudioFileType } from "../../utils/common/getAudioFileType";
 
 export default function CommentFileInput() {
   const [comment, setComment] = useRecoilState(commentWriteData);
@@ -12,8 +13,7 @@ export default function CommentFileInput() {
 
   function handleUploadFile(e: React.ChangeEvent<HTMLInputElement>) {
     const currentFile = e.target.files && e.target.files[0];
-    currentFile && setComment({ ...comment, commentAudioFile: currentFile });
-    currentFile && setComment({ ...comment, commentAudioFileName: currentFile?.name });
+    currentFile && setComment({ ...comment, commentAudioFile: currentFile, commentAudioFileName: currentFile?.name });
 
     if (e.target.files !== null) {
       const file = e.target.value;
