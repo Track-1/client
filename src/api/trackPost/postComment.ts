@@ -8,7 +8,7 @@ export async function postComment(formData: UploadDataType, beatId: any) {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getCookie("accessToken")}`,
-        beatId: beatId,
+        trackId: beatId,
       },
     });
   } catch (e) {

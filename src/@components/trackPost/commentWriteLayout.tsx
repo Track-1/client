@@ -1,10 +1,16 @@
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
+import CommentWriteProfileContainer from "./commentWriteProfileContainer";
 
 export default function CommentWriteLayout(props: PropsWithChildren) {
   const { children } = props;
 
-  return <WriteContainer>{children}</WriteContainer>;
+  return (
+    <WriteContainer>
+      <CommentWriteProfileContainer />
+      {children}
+    </WriteContainer>
+  );
 }
 
 const WriteContainer = styled.article`
