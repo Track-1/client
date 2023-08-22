@@ -14,7 +14,7 @@ export default function CommentInfo(props: CommentInfoProps) {
   const navigate = useNavigate();
   //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
-  function moveVocalProfile() {
+  function handleMoveVocalProfile() {
     // pauseAudio();
     // setShowPlayer(false);
     // setPlay(false);
@@ -25,7 +25,7 @@ export default function CommentInfo(props: CommentInfoProps) {
   return (
     <CommentWrapper>
       <InfoTopWrapper>
-        <UserName onClick={moveVocalProfile}>{userName}</UserName>
+        <UserName onClick={handleMoveVocalProfile}>{userName}</UserName>
         {userSelf && <EllipsisIcon />}
       </InfoTopWrapper>
       <CommentText>{commentContent}</CommentText>
