@@ -38,9 +38,13 @@ export default function Comments(props: CommentsProp) {
   });
 
   function handleUploadComment() {
+    // if (blockAccess()) {
+    //   navigate("/login");
+    // } else {
     if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
       uploadComment();
     }
+    // }
   }
 
   return (
