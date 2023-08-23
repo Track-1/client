@@ -121,12 +121,12 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
   }
 
-  &[data-play="true"] {
-    background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
-      linear-gradient(
-        to right,
-        ${({ theme, commentActive }) => commentActive && theme.colors.sub2},
-        ${({ theme }) => theme.colors.sub3}
-      );
-  }
+  /* &[data-play="true"] { */
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
+    linear-gradient(
+      to right,
+      ${({ theme, commentActive }) => commentActive && theme.colors.sub2},
+      ${({ theme }) => theme.colors.sub3}
+    );
+  /* } */
 `;
