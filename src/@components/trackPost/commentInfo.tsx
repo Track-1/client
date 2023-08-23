@@ -16,7 +16,7 @@ interface CommentInfoProps {
 }
 
 export default function CommentInfo(props: CommentInfoProps) {
-  const { userName, userSelf, commentContent, commentUserId, setIsEdit } = props;
+  const { userName, userSelf, commentContent, commentUserId, setIsEdit, commentId } = props;
   const navigate = useNavigate();
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
@@ -40,7 +40,7 @@ export default function CommentInfo(props: CommentInfoProps) {
       <InfoTopWrapper>
         <UserName onClick={handleMoveVocalProfile}>{userName}</UserName>
         {userSelf && <EllipsisIcon onClick={handleShowEditDropDownComment} />}
-        {editModalToggle && isOpenModal && <EditDropDownComment setIsEdit={setIsEdit} />}
+        {editModalToggle && isOpenModal && <EditDropDownComment setIsEdit={setIsEdit} commentId={commentId} />}
       </InfoTopWrapper>
       <CommentText>{commentContent}</CommentText>
     </CommentWrapper>
