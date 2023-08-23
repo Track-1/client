@@ -9,12 +9,12 @@ export default function CommentLayout(props: PropsWithChildren) {
 const CommentContainer = styled.section`
   width: 107.7rem;
   height: 100%;
-
   min-height: 100vh;
   float: right;
 
-  background-color: rgba(13, 14, 17, 0.75);
+  background: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
+
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;

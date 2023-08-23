@@ -15,6 +15,7 @@ export default function CommentTextInput() {
         placeholder="트랙 음악을 다운받아서 보컬 녹음 파일을 업로드해보세요!"
         maxLength={150}
         onChange={handelChangeCommentLength}
+        value={comment?.commentContent}
       />
     </CommentContentWrapper>
   );
