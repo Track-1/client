@@ -59,6 +59,10 @@ export default function Comments(props: CommentsProp) {
 
 const CloseCommentsBtnIcon = styled(CloseCommentsBtnIc)`
   width: 20rem;
+
+  margin-bottom: 2.7rem;
+
+  cursor: pointer;
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`
