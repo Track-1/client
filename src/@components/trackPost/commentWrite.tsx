@@ -7,16 +7,22 @@ import CommentWriteLayout from "./commentWriteLayout";
 export default function CommentWrite() {
   return (
     <CommentWriteLayout>
-      <InputWrapper>
-        <CommentFileInput />
-        <CommentContentLength />
+      <InputContainer>
+        <InputWrapper>
+          <CommentFileInput />
+          <CommentContentLength />
+        </InputWrapper>
         <CommentTextInput />
-      </InputWrapper>
+      </InputContainer>
     </CommentWriteLayout>
   );
 }
 
-const InputWrapper = styled.section`
+const InputContainer = styled.section`
   display: flex;
   flex-direction: column;
+`;
+
+const InputWrapper = styled.article`
+  display: flex;
 `;
