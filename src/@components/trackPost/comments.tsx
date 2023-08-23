@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { postComment } from "../../api/trackPost/postComment";
 import { AddCommentIc, CloseCommentsBtnIc, ClosedAddCommentIc } from "../../assets";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
+import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import useGetComment from "../../hooks/trackPost/useGetComment";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
@@ -19,11 +20,12 @@ interface CommentsProp {
 
 export default function Comments(props: CommentsProp) {
   const { handleClosecomment } = props;
-  const { trackComments } = useGetComment(1);
   const { trackClosed } = useGetTrackInfo();
   const [comment, setComment] = useRecoilState(commentWriteData);
   const resetComment = useResetRecoilState(commentWriteData);
   const { id } = useParams();
+  const { trackComments, fetchNextPage, hasNextPage } = useGetComment();
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   const queryClient = useQueryClient();
 
@@ -46,6 +48,7 @@ export default function Comments(props: CommentsProp) {
     }
     // }
   }
+  console.log(trackComments?.pages[0]);
 
   return (
     <CommentLayout>
@@ -54,12 +57,18 @@ export default function Comments(props: CommentsProp) {
       <AddCommentIconWrapper>
         {!trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
       </AddCommentIconWrapper>
-      {trackComments?.map((eachComment: CommentType) => (
+      {trackComments?.pages[0]?.response?.map((eachComment: CommentType) => (
         <CommentBox key={eachComment?.commentId} eachComment={eachComment} />
       ))}
+      <InfiniteWrapper ref={observerRef} />
     </CommentLayout>
   );
 }
+
+const InfiniteWrapper = styled.div`
+  width: 100%;
+  height: 2rem;
+`;
 
 const CloseCommentsBtnIcon = styled(CloseCommentsBtnIc)`
   width: 20rem;
