@@ -7,7 +7,7 @@ import { CommentUpldatCompleteIc, QuitIc } from "../../assets";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
-import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { commentUpdateData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
 import { checkIsClickedNothing, checkIsSameId } from "../../utils/common/checkHover";
 import CommentInfo from "./commentInfo";
@@ -38,7 +38,7 @@ export default function CommentBox(props: CommentBoxProps) {
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [comment, setComment] = useRecoilState(commentUpdateData);
-  const resetComment = useResetRecoilState(commentWriteData);
+  const resetComment = useResetRecoilState(commentUpdateData);
 
   function handlePlayComment() {
     setClickId(commentId); //나중에 지우기
