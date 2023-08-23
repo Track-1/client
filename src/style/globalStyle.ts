@@ -68,10 +68,22 @@ export const GlobalStyle = createGlobalStyle`
     font-family: sans-serif;
     /* font-size: 62.5%; */
     user-select: none;
-    @media (min-width:1800px){
+    @media (min-width:2800px){
+      font-size: 94%;
+    }
+    @media (min-width:2160px)and (max-width:2799px){
+      font-size: 70%;
+    }
+    @media (min-width:2001px)and (max-width:2159px){
+      font-size: 68%;
+    }
+    @media (min-width:1800px) and (max-width:2000px){
       font-size: 62.5%;
     }
-    @media (min-width:1420px) and (max-width:1799px){
+    @media (min-width:1501px) and (max-width:1799px){
+      font-size: 49.2%
+    }
+    @media (min-width:1420px) and (max-width:1500px){
       font-size: 46.8%;
     }
     @media (min-width:900px) and (max-width:1419px){

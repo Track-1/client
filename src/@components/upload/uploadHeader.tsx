@@ -1,17 +1,16 @@
-import styled from "styled-components";
-import { UploadInfo } from "../../core/api/upload";
-import { UploadBtnIc, CanUploadBtnIc } from "../../assets";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { CanUploadBtnIc, UploadBtnIc } from "../../assets";
+import { UploadInfo } from "../../core/api/upload";
+import { LoginUserId } from "../../recoil/loginUserData";
+import { showPlayerBar } from "../../recoil/player";
 import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
 import { UploadInfoDataType } from "../../type/uploadInfoDataType";
 import { checkUserType } from "../../utils/common/userType";
-import { LoginUserId } from "../../recoil/loginUserData";
 import BackButton from "../@common/backButton";
-import { showPlayerBar } from "../../recoil/player";
-import loading from "../../assets/image/loading.gif";
 import Loading from "../@common/loading";
 
 interface PropsType {
@@ -30,8 +29,6 @@ export default function UploadHeader(props: PropsType) {
   const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
   const [cursor, setCursor] = useState<string>("pointer");
   const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
-  console.log(producerUploadType, "ggg");
 
   const { mutate, isLoading } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
     onSuccess: () => {
