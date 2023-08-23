@@ -61,7 +61,7 @@ const CommentWrapper = styled.li`
   width: 78rem;
 
   margin-left: 15rem;
-  /* margin-top: -3rem; */
+  margin-top: -3rem;
 `;
 
 const CommentText = styled.strong`

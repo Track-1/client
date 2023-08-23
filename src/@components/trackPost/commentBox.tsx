@@ -95,7 +95,7 @@ const ProfileImageWrapper = styled.div`
   position: absolute;
   overflow: hidden;
 
-  margin-left: 3rem;
+  margin-left: 3.6rem;
 
   cursor: pointer;
 `;
@@ -105,7 +105,7 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
   align-items: center;
 
   position: relative;
-  height: 14.2rem;
+  height: 17.4rem;
 
   border: 0.2rem solid transparent;
   border-top-left-radius: 11.7rem;
