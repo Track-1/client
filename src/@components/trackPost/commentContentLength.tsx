@@ -1,9 +1,11 @@
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { CommentIsUpdateProp } from "../../type/trackPost/commentIsUpdateProp";
 
-export default function CommentContentLength() {
-  const [comment, setComment] = useRecoilState(commentWriteData);
+export default function CommentContentLength(props: CommentIsUpdateProp) {
+  const { isUpdate } = props;
+  const [comment, setComment] = useRecoilState(isUpdate ? commentUpdateData : commentWriteData);
 
   return (
     <CountWrapper>

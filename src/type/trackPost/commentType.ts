@@ -7,5 +7,5 @@ export interface CommentType {
   commentContent: string;
   userSelf: boolean;
   commentAudioFileLength: number;
-  commentFileName: string;
+  commentAudioFileName: string;
 }

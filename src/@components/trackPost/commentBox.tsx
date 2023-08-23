@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { updateComment } from "../../api/trackPost/updateComment";
 import { CommentUpldatCompleteIc, QuitIc } from "../../assets";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import useModal from "../../hooks/common/useModal";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
@@ -30,7 +29,7 @@ export default function CommentBox(props: CommentBoxProps) {
     commentContent,
     userSelf,
     commentAudioFileLength,
-    commentFileName,
+    commentAudioFileName,
   } = eachComment;
 
   const [clickId, setClickId] = useRecoilState(clickedTrackId);
@@ -79,22 +78,19 @@ export default function CommentBox(props: CommentBoxProps) {
     }
   }
 
-  const { modalRef, closeModal, openModal } = useModal();
-
   useEffect(() => {
     if (isEdit) {
-      setComment({ ...comment, commentAudioFileName: commentFileName, commentContent: commentContent });
-      // closeModal();
+      setComment({ ...comment, commentAudioFileName: commentAudioFileName, commentContent: commentContent });
     }
   }, [isEdit]);
 
-  console.log(isEdit);
+  console.log(eachComment);
 
   return (
     <>
       {isEdit ? (
         <UpdateCommentContainer>
-          <CommentWrite />
+          <CommentWrite isUpdate={false} />
           <QuitIcon onClick={handleStopUpdating} />
           <CommentUpldatCompleteIcon onClick={handleSubmitUpdateComment} />
         </UpdateCommentContainer>

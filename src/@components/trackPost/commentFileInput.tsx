@@ -3,10 +3,12 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { FileUploadButtonIc } from "../../assets";
 import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
-import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { CommentIsUpdateProp } from "../../type/trackPost/commentIsUpdateProp";
 
-export default function CommentFileInput() {
-  const [comment, setComment] = useRecoilState(commentWriteData);
+export default function CommentFileInput(props: CommentIsUpdateProp) {
+  const { isUpdate } = props;
+  const [comment, setComment] = useRecoilState(isUpdate ? commentUpdateData : commentWriteData);
   const { audioInit, uploadAudiofile } = useUploadAudioFile();
 
   useEffect(() => {
