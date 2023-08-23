@@ -10,6 +10,7 @@ export { ReactComponent as CloseCommentsBtnIc } from "./icon/closeCommentsBtnIc.
 export { ReactComponent as ClosedAddCommentIc } from "./icon/closedAddCommentIc.svg";
 export { ReactComponent as ClosedDownloadIc } from "./icon/closedBtnIc.svg";
 export { ReactComponent as CloseDownloadIc } from "./icon/closedWithXIc.svg";
+export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIc.svg";
 export { ReactComponent as CommentUpldatCompleteIc } from "./icon/commentUpldatCompleteIc.svg";
 export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckBoxIc.svg";
 export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";

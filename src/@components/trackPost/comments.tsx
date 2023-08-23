@@ -13,7 +13,12 @@ import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
 import CommentWrite from "./commentWrite";
 
-export default function Comments() {
+interface CommentsProp {
+  handleClosecomment: () => void;
+}
+
+export default function Comments(props: CommentsProp) {
+  const { handleClosecomment } = props;
   const { trackComments } = useGetComment(1);
   const { trackClosed } = useGetTrackInfo();
   const [comment, setComment] = useRecoilState(commentWriteData);
@@ -40,7 +45,7 @@ export default function Comments() {
 
   return (
     <CommentLayout>
-      <CloseCommentsBtnIcon />
+      <CloseCommentsBtnIcon onClick={handleClosecomment} />
       <CommentWrite isUpdate={false} />
       <AddCommentIconWrapper>
         {!trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
