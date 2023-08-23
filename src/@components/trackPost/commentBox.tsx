@@ -7,7 +7,7 @@ import { CommentUpldatCompleteIc, QuitIc } from "../../assets";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
-import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
 import { checkIsClickedNothing, checkIsSameId } from "../../utils/common/checkHover";
 import CommentInfo from "./commentInfo";
@@ -37,7 +37,7 @@ export default function CommentBox(props: CommentBoxProps) {
   // const [hoverId, setHoverId] = useState(-1);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [comment, setComment] = useRecoilState(commentWriteData);
+  const [comment, setComment] = useRecoilState(commentUpdateData);
   const resetComment = useResetRecoilState(commentWriteData);
 
   function handlePlayComment() {
@@ -60,8 +60,9 @@ export default function CommentBox(props: CommentBoxProps) {
 
   const { mutate: updateCommentContent } = useMutation(() => updateComment(comment, commentId), {
     onSuccess: () => {
-      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
+      setIsEdit(false);
       resetComment();
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
     },
     onError: (error) => {
       console.log(error);
@@ -84,13 +85,11 @@ export default function CommentBox(props: CommentBoxProps) {
     }
   }, [isEdit]);
 
-  console.log(eachComment);
-
   return (
     <>
       {isEdit ? (
         <UpdateCommentContainer>
-          <CommentWrite isUpdate={false} />
+          <CommentWrite isUpdate={true} />
           <QuitIcon onClick={handleStopUpdating} />
           <CommentUpldatCompleteIcon onClick={handleSubmitUpdateComment} />
         </UpdateCommentContainer>
@@ -190,8 +189,8 @@ const QuitIcon = styled(QuitIc)`
   width: 1.5rem;
 
   position: absolute;
-  right: 4.2rem;
-  margin-top: 1rem;
+  right: 8rem;
+  margin-top: 2rem;
 
   cursor: pointer;
 `;

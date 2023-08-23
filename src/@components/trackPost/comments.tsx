@@ -41,7 +41,7 @@ export default function Comments() {
   return (
     <CommentLayout>
       <CloseCommentsBtnIcon />
-      <CommentWrite isUpdate={true} />
+      <CommentWrite isUpdate={false} />
       <AddCommentIconWrapper>
         {!trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
       </AddCommentIconWrapper>
