@@ -22,8 +22,6 @@ export default function Comments() {
 
   const queryClient = useQueryClient();
 
-  console.log(comment);
-
   const { mutate: uploadComment } = useMutation(() => postComment(comment, Number(id)), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
