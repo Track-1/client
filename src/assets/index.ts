@@ -1,3 +1,4 @@
+export { ReactComponent as AddCommentIc } from "./icon/addCommentIc.svg";
 export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
 export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
 export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
@@ -6,6 +7,7 @@ export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
 export { ReactComponent as ChangePhotoProducerIc } from "./icon/changePhotoProducerIc.svg";
 export { ReactComponent as ChangePhotoVocalIc } from "./icon/changePhotoVocalIc.svg";
 export { ReactComponent as CloseCommentsBtnIc } from "./icon/closeCommentsBtnIc.svg";
+export { ReactComponent as ClosedAddCommentIc } from "./icon/closedAddCommentIc.svg";
 export { ReactComponent as ClosedDownloadIc } from "./icon/closedBtnIc.svg";
 export { ReactComponent as CloseDownloadIc } from "./icon/closedWithXIc.svg";
 export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckBoxIc.svg";
