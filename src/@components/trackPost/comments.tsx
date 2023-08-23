@@ -39,6 +39,8 @@ export default function Comments() {
     }
   }
 
+  console.log(trackComments);
+
   return (
     <CommentLayout>
       <CloseCommentsBtnIcon />
