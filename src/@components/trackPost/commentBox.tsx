@@ -1,12 +1,17 @@
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
+import { updateComment } from "../../api/trackPost/updateComment";
+import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
+import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
 import { checkIsClickedNothing, checkIsSameId } from "../../utils/common/checkHover";
 import CommentInfo from "./commentInfo";
 import CommentProfileEventBox from "./commentProfileEventBox";
+import CommentWrite from "./commentWrite";
 
 interface CommentBoxProps {
   eachComment: CommentType;
@@ -30,6 +35,9 @@ export default function CommentBox(props: CommentBoxProps) {
   const [hoverState, setHoverState] = useState<boolean>(false);
   // const [hoverId, setHoverId] = useState(-1);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [comment, setComment] = useRecoilState(commentWriteData);
+  const resetComment = useResetRecoilState(commentWriteData);
 
   function handlePlayComment() {
     setClickId(commentId); //나중에 지우기
@@ -47,26 +55,57 @@ export default function CommentBox(props: CommentBoxProps) {
     setHoverState(isHover);
   }
 
+  const queryClient = useQueryClient();
+
+  const { mutate: updateCommentContent } = useMutation(() => updateComment(comment, commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
+      resetComment();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  function handleUploadComment() {
+    if (comment?.commentContent?.length > 0) {
+      updateCommentContent();
+    }
+  }
+
+  useEffect(() => {
+    if (isEdit) {
+      setComment({ ...comment, commentAudioFileName: commentFileName, commentContent: commentContent });
+    }
+  }, [isEdit]);
+
   return (
-    <CommentContainer
-      data-play={play}
-      commentActive={checkIsSameId(commentId, clickId) && !checkIsClickedNothing(clickId)}>
-      <ProfileImageWrapper
-        onMouseOver={() => handleHoverEvent(true)}
-        onMouseOut={() => handleHoverEvent(false)}
-        onClick={handlePlayComment}>
-        <CommentProfileEventBox currentId={commentId} hoverState={hoverState}>
-          <ProfileImage src={userImageFile} />
-        </CommentProfileEventBox>
-      </ProfileImageWrapper>
-      <CommentInfo
-        userName={userName}
-        userSelf={userSelf}
-        commentContent={commentContent}
-        commentUserId={commentUserId}
-        commentId={commentId}
-      />
-    </CommentContainer>
+    <>
+      {isEdit ? (
+        <CommentWrite />
+      ) : (
+        <CommentContainer
+          data-play={play}
+          commentActive={checkIsSameId(commentId, clickId) && !checkIsClickedNothing(clickId)}>
+          <ProfileImageWrapper
+            onMouseOver={() => handleHoverEvent(true)}
+            onMouseOut={() => handleHoverEvent(false)}
+            onClick={handlePlayComment}>
+            <CommentProfileEventBox currentId={commentId} hoverState={hoverState}>
+              <ProfileImage src={userImageFile} />
+            </CommentProfileEventBox>
+          </ProfileImageWrapper>
+          <CommentInfo
+            userName={userName}
+            userSelf={userSelf}
+            commentContent={commentContent}
+            commentUserId={commentUserId}
+            commentId={commentId}
+            setIsEdit={setIsEdit}
+          />
+        </CommentContainer>
+      )}
+    </>
   );
 }
 

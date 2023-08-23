@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -12,10 +12,11 @@ interface CommentInfoProps {
   commentContent: string;
   commentUserId: number;
   commentId: number;
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CommentInfo(props: CommentInfoProps) {
-  const { userName, userSelf, commentContent, commentUserId, commentId } = props;
+  const { userName, userSelf, commentContent, commentUserId, commentId, setIsEdit } = props;
   const navigate = useNavigate();
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
@@ -39,7 +40,7 @@ export default function CommentInfo(props: CommentInfoProps) {
       <InfoTopWrapper>
         <UserName onClick={handleMoveVocalProfile}>{userName}</UserName>
         {userSelf && <EllipsisIcon onClick={handleShowEditDropDownComment} />}
-        {editModalToggle && isOpenModal && <EditDropDownComment commentId={commentId} />}
+        {editModalToggle && isOpenModal && <EditDropDownComment setIsEdit={setIsEdit} />}
       </InfoTopWrapper>
       <CommentText>{commentContent}</CommentText>
     </CommentWrapper>

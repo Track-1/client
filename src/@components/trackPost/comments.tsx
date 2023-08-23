@@ -25,8 +25,7 @@ export default function Comments() {
   const { mutate: uploadComment } = useMutation(() => postComment(comment, Number(id)), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
-      // resetComment();
-      setComment({ commentAudioFile: null, commentContent: "", commentAudioFileName: "file_upload.mp3" });
+      resetComment();
     },
     onError: (error) => {
       console.log(error);
@@ -38,8 +37,6 @@ export default function Comments() {
       uploadComment();
     }
   }
-
-  console.log(trackComments);
 
   return (
     <CommentLayout>
