@@ -14,29 +14,29 @@ export default function EditDropDownComment(props: EditDropDownCommentProp) {
 
   const queryClient = useQueryClient();
 
-  //   const { mutate:delete } = useMutation(() => deleteComment(currentId), {
-  //     onSuccess: () => {
-  //       //다시 업로드 하는거 해줘야된다.!
-  //       // queryClient.invalidateQueries("comments");
-  //       // setIsEnd(!isEnd);
-  //       closeModal();
-  //       //   setKey((prev: any) => prev + 1);
-  //       setIsDeleted(true);
-  //     },
-  //     onError: (error) => {
-  //       console.log("에러!!", error);
-  //     },
-  //   });
+  // const { mutate:delete } = useMutation(() => deleteComment(commentId), {
+  //   onSuccess: () => {
+  //     //다시 업로드 하는거 해줘야된다.!
+  //     // queryClient.invalidateQueries("comments");
+  //     // setIsEnd(!isEnd);
+  //     closeModal();
+  //     //   setKey((prev: any) => prev + 1);
+  //     setIsDeleted(true);
+  //   },
+  //   onError: (error) => {
+  //     console.log("에러!!", error);
+  //   },
+  // });
 
-  //   function editComment() {
-  //     setIsEdit(true);
-  //   }
+  // function editComment() {
+  //   setIsEdit(true);
+  // }
 
-  //   function deleteTrackComment() {
-  //     if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
-  //       mutate();
-  //     }
+  // function deleteTrackComment() {
+  //   if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
+  //     mutate();
   //   }
+  // }
 
   return (
     <DropDownContainer ref={modalRef}>
