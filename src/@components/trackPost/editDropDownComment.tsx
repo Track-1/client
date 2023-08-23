@@ -19,8 +19,8 @@ export default function EditDropDownComment(props: EditDropDownCommentProps) {
   return (
     <DropDownContainer ref={modalRef}>
       <DropDownWrapper>
-        <EditWrapper>
-          <EditText onClick={handleStartUpdate}>수정하기</EditText>
+        <EditWrapper onClick={handleStartUpdate}>
+          <EditText>수정하기</EditText>
           <EditIcon />
         </EditWrapper>
         <DivisionBar />

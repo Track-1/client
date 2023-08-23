@@ -35,6 +35,10 @@ export default function CommentInfo(props: CommentInfoProps) {
     setIsOpenModal(true);
   }
 
+  console.log(commentId);
+  console.log("editModalToggle " + editModalToggle);
+  console.log("isOpenModal " + isOpenModal);
+
   return (
     <CommentWrapper>
       <InfoTopWrapper>

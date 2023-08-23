@@ -3,7 +3,9 @@ import { useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { updateComment } from "../../api/trackPost/updateComment";
+import { CommentUpldatCompleteIc, QuitIc } from "../../assets";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
+import useModal from "../../hooks/common/useModal";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
@@ -67,22 +69,35 @@ export default function CommentBox(props: CommentBoxProps) {
     },
   });
 
-  function handleUploadComment() {
+  function handleStopUpdating() {
+    setIsEdit(false);
+  }
+
+  function handleSubmitUpdateComment() {
     if (comment?.commentContent?.length > 0) {
       updateCommentContent();
     }
   }
 
+  const { modalRef, closeModal, openModal } = useModal();
+
   useEffect(() => {
     if (isEdit) {
       setComment({ ...comment, commentAudioFileName: commentFileName, commentContent: commentContent });
+      // closeModal();
     }
   }, [isEdit]);
+
+  console.log(isEdit);
 
   return (
     <>
       {isEdit ? (
-        <CommentWrite />
+        <UpdateCommentContainer>
+          <CommentWrite />
+          <QuitIcon onClick={handleStopUpdating} />
+          <CommentUpldatCompleteIcon onClick={handleSubmitUpdateComment} />
+        </UpdateCommentContainer>
       ) : (
         <CommentContainer
           data-play={play}
@@ -108,6 +123,11 @@ export default function CommentBox(props: CommentBoxProps) {
     </>
   );
 }
+
+const UpdateCommentContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ProfileImage = styled.img`
   width: 100%;
@@ -168,4 +188,23 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
       ${({ theme }) => theme.colors.sub3}
     );
   /* } */
+`;
+
+const QuitIcon = styled(QuitIc)`
+  width: 1.5rem;
+
+  position: absolute;
+  right: 4.2rem;
+  margin-top: 1rem;
+
+  cursor: pointer;
+`;
+
+const CommentUpldatCompleteIcon = styled(CommentUpldatCompleteIc)`
+  width: 13.9rem;
+
+  margin-left: 80rem;
+  margin-top: 1.8rem;
+
+  cursor: pointer;
 `;
