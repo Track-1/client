@@ -1,41 +1,46 @@
-import { useRef } from "react";
+import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { FileUploadButtonIc } from "../../assets";
+import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
-import { checkAudioFileType } from "../../utils/common/checkAudioFileType";
-import { getAudioFileName } from "../../utils/common/getAudioFileName";
-import { getAudioFileType } from "../../utils/common/getAudioFileType";
 
 export default function CommentFileInput() {
   const [comment, setComment] = useRecoilState(commentWriteData);
-  const commentFile = useRef<HTMLInputElement | null>(null);
+  const { audioInit, uploadAudiofile } = useUploadAudioFile();
 
-  function handleUploadFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const currentFile = e.target.files && e.target.files[0];
-    currentFile && setComment({ ...comment, commentAudioFile: currentFile, commentAudioFileName: currentFile?.name });
+  // const commentFile = useRef<HTMLInputElement | null>(null);
 
-    if (e.target.files !== null) {
-      const file = e.target.value;
-      const audioFileName: string = getAudioFileName(file);
-      const audioFileType: string = getAudioFileType(file, audioFileName.length);
-      if (e.target.files?.length === 0) {
-        // alert("파일삽입이 취소되었습니다.")
-      } else {
-        if (!checkAudioFileType(audioFileType)) {
-          alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
-          setComment({ ...comment, commentAudioFile: null, commentAudioFileName: "file_upload.mp3" });
-        }
-      }
-    }
-  }
+  // function handleUploadFile(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const currentFile = e.target.files && e.target.files[0];
+  //   currentFile && setComment({ ...comment, commentAudioFile: currentFile, commentAudioFileName: currentFile?.name });
+
+  //   if (e.target.files !== null) {
+  //     const file = e.target.value;
+  //     const audioFileName: string = getAudioFileName(file);
+  //     const audioFileType: string = getAudioFileType(file, audioFileName.length);
+  //     if (e.target.files?.length === 0) {
+  //       // alert("파일삽입이 취소되었습니다.")
+  //     } else {
+  //       if (!checkAudioFileType(audioFileType)) {
+  //         alert("Only wav, mp3 format audio can be uploaded.\nwav, mp3형식의 오디오만 업로드할 수 있습니다.");
+  //         setComment({ ...comment, commentAudioFile: null, commentAudioFileName: "file_upload.mp3" });
+  //       }
+  //     }
+  //   }
+  // }
+
+  useEffect(() => {
+    if (!audioInit?.audioFile || audioInit?.fileName === "") return;
+    setComment({ ...comment, commentAudioFileName: audioInit?.fileName, commentAudioFile: audioInit?.audioFile });
+  }, [audioInit]);
 
   return (
     <>
       <InputTitle>{comment?.commentAudioFileName}</InputTitle>
       <label>
         <FileUploadButtonIcon />
-        <FileInput type="file" accept=".mp3, .wav" onChange={handleUploadFile} ref={commentFile} />
+        <FileInput type="file" accept=".mp3, .wav" onChange={uploadAudiofile} />
       </label>
     </>
   );
