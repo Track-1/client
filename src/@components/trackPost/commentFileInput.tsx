@@ -15,15 +15,22 @@ export default function CommentFileInput() {
   }, [audioInit]);
 
   return (
-    <>
+    <CommentFileInputWrapper>
       <InputTitle>{comment?.commentAudioFileName}</InputTitle>
       <label>
         <FileUploadButtonIcon />
         <FileInput type="file" accept=".mp3, .wav" onChange={uploadAudiofile} />
       </label>
-    </>
+    </CommentFileInputWrapper>
   );
 }
+
+const CommentFileInputWrapper = styled.header`
+  display: flex;
+  align-items: center;
+
+  height: 4rem;
+`;
 
 const FileUploadButtonIcon = styled(FileUploadButtonIc)`
   width: 4rem;
