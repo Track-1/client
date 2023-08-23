@@ -7,6 +7,7 @@ export async function updateComment(commentData: CommentDataType, commentId: num
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${getCookie("accessToken")}`,
+      commentId: commentId,
     },
   });
 
