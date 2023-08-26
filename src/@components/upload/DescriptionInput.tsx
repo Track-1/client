@@ -1,26 +1,17 @@
 import styled from "styled-components";
 
 import TextareaAutosize from "react-textarea-autosize";
-import { TEXT_LIMIT } from "../../../../core/common/textLimit";
-import useInputText from "../../../../hooks/common/useInputText";
 import TextLength from "./TextLength";
-import { checkEnterCount } from "../../../../utils/common/checkEnterCount";
-import useUploadInitValue from "../../../../hooks/upload/useUploadInitValue";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { UploadData } from "../../../../recoil/upload/uploadData";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import { checkEnterCount } from "../../utils/common/checkEnterCount";
 
-export default function DescriptionInfo() {
-  const [uploadInit] = useUploadInitValue();
-  const [description, changeDescription] = useInputText(uploadInit.description, TEXT_LIMIT.DESCRIPTION);
-  const setUploadData = useSetRecoilState(UploadData);
+interface DescriptionInputProps {
+  description: string;
+  changeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  useEffect(() => {
-    setUploadData((prev) => ({
-      ...prev,
-      content: description,
-    }));
-  }, [description]);
+export default function DescriptionInput(props: DescriptionInputProps) {
+  const { description, changeDescription } = props;
 
   function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = checkEnterCount(e);
@@ -39,7 +30,7 @@ export default function DescriptionInfo() {
       />
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} />
+        {/* <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} /> */}
       </TextLengthWrapper>
     </InfoInput>
   );
