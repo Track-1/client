@@ -1,5 +1,11 @@
 import { UserType } from "./common/userType";
 
+export interface UserLoginInfo {
+  userEmail: string;
+  userPw: string;
+  userType: UserType;
+}
+
 export interface UserProfileType {
   userContact: string;
   userCategory: string[];
