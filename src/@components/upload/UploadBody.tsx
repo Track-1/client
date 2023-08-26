@@ -1,26 +1,26 @@
 import styled from "styled-components";
 import ProducerLayout from "./producer/ProducerLayout";
 import VocalLayout from "./vocal/VocalLayout";
-import { USER_DATA } from "../../core/common/userData";
 import UploadTitle from "./UploadTitle";
 import FileUploadInfo from "./FileUploadInfo";
 import CategoryInfo from "./CategotyInfo";
 import HashtagInfo from "./HashtagInfo";
 import DescriptionInfo from "./DescriptionInfo";
 import useUploadValue from "../../hooks/common/useUploadValue";
+import { ROLE } from "../../core/common/roleType";
 
 interface UploadBodyProps {
-  userType: string;
-  uploadInitData: any | null; //타입설정할 예정
+  roleType: string;
+  initEmptyData: boolean; //true : 초기값 / false : API 데이터로 초기값
 }
 
 export default function UploadBody(props: UploadBodyProps) {
-  const { userType, uploadInitData } = props;
-  const { title, image, audio, description } = useUploadValue(uploadInitData);
+  const { roleType, initEmptyData } = props;
+  const { title, image, audio, description } = useUploadValue(initEmptyData);
 
   return (
     <Container>
-      {userType === USER_DATA.PRODUCER ? (
+      {roleType === ROLE.PRODUCER ? (
         <ProducerLayout
           imageFile={image.imageFile}
           previewImage={image.previewImage}

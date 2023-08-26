@@ -30,7 +30,7 @@ export default function DescriptionInput(props: DescriptionInputProps) {
       />
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} />
+        {/* <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} /> */}
       </TextLengthWrapper>
     </InfoInput>
   );

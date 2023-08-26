@@ -5,18 +5,29 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { UploadData } from "../../recoil/upload/uploadData";
 import BackButton from "../@common/backButton";
+import useProducerUpload from "../../hooks/queries/upload/useProducerUpload";
+import useUploadValue from "../../hooks/common/useUploadValue";
+import { UPLOAD_TYPE } from "../../core/common/uploadType";
 
-export default function UploadHeader() {
+interface UploadHeaderProps {
+  initEmptyData: boolean;
+}
+
+export default function UploadHeader(props: UploadHeaderProps) {
+  const { initEmptyData } = props;
+  const { uploadType } = useUploadValue(initEmptyData);
   const uploadData = useRecoilValue(UploadData);
 
   const [isUploadActive, setIsUploadActive] = useState(false);
 
   function isActive() {
-    return uploadData.audioFile && uploadData.title;
+    return uploadData.trackAudioFile && uploadData.trackTitle;
   }
 
-  function handleUploadAPI() {
-    alert("hello");
+  const [upload] = useProducerUpload(uploadType);
+
+  function handleUploadData() {
+    isUploadActive && upload();
   }
 
   useEffect(() => {
@@ -27,9 +38,9 @@ export default function UploadHeader() {
     <Container>
       <BackButton />
       <Wrapper>
-        <UploadTypeText>Vocal Searching</UploadTypeText>
+        <UploadTypeText>{uploadType === UPLOAD_TYPE.VOCAL_SEARCHING ? "Vocal Searching" : "Portfolio"}</UploadTypeText>
         {isUploadActive ? (
-          <UploadAbleBtn src={uploadAbleBtnImg} alt="업로드 버튼" onClick={handleUploadAPI} />
+          <UploadAbleBtn src={uploadAbleBtnImg} alt="업로드 버튼" onClick={handleUploadData} />
         ) : (
           <img src={uploadUnableBtnImg} alt="업로드 버튼" />
         )}

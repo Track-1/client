@@ -3,4 +3,5 @@ export const QUERIES_KEY = {
   UPLOAD_VOCAL_SEARCHING: "upload producer vocal searching",
   GET_PRODUCER_PORTFOLIO_INFO: "get producer portfolio info",
   GET_TRACK_INFO: "getTrackInfo",
+  GET_UPLOAD_EDIT_INFO: "getUploadEditInfo",
 };

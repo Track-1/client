@@ -9,6 +9,7 @@ interface UploadTitleProps {
 
 export default function UploadTitle(props: UploadTitleProps) {
   const { title, changeTitle } = props;
+
   return (
     <Container>
       <Empty />
