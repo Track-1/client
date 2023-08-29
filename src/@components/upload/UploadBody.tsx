@@ -16,7 +16,7 @@ interface UploadBodyProps {
 
 export default function UploadBody(props: UploadBodyProps) {
   const { roleType, initEmptyData } = props;
-  const { title, image, audio, description } = useUploadValue(initEmptyData);
+  const { title, hashtags, image, audio, description } = useUploadValue(initEmptyData);
 
   return (
     <Container>
@@ -35,7 +35,15 @@ export default function UploadBody(props: UploadBodyProps) {
                 handleUploadAudioFile={audio.handleUploadAudioFile}
               />
               <CategoryInfo />
-              <HashtagInfo />
+              <HashtagInfo
+                hashtags={hashtags.hashtags}
+                hashtagLength={hashtags.hashtagLength}
+                hashtagInputText={hashtags.hashtagInputText}
+                handleEnterHashtag={hashtags.handleEnterHashtag}
+                handleAddHashtag={hashtags.handleAddHashtag}
+                handleRemoveHashtag={hashtags.handleRemoveHashtag}
+                handleChangeHashtagInputText={hashtags.handleChangeHashtagInputText}
+              />
               <DescriptionInfo
                 description={description.description}
                 changeDescription={description.changeDescription}
@@ -58,7 +66,15 @@ export default function UploadBody(props: UploadBodyProps) {
                 handleUploadAudioFile={audio.handleUploadAudioFile}
               />
               <CategoryInfo />
-              <HashtagInfo />
+              <HashtagInfo
+                hashtags={hashtags.hashtags}
+                hashtagLength={hashtags.hashtagLength}
+                hashtagInputText={hashtags.hashtagInputText}
+                handleEnterHashtag={hashtags.handleEnterHashtag}
+                handleAddHashtag={hashtags.handleAddHashtag}
+                handleRemoveHashtag={hashtags.handleRemoveHashtag}
+                handleChangeHashtagInputText={hashtags.handleChangeHashtagInputText}
+              />
               <DescriptionInfo
                 description={description.description}
                 changeDescription={description.changeDescription}

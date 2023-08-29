@@ -1,92 +1,61 @@
 import styled from "styled-components";
-import React from "react";
-import { useState, useRef, KeyboardEvent } from "react";
-
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
-import { checkKorean } from "../../../utils/common/checkKorean";
 
-export default function HashtagsEdit() {
-  const [hashtagLength, setHashtagLength] = useState<number>(0);
-  const [hashtagText, setHashtagText] = useState<string[]>([]);
-  const hashtagRef = useRef<HTMLInputElement | null>(null);
+interface HashtagInputProps {
+  hashtags: string[];
+  hashtagLength: number;
+  hashtagInputText: string;
+  handleEnterHashtag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleAddHashtag: () => void;
+  handleRemoveHashtag: (tag: string) => void;
+  handleChangeHashtagInputText: (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => void;
+}
 
-  function calculateHashtagLength(hashtagValue: string): number {
-    return checkKorean(hashtagValue) ? hashtagValue.length * 1.5 + 1 : hashtagValue.length * 1.2 + 1;
-  }
-
-  function checkHashtagText(e: React.ChangeEvent<HTMLInputElement>) {
-    const hashtagValue = e.target.value;
-    const hashtagLength = hashtagValue.trim() !== "" ? calculateHashtagLength(hashtagValue) : 0;
-    setHashtagLength(hashtagLength);
-  }
-
-  function handleAddHashtag() {
-    if (hashtagRef.current === null) return;
-
-    const value = hashtagRef.current.value.trim();
-    if (value) {
-      setHashtagText((prev) => [...prev, value]);
-      hashtagRef.current!.value = "";
-      setHashtagLength(0);
-    }
-  }
-
-  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== "Enter") return;
-    handleAddHashtag();
-  }
-
-  function handleOutsideClick() {
-    handleAddHashtag();
-  }
-
-  function handleRemoveHashtag(tag: string) {
-    setHashtagText(hashtagText.filter((item) => item !== tag));
-  }
+export default function HashtagInput(props: HashtagInputProps) {
+  const {
+    hashtags,
+    hashtagLength,
+    hashtagInputText,
+    handleEnterHashtag,
+    handleAddHashtag,
+    handleRemoveHashtag,
+    handleChangeHashtagInputText,
+  } = props;
 
   return (
     <>
-      <InputHashtagWrapper>
-        {hashtagText.map((tag, index) => (
-          <Hashtag key={tag}>
-            <CompleteHashtagWrapper>
-              <HashtagSharp># </HashtagSharp>
-              <CompletedHashtag>{tag}</CompletedHashtag>
-            </CompleteHashtagWrapper>
-            <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} />
-          </Hashtag>
-        ))}
-        {hashtagText?.length < 3 && (
-          <Hashtag>
-            <HashtagWrapper>
-              <HashtagSharp># </HashtagSharp>
-              <HashtagInput
-                placeholder="Hashtag"
-                onKeyDown={handleEnterHashtag}
-                onChange={checkHashtagText}
-                onBlur={handleOutsideClick}
-                inputWidth={hashtagLength}
-                ref={hashtagRef}
-              />
-            </HashtagWrapper>
-          </Hashtag>
-        )}
-        {hashtagText?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
-      </InputHashtagWrapper>
+      {hashtags.map((tag, index) => (
+        <HashtagBox key={tag}>
+          <CompleteHashtagWrapper>
+            <HashtagSharp># </HashtagSharp>
+            <CompletedHashtag>{tag}</CompletedHashtag>
+          </CompleteHashtagWrapper>
+          <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} />
+        </HashtagBox>
+      ))}
+      {hashtags?.length < 3 && (
+        <HashtagBox>
+          <HashtagWrapper>
+            <HashtagSharp># </HashtagSharp>
+            <HashtagInputText
+              placeholder="Hashtag"
+              onKeyDown={handleEnterHashtag}
+              onChange={handleChangeHashtagInputText}
+              onBlur={handleAddHashtag}
+              inputWidth={hashtagLength}
+              value={hashtagInputText}
+            />
+          </HashtagWrapper>
+        </HashtagBox>
+      )}
+      {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
     </>
   );
 }
 
-const InputHashtagWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-
-  height: 100%;
-
-  align-items: center;
-`;
-
-const Hashtag = styled.div`
+const HashtagBox = styled.div`
   display: flex;
 
   height: 3.8rem;
@@ -115,7 +84,7 @@ const HashtagSharp = styled.p`
   ${({ theme }) => theme.fonts.hashtag};
 `;
 
-const HashtagInput = styled.input<{ inputWidth: number }>`
+const HashtagInputText = styled.input<{ inputWidth: number }>`
   display: flex;
 
   width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth)}rem;
@@ -153,8 +122,7 @@ const DeleteHashtagIcon = styled(DeleteHashtagIc)`
 
 const CompleteHashtagWrapper = styled.div`
   display: flex;
+  align-items: center;
 
   padding: 0 1.5rem;
-
-  align-items: center;
 `;

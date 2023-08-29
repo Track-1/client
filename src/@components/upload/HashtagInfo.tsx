@@ -3,21 +3,51 @@ import UploadInfoBox from "./UploadInfoBox";
 import HashtagInput from "../@common/hashtag/hashtagInput";
 import HashtagWarning from "../@common/hashtag/hashtagWarning";
 
-export default function HashtagInfo() {
+interface HashtagInfoProps {
+  hashtags: string[];
+  hashtagLength: number;
+  hashtagInputText: string;
+  handleEnterHashtag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleAddHashtag: () => void;
+  handleRemoveHashtag: (tag: string) => void;
+  handleChangeHashtagInputText: (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => void;
+}
+
+export default function HashtagInfo(props: HashtagInfoProps) {
+  const {
+    hashtags,
+    hashtagLength,
+    hashtagInputText,
+    handleEnterHashtag,
+    handleAddHashtag,
+    handleRemoveHashtag,
+    handleChangeHashtagInputText,
+  } = props;
+
   return (
     <UploadInfoBox>
       <InfoType>
         #<InfoTypeText> Hashtag</InfoTypeText>
       </InfoType>
+
       <InfoInput>
-        <HashtagInput />
-        <CustomHashtagWarning>
-          <HashtagWarning />
-        </CustomHashtagWarning>
+        <HashtagInput
+          hashtags={hashtags}
+          hashtagLength={hashtagLength}
+          hashtagInputText={hashtagInputText}
+          handleEnterHashtag={handleEnterHashtag}
+          handleAddHashtag={handleAddHashtag}
+          handleRemoveHashtag={handleRemoveHashtag}
+          handleChangeHashtagInputText={handleChangeHashtagInputText}
+        />
+        <HashtagWarning />
       </InfoInput>
     </UploadInfoBox>
   );
 }
+
 const InfoType = styled.div`
   display: flex;
   align-items: center;
@@ -41,8 +71,4 @@ const InfoInput = styled.div`
 
   display: flex;
   align-items: center;
-`;
-
-const CustomHashtagWarning = styled.div`
-  margin-left: 16rem;
 `;
