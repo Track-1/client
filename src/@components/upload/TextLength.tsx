@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FontsTypes } from "../../../../style/theme";
+import { FontsTypes } from "../../style/theme";
 
 interface TextLengthProps {
   inputLength: number;

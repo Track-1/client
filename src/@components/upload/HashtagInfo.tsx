@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import UploadInfoBox from "./UploadInfoBox";
-import HashtagInput from "../../hashtag/hashtagInput";
-import HashtagWarning from "../../hashtag/hashtagWarning";
+import HashtagInput from "../@common/hashtag/hashtagInput";
+import HashtagWarning from "../@common/hashtag/hashtagWarning";
 
 export default function HashtagInfo() {
   return (

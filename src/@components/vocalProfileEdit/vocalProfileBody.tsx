@@ -20,6 +20,8 @@ export default function VocalProfileEditPage() {
     isSleep: false,
   });
 
+  console.log(profileData);
+
   // input값이 변경될 때 호출
   function handleInputChange(value: string) {
     setProfileData((prevState) => ({
