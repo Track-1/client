@@ -1,4 +1,4 @@
-import { FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import PasswordContainer from "../@common/passwordContainer";
 import InputTitle from "../signUp/inputTitle";
 import Input from "../signUp/Input";
@@ -6,11 +6,10 @@ import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import styled from "styled-components";
 import UserTypeToggle from "./userTypeToggle";
-import useForgotPasswordData from "../../hooks/forgotPassword/useForgotPasswordData";
 import StandardButton from "../@common/button/standardButton";
 import { theme } from "../../style/theme";
-import { useForm } from "react-hook-form";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { useEffect, useState } from "react";
 
 export default function ForgotPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
@@ -31,7 +30,23 @@ export default function ForgotPasswordInput() {
     watch,
   } = methods;
 
-  const { producerType, handleChangeUserType } = useForgotPasswordData();
+  const [producerType, setProducerType] = useState(false);
+  const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
+  const [fontColor, setFontColor] = useState(theme.colors.white);
+
+  function handleChangeUserType() {
+    setProducerType((prev) => !prev);
+  }
+
+  useEffect(() => {
+    if (checkEmailForm(methods.getValues().email)) {
+      producerType ? setButtonColor(theme.colors.sub1) : setButtonColor(theme.colors.sub2);
+      setFontColor(theme.colors.black);
+    } else {
+      setButtonColor(theme.colors.gray4);
+      setFontColor(theme.colors.white);
+    }
+  }, [methods.getValues().email, producerType]);
 
   return (
     <PasswordContainer containerInterval={15.1} title="Forgot password?" titleInterval={9.1}>
@@ -63,10 +78,7 @@ export default function ForgotPasswordInput() {
         </form>
       </FormProvider>
       <UserTypeToggle producerType={producerType} handleChangeUserType={handleChangeUserType} />
-      <StandardButton
-        bgColor={theme.colors.gray2}
-        fontColor={theme.colors.white}
-        handleClickFunction={() => console.log("hello")}>
+      <StandardButton bgColor={buttonColor} fontColor={fontColor} handleClickFunction={() => console.log("hello")}>
         Request a password reset
       </StandardButton>
     </PasswordContainer>

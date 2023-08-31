@@ -11,6 +11,7 @@ interface StandardButtonProps {
 
 export default function StandardButton(props: StandardButtonProps) {
   const { bgColor, fontColor, handleClickFunction, children } = props;
+  console.log(bgColor);
   return (
     <Container bgColor={bgColor} fontColor={fontColor} onClick={handleClickFunction}>
       {children}
