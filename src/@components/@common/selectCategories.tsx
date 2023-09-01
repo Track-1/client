@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-import { CategoryId, CategoryBoolean } from "../../core/common/categories";
+import { CategoryBoolean, CategoryId } from "../../core/common/categories";
 import { CategorySelectType } from "../../type/common/CategoryChecksType";
 
-import { CategoryTitleIc } from "../../assets";
 import styled from "styled-components";
+import { CategoryTitleIc } from "../../assets";
+import InputTitle from "./inputTitle";
 
 export default function SelectCategory() {
   const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>(CategoryBoolean);
@@ -19,7 +20,7 @@ export default function SelectCategory() {
   return (
     <>
       <CategoryContainer>
-        <CategoryTitleIcon />
+        <InputTitle>Category</InputTitle>
         <CategoryBox>
           {Object.keys(CategoryId).map((category: string, CategoryId: number) => {
             return (

@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import CategoriesEdit from "../selectCategories";
 import ContactInput from "./contactInput";
 
 export default function ProfileEditBox() {
@@ -25,12 +26,17 @@ export default function ProfileEditBox() {
     <EditBox>
       <InputWrapper>
         <ContactInput methods={methods} />
+        <CategoriesEdit />
       </InputWrapper>
     </EditBox>
   );
 }
 
 const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   margin-top: 5.7rem;
 `;
 
