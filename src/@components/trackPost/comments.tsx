@@ -48,7 +48,7 @@ export default function Comments(props: CommentsProp) {
     }
     // }
   }
-  console.log(trackComments?.pages[0]);
+  console.log(trackComments?.pages[0]?.nextPage);
 
   return (
     <CommentLayout>
