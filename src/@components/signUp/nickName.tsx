@@ -10,7 +10,7 @@ import { NickNameProp } from "../../type/signUp/nickNameProp";
 import { checkEssentialAgree } from "../../utils/signUp/checkEssentialAgree";
 import { checkNicknamForm } from "../../utils/signUp/checkForm";
 import Input from "../@common/Input";
-import InputTitle from "./inputTitle";
+import InputTitle from "../@common/inputTitle";
 
 interface NickNameProps extends NickNameProp {
   checkedConventions: ConventionChecksType[];

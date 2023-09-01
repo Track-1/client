@@ -7,7 +7,7 @@ import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/erro
 import { role } from "../../recoil/common/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import Input from "../@common/Input";
-import InputTitle from "./inputTitle";
+import InputTitle from "../@common/inputTitle";
 import VerifyCodeButton from "./verifyCodeButton";
 
 export default function VerifyCode(props: SignupInputProps) {

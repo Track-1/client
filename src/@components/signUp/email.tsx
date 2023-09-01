@@ -11,7 +11,7 @@ import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
 import Input from "../@common/Input";
-import InputTitle from "./inputTitle";
+import InputTitle from "../@common/inputTitle";
 import SendCodeButton from "./sendCodeButton";
 
 export default function Email(props: SignupInputProps) {
