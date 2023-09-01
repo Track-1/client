@@ -1,18 +1,5 @@
-import { useRecoilValue } from "recoil";
-import Footer from "../@components/@common/footer";
-import ProducerSuccess from "../@components/signUp/producerSuccess";
-import VocalSuccess from "../@components/signUp/vocalSuccess";
-import { role } from "../recoil/common/role";
-import { isProducer, isVocal } from "../utils/common/checkRoleType";
+import SignupSuccess from "../@components/signupSuccess";
 
 export default function SignupSuccessPage() {
-  const userType = useRecoilValue(role);
-
-  return (
-    <>
-      {isProducer(userType) && <ProducerSuccess />}
-      {isVocal(userType) && <VocalSuccess />}
-      <Footer />
-    </>
-  );
+  return <SignupSuccess />;
 }
