@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import background from "../../assets/icon/signupBackgroundIc.svg";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
 import useConventionModal from "../../hooks/common/useConventionModal";
 import { role } from "../../recoil/common/role";
 import ConventionModal from "../@common/conventionModal";
 import Footer from "../@common/footer";
-import background from "../assets/icon/signupBackgroundIc.svg";
 import SignUpBackButton from "./signUpBackButton";
 import StepFooter from "./stepFooter";
 import StepHeader from "./stepHeader";
