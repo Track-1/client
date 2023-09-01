@@ -6,7 +6,7 @@ import { postVerifyCode } from "../../api/signup/postVerifyCode";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { role } from "../../recoil/common/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
-import Input from "./Input";
+import Input from "../@common/Input";
 import InputTitle from "./inputTitle";
 import VerifyCodeButton from "./verifyCodeButton";
 

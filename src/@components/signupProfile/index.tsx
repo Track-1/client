@@ -4,6 +4,7 @@ import useConventionModal from "../../hooks/common/useConventionModal";
 import ConventionModal from "../@common/conventionModal";
 import Footer from "../@common/footer";
 import SignUpBackButton from "../signUp/signUpBackButton";
+import ContactInput from "../@common/profileEdit/contactInput";
 
 export default function SignupProfile() {
   const { conventionModalInform } = useConventionModal();
@@ -15,7 +16,9 @@ export default function SignupProfile() {
       </BackButtonWrapper>
       <SignUpContainer>
         <Img src={background} alt="배경" />
-        <StepBox></StepBox>
+        <StepBox>
+          <ContactInput />
+        </StepBox>
       </SignUpContainer>
       <Footer />
     </>

@@ -11,7 +11,7 @@ import { checkPasswordForm } from "../../utils/signUp/checkForm";
 import { checkInputEmpty } from "../../utils/signUp/checkInputEmpty";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { showPassword } from "../../utils/signUp/showPassword";
-import Input from "./Input";
+import Input from "../@common/Input";
 import InputTitle from "./inputTitle";
 import PasswordShowIcons from "./passwordShowIcons";
 

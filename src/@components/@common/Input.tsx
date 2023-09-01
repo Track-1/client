@@ -1,7 +1,7 @@
 import { FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
-import CheckErrorIcon from "./checkErrorIcon";
+import CheckErrorIcon from "../signUp/checkErrorIcon";
 
 interface InputProps<
   TFieldValues extends FieldValues = FieldValues,

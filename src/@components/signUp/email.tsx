@@ -10,7 +10,7 @@ import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { checkIsResend } from "../../utils/signUp/checkIsResendCode";
-import Input from "./Input";
+import Input from "../@common/Input";
 import InputTitle from "./inputTitle";
 import SendCodeButton from "./sendCodeButton";
 

@@ -9,7 +9,7 @@ import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { NickNameProp } from "../../type/signUp/nickNameProp";
 import { checkEssentialAgree } from "../../utils/signUp/checkEssentialAgree";
 import { checkNicknamForm } from "../../utils/signUp/checkForm";
-import Input from "./Input";
+import Input from "../@common/Input";
 import InputTitle from "./inputTitle";
 
 interface NickNameProps extends NickNameProp {
