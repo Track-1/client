@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import DescriptionInfo from "../../producerProfileEdit/DescriptionInfo";
+
+import HashtagsEdit from "../hashtag/hashtagsEdit";
 import CategoriesEdit from "../selectCategories";
 import ContactInput from "./contactInput";
 
@@ -27,6 +30,8 @@ export default function ProfileEditBox() {
       <InputWrapper>
         <ContactInput methods={methods} />
         <CategoriesEdit />
+        <HashtagsEdit />
+        <DescriptionInfo />
       </InputWrapper>
     </EditBox>
   );

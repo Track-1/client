@@ -14,8 +14,7 @@ export default function DescriptionInfo() {
 
 const DescriptionBox = styled.div`
   width: 100%;
-  padding-top: 9rem;
-  padding-left: 11rem;
+  padding: 9rem;
 `;
 
 const InfoType = styled.div`
