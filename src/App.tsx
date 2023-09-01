@@ -1,9 +1,10 @@
-import { ThemeProvider } from "styled-components";
-import { GlobalStyle } from "./style/globalStyle";
-import Router from "./Router";
-import { theme } from "./style/theme";
+import { BrowserView, MobileView } from "react-device-detect";
 import { RecoilRoot } from "recoil";
-import React from "react";
+import { ThemeProvider } from "styled-components";
+import MobileAlertPage from "./@pages/mobileAlertPage";
+import Router from "./Router";
+import { GlobalStyle } from "./style/globalStyle";
+import { theme } from "./style/theme";
 
 function App() {
   return (
@@ -12,7 +13,12 @@ function App() {
       <RecoilRoot>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Router />
+          <BrowserView>
+            <Router />
+          </BrowserView>
+          <MobileView>
+            <MobileAlertPage />
+          </MobileView>
         </ThemeProvider>
       </RecoilRoot>
       {/* </React.StrictMode> */}
