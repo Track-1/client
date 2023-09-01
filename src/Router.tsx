@@ -1,22 +1,22 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainPage from "./@pages/mainPage";
-import ProducerProfilePage from "./@pages/producerProfilePage";
-import TrackPostPage from "./@pages/trackPostPage";
-import TrackSearchPage from "./@pages/trackSearchPage";
-import VocalProfilePage from "./@pages/vocalProfilePage";
-import VocalsPage from "./@pages/vocalsPage";
-import UploadPage from "./@pages/uploadPage";
+import ErrorPage from "./@pages/errorPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
+import LoginPage from "./@pages/loginPage";
+import MainPage from "./@pages/mainPage";
+import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
+import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
+import ProducerProfilePage from "./@pages/producerProfilePage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
 import SignUpPage from "./@pages/signUpPage";
-import LoginPage from "./@pages/loginPage";
-import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
-import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import TrackPostEditPage from "./@pages/trackPostEditPage";
-import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
+import TrackPostPage from "./@pages/trackPostPage";
+import TrackSearchPage from "./@pages/trackSearchPage";
+import UploadPage from "./@pages/uploadPage";
 import VocalPortfolioEditPage from "./@pages/vocalPortfolioEditPage";
+import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
+import VocalProfilePage from "./@pages/vocalProfilePage";
+import VocalsPage from "./@pages/vocalsPage";
 import PrivateRoute from "./utils/common/privateRoute";
-import ErrorPage from "./@pages/errorPage";
 
 export default function Router() {
   return (

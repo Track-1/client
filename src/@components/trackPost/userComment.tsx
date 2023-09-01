@@ -1,25 +1,23 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AddCommentIc, CloseBtnIc, ClosedAddCommentIc } from "../../assets";
+import { UploadDataType } from "../../type/uploadDataType";
 import CommentWrite from "./commentWrite";
 import EachUserComment from "./eachUserComment";
-import { useEffect, useState } from "react";
-import { UploadDataType } from "../../type/uploadDataType";
 
-import { useMutation, useQueryClient, useInfiniteQuery } from "react-query";
-import { getComment, updateComment } from "../../core/api/trackPost";
-import { UserCommentType } from "../../type/userCommentsType";
-import { postComment } from "../../core/api/trackPost";
-import { useRecoilState } from "recoil";
-import { endPost, postContentLength } from "../../recoil/postIsCompleted";
-import { playMusic, showPlayerBar } from "../../recoil/player";
-import Player from "../@common/player";
-import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
-import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
-import usePlayer from "../../utils/hooks/usePlayer";
-import useInfiniteKey from "../../utils/hooks/useInfiniteKey";
-import { blockAccess } from "../../utils/common/privateRoute";
+import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { getComment, postComment, updateComment } from "../../core/api/trackPost";
+import { playMusic, showPlayerBar } from "../../recoil/player";
+import { endPost, postContentLength } from "../../recoil/postIsCompleted";
+import { UserCommentType } from "../../type/userCommentsType";
+import { blockAccess } from "../../utils/common/privateRoute";
+import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
+import usePlayer from "../../utils/hooks/usePlayer";
+import usePlayerInfos from "../../utils/hooks/usePlayerInfos";
 import Loading from "../@common/loading";
+import Player from "../@common/player";
 
 interface PropsType {
   closeComment: () => void;
