@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Router from "../Router";
 
 export default function MobileAlertPage() {
   useEffect(() => {
@@ -7,5 +8,5 @@ export default function MobileAlertPage() {
     );
   }, []);
 
-  return <></>;
+  return <Router />;
 }
