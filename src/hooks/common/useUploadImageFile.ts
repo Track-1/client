@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { uploadImageTypeWarningMessage } from "../../core/common/warningMessage";
+import { checkFileSize } from "../../utils/common/checkFileSize";
+import { checkImageFileType } from "../../utils/common/checkFileType";
 import { LIMIT_IMAGE_SIZE } from "../../core/common/fileSize";
 
 export default function useUploadImageFile() {
   const [imageFile, setImageFile] = useState<File | Blob | null>(null);
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
 
-  //오디오 업로드
-  function uploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFile = e.target.files && e.target.files[0];
-    const imageSize = imageFile?.size;
-    const imageType = getImageType(imageFile?.type);
+    const imageSize = imageFile && checkFileSize(imageFile.size) ? imageFile.size : 0;
+    const imageType = imageFile ? getImageType(imageFile) : "";
 
-    if (checkImageSize(imageSize) && checkImageType(imageType)) {
+    if (imageSize && imageType) {
       setImageFile(imageFile);
 
       const reader = new FileReader();
@@ -22,10 +24,9 @@ export default function useUploadImageFile() {
     }
   }
 
-  function getImageType(uploadName: string | undefined) {
-    if (uploadName) {
-      return uploadName.substring(uploadName.length - 4);
-    }
+  function getImageType(imageFile: File) {
+    const type = imageFile.type.toString().replace("image/", ".");
+    return checkImageFileType(type) ? type : alert(uploadImageTypeWarningMessage);
   }
 
   function checkImageSize(imageSize: number | undefined) {
@@ -66,5 +67,14 @@ export default function useUploadImageFile() {
     return file.size;
   }
 
-  return { imageFile, previewImage, uploadImageFile, checkImageType, checkImageSize, getFileURL, getFileSize };
+  return {
+    imageFile,
+    previewImage,
+    setPreviewImage,
+    handleUploadImageFile,
+    checkImageType,
+    checkImageSize,
+    getFileURL,
+    getFileSize,
+  };
 }

@@ -13,7 +13,7 @@ export default function ProducerProfileEditHeader() {
   console.log(uploadData);
 
   useEffect(() => {
-    uploadData.audioFile && uploadData.title ? setIsUploadActive(true) : setIsUploadActive(false);
+    uploadData.trackAudioFile && uploadData.trackTitle ? setIsUploadActive(true) : setIsUploadActive(false);
   }, [uploadData]);
 
   return (

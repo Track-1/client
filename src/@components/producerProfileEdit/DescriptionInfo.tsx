@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import DescriptionInput from "../@common/upload/common/DescriptionInput";
+import DescriptionInput from "../upload/DescriptionInput";
 
 export default function DescriptionInfo() {
   return (
@@ -7,7 +7,7 @@ export default function DescriptionInfo() {
       <InfoType>
         <InfoTypeText>Description</InfoTypeText>
       </InfoType>
-      <DescriptionInput />
+      {/* <DescriptionInput /> */}
     </DescriptionBox>
   );
 }

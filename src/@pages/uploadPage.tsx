@@ -1,5 +1,5 @@
-import Upload from "../@components/@common/upload";
+import UploadContainer from "../@components/upload";
 
 export default function UploadPage() {
-  return <Upload />;
+  return <UploadContainer />;
 }
