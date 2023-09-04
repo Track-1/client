@@ -3,24 +3,28 @@ import styled from "styled-components";
 import { theme } from "../../style/theme";
 
 interface PasswordContainerProps {
+  height: number;
   containerInterval: number;
   title: string;
-  titleInterval: number;
+  titleIntervalTop: number;
+  titleIntervalBottom: number;
   children: ReactNode;
 }
 
 export default function PasswordContainer(props: PasswordContainerProps) {
-  const { containerInterval, title, titleInterval, children } = props;
+  const { height, containerInterval, title, titleIntervalTop, titleIntervalBottom, children } = props;
 
   return (
-    <Container containerInterval={containerInterval}>
-      <Title titleInterval={titleInterval}>{title}</Title>
+    <Container height={height} containerInterval={containerInterval}>
+      <Title titleIntervalTop={titleIntervalTop} titleIntervalBottom={titleIntervalBottom}>
+        {title}
+      </Title>
       {children}
     </Container>
   );
 }
 
-const Container = styled.div<{ containerInterval: number }>`
+const Container = styled.div<{ height: number; containerInterval: number }>`
   position: absolute;
 
   display: flex;
@@ -28,7 +32,7 @@ const Container = styled.div<{ containerInterval: number }>`
   align-items: center;
 
   width: 77.9rem;
-  height: 57rem;
+  height: ${(props) => props.height}rem;
 
   margin-top: ${(props) => props.containerInterval}rem;
 
@@ -41,9 +45,10 @@ const Container = styled.div<{ containerInterval: number }>`
   background-clip: content-box, border-box;
 `;
 
-const Title = styled.h2<{ titleInterval: number }>`
+const Title = styled.h2<{ titleIntervalTop: number; titleIntervalBottom: number }>`
   color: ${theme.colors.white};
   ${theme.fonts.box_title};
 
-  margin-top: ${(props) => props.titleInterval}rem;
+  margin-top: ${(props) => props.titleIntervalTop}rem;
+  margin-bottom: ${(props) => props.titleIntervalBottom}rem;
 `;

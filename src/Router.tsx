@@ -8,6 +8,7 @@ import UploadPage from "./@pages/uploadPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
+import ResetPasswordPage from "./@pages/resetPasswordPage";
 
 export default function Router() {
   return (
@@ -17,6 +18,7 @@ export default function Router() {
         <Route path="/signup/profile" element={<SignupProfilePage />} />
         <Route path="/signup/success" element={<SignupSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/upload/:uploadType" element={<UploadPage />} />
         <Route path="/portfolio-edit/producer/:trackId" element={<ProducerPortfolioEditPage />} />
         <Route path="/vocal-searching-edit/producer/:trackId" element={<ProducerPortfolioEditPage />} />

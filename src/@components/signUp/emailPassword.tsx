@@ -51,8 +51,8 @@ export default function EmailPassword() {
       {checkTitle()}
       <Email methods={methods} />
       {checkIsResend(errors?.email?.message) && <VerifyCode methods={methods} />}
-      <Password methods={methods} />
-      {checkEmailRewrite() && <PasswordConfirm methods={methods} />}
+      <Password methods={methods} width={56} placeholder="Create a password" />
+      {checkEmailRewrite() && <PasswordConfirm methods={methods} width={56} placeholder="Enter a password again" />}
     </>
   );
 }

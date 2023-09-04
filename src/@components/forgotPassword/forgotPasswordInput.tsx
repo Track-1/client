@@ -49,7 +49,12 @@ export default function ForgotPasswordInput() {
   }, [methods.getValues().email, producerType]);
 
   return (
-    <PasswordContainer containerInterval={15.1} title="Forgot password?" titleInterval={9.1}>
+    <PasswordContainer
+      height={49.6}
+      containerInterval={15.1}
+      title="Forgot password?"
+      titleIntervalTop={9.1}
+      titleIntervalBottom={2}>
       <FormProvider {...methods}>
         <form>
           <InputTitle>What’s your email?</InputTitle>

@@ -9,7 +9,7 @@ interface InputProps<
 > extends UseControllerProps<TFieldValues, TName> {
   type?: string;
   placeholder?: string;
-  width: number;
+  width?: number;
 }
 
 export default function Input<
@@ -69,7 +69,7 @@ const InputContainer = styled.article`
   flex-direction: column;
 `;
 
-const InputWrapper = styled.input<{ width: number; color: string | undefined }>`
+const InputWrapper = styled.input<{ width: number | undefined; color: string | undefined }>`
   margin-top: 3rem;
   padding: 0.5rem 0;
 

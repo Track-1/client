@@ -8,6 +8,5 @@ export const QUERIES_KEY = {
   TOKEN_VERIFY: "tokenVerify",
   TRACK_DETAIL: "trackDetail",
   TRACK_DOWNLOAD: "trackDownload",
-} as const;
   GET_UPLOAD_EDIT_INFO: "getUploadEditInfo",
-};
+} as const;
