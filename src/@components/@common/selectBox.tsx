@@ -49,7 +49,7 @@ export const SelectBox = (props: PropsWithChildren<SelectBoxProps<externalStateT
     selectOption: innerSelectState,
     isSelecBoxOpen,
     toggleBoxOpen,
-  } = useSelect<number>(defaultOpen);
+  } = useSelect<number | null>(defaultOpen);
   const selectOption = combineStates(externalSelectState, innerSelectState);
   return (
     <SelectContext.Provider value={{ isSelecBoxOpen, toggleBoxOpen, selectedId, selectOption }}>
@@ -121,11 +121,23 @@ export const Option = (props: PropsWithChildren<OptionProps>) => {
   const { selectOption, selectedId } = useContextScope<SelectContextType>(SelectContext);
   const isSelected = restProps.id === selectedId;
 
+  function unSelectOption() {
+    selectOption(null);
+  }
+
+  function handleClickOption(id: number) {
+    if (restProps.isUnSelectable) {
+      isSelected ? unSelectOption() : selectOption(id);
+      return;
+    }
+    selectOption(id);
+  }
+
   if (asChild) {
     return getCustomElement(children as ReactElement, {
       ...restProps,
       isSelected,
-      onClick: () => selectOption(restProps.id),
+      onClick: () => handleClickOption(restProps.id),
     });
   }
   return (
