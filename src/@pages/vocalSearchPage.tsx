@@ -8,7 +8,7 @@ const Wrapper = styled.section`
 export default function VocalSearchPage() {
   return (
     <Wrapper>
-      <Filter />
+      <Filter pageType="vocals" />
       <VocalList />
     </Wrapper>
   );

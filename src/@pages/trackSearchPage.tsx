@@ -9,7 +9,7 @@ const Wrapper = styled.section`
 export default function TrackSearchPage() {
   return (
     <Wrapper>
-      <Filter />
+      <Filter pageType="tracks" />
       <TrackList />
     </Wrapper>
   );
