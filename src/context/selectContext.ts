@@ -5,5 +5,5 @@ export const SelectContext = createContext<SelectContextType>({
   isSelecBoxOpen: true,
   toggleBoxOpen: () => {},
   selectedId: null,
-  selectOption: (_id: number) => {},
+  selectOption: (id: number | null) => {},
 });

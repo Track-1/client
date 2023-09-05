@@ -2,7 +2,7 @@ export type SelectContextType = {
   isSelecBoxOpen: boolean;
   toggleBoxOpen: () => void;
   selectedId: number | null;
-  selectOption: (id: number) => void;
+  selectOption: (id: number | null) => void;
 };
 
 export type SelectBoxProps<T> = {
@@ -11,7 +11,7 @@ export type SelectBoxProps<T> = {
 };
 
 export type externalStateType = {
-  (id: number): void;
+  (id: number | null): void;
 };
 
 export type LabelProps = {
@@ -33,6 +33,7 @@ export type OptionGroupProps = {
 export type OptionProps = {
   asChild: boolean;
   id: number;
+  isUnSelectable?: boolean;
 };
 
 export type IndicatorProps = OptionProps;
