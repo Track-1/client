@@ -1,19 +1,40 @@
 import { Dispatch, SetStateAction } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
+import { deleteComment } from "../../api/trackPost/deleteComment";
 import { DeleteIc, EditIc } from "../../assets";
+import { QUERIES_KEY } from "../../core/common/queriesKey";
 import useModal from "../../hooks/common/useModal";
 // import { deleteComment } from "../../core/api/trackPost";
 
 interface EditDropDownCommentProps {
   setIsEdit: Dispatch<SetStateAction<boolean>>;
+  commentId: number;
 }
 
 export default function EditDropDownComment(props: EditDropDownCommentProps) {
-  const { setIsEdit } = props;
+  const { setIsEdit, commentId } = props;
   const { modalRef, closeModal, openModal } = useModal();
 
   function handleStartUpdate() {
     setIsEdit(true);
+  }
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(() => deleteComment(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  function handleDelete() {
+    if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
+      mutate();
+    }
   }
 
   return (
@@ -24,7 +45,7 @@ export default function EditDropDownComment(props: EditDropDownCommentProps) {
           <EditIcon />
         </EditWrapper>
         <DivisionBar />
-        <DeleteWrapper>
+        <DeleteWrapper onClick={handleDelete}>
           <DeleteText>삭제하기</DeleteText>
           <DeleteIcon />
         </DeleteWrapper>

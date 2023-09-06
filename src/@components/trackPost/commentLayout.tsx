@@ -12,7 +12,7 @@ const CommentContainer = styled.section`
   min-height: 100vh;
   float: right;
 
-  background: rgba(13, 14, 17, 0.75);
+  background-color: rgba(13, 14, 17, 0.75);
   backdrop-filter: blur(1.5rem);
 
   padding-left: 6.5rem;

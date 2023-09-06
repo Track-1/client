@@ -37,6 +37,7 @@ export default function CommentBox(props: CommentBoxProps) {
   // const [hoverId, setHoverId] = useState(-1);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
   const [comment, setComment] = useRecoilState(commentUpdateData);
   const resetComment = useResetRecoilState(commentUpdateData);
 
