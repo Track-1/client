@@ -10,7 +10,7 @@ export default function ProducerUploadModal() {
   const navigate = useNavigate();
 
   function handleMoveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
+    navigate("/upload/Vocal-Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
   }
 
   function handleMovePortfolio() {
