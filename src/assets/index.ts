@@ -12,6 +12,7 @@ export { ReactComponent as ClosedDownloadIc } from "./icon/closedBtnIc.svg";
 export { ReactComponent as CloseDownloadIc } from "./icon/closedWithXIc.svg";
 export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIc.svg";
 export { ReactComponent as CommentUpldatCompleteIc } from "./icon/commentUpldatCompleteIc.svg";
+export { ReactComponent as CompleteBtnSignupIc } from "./icon/completeBtnSignupIc.svg";
 export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckBoxIc.svg";
 export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";
 export { ReactComponent as CreateAPasswordForYourAccountIc } from "./icon/createAPasswordForYourAccountIc.svg";
@@ -74,6 +75,7 @@ export { ReactComponent as SignupSendCodeIc } from "./icon/signupSendCodeIc.svg"
 export { ReactComponent as SignupStepBackArrowIc } from "./icon/signupStepBackArrowIc.svg";
 export { ReactComponent as SignupStepContinueIc } from "./icon/signupStepContinueIc.svg";
 export { ReactComponent as SignupVerifyIc } from "./icon/signupVerifyIc.svg";
+export { ReactComponent as SkipBtnSignupIc } from "./icon/skipBtnSignupIc.svg";
 export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
 export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
@@ -83,3 +85,4 @@ export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.
 export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
+export { ReactComponent as WelcomeSignupProfileIc } from "./icon/welcomeSignupProfileIc.svg";

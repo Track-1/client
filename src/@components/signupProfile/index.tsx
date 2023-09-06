@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import background from "../../assets/icon/signupBackgroundIc.svg";
+import { SkipBtnSignupIc, WelcomeSignupProfileIc } from "../../assets";
+import background from "../../assets/icon/signupProfileBackgroundIc.svg";
 import useConventionModal from "../../hooks/common/useConventionModal";
 import ConventionModal from "../@common/conventionModal";
 import Footer from "../@common/footer";
@@ -15,6 +16,8 @@ export default function SignupProfile() {
       <BackButtonWrapper>
         <SignUpBackButton />
       </BackButtonWrapper>
+      <WelcomeSignupProfileIcon />
+      <SkipBtnSignupIcon />
       <SignUpContainer>
         <Img src={background} alt="배경" />
         <ProfileEditBox />
@@ -23,6 +26,22 @@ export default function SignupProfile() {
     </>
   );
 }
+
+const WelcomeSignupProfileIcon = styled(WelcomeSignupProfileIc)`
+  position: absolute;
+  width: 35.1rem;
+
+  margin: 35.8rem 0 0 32.1rem;
+`;
+
+const SkipBtnSignupIcon = styled(SkipBtnSignupIc)`
+  position: absolute;
+  width: 35.2rem;
+
+  margin: 48.2rem 0 0 32.1rem;
+
+  cursor: pointer;
+`;
 
 const BackButtonWrapper = styled.div`
   margin: 5.9rem 0 0 7.9rem;
