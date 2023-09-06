@@ -13,7 +13,7 @@ export default function TextLength(props: TextLengthProps) {
   return (
     <Container font={font}>
       <InputLength inputLength={inputLength}>{inputLength}</InputLength>
-      <Limit>/{limit}</Limit>
+      <Limit>{limit}</Limit>
     </Container>
   );
 }
@@ -30,4 +30,10 @@ const InputLength = styled.p<{ inputLength: number }>`
 
 const Limit = styled.p`
   color: ${({ theme }) => theme.colors.gray3};
+
+  &::before {
+    margin-right: 0.5rem;
+    color: ${({ theme }) => theme.colors.gray3};
+    content: "/";
+  }
 `;
