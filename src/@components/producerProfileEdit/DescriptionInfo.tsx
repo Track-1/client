@@ -5,9 +5,8 @@ import DescriptionInput from "../@common/upload/common/DescriptionInput";
 export default function DescriptionInfo() {
   return (
     <DescriptionBox>
-      <InfoType>
-        <InputTitle>Description</InputTitle>
-      </InfoType>
+      <InputTitle>Description</InputTitle>
+
       <DescriptionInput />
     </DescriptionBox>
   );
@@ -16,9 +15,5 @@ export default function DescriptionInfo() {
 const DescriptionBox = styled.div`
   width: 100%;
 
-  margin-top: 4.8rem;
-`;
-
-const InfoType = styled.div`
-  display: flex;
+  margin-top: 6.4rem;
 `;

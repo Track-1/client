@@ -41,7 +41,7 @@ const WarningIcon = styled.div`
   position: relative;
 
   height: 3rem;
-  margin-top: 0.7rem;
+  margin-top: 3.9rem;
 
   border-radius: 5rem;
 

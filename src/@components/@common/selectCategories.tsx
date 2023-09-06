@@ -40,6 +40,8 @@ export default function SelectCategory() {
 
 const CategoryContainer = styled.article`
   width: 55.9rem;
+
+  margin-top: 4.8rem;
 `;
 
 const CategoryBox = styled.ul`

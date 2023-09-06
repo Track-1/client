@@ -20,6 +20,8 @@ export default function HashtagsEdit() {
 
 const HashtagContainer = styled.article`
   width: 55.9rem;
+
+  margin-top: 1.6rem;
 `;
 
 const HashIconWrapper = styled.div`

@@ -1,6 +1,5 @@
+import React, { KeyboardEvent, useRef, useState } from "react";
 import styled from "styled-components";
-import React from "react";
-import { useState, useRef, KeyboardEvent } from "react";
 
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
 import { checkKorean } from "../../../utils/common/checkKorean";
@@ -83,7 +82,8 @@ const InputHashtagWrapper = styled.div`
 
   height: 100%;
 
-  align-items: center;
+  align-items: flex-start;
+  margin-top: 1.9rem;
 `;
 
 const Hashtag = styled.div`
