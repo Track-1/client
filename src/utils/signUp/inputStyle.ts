@@ -37,7 +37,7 @@ export function checkInputUnderline(message: string | undefined) {
     case NICKNAME_MESSAGE.SUCCESS:
       return ERROR_COLOR.VIOLET;
     default:
-      return ERROR_COLOR.WHITE;
+      return ERROR_COLOR.GRAY;
   }
 }
 

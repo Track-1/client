@@ -39,10 +39,7 @@ export default function SelectCategory() {
 }
 
 const CategoryContainer = styled.article`
-  width: 66rem;
-
-  margin-top: 6.2rem;
-  margin-left: 9rem;
+  width: 55.9rem;
 `;
 
 const CategoryBox = styled.ul`

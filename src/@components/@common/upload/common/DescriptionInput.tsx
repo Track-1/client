@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
+import { useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import { useSetRecoilState } from "recoil";
 import { TEXT_LIMIT } from "../../../../core/common/textLimit";
 import useInputText from "../../../../hooks/common/useInputText";
-import TextLength from "./TextLength";
-import { checkEnterCount } from "../../../../utils/common/checkEnterCount";
 import useUploadInitValue from "../../../../hooks/upload/useUploadInitValue";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
 import { UploadData } from "../../../../recoil/upload/uploadData";
+import { checkEnterCount } from "../../../../utils/common/checkEnterCount";
+import TextLength from "./TextLength";
 
 export default function DescriptionInfo() {
   const [uploadInit] = useUploadInitValue();
@@ -31,7 +31,7 @@ export default function DescriptionInfo() {
     <InfoInput>
       <DescriptionText
         //따로 폴더를 만들어서 상수로 빼서 작업하기
-        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+        placeholder="What kind of work do you do?"
         spellCheck="false"
         maxRows={7}
         onChange={handleDescription}
@@ -56,7 +56,7 @@ const DescriptionText = styled(TextareaAutosize)`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.description};
 
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray5};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray3};
 
   margin-top: 1.7rem;
   padding-bottom: 1rem;
@@ -67,7 +67,8 @@ const DescriptionText = styled(TextareaAutosize)`
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
-    ${({ theme }) => theme.fonts.description};
+
+    ${({ theme }) => theme.fonts.input}
   }
 
   &:focus {

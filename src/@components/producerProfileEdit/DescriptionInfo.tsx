@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import InputTitle from "../@common/inputTitle";
 import DescriptionInput from "../@common/upload/common/DescriptionInput";
 
 export default function DescriptionInfo() {
   return (
     <DescriptionBox>
       <InfoType>
-        <InfoTypeText>Description</InfoTypeText>
+        <InputTitle>Description</InputTitle>
       </InfoType>
       <DescriptionInput />
     </DescriptionBox>
@@ -14,14 +15,10 @@ export default function DescriptionInfo() {
 
 const DescriptionBox = styled.div`
   width: 100%;
-  padding: 9rem;
+
+  margin-top: 4.8rem;
 `;
 
 const InfoType = styled.div`
   display: flex;
-`;
-
-const InfoTypeText = styled.div`
-  color: ${({ theme }) => theme.colors.gray2};
-  ${({ theme }) => theme.fonts.inputTitle};
 `;

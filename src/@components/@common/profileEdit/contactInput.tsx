@@ -1,16 +1,19 @@
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import styled from "styled-components";
-import { ProfileEditType } from "../../../type/common/profile";
 import Input from "../Input";
 import InputTitle from "../inputTitle";
 
-export default function ContactInput(props: ProfileEditType) {
-  const { methods } = props;
+export default function ContactInput() {
+  const methods = useForm({
+    defaultValues: {
+      userContact: "",
+    },
+    mode: "onChange",
+  });
 
   const {
     handleSubmit,
     setError,
-    resetField,
     getValues,
     formState: { errors },
     watch,
@@ -28,10 +31,6 @@ export default function ContactInput(props: ProfileEditType) {
             name="contact"
             rules={{
               required: true,
-              // pattern: {
-              //   value: CHECK_NICKNAME_FORM,
-              //   message: NICKNAME_MESSAGE.ERROR,
-              // }
             }}
             type="text"
             placeholder="Enter your phone number or SNS account"

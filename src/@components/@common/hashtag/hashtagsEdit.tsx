@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
-import HashtagWarning from "./hashtagWarning";
+import InputTitle from "../inputTitle";
 import HashtagInput from "./hashtagInput";
+import HashtagWarning from "./hashtagWarning";
 
 export default function HashtagsEdit() {
   return (
     <>
       <HashtagContainer>
         <HashIconWrapper>
-          <HashtagTitle>Hashtag</HashtagTitle>
+          <InputTitle>Hashtag</InputTitle>
           <HashtagWarning />
         </HashIconWrapper>
         <HashtagInput />
@@ -19,15 +20,8 @@ export default function HashtagsEdit() {
 
 const HashtagContainer = styled.article`
   width: 55.9rem;
-
-  margin-top: 4.8rem;
 `;
 
 const HashIconWrapper = styled.div`
   display: flex;
-`;
-
-const HashtagTitle = styled.div`
-  color: ${({ theme }) => theme.colors.gray2};
-  ${({ theme }) => theme.fonts.inputTitle};
 `;
