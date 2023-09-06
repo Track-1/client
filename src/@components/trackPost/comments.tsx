@@ -13,7 +13,12 @@ import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
 import CommentWrite from "./commentWrite";
 
-export default function Comments() {
+interface CommentsProp {
+  handleClosecomment: () => void;
+}
+
+export default function Comments(props: CommentsProp) {
+  const { handleClosecomment } = props;
   const { trackComments } = useGetComment(1);
   const { trackClosed } = useGetTrackInfo();
   const [comment, setComment] = useRecoilState(commentWriteData);
@@ -22,13 +27,10 @@ export default function Comments() {
 
   const queryClient = useQueryClient();
 
-  console.log(comment);
-
   const { mutate: uploadComment } = useMutation(() => postComment(comment, Number(id)), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
-      // resetComment();
-      setComment({ commentAudioFile: null, commentContent: "", commentAudioFileName: "file_upload.mp3" });
+      resetComment();
     },
     onError: (error) => {
       console.log(error);
@@ -43,8 +45,8 @@ export default function Comments() {
 
   return (
     <CommentLayout>
-      <CloseCommentsBtnIcon />
-      <CommentWrite />
+      <CloseCommentsBtnIcon onClick={handleClosecomment} />
+      <CommentWrite isUpdate={false} />
       <AddCommentIconWrapper>
         {!trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
       </AddCommentIconWrapper>
@@ -57,6 +59,10 @@ export default function Comments() {
 
 const CloseCommentsBtnIcon = styled(CloseCommentsBtnIc)`
   width: 20rem;
+
+  margin-bottom: 2.7rem;
+
+  cursor: pointer;
 `;
 
 const AddCommentIcon = styled(AddCommentIc)`

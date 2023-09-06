@@ -1,52 +1,51 @@
-import { useQueryClient } from "react-query";
+import { Dispatch, SetStateAction } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
+import { deleteComment } from "../../api/trackPost/deleteComment";
 import { DeleteIc, EditIc } from "../../assets";
+import { QUERIES_KEY } from "../../core/common/queriesKey";
 import useModal from "../../hooks/common/useModal";
 // import { deleteComment } from "../../core/api/trackPost";
 
-interface EditDropDownCommentProp {
+interface EditDropDownCommentProps {
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
   commentId: number;
 }
 
-export default function EditDropDownComment(props: EditDropDownCommentProp) {
-  const { commentId } = props;
+export default function EditDropDownComment(props: EditDropDownCommentProps) {
+  const { setIsEdit, commentId } = props;
   const { modalRef, closeModal, openModal } = useModal();
+
+  function handleStartUpdate() {
+    setIsEdit(true);
+  }
 
   const queryClient = useQueryClient();
 
-  //   const { mutate:delete } = useMutation(() => deleteComment(currentId), {
-  //     onSuccess: () => {
-  //       //다시 업로드 하는거 해줘야된다.!
-  //       // queryClient.invalidateQueries("comments");
-  //       // setIsEnd(!isEnd);
-  //       closeModal();
-  //       //   setKey((prev: any) => prev + 1);
-  //       setIsDeleted(true);
-  //     },
-  //     onError: (error) => {
-  //       console.log("에러!!", error);
-  //     },
-  //   });
+  const { mutate } = useMutation(() => deleteComment(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-  //   function editComment() {
-  //     setIsEdit(true);
-  //   }
-
-  //   function deleteTrackComment() {
-  //     if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
-  //       mutate();
-  //     }
-  //   }
+  function handleDelete() {
+    if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
+      mutate();
+    }
+  }
 
   return (
     <DropDownContainer ref={modalRef}>
       <DropDownWrapper>
-        <EditWrapper>
+        <EditWrapper onClick={handleStartUpdate}>
           <EditText>수정하기</EditText>
           <EditIcon />
         </EditWrapper>
         <DivisionBar />
-        <DeleteWrapper>
+        <DeleteWrapper onClick={handleDelete}>
           <DeleteText>삭제하기</DeleteText>
           <DeleteIcon />
         </DeleteWrapper>

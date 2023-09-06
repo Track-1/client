@@ -10,6 +10,8 @@ export { ReactComponent as CloseCommentsBtnIc } from "./icon/closeCommentsBtnIc.
 export { ReactComponent as ClosedAddCommentIc } from "./icon/closedAddCommentIc.svg";
 export { ReactComponent as ClosedDownloadIc } from "./icon/closedBtnIc.svg";
 export { ReactComponent as CloseDownloadIc } from "./icon/closedWithXIc.svg";
+export { ReactComponent as CommentBtnIc } from "./icon/commentBtnIc.svg";
+export { ReactComponent as CommentUpldatCompleteIc } from "./icon/commentUpldatCompleteIc.svg";
 export { ReactComponent as ConventionBlankBoxIc } from "./icon/conventionBlanckBoxIc.svg";
 export { ReactComponent as ConventionFullBoxIc } from "./icon/conventionFullBoxIc.svg";
 export { ReactComponent as CreateAPasswordForYourAccountIc } from "./icon/createAPasswordForYourAccountIc.svg";
@@ -36,6 +38,7 @@ export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditA
 export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
 export { ReactComponent as ProfileEditSleepAcountTitleIc } from "./icon/profileEditSleepAcountTitleIc.svg";
 export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEditSleeperButtonIc.svg";
+export { ReactComponent as QuitIc } from "./icon/quitIc.svg";
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
 export { ReactComponent as ShowPasswordSignupIc } from "./icon/showPasswordSignupIc.svg";

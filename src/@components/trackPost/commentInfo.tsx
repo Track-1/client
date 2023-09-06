@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { EllipsisIc } from "../../assets";
+import { isModalOpen } from "../../recoil/common/isModalOpen";
 import EditDropDownComment from "./editDropDownComment";
 
 interface CommentInfoProps {
@@ -10,12 +12,14 @@ interface CommentInfoProps {
   commentContent: string;
   commentUserId: number;
   commentId: number;
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CommentInfo(props: CommentInfoProps) {
-  const { userName, userSelf, commentContent, commentUserId, commentId } = props;
+  const { userName, userSelf, commentContent, commentUserId, setIsEdit, commentId } = props;
   const navigate = useNavigate();
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
   //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
 
   function handleMoveVocalProfile() {
@@ -28,6 +32,7 @@ export default function CommentInfo(props: CommentInfoProps) {
 
   function handleShowEditDropDownComment() {
     setEditModalToggle(true);
+    setIsOpenModal(true);
   }
 
   return (
@@ -35,7 +40,7 @@ export default function CommentInfo(props: CommentInfoProps) {
       <InfoTopWrapper>
         <UserName onClick={handleMoveVocalProfile}>{userName}</UserName>
         {userSelf && <EllipsisIcon onClick={handleShowEditDropDownComment} />}
-        {editModalToggle && <EditDropDownComment commentId={commentId} />}
+        {editModalToggle && isOpenModal && <EditDropDownComment setIsEdit={setIsEdit} commentId={commentId} />}
       </InfoTopWrapper>
       <CommentText>{commentContent}</CommentText>
     </CommentWrapper>
@@ -43,6 +48,9 @@ export default function CommentInfo(props: CommentInfoProps) {
 }
 
 const EllipsisIcon = styled(EllipsisIc)`
+  position: absolute;
+  right: 0;
+
   width: 4rem;
   margin-top: -2rem;
   float: right;
