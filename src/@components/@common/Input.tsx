@@ -1,5 +1,6 @@
 import { FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 import styled from "styled-components";
+import { ERROR_COLOR } from "../../core/signUp/errorMessage";
 import { checkInputUnderline, checkMessageColor } from "../../utils/signUp/inputStyle";
 import CheckErrorIcon from "../signUp/checkErrorIcon";
 
@@ -82,7 +83,8 @@ const InputWrapper = styled.input<{ width: number; color: string | undefined }>`
   ${({ theme }) => theme.fonts.input}
 
   &:focus {
-    border-color: ${({ theme, color }) => (color === undefined ? theme.colors.white : color)};
+    border-color: ${({ theme, color }) =>
+      color === undefined || color === ERROR_COLOR.GRAY ? theme.colors.white : color};
   }
 `;
 
