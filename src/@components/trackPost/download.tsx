@@ -9,7 +9,7 @@ import { QUERIES_KEY } from "../../core/common/queriesKey";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function Download() {
-  const { isMe, isClosed, title } = useGetTrackInfo();
+  const { userSelf, trackClosed, trackTitle } = useGetTrackInfo();
   const { id } = useParams();
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const queryClient = useQueryClient();
@@ -30,7 +30,7 @@ export default function Download() {
 
       var a = document.createElement("a");
       a.href = url;
-      a.download = `${title}`;
+      a.download = `${trackTitle}`;
       document.body.appendChild(a);
       a.click();
       setTimeout((_: any) => {
@@ -46,19 +46,19 @@ export default function Download() {
   });
 
   function checkIsMeOpen() {
-    return isMe && !isClosed;
+    return userSelf && !trackClosed;
   }
 
   function checkIsMeClosed() {
-    return isMe && isClosed;
+    return userSelf && trackClosed;
   }
 
   function checkIsNotMeOpen() {
-    return !isMe && !isClosed;
+    return !userSelf && !trackClosed;
   }
 
   function checkIsNotMeClosed() {
-    return !isMe && isClosed;
+    return !userSelf && trackClosed;
   }
 
   function closeTrackPost() {
