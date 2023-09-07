@@ -9,19 +9,19 @@ import { CommentIsUpdateProp } from "../../type/trackPost/commentIsUpdateProp";
 export default function CommentFileInput(props: CommentIsUpdateProp) {
   const { isUpdate } = props;
   const [comment, setComment] = useRecoilState(isUpdate ? commentUpdateData : commentWriteData);
-  const { audioInit, uploadAudiofile } = useUploadAudioFile();
+  const { audioFile, audioFileName, handleUploadAudioFile } = useUploadAudioFile();
 
   useEffect(() => {
-    if (!audioInit?.audioFile || audioInit?.fileName === "") return;
-    setComment({ ...comment, commentAudioFileName: audioInit?.fileName, commentAudioFile: audioInit?.audioFile });
-  }, [audioInit]);
+    if (!audioFile || audioFileName === "") return;
+    setComment({ ...comment, commentAudioFileName: audioFileName, commentAudioFile: audioFile });
+  }, [audioFile, audioFileName]);
 
   return (
     <CommentFileInputWrapper>
       <InputTitle>{comment?.commentAudioFileName}</InputTitle>
       <label>
         <FileUploadButtonIcon />
-        <FileInput type="file" accept=".mp3, .wav" onChange={uploadAudiofile} />
+        <FileInput type="file" accept=".mp3, .wav" onChange={handleUploadAudioFile} />
       </label>
     </CommentFileInputWrapper>
   );
