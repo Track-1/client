@@ -9,7 +9,6 @@ export default function BackButton(props: any) {
   function movePreviousPage() {
     // pauseAudio();
     navigate(-1);
-    console.log("hello");
   }
 
   return (

@@ -15,9 +15,6 @@ export default function ForgotPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
     defaultValues: {
       email: "",
-      verifyCode: "",
-      password: "",
-      passwordConfirm: "",
     },
     mode: "onChange",
   });

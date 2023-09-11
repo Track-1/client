@@ -25,7 +25,7 @@ export default function Header(props: HeaderProps) {
       <Wrapper>
         {homeLogo && <HomeLogoIcon onClick={handleMoveToHome} />}
         {backBtn && <BackButton />}
-        {slogan && <SloganIc />}
+        {slogan && <SloganIcon />}
         {children}
       </Wrapper>
     </Container>
@@ -51,4 +51,10 @@ const Wrapper = styled.div`
 
 const HomeLogoIcon = styled(HomeLogoIc)`
   cursor: pointer;
+`;
+
+const SloganIcon = styled(SloganIc)`
+  cursor: pointer;
+
+  width: 26.3rem;
 `;
