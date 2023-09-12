@@ -3,12 +3,12 @@ import { CategoryIc } from "../../assets";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function AudioCategory() {
-  const { category } = useGetTrackInfo();
+  const { userCategory } = useGetTrackInfo();
 
   return (
     <CategoryBox>
       <CategoryIcon />
-      {category}
+      {userCategory}
     </CategoryBox>
   );
 }

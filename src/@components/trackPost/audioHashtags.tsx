@@ -4,7 +4,7 @@ import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 import HashTag from "../@common/hashTag";
 
 export default function AudioHashtags() {
-  const { keyword } = useGetTrackInfo();
+  const { userKeyword } = useGetTrackInfo();
 
   return (
     <HashTagBox>
@@ -12,7 +12,7 @@ export default function AudioHashtags() {
         <HashTagIcon />
       </HashTagIconWrapper>
       <TagWrapper>
-        {keyword?.map((tag: string) => (
+        {userKeyword?.map((tag: string) => (
           <HashTag key={tag} tag={tag} />
         ))}
       </TagWrapper>
