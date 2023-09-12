@@ -46,8 +46,9 @@ export async function postUserEmail(userEmail: UserEmailRequest) {
 }
 
 export async function patchPassword(userPassword: UserPasswordRequest) {
-  const accessToken = getCookie("accessToken");
-  const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD(accessToken), userPassword);
+  const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD(userPassword.token), {
+    userPw: userPassword.userPw,
+  });
   return data;
 }
 

@@ -11,6 +11,7 @@ import { checkPasswordForm } from "../../utils/signUp/checkForm";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { usePatchPassword } from "../../hooks/queries/user";
 import { UserPasswordType } from "../../type/user";
+import { useParams } from "react-router-dom";
 
 export default function ResetPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
@@ -30,6 +31,7 @@ export default function ResetPasswordInput() {
   } = methods;
 
   const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
+  const { token } = useParams();
 
   const { patchPassword } = usePatchPassword();
 
@@ -45,8 +47,8 @@ export default function ResetPasswordInput() {
   }, [methods.getValues().password, methods.getValues().passwordConfirm]);
 
   function handlePatchPassword() {
-    if (buttonColor === theme.colors.main) {
-      const userPassword: UserPasswordType = { userPw: methods.getValues().password };
+    if (buttonColor === theme.colors.main && token) {
+      const userPassword: UserPasswordType = { userPw: methods.getValues().password, token: token };
       patchPassword(userPassword);
     }
   }

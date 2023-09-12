@@ -18,7 +18,7 @@ export default function Router() {
         <Route path="/signup/profile" element={<SignupProfilePage />} />
         <Route path="/signup/success" element={<SignupSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/upload/:uploadType" element={<UploadPage />} />
         <Route path="/portfolio-edit/producer/:trackId" element={<ProducerPortfolioEditPage />} />
         <Route path="/vocal-searching-edit/producer/:trackId" element={<ProducerPortfolioEditPage />} />
