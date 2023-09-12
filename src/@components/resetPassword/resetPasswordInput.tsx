@@ -9,12 +9,12 @@ import { useEffect, useState } from "react";
 import { theme } from "../../style/theme";
 import { checkPasswordForm } from "../../utils/signUp/checkForm";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
+import { usePatchPassword } from "../../hooks/queries/user";
+import { UserPasswordType } from "../../type/user";
 
 export default function ResetPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
     defaultValues: {
-      email: "",
-      verifyCode: "",
       password: "",
       passwordConfirm: "",
     },
@@ -31,6 +31,8 @@ export default function ResetPasswordInput() {
 
   const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
 
+  const { patchPassword } = usePatchPassword();
+
   useEffect(() => {
     if (
       checkPasswordForm(methods.getValues().password) &&
@@ -42,6 +44,13 @@ export default function ResetPasswordInput() {
     }
   }, [methods.getValues().password, methods.getValues().passwordConfirm]);
 
+  function handlePatchPassword() {
+    if (buttonColor === theme.colors.main) {
+      const userPassword: UserPasswordType = { userPw: methods.getValues().password };
+      patchPassword(userPassword);
+    }
+  }
+
   return (
     <PasswordContainer
       height={66.2}
@@ -52,10 +61,7 @@ export default function ResetPasswordInput() {
       <Password methods={methods} width={56} placeholder="Enter new password" />
       <PasswordConfirm methods={methods} width={56} placeholder="Enter new password again" />
       <Instructions>{`If you save your new password,\n your account will be signed out everywhere`}</Instructions>
-      <StandardButton
-        bgColor={buttonColor}
-        fontColor={theme.colors.white}
-        handleClickFunction={() => console.log("hello")}>
+      <StandardButton bgColor={buttonColor} fontColor={theme.colors.white} handleClickFunction={handlePatchPassword}>
         save
       </StandardButton>
     </PasswordContainer>

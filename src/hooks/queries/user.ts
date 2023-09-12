@@ -3,6 +3,7 @@ import {
   getAccessToken,
   getLogout,
   getTokenVerify,
+  patchPassword,
   patchProfileAfterJoin,
   patchResetPassword,
   patchVerifyEmail,
@@ -13,7 +14,7 @@ import {
   postVerifyCode,
 } from "../../api/user";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { UserEmailRequest, UserLoginInfoRequest, UserProfileRequest, VerifyCodeRequest } from "../../type/api";
+import { UserEmailRequest, UserLoginInfoRequest, UserPasswordRequest, UserProfileRequest, VerifyCodeRequest } from "../../type/api";
 import { UserType } from "../../type/common/userType";
 
 export function useJoin() {
@@ -111,6 +112,18 @@ export function useVerifyCote() {
   });
   return {
     verifyCode: mutate,
+    ...restValues,
+  };
+}
+
+export function usePatchPassword() {
+  const { mutate, ...restValues } = useMutation({
+    mutationFn: (userPassword: UserPasswordRequest) => patchPassword(userPassword),
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return {
+    patchPassword: mutate,
     ...restValues,
   };
 }
