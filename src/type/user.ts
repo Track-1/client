@@ -20,7 +20,6 @@ export interface UserEmailType {
 
 export interface UserPasswordType {
   userPw: string;
-  token: string;
 }
 
 export interface VerifyCodeType {
