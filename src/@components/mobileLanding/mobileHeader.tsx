@@ -25,6 +25,7 @@ export default function MobileHeader() {
 }
 
 const MobileHeaderSection = styled.header`
+  position: absolute;
   display: flex;
   justify-content: space-between;
 

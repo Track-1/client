@@ -251,4 +251,7 @@ export { ReactComponent as EventPinkTextIc } from "./icon/eventPinkTextIc.svg";
 export { ReactComponent as EventSelectTextIc } from "./icon/eventSelectTextIc.svg";
 export { ReactComponent as EventTextIc } from "./icon/eventTextIc.svg";
 
+export { ReactComponent as MobileBackgroundGradationIc1 } from "./icon/MobileBackgroundGradationIc1.svg";
+export { ReactComponent as MobileBackgroundGradationIc2 } from "./icon/MobileBackgroundGradationIc2.svg";
+export { ReactComponent as MobileHeadBackgroudnIc } from "./icon/mobileHeadBackgroudnIc.svg";
 export { ReactComponent as MobileTrack1Ic } from "./icon/mobileTrack1Ic.svg";

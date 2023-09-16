@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import KoreaVersion from "./koreaVersion";
 import MobileHeader from "./mobileHeader";
 
 export default function MobileLanding() {
@@ -6,6 +7,7 @@ export default function MobileLanding() {
     <MobileLandingContainer>
       <MobileLandingSection>
         <MobileHeader />
+        <KoreaVersion />
       </MobileLandingSection>
     </MobileLandingContainer>
   );
@@ -13,12 +15,15 @@ export default function MobileLanding() {
 
 const MobileLandingContainer = styled.div`
   width: 100%;
-  height: 100%;
+
   display: flex;
   justify-content: center;
+
+  overflow: scroll;
 `;
 
 const MobileLandingSection = styled.section`
   width: 39.3rem;
-  height: 30.55rem;
+
+  border: 1px solid white;
 `;
