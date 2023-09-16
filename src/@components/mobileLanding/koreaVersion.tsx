@@ -23,23 +23,17 @@ export default function KoreaVersion() {
     <KoreaVersionSection>
       <FrontContents>
         <TextField>
-          <BigTitle>
-            여기 보컬
-            <br />
-            진짜 많아요.
-          </BigTitle>
-          <SmallTitle>여기 보컬 진짜 많아요.</SmallTitle>
+          <FirstTitle>여기 보컬 진짜 많아요.</FirstTitle>
           <Sub>내 노래에 맞는 보컬, 직접 들어보고 구하세요!</Sub>
         </TextField>
         <GotoPCSection>
-          <SmallPcComment marginTop={0}>PC로 접속하면 만날 수 있어요</SmallPcComment>
-          <BigPcComment>PC로 접속하면 만날 수 있어요</BigPcComment>
+          <SmallTitle>PC로 접속하면 만날 수 있어요</SmallTitle>
           <PcSaveButton>PC 링크 저장해두기</PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
         <GotoPCBottomSection>
           <PcSaveButton>PC 링크 저장해두기</PcSaveButton>
-          <SmallPcComment marginTop={1.5}>PC나 태블릿으로 접속하세요</SmallPcComment>
+          <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
       <MobileHeadBackgroudnIcon />
@@ -81,7 +75,7 @@ const PcSaveButton = styled.button`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const SmallPcComment = styled.p<{ marginTop: number }>`
+const SmallPcComment = styled.p`
   font-family: Pretendard;
   font-size: 1.5rem;
   font-style: normal;
@@ -90,38 +84,35 @@ const SmallPcComment = styled.p<{ marginTop: number }>`
 
   display: block;
 
-  margin-top: ${({ marginTop }) => marginTop}rem;
+  margin-top: 1.5rem;
 `;
 
-const BigPcComment = styled.p`
-  text-align: center;
+const FirstTitle = styled.h1`
+  /* 커졌을 때 */
   font-family: Pretendard;
   font-size: 5rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
 
-  display: none;
+  width: 24rem;
+
+  display: flex;
+  flex-wrap: wrap;
 `;
 
-const BigTitle = styled.h1`
+const SmallTitle = styled.p`
+  /* 커졌을 때 */
   font-family: Pretendard;
   font-size: 5rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
 
-  display: block;
-`;
+  width: 29.5rem;
 
-const SmallTitle = styled.h2`
-  font-family: Pretendard;
-  font-size: 1.7rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
-
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const FrontContents = styled.div`
