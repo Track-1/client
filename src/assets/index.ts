@@ -251,3 +251,4 @@ export { ReactComponent as EventPinkTextIc } from "./icon/eventPinkTextIc.svg";
 export { ReactComponent as EventSelectTextIc } from "./icon/eventSelectTextIc.svg";
 export { ReactComponent as EventTextIc } from "./icon/eventTextIc.svg";
 
+export { ReactComponent as MobileTrack1Ic } from "./icon/mobileTrack1Ic.svg";

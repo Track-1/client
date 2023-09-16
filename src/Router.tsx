@@ -3,6 +3,7 @@ import ErrorPage from "./@pages/errorPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import LoginPage from "./@pages/loginPage";
 import MainPage from "./@pages/mainPage";
+import MobileLandingPage from "./@pages/mobileLandingPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
 import ProducerProfilePage from "./@pages/producerProfilePage";
@@ -49,6 +50,9 @@ export default function Router() {
         </Route>
 
         <Route path="*" element={<ErrorPage />} />
+
+        {/* 모바일 랜딩 임시라우팅 */}
+        <Route path="/mobile" element={<MobileLandingPage />} />
       </Routes>
     </BrowserRouter>
   );
