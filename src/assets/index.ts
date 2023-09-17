@@ -255,3 +255,6 @@ export { ReactComponent as MobileBackgroundGradationIc1 } from "./icon/MobileBac
 export { ReactComponent as MobileBackgroundGradationIc2 } from "./icon/MobileBackgroundGradationIc2.svg";
 export { ReactComponent as MobileHeadBackgroudnIc } from "./icon/mobileHeadBackgroudnIc.svg";
 export { ReactComponent as MobileTrack1Ic } from "./icon/mobileTrack1Ic.svg";
+
+export { ReactComponent as MobileEngBackgroundGradationIc1 } from "./icon/MobileEngBackgroundGradationIc1.svg";
+export { ReactComponent as MobileEngBackgroundGradationIc2 } from "./icon/MobileEngBackgroundGradationIc2.svg";

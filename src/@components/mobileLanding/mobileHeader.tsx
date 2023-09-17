@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { MobileTrack1Ic } from "../../assets";
 
-export default function MobileHeader() {
-  const [language, setLanguage] = useState("Kor");
+interface HeaderProp {
+  language: string;
+  setLanguage: Dispatch<SetStateAction<string>>;
+}
+
+export default function MobileHeader(props: HeaderProp) {
+  const { language, setLanguage } = props;
 
   function handleChangLanguage(language: string) {
     setLanguage(language);

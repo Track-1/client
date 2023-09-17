@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
+import { MobileEngBackgroundGradationIc1, MobileEngBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
 
 export default function EnglishVersion() {
   const [pageY, setPageY] = useState<number>(0);
@@ -21,32 +21,29 @@ export default function EnglishVersion() {
       <FrontContents>
         <TextField>
           <FirstTitle pageY={pageY}>
-            여기 보컬
-            <br /> 진짜 많아요.
+            We have <br />
+            tons of vocals.
           </FirstTitle>
-          <SecondTitle pageY={pageY}>여기 보컬 진짜 많아요.</SecondTitle>
-          <Sub>내 노래에 맞는 보컬, 직접 들어보고 구하세요!</Sub>
+          <SecondTitle pageY={pageY}>We have tons of vocals.</SecondTitle>
+          <Sub>Find the best vocals that fit your song.</Sub>
         </TextField>
         <GotoPCSection>
-          <FirstSub pageY={pageY}>PC로 접속하면 만날 수 있어요</FirstSub>
+          <FirstSub pageY={pageY}>You can meet them via PC</FirstSub>
           <SecondSub pageY={pageY}>
-            PC로 접속하면
-            <br />
-            만날 수 있어요
+            You can meet them
+            <br /> via PC
           </SecondSub>
-          <PcSaveButton id="kakao-link-btn" className="eng-pc1">
-            PC 링크 저장해두기
-          </PcSaveButton>
+          <PcSaveButton className="eng-pc1">Save the PC link</PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
         <GotoPCBottomSection>
-          <PcSaveButton className="kor-pc2">PC 링크 저장해두기</PcSaveButton>
-          <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
+          <PcSaveButton className="eng-pc2">Save the PC link</PcSaveButton>
+          <SmallPcComment>Access via PC or tablet.</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
       <MobileHeadBackgroudnIcon pageY={pageY} />
-      <MobileBackgroundGradationIcon1 />
-      <MobileBackgroundGradationIcon2 />
+      <MobileEngBackgroundGradationIcon1 />
+      <MobileEngBackgroundGradationIcon2 />
     </KoreaVersionSection>
   );
 }
@@ -64,7 +61,6 @@ const Audio = styled.div`
 
   margin-left: 2rem;
   margin-top: 4rem;
-  position: absolute;
 `;
 
 const PcSaveButton = styled.button`
@@ -184,12 +180,12 @@ const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)<{ pageY: number 
   margin-bottom: ${({ pageY }) => (pageY <= 42 ? 0.253 * pageY : 10.6)}rem;
 `;
 
-const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)`
+const MobileEngBackgroundGradationIcon1 = styled(MobileEngBackgroundGradationIc1)`
   width: 39.3rem;
   height: 137rem;
 `;
 
-const MobileBackgroundGradationIcon2 = styled(MobileBackgroundGradationIc2)`
+const MobileEngBackgroundGradationIcon2 = styled(MobileEngBackgroundGradationIc2)`
   width: 39.3rem;
   height: 104.7rem;
 `;
