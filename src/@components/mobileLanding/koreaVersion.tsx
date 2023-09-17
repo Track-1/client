@@ -95,7 +95,7 @@ const FirstTitle = styled.h1`
   font-weight: 600;
   line-height: 120%;
 
-  width: 24rem;
+  width: 24.9rem;
 
   display: flex;
   flex-wrap: wrap;
@@ -110,6 +110,7 @@ const SmallTitle = styled.p`
   line-height: 120%;
 
   width: 29.5rem;
+  text-align: center;
 
   display: flex;
   flex-wrap: wrap;
