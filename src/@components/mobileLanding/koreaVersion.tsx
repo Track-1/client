@@ -44,7 +44,7 @@ export default function KoreaVersion() {
           <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
-      <MobileHeadBackgroudnIcon />
+      <MobileHeadBackgroudnIcon pageY={pageY} />
       <MobileBackgroundGradationIcon1 />
       <MobileBackgroundGradationIcon2 />
     </KoreaVersionSection>
@@ -122,11 +122,9 @@ const SecondTitle = styled.h1<{ pageY: number }>`
 `;
 
 const FirstSub = styled.p<{ pageY: number }>`
-  /* 작은 글씨 */
   font-family: Pretendard;
   font-size: ${({ pageY }) => (0.1 * pageY <= 1.5 ? 1.5 : 0.1 * pageY >= 2.5 ? 2.5 : 0.1 * pageY)}rem;
 
-  /* font-size: ${({ pageY }) => (pageY * 0.1 >= 5 ? 5 : pageY * 0.1 <= 1.5 ? 1.5 : pageY * 0.1)}rem; */
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -141,11 +139,9 @@ const FirstSub = styled.p<{ pageY: number }>`
 `;
 
 const SecondSub = styled.p<{ pageY: number }>`
-  /* 큰 글씨 */
   font-family: Pretendard;
 
   font-size: ${({ pageY }) => (0.1 * pageY >= 5 ? 5 : 0.1 * pageY <= 2.5 ? 2.5 : 0.1 * pageY)}rem;
-  /* font-size: ${({ pageY }) => (pageY * 0.1 >= 5 ? 5 : pageY * 0.1 <= 1.5 ? 1.5 : pageY * 0.1)}rem; */
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -179,12 +175,12 @@ const KoreaVersionSection = styled.section`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)`
+const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)<{ pageY: number }>`
   width: 39.3rem;
   height: 29.1rem;
   /* 애니메이션 필요 */
-  margin-top: 14rem;
-  margin-bottom: 0rem;
+  margin-top: ${({ pageY }) => (pageY <= 42 ? 14 - 0.253 * pageY : 3.86)}rem;
+  margin-bottom: ${({ pageY }) => (pageY <= 42 ? 0.253 * pageY : 10.6)}rem;
 `;
 
 const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)`
