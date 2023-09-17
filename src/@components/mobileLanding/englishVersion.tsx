@@ -5,7 +5,6 @@ import { MobileEngBackgroundGradationIc1, MobileEngBackgroundGradationIc2, Mobil
 export default function EnglishVersion() {
   const [pageY, setPageY] = useState<number>(0);
   const documentRef = useRef(document);
-  const [URL, setURL] = useState(`www.track1.site`);
 
   useEffect(() => {
     documentRef.current.addEventListener("scroll", handleScroll);
@@ -22,7 +21,7 @@ export default function EnglishVersion() {
       navigator.share({
         title: "Track-1",
         text: "Discover Your Limitless Track",
-        url: URL,
+        url: "https://www.track1.site",
       });
     } else {
       alert("공유하기가 지원되지 않는 환경 입니다.");
