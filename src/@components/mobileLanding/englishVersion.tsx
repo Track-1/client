@@ -16,6 +16,18 @@ export default function EnglishVersion() {
     setPageY(pageYOffset);
   }
 
+  function handleShareOtherWays() {
+    if (navigator.share) {
+      navigator.share({
+        title: "Track-1",
+        text: "Discover Your Limitless Track",
+        url: "www.track1.site",
+      });
+    } else {
+      alert("공유하기가 지원되지 않는 환경 입니다.");
+    }
+  }
+
   return (
     <KoreaVersionSection>
       <FrontContents>
@@ -33,11 +45,15 @@ export default function EnglishVersion() {
             You can meet them
             <br /> via PC
           </SecondSub>
-          <PcSaveButton className="eng-pc1">Save the PC link</PcSaveButton>
+          <PcSaveButton className="eng-pc1" onClick={handleShareOtherWays}>
+            Save the PC link
+          </PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
         <GotoPCBottomSection>
-          <PcSaveButton className="eng-pc2">Save the PC link</PcSaveButton>
+          <PcSaveButton className="eng-pc2" onClick={handleShareOtherWays}>
+            Save the PC link
+          </PcSaveButton>
           <SmallPcComment>Access via PC or tablet.</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
@@ -67,7 +83,7 @@ const PcSaveButton = styled.button`
   font-family: Pretendard;
   font-size: 1.8rem;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 160%;
 
   margin-top: 1.5rem;
@@ -100,7 +116,7 @@ const FirstTitle = styled.h1<{ pageY: number }>`
   font-weight: 600;
   line-height: 120%;
 
-  width: 24.9rem;
+  width: 33.6rem;
 
   display: ${({ pageY }) => (pageY >= 42 ? "none" : "flex")};
   flex-wrap: wrap;
@@ -111,7 +127,7 @@ const SecondTitle = styled.h1<{ pageY: number }>`
   font-size: ${({ pageY }) => (5 - 0.1 * pageY <= 1.7 ? 1.7 : 5 - 0.1 * pageY >= 3.3 ? 3.3 : 5 - 0.1 * pageY)}rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 140%;
+  line-height: 120%;
 
   margin-bottom: -1rem;
 
@@ -123,10 +139,10 @@ const FirstSub = styled.p<{ pageY: number }>`
   font-size: ${({ pageY }) => (0.1 * pageY <= 1.5 ? 1.5 : 0.1 * pageY >= 2.5 ? 2.5 : 0.1 * pageY)}rem;
 
   font-style: normal;
-  font-weight: 600;
-  line-height: 120%;
+  font-weight: 500;
+  line-height: 160%;
 
-  width: 29.5rem;
+  width: 45rem;
   text-align: center;
 
   display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "flex" : "none")};
@@ -142,8 +158,7 @@ const SecondSub = styled.p<{ pageY: number }>`
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
-
-  width: 29.5rem;
+  width: 45rem;
   text-align: center;
 
   display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "none" : "flex")};
@@ -195,7 +210,7 @@ const Sub = styled.p`
   font-size: 1.7rem;
   font-style: normal;
   font-weight: 500;
-  line-height: 120%;
+  line-height: 130%;
 
   margin-top: 2rem;
   margin-bottom: 20rem;
