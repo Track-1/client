@@ -20,7 +20,7 @@ export default function EnglishVersion() {
     if (navigator.share) {
       navigator.share({
         title: "Track-1",
-        text: "Discover Your Limitless Track",
+        text: "Access via PC or tablet.",
         url: "https://www.track1.site",
       });
     } else {
