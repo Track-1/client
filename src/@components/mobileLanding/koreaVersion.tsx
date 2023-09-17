@@ -30,7 +30,12 @@ export default function KoreaVersion() {
           <Sub>내 노래에 맞는 보컬, 직접 들어보고 구하세요!</Sub>
         </TextField>
         <GotoPCSection>
-          <SmallTitle pageY={pageY}>PC로 접속하면 만날 수 있어요</SmallTitle>
+          <FirstSub pageY={pageY}>PC로 접속하면 만날 수 있어요</FirstSub>
+          <SecondSub pageY={pageY}>
+            PC로 접속하면
+            <br />
+            만날 수 있어요
+          </SecondSub>
           <PcSaveButton>PC 링크 저장해두기</PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
@@ -100,7 +105,7 @@ const FirstTitle = styled.h1<{ pageY: number }>`
 
   width: 24.9rem;
 
-  display: ${({ pageY }) => (pageY >= 40 ? "none" : "flex")};
+  display: ${({ pageY }) => (pageY >= 42 ? "none" : "flex")};
   flex-wrap: wrap;
 `;
 
@@ -113,12 +118,15 @@ const SecondTitle = styled.h1<{ pageY: number }>`
 
   margin-bottom: -1rem;
 
-  display: ${({ pageY }) => (pageY < 40 ? "none" : "block")};
+  display: ${({ pageY }) => (pageY < 42 ? "none" : "block")};
 `;
 
-const SmallTitle = styled.p<{ pageY: number }>`
+const FirstSub = styled.p<{ pageY: number }>`
+  /* 작은 글씨 */
   font-family: Pretendard;
-  font-size: ${({ pageY }) => (pageY * 0.1 >= 5 ? 5 : pageY * 0.1 <= 1.5 ? 1.5 : pageY * 0.1)}rem;
+  font-size: ${({ pageY }) => (0.1 * pageY <= 1.5 ? 1.5 : 0.1 * pageY >= 2.5 ? 2.5 : 0.1 * pageY)}rem;
+
+  /* font-size: ${({ pageY }) => (pageY * 0.1 >= 5 ? 5 : pageY * 0.1 <= 1.5 ? 1.5 : pageY * 0.1)}rem; */
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -126,7 +134,26 @@ const SmallTitle = styled.p<{ pageY: number }>`
   width: 29.5rem;
   text-align: center;
 
-  display: flex;
+  display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "flex" : "none")};
+
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+const SecondSub = styled.p<{ pageY: number }>`
+  /* 큰 글씨 */
+  font-family: Pretendard;
+
+  font-size: ${({ pageY }) => (0.1 * pageY >= 5 ? 5 : 0.1 * pageY <= 2.5 ? 2.5 : 0.1 * pageY)}rem;
+  /* font-size: ${({ pageY }) => (pageY * 0.1 >= 5 ? 5 : pageY * 0.1 <= 1.5 ? 1.5 : pageY * 0.1)}rem; */
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+
+  width: 29.5rem;
+  text-align: center;
+
+  display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "none" : "flex")};
   justify-content: center;
   flex-wrap: wrap;
 `;
