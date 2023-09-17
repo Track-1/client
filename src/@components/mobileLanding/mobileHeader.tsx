@@ -29,7 +29,8 @@ const MobileHeaderSection = styled.header`
   display: flex;
   justify-content: space-between;
 
-  padding: 4.7rem 2rem 6rem 2rem;
+  padding: 4.7rem 2.07rem 6rem 2rem;
+  width: 39.3rem;
 `;
 
 const MobileTrack1Icon = styled(MobileTrack1Ic)`

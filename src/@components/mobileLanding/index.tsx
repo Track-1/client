@@ -27,5 +27,5 @@ const MobileLandingContainer = styled.div`
 const MobileLandingSection = styled.section`
   width: 39.3rem;
 
-  border: 1px solid white;
+  /* border: 1px solid white; */
 `;

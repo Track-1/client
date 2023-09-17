@@ -99,6 +99,7 @@ export const GlobalStyle = createGlobalStyle`
     @media (min-width: 1000px){ 
       font-size: 70%
     } */
+    /* 모바일 */
     @media (min-width: 931px) and (max-width:999px){ 
       font-size: 42%;
     }
@@ -120,9 +121,6 @@ export const GlobalStyle = createGlobalStyle`
     }
     @media (min-width: 600px) and (max-width:749px){ 
       font-size: 113%;
-      /* @media (min-height: 740px) and (max-height: 999px){
-            height: 80%!important;
-      } */
     }
     @media (min-width: 471px) and (max-width:580px){ 
       font-size: 93%;
