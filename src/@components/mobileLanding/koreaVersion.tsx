@@ -5,7 +5,6 @@ import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadB
 export default function KoreaVersion() {
   const [pageY, setPageY] = useState<number>(0);
   const documentRef = useRef(document);
-  const [isSpread, setIsSpread] = useState<boolean>(true);
 
   useEffect(() => {
     documentRef.current.addEventListener("scroll", handleScroll);
@@ -23,11 +22,15 @@ export default function KoreaVersion() {
     <KoreaVersionSection>
       <FrontContents>
         <TextField>
-          <FirstTitle>여기 보컬 진짜 많아요.</FirstTitle>
+          <FirstTitle pageY={pageY}>
+            여기 보컬
+            <br /> 진짜 많아요.
+          </FirstTitle>
+          <SecondTitle pageY={pageY}>여기 보컬 진짜 많아요.</SecondTitle>
           <Sub>내 노래에 맞는 보컬, 직접 들어보고 구하세요!</Sub>
         </TextField>
         <GotoPCSection>
-          <SmallTitle>PC로 접속하면 만날 수 있어요</SmallTitle>
+          <SmallTitle pageY={pageY}>PC로 접속하면 만날 수 있어요</SmallTitle>
           <PcSaveButton>PC 링크 저장해두기</PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
@@ -87,24 +90,35 @@ const SmallPcComment = styled.p`
   margin-top: 1.5rem;
 `;
 
-const FirstTitle = styled.h1`
-  /* 커졌을 때 */
+const FirstTitle = styled.h1<{ pageY: number }>`
   font-family: Pretendard;
-  font-size: 5rem;
+  font-size: ${({ pageY }) => (5 - 0.1 * pageY >= 5 ? 5 : pageY > 42 ? 3.3 : 5 - 0.1 * pageY)}rem;
+
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
 
   width: 24.9rem;
 
-  display: flex;
+  display: ${({ pageY }) => (pageY >= 40 ? "none" : "flex")};
   flex-wrap: wrap;
 `;
 
-const SmallTitle = styled.p`
-  /* 커졌을 때 */
+const SecondTitle = styled.h1<{ pageY: number }>`
   font-family: Pretendard;
-  font-size: 5rem;
+  font-size: ${({ pageY }) => (5 - 0.1 * pageY <= 1.7 ? 1.7 : 5 - 0.1 * pageY >= 3.3 ? 3.3 : 5 - 0.1 * pageY)}rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+
+  margin-bottom: -1rem;
+
+  display: ${({ pageY }) => (pageY < 40 ? "none" : "block")};
+`;
+
+const SmallTitle = styled.p<{ pageY: number }>`
+  font-family: Pretendard;
+  font-size: ${({ pageY }) => (pageY * 0.1 >= 5 ? 5 : pageY * 0.1 <= 1.5 ? 1.5 : pageY * 0.1)}rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -113,6 +127,7 @@ const SmallTitle = styled.p`
   text-align: center;
 
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
 `;
 
