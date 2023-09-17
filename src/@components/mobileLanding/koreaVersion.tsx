@@ -16,8 +16,6 @@ export default function KoreaVersion() {
     setPageY(pageYOffset);
   };
 
-  console.log(pageY);
-
   return (
     <KoreaVersionSection>
       <FrontContents>
@@ -36,11 +34,11 @@ export default function KoreaVersion() {
             <br />
             만날 수 있어요
           </SecondSub>
-          <PcSaveButton>PC 링크 저장해두기</PcSaveButton>
+          <PcSaveButton className="kor-pc1">PC 링크 저장해두기</PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
         <GotoPCBottomSection>
-          <PcSaveButton>PC 링크 저장해두기</PcSaveButton>
+          <PcSaveButton className="kor-pc2">PC 링크 저장해두기</PcSaveButton>
           <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
