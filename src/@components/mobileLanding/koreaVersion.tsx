@@ -44,6 +44,21 @@ export default function KoreaVersion() {
     });
   }
 
+  function handleKakaoShare2() {
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    }
+
+    Kakao.Share.createCustomButton({
+      container: "#kakao-link-btn2",
+      templateId: 98550,
+      templateArgs: {
+        title: "Track-1",
+        description: "Discover Your Limitless Track",
+      },
+    });
+  }
+
   return (
     <KoreaVersionSection>
       <FrontContents>
@@ -68,7 +83,9 @@ export default function KoreaVersion() {
         </GotoPCSection>
         <Audio></Audio>
         <GotoPCBottomSection>
-          <PcSaveButton className="kor-pc2">PC 링크 저장해두기</PcSaveButton>
+          <PcSaveButton id="kakao-link-btn2" className="kor-pc2" onClick={handleKakaoShare2}>
+            PC 링크 저장해두기
+          </PcSaveButton>
           <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
@@ -92,7 +109,6 @@ const Audio = styled.div`
 
   margin-left: 2rem;
   margin-top: 4rem;
-  position: absolute;
 `;
 
 const PcSaveButton = styled.button`

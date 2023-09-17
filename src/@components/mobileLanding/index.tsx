@@ -1,6 +1,6 @@
 import styled from "styled-components";
+import KorLinkBox from "./korLinkBox";
 import KoreaVersion from "./koreaVersion";
-import LinkBox from "./linkBox";
 import MobileHeader from "./mobileHeader";
 
 export default function MobileLanding() {
@@ -9,7 +9,7 @@ export default function MobileLanding() {
       <MobileLandingSection>
         <MobileHeader />
         <KoreaVersion />
-        <LinkBox />
+        <KorLinkBox />
       </MobileLandingSection>
     </MobileLandingContainer>
   );

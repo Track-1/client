@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function LinkBox() {
+export default function KorLinkBox() {
   return (
     <LinkBoxContainer>
       <Name>Email</Name>
