@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
+// kakao 기능 동작을 위해 넣어준다.
+const { Kakao } = window;
 
 export default function KoreaVersion() {
   const [pageY, setPageY] = useState<number>(0);
@@ -11,10 +13,36 @@ export default function KoreaVersion() {
     return () => documentRef.current.removeEventListener("scroll", handleScroll);
   }, [pageY]);
 
-  const handleScroll = () => {
+  function handleScroll() {
     const { pageYOffset } = window;
     setPageY(pageYOffset);
-  };
+  }
+
+  // 재랜더링시에 실행되게 해준다.
+  useEffect(() => {
+    // init 해주기 전에 clean up 을 해준다.
+    Kakao.cleanup();
+    // 자신의 js 키를 넣어준다.
+
+    Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    // 잘 적용되면 true 를 뱉는다.
+    console.log(Kakao.isInitialized());
+  }, []);
+
+  function handleKakaoShare() {
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    }
+
+    Kakao.Share.createCustomButton({
+      container: "#kakao-link-btn",
+      templateId: 98550,
+      templateArgs: {
+        title: "Track-1",
+        description: "Discover Your Limitless Track",
+      },
+    });
+  }
 
   return (
     <KoreaVersionSection>
@@ -34,7 +62,9 @@ export default function KoreaVersion() {
             <br />
             만날 수 있어요
           </SecondSub>
-          <PcSaveButton className="kor-pc1">PC 링크 저장해두기</PcSaveButton>
+          <PcSaveButton id="kakao-link-btn" className="kor-pc1" onClick={handleKakaoShare}>
+            PC 링크 저장해두기
+          </PcSaveButton>
         </GotoPCSection>
         <Audio></Audio>
         <GotoPCBottomSection>
@@ -62,6 +92,7 @@ const Audio = styled.div`
 
   margin-left: 2rem;
   margin-top: 4rem;
+  position: absolute;
 `;
 
 const PcSaveButton = styled.button`
