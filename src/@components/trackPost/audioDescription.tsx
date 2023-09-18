@@ -3,12 +3,12 @@ import { DescriptionIc } from "../../assets";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function AudioDescription() {
-  const { introduce } = useGetTrackInfo();
+  const { userIntroduction } = useGetTrackInfo();
 
   return (
     <DescriptionBox>
       <DescriptionIcon />
-      <Description>{introduce}</Description>
+      <Description>{userIntroduction}</Description>
     </DescriptionBox>
   );
 }

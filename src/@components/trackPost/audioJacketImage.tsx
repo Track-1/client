@@ -2,12 +2,12 @@ import styled from "styled-components";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function AudioJacketImage() {
-  const { jacketImage } = useGetTrackInfo();
+  const { trackImageFile } = useGetTrackInfo();
 
   return (
     <PlayImageWrapper>
       {/* <PlayImageWrapper className={!isCommentOpen && play ? "playAnimation" : "pauseAnimation"}> */}
-      <PlayerImage src={jacketImage} alt="재생 이미지" />
+      <PlayerImage src={trackImageFile} alt="재생 이미지" />
     </PlayImageWrapper>
   );
 }
