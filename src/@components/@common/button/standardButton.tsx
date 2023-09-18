@@ -5,7 +5,7 @@ import { theme } from "../../../style/theme";
 interface StandardButtonProps {
   bgColor: string;
   fontColor: string;
-  handleClickFunction: () => void;
+  handleClickFunction?: () => void;
 }
 
 export default function StandardButton(props: PropsWithChildren<StandardButtonProps>) {

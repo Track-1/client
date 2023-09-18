@@ -1,3 +1,5 @@
+import { theme } from "../../style/theme";
+
 export const EMAIL_MESSAGE = {
   NULL: "email null",
   FORM: "This email is invalid.",
@@ -31,10 +33,12 @@ export const NICKNAME_MESSAGE = {
 };
 
 export const ERROR_COLOR = {
-  GRAY: "#535559",
-  RED: "#FF4F4F",
-  VIOLET: "#5200FF",
-  WHITE: "white",
+  GRAY: `${theme.colors.gray3}`,
+  RED: `${theme.colors.red}`,
+  VIOLET: `${theme.colors.main}`,
+  WHITE: `${theme.colors.white}`,
+  GREEN: `${theme.colors.sub1}`,
+  PINK: `${theme.colors.sub2}`,
   TRANSPARENT: "transparent",
 };
 
