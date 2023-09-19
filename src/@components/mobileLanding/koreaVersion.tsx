@@ -26,7 +26,8 @@ export default function KoreaVersion() {
     Kakao.cleanup();
     // 자신의 js 키를 넣어준다.
 
-    Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    // Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
     // 잘 적용되면 true 를 뱉는다.
     console.log(Kakao.isInitialized());
     // if (isKakao) {
@@ -57,7 +58,8 @@ export default function KoreaVersion() {
   function handleKakaoShare() {
     setIsKakao(true);
     if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+      // Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+      Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
     }
 
     // Kakao.Share.createCustomButton({
@@ -74,7 +76,8 @@ export default function KoreaVersion() {
   function handleKakaoShare2() {
     setIsKakao2(true);
     if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+      // Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+      Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
     }
 
     // Kakao.Share.createCustomButton({
