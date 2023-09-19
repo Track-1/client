@@ -110,8 +110,8 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
         <Video
           pageY={pageY}
           controls
-          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png"
-          preload="none">
+          playsInline
+          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png">
           <source
             src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_Korean.mp4"
             type="video/mp4"
