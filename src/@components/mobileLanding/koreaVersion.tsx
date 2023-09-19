@@ -21,18 +21,15 @@ export default function KoreaVersion() {
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
     Kakao.cleanup();
-    Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
+    Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     console.log(Kakao.isInitialized());
   }, []);
 
   function handleKakaoShare() {
     if (!Kakao.isInitialized()) {
-      Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     }
 
-    // if (!Kakao.isInitialized()) {
-    //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-    // }
     Kakao.Share.createCustomButton({
       container: "#kakao-link-btn2",
       templateId: 98550,
@@ -45,8 +42,9 @@ export default function KoreaVersion() {
 
   function handleKakaoShare2() {
     if (!Kakao.isInitialized()) {
-      Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     }
+
     Kakao.Share.createCustomButton({
       container: "#kakao-link-btn2",
       templateId: 98550,
