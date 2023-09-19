@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
@@ -59,6 +59,8 @@ export default function KoreaVersion() {
     });
   }
 
+  console.log(pageY);
+
   return (
     <KoreaVersionSection>
       <FrontContents>
@@ -75,7 +77,7 @@ export default function KoreaVersion() {
             <br />
             만날 수 있어요
           </SubTitle>
-          <PcSaveButton id="kakao-link-btn" className="kor-pc1" onClick={handleKakaoShare}>
+          <PcSaveButton id="kakao-link-btn" className="kor-pc1" onClick={handleKakaoShare} pageY={pageY}>
             PC 링크 저장해두기
           </PcSaveButton>
         </GotoPCSection>
@@ -91,7 +93,7 @@ export default function KoreaVersion() {
           aaa
         </Video>
         <GotoPCBottomSection>
-          <PcSaveButton id="kakao-link-btn2" className="kor-pc2" onClick={handleKakaoShare2}>
+          <PcSaveButton id="kakao-link-btn2" className="kor-pc2" onClick={handleKakaoShare2} pageY={pageY}>
             PC 링크 저장해두기
           </PcSaveButton>
           <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
@@ -110,8 +112,18 @@ const GotoPCBottomSection = styled.section`
   text-align: center;
 `;
 
+const Show = keyframes`
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+`;
+
 const Video = styled.video<{ pageY: number }>`
-  margin-top: ${({ pageY }) => (0.005 * pageY + 1.5 >= 20 ? 5.5 : 0.005 * pageY <= 1.5 ? 4 : 0.005 * pageY + 1.5)}rem;
+  /* margin-top: ${({ pageY }) =>
+    0.005 * pageY + 1.5 >= 20 ? 5.5 : 0.005 * pageY <= 1.5 ? 4 : 0.005 * pageY + 1.5}rem; */
 
   /* margin-top: ${({ pageY }) => (0.05 * pageY >= 32 ? 5 : 0.05 * pageY <= 1.5 ? 4 : 4.5)}rem; */
   width: 35.2rem;
@@ -120,9 +132,12 @@ const Video = styled.video<{ pageY: number }>`
 
   margin-left: 2rem;
   /* margin-top: 4rem; */
+
+  display: ${({ pageY }) => (pageY >= 500 ? "block" : "none")};
+  animation: ${Show} 2s ease-out;
 `;
 
-const PcSaveButton = styled.button`
+const PcSaveButton = styled.button<{ pageY: number }>`
   font-family: Pretendard;
   font-size: 1.8rem;
   font-style: normal;
@@ -137,6 +152,9 @@ const PcSaveButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
 
   background-color: ${({ theme }) => theme.colors.main};
+
+  display: ${({ pageY }) => (pageY >= 500 ? "block" : "none")};
+  animation: ${Show} 2s ease-out;
 `;
 
 const SmallPcComment = styled.p`
@@ -212,7 +230,7 @@ const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)`
 `;
 
 const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)<{ pageY: number }>`
-  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 50 ? 50 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
+  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 46 ? 46 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
   width: 39.3rem;
   height: 137rem;
 `;
