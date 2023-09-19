@@ -30,29 +30,31 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
 
     Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     // 잘 적용되면 true 를 뱉는다.
+
     console.log(Kakao.isInitialized());
   }, []);
 
   function handleKakaoShare() {
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+      shareLink();
     }
 
-    Kakao.Share.createCustomButton({
-      container: "#kakao-link-btn",
-      templateId: 98550,
-      templateArgs: {
-        title: "Track-1",
-        description: "Discover Your Limitless Track",
-      },
-    });
+    // if (!Kakao.isInitialized()) {
+    //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    // }
+    shareLink();
   }
 
   function handleKakaoShare2() {
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+      shareLink();
     }
+    shareLink();
+  }
 
+  function shareLink() {
     Kakao.Share.createCustomButton({
       container: "#kakao-link-btn2",
       templateId: 98550,
@@ -84,8 +86,6 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
   //     bg1Ref.current.addEventListener("load", () => updateStatus(bg1Ref.current as HTMLImageElement), { once: true });
   //   bg2Ref.current.addEventListener("load", () => updateStatus(bg2Ref.current as HTMLImageElement), { once: true });
   // }, [bg1Ref, bg2Ref]);
-
-  console.log(pageY);
 
   return (
     <KoreaVersionSection>
