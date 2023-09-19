@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
+import thumbnail from "../../assets/image/landingVideoThumbnail.png";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
@@ -63,25 +64,29 @@ export default function KoreaVersion() {
     <KoreaVersionSection>
       <FrontContents>
         <TextField>
-          <FirstTitle pageY={pageY}>
+          <FirstTitle>
             여기 보컬
             <br /> 진짜 많아요.
           </FirstTitle>
-          <SecondTitle pageY={pageY}>여기 보컬 진짜 많아요.</SecondTitle>
           <Sub>내 노래에 맞는 보컬, 직접 들어보고 구하세요!</Sub>
         </TextField>
         <GotoPCSection>
-          <FirstSub pageY={pageY}>PC로 접속하면 만날 수 있어요</FirstSub>
-          <SecondSub pageY={pageY}>
+          <SubTitle pageY={pageY}>
             PC로 접속하면
             <br />
             만날 수 있어요
-          </SecondSub>
+          </SubTitle>
           <PcSaveButton id="kakao-link-btn" className="kor-pc1" onClick={handleKakaoShare}>
             PC 링크 저장해두기
           </PcSaveButton>
         </GotoPCSection>
-        <Audio></Audio>
+        <Video pageY={pageY} controls preload={thumbnail}>
+          <source
+            src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_Korean.mp4"
+            type="video/mp4"
+          />
+          aaa
+        </Video>
         <GotoPCBottomSection>
           <PcSaveButton id="kakao-link-btn2" className="kor-pc2" onClick={handleKakaoShare2}>
             PC 링크 저장해두기
@@ -89,26 +94,29 @@ export default function KoreaVersion() {
           <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
         </GotoPCBottomSection>
       </FrontContents>
-      <MobileHeadBackgroudnIcon pageY={pageY} />
-      <MobileBackgroundGradationIcon1 />
+      <MobileHeadBackgroudnIcon />
+      <MobileBackgroundGradationIcon1 pageY={pageY} />
       <MobileBackgroundGradationIcon2 />
     </KoreaVersionSection>
   );
 }
 
 const GotoPCBottomSection = styled.section`
-  margin-top: 170rem;
+  margin-top: 160rem;
 
   text-align: center;
 `;
 
-const Audio = styled.div`
-  width: 35.3rem;
+const Video = styled.video<{ pageY: number }>`
+  margin-top: ${({ pageY }) => (0.005 * pageY + 1.5 >= 20 ? 5.5 : 0.005 * pageY <= 1.5 ? 4 : 0.005 * pageY + 1.5)}rem;
+
+  /* margin-top: ${({ pageY }) => (0.05 * pageY >= 32 ? 5 : 0.05 * pageY <= 1.5 ? 4 : 4.5)}rem; */
+  width: 35.2rem;
   height: 19.8rem;
   background: #d9d9d9;
 
   margin-left: 2rem;
-  margin-top: 4rem;
+  /* margin-top: 4rem; */
 `;
 
 const PcSaveButton = styled.button`
@@ -140,9 +148,9 @@ const SmallPcComment = styled.p`
   margin-top: 1.5rem;
 `;
 
-const FirstTitle = styled.h1<{ pageY: number }>`
+const FirstTitle = styled.h1`
   font-family: Pretendard;
-  font-size: ${({ pageY }) => (5 - 0.1 * pageY >= 5 ? 5 : pageY > 42 ? 3.3 : 5 - 0.1 * pageY)}rem;
+  font-size: 5rem;
 
   font-style: normal;
   font-weight: 600;
@@ -150,26 +158,16 @@ const FirstTitle = styled.h1<{ pageY: number }>`
 
   width: 24.9rem;
 
-  display: ${({ pageY }) => (pageY >= 42 ? "none" : "flex")};
+  display: flex;
   flex-wrap: wrap;
 `;
 
-const SecondTitle = styled.h1<{ pageY: number }>`
+const SubTitle = styled.p<{ pageY: number }>`
   font-family: Pretendard;
-  font-size: ${({ pageY }) => (5 - 0.1 * pageY <= 1.7 ? 1.7 : 5 - 0.1 * pageY >= 3.3 ? 3.3 : 5 - 0.1 * pageY)}rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 140%;
 
-  margin-bottom: -1rem;
+  margin-top: ${({ pageY }) => (0.05 * pageY >= 20 ? 20 : 0.05 * pageY <= 1.5 ? 0 : 0.05 * pageY)}rem;
 
-  display: ${({ pageY }) => (pageY < 42 ? "none" : "block")};
-`;
-
-const FirstSub = styled.p<{ pageY: number }>`
-  font-family: Pretendard;
-  font-size: ${({ pageY }) => (0.1 * pageY <= 1.5 ? 1.5 : 0.1 * pageY >= 2.5 ? 2.5 : 0.1 * pageY)}rem;
-
+  font-size: ${({ pageY }) => (0.01 * pageY >= 5 ? 5 : 0.01 * pageY <= 1.5 ? 1.5 : 0.01 * pageY)}rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -177,24 +175,7 @@ const FirstSub = styled.p<{ pageY: number }>`
   width: 29.5rem;
   text-align: center;
 
-  display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "flex" : "none")};
-
-  justify-content: center;
-  flex-wrap: wrap;
-`;
-
-const SecondSub = styled.p<{ pageY: number }>`
-  font-family: Pretendard;
-
-  font-size: ${({ pageY }) => (0.1 * pageY >= 5 ? 5 : 0.1 * pageY <= 2.5 ? 2.5 : 0.1 * pageY)}rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 120%;
-
-  width: 29.5rem;
-  text-align: center;
-
-  display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "none" : "flex")};
+  display: flex;
   justify-content: center;
   flex-wrap: wrap;
 `;
@@ -220,15 +201,15 @@ const KoreaVersionSection = styled.section`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)<{ pageY: number }>`
+const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)`
   width: 39.3rem;
   height: 29.1rem;
+  margin-top: 12rem;
   /* 애니메이션 필요 */
-  margin-top: ${({ pageY }) => (pageY <= 42 ? 14 - 0.253 * pageY : 3.86)}rem;
-  margin-bottom: ${({ pageY }) => (pageY <= 42 ? 0.253 * pageY : 10.6)}rem;
 `;
 
-const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)`
+const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)<{ pageY: number }>`
+  margin-top: ${({ pageY }) => (0.04 * pageY + 10 >= 32 ? 32 : 0.04 * pageY <= 1.5 ? 10 : 0.04 * pageY + 10)}rem;
   width: 39.3rem;
   height: 137rem;
 `;

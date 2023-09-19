@@ -32,19 +32,17 @@ export default function EnglishVersion() {
     <KoreaVersionSection>
       <FrontContents>
         <TextField>
-          <FirstTitle pageY={pageY}>
+          <FirstTitle>
             We have <br />
             tons of vocals.
           </FirstTitle>
-          <SecondTitle pageY={pageY}>We have tons of vocals.</SecondTitle>
           <Sub>Find the best vocals that fit your song.</Sub>
         </TextField>
         <GotoPCSection>
-          <FirstSub pageY={pageY}>You can meet them via PC</FirstSub>
-          <SecondSub pageY={pageY}>
+          <SubTitle pageY={pageY}>
             You can meet them
             <br /> via PC
-          </SecondSub>
+          </SubTitle>
           <PcSaveButton className="eng-pc1" onClick={handleShareOtherWays}>
             Save the PC link
           </PcSaveButton>
@@ -108,9 +106,9 @@ const SmallPcComment = styled.p`
   margin-top: 1.5rem;
 `;
 
-const FirstTitle = styled.h1<{ pageY: number }>`
+const FirstTitle = styled.h1`
   font-family: Pretendard;
-  font-size: ${({ pageY }) => (5 - 0.1 * pageY >= 5 ? 5 : pageY > 42 ? 3.3 : 5 - 0.1 * pageY)}rem;
+  font-size: 5rem;
 
   font-style: normal;
   font-weight: 600;
@@ -118,40 +116,11 @@ const FirstTitle = styled.h1<{ pageY: number }>`
 
   width: 33.6rem;
 
-  display: ${({ pageY }) => (pageY >= 42 ? "none" : "flex")};
+  display: flex;
   flex-wrap: wrap;
 `;
 
-const SecondTitle = styled.h1<{ pageY: number }>`
-  font-family: Pretendard;
-  font-size: ${({ pageY }) => (5 - 0.1 * pageY <= 1.7 ? 1.7 : 5 - 0.1 * pageY >= 3.3 ? 3.3 : 5 - 0.1 * pageY)}rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 120%;
-
-  margin-bottom: -1rem;
-
-  display: ${({ pageY }) => (pageY < 42 ? "none" : "block")};
-`;
-
-const FirstSub = styled.p<{ pageY: number }>`
-  font-family: Pretendard;
-  font-size: ${({ pageY }) => (0.1 * pageY <= 1.5 ? 1.5 : 0.1 * pageY >= 2.5 ? 2.5 : 0.1 * pageY)}rem;
-
-  font-style: normal;
-  font-weight: 500;
-  line-height: 160%;
-
-  width: 45rem;
-  text-align: center;
-
-  display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "flex" : "none")};
-
-  justify-content: center;
-  flex-wrap: wrap;
-`;
-
-const SecondSub = styled.p<{ pageY: number }>`
+const SubTitle = styled.p<{ pageY: number }>`
   font-family: Pretendard;
 
   font-size: ${({ pageY }) => (0.1 * pageY >= 5 ? 5 : 0.1 * pageY <= 2.5 ? 2.5 : 0.1 * pageY)}rem;
@@ -161,7 +130,7 @@ const SecondSub = styled.p<{ pageY: number }>`
   width: 45rem;
   text-align: center;
 
-  display: ${({ pageY }) => (0.1 * pageY < 2.5 ? "none" : "flex")};
+  display: flex;
   justify-content: center;
   flex-wrap: wrap;
 `;

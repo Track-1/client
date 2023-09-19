@@ -32,6 +32,7 @@ const LinkBoxContainer = styled.section`
   justify-content: flex-start;
 
   padding-left: 2rem;
+  margin-bottom: 10rem;
 `;
 
 const Name = styled.h1`
