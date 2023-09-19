@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
+import { MobileHeadBackgroudnIc } from "../../assets";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
-export default function KoreaVersion() {
+export interface LoadingProps {
+  setIsImgLoaded: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
   const [pageY, setPageY] = useState<number>(0);
   const documentRef = useRef(document);
 
@@ -59,7 +63,29 @@ export default function KoreaVersion() {
     });
   }
 
-  console.log(pageY);
+  const bg1Ref = useRef();
+  const bg2Ref = useRef();
+
+  // useEffect(() => {
+  //   if (!bg1Ref.current && !bg2Ref.current) {
+  //     return;
+  //   }
+
+  //   // complete와 naturalHeight를 이용해 완전한 load를 판단하는 함수
+  //   const updateStatus = (img: HTMLImageElement) => {
+  //     const isLoaded = img.complete && img.naturalHeight !== 0;
+
+  //     setIsImgLoaded(isLoaded);
+  //   };
+
+  //   // load 이벤트를 바라본다.
+  //   // 익명 함수를 사용했기 때문에 once 속성을 사용해서 한번 실행 후 제거한다.
+  //   bg1Ref.current &&
+  //     bg1Ref.current.addEventListener("load", () => updateStatus(bg1Ref.current as HTMLImageElement), { once: true });
+  //   bg2Ref.current.addEventListener("load", () => updateStatus(bg2Ref.current as HTMLImageElement), { once: true });
+  // }, [bg1Ref, bg2Ref]);
+
+  console.log(bg1Ref);
 
   return (
     <KoreaVersionSection>
@@ -100,11 +126,18 @@ export default function KoreaVersion() {
         </GotoPCBottomSection>
       </FrontContents>
       <MobileHeadBackgroudnIcon />
-      <MobileBackgroundGradationIcon1 pageY={pageY} />
-      {/* <MobileBackgroundGradationIcon2 /> */}
-      <img
+      {/* <MobileBackgroundGradationIcon1 pageY={pageY} ref={bg1Ref} /> */}
+      {/* <MobileBackgroundGradationIcon2 ref={bg2Ref} /> */}
+      <MobileBackgroundGradationIcon1
+        src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileBackgroundGradationIc1.svg"
+        alt="사진"
+        pageY={pageY}
+        loading="lazy"
+      />
+      <MobileBackgroundGradationIcon2
         src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileBackgroundGradationIc2.svg"
         alt="사진"
+        loading="lazy"
       />
     </KoreaVersionSection>
   );
@@ -129,18 +162,15 @@ const Show = keyframes`
 `;
 
 const Video = styled.video<{ pageY: number }>`
-  /* margin-top: ${({ pageY }) =>
-    0.005 * pageY + 1.5 >= 20 ? 5.5 : 0.005 * pageY <= 1.5 ? 4 : 0.005 * pageY + 1.5}rem; */
-
-  /* margin-top: ${({ pageY }) => (0.05 * pageY >= 32 ? 5 : 0.05 * pageY <= 1.5 ? 4 : 4.5)}rem; */
   width: 35.2rem;
   height: 19.8rem;
   background: #d9d9d9;
 
   margin-left: 2rem;
-  /* margin-top: 4rem; */
+  margin-top: 4rem;
 
   display: ${({ pageY }) => (pageY >= 500 ? "block" : "none")};
+
   animation: ${Show} 2s ease-out;
 `;
 
@@ -236,13 +266,13 @@ const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)`
   /* 애니메이션 필요 */
 `;
 
-const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)<{ pageY: number }>`
-  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 46 ? 46 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
+const MobileBackgroundGradationIcon1 = styled.img<{ pageY: number }>`
+  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 52 ? 52 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
   width: 39.3rem;
   height: 137rem;
 `;
 
-const MobileBackgroundGradationIcon2 = styled(MobileBackgroundGradationIc2)`
+const MobileBackgroundGradationIcon2 = styled.img`
   width: 39.3rem;
   height: 104.7rem;
 `;
