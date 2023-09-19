@@ -111,7 +111,10 @@ export default function KoreaVersion() {
 }
 
 const GotoPCBottomSection = styled.section`
-  margin-top: 155rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 170rem;
 
   text-align: center;
 `;
