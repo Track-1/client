@@ -101,7 +101,11 @@ export default function KoreaVersion() {
       </FrontContents>
       <MobileHeadBackgroudnIcon />
       <MobileBackgroundGradationIcon1 pageY={pageY} />
-      <MobileBackgroundGradationIcon2 />
+      {/* <MobileBackgroundGradationIcon2 /> */}
+      <img
+        src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileBackgroundGradationIc2.svg"
+        alt="사진"
+      />
     </KoreaVersionSection>
   );
 }
