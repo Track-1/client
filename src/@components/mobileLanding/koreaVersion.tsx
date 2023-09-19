@@ -181,7 +181,7 @@ const PcSaveButton = styled.button<{ pageY: number }>`
   font-weight: 300;
   line-height: 160%;
 
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   width: 21.5rem;
   height: 4.8rem;
   border-radius: 2.4rem;
