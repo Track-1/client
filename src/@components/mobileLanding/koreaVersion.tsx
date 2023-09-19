@@ -85,7 +85,7 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
   //   bg2Ref.current.addEventListener("load", () => updateStatus(bg2Ref.current as HTMLImageElement), { once: true });
   // }, [bg1Ref, bg2Ref]);
 
-  console.log(bg1Ref);
+  console.log(pageY);
 
   return (
     <KoreaVersionSection>
@@ -223,12 +223,13 @@ const FirstTitle = styled.h1`
 const SubTitle = styled.p<{ pageY: number }>`
   font-family: Pretendard;
 
-  margin-top: ${({ pageY }) => (0.07 * pageY >= 40 ? 40 : 0.07 * pageY <= 1.5 ? 7 : 0.07 * pageY)}rem;
+  margin-top: ${({ pageY }) => (0.07 * pageY >= 40 ? 40 : 0.07 * pageY <= 7 ? 7 : 0.07 * pageY)}rem;
 
   font-size: ${({ pageY }) => (0.01 * pageY >= 5 ? 5 : 0.01 * pageY <= 3.3 ? 3.3 : 0.01 * pageY)}rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
+  color: ${({ pageY, theme }) => (pageY <= 30 ? theme.colors.gray3 : theme.colors.white)};
 
   width: 29.5rem;
   text-align: center;
