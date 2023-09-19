@@ -29,30 +29,30 @@ export default function KoreaVersion() {
     Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     // 잘 적용되면 true 를 뱉는다.
     console.log(Kakao.isInitialized());
-    if (isKakao) {
-      Kakao.Share.createCustomButton({
-        container: "#kakao-link-btn",
-        templateId: 98550,
-        templateArgs: {
-          title: "Track-1",
-          description: "Discover Your Limitless Track",
-        },
-      });
-      setIsKakao(false);
-    }
+    // if (isKakao) {
+    //   Kakao.Share.createCustomButton({
+    //     container: "#kakao-link-btn",
+    //     templateId: 98550,
+    //     templateArgs: {
+    //       title: "Track-1",
+    //       description: "Discover Your Limitless Track",
+    //     },
+    //   });
+    //   setIsKakao(false);
+    // }
 
-    if (isKakao2) {
-      Kakao.Share.createCustomButton({
-        container: "#kakao-link-btn2",
-        templateId: 98550,
-        templateArgs: {
-          title: "Track-1",
-          description: "Discover Your Limitless Track",
-        },
-      });
-      setIsKakao2(false);
-    }
-  }, [isKakao, isKakao2]);
+    // if (isKakao2) {
+    //   Kakao.Share.createCustomButton({
+    //     container: "#kakao-link-btn2",
+    //     templateId: 98550,
+    //     templateArgs: {
+    //       title: "Track-1",
+    //       description: "Discover Your Limitless Track",
+    //     },
+    //   });
+    //   setIsKakao2(false);
+    // }
+  }, []);
 
   function handleKakaoShare() {
     setIsKakao(true);
@@ -60,8 +60,9 @@ export default function KoreaVersion() {
       Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     }
 
-    Kakao.Share.createCustomButton({
-      container: "#kakao-link-btn",
+    // Kakao.Share.createCustomButton({
+    Kakao.Share.sendCustom({
+      // container: "#kakao-link-btn",
       templateId: 98550,
       templateArgs: {
         title: "Track-1",
@@ -76,8 +77,9 @@ export default function KoreaVersion() {
       Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     }
 
-    Kakao.Share.createCustomButton({
-      container: "#kakao-link-btn2",
+    // Kakao.Share.createCustomButton({
+    Kakao.Share.sendCustom({
+      // container: "#kakao-link-btn2",
       templateId: 98550,
       templateArgs: {
         title: "Track-1",
@@ -102,7 +104,7 @@ export default function KoreaVersion() {
             <br />
             만날 수 있어요
           </SubTitle>
-          <PcSaveButton id="kakao-link-btn" className="kor-pc1" onClick={handleKakaoShare} pageY={pageY}>
+          <PcSaveButton className="kor-pc1" onClick={handleKakaoShare} pageY={pageY}>
             PC 링크 저장해두기
           </PcSaveButton>
         </GotoPCSection>
@@ -119,7 +121,7 @@ export default function KoreaVersion() {
           aaa
         </Video>
         <GotoPCBottomSection>
-          <PcSaveButton id="kakao-link-btn2" className="kor-pc2" onClick={handleKakaoShare2} pageY={pageY}>
+          <PcSaveButton className="kor-pc2" onClick={handleKakaoShare2} pageY={pageY}>
             PC 링크 저장해두기
           </PcSaveButton>
           <SmallPcComment>PC나 태블릿으로 접속하세요</SmallPcComment>
