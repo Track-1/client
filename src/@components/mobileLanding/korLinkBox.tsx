@@ -13,11 +13,11 @@ export default function KorLinkBox() {
       </Content>
       <Name>Youtube</Name>
       <Content className="kor-youtube" isEmail={false}>
-        <a href="www.youtube.com/@Track-1.official">www.youtube.com/@Track-1.official</a>
+        <a href="https://www.youtube.com/@Track-1.official">www.youtube.com/@Track-1.official</a>
       </Content>
       <Name>Our website</Name>
       <Content className="kor-website" isEmail={false}>
-        <a href="www.track1.site">www.track1.site</a>
+        <a href="https://www.track1.site/">www.track1.site</a>
       </Content>
 
       <CopyRight>©Track1. All rights reserved.</CopyRight>

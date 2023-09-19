@@ -111,6 +111,7 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
           pageY={pageY}
           controls
           playsInline
+          className="kor-video"
           poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png">
           <source
             src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_Korean.mp4"
