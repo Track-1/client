@@ -11,6 +11,7 @@ export interface LoadingProps {
 export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
   const [pageY, setPageY] = useState<number>(0);
   const documentRef = useRef(document);
+  const [isKakao, setIsKakao] = useState(false);
 
   useEffect(() => {
     documentRef.current.addEventListener("scroll", handleScroll);
@@ -28,13 +29,18 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
     Kakao.cleanup();
     // 자신의 js 키를 넣어준다.
 
-    Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    }
     // 잘 적용되면 true 를 뱉는다.
-
+    else {
+      shareLink();
+    }
     console.log(Kakao.isInitialized());
-  }, []);
+  }, [isKakao]);
 
   function handleKakaoShare() {
+    setIsKakao(!isKakao);
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
       shareLink();
@@ -47,6 +53,7 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
   }
 
   function handleKakaoShare2() {
+    setIsKakao(!isKakao);
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
       shareLink();
