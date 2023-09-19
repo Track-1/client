@@ -27,6 +27,7 @@ const MobileLandingContainer = styled.div`
   justify-content: center;
 
   overflow: scroll;
+  scroll-behavior: smooth;
 `;
 
 const MobileLandingSection = styled.section`
