@@ -20,8 +20,12 @@ export default function KoreaVersion() {
 
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
+    // init 해주기 전에 clean up 을 해준다.
     Kakao.cleanup();
+    // 자신의 js 키를 넣어준다.
+
     Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    // 잘 적용되면 true 를 뱉는다.
     console.log(Kakao.isInitialized());
   }, []);
 
@@ -31,7 +35,7 @@ export default function KoreaVersion() {
     }
 
     Kakao.Share.createCustomButton({
-      container: "#kakao-link-btn2",
+      container: "#kakao-link-btn",
       templateId: 98550,
       templateArgs: {
         title: "Track-1",
