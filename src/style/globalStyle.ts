@@ -86,17 +86,86 @@ export const GlobalStyle = createGlobalStyle`
     @media (min-width:1420px) and (max-width:1500px){
       font-size: 46.8%;
     }
-    @media (min-width:900px) and (max-width:1419px){
+    @media (min-width:1000px) and (max-width:1419px){
       font-size: 42%;
     }
-    @media (min-width: 768px) and (max-width:899px){ 
+    /* @media (min-width: 768px) and (max-width:899px){ 
       font-size: 35%;
     }
     @media (max-width:767px){ 
       font-size: 32%;
     }
     
+    @media (min-width: 1000px){ 
+      font-size: 70%
+    } */
+    /* 모바일 */
+    @media (min-width: 931px) and (max-width:999px){ 
+      font-size: 42%;
+    }
+    //Surface Pro 7
+    @media (min-width: 901px) and (max-width:930px){ 
+      font-size:62.5%;
+    }
+    //
+    @media (min-width: 831px) and (max-width:900px){ 
+      font-size: 160%;
+    }
+    //iPad Air
+    @media (min-width: 790px) and (max-width:830px){ 
+      font-size: 127%;
+    }
+    //iPad Mini
+    @media (min-width: 750px) and (max-width:789px){ 
+      font-size: 122%;
+    }
+    @media (min-width: 600px) and (max-width:749px){ 
+      font-size: 113%;
+    }
+    @media (min-width: 471px) and (max-width:580px){ 
+      font-size: 93%;
+    }
+    //
+    @media (min-width: 451px) and (max-width:470px){ 
+      font-size: 16px;
+    }
+    //iPhone XR & Galaxy S20 Ultra & A51/71
+    @media (min-width: 410px) and (max-width:450px){ 
+     font-size: 66%;
+    }
+    //iPhone 12 Pro
+    @media (min-width: 386px) and (max-width:409px){ 
+      font-size: 61%;
+    }
+    //
+    @media (min-width: 384px) and (max-width:385px){ 
+      font-size: 60%!important;
+    }
+    //iPhone SE
+    @media (min-width: 371px) and (max-width:383px){ 
+      font-size: 60%;
+    }
+    @media (min-width:361px) and (max-width: 370px){
+      font-size: 68%;
+    }
+    @media (min-width:331px) and (max-width: 361px){
+      font-size: 57%;
+   
+    }
+     //Galaxy S9+
+    @media (min-width:301px) and (max-width:330px){
+       font-size: 50%;
+   
+    }
+    //Galaxy Fold
+    @media (min-width:251px) and (max-width: 300px){ 
+      font-size: 44%;
+    }
 
+    @media (max-width:250px){
+      font-size: 46%;
+    }
+  
   }
   ul, li {
     padding-left: 0rem;
