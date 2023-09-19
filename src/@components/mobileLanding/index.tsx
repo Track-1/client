@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Loading from "../@common/loading";
 import EngLinkBox from "./engLinkBox";
 import EnglishVersion from "./englishVersion";
 import KorLinkBox from "./korLinkBox";
@@ -9,22 +8,15 @@ import MobileHeader from "./mobileHeader";
 
 export default function MobileLanding() {
   const [language, setLanguage] = useState("Kor");
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
 
   return (
-    <>
-      {isImgLoaded ? (
-        <Loading />
-      ) : (
-        <MobileLandingContainer>
-          <MobileLandingSection>
-            <MobileHeader language={language} setLanguage={setLanguage} />
-            {language === "Kor" ? <KoreaVersion setIsImgLoaded={setIsImgLoaded} /> : <EnglishVersion />}
-            {language === "Kor" ? <KorLinkBox /> : <EngLinkBox />}
-          </MobileLandingSection>
-        </MobileLandingContainer>
-      )}
-    </>
+    <MobileLandingContainer>
+      <MobileLandingSection>
+        <MobileHeader language={language} setLanguage={setLanguage} />
+        {language === "Kor" ? <KoreaVersion /> : <EnglishVersion />}
+        {language === "Kor" ? <KorLinkBox /> : <EngLinkBox />}
+      </MobileLandingSection>
+    </MobileLandingContainer>
   );
 }
 

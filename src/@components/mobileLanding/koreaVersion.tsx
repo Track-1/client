@@ -1,17 +1,12 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { MobileHeadBackgroudnIc } from "../../assets";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
-export interface LoadingProps {
-  setIsImgLoaded: Dispatch<SetStateAction<boolean>>;
-}
-
-export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
+export default function KoreaVersion() {
   const [pageY, setPageY] = useState<number>(0);
   const documentRef = useRef(document);
-  const [isKakao, setIsKakao] = useState(false);
 
   useEffect(() => {
     documentRef.current.addEventListener("scroll", handleScroll);
@@ -25,43 +20,19 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
 
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
-    // init 해주기 전에 clean up 을 해준다.
     Kakao.cleanup();
-    // 자신의 js 키를 넣어준다.
-
-    if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-    }
-    // 잘 적용되면 true 를 뱉는다.
-    else {
-      shareLink();
-    }
+    Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
     console.log(Kakao.isInitialized());
-  }, [isKakao]);
+  }, []);
 
   function handleKakaoShare() {
-    setIsKakao(!isKakao);
     if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-      shareLink();
+      Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
     }
 
     // if (!Kakao.isInitialized()) {
     //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     // }
-    shareLink();
-  }
-
-  function handleKakaoShare2() {
-    setIsKakao(!isKakao);
-    if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-      shareLink();
-    }
-    shareLink();
-  }
-
-  function shareLink() {
     Kakao.Share.createCustomButton({
       container: "#kakao-link-btn2",
       templateId: 98550,
@@ -72,27 +43,19 @@ export default function KoreaVersion({ setIsImgLoaded }: LoadingProps) {
     });
   }
 
-  const bg1Ref = useRef();
-  const bg2Ref = useRef();
-
-  // useEffect(() => {
-  //   if (!bg1Ref.current && !bg2Ref.current) {
-  //     return;
-  //   }
-
-  //   // complete와 naturalHeight를 이용해 완전한 load를 판단하는 함수
-  //   const updateStatus = (img: HTMLImageElement) => {
-  //     const isLoaded = img.complete && img.naturalHeight !== 0;
-
-  //     setIsImgLoaded(isLoaded);
-  //   };
-
-  //   // load 이벤트를 바라본다.
-  //   // 익명 함수를 사용했기 때문에 once 속성을 사용해서 한번 실행 후 제거한다.
-  //   bg1Ref.current &&
-  //     bg1Ref.current.addEventListener("load", () => updateStatus(bg1Ref.current as HTMLImageElement), { once: true });
-  //   bg2Ref.current.addEventListener("load", () => updateStatus(bg2Ref.current as HTMLImageElement), { once: true });
-  // }, [bg1Ref, bg2Ref]);
+  function handleKakaoShare2() {
+    if (!Kakao.isInitialized()) {
+      Kakao.init("d2ec963420b55d4c903b1f90d5284d36");
+    }
+    Kakao.Share.createCustomButton({
+      container: "#kakao-link-btn2",
+      templateId: 98550,
+      templateArgs: {
+        title: "Track-1",
+        description: "Discover Your Limitless Track",
+      },
+    });
+  }
 
   return (
     <KoreaVersionSection>
