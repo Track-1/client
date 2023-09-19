@@ -223,9 +223,9 @@ const FirstTitle = styled.h1`
 const SubTitle = styled.p<{ pageY: number }>`
   font-family: Pretendard;
 
-  margin-top: ${({ pageY }) => (0.07 * pageY >= 40 ? 40 : 0.07 * pageY <= 7 ? 7 : 0.07 * pageY)}rem;
+  margin-top: ${({ pageY }) => (0.07 * pageY >= 35 ? 35 : 0.07 * pageY <= 7 ? 7 : 0.07 * pageY)}rem;
 
-  font-size: ${({ pageY }) => (0.01 * pageY >= 5 ? 5 : 0.01 * pageY <= 3.3 ? 3.3 : 0.01 * pageY)}rem;
+  font-size: ${({ pageY }) => (0.03 * pageY >= 5 ? 5 : 0.03 * pageY <= 3.3 ? 3.3 : 0.03 * pageY)}rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -268,7 +268,7 @@ const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)`
 `;
 
 const MobileBackgroundGradationIcon1 = styled.img<{ pageY: number }>`
-  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 52 ? 52 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
+  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 47 ? 47 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
   width: 39.3rem;
   height: 137rem;
 `;
