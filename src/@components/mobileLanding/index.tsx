@@ -26,7 +26,7 @@ const MobileLandingContainer = styled.div`
   display: flex;
   justify-content: center;
 
-  overflow: scroll;
+  /* overflow: scroll; */
   scroll-behavior: smooth;
 `;
 
