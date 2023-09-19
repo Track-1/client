@@ -186,7 +186,7 @@ const SubTitle = styled.p<{ pageY: number }>`
   line-height: 120%;
   color: ${({ pageY, theme }) => (pageY <= 30 ? theme.colors.gray3 : theme.colors.white)};
 
-  width: 32rem;
+  width: 100%;
   text-align: center;
 
   display: flex;

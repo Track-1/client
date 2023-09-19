@@ -7,6 +7,8 @@ const { Kakao } = window;
 export default function KoreaVersion() {
   const [pageY, setPageY] = useState<number>(0);
   const documentRef = useRef(document);
+  const [isKakao, setIsKakao] = useState(false);
+  const [isKakao2, setIsKakao2] = useState(false);
 
   useEffect(() => {
     documentRef.current.addEventListener("scroll", handleScroll);
@@ -27,36 +29,61 @@ export default function KoreaVersion() {
     Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
     // 잘 적용되면 true 를 뱉는다.
     console.log(Kakao.isInitialized());
-  }, []);
-
-  function handleKakaoShare() {
-    if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    if (isKakao) {
+      Kakao.Share.createCustomButton({
+        container: "#kakao-link-btn",
+        templateId: 98550,
+        templateArgs: {
+          title: "Track-1",
+          description: "Discover Your Limitless Track",
+        },
+      });
+      setIsKakao(false);
     }
 
-    Kakao.Share.createCustomButton({
-      container: "#kakao-link-btn",
-      templateId: 98550,
-      templateArgs: {
-        title: "Track-1",
-        description: "Discover Your Limitless Track",
-      },
-    });
+    if (isKakao2) {
+      Kakao.Share.createCustomButton({
+        container: "#kakao-link-btn2",
+        templateId: 98550,
+        templateArgs: {
+          title: "Track-1",
+          description: "Discover Your Limitless Track",
+        },
+      });
+      setIsKakao2(false);
+    }
+  }, [isKakao, isKakao2]);
+
+  function handleKakaoShare() {
+    setIsKakao(true);
+    // if (!Kakao.isInitialized()) {
+    //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    // }
+
+    // Kakao.Share.createCustomButton({
+    //   container: "#kakao-link-btn",
+    //   templateId: 98550,
+    //   templateArgs: {
+    //     title: "Track-1",
+    //     description: "Discover Your Limitless Track",
+    //   },
+    // });
   }
 
   function handleKakaoShare2() {
-    if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-    }
+    setIsKakao2(true);
+    // if (!Kakao.isInitialized()) {
+    //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    // }
 
-    Kakao.Share.createCustomButton({
-      container: "#kakao-link-btn2",
-      templateId: 98550,
-      templateArgs: {
-        title: "Track-1",
-        description: "Discover Your Limitless Track",
-      },
-    });
+    // Kakao.Share.createCustomButton({
+    //   container: "#kakao-link-btn2",
+    //   templateId: 98550,
+    //   templateArgs: {
+    //     title: "Track-1",
+    //     description: "Discover Your Limitless Track",
+    //   },
+    // });
   }
 
   return (
@@ -217,7 +244,7 @@ const SubTitle = styled.p<{ pageY: number }>`
   line-height: 120%;
   color: ${({ pageY, theme }) => (pageY <= 30 ? theme.colors.gray3 : theme.colors.white)};
 
-  width: 29.5rem;
+  width: 100%;
   text-align: center;
 
   display: flex;
