@@ -220,8 +220,21 @@ const FirstTitle = styled.h1`
   flex-wrap: wrap;
 `;
 
+const FontLarger = keyframes`
+    0% {
+     font-size:1.5rem;
+     margin-top:7rem;
+    }
+    100% {
+      font-size:5rem;
+      margin-top:35rem;
+    }
+`;
+
 const SubTitle = styled.p<{ pageY: number }>`
   font-family: Pretendard;
+
+  /* animation: ${({ pageY }) => pageY > 30 && FontLarger} 2s ease-out; */
 
   margin-top: ${({ pageY }) => (0.07 * pageY >= 35 ? 35 : 0.07 * pageY <= 7 ? 7 : 0.07 * pageY)}rem;
 
