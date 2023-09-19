@@ -104,7 +104,7 @@ export default function KoreaVersion() {
 }
 
 const GotoPCBottomSection = styled.section`
-  margin-top: 160rem;
+  margin-top: 155rem;
 
   text-align: center;
 `;
@@ -167,7 +167,7 @@ const FirstTitle = styled.h1`
 const SubTitle = styled.p<{ pageY: number }>`
   font-family: Pretendard;
 
-  margin-top: ${({ pageY }) => (0.05 * pageY >= 20 ? 20 : 0.05 * pageY <= 1.5 ? 0 : 0.05 * pageY)}rem;
+  margin-top: ${({ pageY }) => (0.07 * pageY >= 40 ? 40 : 0.07 * pageY <= 1.5 ? 0 : 0.07 * pageY)}rem;
 
   font-size: ${({ pageY }) => (0.01 * pageY >= 5 ? 5 : 0.01 * pageY <= 1.5 ? 1.5 : 0.01 * pageY)}rem;
   font-style: normal;
@@ -211,7 +211,7 @@ const MobileHeadBackgroudnIcon = styled(MobileHeadBackgroudnIc)`
 `;
 
 const MobileBackgroundGradationIcon1 = styled(MobileBackgroundGradationIc1)<{ pageY: number }>`
-  margin-top: ${({ pageY }) => (0.04 * pageY + 10 >= 32 ? 32 : 0.04 * pageY <= 1.5 ? 10 : 0.04 * pageY + 10)}rem;
+  margin-top: ${({ pageY }) => (0.07 * pageY + 10 >= 50 ? 50 : 0.07 * pageY <= 1.5 ? 10 : 0.07 * pageY + 10)}rem;
   width: 39.3rem;
   height: 137rem;
 `;
