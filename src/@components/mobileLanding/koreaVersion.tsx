@@ -56,34 +56,34 @@ export default function KoreaVersion() {
 
   function handleKakaoShare() {
     setIsKakao(true);
-    // if (!Kakao.isInitialized()) {
-    //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-    // }
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    }
 
-    // Kakao.Share.createCustomButton({
-    //   container: "#kakao-link-btn",
-    //   templateId: 98550,
-    //   templateArgs: {
-    //     title: "Track-1",
-    //     description: "Discover Your Limitless Track",
-    //   },
-    // });
+    Kakao.Share.createCustomButton({
+      container: "#kakao-link-btn",
+      templateId: 98550,
+      templateArgs: {
+        title: "Track-1",
+        description: "Discover Your Limitless Track",
+      },
+    });
   }
 
   function handleKakaoShare2() {
     setIsKakao2(true);
-    // if (!Kakao.isInitialized()) {
-    //   Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
-    // }
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.REACT_APP_KAKAO_JS_KEY);
+    }
 
-    // Kakao.Share.createCustomButton({
-    //   container: "#kakao-link-btn2",
-    //   templateId: 98550,
-    //   templateArgs: {
-    //     title: "Track-1",
-    //     description: "Discover Your Limitless Track",
-    //   },
-    // });
+    Kakao.Share.createCustomButton({
+      container: "#kakao-link-btn2",
+      templateId: 98550,
+      templateArgs: {
+        title: "Track-1",
+        description: "Discover Your Limitless Track",
+      },
+    });
   }
 
   return (
