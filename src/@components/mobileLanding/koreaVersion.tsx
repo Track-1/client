@@ -82,7 +82,8 @@ export default function KoreaVersion() {
         <Video
           pageY={pageY}
           controls
-          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png">
+          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png"
+          preload="none">
           <source
             src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_Korean.mp4"
             type="video/mp4"
