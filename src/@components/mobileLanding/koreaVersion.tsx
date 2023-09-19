@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { MobileBackgroundGradationIc1, MobileBackgroundGradationIc2, MobileHeadBackgroudnIc } from "../../assets";
-import thumbnail from "../../assets/image/landingVideoThumbnail.png";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
@@ -80,7 +79,10 @@ export default function KoreaVersion() {
             PC 링크 저장해두기
           </PcSaveButton>
         </GotoPCSection>
-        <Video pageY={pageY} controls preload={thumbnail}>
+        <Video
+          pageY={pageY}
+          controls
+          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png">
           <source
             src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_Korean.mp4"
             type="video/mp4"
