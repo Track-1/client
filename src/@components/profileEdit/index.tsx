@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import ProducerImageEdit from "./producerImageEdit";
-import ProfileNameEdit from "./profileNameEdit";
 import ProfileHashtagEdit from "./profileHashtagEdit";
+import ProfileNameEdit from "./profileNameEdit";
 import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from "../../assets";
 import useInputText from "../../hooks/common/useInputText";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
@@ -13,6 +12,11 @@ import ProfileDescriptionEdit from "./profileDescriptionEdit";
 import Header from "../@common/header";
 import { useEffect, useState } from "react";
 import useHashtagInput from "../../hooks/common/useHashtagInput";
+import { ROLE } from "../../core/common/roleType";
+import VocalImageEdit from "./vocalProfileEdit/vocalImageEdit";
+import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
+import ProfileContactEdit from "./profileContactEdit";
+import ProducerImageEdit from "./producerProfileEdit/producerImageEdit";
 
 export default function ProducerProfileEditContainer() {
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
@@ -20,6 +24,8 @@ export default function ProducerProfileEditContainer() {
   const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
   const [isUploadActive, setIsUploadActive] = useState(false);
   const [name, handleChangeName] = useInputText("", TEXT_LIMIT.NICK_NAME);
+  const [contact, handleChangeContact] = useInputText("");
+
   const {
     hashtags,
     hashtagLength,
@@ -29,18 +35,32 @@ export default function ProducerProfileEditContainer() {
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = useHashtagInput();
+  const [isSleep, setIsSleep] = useState(false);
 
-  const methods = useForm({
+  const nameMethods = useForm({
     defaultValues: {
       nickName: "",
     },
     mode: "onChange",
   });
 
+  const contactMethods = useForm({
+    defaultValues: {
+      contact: "",
+    },
+    mode: "onChange",
+  });
+
+  const userType = "vocal";
+
   useEffect(() => {
-    const nickName = methods.getValues().nickName;
+    const nickName = nameMethods.getValues().nickName;
     return nickName !== "" ? setIsUploadActive(true) : setIsUploadActive(false);
-  }, [methods.getValues()]);
+  }, [nameMethods.watch()]);
+
+  function handleChangeIsSleep() {
+    setIsSleep((prev) => !prev);
+  }
 
   return (
     <>
@@ -48,16 +68,31 @@ export default function ProducerProfileEditContainer() {
       <ProfileBackgroundIcon />
       <ProfileEditContainer>
         <ProfileEditTitle>
-          <ProducerImageEdit
-            imageFile={imageFile}
-            previewImage={previewImage}
-            handleUploadImageFile={handleUploadImageFile}
-          />
-          <ProfileNameEdit methods={methods} />
+          {userType === ROLE.PRODUCER ? (
+            <>
+              <ProducerImageEdit
+                imageFile={imageFile}
+                previewImage={previewImage}
+                handleUploadImageFile={handleUploadImageFile}
+              />
+              <ProfileNameEdit methods={nameMethods} />
+            </>
+          ) : (
+            <>
+              <VocalImageEdit
+                imageFile={imageFile}
+                previewImage={previewImage}
+                handleUploadImageFile={handleUploadImageFile}
+              />
+              <ProfileNameEdit methods={nameMethods} />
+              <VocalSleeper isSleep={isSleep} handleChangeIsSleep={handleChangeIsSleep} />
+            </>
+          )}
         </ProfileEditTitle>
 
         <ProfileEditInfo>
           <ProfileEditInfoWrapper>
+            <ProfileContactEdit methods={contactMethods} />
             <ProfileSelectCategoryEdit
               isCategorySelected={isCategorySelected}
               handleSelectCategory={handleSelectCategory}
@@ -79,7 +114,7 @@ export default function ProducerProfileEditContainer() {
   );
 }
 
-const ProfileBackgroundIcon = styled(ProfileBackgroundIc)`
+export const ProfileBackgroundIcon = styled(ProfileBackgroundIc)`
   position: absolute;
 
   width: 192rem;
@@ -116,7 +151,7 @@ const ProfileContainer = styled.div`
   align-items: center;
 `;
 
-const ProfileEditInfoWrapper = styled.div`
+export const ProfileEditInfoWrapper = styled.div`
   margin-top: 8.9rem;
 `;
 
@@ -126,10 +161,10 @@ export const ProfileEditInfo = styled(ProfileContainer)`
   width: 77.9rem;
 `;
 
-const UploadActiveSaveButtonIcon = styled(UploadActiveSaveButtonIc)`
+export const UploadActiveSaveButtonIcon = styled(UploadActiveSaveButtonIc)`
   width: 24.6rem;
 `;
 
-const UploadUnActiveSaveButtonIcon = styled(UploadUnActiveSaveButtonIc)`
+export const UploadUnActiveSaveButtonIcon = styled(UploadUnActiveSaveButtonIc)`
   width: 24.6rem;
 `;

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
-import { UploadFileChangeIc } from "../../assets";
-import UploadProducerDefaultImg from "../../assets/image/uploadProducerDefaultImg .png";
-import useFileHover from "../../hooks/common/useFileHover";
+import { UploadFileChangeIc } from "../../../assets";
+import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg.png";
+import useFileHover from "../../../hooks/common/useFileHover";
 
 interface ProducerImageEditProps {
   imageFile: File | Blob | null;
@@ -13,18 +13,19 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
   const { imageFile, previewImage, handleUploadImageFile } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
+  console.log(fileHoverState, imageFile);
+
   return (
     <>
-      {/* 프로듀서 프로필 이미지 업로더 */}
       <ProfileImageContainer>
         <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
           <ProfileImage
             src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
             alt="썸네일 이미지"
-            hoverState={true}
+            hoverState={fileHoverState}
             imageFile={imageFile}
           />
-          {imageFile && true && <FileChangeIcon />}
+          {imageFile && fileHoverState && <FileChangeIcon />}
           <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
         </Label>
       </ProfileImageContainer>
@@ -32,15 +33,13 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
   );
 }
 
-const FileChangeIcon = styled(UploadFileChangeIc)`
+export const FileChangeIcon = styled(UploadFileChangeIc)`
   width: 18.9rem;
   position: absolute;
   top: 47.95rem;
   left: 42.8rem;
   cursor: pointer;
   z-index: 999900;
-
-  background-color: orange;
 `;
 
 const ProfileImageContainer = styled.label`
@@ -83,10 +82,10 @@ const ProfileImage = styled.img<{ hoverState: boolean; imageFile: File | Blob | 
         `}
 `;
 
-const FileInput = styled.input`
+export const FileInput = styled.input`
   display: none;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   cursor: pointer;
 `;

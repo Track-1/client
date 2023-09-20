@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import HashtagInput from "../@common/hashtag/hashtagInput";
 import InputContainer from "../@common/inputContainer";
-import useHashtagInput from "../../hooks/common/useHashtagInput";
 
 interface ProfileHashtagEditProps {
   hashtags: string[];
