@@ -26,7 +26,7 @@ export default function useUploadValue(initEmptyData: boolean) {
   } = useHashtagInput();
   const { audioFile, audioFileName, setAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
     useUploadAudioFile();
-  const [description, changeDescription, setDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
+  const [description, handleChangeDescription, setDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
 
   const setUploadData = useSetRecoilState(UploadData);
   const { trackId } = useParams();
@@ -82,7 +82,7 @@ export default function useUploadValue(initEmptyData: boolean) {
     },
     image: { imageFile, previewImage, handleUploadImageFile },
     audio: { audioFile, audioFileName, audioFileType, isTextOverflow, handleUploadAudioFile },
-    description: { description, changeDescription },
+    description: { description, handleChangeDescription },
     uploadType,
   };
 }

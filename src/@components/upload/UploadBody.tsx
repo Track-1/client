@@ -46,7 +46,7 @@ export default function UploadBody(props: UploadBodyProps) {
               />
               <DescriptionInfo
                 description={description.description}
-                changeDescription={description.changeDescription}
+                handleChangeDescription={description.handleChangeDescription}
               />
             </UploadInfoWrapper>
           </UploadDataWrapper>
@@ -77,7 +77,7 @@ export default function UploadBody(props: UploadBodyProps) {
               />
               <DescriptionInfo
                 description={description.description}
-                changeDescription={description.changeDescription}
+                handleChangeDescription={description.handleChangeDescription}
               />
             </UploadInfoWrapper>
           </UploadDataWrapper>

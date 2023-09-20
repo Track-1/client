@@ -7,15 +7,15 @@ import { checkEnterCount } from "../../utils/common/checkEnterCount";
 
 interface DescriptionInputProps {
   description: string;
-  changeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function DescriptionInput(props: DescriptionInputProps) {
-  const { description, changeDescription } = props;
+  const { description, handleChangeDescription } = props;
 
   function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = checkEnterCount(e);
-    enterCount < TEXT_LIMIT.ENTER_COUNT && changeDescription(e);
+    enterCount < TEXT_LIMIT.ENTER_COUNT && handleChangeDescription(e);
   }
 
   return (
@@ -30,7 +30,7 @@ export default function DescriptionInput(props: DescriptionInputProps) {
       />
       <TextLengthWrapper>
         <Empty />
-        {/* <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} /> */}
+        <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} />
       </TextLengthWrapper>
     </InfoInput>
   );

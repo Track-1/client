@@ -3,6 +3,7 @@ export const TEXT_LIMIT = {
   HASHTAG: 10,
   UPLOAD_AUDIO: 13,
   15: 15,
+  NICK_NAME: 16,
   20: 20,
   UPLOAD_TITLE: 36,
   150: 150,
