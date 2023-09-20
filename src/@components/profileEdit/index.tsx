@@ -18,13 +18,11 @@ import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
 import ProfileContactEdit from "./profileContactEdit";
 import ProducerImageEdit from "./producerProfileEdit/producerImageEdit";
 
-export default function ProducerProfileEditContainer() {
+export default function ProfileEditContainer() {
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
   const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.DESCRIPTION);
   const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
   const [isUploadActive, setIsUploadActive] = useState(false);
-  const [name, handleChangeName] = useInputText("", TEXT_LIMIT.NICK_NAME);
-  const [contact, handleChangeContact] = useInputText("");
 
   const {
     hashtags,
@@ -66,7 +64,7 @@ export default function ProducerProfileEditContainer() {
     <>
       <Header backBtn>{isUploadActive ? <UploadActiveSaveButtonIcon /> : <UploadUnActiveSaveButtonIcon />}</Header>
       <ProfileBackgroundIcon />
-      <ProfileEditContainer>
+      <ProfileEditContainerBox>
         <ProfileEditTitle>
           {userType === ROLE.PRODUCER ? (
             <>
@@ -109,7 +107,7 @@ export default function ProducerProfileEditContainer() {
             <ProfileDescriptionEdit description={description} handleChangeDescription={handleChangeDescriptikon} />
           </ProfileEditInfoWrapper>
         </ProfileEditInfo>
-      </ProfileEditContainer>
+      </ProfileEditContainerBox>
     </>
   );
 }
@@ -121,7 +119,7 @@ export const ProfileBackgroundIcon = styled(ProfileBackgroundIc)`
   height: 98rem;
 `;
 
-export const ProfileEditContainer = styled.div`
+export const ProfileEditContainerBox = styled.div`
   display: flex;
   justify-content: space-between;
 
