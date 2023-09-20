@@ -87,3 +87,5 @@ export { ReactComponent as DefaultToggleIc } from "./icon/defaultToggleIc.svg";
 export { ReactComponent as ProducerTypeToggleIc } from "./icon/producerTypeToggleIc.svg";
 export { ReactComponent as HomeLogoIc } from "./icon/homeLogoIc.svg";
 export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
+export { ReactComponent as UploadActiveSaveButtonIc } from "./icon/uploadActiveSaveButtonIc.svg";
+export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnActiveSaveButtonIc.svg";
