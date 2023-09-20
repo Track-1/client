@@ -35,25 +35,31 @@ export default function HashtagInput(props: HashtagInputProps) {
           <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} />
         </HashtagBox>
       ))}
-      {hashtags?.length < 3 && (
-        <HashtagBox>
-          <HashtagWrapper>
-            <HashtagSharp># </HashtagSharp>
-            <HashtagInputText
-              placeholder="Hashtag"
-              onKeyDown={handleEnterHashtag}
-              onChange={handleChangeHashtagInputText}
-              onBlur={handleAddHashtag}
-              inputWidth={hashtagLength}
-              value={hashtagInputText}
-            />
-          </HashtagWrapper>
-        </HashtagBox>
-      )}
-      {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
+      <HashtagBoxWrapper>
+        {hashtags?.length < 3 && (
+          <HashtagBox>
+            <HashtagWrapper>
+              <HashtagSharp># </HashtagSharp>
+              <HashtagInputText
+                placeholder="Hashtag"
+                onKeyDown={handleEnterHashtag}
+                onChange={handleChangeHashtagInputText}
+                onBlur={handleAddHashtag}
+                inputWidth={hashtagLength}
+                value={hashtagInputText}
+              />
+            </HashtagWrapper>
+          </HashtagBox>
+        )}
+        {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
+      </HashtagBoxWrapper>
     </>
   );
 }
+
+const HashtagBoxWrapper = styled.div`
+  display: flex;
+`;
 
 const HashtagBox = styled.div`
   display: flex;
@@ -62,6 +68,7 @@ const HashtagBox = styled.div`
 
   padding-right: 1rem;
   margin-right: 1rem;
+  margin-bottom: 1.2rem;
 
   border-radius: 2.1rem;
   background-color: ${({ theme }) => theme.colors.gray5};
@@ -87,7 +94,7 @@ const HashtagSharp = styled.p`
 const HashtagInputText = styled.input<{ inputWidth: number }>`
   display: flex;
 
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth)}rem;
+  width: ${({ inputWidth }) => (inputWidth === 0 ? 9 : inputWidth * 1.5 + 1)}rem;
   ${({ theme }) => theme.fonts.hashtag};
 
   color: ${({ theme }) => theme.colors.gray1};
@@ -106,8 +113,8 @@ const CompletedHashtag = styled.article`
 `;
 
 const AddHashtagIcon = styled(AddHashtagIc)`
-  width: 4rem;
-  height: 4rem;
+  width: 3.8rem;
+  height: 3.8rem;
 
   cursor: pointer;
 `;

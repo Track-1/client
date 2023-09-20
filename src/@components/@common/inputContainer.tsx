@@ -1,19 +1,24 @@
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
+import HashtagWarning from "./hashtag/hashtagWarning";
 
 interface InputContainerProps {
   title: string;
   isRequired?: boolean;
+  hashtagWarningIcon?: boolean;
 }
 
 export default function InputContainer(props: PropsWithChildren<InputContainerProps>) {
-  const { title, isRequired, children } = props;
+  const { title, isRequired, hashtagWarningIcon, children } = props;
 
   return (
     <Container>
       <InputTitleWrapper>
-        <InputTitle>{title}</InputTitle>
-        {isRequired && <PointIcon />}
+        <Wrapper>
+          <InputTitle>{title}</InputTitle>
+          {isRequired && <PointIcon />}
+        </Wrapper>
+        {hashtagWarningIcon && <HashtagWarning />}
       </InputTitleWrapper>
       {children}
     </Container>
@@ -25,6 +30,13 @@ const Container = styled.div`
 `;
 
 const InputTitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+`;
+
+const Wrapper = styled.div`
   display: flex;
 `;
 

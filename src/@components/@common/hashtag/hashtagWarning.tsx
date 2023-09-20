@@ -2,26 +2,33 @@ import styled from "styled-components";
 import { HashtagWarningIc } from "../../../assets";
 import { hashtagInfo } from "../../../core/common/hashtagInfo";
 
-export default function ProfileWarning() {
+export default function HashtagWarning() {
   return (
-    <WarningIcon>
-      <HashtagWarningIcon />
-      <WarningTextWrapper>
-        <WarningText>{hashtagInfo}</WarningText>
-      </WarningTextWrapper>
-    </WarningIcon>
+    <Container>
+      <WarningIcon>
+        <HashtagWarningIcon />
+        <WarningTextWrapper>
+          <WarningText>{hashtagInfo}</WarningText>
+        </WarningTextWrapper>
+      </WarningIcon>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  position: relative;
+`;
 
 const WarningTextWrapper = styled.div`
   display: none;
 
   position: absolute;
+  right: 0;
 
   width: 47.2rem;
   height: 12.5rem;
 
-  margin-top: 4rem;
+  margin-top: 1.8rem;
 
   border-radius: 0.5rem;
   background: rgba(30, 32, 37, 0.7);
@@ -38,13 +45,6 @@ const WarningText = styled.div`
 `;
 
 const WarningIcon = styled.div`
-  position: relative;
-
-  height: 3rem;
-  margin-top: 0.7rem;
-
-  border-radius: 5rem;
-
   cursor: pointer;
 
   :hover ${WarningTextWrapper} {
@@ -53,14 +53,7 @@ const WarningIcon = styled.div`
 `;
 
 const HashtagWarningIcon = styled(HashtagWarningIc)`
-  position: absolute;
-  z-index: 1;
-
-  width: 4rem;
-  height: 4rem;
-
-  margin-left: 42.6rem;
-  margin-top: -1rem;
+  width: 3rem;
 
   opacity: 0.3;
 
