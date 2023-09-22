@@ -26,7 +26,11 @@ export default function VocalProfile() {
 }
 
 const BackButtonWrapper = styled.div`
-  margin: 6rem 0 6rem 8rem;
+  margin: 6rem 0 6rem 0;
+  display: flex;
+  padding: 0 8rem;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
