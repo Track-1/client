@@ -38,6 +38,8 @@ export { ReactComponent as MoveTouploadVocalSearchingButtonIc } from "./icon/mov
 export { ReactComponent as OpenDownloadIc } from "./icon/openedIc.svg";
 export { ReactComponent as PauseButtonIc } from "./icon/pauseButtonIc.svg";
 export { ReactComponent as PlayButtonIc } from "./icon/playButtonIc.svg";
+export { ReactComponent as PortfolioPauseIc } from "./icon/portfolioPauseIc.svg";
+export { ReactComponent as PortfolioPlayIc } from "./icon/portfolioPlayIc.svg";
 export { ReactComponent as ProducerTypeToggleIc } from "./icon/producerTypeToggleIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";

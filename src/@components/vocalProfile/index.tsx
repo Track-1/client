@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ProfileEditBtnIc } from "../../assets";
 import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
 import BackButton from "../@common/backButton";
+import Portfolio from "../portfolio";
 import Profile from "../profile";
 
 export default function VocalProfile() {
@@ -15,15 +16,28 @@ export default function VocalProfile() {
   }
 
   return (
-    <>
-      <BackButtonWrapper>
-        <BackButton />
-        {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
-      </BackButtonWrapper>
-      <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
-    </>
+    <Container>
+      <LeftSection>
+        <BackButtonWrapper>
+          <BackButton />
+          {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
+        </BackButtonWrapper>
+        <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
+      </LeftSection>
+      <Right>
+        <Portfolio />
+      </Right>
+    </Container>
   );
 }
+
+const Right = styled.section`
+  border: 1px solid white;
+  width: 186rem;
+`;
+const Container = styled.div`
+  display: flex;
+`;
 
 const BackButtonWrapper = styled.div`
   margin: 6rem 0 6rem 0;
@@ -38,4 +52,8 @@ const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
   margin-left: 16.9rem;
 
   cursor: pointer;
+`;
+
+const LeftSection = styled.section`
+  width: 60rem;
 `;
