@@ -18,8 +18,8 @@ export default function Profile(props: ProfileProps) {
 
   return (
     <ProfileWrapper>
-      {userType === "vocal" && <VocalProfileImage profileImage={userProfile?.userImageFile} />}
-      {userType === "producer" && <ProducerProfileImage profileImage={userProfile?.userImageFile} />}
+      {userType === "vocal" && <VocalProfileImage />}
+      {userType === "producer" && <ProducerProfileImage />}
       <Title>
         <Name>{userProfile?.userName}</Name>
         {userProfile?.userTrackSearch && <SleeperAccountIcon />}

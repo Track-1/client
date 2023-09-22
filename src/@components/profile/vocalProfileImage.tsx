@@ -1,15 +1,14 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
 
-interface VocalProfileImageProps {
-  profileImage: string | undefined;
-}
-
-export default function VocalProfileImage(props: VocalProfileImageProps) {
-  const { profileImage } = props;
+export default function VocalProfileImage() {
+  const { vocalId } = useParams();
+  const { vocalProfile } = useGetVocalProfile(Number(vocalId));
 
   return (
     <Container>
-      <Image src={profileImage} alt="프로필이미지" />
+      <Image src={vocalProfile?.userProfile.userImageFile} alt="프로필이미지" />
     </Container>
   );
 }

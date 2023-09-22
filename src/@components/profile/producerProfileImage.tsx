@@ -1,15 +1,14 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import useGetProducerProfile from "../../hooks/producerProfile/useGetProducerProfile";
 
-interface ProducerProfileImageProps {
-  profileImage: string | undefined;
-}
-
-export default function ProducerProfileImage(props: ProducerProfileImageProps) {
-  const { profileImage } = props;
+export default function ProducerProfileImage() {
+  const { producerId } = useParams();
+  const { producerProfile } = useGetProducerProfile(Number(producerId));
 
   return (
     <Container>
-      <ProfileImage src={profileImage} alt="프로필이미지" />
+      <ProfileImage src={producerProfile?.userProfile.userImageFile} alt="프로필이미지" />
     </Container>
   );
 }
