@@ -1,3 +1,5 @@
+import VocalProfile from "../@components/vocalProfile";
+
 export default function VocalProfilePage() {
-  return <div>vocalProfilePage</div>;
+  return <VocalProfile />;
 }

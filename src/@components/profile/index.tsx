@@ -1,19 +1,11 @@
 import styled from "styled-components";
 import { SleeperAccountIc } from "../../assets";
+import { UserProfileType } from "../../type/profile";
+import ProducerProfileImage from "./producerProfileImage";
 import ProfileCategory from "./profileCategory";
 import ProfileDescription from "./profileDescription";
 import ProfileHashtags from "./profileHashtags";
-
-interface UserProfileType {
-  userId: number;
-  userImageFile: string;
-  userName: string;
-  userContact: string;
-  userCategory?: string[];
-  userKeyword: string[];
-  userIntroduction: string;
-  userTrackSearch: boolean;
-}
+import VocalProfileImage from "./vocalProfileImage";
 
 interface ProfileProps {
   userType: string | undefined;
@@ -26,6 +18,8 @@ export default function Profile(props: ProfileProps) {
 
   return (
     <ProfileWrapper>
+      {userType === "vocal" && <VocalProfileImage profileImage={userProfile?.userImageFile} />}
+      {userType === "producer" && <ProducerProfileImage profileImage={userProfile?.userImageFile} />}
       <Title>
         <Name>{userProfile?.userName}</Name>
         {userProfile?.userTrackSearch && <SleeperAccountIcon />}
@@ -41,6 +35,7 @@ export default function Profile(props: ProfileProps) {
 }
 
 const Title = styled.header`
+  margin-top: 2.1rem;
   display: flex;
 `;
 

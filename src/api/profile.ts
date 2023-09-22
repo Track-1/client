@@ -24,6 +24,17 @@ export async function getProducerInfo(params: ProducerInfoParamsType) {
   return data;
 }
 
+export async function getVocalProfile(params: VocalInfoParamsType) {
+  const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
+    params: {
+      page: 1,
+      limit: 1,
+    },
+  });
+
+  return data.data;
+}
+
 export async function getVocalInfo(params: VocalInfoParamsType) {
   const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_INFO(params.userId), {
     params: {
