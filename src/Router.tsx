@@ -3,12 +3,14 @@ import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import MainPage from "./@pages/mainPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
+import ProducerProfilePage from "./@pages/producerProfilePage";
 import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
 import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
 import UploadPage from "./@pages/uploadPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
+import VocalProfilePage from "./@pages/vocalProfilePage";
 
 export default function Router() {
   return (
@@ -27,6 +29,8 @@ export default function Router() {
         <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
         <Route path="/vocal/profile-edit" element={<VocalProfileEditPage />} />
         <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
+        <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
       </Routes>
     </BrowserRouter>
   );
