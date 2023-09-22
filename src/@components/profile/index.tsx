@@ -51,12 +51,10 @@ const ProfileWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   width: 60rem;
-  height: 100vh;
-
-  border: 1px solid white;
+  height: 108rem;
 `;
 
 const Name = styled.h1`
