@@ -41,6 +41,7 @@ export { ReactComponent as PlayButtonIc } from "./icon/playButtonIc.svg";
 export { ReactComponent as ProducerTypeToggleIc } from "./icon/producerTypeToggleIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
+export { ReactComponent as ProfileEditBtnIc } from "./icon/profileEditBtnIc.svg";
 export { ReactComponent as ProfileEditSleepAcountTextIc } from "./icon/profileEditSleepAcountTextIc.svg";
 export { ReactComponent as ProfileEditSleepAcountTitleIc } from "./icon/profileEditSleepAcountTitleIc.svg";
 export { ReactComponent as ProfileEditSleeperButtonIc } from "./icon/profileEditSleeperButtonIc.svg";

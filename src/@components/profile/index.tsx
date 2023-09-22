@@ -9,12 +9,11 @@ import VocalProfileImage from "./vocalProfileImage";
 
 interface ProfileProps {
   userType: string | undefined;
-  userSelf: boolean | undefined;
   userProfile: UserProfileType | undefined;
 }
 
 export default function Profile(props: ProfileProps) {
-  const { userType, userSelf, userProfile } = props;
+  const { userType, userProfile } = props;
 
   return (
     <ProfileWrapper>
