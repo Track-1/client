@@ -2,13 +2,13 @@ import { useState } from "react";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
 
-interface VocalBigPortfolioProps {
+interface VocalSmallPortfolioProps {
   portfolioId: number;
   portfolioImageFile: string;
   portfolioAudioFile: string;
 }
 
-export default function VocalBigPortfolio(props: VocalBigPortfolioProps) {
+export default function VocalSmallPortfolio(props: VocalSmallPortfolioProps) {
   const { portfolioId, portfolioImageFile, portfolioAudioFile } = props;
   // 플레이어 붙이기
   const isPlay = true;
@@ -23,12 +23,12 @@ export default function VocalBigPortfolio(props: VocalBigPortfolioProps) {
   }
 
   return (
-    <BigImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover}>
-      <BigImageWrapper className="image-wrapper">
+    <SmallImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover}>
+      <SmallImageWrapper className="image-wrapper">
         <Image src={portfolioImageFile} alt="포트폴리오 이미지" className="image" />
-      </BigImageWrapper>
+      </SmallImageWrapper>
       {!isPlay ? hover !== -1 && <PortfolioPauseIcon /> : hover !== -1 && <PortfolioPlayIcon />}
-    </BigImageContainer>
+    </SmallImageContainer>
   );
 }
 
@@ -47,10 +47,10 @@ const PortfolioPlayIcon = styled(PortfolioPlayIc)`
   cursor: pointer;
 `;
 
-const BigImageContainer = styled.div`
+const SmallImageContainer = styled.div`
   display: flex;
-  width: 42.8rem;
-  height: 42.8rem;
+  width: 22rem;
+  height: 22rem;
   justify-content: center;
   align-items: center;
 
@@ -66,12 +66,12 @@ const BigImageContainer = styled.div`
   }
 `;
 
-const BigImageWrapper = styled.div`
+const SmallImageWrapper = styled.div`
   display: inline-block;
 
   overflow: hidden;
-  width: 32rem;
-  height: 32rem;
+  width: 16.7rem;
+  height: 16.7rem;
   border-radius: 3rem;
 
   transform: rotate(-45deg);
@@ -88,11 +88,11 @@ const Image = styled.img`
   transform: rotate(45deg);
   object-fit: cover;
 
-  margin-left: -8rem;
-  margin-top: -8rem;
+  margin-left: -3rem;
+  margin-top: -3rem;
 
-  width: 150%;
-  height: 150%;
+  width: 135%;
+  height: 135%;
 
   cursor: pointer;
 `;
