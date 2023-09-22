@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { CategoryIc } from "../../assets";
 import { CategoryId, CategoryText } from "../../core/common/categories";
+import Empty from "./empty";
 
 interface ProfileCategoryProps {
   category: string[] | undefined;
@@ -22,9 +23,7 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
             ),
           )
         ) : (
-          <EmptyProfileMessageWrapper>
-            <EmptyProfileMessage>no information</EmptyProfileMessage>
-          </EmptyProfileMessageWrapper>
+          <Empty />
         )}
       </CategoryArray>
     </CategoryBox>
@@ -55,20 +54,6 @@ const NotCategory = styled.li`
 
 const CategoryIcon = styled(CategoryIc)`
   width: 10.2rem;
-`;
-
-const EmptyProfileMessageWrapper = styled.div`
-  height: 10.3rem;
-
-  display: flex;
-  justify-content: center;
-
-  margin-top: 6.2rem;
-`;
-
-const EmptyProfileMessage = styled.p`
-  ${({ theme }) => theme.fonts.description}
-  color: ${({ theme }) => theme.colors.gray4};
 `;
 
 const CategoryArray = styled.ul`
