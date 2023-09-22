@@ -1,7 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import MainPage from "./@pages/mainPage";
-import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
 import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
