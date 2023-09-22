@@ -80,6 +80,7 @@ export { ReactComponent as SignupSendCodeIc } from "./icon/signupSendCodeIc.svg"
 export { ReactComponent as SignupStepBackArrowIc } from "./icon/signupStepBackArrowIc.svg";
 export { ReactComponent as SignupStepContinueIc } from "./icon/signupStepContinueIc.svg";
 export { ReactComponent as SignupVerifyIc } from "./icon/signupVerifyIc.svg";
+export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg";
 export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
 export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";

@@ -6,8 +6,6 @@ export default function ProducerProfilePage() {
   const { producerId } = useParams();
   const { producerProfile } = useGetProducerProfile(Number(producerId));
 
-  console.log(producerProfile);
-
   return (
     <>
       <Profile

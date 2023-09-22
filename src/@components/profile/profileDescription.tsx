@@ -18,10 +18,10 @@ export default function ProfileDescription(props: ProfileDescriptionProps) {
 }
 
 const DescriptionBox = styled.div`
-  width: 28em;
+  width: 43rem;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 
   ${({ theme }) => theme.fonts.description}
   color: ${({ theme }) => theme.colors.gray2};

@@ -15,11 +15,11 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
       <CategoryIcon />
       <CategoryArray>
         {category && category.length > 0 ? (
-          Object.keys(CategoryId).map((category: any, index: number) =>
-            category.includes(CategoryText[category]) ? (
-              <Category key={category}>{category}</Category>
+          Object.keys(CategoryId).map((categ: any, index: number) =>
+            category.includes(CategoryText[categ]) ? (
+              <Category key={index}>{categ}</Category>
             ) : (
-              <NotCategory key={category + 9}>{category}</NotCategory>
+              <NotCategory key={index + 9}>{categ}</NotCategory>
             ),
           )
         ) : (
@@ -31,10 +31,11 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
 }
 
 const CategoryBox = styled.div`
+  margin-right: 6.3rem;
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.hashtag};
 
-  width: 34.8rem;
+  width: 20.3rem;
 
   display: flex;
   flex-direction: column;
@@ -64,4 +65,6 @@ const CategoryArray = styled.ul`
 
 const Category = styled.li`
   margin-bottom: 1.1rem;
+
+  color: ${({ theme }) => theme.colors.white};
 `;
