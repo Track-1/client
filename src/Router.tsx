@@ -1,9 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ForgotPasswordPage from "./@pages/forgotPasswordPage";
+import MainPage from "./@pages/mainPage";
+import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
-import TrackPostPage from "./@pages/trackPostPage";
 import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
 import SignupSuccessPage from "./@pages/signupSuccessPage";
+import TrackPostPage from "./@pages/trackPostPage";
 import UploadPage from "./@pages/uploadPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
@@ -14,6 +17,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
         <Route path="/signup/profile" element={<SignupProfilePage />} />
         <Route path="/signup/success" element={<SignupSuccessPage />} />
