@@ -1,4 +1,5 @@
 import ProfileCategory from "./profileCategory";
+import ProfileDescription from "./profileDescription";
 import ProfileHashtags from "./profileHashtags";
 
 interface UserProfileType {
@@ -25,6 +26,7 @@ export default function Profile(props: ProfileProps) {
     <>
       <ProfileCategory category={userProfile?.userCategory} />
       <ProfileHashtags keywords={userProfile?.userKeyword} />
+      <ProfileDescription introduce={userProfile?.userIntroduction} />
     </>
   );
 }
