@@ -80,7 +80,6 @@ export { ReactComponent as SignupSendCodeIc } from "./icon/signupSendCodeIc.svg"
 export { ReactComponent as SignupStepBackArrowIc } from "./icon/signupStepBackArrowIc.svg";
 export { ReactComponent as SignupStepContinueIc } from "./icon/signupStepContinueIc.svg";
 export { ReactComponent as SignupVerifyIc } from "./icon/signupVerifyIc.svg";
-export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
 export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
@@ -90,9 +89,6 @@ export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.
 export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
-export { ReactComponent as DefaultToggleIc } from "./icon/defaultToggleIc.svg";
-export { ReactComponent as ProducerTypeToggleIc } from "./icon/producerTypeToggleIc.svg";
-export { ReactComponent as HomeLogoIc } from "./icon/homeLogoIc.svg";
 export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as UploadActiveSaveButtonIc } from "./icon/uploadActiveSaveButtonIc.svg";
 export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnActiveSaveButtonIc.svg";
