@@ -7,9 +7,9 @@ import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
 import UploadPage from "./@pages/uploadPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
-import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
+import UploadEditPage from "./@pages/uploadEditPage";
 
 export default function Router() {
   return (
@@ -21,9 +21,10 @@ export default function Router() {
         <Route path="/signup/success" element={<SignupSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="/upload/:uploadType" element={<UploadPage />} />
-        <Route path="/portfolio-edit/producer/:trackId" element={<ProducerPortfolioEditPage />} />
-        <Route path="/vocal-searching-edit/producer/:trackId" element={<ProducerPortfolioEditPage />} />
+        <Route path="/upload/vocal/portfolio" element={<UploadPage />} />
+        <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
+        <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />
+        <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
         <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
         {/* [ 예원 ] 리팩토링 임시 라우터 */}
         <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
