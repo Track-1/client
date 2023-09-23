@@ -90,3 +90,6 @@ export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.
 export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
+export { ReactComponent as RequestBlackTextIc } from "./icon/requestBlackTextIc.svg";
+export { ReactComponent as RequestWhiteTextIc } from "./icon/requestWhiteTextIc.svg";
+export { ReactComponent as ResendTextIc } from "./icon/resendTextIc.svg";

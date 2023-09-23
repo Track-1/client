@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FolderUploadIc, UploadFileIc } from "../../assets";
-import UploadInfoBox from "./UploadInfoBox";
+import UploadInfoBox from "./uploadInfoBox";
 
 interface FileUploadInfoProps {
   audioFileName: string;
