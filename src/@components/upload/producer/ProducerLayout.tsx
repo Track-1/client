@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { ReactNode } from "react";
 import { UploadFileChangeIc } from "../../../assets";
-import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg .png";
+import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg.png";
 import useFileHover from "../../../hooks/common/useFileHover";
 
 interface ProducerLayoutProps {

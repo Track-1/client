@@ -10,13 +10,23 @@ import { useSetRecoilState } from "recoil";
 import { UploadData } from "../../recoil/upload/uploadData";
 import { useLocation, useParams } from "react-router-dom";
 import { UPLOAD_TYPE } from "../../core/common/uploadType";
+import useHashtagInput from "./useHashtagInput";
 
 export default function useUploadValue(initEmptyData: boolean) {
   const { imageFile, previewImage, setPreviewImage, handleUploadImageFile } = useUploadImageFile();
   const [title, changeTitle, setTitle] = useInputText("", TEXT_LIMIT.UPLOAD_TITLE);
+  const {
+    hashtags,
+    hashtagLength,
+    hashtagInputText,
+    handleEnterHashtag,
+    handleAddHashtag,
+    handleRemoveHashtag,
+    handleChangeHashtagInputText,
+  } = useHashtagInput();
   const { audioFile, audioFileName, setAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
     useUploadAudioFile();
-  const [description, changeDescription, setDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
+  const [description, handleChangeDescription, setDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
 
   const setUploadData = useSetRecoilState(UploadData);
   const { trackId } = useParams();
@@ -35,11 +45,11 @@ export default function useUploadValue(initEmptyData: boolean) {
       trackImageFile: imageFile,
       trackAudioFile: audioFile,
       trackCategory: "1",
-      trackKeyword: ["hello", "world"],
+      trackKeyword: hashtags,
       trackIntroduction: description,
       trackAudioFileName: audioFileName,
     }));
-  }, [imageFile, title, audioFile, description]);
+  }, [imageFile, hashtags, title, audioFile, description]);
 
   const { data } = useQuery(
     QUERIES_KEY.GET_UPLOAD_EDIT_INFO,
@@ -61,9 +71,18 @@ export default function useUploadValue(initEmptyData: boolean) {
 
   return {
     title: { title, changeTitle },
+    hashtags: {
+      hashtags,
+      hashtagLength,
+      hashtagInputText,
+      handleEnterHashtag,
+      handleAddHashtag,
+      handleRemoveHashtag,
+      handleChangeHashtagInputText,
+    },
     image: { imageFile, previewImage, handleUploadImageFile },
     audio: { audioFile, audioFileName, audioFileType, isTextOverflow, handleUploadAudioFile },
-    description: { description, changeDescription },
+    description: { description, handleChangeDescription },
     uploadType,
   };
 }

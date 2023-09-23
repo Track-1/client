@@ -5,11 +5,11 @@ import UploadInfoBox from "./uploadInfoBox";
 
 interface DescriptionInfoProps {
   description: string;
-  changeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function DescriptionInfo(props: DescriptionInfoProps) {
-  const { description, changeDescription } = props;
+  const { description, handleChangeDescription } = props;
 
   return (
     <UploadInfoBox>
@@ -17,7 +17,7 @@ export default function DescriptionInfo(props: DescriptionInfoProps) {
         <UploadDescriptionIc />
         <InfoTypeText>Description</InfoTypeText>
       </InfoType>
-      <DescriptionInput description={description} changeDescription={changeDescription} />
+      <DescriptionInput description={description} handleChangeDescription={handleChangeDescription} />
     </UploadInfoBox>
   );
 }

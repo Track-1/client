@@ -71,7 +71,7 @@ const InputContainer = styled.article`
 `;
 
 const InputWrapper = styled.input<{ width: number | undefined; color: string | undefined }>`
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
   padding: 0.5rem 0;
 
   color: white;

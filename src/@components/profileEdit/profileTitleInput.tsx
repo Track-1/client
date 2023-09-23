@@ -1,32 +1,20 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { nameWarningMessage } from "../../core/common/warningMessage";
-import { inputState } from "../../core/common/inputState";
 
 interface ProfileTitleInputProps {
   inputTitle: string;
-  data: string;
-  onChangeProps: (value: string) => void;
+  name: string;
+  handleChangeProps: () => void;
 }
 
 export default function ProfileTitleInput(props: ProfileTitleInputProps) {
-  const { inputTitle, data, onChangeProps } = props;
-  const [nameState, setNameState] = useState<string>("");
-  const [value, setValue] = useState<number>(0);
+  const { inputTitle, name, handleChangeProps } = props;
 
   const inputWrapperWidth = inputTitle === "name" ? "54.9rem" : "55.9rem";
 
   function checkNameIsError() {
-    return nameState === inputState.ERROR;
+    return true;
   }
-
-  function handleChange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
-    const newValue = event.target.value;
-    setValue(event.currentTarget.value.length);
-    onChangeProps(newValue);
-  }
-
-  const nameStateNothing = value === 0 ? inputState.NOTHING : inputState.CORRECT || inputState.ERROR;
 
   return (
     <>
@@ -35,8 +23,8 @@ export default function ProfileTitleInput(props: ProfileTitleInputProps) {
           <NameTitleText>{inputTitle}</NameTitleText>
           <PointIcon />
         </NameTitleWrapper>
-        <InputWrapper nameState={nameState} width={inputWrapperWidth} nameStateNothing={nameStateNothing}>
-          <NameInput placeholder="상수로 두기" onChange={handleChange} value={data} />
+        <InputWrapper width={inputWrapperWidth}>
+          <NameInput placeholder="Enter your name" onChange={handleChangeProps} value={name} />
         </InputWrapper>
         {checkNameIsError() ? (
           <ProfileEditWarningMsg>{nameWarningMessage}</ProfileEditWarningMsg>
@@ -73,7 +61,7 @@ const PointIcon = styled.div`
   background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const InputWrapper = styled.div<{ nameState: string; width: string; nameStateNothing: string }>`
+const InputWrapper = styled.div<{ nameState?: string; width: string; nameStateNothing?: string }>`
   display: flex;
   justify-content: space-between;
 

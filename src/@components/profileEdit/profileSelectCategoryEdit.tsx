@@ -1,25 +1,19 @@
-import { useState } from "react";
-
-import { CategoryId, CategoryBoolean } from "../../core/common/categories";
+import { CategoryId } from "../../core/common/categories";
 import { CategorySelectType } from "../../type/common/CategoryChecksType";
-
-import { CategoryTitleIc } from "../../assets";
 import styled from "styled-components";
+import InputContainer from "../@common/inputContainer";
 
-export default function SelectCategory() {
-  const [isCategorySelected, setIsCategorySelected] = useState<CategorySelectType>(CategoryBoolean);
+interface SelectCategoryProps {
+  isCategorySelected: CategorySelectType;
+  handleSelectCategory: (category: string) => void;
+}
 
-  function handleSelectCategory(category: string) {
-    setIsCategorySelected((prevState) => ({
-      ...prevState,
-      [category]: !prevState[category],
-    }));
-  }
+export default function ProfileSelectCategoryEdit(props: SelectCategoryProps) {
+  const { isCategorySelected, handleSelectCategory } = props;
 
   return (
-    <>
-      <CategoryContainer>
-        <CategoryTitleIcon />
+    <CategoryContainer>
+      <InputContainer title="Category">
         <CategoryBox>
           {Object.keys(CategoryId).map((category: string, CategoryId: number) => {
             return (
@@ -32,16 +26,13 @@ export default function SelectCategory() {
             );
           })}
         </CategoryBox>
-      </CategoryContainer>
-    </>
+      </InputContainer>
+    </CategoryContainer>
   );
 }
 
-const CategoryContainer = styled.article`
-  width: 66rem;
-
-  margin-top: 6.2rem;
-  margin-left: 9rem;
+const CategoryContainer = styled.div`
+  margin-bottom: 6.2rem;
 `;
 
 const CategoryBox = styled.ul`
@@ -64,8 +55,4 @@ const CategoryItem = styled.li<{ isSelected: boolean }>`
   margin-bottom: 1.2rem;
 
   color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray4)};
-`;
-
-const CategoryTitleIcon = styled(CategoryTitleIc)`
-  width: 10.3rem;
 `;
