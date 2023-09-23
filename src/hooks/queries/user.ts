@@ -3,6 +3,7 @@ import {
   getAccessToken,
   getLogout,
   getTokenVerify,
+  patchPassword,
   patchProfileAfterJoin,
   patchResetPassword,
   patchVerifyEmail,
@@ -13,8 +14,15 @@ import {
   postVerifyCode,
 } from "../../api/user";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { UserEmailRequest, UserLoginInfoRequest, UserProfileRequest, VerifyCodeRequest } from "../../type/api";
+import {
+  UserEmailRequest,
+  UserLoginInfoRequest,
+  UserPasswordRequest,
+  UserProfileRequest,
+  VerifyCodeRequest,
+} from "../../type/api";
 import { UserType } from "../../type/common/userType";
+import { useNavigate } from "react-router-dom";
 
 export function useJoin() {
   const { mutate, ...restValues } = useMutation({
@@ -103,7 +111,7 @@ export function useVerifyEmail() {
   };
 }
 
-export function useVerifyCote() {
+export function useVerifyCode() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (verifyCode: VerifyCodeRequest) => postVerifyCode(verifyCode),
     onSuccess: () => {},
@@ -111,6 +119,21 @@ export function useVerifyCote() {
   });
   return {
     verifyCode: mutate,
+    ...restValues,
+  };
+}
+
+export function usePatchPassword() {
+  const navigate = useNavigate();
+  const { mutate, ...restValues } = useMutation({
+    mutationFn: (userPassword: UserPasswordRequest) => patchPassword(userPassword),
+    onSuccess: () => {
+      navigate("/");
+    },
+    onError: () => {},
+  });
+  return {
+    patchPassword: mutate,
     ...restValues,
   };
 }
@@ -144,7 +167,9 @@ export function useTokenVerify() {
     queryKey: [QUERIES_KEY.TOKEN_VERIFY],
     queryFn: getTokenVerify,
     onSuccess: () => {},
-    onError: () => {},
+    onError: () => {
+      alert('')
+    },
   });
   return {
     tokenVerify: data,

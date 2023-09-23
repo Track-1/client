@@ -11,4 +11,3 @@ export const QUERIES_KEY = {
   TRACK_DOWNLOAD: "trackDownload",
   GET_UPLOAD_EDIT_INFO: "getUploadEditInfo",
 } as const;
- 
