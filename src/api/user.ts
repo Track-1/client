@@ -46,8 +46,11 @@ export async function postUserEmail(userEmail: UserEmailRequest) {
 }
 
 export async function patchPassword(userPassword: UserPasswordRequest) {
-  const accessToken = getCookie("accessToken");
-  const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD(accessToken), userPassword);
+  const token = window.location.pathname.replace("/reset-password/", "");
+
+  const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD(token), {
+    userPw: userPassword.userPw,
+  });
   return data;
 }
 
@@ -77,7 +80,7 @@ export async function patchResetPassword(userEmail: UserEmailRequest) {
 }
 
 export async function getTokenVerify() {
-  const accessToken = getCookie("accessToken");
-  const { data } = await client.get(USER.MAIL_PASSWORD_TOKEN(accessToken));
+  const token = window.location.pathname.replace("/reset-password/", "");
+  const { data } = await client.get(USER.MAIL_PASSWORD_TOKEN(token));
   return data;
 }
