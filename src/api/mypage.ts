@@ -14,8 +14,8 @@ export async function getMyInfo(params: ParamsType) {
   return data;
 }
 
-export async function postProducerPortfolio(formData: FormData) {
-  const { data } = await client.post<DefaultResponseType>(MYPAGE.UPLOAD_PRODUCER_PORTFOLIO, formData, {
+export async function postProducerPortfolio(uploadData: FormData) {
+  const { data } = await client.post<DefaultResponseType>(MYPAGE.UPLOAD_PRODUCER_PORTFOLIO, uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -23,8 +23,8 @@ export async function postProducerPortfolio(formData: FormData) {
   return data;
 }
 
-export async function postVocalPortfolio(formData: FormData) {
-  const { data } = await client.post<DefaultResponseType>(MYPAGE.UPLOAD_VOCAL_PORTFOLIO, formData, {
+export async function postVocalPortfolio(uploadData: FormData) {
+  const { data } = await client.post<DefaultResponseType>(MYPAGE.UPLOAD_VOCAL_PORTFOLIO, uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -32,8 +32,8 @@ export async function postVocalPortfolio(formData: FormData) {
   return data;
 }
 
-export async function patchProducerPortfolio(portfolioId: number, formData: FormData) {
-  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_PRODUCER_PORTFOLIO(portfolioId), formData, {
+export async function patchProducerPortfolio(trackId: number, uploadData: FormData) {
+  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_PRODUCER_PORTFOLIO(trackId), uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -41,8 +41,8 @@ export async function patchProducerPortfolio(portfolioId: number, formData: Form
   return data;
 }
 
-export async function patchVocalPortfolio(portfolioId: number, formData: FormData) {
-  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_VOCAL_PORTFOLIO(portfolioId), formData, {
+export async function patchVocalPortfolio(trackId: number, uploadData: FormData) {
+  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_VOCAL_PORTFOLIO(trackId), uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

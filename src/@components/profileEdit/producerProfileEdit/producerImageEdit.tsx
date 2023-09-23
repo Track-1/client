@@ -20,7 +20,7 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
           <ProfileImage
             src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
             alt="썸네일 이미지"
-            hoverState={fileHoverState}
+            fileHoverState={fileHoverState}
             imageFile={imageFile}
           />
           {imageFile && fileHoverState && <FileChangeIcon />}
@@ -59,7 +59,7 @@ const ProfileImageContainer = styled.label`
   cursor: pointer;
 `;
 
-const ProfileImage = styled.img<{ hoverState: boolean; imageFile: File | Blob | null }>`
+const ProfileImage = styled.img<{ fileHoverState: boolean; imageFile: File | Blob | null }>`
   width: 100%;
   height: 100%;
 
@@ -69,7 +69,7 @@ const ProfileImage = styled.img<{ hoverState: boolean; imageFile: File | Blob | 
   object-fit: cover;
   border-radius: 50%;
   ${(props) =>
-    props.hoverState && props.imageFile
+    props.fileHoverState && props.imageFile
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

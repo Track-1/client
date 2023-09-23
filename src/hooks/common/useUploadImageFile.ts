@@ -8,6 +8,10 @@ export default function useUploadImageFile() {
   const [imageFile, setImageFile] = useState<File | Blob | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>("");
 
+  function changePreviewImage(image: string) {
+    setPreviewImage(image);
+  }
+
   function handleUploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFile = e.target.files && e.target.files[0];
     const imageSize = imageFile && checkFileSize(imageFile.size) ? imageFile.size : 0;
@@ -70,7 +74,7 @@ export default function useUploadImageFile() {
   return {
     imageFile,
     previewImage,
-    setPreviewImage,
+    changePreviewImage,
     handleUploadImageFile,
     checkImageType,
     checkImageSize,

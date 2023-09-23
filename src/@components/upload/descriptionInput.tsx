@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 import TextareaAutosize from "react-textarea-autosize";
-import TextLength from "./TextLength";
+import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { checkEnterCount } from "../../utils/common/checkEnterCount";
+import { InfoInput } from "./categotyInfo";
+import { theme } from "../../style/theme";
 
 interface DescriptionInputProps {
   description: string;
@@ -21,7 +23,6 @@ export default function DescriptionInput(props: DescriptionInputProps) {
   return (
     <InfoInput>
       <DescriptionText
-        //따로 폴더를 만들어서 상수로 빼서 작업하기
         placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
         spellCheck="false"
         maxRows={7}
@@ -30,16 +31,11 @@ export default function DescriptionInput(props: DescriptionInputProps) {
       />
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={"description"} />
+        <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={theme.fonts.description} />
       </TextLengthWrapper>
     </InfoInput>
   );
 }
-
-const InfoInput = styled.div`
-  width: 100%;
-  height: 100%;
-`;
 
 const DescriptionText = styled(TextareaAutosize)`
   width: 100%;

@@ -43,7 +43,9 @@ export function useTrackDownload(trackId: number) {
 export function useUploadTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
@@ -55,7 +57,9 @@ export function useUploadTrack() {
 export function useEditTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {

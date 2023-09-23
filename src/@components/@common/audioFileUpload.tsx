@@ -1,68 +1,34 @@
 import styled from "styled-components";
-import { FolderUploadIc, UploadFileIc } from "../../assets";
-import UploadInfoBox from "./uploadInfoBox";
+import { FolderUploadIc } from "../../assets";
 
-interface FileUploadInfoProps {
+interface AudioFileUploadProps {
   audioFileName: string;
   audioFileType: string;
   isTextOverflow: boolean;
   handleUploadAudioFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function FileUploadInfo(props: FileUploadInfoProps) {
+export default function AudioFileUpload(props: AudioFileUploadProps) {
   const { audioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } = props;
-
   return (
-    <UploadInfoBox>
-      <InfoType>
-        <UploadFileIc />
-        <InfoTypeText>File Upload</InfoTypeText>
-      </InfoType>
-      <InfoInput>
-        <InputWrapper>
-          <InputFileTextWrapper fileName={audioFileName}>
-            <FileName value={audioFileName} isTextOverflow={isTextOverflow} disabled />
-            {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioFileType}</FileAttribute>}
-            <FileInput
-              type="file"
-              id="wavFileUpload"
-              accept=".wav,.mp3, .WAV, .MP3"
-              onChange={handleUploadAudioFile}
-              readOnly
-            />
-          </InputFileTextWrapper>
-          <FileLable htmlFor="wavFileUpload">
-            <FolderUploadIcon />
-          </FileLable>
-        </InputWrapper>
-      </InfoInput>
-    </UploadInfoBox>
+    <InputWrapper>
+      <InputFileTextWrapper fileName={audioFileName}>
+        <FileName value={audioFileName} isTextOverflow={isTextOverflow} disabled />
+        {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{audioFileType}</FileAttribute>}
+        <FileInput
+          type="file"
+          id="wavFileUpload"
+          accept=".wav,.mp3, .WAV, .MP3"
+          onChange={handleUploadAudioFile}
+          readOnly
+        />
+      </InputFileTextWrapper>
+      <FileLable htmlFor="wavFileUpload">
+        <FolderUploadIcon />
+      </FileLable>
+    </InputWrapper>
   );
 }
-const InfoType = styled.div`
-  display: flex;
-  align-items: center;
-
-  width: 20.7rem;
-  height: 100%;
-
-  color: ${({ theme }) => theme.colors.gray3};
-  ${({ theme }) => theme.fonts.body1};
-`;
-
-const InfoTypeText = styled.p`
-  margin-left: 1rem;
-`;
-
-const InfoInput = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  width: 100%;
-  height: 100%;
-`;
-
-// -------여기까지 공통----------
 
 const InputWrapper = styled.div`
   display: flex;

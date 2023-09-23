@@ -11,6 +11,10 @@ export default function useHashtagInput() {
     hashtagInputText === "" ? setHashtagLength(0) : setHashtagLength(hashtagInputText.length);
   }, [hashtagInputText]);
 
+  function changeHashtags(tags: Array<string>) {
+    setHashtags([...tags]);
+  }
+
   function handleAddHashtag() {
     if (hashtagInputText && hashtags.length < 3) {
       setHashtags((prev) => [...prev, hashtagInputText]);
@@ -32,6 +36,7 @@ export default function useHashtagInput() {
     hashtags,
     hashtagLength,
     hashtagInputText,
+    changeHashtags,
     handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,

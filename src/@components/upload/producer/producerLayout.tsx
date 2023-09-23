@@ -23,8 +23,8 @@ export default function ProducerLayout(props: ProducerLayoutProps) {
             <ProducerUploadImageLayout
               src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
               alt="썸네일 이미지"
-              hoverState={fileHoverState}
-              imageFile={imageFile}
+              fileHoverState={fileHoverState}
+              previewImage={previewImage}
             />
             {imageFile && fileHoverState && <FileChangeIcon />}
             <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
@@ -58,6 +58,7 @@ const UploadImage = styled.div`
 
 const ProducerUploadImageContainer = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 
   margin-left: 6.5rem;
@@ -67,18 +68,18 @@ const ProducerUploadImageContainer = styled.div`
 
   overflow: hidden;
   cursor: pointer;
-
-  &:hover {
-  }
 `;
 
-const ProducerUploadImageLayout = styled.img<{ hoverState: boolean; imageFile: File | Blob | null }>`
+const ProducerUploadImageLayout = styled.img<{ fileHoverState: boolean; previewImage: string | ArrayBuffer | null }>`
+  position: relative;
+
   width: 60.4rem;
   height: 60.4rem;
   object-fit: cover;
   border-radius: 50%;
+
   ${(props) =>
-    props.hoverState && props.imageFile
+    props.fileHoverState && props.previewImage !== ""
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);
@@ -94,10 +95,12 @@ const Label = styled.label`
 `;
 
 const FileChangeIcon = styled(UploadFileChangeIc)`
-  width: 18.9rem;
   position: absolute;
   top: 47.95rem;
   left: 42.8rem;
+
+  width: 18.9rem;
+
   cursor: pointer;
 `;
 

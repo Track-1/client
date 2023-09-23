@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { FontsTypes } from "../../style/theme";
 
 interface TextLengthProps {
   inputLength: number;
   limit: number;
-  font: keyof FontsTypes;
+  font: string;
 }
 
 export default function TextLength(props: TextLengthProps) {

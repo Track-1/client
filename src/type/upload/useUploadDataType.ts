@@ -1,9 +1,10 @@
 export interface UploadDataType {
-  trackTitle: string;
-  trackCategory: string;
-  trackAudioFile: File | null;
-  trackAudioFileName: string;
-  trackIntroduction: string;
-  trackKeyword: Array<string>;
-  trackImageFile: File | Blob | null;
+  title: string;
+  category: string;
+  audioFile: File | null;
+  audioFileName: string;
+  introduction: string;
+  keyword: Array<string>;
+  imageFile: File | Blob | null;
+  imageFileSame?: boolean;
 }

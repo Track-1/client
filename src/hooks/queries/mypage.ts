@@ -18,7 +18,9 @@ export function useMyInfo() {
 export function useUploadProducerPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
@@ -30,7 +32,9 @@ export function useUploadProducerPortfolio() {
 export function useUploadVocalPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
@@ -41,9 +45,11 @@ export function useUploadVocalPortfolio() {
 
 export function useEditProducerPortfolio() {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ portfolioId, formData }: { portfolioId: number; formData: FormData }) =>
-      patchProducerPortfolio(portfolioId, formData),
-    onSuccess: () => {},
+    mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
+      patchProducerPortfolio(trackId, formData),
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
@@ -54,9 +60,11 @@ export function useEditProducerPortfolio() {
 
 export function useEditVocalPortfolio() {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ portfolioId, formData }: { portfolioId: number; formData: FormData }) =>
-      patchVocalPortfolio(portfolioId, formData),
-    onSuccess: () => {},
+    mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
+      patchVocalPortfolio(trackId, formData),
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
