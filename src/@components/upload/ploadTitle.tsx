@@ -1,14 +1,15 @@
 import styled from "styled-components";
-import TextLength from "./TextLength";
+import TextLength from "./extLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
+import { theme } from "../../style/theme";
 
 interface UploadTitleProps {
   title: string;
-  changeTitle: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeTitle: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function UploadTitle(props: UploadTitleProps) {
-  const { title, changeTitle } = props;
+  const { title, handleChangeTitle } = props;
 
   return (
     <Container>
@@ -16,11 +17,11 @@ export default function UploadTitle(props: UploadTitleProps) {
       <TitleInput
         placeholder="Please enter a title"
         spellCheck="false"
-        onChange={changeTitle}
+        onChange={handleChangeTitle}
         defaultValue={title}></TitleInput>
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={"body1"} />
+        <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={theme.fonts.body1} />
       </TextLengthWrapper>
     </Container>
   );

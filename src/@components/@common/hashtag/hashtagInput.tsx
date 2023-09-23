@@ -35,53 +35,44 @@ export default function HashtagInput(props: HashtagInputProps) {
           <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} />
         </HashtagBox>
       ))}
-      <HashtagBoxWrapper>
-        {hashtags?.length < 3 && (
-          <HashtagBox>
-            <HashtagWrapper>
-              <HashtagSharp># </HashtagSharp>
-              <HashtagInputText
-                placeholder="Hashtag"
-                onKeyDown={handleEnterHashtag}
-                onChange={handleChangeHashtagInputText}
-                onBlur={handleAddHashtag}
-                inputWidth={hashtagLength}
-                value={hashtagInputText}
-              />
-            </HashtagWrapper>
-          </HashtagBox>
-        )}
-        {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
-      </HashtagBoxWrapper>
+
+      {hashtags?.length < 3 && (
+        <HashtagBox>
+          <HashtagWrapper>
+            <HashtagSharp># </HashtagSharp>
+            <HashtagInputText
+              placeholder="Hashtag"
+              onKeyDown={handleEnterHashtag}
+              onChange={handleChangeHashtagInputText}
+              onBlur={handleAddHashtag}
+              inputWidth={hashtagLength}
+              value={hashtagInputText}
+            />
+          </HashtagWrapper>
+        </HashtagBox>
+      )}
+      {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
     </>
   );
 }
 
-const HashtagBoxWrapper = styled.div`
-  display: flex;
-`;
-
 const HashtagBox = styled.div`
   display: flex;
+  align-items: center;
 
   height: 3.8rem;
 
   padding-right: 1rem;
   margin-right: 1rem;
-  margin-bottom: 1.2rem;
 
   border-radius: 2.1rem;
   background-color: ${({ theme }) => theme.colors.gray5};
-
-  align-items: center;
 `;
 
 const HashtagWrapper = styled.div`
   display: flex;
 
   padding: 0 0.5rem 0 1.5rem;
-
-  align-items: center;
 `;
 
 const HashtagSharp = styled.p`

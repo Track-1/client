@@ -95,3 +95,5 @@ export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnAct
 export { ReactComponent as RequestBlackTextIc } from "./icon/requestBlackTextIc.svg";
 export { ReactComponent as RequestWhiteTextIc } from "./icon/requestWhiteTextIc.svg";
 export { ReactComponent as ResendTextIc } from "./icon/resendTextIc.svg";
+export { ReactComponent as UploadAbleBtnIc } from "./icon/uploadAbleBtnIc.svg";
+export { ReactComponent as UploadUnableBtnIc } from "./icon/uploadUnableBtnIc.svg";

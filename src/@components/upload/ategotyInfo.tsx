@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
 import { useState } from "react";
-import UploadInfoBox from "./uploadInfoBox";
+import UploadInfoBox from "./ploadInfoBox";
 
 export default function CategoryInfo() {
   const [categoryState, setCategoryState] = useState(false);
@@ -53,7 +53,7 @@ export default function CategoryInfo() {
     </>
   );
 }
-const InfoType = styled.div`
+export const InfoType = styled.div`
   display: flex;
   align-items: center;
 
@@ -64,12 +64,13 @@ const InfoType = styled.div`
   ${({ theme }) => theme.fonts.body1};
 `;
 
-const InfoTypeText = styled.p`
+export const InfoTypeText = styled.p`
   margin-left: 1rem;
 `;
 
-const InfoInput = styled.div`
+export const InfoInput = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
   width: 100%;

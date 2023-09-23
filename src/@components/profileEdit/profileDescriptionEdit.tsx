@@ -1,4 +1,4 @@
-import DescriptionInput from "../upload/DescriptionInput";
+import DescriptionInput from "../upload/escriptionInput";
 import InputContainer from "../@common/inputContainer";
 
 interface ProfileDescriptionEditProps {
