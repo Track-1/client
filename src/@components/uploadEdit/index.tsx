@@ -1,6 +1,6 @@
 import Header from "../@common/header";
-import UploadBody from "../upload/ploadBody";
-import UploadHeader from "../upload/ploadHeader";
+import UploadBody from "../upload/uploadBody";
+import UploadHeader from "../upload/uploadHeader";
 
 export default function UploadEditContainer() {
   return (

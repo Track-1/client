@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import ProducerLayout from "./producer/ProducerLayout";
-import VocalLayout from "./vocal/VocalLayout";
-import UploadTitle from "./ploadTitle";
-import FileUploadInfo from "./ileUploadInfo";
-import CategoryInfo from "./ategotyInfo";
-import HashtagInfo from "./ashtagInfo";
-import DescriptionInfo from "./escriptionInfo";
+import ProducerLayout from "./producer/roducerLayout";
+import VocalLayout from "./vocal/ocalLayout";
+import UploadTitle from "./uploadTitle";
+import FileUploadInfo from "./fileUploadInfo";
+import CategoryInfo from "./categotyInfo";
+import HashtagInfo from "./hashtagInfo";
+import DescriptionInfo from "./descriptionInfo";
 import { ROLE } from "../../core/common/roleType";
 import { useEffect } from "react";
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";

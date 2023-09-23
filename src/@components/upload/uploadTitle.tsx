@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import TextLength from "./extLength";
+import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
 

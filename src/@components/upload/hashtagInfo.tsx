@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import UploadInfoBox from "./ploadInfoBox";
+import UploadInfoBox from "./uploadInfoBox";
 import HashtagInput from "../@common/hashtag/hashtagInput";
 import HashtagWarning from "../@common/hashtag/hashtagWarning";
-import { InfoInput, InfoType, InfoTypeText } from "./ategotyInfo";
+import { InfoInput, InfoType, InfoTypeText } from "./categotyInfo";
 
 interface HashtagInfoProps {
   hashtags: string[];

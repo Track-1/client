@@ -1,6 +1,6 @@
 import { UploadFileIc } from "../../assets";
-import UploadInfoBox from "./ploadInfoBox";
-import { InfoInput, InfoType, InfoTypeText } from "./ategotyInfo";
+import UploadInfoBox from "./uploadInfoBox";
+import { InfoInput, InfoType, InfoTypeText } from "./categotyInfo";
 import AudioFileUpload from "../@common/audioFileUpload";
 
 interface FileUploadInfoProps {

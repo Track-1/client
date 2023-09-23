@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 import TextareaAutosize from "react-textarea-autosize";
-import TextLength from "./extLength";
+import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { checkEnterCount } from "../../utils/common/checkEnterCount";
-import { InfoInput } from "./ategotyInfo";
+import { InfoInput } from "./categotyInfo";
 import { theme } from "../../style/theme";
 
 interface DescriptionInputProps {

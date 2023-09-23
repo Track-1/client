@@ -1,7 +1,7 @@
-import DescriptionInput from "./escriptionInput";
-import UploadInfoBox from "./ploadInfoBox";
+import DescriptionInput from "./descriptionInput";
+import UploadInfoBox from "./uploadInfoBox";
 import { UploadDescriptionIc } from "../../assets";
-import { InfoType, InfoTypeText } from "./ategotyInfo";
+import { InfoType, InfoTypeText } from "./categotyInfo";
 
 interface DescriptionInfoProps {
   description: string;
