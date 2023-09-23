@@ -17,6 +17,8 @@ import VocalImageEdit from "./vocalProfileEdit/vocalImageEdit";
 import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
 import ProfileContactEdit from "./profileContactEdit";
 import ProducerImageEdit from "./producerProfileEdit/producerImageEdit";
+import { useEditProdcerProfile, useEditVocalProfile } from "../../hooks/queries/profile";
+import { ProfileEditType, VocalProfileEditType } from "../../type/profile";
 
 export default function ProfileEditContainer() {
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
@@ -34,6 +36,8 @@ export default function ProfileEditContainer() {
     handleChangeHashtagInputText,
   } = useHashtagInput();
   const [isSleep, setIsSleep] = useState(false);
+  const { editProducerProfile } = useEditProdcerProfile();
+  const { editVocalProfile } = useEditVocalProfile();
 
   const nameMethods = useForm({
     defaultValues: {
@@ -60,9 +64,46 @@ export default function ProfileEditContainer() {
     setIsSleep((prev) => !prev);
   }
 
+  function producerProfileData() {
+    const data: ProfileEditType = {
+      userImageFile: imageFile,
+      userName: nameMethods.getValues().nickName,
+      userContact: contactMethods.getValues().contact,
+      userCategory: categories,
+      userKeyword: hashtags,
+      userIntroduction: description,
+      userImageFileSame: true, //변경해야됨
+    };
+    return data;
+  }
+
+  function vocalProfileData() {
+    const data: VocalProfileEditType = {
+      userImageFile: imageFile,
+      userName: nameMethods.getValues().nickName,
+      userContact: contactMethods.getValues().contact,
+      userCategory: categories,
+      userKeyword: hashtags,
+      userIntroduction: description,
+      userImageFileSame: true, //변경해야됨
+      userTrackSearch: isSleep,
+    };
+    return data;
+  }
+
+  function editProfile() {
+    if (userType === ROLE.PRODUCER) {
+      return editProducerProfile(producerProfileData());
+    } else {
+      return editVocalProfile(vocalProfileData());
+    }
+  }
+
   return (
     <>
-      <Header backBtn>{isUploadActive ? <UploadActiveSaveButtonIcon /> : <UploadUnActiveSaveButtonIcon />}</Header>
+      <Header backBtn>
+        {isUploadActive ? <UploadActiveSaveButtonIcon onClick={editProfile} /> : <UploadUnActiveSaveButtonIcon />}
+      </Header>
       <ProfileBackgroundIcon />
       <ProfileEditContainerBox>
         <ProfileEditTitle>
@@ -161,8 +202,10 @@ export const ProfileEditInfo = styled(ProfileContainer)`
 
 export const UploadActiveSaveButtonIcon = styled(UploadActiveSaveButtonIc)`
   width: 24.6rem;
+  cursor: pointer;
 `;
 
 export const UploadUnActiveSaveButtonIcon = styled(UploadUnActiveSaveButtonIc)`
   width: 24.6rem;
+  cursor: pointer;
 `;

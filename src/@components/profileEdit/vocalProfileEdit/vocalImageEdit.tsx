@@ -13,8 +13,6 @@ export default function VocalImageEdit(props: VocalImageEditProps) {
   const { imageFile, previewImage, handleUploadImageFile } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
-  console.log(fileHoverState, imageFile);
-
   return (
     <>
       <ProfileImageContainer>
