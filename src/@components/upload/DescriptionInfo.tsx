@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import DescriptionInput from "./DescriptionInput";
-import UploadInfoBox from "./UploadInfoBox";
+import UploadInfoBox from "./uploadInfoBox";
 import { UploadDescriptionIc } from "../../assets";
 
 interface DescriptionInfoProps {

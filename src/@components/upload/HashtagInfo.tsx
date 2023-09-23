@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import UploadInfoBox from "./UploadInfoBox";
+import UploadInfoBox from "./uploadInfoBox";
 import HashtagInput from "../@common/hashtag/hashtagInput";
 import HashtagWarning from "../@common/hashtag/hashtagWarning";
 
