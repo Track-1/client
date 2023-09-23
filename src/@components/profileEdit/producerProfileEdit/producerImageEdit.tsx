@@ -13,8 +13,6 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
   const { imageFile, previewImage, handleUploadImageFile } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
-  console.log(fileHoverState, imageFile);
-
   return (
     <>
       <ProfileImageContainer>
