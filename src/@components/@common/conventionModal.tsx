@@ -4,14 +4,10 @@ import useConventionModal from "../../hooks/common/useConventionModal";
 import { checkConventionType } from "../../utils/common/convention/checkConventionType";
 
 export default function ConventionModal() {
-  const { conventionModalInform, showConventionModal } = useConventionModal();
+  const { conventionModalInform, showConventionModal, closeModal } = useConventionModal();
 
   function isIntroNotNull() {
     return checkConventionType(conventionModalInform?.policy)?.INTRO !== "";
-  }
-
-  function closeModal() {
-    showConventionModal(conventionModalInform?.policy, false);
   }
 
   return (

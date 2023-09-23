@@ -9,14 +9,15 @@ interface InputProps<
 > extends UseControllerProps<TFieldValues, TName> {
   type?: string;
   placeholder?: string;
-  width: number;
+  userType?: string;
+  width?: number;
 }
 
 export default function Input<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: InputProps<TFieldValues, TName>) {
-  const { name, rules, type, placeholder, width } = props;
+  const { name, rules, type, placeholder, width, userType } = props;
   const { field, fieldState } = useController({
     name,
     rules: rules,
@@ -50,7 +51,7 @@ export default function Input<
       />
       <ErrorMessageWrapper>
         {fieldState?.error && (
-          <ErrorMessage color={checkMessageColor(fieldState?.error?.message)}>
+          <ErrorMessage color={checkMessageColor(fieldState?.error?.message, userType)}>
             {fieldState.error.message}
             <IconWrapper marginLeft={calculateMarginLeft()}>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
           </ErrorMessage>
@@ -68,6 +69,7 @@ const InputContainer = styled.article`
   display: flex;
   flex-direction: column;
 `;
+
 
 const InputWrapper = styled.input<{ width: number; color: string | undefined }>`
   /* margin-top: 3rem; */
