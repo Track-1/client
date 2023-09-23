@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
 import { useState } from "react";
-import UploadInfoBox from "./ploadInfoBox";
+import UploadInfoBox from "./uploadInfoBox";
 
 export default function CategoryInfo() {
   const [categoryState, setCategoryState] = useState(false);
