@@ -7,6 +7,7 @@ import SignupSuccessPage from "./@pages/signupSuccessPage";
 import UploadPage from "./@pages/uploadPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
+import { LoginPage } from "./@pages/loginPage";
 
 export default function Router() {
   return (
@@ -23,6 +24,7 @@ export default function Router() {
         <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
         <Route path="/vocal/profile-edit" element={<VocalProfileEditPage />} />
         <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );
