@@ -5,7 +5,7 @@ import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 import EditDropDown from "./editDropDown";
 
 export default function ShowMore() {
-  const { isMe } = useGetTrackInfo();
+  const { userSelf } = useGetTrackInfo();
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   function handleOpenEdit() {
@@ -14,7 +14,7 @@ export default function ShowMore() {
 
   return (
     <>
-      {isMe && <EditBtnIcon onClick={handleOpenEdit} />}
+      {userSelf && <EditBtnIcon onClick={handleOpenEdit} />}
       {isEditOpen && <EditDropDown />}
     </>
   );

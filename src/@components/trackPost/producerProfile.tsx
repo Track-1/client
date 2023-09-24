@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function ProducerProfile() {
-  const { producerProfileImage, producerName, producerId } = useGetTrackInfo();
+  const { userImageFile, trackUserName, trackUserId } = useGetTrackInfo();
   const navigate = useNavigate();
 
   function handleMoveToProducerProfile() {
@@ -11,15 +11,15 @@ export default function ProducerProfile() {
     // pausesPlayerAudio();
     // closePlayer();
 
-    navigate(`/producer-profile/${producerId}`);
+    navigate(`/producer-profile/${trackUserId}`);
   }
 
   return (
     <ProducerBox>
       <ProfileImgWrapper>
-        <ProducerProfileImage src={producerProfileImage} alt="프로듀서 프로필 이미지" />
+        <ProducerProfileImage src={userImageFile} alt="프로듀서 프로필 이미지" />
       </ProfileImgWrapper>
-      <NickName onClick={handleMoveToProducerProfile}>{producerName}</NickName>
+      <NickName onClick={handleMoveToProducerProfile}>{trackUserName}</NickName>
     </ProducerBox>
   );
 }

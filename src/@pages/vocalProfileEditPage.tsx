@@ -1,5 +1,5 @@
-import VocalProfileEdit from "../@components/vocalProfileEdit/index";
+// import VocalProfileEdit from "../@components/vocalProfileEdit/index";
 
-export default function ProducerProfileEditPage() {
-  return <VocalProfileEdit />;
+export default function VocalProfileEditPage() {
+  return <></>;
 }
