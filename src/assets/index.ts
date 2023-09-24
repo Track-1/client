@@ -3,7 +3,7 @@ export { ReactComponent as AddHashtagIc } from "./icon/addHashtagIc.svg";
 export { ReactComponent as BackButtonIc } from "./icon/backButtonIc.svg";
 export { ReactComponent as CategoryDropDownIc } from "./icon/categoryDropDownIc.svg";
 export { ReactComponent as CategoryIc } from "./icon/categoryIc.svg";
-export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
+// export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
 export { ReactComponent as ChangePhotoProducerIc } from "./icon/changePhotoProducerIc.svg";
 export { ReactComponent as ChangePhotoVocalIc } from "./icon/changePhotoVocalIc.svg";
 export { ReactComponent as CloseCommentsBtnIc } from "./icon/closeCommentsBtnIc.svg";
@@ -89,6 +89,8 @@ export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.
 export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
+export { ReactComponent as CategoryTitleIc } from "./icon/categoryTitleIc.svg";
+export { ReactComponent as CrossLogoIc } from "./icon/crossLogoIc.svg";
 export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as UploadActiveSaveButtonIc } from "./icon/uploadActiveSaveButtonIc.svg";
 export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnActiveSaveButtonIc.svg";

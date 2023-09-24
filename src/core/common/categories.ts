@@ -1,8 +1,8 @@
-import { CategoryIdType, CategorySelectType } from "../../type/common/CategoryChecksType";
+import { CategorySelectType } from "../../type/common/CategoryChecksType";
 
 export const Categories: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
 
-export const CategoryId: CategoryIdType = {
+export const CategoryId = {
   "R&B": "0",
   HIPHOP: "1",
   BALLAD: "2",

@@ -6,7 +6,9 @@ import SignupStepPage from "./@pages/signupStepPage";
 import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
 import UploadPage from "./@pages/uploadPage";
+import TrackSearchPage from "./@pages/trackSearchPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
+import VocalSearchPage from "./@pages/vocalSearchPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
 import UploadEditPage from "./@pages/uploadEditPage";
@@ -30,6 +32,8 @@ export default function Router() {
         <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
         <Route path="/vocal/profile-edit" element={<VocalProfileEditPage />} />
         <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/track-search" element={<TrackSearchPage />} />
+        <Route path="/vocal-search" element={<VocalSearchPage />} />
       </Routes>
     </BrowserRouter>
   );
