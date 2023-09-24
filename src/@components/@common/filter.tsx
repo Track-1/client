@@ -5,9 +5,10 @@ import { CategoryId } from "../../core/common/categories";
 import { PageType } from "../../type/common/pageType";
 import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
 import { updateQueryParams } from "../../utils/common/queryString";
+import { CheckBox } from "./checkBox";
 import { Select } from "./selectBox";
 
-const CategoryItem = styled.div<{ pageType: PageType; isSelected?: boolean }>`
+const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
   ${({ theme }) => theme.fonts.id}
   display: flex;
   justify-content: space-between;
@@ -25,9 +26,9 @@ const CategoryItem = styled.div<{ pageType: PageType; isSelected?: boolean }>`
 
   color: ${({ theme }) => theme.colors.white};
 
-  ${({ pageType, isSelected }) =>
+  ${({ pageType, isChecked }) =>
     pageType === "tracks" &&
-    isSelected &&
+    isChecked &&
     css`
       background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
         linear-gradient(
@@ -57,22 +58,27 @@ const CategoryItem = styled.div<{ pageType: PageType; isSelected?: boolean }>`
     `}
 `;
 
-const CategoryCancelButton = styled.button<{ pageType: PageType; isSelected?: boolean }>`
+const CategoryCancelButton = styled.button<{ pageType: PageType; isChecked?: boolean }>`
   margin-right: 2rem;
 
-  ${({ pageType, isSelected }) =>
+  ${({ pageType, isChecked }) =>
     pageType === "tracks" &&
-    isSelected &&
+    isChecked &&
     css`
       color: ${({ theme }) => theme.colors.sub1};
     `}
 
-  ${({ pageType, isSelected }) =>
+  ${({ pageType, isChecked }) =>
     pageType === "vocals" &&
-    isSelected &&
+    isChecked &&
     css`
       color: ${({ theme }) => theme.colors.sub2};
     `}
+`;
+
+const FilterWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
 `;
 
 interface FilterProps {
@@ -95,21 +101,21 @@ export default function Filter(props: FilterProps) {
   }, [selectedCategory]);
 
   return (
-    <Select defaultOpen externalSelectState={selectCategory}>
-      <Select.OptionGroup asChild={false}>
-        {getInvariantObjectKeys(invariantOf(CategoryId)).map((category) => {
-          return (
-            <Select.Option key={CategoryId[category]} id={Number(CategoryId[category])} isUnSelectable asChild>
+    <FilterWrapper>
+      {getInvariantObjectKeys(invariantOf(CategoryId)).map((category) => {
+        return (
+          <CheckBox id={category}>
+            <CheckBox.Indicator asChild>
               <CategoryItem pageType={pageType}>
-                {category}
-                <Select.Indicator id={Number(CategoryId[category])} asChild>
-                  <CategoryCancelButton pageType={pageType}>x</CategoryCancelButton>
-                </Select.Indicator>
+                <CheckBox.Label>{category}</CheckBox.Label>
+                <CheckBox.Indicator asChild>
+                  <CategoryCancelButton pageType={pageType}>X</CategoryCancelButton>
+                </CheckBox.Indicator>
               </CategoryItem>
-            </Select.Option>
-          );
-        })}
-      </Select.OptionGroup>
-    </Select>
+            </CheckBox.Indicator>
+          </CheckBox>
+        );
+      })}
+    </FilterWrapper>
   );
 }
