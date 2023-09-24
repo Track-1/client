@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { UserType } from "../../type/common/userType";
 import { Switch } from "../@common/switch";
 
 const Container = styled.section`
