@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ProfileEditBtnIc } from "../../assets";
 import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
 import BackButton from "../@common/backButton";
-import Portfolio from "../portfolio";
+import VocalPortfolioList from "../portfolio/vocalPortfolioList";
 import Profile from "../profile";
 
 export default function VocalProfile() {
@@ -25,7 +25,7 @@ export default function VocalProfile() {
         <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
       </LeftSection>
       <Right>
-        <Portfolio />
+        <VocalPortfolioList />
       </Right>
     </Container>
   );

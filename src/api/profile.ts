@@ -1,4 +1,4 @@
-import { DefaultResponseType, ProducerInfoResponse, VocalInfoResponse } from "../type/api";
+import { DefaultResponseType, ProducerInfoResponse, VocalInfoResponse, VocalProfileResponse } from "../type/api";
 import { ProducerInfoParamsType, VocalInfoParamsType } from "../type/profile";
 import { client } from "./common/client";
 import { PROFILE } from "./path";
@@ -25,7 +25,7 @@ export async function getProducerInfo(params: ProducerInfoParamsType) {
 }
 
 export async function getVocalProfile(params: VocalInfoParamsType) {
-  const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
+  const { data } = await client.get<VocalProfileResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
     params: {
       page: 1,
       limit: 1,
@@ -43,7 +43,7 @@ export async function getVocalInfo(params: VocalInfoParamsType) {
     },
   });
 
-  return data;
+  return data.data;
 }
 
 export async function patchProducerProfile(formData: FormData) {

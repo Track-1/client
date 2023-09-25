@@ -55,9 +55,14 @@ export interface VocalInfoParamsType extends ParamsType {
   userId: number;
 }
 
-export interface VocalInfoType {
+export interface VocalProfileType {
   userType: UserType;
   userSelf: boolean;
   userProfile: UserProfileType;
   userPortfolio: UserPortfolioType[];
+}
+
+export interface VocalInfoType {
+  hasNextPage: boolean;
+  data: UserPortfolioType[];
 }
