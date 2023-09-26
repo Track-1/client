@@ -42,8 +42,9 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
       color: ${({ theme }) => theme.colors.sub1};
     `}
 
-  ${({ pageType }) =>
+  ${({ pageType, isChecked }) =>
     pageType === "vocals" &&
+    isChecked &&
     css`
       background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
         linear-gradient(

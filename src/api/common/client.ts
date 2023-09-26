@@ -5,7 +5,7 @@ import { getCookie, removeCookie, setCookie } from "../../utils/common/cookie";
 export const client = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
-    Authorization: `Bearer ${getCookie("accessToken")}`,
+    // Authorization: `Bearer ${getCookie("accessToken")}`,
   },
   withCredentials: true,
 });
