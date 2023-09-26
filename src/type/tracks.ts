@@ -4,7 +4,7 @@ export interface FilteredTrackParamsType {
   categ: number[];
 }
 
-interface FilteredTrackType {
+export interface FilteredTrackType {
   trackId: number;
   trackImageFile: string;
   trackAudioFile: string;
@@ -18,6 +18,7 @@ interface FilteredTrackType {
 
 export interface FilteredTrackListType {
   trackList: FilteredTrackType[];
+  hasNextPage: boolean;
 }
 
 export interface TrackDetailType {

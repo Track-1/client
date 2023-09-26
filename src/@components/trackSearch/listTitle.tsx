@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CrossLogoIc, SloganIc } from "../../assets";
+import { CrossLogoIc, SloganIc, TrackSearchSlogunIc } from "../../assets";
 
 const Container = styled.div`
   margin-left: 10rem;
@@ -15,11 +15,9 @@ const CrossLogoIcon = styled(CrossLogoIc)`
   height: 16.6rem;
 `;
 
-const SloganIcon = styled(SloganIc)`
+const TrackSearchSlogunIcon = styled(TrackSearchSlogunIc)`
   width: 50rem;
   height: 10rem;
-
-  margin-left: 6.6rem;
 `;
 
 const TitleWrapper = styled.div`
@@ -55,7 +53,7 @@ export default function ListTitle() {
   return (
     <Container>
       <LogoWrapper>
-        <SloganIcon />
+        <TrackSearchSlogunIcon />
         <CrossLogoIcon />
       </LogoWrapper>
       <TitleWrapper>

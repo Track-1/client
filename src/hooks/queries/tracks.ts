@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import {
   deleteTrack,
+  getFilteredTracks,
   getTrackDetail,
   getTrackDownload,
   patchTrack,
@@ -10,8 +11,28 @@ import {
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredTrackParamsType } from "../../type/tracks";
 
-export function useFilteredTracks(params: FilteredTrackParamsType) {
-  //무한스크롤 미적용 (서버아직;;)
+export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
+  const pageParams = 1;
+  const fetchTracks = async (pageParams: number) => {
+    const response = await getFilteredTracks({ ...params, page: pageParams });
+    return { response, nextPage: pageParams + 1 };
+  };
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "tracks",
+    () => fetchTracks(pageParams),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextPage;
+      },
+    },
+  );
+
+  return {
+    trackData: data?.pages,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
 }
 
 export function useTrackDetail(trackId: number) {

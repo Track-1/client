@@ -22,7 +22,7 @@ export type UserPasswordRequest = UserPasswordType;
 
 export type VerifyCodeRequest = VerifyCodeType;
 
-export type FilteredTrackResponse = DefaultResponseType<FilteredTrackListType>;
+export type FilteredTrackResponse = DefaultResponseType<FilteredTrackListType[]>;
 
 export type TrackDetailResponse = DefaultResponseType<TrackDetailType[]>;
 

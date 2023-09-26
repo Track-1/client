@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { FilteredTrackType } from "../../type/tracks";
 
 const Container = styled.li<{ isHovered: boolean }>`
   display: flex;
@@ -87,7 +88,12 @@ const Tag = styled.span`
   border-radius: 21px;
 `;
 
-export default function TrackItem() {
+interface TrackItemProps {
+  trackInfo: FilteredTrackType;
+}
+
+export default function TrackItem(props: TrackItemProps) {
+  const { trackInfo } = props;
   const [isHovered, setIsHovered] = useState(false);
 
   function hoverTrack() {
@@ -100,12 +106,14 @@ export default function TrackItem() {
   return (
     <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
       <ThumnailWrapper>
-        <Thumbnail />
+        <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
       </ThumnailWrapper>
-      <TrackTitle isHovered={isHovered}>Favorate</TrackTitle>
-      <Producer isHovered={isHovered}>Nct127</Producer>
-      <Category isHovered={isHovered}>Hiphop</Category>
-      <Tag>#avb</Tag>
+      <TrackTitle isHovered={isHovered}>{trackInfo.trackTitle}</TrackTitle>
+      <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>
+      <Category isHovered={isHovered}>{trackInfo.trackCategory}</Category>
+      {trackInfo.trackKeyword.map((tag) => {
+        return <Tag>#{tag}</Tag>;
+      })}
     </Container>
   );
 }
