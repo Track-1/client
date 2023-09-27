@@ -18,4 +18,7 @@ interface FilteredVocalType {
   userAudioFileLength: number;
 }
 
-export type FilteredVocalListType = FilteredVocalType[];
+export type FilteredVocalListType = {
+  vocalList: FilteredVocalType[];
+  hasNextPage: boolean;
+};

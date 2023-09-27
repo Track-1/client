@@ -9,7 +9,7 @@ export type DefaultResponseType<T = unknown> = {
   status: number;
   success: boolean;
   messaage: string;
-  data?: T;
+  data: T;
 };
 
 export type UserProfileRequest = UserProfileType;
@@ -32,7 +32,7 @@ export type CommentsRequest = CommentsParamsType & { trackId: number };
 
 export type CommentsResponse = DefaultResponseType<CommentsListType>;
 
-export type FilteredVocalsResponse = DefaultResponseType<FilteredVocalListType>;
+export type FilteredVocalsResponse = DefaultResponseType<FilteredVocalListType[]>;
 
 export type ProducerInfoResponse = DefaultResponseType<ProducerInfoType>;
 
