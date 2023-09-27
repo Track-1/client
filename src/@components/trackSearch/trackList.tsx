@@ -12,7 +12,7 @@ const Container = styled.section`
 export default function TrackList() {
   const { trackData, fetchNextPage, hasNextPage } = useFilteredTracks({
     limit: 10,
-    categ: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    categ: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], // TODO 필터링
   });
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
@@ -21,10 +21,10 @@ export default function TrackList() {
   return (
     <Container>
       <ListTitle />
-      {trackData[0].response.data?.[0].trackList?.map((trackInfo) => {
+      {trackData.map((trackInfo) => {
         return <TrackItem trackInfo={trackInfo} key={trackInfo.trackUserId} />;
       })}
-      <div ref={observerRef} />
+      <div ref={observerRef} style={{ width: "100%", height: "20px" }} />
     </Container>
   );
 }
