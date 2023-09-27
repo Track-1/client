@@ -5,7 +5,7 @@ export interface FilteredVocalsParamsType {
   trackSearch: boolean;
 }
 
-interface FilteredVocalType {
+export interface FilteredVocalType {
   userId: number;
   userImageFile: string;
   userAudioFile: string;
