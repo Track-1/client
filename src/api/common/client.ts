@@ -1,11 +1,12 @@
 import axios from "axios";
-import { getCookie, removeCookie, setCookie } from "../../utils/common/cookie";
 
 //서버통신 함수
 export const client = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     // Authorization: `Bearer ${getCookie("accessToken")}`,
+
+    Authorization: `Bearer ${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`,
   },
   withCredentials: true,
 });
