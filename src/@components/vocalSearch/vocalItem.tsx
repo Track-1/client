@@ -1,12 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-
-const VocalListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 4rem;
-  padding-left: 9rem;
-`;
+import { FilteredVocalType } from "../../type/vocals";
 
 const VocalContainer = styled.div`
   display: inline-block;
@@ -112,7 +106,35 @@ const GradientLine = styled.div`
   background-color: ${({ theme }) => theme.colors.sub3};
 `;
 
-export default function VocalItem() {
+const HashtagContainer = styled.ul`
+  position: relative;
+  right: 7.5rem;
+
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+
+  bottom: 8.5rem;
+`;
+
+const Hashtag = styled.li`
+  ${({ theme }) => theme.fonts.hashtag};
+  height: 3.8rem;
+
+  padding: 1.7rem 1.5rem;
+  margin-bottom: 1rem;
+
+  line-height: 0.3rem !important;
+  border-radius: 2.1rem;
+  background-color: ${({ theme }) => theme.colors.gray5};
+`;
+
+interface VocalItemProps {
+  vocalInfo: FilteredVocalType;
+}
+
+export default function VocalItem(props: VocalItemProps) {
+  const { vocalInfo } = props;
   const [isHovered, setIsHovered] = useState(false);
 
   function hoverVocalItem() {
@@ -125,20 +147,25 @@ export default function VocalItem() {
   return (
     <VocalContainer>
       <UsernameInformWrapper>
-        <Username></Username>
+        <Username>{vocalInfo.userName}</Username>
       </UsernameInformWrapper>
 
       <CategoryTextWrapper>
-        <CategoryText></CategoryText>
-        <CategoryNum>+</CategoryNum>
+        <CategoryText>{vocalInfo.userCategory}</CategoryText>
+        <CategoryNum>+{vocalInfo.userCategoryNum}</CategoryNum>
       </CategoryTextWrapper>
 
       <MusicProfileWrapper onMouseLeave={unhoverVocalItem} onMouseEnter={hoverVocalItem} isHovered={isHovered}>
         <GradientLine>
-          <AlbumCoverImg src="" alt="앨범자켓사진" />
+          <AlbumCoverImg src={vocalInfo.userImageFile} alt="앨범자켓사진" />
         </GradientLine>
         <GradientProfile isHovered={isHovered}></GradientProfile>
       </MusicProfileWrapper>
+      <HashtagContainer>
+        {vocalInfo.userKeyword.map((keyword, idx) => (
+          <Hashtag key={idx}>#{keyword}</Hashtag>
+        ))}
+      </HashtagContainer>
     </VocalContainer>
   );
 }

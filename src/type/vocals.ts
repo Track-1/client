@@ -5,7 +5,7 @@ export interface FilteredVocalsParamsType {
   trackSearch: boolean;
 }
 
-interface FilteredVocalType {
+export interface FilteredVocalType {
   userId: number;
   userImageFile: string;
   userAudioFile: string;
@@ -18,4 +18,7 @@ interface FilteredVocalType {
   userAudioFileLength: number;
 }
 
-export type FilteredVocalListType = FilteredVocalType[];
+export type FilteredVocalListType = {
+  vocalList: FilteredVocalType[];
+  hasNextPage: boolean;
+};

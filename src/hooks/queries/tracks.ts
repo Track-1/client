@@ -12,23 +12,27 @@ import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredTrackParamsType } from "../../type/tracks";
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
-  const pageParams = 1;
   const fetchTracks = async (pageParams: number) => {
     const response = await getFilteredTracks({ ...params, page: pageParams });
+
     return { response, nextPage: pageParams + 1 };
   };
+
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    "tracks",
-    () => fetchTracks(pageParams),
+    [QUERIES_KEY.GET_TRACK_INFO, params.categ, params.limit],
+    ({ pageParam = 1 }) => fetchTracks(pageParam),
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.nextPage;
+        return lastPage.response.data[0].trackList.length === 0 ? undefined : lastPage.nextPage;
       },
+      refetchOnWindowFocus: false,
     },
   );
 
+  const trackData = data?.pages.flatMap((data) => data.response.data[0].trackList.map((trackInfo) => trackInfo));
+
   return {
-    trackData: data?.pages,
+    trackData,
     fetchNextPage,
     hasNextPage,
     ...restValues,

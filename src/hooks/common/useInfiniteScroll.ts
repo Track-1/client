@@ -6,7 +6,7 @@ export default function useInfiniteScroll(fetchNextPage: any, hasNextPage: any) 
   const handleObserver = useCallback(
     (entries: any) => {
       const [target] = entries;
-      if (target.isIntersecting) {
+      if (target.isIntersecting && hasNextPage) {
         fetchNextPage();
       }
     },
