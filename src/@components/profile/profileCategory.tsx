@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { CategoryIc } from "../../assets";
 import { CategoryId, CategoryText } from "../../core/common/categories";
+import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
 import Empty from "./empty";
 
 interface ProfileCategoryProps {
@@ -15,7 +16,7 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
       <CategoryIcon />
       <CategoryArray>
         {category && category.length > 0 ? (
-          Object.keys(CategoryId).map((categ: any, index: number) =>
+          getInvariantObjectKeys(invariantOf(CategoryId)).map((categ, index) =>
             category.includes(CategoryText[categ]) ? (
               <Category key={index}>{categ}</Category>
             ) : (

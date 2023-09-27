@@ -1,8 +1,3 @@
-export interface CategoryChecksType {
-  categId: number;
-  selected: boolean;
-}
-
 export interface CategorySelectType {
   [key: string]: boolean;
 }

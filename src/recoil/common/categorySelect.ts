@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { categorySelectedCheck } from "../../core/trackSearch/categorySelectedCheck";
-import { CategoryChecksType } from "../../type/common/CategoryChecksType";
+import { CategorySelectedCheckType } from "../../type/common/category";
 const { persistAtom } = recoilPersist();
 
 export const categorySelect = atom({
@@ -41,7 +41,7 @@ export const clickCategoryHeader = atom({
   default: false,
 });
 
-export const categoryFinalSelectedCheck = atom<CategoryChecksType[]>({
+export const categoryFinalSelectedCheck = atom<CategorySelectedCheckType[]>({
   key: "categoryFinalSelectedCheck",
   default: categorySelectedCheck,
   effects_UNSTABLE: [persistAtom],

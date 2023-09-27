@@ -1,6 +1,6 @@
-import { CategoryChecksType } from "../../type/common/CategoryChecksType";
+import { CategorySelectedCheckType } from "../../type/common/category";
 
-export const categorySelectedCheck: CategoryChecksType[] = [
+export const categorySelectedCheck: CategorySelectedCheckType[] = [
   { categId: 0, selected: false },
   { categId: 1, selected: false },
   { categId: 2, selected: false },

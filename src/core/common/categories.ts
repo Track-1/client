@@ -1,8 +1,8 @@
-import { CategorySelectType } from "../../type/common/CategoryChecksType";
+import { CategoryType, UpperCategoryType } from "../../type/common/category";
 
-export const Categories: string[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
+export const Categories: CategoryType[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
 
-export const CategoryId = {
+export const CategoryId: Record<UpperCategoryType, string> = {
   "R&B": "0",
   HIPHOP: "1",
   BALLAD: "2",
@@ -12,9 +12,9 @@ export const CategoryId = {
   JAZZ: "6",
   HOUSE: "7",
   FUNK: "8",
-};
+} as const;
 
-export const CategoryBoolean: CategorySelectType = {
+export const CategoryBoolean: Record<UpperCategoryType, boolean> = {
   "R&B": false,
   HIPHOP: false,
   BALLAD: false,
@@ -24,9 +24,9 @@ export const CategoryBoolean: CategorySelectType = {
   JAZZ: false,
   HOUSE: false,
   FUNK: false,
-};
+} as const;
 
-export const CategoryText: CategoryIdType = {
+export const CategoryText: Record<UpperCategoryType | "EVENT", CategoryType | "Event"> = {
   "R&B": "R&B",
   HIPHOP: "Hiphop",
   BALLAD: "Ballad",
@@ -37,4 +37,4 @@ export const CategoryText: CategoryIdType = {
   HOUSE: "House",
   FUNK: "Funk",
   EVENT: "Event",
-};
+} as const;
