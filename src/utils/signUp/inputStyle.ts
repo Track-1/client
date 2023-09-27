@@ -1,3 +1,4 @@
+import { ROLE } from "../../core/common/roleType";
 import {
   EMAIL_MESSAGE,
   ERROR_COLOR,
@@ -41,7 +42,7 @@ export function checkInputUnderline(message: string | undefined) {
   }
 }
 
-export function checkMessageColor(message: string | undefined) {
+export function checkMessageColor(message: string | undefined, userType?: string) {
   switch (message) {
     case EMAIL_MESSAGE.NULL:
       return ERROR_COLOR.TRANSPARENT;
@@ -50,7 +51,7 @@ export function checkMessageColor(message: string | undefined) {
     case EMAIL_MESSAGE.DUPLICATION:
       return ERROR_COLOR.RED;
     case EMAIL_MESSAGE.TIME:
-      return ERROR_COLOR.VIOLET;
+      return userType ? (userType === ROLE.PRODUCER ? ERROR_COLOR.GREEN : ERROR_COLOR.PINK) : ERROR_COLOR.VIOLET;
     case VERIFICATION_CODE_MESSAGE.ERROR:
       return ERROR_COLOR.RED;
     case PASSWORD_MESSAGE.FORM:

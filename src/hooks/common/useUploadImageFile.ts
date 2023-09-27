@@ -6,7 +6,11 @@ import { LIMIT_IMAGE_SIZE } from "../../core/common/fileSize";
 
 export default function useUploadImageFile() {
   const [imageFile, setImageFile] = useState<File | Blob | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
+  const [previewImage, setPreviewImage] = useState<string | null>("");
+
+  function changePreviewImage(image: string) {
+    setPreviewImage(image);
+  }
 
   function handleUploadImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const imageFile = e.target.files && e.target.files[0];
@@ -19,7 +23,7 @@ export default function useUploadImageFile() {
       const reader = new FileReader();
       imageFile && reader.readAsDataURL(imageFile);
       reader.onloadend = () => {
-        setPreviewImage(reader.result);
+        setPreviewImage(reader.result as string);
       };
     }
   }
@@ -70,7 +74,7 @@ export default function useUploadImageFile() {
   return {
     imageFile,
     previewImage,
-    setPreviewImage,
+    changePreviewImage,
     handleUploadImageFile,
     checkImageType,
     checkImageSize,

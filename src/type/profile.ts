@@ -9,6 +9,20 @@ export interface ProducerInfoParamsType extends ParamsType {
   userId: number;
 }
 
+export interface ProfileEditType {
+  userImageFile: File | Blob | null;
+  userName: string;
+  userContact: string;
+  userCategory: string[];
+  userKeyword: string[];
+  userIntroduction: string;
+  userImageFileSame: boolean;
+}
+
+export interface VocalProfileEditType extends ProfileEditType {
+  userTrackSearch: boolean;
+}
+
 export interface UserProfileType {
   userId: number;
   userImageFile: string;

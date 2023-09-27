@@ -1,4 +1,4 @@
-import ProducerProfileEdit from "../@components/producerProfileEdit/index";
+import ProducerProfileEdit from "../@components/profileEdit/index";
 
 export default function ProducerProfileEditPage() {
   return <ProducerProfileEdit />;
