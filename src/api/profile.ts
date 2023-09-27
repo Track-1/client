@@ -3,6 +3,17 @@ import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProf
 import { client } from "./common/client";
 import { PROFILE } from "./path";
 
+export async function getProducerProfile(params: ProducerInfoParamsType) {
+  const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_PROFILE(params.userId), {
+    params: {
+      page: 1,
+      limit: 1,
+    },
+  });
+
+  return data.data;
+}
+
 export async function getProducerInfo(params: ProducerInfoParamsType) {
   const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_INFO(params.userId), {
     params: {
@@ -11,6 +22,17 @@ export async function getProducerInfo(params: ProducerInfoParamsType) {
     },
   });
   return data;
+}
+
+export async function getVocalProfile(params: VocalInfoParamsType) {
+  const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
+    params: {
+      page: 1,
+      limit: 1,
+    },
+  });
+
+  return data.data;
 }
 
 export async function getVocalInfo(params: VocalInfoParamsType) {

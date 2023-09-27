@@ -23,17 +23,18 @@ export interface VocalProfileEditType extends ProfileEditType {
   userTrackSearch: boolean;
 }
 
-interface UserProfileType {
+export interface UserProfileType {
   userId: number;
   userImageFile: string;
   userName: string;
   userContact: string;
+  userCategory: string[];
   userIntroduction: string;
   userKeyword: string[];
   userTrackSearch: boolean;
 }
 
-interface UserPortfolioType {
+export interface UserPortfolioType {
   portfolioId: number;
   portfolioImageFile: string;
   portfolioAudioFile: string;
@@ -71,6 +72,6 @@ export interface VocalInfoParamsType extends ParamsType {
 export interface VocalInfoType {
   userType: UserType;
   userSelf: boolean;
-  userProfile: UserPortfolioType;
+  userProfile: UserProfileType;
   userPortfolio: UserPortfolioType[];
 }
