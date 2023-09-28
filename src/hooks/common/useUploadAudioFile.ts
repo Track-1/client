@@ -10,6 +10,21 @@ export default function useUploadAudioFile() {
   const [audioFileType, setAudioFileType] = useState("");
   const [isTextOverflow, setIsTextOverflow] = useState(false);
 
+  function changeAudioFileName(fileName: string) {
+    // const audioOnlyFileName = fileName.substring(fileName.length - 4, -1);
+    const audioOnlyFileName = fileName;
+    const audioFileType = fileName.substring(fileName.length - 4);
+
+    if (checkMaxInputLength(audioOnlyFileName.length, TEXT_LIMIT.UPLOAD_AUDIO)) {
+      setAudioFileName(fileName);
+      setIsTextOverflow(false);
+    } else {
+      setAudioFileName(audioOnlyFileName);
+      setIsTextOverflow(true);
+      setAudioFileType(audioFileType);
+    }
+  }
+
   //오디오 업로드
   function handleUploadAudioFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
@@ -34,5 +49,5 @@ export default function useUploadAudioFile() {
     }
   }
 
-  return { audioFile, audioFileName, setAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile };
+  return { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile };
 }

@@ -1,5 +1,6 @@
 import { useMutation } from "react-query";
 import { patchProducerProfile, patchVocalProfile } from "../../api/profile";
+import { ProfileEditType, VocalProfileEditType } from "../../type/profile";
 
 export function useProducerInfo() {
   //무한스크롤 미적용
@@ -11,7 +12,7 @@ export function useVocalInfo() {
 
 export function useEditProdcerProfile() {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (formaData: FormData) => patchProducerProfile(formaData),
+    mutationFn: (editData: ProfileEditType) => patchProducerProfile(editData),
     onSuccess: () => {},
     onError: () => {},
   });
@@ -23,7 +24,7 @@ export function useEditProdcerProfile() {
 
 export function useEditVocalProfile() {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (formaData: FormData) => patchVocalProfile(formaData),
+    mutationFn: (editData: VocalProfileEditType) => patchVocalProfile(editData),
     onSuccess: () => {},
     onError: () => {},
   });

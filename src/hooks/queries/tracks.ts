@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import {
   deleteTrack,
+  getFilteredTracks,
   getTrackDetail,
   getTrackDownload,
   patchTrack,
@@ -10,8 +11,32 @@ import {
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredTrackParamsType } from "../../type/tracks";
 
-export function useFilteredTracks(params: FilteredTrackParamsType) {
-  //무한스크롤 미적용 (서버아직;;)
+export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
+  const fetchTracks = async (pageParams: number) => {
+    const response = await getFilteredTracks({ ...params, page: pageParams });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    [QUERIES_KEY.GET_TRACK_INFO, params.categ, params.limit],
+    ({ pageParam = 1 }) => fetchTracks(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data[0].trackList.length === 0 ? undefined : lastPage.nextPage;
+      },
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const trackData = data?.pages.flatMap((data) => data.response.data[0].trackList.map((trackInfo) => trackInfo));
+
+  return {
+    trackData,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
 }
 
 export function useTrackDetail(trackId: number) {
@@ -43,7 +68,9 @@ export function useTrackDownload(trackId: number) {
 export function useUploadTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
@@ -55,7 +82,9 @@ export function useUploadTrack() {
 export function useEditTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: () => {},
   });
   return {
