@@ -22,18 +22,23 @@ export default function VocalPortfolioList() {
 
   return (
     <VocalPortfolioListWrapper>
-      {vocalPortfolios?.map((vocalPortfolios, index) => {
-        return (
-          <>
-            {index === 0 || clickedId === vocalPortfolios.portfolioId ? (
-              <VocalBigPortfolio vocalPortfolios={vocalPortfolios} />
-            ) : (
-              <VocalSmallPortfolio vocalPortfolios={vocalPortfolios} />
-            )}
-          </>
-        );
-      })}
-      <Observer ref={observerRef} />
+      <VocalsBoxHead />
+      <VocalsBoxBody vocalPortfolioCount={vocalPortfolios.length}>
+        <PortfolioWrapper>
+          {vocalPortfolios?.map((vocalPortfolios, index) => {
+            return (
+              <>
+                {index === 0 || clickedId === vocalPortfolios.portfolioId ? (
+                  <VocalBigPortfolio vocalPortfolios={vocalPortfolios} />
+                ) : (
+                  <VocalSmallPortfolio vocalPortfolios={vocalPortfolios} />
+                )}
+              </>
+            );
+          })}
+          <Observer ref={observerRef} />
+        </PortfolioWrapper>
+      </VocalsBoxBody>
     </VocalPortfolioListWrapper>
   );
 }
@@ -48,4 +53,41 @@ const VocalPortfolioListWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const VocalsBoxHead = styled.div`
+  width: 36rem;
+  height: 36rem;
+  margin: 31rem 0 0 18rem;
+
+  transform: rotate(45deg);
+
+  border: 0.34rem solid ${({ theme }) => theme.colors.sub2};
+  border-radius: 5rem 2.8rem 5.4rem 2.8rem;
+`;
+
+const VocalsBoxBody = styled.div<{ vocalPortfolioCount: number }>`
+  margin-left: 18rem;
+  margin-top: 48.5rem;
+
+  position: absolute;
+
+  height: ${({ vocalPortfolioCount }) => (vocalPortfolioCount - 1) * 26 + 30}rem;
+  width: 48.45rem;
+
+  border-left: 0.34rem solid transparent;
+  border-right: 0.34rem solid transparent;
+
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
+    linear-gradient(to top, ${({ theme }) => theme.colors.sub3} -5%, ${({ theme }) => theme.colors.sub2} 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+`;
+
+const PortfolioWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: -18rem;
 `;

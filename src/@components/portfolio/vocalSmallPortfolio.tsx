@@ -64,6 +64,8 @@ const SmallImageContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  margin-bottom: 3rem;
+
   &:hover {
     .image-wrapper {
       background-color: rgba(13, 14, 17, 0.5);
@@ -85,9 +87,6 @@ const SmallImageWrapper = styled.div`
   border-radius: 3rem;
 
   transform: rotate(-45deg);
-
-  /* margin: 12rem 0 0 12rem; */
-  /* margin-bottom: 12rem; */
 
   cursor: pointer;
 `;

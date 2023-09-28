@@ -9,6 +9,7 @@ import BackButton from "../@common/backButton";
 import VocalPortfolioInform from "../portfolio/vocalPortfolioInform";
 import VocalPortfolioList from "../portfolio/vocalPortfolioList";
 import Profile from "../profile";
+import VocalProfileShadow from "./vocalProfileShadow";
 
 export default function VocalProfile() {
   const { vocalId } = useParams();
@@ -38,13 +39,13 @@ export default function VocalProfile() {
       <PortfolioSection>
         <VocalPortfolioList />
         <VocalPortfolioInform />
+        <VocalProfileShadow />
       </PortfolioSection>
     </Container>
   );
 }
 
 const PortfolioSection = styled.section`
-  border: 1px solid white;
   width: 186rem;
   display: flex;
 
