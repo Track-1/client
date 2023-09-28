@@ -4,7 +4,6 @@ import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import useGetVocalPortfolio from "../../hooks/vocalProfile/useGetVocalPortfolio";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import MusicInformation from "./musicInformation";
 import VocalBigPortfolio from "./vocalBigPortfolio";
 import VocalSmallPortfolio from "./vocalSmallPortfolio";
 
@@ -21,30 +20,21 @@ export default function VocalPortfolioList() {
 
   if (vocalPortfolios === undefined) return null;
 
-  console.log(clickedId);
   return (
-    <>
+    <VocalPortfolioListWrapper>
       {vocalPortfolios?.map((vocalPortfolios, index) => {
         return (
-          <VocalPortfolioListWrapper>
-            <MiddleSection>
-              {index === 0 || clickedId === vocalPortfolios.portfolioId ? (
-                <VocalBigPortfolio vocalPortfolios={vocalPortfolios} />
-              ) : (
-                <VocalSmallPortfolio vocalPortfolios={vocalPortfolios} />
-              )}
-            </MiddleSection>
-            <RightSection>
-              {((hoveredId === -1 && clickedId === vocalPortfolios.portfolioId) ||
-                (hoveredId !== -1 && hoveredId === vocalPortfolios.portfolioId)) && (
-                <MusicInformation vocalPortfolios={vocalPortfolios} />
-              )}
-            </RightSection>
-          </VocalPortfolioListWrapper>
+          <>
+            {index === 0 || clickedId === vocalPortfolios.portfolioId ? (
+              <VocalBigPortfolio vocalPortfolios={vocalPortfolios} />
+            ) : (
+              <VocalSmallPortfolio vocalPortfolios={vocalPortfolios} />
+            )}
+          </>
         );
       })}
       <Observer ref={observerRef} />
-    </>
+    </VocalPortfolioListWrapper>
   );
 }
 
@@ -53,14 +43,9 @@ const Observer = styled.div`
   height: 10px;
 `;
 
-const VocalPortfolioListWrapper = styled.div`
-  display: flex;
-`;
-
-const MiddleSection = styled.section`
+const VocalPortfolioListWrapper = styled.section`
   width: 87rem;
-`;
-
-const RightSection = styled.section`
-  width: 44rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

@@ -6,6 +6,7 @@ import { ProfileEditBtnIc } from "../../assets";
 import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
+import VocalPortfolioInform from "../portfolio/vocalPortfolioInform";
 import VocalPortfolioList from "../portfolio/vocalPortfolioList";
 import Profile from "../profile";
 
@@ -27,24 +28,29 @@ export default function VocalProfile() {
 
   return (
     <Container>
-      <LeftSection>
+      <ProfileSection>
         <BackButtonWrapper>
           <BackButton />
           {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
         </BackButtonWrapper>
         <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
-      </LeftSection>
-      <Right>
+      </ProfileSection>
+      <PortfolioSection>
         <VocalPortfolioList />
-      </Right>
+        <VocalPortfolioInform />
+      </PortfolioSection>
     </Container>
   );
 }
 
-const Right = styled.section`
+const PortfolioSection = styled.section`
   border: 1px solid white;
   width: 186rem;
+  display: flex;
+
+  margin-left: 60rem;
 `;
+
 const Container = styled.div`
   display: flex;
 `;
@@ -57,13 +63,14 @@ const BackButtonWrapper = styled.div`
   justify-content: space-between;
 `;
 
+const ProfileSection = styled.section`
+  width: 60rem;
+  position: fixed;
+`;
+
 const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
   width: 16.6rem;
   margin-left: 16.9rem;
 
   cursor: pointer;
-`;
-
-const LeftSection = styled.section`
-  width: 60rem;
 `;
