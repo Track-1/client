@@ -1,13 +1,17 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
-import useGetProducerProfile from "../../hooks/producerProfile/useGetProducerProfile";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
+import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
+import { useGetProducerPortfolio, useGetProducerProfile } from "../../hooks/queries/mypage";
+import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
 import Profile from "../profile";
+import ProducerPortfolioList from "./producerPortfolioList";
 import ProducerProfileShadow from "./producerProfileShadow";
+
+const PAGE_LIMIT = 5;
 
 export default function ProducerProfile() {
   const { producerId } = useParams();
@@ -15,10 +19,11 @@ export default function ProducerProfile() {
   const navigate = useNavigate();
   const resetClickedId = useResetRecoilState(clickedProfileId);
   const resetHoveredId = useResetRecoilState(hoveredProfileId);
-  // const { vocalPortfolios } = useGetVocalPortfolio({
-  //   limit: PAGE_LIMIT,
-  //   userId: Number(vocalId),
-  // });
+  const { producerPortfolios } = useGetProducerPortfolio({
+    limit: PAGE_LIMIT,
+    userId: Number(producerId),
+  });
+  const dataState = useRecoilValue(producerState);
 
   useEffect(() => {
     resetClickedId();
@@ -48,21 +53,27 @@ export default function ProducerProfile() {
         {producerProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
 
         <PortfolioSection>
-          {/* {producerPortfolios && producerPortfolios?.length > 0 ? (
+          {producerPortfolios && producerPortfolios?.length > 0 ? (
             <>
-              <ProducerPortfolioList />
-              <ProducerPortfolioInform isMe={producerProfile?.userSelf} />
+              {dataState === "Portfolio" && <ProducerPortfolioList />}
+              {/* <ProducerPortfolioInform isMe={producerProfile?.userSelf} /> */}
             </>
           ) : (
             <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
-          )} */}
-
+          )}
           <ProducerProfileShadow />
         </PortfolioSection>
       </Container>
     </>
   );
 }
+
+const ProducerEmptyProfileImage = styled.img`
+  position: absolute;
+  top: 26.2rem;
+  left: 69.6rem;
+  width: 124.2rem;
+`;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
   position: fixed;

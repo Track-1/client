@@ -13,13 +13,92 @@ import { MyPageTitleParamsType } from "../../type/mypage";
 
 import { useInfiniteQuery } from "react-query";
 
-import { getVocalInfo } from "../../api/profile";
-import { VocalsPortfoliosParamsType } from "../../type/vocals";
+import { getProducerPortfolio, getProducerVocalSearching, getVocalInfo } from "../../api/profile";
+import { PortfoliosParamsType } from "../../type/vocals";
 
 import { useQuery } from "react-query";
 import { getVocalProfile } from "../../api/profile";
 
-export function useGetVocalPortfolio(params: Omit<VocalsPortfoliosParamsType, "page">) {
+import { getProducerProfile } from "../../api/profile";
+
+export function useGetProducerProfile(userId: number) {
+  const { data: producerProfile } = useQuery(
+    ["getProducerProfile"],
+    () =>
+      getProducerProfile({
+        userId: userId,
+        page: 1,
+        limit: 1,
+      }),
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    },
+  );
+
+  return { producerProfile };
+}
+
+export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+  const fetchVocals = async (pageParams: number) => {
+    const response = await getProducerPortfolio({ ...params, page: pageParams, userId: params.userId });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "producerPortfolios",
+    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
+      },
+    },
+  );
+
+  const producerPortfolios = data?.pages.flatMap((data) =>
+    data.response.data.map((producerPortfolio: any) => producerPortfolio),
+  );
+
+  return {
+    producerPortfolios,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
+}
+
+export function useGetVocalSearchingPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+  const fetchVocals = async (pageParams: number) => {
+    const response = await getProducerVocalSearching({ ...params, page: pageParams, userId: params.userId });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "producerVocalSearchings",
+    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
+      },
+    },
+  );
+
+  const producerVocalSearchings = data?.pages.flatMap((data) =>
+    data.response.data.map((producerVocalSearching: any) => producerVocalSearching),
+  );
+
+  return {
+    producerVocalSearchings,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
+}
+
+export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getVocalInfo({ ...params, page: pageParams, userId: params.userId });
 

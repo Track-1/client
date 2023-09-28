@@ -1,6 +1,12 @@
 import { CommentsListType, CommentsParamsType } from "./comments";
 import { MyInfoType } from "./mypage";
-import { ProducerInfoType, VocalInfoType, VocalProfileType } from "./profile";
+import {
+  ProducerInfoType,
+  ProducerPortfolioType,
+  ProducerVocalSearchingInfoType,
+  VocalInfoType,
+  VocalProfileType,
+} from "./profile";
 import { FilteredTrackListType, TrackDetailType, TrackDownloadType } from "./tracks";
 import { UserEmailType, UserLoginInfo, UserPasswordType, UserProfileType, VerifyCodeType } from "./user";
 import { FilteredVocalListType } from "./vocals";
@@ -41,3 +47,7 @@ export type VocalProfileResponse = DefaultResponseType<VocalProfileType>;
 export type MyInfoResponse = DefaultResponseType<MyInfoType>;
 
 export type VocalInfoResponse = DefaultResponseType<VocalInfoType>;
+
+export type ProducerVocalSearchingResponse = DefaultResponseType<ProducerVocalSearchingInfoType>;
+
+export type ProducerPortfolioResponse = DefaultResponseType<ProducerPortfolioType>;

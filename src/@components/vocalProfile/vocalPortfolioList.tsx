@@ -4,14 +4,16 @@ import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import VocalBigPortfolio from "./vocalBigPortfolio";
-import VocalSmallPortfolio from "./vocalSmallPortfolio";
+import VocalBigPortfolio from "../portfolio/vocalBigPortfolio";
+import VocalSmallPortfolio from "../portfolio/vocalSmallPortfolio";
+
+const PAGE_LIMIT = 5;
 
 export default function VocalPortfolioList() {
   const { vocalId } = useParams();
   const clickedId = useRecoilValue(clickedProfileId);
   const hoveredId = useRecoilValue(hoveredProfileId);
-  const PAGE_LIMIT = 5;
+
   const { vocalPortfolios, fetchNextPage, hasNextPage } = useGetVocalPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(vocalId),

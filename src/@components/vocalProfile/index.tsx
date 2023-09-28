@@ -8,8 +8,8 @@ import { useGetVocalPortfolio, useGetVocalProfile } from "../../hooks/queries/my
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
 import VocalPortfolioInform from "../portfolio/vocalPortfolioInform";
-import VocalPortfolioList from "../portfolio/vocalPortfolioList";
 import Profile from "../profile";
+import VocalPortfolioList from "./vocalPortfolioList";
 import VocalProfileShadow from "./vocalProfileShadow";
 
 const PAGE_LIMIT = 5;

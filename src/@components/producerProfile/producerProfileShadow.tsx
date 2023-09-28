@@ -11,8 +11,6 @@ export default function ProducerProfileShadow() {
     setDataState(state);
   }
 
-  console.log(dataState);
-
   return (
     <ProducerProfileShadowWrapper>
       <TitleWrapper>

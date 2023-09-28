@@ -23,7 +23,7 @@ export type FilteredVocalListType = {
   hasNextPage: boolean;
 };
 
-export interface VocalsPortfoliosParamsType {
+export interface PortfoliosParamsType {
   page: number;
   limit: number;
   userId: number;

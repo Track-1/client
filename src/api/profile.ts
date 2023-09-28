@@ -1,4 +1,11 @@
-import { DefaultResponseType, ProducerInfoResponse, VocalInfoResponse, VocalProfileResponse } from "../type/api";
+import {
+  DefaultResponseType,
+  ProducerInfoResponse,
+  ProducerPortfolioResponse,
+  ProducerVocalSearchingResponse,
+  VocalInfoResponse,
+  VocalProfileResponse,
+} from "../type/api";
 import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from "../type/profile";
 import { client } from "./common/client";
 import { PROFILE } from "./path";
@@ -14,14 +21,25 @@ export async function getProducerProfile(params: ProducerInfoParamsType) {
   return data.data;
 }
 
-export async function getProducerInfo(params: ProducerInfoParamsType) {
-  const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_INFO(params.userId), {
+export async function getProducerPortfolio(params: ProducerInfoParamsType) {
+  const { data } = await client.get<ProducerPortfolioResponse>(PROFILE.PRODUCER_INFO(params.userId), {
     params: {
       page: params.page,
       limit: params.limit,
     },
   });
-  return data;
+
+  return data.data.portfolioList;
+}
+
+export async function getProducerVocalSearching(params: ProducerInfoParamsType) {
+  const { data } = await client.get<ProducerVocalSearchingResponse>(PROFILE.PRODUCER_INFO(params.userId), {
+    params: {
+      page: params.page,
+      limit: params.limit,
+    },
+  });
+  return data.data.trackList;
 }
 
 export async function getVocalProfile(params: VocalInfoParamsType) {

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
+import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import { UserPortfolioType } from "../../type/profile";
 
 interface ProducerSmallPortfolioProps {
@@ -11,22 +13,30 @@ export default function ProducerSmallPortfolio(props: ProducerSmallPortfolioProp
   const { producerPortfolios } = props;
   // 플레이어 붙이기
   const isPlay = true;
-  const [hover, setHover] = useState(-1);
+  const [hoverId, setHoverId] = useState(-1);
+  const [savedHoverId, setSavedHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
 
   function handleHoverImage() {
-    setHover(producerPortfolios.portfolioId);
+    setHoverId(producerPortfolios.portfolioId);
+    setSavedHoverId(producerPortfolios.portfolioId);
   }
 
   function handleNoneHover() {
-    setHover(-1);
+    setHoverId(-1);
+    setSavedHoverId(-1);
+  }
+
+  function handlePlaying() {
+    setClickId(producerPortfolios.portfolioId);
   }
 
   return (
-    <BigImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover}>
+    <BigImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover} onClick={handlePlaying}>
       <BigImageWrapper className="image-wrapper">
         <Image src={producerPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </BigImageWrapper>
-      {!isPlay ? hover !== -1 && <PortfolioPauseIcon /> : hover !== -1 && <PortfolioPlayIcon />}
+      {!isPlay ? hoverId !== -1 && <PortfolioPauseIcon /> : hoverId !== -1 && <PortfolioPlayIcon />}
     </BigImageContainer>
   );
 }
