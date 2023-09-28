@@ -6,8 +6,8 @@ import { EllipsisIc, VocalPortfolioTitleTextIc } from "../../assets";
 import useModal from "../../hooks/common/useModal";
 import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import MusicInformation from "./musicInformation";
-import PortfolioUpdateModal from "./portfolioUpdateModal";
+import MusicInformation from "../portfolio/musicInformation";
+import PortfolioUpdateModal from "../portfolio/portfolioUpdateModal";
 
 interface VocalPortfolioInformProp {
   isMe: boolean | undefined;
@@ -51,7 +51,7 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
                     />
                   )}
                 </TitleSection>
-                <MusicInformation vocalPortfolio={vocalPortfolio} />
+                <MusicInformation portfolio={vocalPortfolio} />
               </>
             )}
           </Fragment>

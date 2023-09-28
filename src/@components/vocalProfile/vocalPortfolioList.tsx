@@ -25,7 +25,7 @@ export default function VocalPortfolioList() {
   return (
     <VocalPortfolioListWrapper>
       <VocalsBoxHead />
-      <VocalsBoxBody vocalPortfolioCount={vocalPortfolios.length}>
+      <VocalsBoxBody>
         <PortfolioWrapper>
           {vocalPortfolios?.map((vocalPortfolios, index) => {
             return (
@@ -68,13 +68,13 @@ const VocalsBoxHead = styled.div`
   border-radius: 5rem 2.8rem 5.4rem 2.8rem;
 `;
 
-const VocalsBoxBody = styled.div<{ vocalPortfolioCount: number }>`
+const VocalsBoxBody = styled.div`
   margin-left: 18rem;
   margin-top: 48.5rem;
+  margin-bottom: 3rem;
 
   position: absolute;
 
-  height: ${({ vocalPortfolioCount }) => (vocalPortfolioCount - 1) * 26 + 30}rem;
   width: 48.45rem;
 
   border-left: 0.34rem solid transparent;

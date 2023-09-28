@@ -7,8 +7,8 @@ import VocalEmptyProfileImg from "../../assets/image/vocalEmptyProfileImg.png";
 import { useGetVocalPortfolio, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
-import VocalPortfolioInform from "../portfolio/vocalPortfolioInform";
 import Profile from "../profile";
+import VocalPortfolioInform from "./vocalPortfolioInform";
 import VocalPortfolioList from "./vocalPortfolioList";
 import VocalProfileShadow from "./vocalProfileShadow";
 

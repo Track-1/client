@@ -63,6 +63,8 @@ const BigImageContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  margin-bottom: 5rem;
+
   &:hover {
     .image-wrapper {
       background-color: rgba(13, 14, 17, 0.5);

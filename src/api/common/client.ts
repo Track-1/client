@@ -6,7 +6,7 @@ export const client = axios.create({
   headers: {
     // Authorization: `Bearer ${getCookie("accessToken")}`,
 
-    Authorization: `Bearer ${process.env.REACT_APP_VOCAL_ACCESSTOKEN}`,
+    Authorization: `Bearer ${process.env.REACT_PRODUCER_VOCAL_ACCESSTOKEN}`,
   },
   withCredentials: true,
 });

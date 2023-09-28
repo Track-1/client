@@ -8,6 +8,7 @@ import { useGetProducerPortfolio, useGetProducerProfile } from "../../hooks/quer
 import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
 import Profile from "../profile";
+import ProducerPortfolioInform from "./producerPortfolioInform";
 import ProducerPortfolioList from "./producerPortfolioList";
 import ProducerProfileShadow from "./producerProfileShadow";
 
@@ -55,18 +56,36 @@ export default function ProducerProfile() {
         <PortfolioSection>
           {producerPortfolios && producerPortfolios?.length > 0 ? (
             <>
-              {dataState === "Portfolio" && <ProducerPortfolioList />}
-              {/* <ProducerPortfolioInform isMe={producerProfile?.userSelf} /> */}
+              <DataWrapper>{dataState === "Portfolio" && <ProducerPortfolioList />}</DataWrapper>
+              <ProducerPortfolioInform isMe={producerProfile?.userSelf} />
             </>
           ) : (
             <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
           )}
+
           <ProducerProfileShadow />
         </PortfolioSection>
       </Container>
     </>
   );
 }
+
+const DataWrapper = styled.div`
+  width: 47.8rem;
+  border: 0.3rem solid transparent;
+  border-top-left-radius: 47.8rem;
+  border-top-right-radius: 47.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 29.4rem;
+  margin-top: 23.3rem;
+  margin-bottom: 3rem;
+  background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
+    linear-gradient(to bottom, ${({ theme }) => theme.colors.sub1}, ${({ theme }) => theme.colors.sub3});
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+`;
 
 const ProducerEmptyProfileImage = styled.img`
   position: absolute;

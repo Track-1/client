@@ -32,12 +32,12 @@ export default function ProducerSmallPortfolio(props: ProducerSmallPortfolioProp
   }
 
   return (
-    <BigImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover} onClick={handlePlaying}>
-      <BigImageWrapper className="image-wrapper">
+    <SmallImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover} onClick={handlePlaying}>
+      <SmallImageWrapper className="image-wrapper">
         <Image src={producerPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
-      </BigImageWrapper>
+      </SmallImageWrapper>
       {!isPlay ? hoverId !== -1 && <PortfolioPauseIcon /> : hoverId !== -1 && <PortfolioPlayIcon />}
-    </BigImageContainer>
+    </SmallImageContainer>
   );
 }
 
@@ -56,12 +56,14 @@ const PortfolioPlayIcon = styled(PortfolioPlayIc)`
   cursor: pointer;
 `;
 
-const BigImageContainer = styled.div`
+const SmallImageContainer = styled.div`
   display: flex;
   width: 21.8rem;
   height: 21.8rem;
   justify-content: center;
   align-items: center;
+
+  margin-bottom: 3rem;
 
   &:hover {
     .image-wrapper {
@@ -75,16 +77,13 @@ const BigImageContainer = styled.div`
   }
 `;
 
-const BigImageWrapper = styled.div`
+const SmallImageWrapper = styled.div`
   display: inline-block;
 
   overflow: hidden;
   width: 21.8rem;
   height: 21.8rem;
   border-radius: 50%;
-
-  /* margin: 12rem 0 0 12rem; */
-  /* margin-bottom: 12rem; */
 
   cursor: pointer;
 `;

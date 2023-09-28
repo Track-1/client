@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useGetProducerPortfolio } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
+import { clickedProfileId } from "../../recoil/common/profile";
 import ProducerBigPortfolio from "../portfolio/producerBigPortfolio";
 import ProducerSmallPortfolio from "../portfolio/producerSmallPortfolio";
 
@@ -17,12 +17,11 @@ export default function ProducerPortfolioList() {
   });
 
   const clickedId = useRecoilValue(clickedProfileId);
-  const hoveredId = useRecoilValue(hoveredProfileId);
 
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   if (producerPortfolios === undefined) return null;
-  console.log(producerPortfolios);
+
   return (
     <PortfolioWrapper>
       {producerPortfolios?.map((producerPortfolios, index) => {
@@ -51,5 +50,5 @@ const PortfolioWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 
-  /* margin-top: -18rem; */
+  margin-top: 3rem;
 `;
