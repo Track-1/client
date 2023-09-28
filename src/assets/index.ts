@@ -43,6 +43,7 @@ export { ReactComponent as PencilUpdateIc } from "./icon/pencilUpdateIc.svg";
 export { ReactComponent as PlayButtonIc } from "./icon/playButtonIc.svg";
 export { ReactComponent as PortfolioPauseIc } from "./icon/portfolioPauseIc.svg";
 export { ReactComponent as PortfolioPlayIc } from "./icon/portfolioPlayIc.svg";
+export { ReactComponent as ProducerProfileShadowIc } from "./icon/producerProfileShadowIc.svg";
 export { ReactComponent as ProducerTypeToggleIc } from "./icon/producerTypeToggleIc.svg";
 export { ReactComponent as ProfileBackgroundIc } from "./icon/profileBackgroundIc.svg";
 export { ReactComponent as ProfileEditActiveButtonIc } from "./icon/profileEditActiveButtonIc.svg";
