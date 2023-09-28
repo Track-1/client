@@ -9,3 +9,8 @@ export const hoveredProfileId = atom({
   key: "hoveredProfileId",
   default: -1,
 });
+
+export const producerState = atom({
+  key: "producerState",
+  default: "Portfolio",
+});

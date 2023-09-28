@@ -56,6 +56,7 @@ export { ReactComponent as RequestBlackTextIc } from "./icon/requestBlackTextIc.
 export { ReactComponent as RequestWhiteTextIc } from "./icon/requestWhiteTextIc.svg";
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as ResendTextIc } from "./icon/resendTextIc.svg";
+export { ReactComponent as RightArrorIc } from "./icon/rightArrorIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
 export { ReactComponent as SetIsTitleIc } from "./icon/setIsTitleIc.svg";
 export { ReactComponent as ShowPasswordSignupIc } from "./icon/showPasswordSignupIc.svg";
