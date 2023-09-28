@@ -39,6 +39,7 @@ export { ReactComponent as MoveTouploadPortfolioButtonIc } from "./icon/moveToup
 export { ReactComponent as MoveTouploadVocalSearchingButtonIc } from "./icon/moveTouploadVocalSearchingButtonIc.svg";
 export { ReactComponent as OpenDownloadIc } from "./icon/openedIc.svg";
 export { ReactComponent as PauseButtonIc } from "./icon/pauseButtonIc.svg";
+export { ReactComponent as PencilUpdateIc } from "./icon/pencilUpdateIc.svg";
 export { ReactComponent as PlayButtonIc } from "./icon/playButtonIc.svg";
 export { ReactComponent as PortfolioPauseIc } from "./icon/portfolioPauseIc.svg";
 export { ReactComponent as PortfolioPlayIc } from "./icon/portfolioPlayIc.svg";
@@ -55,6 +56,7 @@ export { ReactComponent as RequestWhiteTextIc } from "./icon/requestWhiteTextIc.
 export { ReactComponent as ResendSignupIc } from "./icon/resendSignupIc.svg";
 export { ReactComponent as ResendTextIc } from "./icon/resendTextIc.svg";
 export { ReactComponent as SendCodeSignupIc } from "./icon/sendCodeSignupIc.svg";
+export { ReactComponent as SetIsTitleIc } from "./icon/setIsTitleIc.svg";
 export { ReactComponent as ShowPasswordSignupIc } from "./icon/showPasswordSignupIc.svg";
 export { ReactComponent as SignUpGetStartedButtonIc } from "./icon/signUpGetStartedButtonIc.svg";
 export { ReactComponent as SignUpModalXIc } from "./icon/signUpModalXIc.svg";
@@ -93,6 +95,7 @@ export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
 export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";
 export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunIc.svg";
+export { ReactComponent as TrashDeleteIc } from "./icon/trashDeleteIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
 export { ReactComponent as UploadAbleBtnIc } from "./icon/uploadAbleBtnIc.svg";
 export { ReactComponent as UploadActiveSaveButtonIc } from "./icon/uploadActiveSaveButtonIc.svg";

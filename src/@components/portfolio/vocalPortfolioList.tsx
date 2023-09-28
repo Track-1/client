@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
-import useGetVocalPortfolio from "../../hooks/vocalProfile/useGetVocalPortfolio";
+import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import VocalBigPortfolio from "./vocalBigPortfolio";
 import VocalSmallPortfolio from "./vocalSmallPortfolio";

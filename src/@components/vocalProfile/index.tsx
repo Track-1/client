@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
-import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
+import VocalEmptyProfileImg from "../../assets/image/vocalEmptyProfileImg.png";
+import { useGetVocalPortfolio, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
 import VocalPortfolioInform from "../portfolio/vocalPortfolioInform";
@@ -11,12 +12,18 @@ import VocalPortfolioList from "../portfolio/vocalPortfolioList";
 import Profile from "../profile";
 import VocalProfileShadow from "./vocalProfileShadow";
 
+const PAGE_LIMIT = 5;
+
 export default function VocalProfile() {
   const { vocalId } = useParams();
   const { vocalProfile } = useGetVocalProfile(Number(vocalId));
   const navigate = useNavigate();
   const resetClickedId = useResetRecoilState(clickedProfileId);
   const resetHoveredId = useResetRecoilState(hoveredProfileId);
+  const { vocalPortfolios } = useGetVocalPortfolio({
+    limit: PAGE_LIMIT,
+    userId: Number(vocalId),
+  });
 
   useEffect(() => {
     resetClickedId();
@@ -44,13 +51,27 @@ export default function VocalProfile() {
       </ProfileSection>
       {vocalProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
       <PortfolioSection>
-        <VocalPortfolioList />
-        <VocalPortfolioInform isMe={vocalProfile?.userSelf} />
+        {vocalPortfolios && vocalPortfolios?.length > 0 ? (
+          <>
+            <VocalPortfolioList />
+            <VocalPortfolioInform isMe={vocalProfile?.userSelf} />
+          </>
+        ) : (
+          <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
+        )}
+
         <VocalProfileShadow />
       </PortfolioSection>
     </Container>
   );
 }
+
+const VocalEmptyProfileImage = styled.img`
+  position: absolute;
+  top: 26.2rem;
+  left: 69.6rem;
+  width: 123rem;
+`;
 
 const PortfolioSection = styled.section`
   width: 186rem;

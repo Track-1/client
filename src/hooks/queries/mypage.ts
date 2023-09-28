@@ -11,8 +11,58 @@ import {
 } from "../../api/mypage";
 import { MyPageTitleParamsType } from "../../type/mypage";
 
-export function useMyInfo() {
-  //무한스크롤 미적용
+import { useInfiniteQuery } from "react-query";
+
+import { getVocalInfo } from "../../api/profile";
+import { VocalsPortfoliosParamsType } from "../../type/vocals";
+
+import { useQuery } from "react-query";
+import { getVocalProfile } from "../../api/profile";
+
+export function useGetVocalPortfolio(params: Omit<VocalsPortfoliosParamsType, "page">) {
+  const fetchVocals = async (pageParams: number) => {
+    const response = await getVocalInfo({ ...params, page: pageParams, userId: params.userId });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "vocalPortfolios",
+    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
+      },
+    },
+  );
+
+  const vocalPortfolios = data?.pages.flatMap((data) => data.response.data.map((vocalPortfolio) => vocalPortfolio));
+
+  return {
+    vocalPortfolios,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
+}
+
+export function useGetVocalProfile(userId: number) {
+  const { data: vocalProfile } = useQuery(
+    ["getVocalProfile"],
+    () =>
+      getVocalProfile({
+        userId: userId,
+        page: 1,
+        limit: 1,
+      }),
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    },
+  );
+
+  return { vocalProfile };
 }
 
 export function useUploadProducerPortfolio() {
@@ -88,7 +138,9 @@ export function useEditProducerTitle() {
 export function useEditVocalTitle() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (params: MyPageTitleParamsType) => patchVocalTitle(params),
-    onSuccess: () => {},
+    onSuccess: () => {
+      alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.");
+    },
     onError: () => {},
   });
   return {

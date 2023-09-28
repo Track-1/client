@@ -3,19 +3,19 @@ import { UserPortfolioType } from "../../type/profile";
 import HashTag from "../profile/hashtag";
 
 interface MusicInformationProps {
-  vocalPortfolios: UserPortfolioType;
+  vocalPortfolio: UserPortfolioType;
 }
 
 export default function MusicInformation(props: MusicInformationProps) {
-  const { vocalPortfolios } = props;
+  const { vocalPortfolio } = props;
 
   return (
     <MusicInformationWrapper>
-      <InformTitle>{vocalPortfolios.portfolioTitle}</InformTitle>
-      <InformCategory>{vocalPortfolios.portfolioCategory}</InformCategory>
-      <InformContent>{vocalPortfolios.portfolioContent}</InformContent>
+      <InformTitle>{vocalPortfolio.portfolioTitle}</InformTitle>
+      <InformCategory>{vocalPortfolio.portfolioCategory}</InformCategory>
+      <InformContent>{vocalPortfolio.portfolioContent}</InformContent>
       <InformTagWrapper>
-        {vocalPortfolios.portfolioKeyword.map((tag: any, idx: any) => (
+        {vocalPortfolio.portfolioKeyword.map((tag: any, idx: any) => (
           <HashTag key={idx} text={tag} />
         ))}
       </InformTagWrapper>
