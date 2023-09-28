@@ -35,7 +35,10 @@ export default function VocalPortfolioList() {
               )}
             </MiddleSection>
             <RightSection>
-              {clickedId === vocalPortfolios.portfolioId && <MusicInformation vocalPortfolios={vocalPortfolios} />}
+              {((hoveredId === -1 && clickedId === vocalPortfolios.portfolioId) ||
+                (hoveredId !== -1 && hoveredId === vocalPortfolios.portfolioId)) && (
+                <MusicInformation vocalPortfolios={vocalPortfolios} />
+              )}
             </RightSection>
           </VocalPortfolioListWrapper>
         );
