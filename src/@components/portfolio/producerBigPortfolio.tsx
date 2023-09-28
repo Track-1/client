@@ -1,21 +1,20 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
+import { UserPortfolioType } from "../../type/profile";
 
 interface ProducerBigPortfolioProps {
-  portfolioId: number;
-  portfolioImageFile: string;
-  portfolioAudioFile: string;
+  producerPortfolios: UserPortfolioType;
 }
 
 export default function ProducerBigPortfolio(props: ProducerBigPortfolioProps) {
-  const { portfolioId, portfolioImageFile, portfolioAudioFile } = props;
+  const { producerPortfolios } = props;
   // 플레이어 붙이기
   const isPlay = true;
   const [hover, setHover] = useState(-1);
 
   function handleHoverImage() {
-    setHover(portfolioId);
+    setHover(producerPortfolios.portfolioId);
   }
 
   function handleNoneHover() {
@@ -25,7 +24,7 @@ export default function ProducerBigPortfolio(props: ProducerBigPortfolioProps) {
   return (
     <BigImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover}>
       <BigImageWrapper className="image-wrapper">
-        <Image src={portfolioImageFile} alt="포트폴리오 이미지" className="image" />
+        <Image src={producerPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </BigImageWrapper>
       {!isPlay ? hover !== -1 && <PortfolioPauseIcon /> : hover !== -1 && <PortfolioPlayIcon />}
     </BigImageContainer>

@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc } from "../../assets";
 import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
+import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
 import VocalPortfolioList from "../portfolio/vocalPortfolioList";
 import Profile from "../profile";
@@ -10,6 +13,13 @@ export default function VocalProfile() {
   const { vocalId } = useParams();
   const { vocalProfile } = useGetVocalProfile(Number(vocalId));
   const navigate = useNavigate();
+  const resetClickedId = useResetRecoilState(clickedProfileId);
+  const resetHoveredId = useResetRecoilState(hoveredProfileId);
+
+  useEffect(() => {
+    resetClickedId();
+    resetHoveredId();
+  }, []);
 
   function handleMoveProfileEditPage() {
     navigate(`/profile-edit/vocal/${vocalProfile?.userProfile.userId}`);

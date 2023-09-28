@@ -1,33 +1,43 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
+import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
+import { UserPortfolioType } from "../../type/profile";
 
 interface VocalSmallPortfolioProps {
-  portfolioId: number;
-  portfolioImageFile: string;
-  portfolioAudioFile: string;
+  vocalPortfolios: UserPortfolioType;
 }
 
 export default function VocalSmallPortfolio(props: VocalSmallPortfolioProps) {
-  const { portfolioId, portfolioImageFile, portfolioAudioFile } = props;
+  const { vocalPortfolios } = props;
+
   // 플레이어 붙이기
   const isPlay = true;
-  const [hover, setHover] = useState(-1);
+  const [hoverId, setHoverId] = useState(-1);
+  const [savedHoverId, setSavedHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
 
   function handleHoverImage() {
-    setHover(portfolioId);
+    setHoverId(vocalPortfolios.portfolioId);
+    setSavedHoverId(vocalPortfolios.portfolioId);
   }
 
   function handleNoneHover() {
-    setHover(-1);
+    setHoverId(-1);
+    setSavedHoverId(-1);
+  }
+
+  function handlePlaying() {
+    setClickId(vocalPortfolios.portfolioId);
   }
 
   return (
-    <SmallImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover}>
+    <SmallImageContainer onMouseEnter={handleHoverImage} onMouseLeave={handleNoneHover} onClick={handlePlaying}>
       <SmallImageWrapper className="image-wrapper">
-        <Image src={portfolioImageFile} alt="포트폴리오 이미지" className="image" />
+        <Image src={vocalPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </SmallImageWrapper>
-      {!isPlay ? hover !== -1 && <PortfolioPauseIcon /> : hover !== -1 && <PortfolioPlayIcon />}
+      {!isPlay ? hoverId !== -1 && <PortfolioPauseIcon /> : hoverId !== -1 && <PortfolioPlayIcon />}
     </SmallImageContainer>
   );
 }
