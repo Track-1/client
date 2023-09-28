@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ProfileEditBtnIc } from "../../assets";
+import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import useGetVocalProfile from "../../hooks/vocalProfile/useGetVocalProfile";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
@@ -27,6 +27,12 @@ export default function VocalProfile() {
     navigate(`/profile-edit/vocal/${vocalProfile?.userProfile.userId}`);
   }
 
+  function hadnleMoveToUpload() {
+    navigate("/upload/Portfolio", {
+      state: { producerUploadType: "Portfolio", prevPage: `/vocal-profile/${vocalId}` },
+    });
+  }
+
   return (
     <Container>
       <ProfileSection>
@@ -36,9 +42,10 @@ export default function VocalProfile() {
         </BackButtonWrapper>
         <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
       </ProfileSection>
+      {vocalProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
       <PortfolioSection>
         <VocalPortfolioList />
-        <VocalPortfolioInform />
+        <VocalPortfolioInform isMe={vocalProfile?.userSelf} />
         <VocalProfileShadow />
       </PortfolioSection>
     </Container>
@@ -72,6 +79,18 @@ const ProfileSection = styled.section`
 const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
   width: 16.6rem;
   margin-left: 16.9rem;
+
+  cursor: pointer;
+`;
+
+const UploadButtonIcon = styled(UploadButtonIc)`
+  position: fixed;
+  z-index: 7;
+  right: 0;
+  margin-top: 5.9rem;
+  margin-right: 6.9rem;
+
+  width: 24.5rem;
 
   cursor: pointer;
 `;

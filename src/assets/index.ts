@@ -96,6 +96,7 @@ export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunI
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
 export { ReactComponent as UploadAbleBtnIc } from "./icon/uploadAbleBtnIc.svg";
 export { ReactComponent as UploadActiveSaveButtonIc } from "./icon/uploadActiveSaveButtonIc.svg";
+export { ReactComponent as UploadButtonIc } from "./icon/uploadButtonIc.svg";
 export { ReactComponent as UploadCategoryIc } from "./icon/uploadCategoryIc.svg";
 export { ReactComponent as UploadDescriptionIc } from "./icon/uploadDescriptionIc.svg";
 export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.svg";
@@ -103,5 +104,6 @@ export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnActiveSaveButtonIc.svg";
 export { ReactComponent as UploadUnableBtnIc } from "./icon/uploadUnableBtnIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
+export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";
 export { ReactComponent as VocalProfileShadowIc } from "./icon/vocalProfileShadowIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
