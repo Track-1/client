@@ -1,6 +1,7 @@
 import Footer from "../@common/footer";
 
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from "../../assets";
 import background from "../../assets/icon/signupProfileBackgroundIc.svg";
@@ -8,6 +9,7 @@ import { TEXT_LIMIT } from "../../core/common/textLimit";
 import useHashtagInput from "../../hooks/common/useHashtagInput";
 import useInputText from "../../hooks/common/useInputText";
 import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
+import { useProfileAfterJoin } from "../../hooks/queries/user";
 import ProfileContactEdit from "../profileEdit/profileContactEdit";
 import ProfileDescriptionEdit from "../profileEdit/profileDescriptionEdit";
 import ProfileHashtagEdit from "../profileEdit/profileHashtagEdit";
@@ -22,10 +24,12 @@ export default function SignupProfile() {
     mode: "onChange",
   });
 
-  const { watch } = contactMethods;
+  const { getValues, watch } = contactMethods;
 
+  const { profileAtferJoin } = useProfileAfterJoin();
   const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.PROFILE_DESCRIPTION);
   const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
+  const navigate = useNavigate();
 
   const {
     hashtags,
@@ -41,6 +45,19 @@ export default function SignupProfile() {
     return watch("contact") !== "" || categories.length > 0 || hashtags.length > 0 || description !== "";
   }
 
+  function handleMoveToSuccess() {
+    navigate("/signup/success");
+  }
+
+  function handleCompleteProfile() {
+    profileAtferJoin({
+      userContact: getValues("contact"),
+      userCategory: categories,
+      userKeyword: hashtags,
+      userIntroduction: description,
+    });
+  }
+
   return (
     <>
       <BackButtonWrapper>
@@ -48,8 +65,8 @@ export default function SignupProfile() {
       </BackButtonWrapper>
       <SignUpContainer>
         <Img src={background} alt="배경" />
-        <SignupProfileSkipIcon />
-        <UploadButton type="button" isComplete={checkIsComplete()}>
+        <SignupProfileSkipIcon onClick={handleMoveToSuccess} />
+        <UploadButton type="button" isComplete={checkIsComplete()} onClick={handleCompleteProfile}>
           <SignupProfileCompleteTextIcon />
         </UploadButton>
         <StepBox>

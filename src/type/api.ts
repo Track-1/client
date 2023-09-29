@@ -14,7 +14,7 @@ import { FilteredVocalListType } from "./vocals";
 export type DefaultResponseType<T = unknown> = {
   status: number;
   success: boolean;
-  messaage: string;
+  message: string;
   data: T;
 };
 

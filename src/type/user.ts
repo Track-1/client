@@ -9,7 +9,7 @@ export interface UserLoginInfo {
 export interface UserProfileType {
   userContact: string;
   userCategory: string[];
-  userKeyword: string;
+  userKeyword: string[];
   userIntroduction: string;
 }
 
