@@ -4,13 +4,19 @@ import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
-import { useGetProducerPortfolio, useGetProducerProfile } from "../../hooks/queries/mypage";
+import {
+  useGetProducerPortfolio,
+  useGetProducerProfile,
+  useGetProducerVocalSearching,
+} from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
 import Profile from "../profile";
 import ProducerPortfolioInform from "./producerPortfolioInform";
 import ProducerPortfolioList from "./producerPortfolioList";
 import ProducerProfileShadow from "./producerProfileShadow";
+import ProducerVocalSearching from "./producerVocalSearching";
+import ProducerVocalSearchingInform from "./producerVocalSearchingInform";
 
 const PAGE_LIMIT = 5;
 
@@ -24,6 +30,11 @@ export default function ProducerProfile() {
     limit: PAGE_LIMIT,
     userId: Number(producerId),
   });
+  const { producerVocalSearchings } = useGetProducerVocalSearching({
+    limit: PAGE_LIMIT,
+    userId: Number(producerId),
+  });
+
   const dataState = useRecoilValue(producerState);
 
   useEffect(() => {
@@ -54,13 +65,32 @@ export default function ProducerProfile() {
         {producerProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
 
         <PortfolioSection>
-          {producerPortfolios && producerPortfolios?.length > 0 ? (
+          {dataState === "Portfolio" ? (
             <>
-              <DataWrapper>{dataState === "Portfolio" && <ProducerPortfolioList />}</DataWrapper>
-              <ProducerPortfolioInform isMe={producerProfile?.userSelf} />
+              {producerPortfolios && producerPortfolios.length > 0 ? (
+                <>
+                  <DataWrapper>
+                    <ProducerPortfolioList />
+                  </DataWrapper>
+                  <ProducerPortfolioInform isMe={producerProfile?.userSelf} />
+                </>
+              ) : (
+                <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
+              )}
             </>
           ) : (
-            <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
+            <>
+              {producerVocalSearchings && producerVocalSearchings.length > 0 ? (
+                <>
+                  <DataWrapper>
+                    <ProducerVocalSearching />
+                  </DataWrapper>
+                  <ProducerVocalSearchingInform isMe={producerProfile?.userSelf} />
+                </>
+              ) : (
+                <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
+              )}
+            </>
           )}
 
           <ProducerProfileShadow />

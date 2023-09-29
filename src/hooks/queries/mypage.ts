@@ -23,7 +23,7 @@ import { getProducerProfile } from "../../api/profile";
 
 export function useGetProducerProfile(userId: number) {
   const { data: producerProfile } = useQuery(
-    ["getProducerProfile"],
+    "getProducerProfile",
     () =>
       getProducerProfile({
         userId: userId,
@@ -58,7 +58,7 @@ export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page
   );
 
   const producerPortfolios = data?.pages.flatMap((data) =>
-    data.response.data.map((producerPortfolio: any) => producerPortfolio),
+    data.response.data.map((producerPortfolio: any) => producerPortfolio && producerPortfolio),
   );
 
   return {
@@ -69,7 +69,7 @@ export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page
   };
 }
 
-export function useGetVocalSearchingPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, "page">) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getProducerVocalSearching({ ...params, page: pageParams, userId: params.userId });
 
@@ -87,7 +87,7 @@ export function useGetVocalSearchingPortfolio(params: Omit<PortfoliosParamsType,
   );
 
   const producerVocalSearchings = data?.pages.flatMap((data) =>
-    data.response.data.map((producerVocalSearching: any) => producerVocalSearching),
+    data.response.data.map((producerVocalSearching: any) => producerVocalSearching && producerVocalSearching),
   );
 
   return {
@@ -115,7 +115,9 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">)
     },
   );
 
-  const vocalPortfolios = data?.pages.flatMap((data) => data.response.data.map((vocalPortfolio) => vocalPortfolio));
+  const vocalPortfolios = data?.pages.flatMap((data) =>
+    data.response.data.map((vocalPortfolio) => vocalPortfolio && vocalPortfolio),
+  );
 
   return {
     vocalPortfolios,
