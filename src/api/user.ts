@@ -7,17 +7,17 @@ import {
   VerifyCodeRequest,
 } from "../type/api";
 import { UserType } from "../type/common/userType";
-import { getCookie } from "../utils/common/cookie";
+import { JoinUserDataPropsType } from "../type/signUp/joinUserDataType";
 import { client } from "./common/client";
 import { USER } from "./path";
 
-export async function postJoin(userType: UserType, formData: FormData) {
+export async function postJoin(userType: UserType, formData: JoinUserDataPropsType) {
   const { data } = await client.post<DefaultResponseType>(USER.JOIN(userType), formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  return data;
+  return data.data;
 }
 
 export async function patchProfileAfterJoin(userProfile: UserProfileRequest) {
@@ -42,6 +42,7 @@ export async function getAccessToken() {
 
 export async function postUserEmail(userEmail: UserEmailRequest) {
   const { data } = await client.post<DefaultResponseType>(USER.BASIC_EMAIL, userEmail);
+  console.log(data);
   return data;
 }
 

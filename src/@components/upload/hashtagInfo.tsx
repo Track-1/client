@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import UploadInfoBox from "./uploadInfoBox";
 import HashtagInput from "../@common/hashtag/hashtagInput";
 import HashtagWarning from "../@common/hashtag/hashtagWarning";
 import { InfoInput, InfoType, InfoTypeText } from "./categotyInfo";
+import UploadInfoBox from "./uploadInfoBox";
 
 interface HashtagInfoProps {
   hashtags: string[];
@@ -33,7 +33,7 @@ export default function HashtagInfo(props: HashtagInfoProps) {
         #<InfoTypeText>Hashtag</InfoTypeText>
       </InfoType>
 
-      <InfoInput>
+      <InfoInput isProfile={false}>
         <HashtagInputWrapper>
           <HashtagInput
             hashtags={hashtags}

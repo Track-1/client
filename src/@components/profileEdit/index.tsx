@@ -1,24 +1,24 @@
-import styled from "styled-components";
-import ProfileHashtagEdit from "./profileHashtagEdit";
-import ProfileNameEdit from "./profileNameEdit";
-import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from "../../assets";
-import useInputText from "../../hooks/common/useInputText";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import useUploadImageFile from "../../hooks/common/useUploadImageFile";
-import ProfileSelectCategoryEdit from "./profileSelectCategoryEdit";
-import { useForm } from "react-hook-form";
-import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
-import ProfileDescriptionEdit from "./profileDescriptionEdit";
-import Header from "../@common/header";
 import { useEffect, useState } from "react";
-import useHashtagInput from "../../hooks/common/useHashtagInput";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
-import VocalImageEdit from "./vocalProfileEdit/vocalImageEdit";
-import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
-import ProfileContactEdit from "./profileContactEdit";
-import ProducerImageEdit from "./producerProfileEdit/producerImageEdit";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import useHashtagInput from "../../hooks/common/useHashtagInput";
+import useInputText from "../../hooks/common/useInputText";
+import useUploadImageFile from "../../hooks/common/useUploadImageFile";
+import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
 import { useEditProdcerProfile, useEditVocalProfile } from "../../hooks/queries/profile";
 import { ProfileEditType, VocalProfileEditType } from "../../type/profile";
+import Header from "../@common/header";
+import ProducerImageEdit from "./producerProfileEdit/producerImageEdit";
+import ProfileContactEdit from "./profileContactEdit";
+import ProfileDescriptionEdit from "./profileDescriptionEdit";
+import ProfileHashtagEdit from "./profileHashtagEdit";
+import ProfileNameEdit from "./profileNameEdit";
+import ProfileSelectCategoryEdit from "./profileSelectCategoryEdit";
+import VocalImageEdit from "./vocalProfileEdit/vocalImageEdit";
+import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
 
 export default function ProfileEditContainer() {
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
@@ -145,7 +145,11 @@ export default function ProfileEditContainer() {
               handleRemoveHashtag={handleRemoveHashtag}
               handleChangeHashtagInputText={handleChangeHashtagInputText}
             />
-            <ProfileDescriptionEdit description={description} handleChangeDescription={handleChangeDescriptikon} />
+            <ProfileDescriptionEdit
+              description={description}
+              handleChangeDescription={handleChangeDescriptikon}
+              isProfile={true}
+            />
           </ProfileEditInfoWrapper>
         </ProfileEditInfo>
       </ProfileEditContainerBox>

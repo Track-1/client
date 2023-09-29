@@ -1,6 +1,6 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
-import { useState } from "react";
 import UploadInfoBox from "./uploadInfoBox";
 
 export default function CategoryInfo() {
@@ -19,7 +19,7 @@ export default function CategoryInfo() {
           <UploadCategoryIc />
           <InfoTypeText>Category</InfoTypeText>
         </InfoType>
-        <InfoInput>
+        <InfoInput isProfile={false}>
           <InputWrapper>
             <InputCategoryTextWrapper categoryState={categoryState}>
               <InputCategoryText categoryState={categoryState} onClick={showDropBox}>
@@ -68,11 +68,14 @@ export const InfoTypeText = styled.p`
   margin-left: 1rem;
 `;
 
-export const InfoInput = styled.div`
+export const InfoInput = styled.div<{ isProfile: boolean }>`
   display: flex;
-  align-items: center;
   justify-content: space-between;
 
+  flex-direction: ${({ isProfile }) => isProfile && "column"};
+  align-items: ${({ isProfile }) => (isProfile ? "flex-end" : "center")};
+
+  margin-top: ${({ isProfile }) => isProfile && -1.8}rem;
   width: 100%;
   height: 100%;
 `;
