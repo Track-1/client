@@ -27,3 +27,15 @@ export interface VerifyCodeType {
   userEmail: string;
   userCode: string;
 }
+
+export interface UserResultType {
+  userId: number;
+  userName: string;
+  userType: string;
+  userEmail: string;
+}
+
+export interface SingupResultType {
+  userResult: UserResultType;
+  accessToken: string;
+}

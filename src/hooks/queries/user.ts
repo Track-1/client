@@ -30,6 +30,7 @@ import {
 import { UserType } from "../../type/common/userType";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
+import { setCookie } from "../../utils/common/cookie";
 
 export function useJoin() {
   const navigate = useNavigate();
@@ -39,15 +40,16 @@ export function useJoin() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ userType, formData }: { userType: UserType; formData: JoinUserDataPropsType }) =>
       postJoin(userType, formData),
-    onSuccess: (response) => {
-      console.log(response);
-      // const accessToken = response.accessToken;
-      // setCookie("accessToken", accessToken, {});
-      // setLoginUserType(response.data.userResult.tableName);
-      // setLoginUserId(response.data.data.userResult.id);
+    onSuccess: (response: any) => {
+      const accessToken = response.accessToken;
+      setCookie("accessToken", accessToken, {});
+      setLoginUserType(response.userResult.userType);
+      setLoginUserId(response.userResult.userId);
       navigate("/signup/profile");
     },
-    onError: () => {},
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   return {
