@@ -58,7 +58,7 @@ export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page
   );
 
   const producerPortfolios = data?.pages.flatMap((data) =>
-    data.response.data.map((producerPortfolio: any) => producerPortfolio && producerPortfolio),
+    data.response.data.filter((producerPortfolio: any) => producerPortfolio),
   );
 
   return {
@@ -87,7 +87,7 @@ export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, 
   );
 
   const producerVocalSearchings = data?.pages.flatMap((data) =>
-    data.response.data.map((producerVocalSearching: any) => producerVocalSearching && producerVocalSearching),
+    data.response.data.filter((producerVocalSearching: any) => producerVocalSearching),
   );
 
   return {
@@ -115,9 +115,7 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">)
     },
   );
 
-  const vocalPortfolios = data?.pages.flatMap((data) =>
-    data.response.data.map((vocalPortfolio) => vocalPortfolio && vocalPortfolio),
-  );
+  const vocalPortfolios = data?.pages.flatMap((data) => data.response.data.filter((vocalPortfolio) => vocalPortfolio));
 
   return {
     vocalPortfolios,

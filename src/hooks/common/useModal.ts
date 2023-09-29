@@ -16,7 +16,6 @@ export default function useModal() {
   }, [openModal]);
 
   function closeModal(e: MouseEvent) {
-    console.log(e.target);
     if (isClickedOutside(e, modalRef, openModal)) {
       setOpenModal(false);
     }
