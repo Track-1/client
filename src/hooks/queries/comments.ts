@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 import { useResetRecoilState } from "recoil";
 import { deleteComment, getComments, patchComment, postComment } from "../../api/comments";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentsRequest } from "../../type/api";
 import { CommentDataType } from "../../type/trackPost/commentDataType";
 
@@ -44,7 +44,9 @@ export function useUploadComment() {
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
       resetComment();
     },
-    onError: () => {},
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     uploadComment: mutate,
@@ -52,12 +54,20 @@ export function useUploadComment() {
   };
 }
 
-export function useEditComment() {
+export function useEditComment(setIsEdit: (value: React.SetStateAction<boolean>) => void) {
+  const queryClient = useQueryClient();
+  const resetComment = useResetRecoilState(commentUpdateData);
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ commentId, formData }: { commentId: number; formData: FormData }) =>
+    mutationFn: ({ commentId, formData }: { commentId: number; formData: CommentDataType }) =>
       patchComment(commentId, formData),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setIsEdit(false);
+      resetComment();
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     editComment: mutate,
@@ -66,10 +76,15 @@ export function useEditComment() {
 }
 
 export function useDeleteComment() {
+  const queryClient = useQueryClient();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (commentId: number) => deleteComment(commentId),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     deleteComment: mutate,

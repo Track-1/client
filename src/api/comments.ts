@@ -22,7 +22,7 @@ export async function postComment(trackId: number, formData: CommentDataType) {
   return data;
 }
 
-export async function patchComment(commentId: number, formData: FormData) {
+export async function patchComment(commentId: number, formData: CommentDataType) {
   const { data } = await client.patch<DefaultResponseType>(COMMENTS.PATCH(commentId), formData, {
     headers: {
       "Content-Type": "multipart/form-data",
