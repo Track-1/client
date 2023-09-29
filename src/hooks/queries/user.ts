@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -15,7 +16,9 @@ import {
   postUserEmail,
   postVerifyCode,
 } from "../../api/user";
+import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
+import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import {
   UserEmailRequest,
@@ -103,13 +106,24 @@ export function useAccessToken() {
 }
 
 export function useUserEmail() {
+  const [errorMessage, setErrorMessage] = useState("");
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postUserEmail(userEmail),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setErrorMessage(EMAIL_MESSAGE.TIME);
+      alert(SIGNUP_SENDCODE);
+    },
+    onError: (error: any) => {
+      if (error.response.data.message === "중복된 이메일입니다") {
+        setErrorMessage(EMAIL_MESSAGE.DUPLICATION);
+      }
+      console.log(error);
+    },
   });
   return {
     sendEmail: mutate,
+    errorMessage,
     ...restValues,
   };
 }

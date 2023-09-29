@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -26,7 +27,7 @@ export default function Email(props: SignupInputProps) {
     watch,
   } = methods;
 
-  const { sendEmail } = useUserEmail();
+  const { sendEmail, errorMessage } = useUserEmail();
 
   function checkIsActive() {
     return (getValues("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
@@ -38,6 +39,10 @@ export default function Email(props: SignupInputProps) {
       userEmail: getValues("email"),
     });
   }
+
+  useEffect(() => {
+    setError("email", { message: errorMessage });
+  }, [errorMessage, errors]);
 
   return (
     <>
