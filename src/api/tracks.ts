@@ -17,7 +17,7 @@ export async function getFilteredTracks(params: FilteredTrackParamsType) {
 
 export async function getTrackDetail(trackId: number) {
   const { data } = await client.get<TrackDetailResponse>(TRACKS.DETAIL(trackId));
-  return data;
+  return data.data;
 }
 
 export async function getTrackDownload(trackId: number) {

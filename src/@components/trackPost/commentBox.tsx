@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { updateComment } from "../../api/trackPost/updateComment";
 import { CommentUpldatCompleteIc, QuitIc } from "../../assets";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
+import { useEditComment } from "../../hooks/queries/comments";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
 import { commentUpdateData } from "../../recoil/trackPost/commentWriteData";
@@ -34,12 +32,13 @@ export default function CommentBox(props: CommentBoxProps) {
 
   const [clickId, setClickId] = useRecoilState(clickedTrackId);
   const [hoverState, setHoverState] = useState<boolean>(false);
-  // const [hoverId, setHoverId] = useState(-1);
   const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [comment, setComment] = useRecoilState(commentUpdateData);
   const resetComment = useResetRecoilState(commentUpdateData);
+
+  const { editComment } = useEditComment(() => setIsEdit(false));
 
   function handlePlayComment() {
     setClickId(commentId); //나중에 지우기
@@ -57,26 +56,13 @@ export default function CommentBox(props: CommentBoxProps) {
     setHoverState(isHover);
   }
 
-  const queryClient = useQueryClient();
-
-  const { mutate: updateCommentContent } = useMutation(() => updateComment(comment, commentId), {
-    onSuccess: () => {
-      setIsEdit(false);
-      resetComment();
-      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
   function handleStopUpdating() {
     setIsEdit(false);
   }
 
   function handleSubmitUpdateComment() {
     if (comment?.commentContent?.length > 0) {
-      updateCommentContent();
+      editComment({ commentId: commentId, formData: comment });
     }
   }
 

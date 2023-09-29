@@ -30,7 +30,7 @@ export type VerifyCodeRequest = VerifyCodeType;
 
 export type FilteredTrackResponse = DefaultResponseType<FilteredTrackListType[]>;
 
-export type TrackDetailResponse = DefaultResponseType<TrackDetailType[]>;
+export type TrackDetailResponse = DefaultResponseType<TrackDetailType>;
 
 export type TrackDownloadResponse = DefaultResponseType<TrackDownloadType>;
 
