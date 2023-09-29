@@ -1,7 +1,7 @@
 import { UploadFileIc } from "../../assets";
-import UploadInfoBox from "./uploadInfoBox";
-import { InfoInput, InfoType, InfoTypeText } from "./categotyInfo";
 import AudioFileUpload from "../@common/audioFileUpload";
+import { InfoInput, InfoType, InfoTypeText } from "./categotyInfo";
+import UploadInfoBox from "./uploadInfoBox";
 
 interface FileUploadInfoProps {
   audioFileName: string;
@@ -19,7 +19,7 @@ export default function FileUploadInfo(props: FileUploadInfoProps) {
         <UploadFileIc />
         <InfoTypeText>File Upload</InfoTypeText>
       </InfoType>
-      <InfoInput>
+      <InfoInput isProfile={false}>
         <AudioFileUpload
           audioFileName={audioFileName}
           audioFileType={audioFileType}

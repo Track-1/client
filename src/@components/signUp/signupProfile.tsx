@@ -1,11 +1,44 @@
 import Footer from "../@common/footer";
 
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from "../../assets";
 import background from "../../assets/icon/signupProfileBackgroundIc.svg";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import useHashtagInput from "../../hooks/common/useHashtagInput";
+import useInputText from "../../hooks/common/useInputText";
+import useUploadImageFile from "../../hooks/common/useUploadImageFile";
+import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
+import ProfileContactEdit from "../profileEdit/profileContactEdit";
+import ProfileDescriptionEdit from "../profileEdit/profileDescriptionEdit";
+import ProfileHashtagEdit from "../profileEdit/profileHashtagEdit";
+import ProfileSelectCategoryEdit from "../profileEdit/profileSelectCategoryEdit";
 import SignUpBackButton from "./signUpBackButton";
 
 export default function SignupProfile() {
+  const contactMethods = useForm({
+    defaultValues: {
+      contact: "",
+    },
+    mode: "onChange",
+  });
+
+  const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
+  const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.DESCRIPTION);
+  const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
+  const [isUploadActive, setIsUploadActive] = useState(false);
+
+  const {
+    hashtags,
+    hashtagLength,
+    hashtagInputText,
+    handleEnterHashtag,
+    handleAddHashtag,
+    handleRemoveHashtag,
+    handleChangeHashtagInputText,
+  } = useHashtagInput();
+
   return (
     <>
       <BackButtonWrapper>
@@ -17,7 +50,29 @@ export default function SignupProfile() {
         <UploadButton type="button">
           <SignupProfileCompleteTextIcon />
         </UploadButton>
-        <StepBox></StepBox>
+        <StepBox>
+          <ProfileEditInfoWrapper>
+            <ProfileContactEdit methods={contactMethods} />
+            <ProfileSelectCategoryEdit
+              isCategorySelected={isCategorySelected}
+              handleSelectCategory={handleSelectCategory}
+            />
+            <ProfileHashtagEdit
+              hashtags={hashtags}
+              hashtagLength={hashtagLength}
+              hashtagInputText={hashtagInputText}
+              handleEnterHashtag={handleEnterHashtag}
+              handleAddHashtag={handleAddHashtag}
+              handleRemoveHashtag={handleRemoveHashtag}
+              handleChangeHashtagInputText={handleChangeHashtagInputText}
+            />
+            <ProfileDescriptionEdit
+              description={description}
+              handleChangeDescription={handleChangeDescriptikon}
+              isProfile={true}
+            />
+          </ProfileEditInfoWrapper>
+        </StepBox>
       </SignUpContainer>
       <Footer />
     </>
@@ -89,4 +144,44 @@ const StepBox = styled.div`
 
   background-origin: border-box;
   background-clip: content-box, border-box;
+`;
+
+export const ProfileEditContainerBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  width: 148rem;
+
+  margin-left: 21.8rem;
+  margin-bottom: 4rem;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 67.7rem;
+  height: 88.8rem;
+
+  border: 0.3rem solid transparent;
+  border-radius: 5rem;
+
+  backdrop-filter: blur(1rem);
+  background-color: rgba(20, 21, 23, 0.6);
+  background-image: linear-gradient(rgba(13, 14, 17, 0.9), rgba(20, 21, 23, 0.6)),
+    linear-gradient(to top, transparent 0%, #3e4045 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+
+  align-items: center;
+`;
+
+export const ProfileEditInfoWrapper = styled.div`
+  margin-top: 8.9rem;
+`;
+
+export const ProfileEditTitle = styled(ProfileContainer)``;
+
+export const ProfileEditInfo = styled(ProfileContainer)`
+  width: 77.9rem;
 `;

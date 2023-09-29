@@ -1,21 +1,21 @@
-import styled from "styled-components";
-import ProducerLayout from "./producer/producerLayout";
-import VocalLayout from "./vocal/vocalLayout";
-import UploadTitle from "./uploadTitle";
-import FileUploadInfo from "./fileUploadInfo";
-import CategoryInfo from "./categotyInfo";
-import HashtagInfo from "./hashtagInfo";
-import DescriptionInfo from "./descriptionInfo";
-import { ROLE } from "../../core/common/roleType";
 import { useEffect } from "react";
+import styled from "styled-components";
+import { ROLE } from "../../core/common/roleType";
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";
+import CategoryInfo from "./categotyInfo";
+import DescriptionInfo from "./descriptionInfo";
+import FileUploadInfo from "./fileUploadInfo";
+import HashtagInfo from "./hashtagInfo";
+import ProducerLayout from "./producer/producerLayout";
+import UploadTitle from "./uploadTitle";
+import VocalLayout from "./vocal/vocalLayout";
 
-import useInputText from "../../hooks/common/useInputText";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import useHashtagInput from "../../hooks/common/useHashtagInput";
-import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { useLocation } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import useHashtagInput from "../../hooks/common/useHashtagInput";
+import useInputText from "../../hooks/common/useInputText";
+import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { UploadData } from "../../recoil/upload/uploadData";
 
 export default function UploadBody() {
@@ -83,7 +83,11 @@ export default function UploadBody() {
             handleRemoveHashtag={handleRemoveHashtag}
             handleChangeHashtagInputText={handleChangeHashtagInputText}
           />
-          <DescriptionInfo description={description} handleChangeDescription={handleChangeDescription} />
+          <DescriptionInfo
+            description={description}
+            handleChangeDescription={handleChangeDescription}
+            isProfile={false}
+          />
         </UploadInfoWrapper>
       </UploadDataWrapper>
     );
