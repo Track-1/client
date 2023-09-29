@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { UseFormResetField, UseFormSetError, UseFormSetValue } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -18,7 +18,7 @@ import {
 } from "../../api/user";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import {
   UserEmailRequest,
@@ -28,6 +28,7 @@ import {
   VerifyCodeRequest,
 } from "../../type/api";
 import { UserType } from "../../type/common/userType";
+import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 
 export function useJoin() {
@@ -105,25 +106,21 @@ export function useAccessToken() {
   };
 }
 
-export function useUserEmail() {
-  const [errorMessage, setErrorMessage] = useState("");
-
+export function useUserEmail(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postUserEmail(userEmail),
     onSuccess: () => {
-      setErrorMessage(EMAIL_MESSAGE.TIME);
+      setError("email", { message: EMAIL_MESSAGE.TIME });
       alert(SIGNUP_SENDCODE);
     },
     onError: (error: any) => {
-      if (error.response.data.message === "중복된 이메일입니다") {
-        setErrorMessage(EMAIL_MESSAGE.DUPLICATION);
+      if (error?.response?.data.message === "중복된 이메일입니다") {
+        setError("email", { message: EMAIL_MESSAGE.DUPLICATION });
       }
-      console.log(error);
     },
   });
   return {
     sendEmail: mutate,
-    errorMessage,
     ...restValues,
   };
 }
@@ -140,11 +137,23 @@ export function useVerifyEmail() {
   };
 }
 
-export function useVerifyCode() {
+export function useVerifyCode(
+  setError: UseFormSetError<EmailPasswordInputType>,
+  resetField: UseFormResetField<EmailPasswordInputType>,
+  setValue: UseFormSetValue<EmailPasswordInputType>,
+) {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (verifyCode: VerifyCodeRequest) => postVerifyCode(verifyCode),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setError("email", { message: EMAIL_MESSAGE.VERIFY });
+      setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.SUCCESS });
+      setValue("verifyCode", "");
+      resetField("passwordConfirm");
+    },
+    onError: () => {
+      setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.ERROR });
+      setError("email", { message: EMAIL_MESSAGE.TIME });
+    },
   });
   return {
     verifyCode: mutate,

@@ -1,9 +1,7 @@
 import { FormProvider } from "react-hook-form";
-import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { postVerifyCode } from "../../api/signup/postVerifyCode";
-import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
+import { useVerifyCode } from "../../hooks/queries/user";
 import { role } from "../../recoil/common/role";
 import { SignupInputProps } from "../../type/signUp/inputProps";
 import Input from "./Input";
@@ -23,26 +21,13 @@ export default function VerifyCode(props: SignupInputProps) {
     watch,
   } = methods;
 
-  const { mutate: verifyEmail } = useMutation(postVerifyCode, {
-    onSuccess: () => {
-      // password 등장 하도록 변경
-      setError("email", { message: EMAIL_MESSAGE.VERIFY });
-      setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.SUCCESS });
-      setValue("verifyCode", "");
-      resetField("passwordConfirm");
-    },
-    onError: () => {
-      setError("verifyCode", { message: VERIFICATION_CODE_MESSAGE.ERROR });
-      setError("email", { message: EMAIL_MESSAGE.TIME });
-    },
-  });
+  const { verifyCode } = useVerifyCode(setError, resetField, setValue);
 
   function handleVerifyCode() {
-    //verify code post
-    verifyEmail({
-      tableName: clickRole,
+    verifyCode({
+      userType: clickRole === "producer" ? "producer" : "vocal",
       userEmail: getValues("email"),
-      verificationCode: getValues("verifyCode"),
+      userCode: getValues("verifyCode"),
     });
   }
 
