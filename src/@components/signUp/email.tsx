@@ -1,10 +1,8 @@
 import { FormProvider } from "react-hook-form";
-import { useMutation } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { authEmail } from "../../api/signup/authEmail";
-import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { useUserEmail } from "../../hooks/queries/user";
 import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { SignupInputProps } from "../../type/signUp/inputProps";
@@ -28,29 +26,18 @@ export default function Email(props: SignupInputProps) {
     watch,
   } = methods;
 
+  const { sendEmail } = useUserEmail();
+
   function checkIsActive() {
     return (getValues("email") !== "" && errors?.email?.message === undefined) || checkIsResend(errors?.email?.message);
   }
 
   function handleSendCode() {
-    // send code post 로직
-    sendCode({
-      tableName: clickRole,
+    sendEmail({
+      userType: clickRole === "producer" ? "producer" : "vocal",
       userEmail: getValues("email"),
     });
   }
-
-  const { mutate: sendCode } = useMutation(authEmail, {
-    onSuccess: () => {
-      setError("email", { message: EMAIL_MESSAGE.TIME });
-      alert(SIGNUP_SENDCODE);
-    },
-    onError: (error: any) => {
-      if (error.response.data.message === "중복된 이메일입니다") {
-        setError("email", { message: EMAIL_MESSAGE.DUPLICATION });
-      }
-    },
-  });
 
   return (
     <>
@@ -62,10 +49,6 @@ export default function Email(props: SignupInputProps) {
               name="email"
               rules={{
                 required: true,
-                // pattern: {
-                //   value: CHECK_EMAIL_FORM,
-                //   message: EMAIL_MESSAGE.FORM,
-                // },
                 validate: {
                   check: (value) => {
                     resetField("password");

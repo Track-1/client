@@ -1,4 +1,6 @@
 import { useMutation, useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import {
   getAccessToken,
   getLogout,
@@ -14,6 +16,7 @@ import {
   postVerifyCode,
 } from "../../api/user";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import {
   UserEmailRequest,
   UserLoginInfoRequest,
@@ -22,12 +25,24 @@ import {
   VerifyCodeRequest,
 } from "../../type/api";
 import { UserType } from "../../type/common/userType";
-import { useNavigate } from "react-router-dom";
+import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 
 export function useJoin() {
+  const navigate = useNavigate();
+  const setLoginUserType = useSetRecoilState(loginUserType);
+  const setLoginUserId = useSetRecoilState(loginUserId);
+
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ userType, formData }: { userType: UserType; formData: FormData }) => postJoin(userType, formData),
-    onSuccess: () => {},
+    mutationFn: ({ userType, formData }: { userType: UserType; formData: JoinUserDataPropsType }) =>
+      postJoin(userType, formData),
+    onSuccess: (response) => {
+      console.log(response);
+      // const accessToken = response.accessToken;
+      // setCookie("accessToken", accessToken, {});
+      // setLoginUserType(response.data.userResult.tableName);
+      // setLoginUserId(response.data.data.userResult.id);
+      navigate("/signup/profile");
+    },
     onError: () => {},
   });
 
@@ -87,7 +102,7 @@ export function useAccessToken() {
   };
 }
 
-export function useUSerEmail() {
+export function useUserEmail() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postUserEmail(userEmail),
     onSuccess: () => {},
@@ -168,7 +183,7 @@ export function useTokenVerify() {
     queryFn: getTokenVerify,
     onSuccess: () => {},
     onError: () => {
-      alert('')
+      alert("");
     },
   });
   return {

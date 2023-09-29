@@ -1,26 +1,26 @@
-import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { join } from "../../api/signup/join";
 import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
 import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
+import { useJoin } from "../../hooks/queries/user";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import { role } from "../../recoil/common/role";
 import { isNextStep } from "../../recoil/signUp/isNextStep";
 import { joinUserData } from "../../recoil/signUp/joinUserData";
+import { UserType } from "../../type/common/userType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
 import { StepMainProps } from "../../type/signUp/stepProps";
-import { setCookie } from "../../utils/common/cookie";
 
 export default function StepFooter(props: StepMainProps) {
   const { step, setStep } = props;
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const navigate = useNavigate();
-  const [roleType, setRoleType] = useRecoilState<string>(role);
+  const [roleType, setRoleType] = useRecoilState<string | UserType>(role);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
   const setLoginUserType = useSetRecoilState(loginUserType);
   const setLoginUserId = useSetRecoilState(loginUserId);
+  const { join } = useJoin();
 
   function checkNextStep() {
     if (isSuccess) {
@@ -48,23 +48,9 @@ export default function StepFooter(props: StepMainProps) {
     checkPrevStep();
   }
 
-  const { mutate: signup } = useMutation(() => join(userData, roleType), {
-    onSuccess: (data) => {
-      navigate("/signup/profile");
-      const accessToken = data.data.data.accessToken;
-      setCookie("accessToken", accessToken, {});
-      setLoginUserType(data.data.data.userResult.tableName);
-      setLoginUserId(data.data.data.userResult.id);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
   function handleMoveToNextStep() {
     if (checkFinalStep()) {
-      // post
-      signup();
+      join({ userType: roleType === "producer" ? "producer" : "vocal", formData: userData });
     } else {
       setIsSuccess(false);
       checkNextStep();
