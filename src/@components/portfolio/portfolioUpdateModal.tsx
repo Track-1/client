@@ -2,20 +2,22 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
 import useModal from "../../hooks/common/useModal";
-import { useDeleteVocalPortfolio, useEditVocalTitle } from "../../hooks/queries/mypage";
+import { useDeleteVocalPortfolio, useEditProducerTitle, useEditVocalTitle } from "../../hooks/queries/mypage";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
   nowTitleId: number;
   portfolioId: number;
+  dataState: string;
 }
 
 export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
-  const { isTitle, nowTitleId, portfolioId } = props;
+  const { isTitle, nowTitleId, portfolioId, dataState } = props;
   const navigate = useNavigate();
   const { modalRef } = useModal();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { editVocalTitle } = useEditVocalTitle();
+  const { editProducerTitle } = useEditProducerTitle();
   function handleMoveToEditPage() {
     navigate(`portfolio-edit/vocal/${portfolioId}`);
   }
@@ -27,10 +29,14 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   }
 
   function handleChangeTitle() {
-    editVocalTitle({
-      bef: nowTitleId,
-      aft: portfolioId,
-    });
+    if (dataState === "vocal portfolio") {
+      editVocalTitle({
+        bef: nowTitleId,
+        aft: portfolioId,
+      });
+    } else if (dataState === "producer portfolio") {
+      editProducerTitle({ bef: nowTitleId, aft: portfolioId });
+    }
   }
 
   return (
@@ -43,7 +49,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
         삭제하기
         <TrashDeleteIcon />
       </ModalBox>
-      {!isTitle && (
+      {dataState !== "producer vocal searching" && !isTitle && (
         <ModalBox underline={false} onClick={handleChangeTitle}>
           타이틀 설정
           <SetIsTitleIcon />

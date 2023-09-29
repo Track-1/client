@@ -48,6 +48,7 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
                       isTitle={index === 0}
                       nowTitleId={vocalPortfolios[0].portfolioId}
                       portfolioId={vocalPortfolio.portfolioId}
+                      dataState="vocal portfolio"
                     />
                   )}
                 </TitleSection>

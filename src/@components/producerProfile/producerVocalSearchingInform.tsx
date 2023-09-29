@@ -52,6 +52,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
                       isTitle={index === 0}
                       nowTitleId={producerPortfolio[0].portfolioId}
                       portfolioId={producerPortfolio.portfolioId}
+                      dataState="producer vocal searching"
                     />
                   )}
                 </TitleSection>
