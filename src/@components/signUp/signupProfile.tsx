@@ -1,6 +1,5 @@
 import Footer from "../@common/footer";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from "../../assets";
@@ -8,7 +7,6 @@ import background from "../../assets/icon/signupProfileBackgroundIc.svg";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import useHashtagInput from "../../hooks/common/useHashtagInput";
 import useInputText from "../../hooks/common/useInputText";
-import useUploadImageFile from "../../hooks/common/useUploadImageFile";
 import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
 import ProfileContactEdit from "../profileEdit/profileContactEdit";
 import ProfileDescriptionEdit from "../profileEdit/profileDescriptionEdit";
@@ -24,10 +22,10 @@ export default function SignupProfile() {
     mode: "onChange",
   });
 
-  const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
-  const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.DESCRIPTION);
+  const { watch } = contactMethods;
+
+  const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.PROFILE_DESCRIPTION);
   const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
-  const [isUploadActive, setIsUploadActive] = useState(false);
 
   const {
     hashtags,
@@ -39,6 +37,10 @@ export default function SignupProfile() {
     handleChangeHashtagInputText,
   } = useHashtagInput();
 
+  function checkIsComplete() {
+    return watch("contact") !== "" || categories.length > 0 || hashtags.length > 0 || description !== "";
+  }
+
   return (
     <>
       <BackButtonWrapper>
@@ -47,7 +49,7 @@ export default function SignupProfile() {
       <SignUpContainer>
         <Img src={background} alt="배경" />
         <SignupProfileSkipIcon />
-        <UploadButton type="button">
+        <UploadButton type="button" isComplete={checkIsComplete()}>
           <SignupProfileCompleteTextIcon />
         </UploadButton>
         <StepBox>
@@ -84,7 +86,7 @@ const SignupProfileCompleteTextIcon = styled(SignupProfileCompleteTextIc)`
   height: 2.664rem;
 `;
 
-const UploadButton = styled.button`
+const UploadButton = styled.button<{ isComplete: boolean }>`
   width: 35.2rem;
   height: 7rem;
   border-radius: 3.5rem;
@@ -93,7 +95,7 @@ const UploadButton = styled.button`
   align-items: center;
   position: absolute;
   margin: 34rem 0 0 32rem;
-  background-color: ${({ theme }) => theme.colors.gray3};
+  background-color: ${({ isComplete, theme }) => (isComplete ? theme.colors.main : theme.colors.gray3)};
 
   cursor: pointer;
 `;
