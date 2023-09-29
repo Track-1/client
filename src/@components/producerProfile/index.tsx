@@ -4,6 +4,7 @@ import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
+import useModal from "../../hooks/common/useModal";
 import {
   useGetProducerPortfolio,
   useGetProducerProfile,
@@ -17,6 +18,7 @@ import ProducerPortfolioList from "./producerPortfolioList";
 import ProducerProfileShadow from "./producerProfileShadow";
 import ProducerVocalSearching from "./producerVocalSearching";
 import ProducerVocalSearchingInform from "./producerVocalSearchingInform";
+import TracksProfileUploadModal from "./tracksProfileUploadModal";
 
 const PAGE_LIMIT = 5;
 
@@ -36,6 +38,7 @@ export default function ProducerProfile() {
   });
 
   const dataState = useRecoilValue(producerState);
+  const { openModal, showModal } = useModal();
 
   useEffect(() => {
     resetClickedId();
@@ -46,10 +49,9 @@ export default function ProducerProfile() {
     navigate(`/profile-edit/producer/${producerProfile?.userProfile.userId}`);
   }
 
-  function hadnleMoveToUpload() {}
-
   return (
     <>
+      {openModal && <TracksProfileUploadModal />}
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
@@ -62,7 +64,7 @@ export default function ProducerProfile() {
             userProfile={producerProfile?.userProfile}
           />
         </ProfileSection>
-        {producerProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
+        {producerProfile?.userSelf && <UploadButtonIcon onClick={showModal} />}
 
         <PortfolioSection>
           {dataState === "Portfolio" ? (

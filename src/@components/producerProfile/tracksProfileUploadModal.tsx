@@ -13,7 +13,7 @@ export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
   const location = useLocation();
   const preLocation = location.pathname.split("/")[1];
-  const { modalRef, unShowModal } = useModal();
+  const { modalRef } = useModal();
 
   function moveVocalSearching() {
     navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
@@ -21,10 +21,6 @@ export default function TracksProfileUploadModal() {
 
   function movePortfolio() {
     navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
-  }
-
-  function clickOutside() {
-    unShowModal();
   }
 
   return (
@@ -47,7 +43,7 @@ export default function TracksProfileUploadModal() {
           </PortfolioWrapper>
           <ProducerProfileUploadeModalIcon />
         </ModalWrapper>
-        <ModalBackgroundShadow onClick={clickOutside}></ModalBackgroundShadow>
+        <ModalBackgroundShadow />
       </UploadButtonModalWrapper>
     </>
   );
@@ -71,7 +67,7 @@ const ModalWrapper = styled.div`
 
 const UploadButtonModalWrapper = styled.section`
   position: fixed;
-  z-index: 10;
+  z-index: 2;
 `;
 
 const VocalSearchingWrapper = styled.article`

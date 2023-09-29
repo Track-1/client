@@ -21,10 +21,10 @@ export default function ProducerVocalSearching() {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
   if (producerVocalSearchings === undefined) return null;
-
+  console.log(producerVocalSearchings);
   return (
     <PortfolioWrapper>
-      {producerVocalSearchings?.map((producerVocalSearchings, index) => {
+      {producerVocalSearchings?.map((producerVocalSearchings) => {
         return (
           <>
             {clickedId === producerVocalSearchings.portfolioId ? (
@@ -51,4 +51,6 @@ const PortfolioWrapper = styled.div`
   align-items: center;
 
   margin-top: 3rem;
+
+  color: ${({ theme }) => theme.colors.white};
 `;
