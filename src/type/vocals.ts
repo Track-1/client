@@ -22,3 +22,9 @@ export type FilteredVocalListType = {
   vocalList: FilteredVocalType[];
   hasNextPage: boolean;
 };
+
+export interface PortfoliosParamsType {
+  page: number;
+  limit: number;
+  userId: number;
+}
