@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from "react-query";
 import { getFilteredVocals } from "../../api/vocals";
+import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredVocalsParamsType } from "../../type/vocals";
 
 export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">) {
@@ -10,12 +11,13 @@ export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">
   };
 
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    "vocals",
+    [QUERIES_KEY.GET_VOCAL_INFO, params.categ, params.trackSearch],
     ({ pageParam = 1 }) => fetchVocals(pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.response.data[0].vocalList.length === 0 ? undefined : lastPage.nextPage;
       },
+      refetchOnWindowFocus: false,
     },
   );
 

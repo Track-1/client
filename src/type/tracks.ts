@@ -1,7 +1,7 @@
 export interface FilteredTrackParamsType {
   page: number;
   limit: number;
-  categ: number[];
+  categ: string[];
 }
 
 export interface FilteredTrackType {
