@@ -4,11 +4,34 @@ import { useNavigate } from "react-router-dom";
 import MypageButton from "./mypageButton";
 import ProfileBox from "./profileBox";
 import { checkIsLogin } from "../../utils/common/checkIsLogined";
+import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
+import { ROLE } from "../../core/common/roleType";
 
 export default function LoginButton() {
   const isLogined = checkIsLogin();
 
+  const userType = "vocal";
+
+  const { vocalProfile } = useGetVocalProfile(Number(2), userType);
+  const { producerProfile } = useGetProducerProfile(Number(2), userType);
+
   const navigate = useNavigate();
+
+  function getUserImage() {
+    return userType === ROLE.PRODUCER
+      ? producerProfile?.userProfile.userImageFile
+      : vocalProfile?.userProfile.userImageFile;
+  }
+
+  function getUserName() {
+    return userType === ROLE.PRODUCER ? producerProfile?.userProfile.userName : vocalProfile?.userProfile.userName;
+  }
+
+  function getUserContact() {
+    return userType === ROLE.PRODUCER
+      ? producerProfile?.userProfile.userContact
+      : vocalProfile?.userProfile.userContact;
+  }
 
   function handleMoveLogin() {
     navigate("/login");
@@ -16,8 +39,6 @@ export default function LoginButton() {
   function handleMoveSignUp() {
     navigate("/signup");
   }
-
-  const userType = "vocal";
 
   return (
     <>
@@ -28,10 +49,9 @@ export default function LoginButton() {
             <SignUpIcon onClick={handleMoveSignUp} />
           </>
         ) : (
-          <MypageButton userType={userType} />
+            <MypageButton userType={userType} userImage={getUserImage()} userName={getUserName()} userContact={getUserContact()} />
         )}
       </LoginButtonWrapper>
-      <ProfileBox userType={userType} />
     </>
   );
 }
