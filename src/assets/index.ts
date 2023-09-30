@@ -102,3 +102,5 @@ export { ReactComponent as ResendTextIc } from "./icon/resendTextIc.svg";
 export { ReactComponent as UploadAbleBtnIc } from "./icon/uploadAbleBtnIc.svg";
 export { ReactComponent as UploadUnableBtnIc } from "./icon/uploadUnableBtnIc.svg";
 export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunIc.svg";
+export { ReactComponent as TrackSearchingFalseIc } from "./icon/trackSearchingFalseIc.svg";
+export { ReactComponent as TrackSearchingTrueIc } from "./icon/trackSearchingTrueIc.svg";
