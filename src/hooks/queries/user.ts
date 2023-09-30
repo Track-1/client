@@ -82,12 +82,18 @@ export function useLogin() {
   };
 }
 
-export function useLogout() {
+export function useLogout(state: boolean) {
+  const navigate = useNavigate();
+
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      //토큰제거
+      data.success && navigate("/");
+    },
     onError: () => {},
+    enabled: state,
   });
   return {
     logout: data,

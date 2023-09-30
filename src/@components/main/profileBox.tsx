@@ -1,38 +1,44 @@
 import styled, { css } from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
+import { useLogout } from "../../hooks/queries/user";
+import { useState } from "react";
 
 interface ProfileBoxProps {
   userType: string;
+  userImage: string | undefined;
+  userName: string | undefined;
+  userContact: string | undefined;
 }
 
 export default function ProfileBox(props: ProfileBoxProps) {
-  const { userType } = props;
+  const { userType, userImage, userName, userContact } = props;
+  const [logoutState, setLogoutState] = useState(false);
+  const { logout } = useLogout(logoutState);
+
+  function handleLogout() {
+    setLogoutState(!logoutState);
+  }
+
   return (
     <ProfileBoxContainer>
       <ProfileWrapper>
         {userType === ROLE.PRODUCER ? (
           <ProducerImageLayout>
-            <ProfileImage
-              src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/producerProfileImage/1681374447463-70846061.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCC2F2RR2UJ%2F20230930%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230930T051833Z&X-Amz-Expires=900&X-Amz-Signature=fc8a8c547f7e4792bc9162b57a68f1c5d38556c331caf2fbdc167124423bc12a&X-Amz-SignedHeaders=host"
-              userType={userType}
-            />
+            <ProfileImage src={userImage} userType={userType} />
           </ProducerImageLayout>
         ) : (
           <VocalImageLayout>
-            <ProfileImage
-              src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/producerProfileImage/1681374447463-70846061.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCC2F2RR2UJ%2F20230930%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230930T051833Z&X-Amz-Expires=900&X-Amz-Signature=fc8a8c547f7e4792bc9162b57a68f1c5d38556c331caf2fbdc167124423bc12a&X-Amz-SignedHeaders=host"
-              userType={userType}
-            />
+            <ProfileImage src={userImage} userType={userType} />
           </VocalImageLayout>
         )}
         <ProfileContentWrapper>
-          <UserIdText>_Bepore</UserIdText>
+          <UserNameText>{userName}</UserNameText>
           {userType === ROLE.PRODUCER ? <ProducerTextIcon /> : <VocalTextIcon />}
-          <UserEmailText>yes7076@naver.com</UserEmailText>
+          <UserEmailText>{userContact}</UserEmailText>
         </ProfileContentWrapper>
       </ProfileWrapper>
-      <LogoutWrapper>
+      <LogoutWrapper onClick={handleLogout}>
         Logout
         <LogoutIcon />
       </LogoutWrapper>
@@ -85,7 +91,7 @@ const VocalImageLayout = styled.div`
   margin-right: 1.8rem;
 `;
 
-const UserIdText = styled.p`
+const UserNameText = styled.p`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.id};
 `;
