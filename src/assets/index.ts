@@ -106,7 +106,6 @@ export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg"
 export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
 export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";
-export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunIc.svg";
 export { ReactComponent as TrashDeleteIc } from "./icon/trashDeleteIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
 export { ReactComponent as UploadAbleBtnIc } from "./icon/uploadAbleBtnIc.svg";
@@ -118,6 +117,8 @@ export { ReactComponent as UploadFileChangeIc } from "./icon/uploadFileChangeIc.
 export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnActiveSaveButtonIc.svg";
 export { ReactComponent as UploadUnableBtnIc } from "./icon/uploadUnableBtnIc.svg";
+export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunIc.svg";
+export { ReactComponent as CheckCategoryIc } from "./icon/checkCategoryIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";
 export { ReactComponent as VocalProfileShadowIc } from "./icon/vocalProfileShadowIc.svg";

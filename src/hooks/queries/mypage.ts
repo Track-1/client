@@ -149,6 +149,7 @@ export function useUploadProducerPortfolio() {
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -163,6 +164,7 @@ export function useUploadVocalPortfolio() {
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -178,6 +180,7 @@ export function useEditProducerPortfolio() {
       patchProducerPortfolio(trackId, formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -193,6 +196,7 @@ export function useEditVocalPortfolio() {
       patchVocalPortfolio(trackId, formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });

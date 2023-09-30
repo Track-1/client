@@ -39,7 +39,12 @@ export default function UploadHeader() {
   }, [uploadData.imageFile]);
 
   function isActive() {
-    return uploadData.title !== ""; //setAudioFile해야된다.
+    return (
+      uploadData.title !== "" &&
+      uploadData.audioFileName &&
+      uploadData.category !== "-1" &&
+      uploadData.keyword.length > 0
+    );
   }
 
   function uploadFormData() {

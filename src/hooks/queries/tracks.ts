@@ -76,6 +76,7 @@ export function useUploadTrack() {
     mutationFn: (formData: FormData) => postTrack(formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -90,6 +91,7 @@ export function useEditTrack() {
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });

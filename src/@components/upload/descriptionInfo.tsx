@@ -1,7 +1,9 @@
 import { UploadDescriptionIc } from "../../assets";
-import { InfoType, InfoTypeText } from "./categotyInfo";
+import { InfoType, InfoTypeIconWrapper, InfoTypeText } from "./categotyInfo";
+import styled from "styled-components";
 import DescriptionInput from "./descriptionInput";
 import UploadInfoBox from "./uploadInfoBox";
+
 
 interface DescriptionInfoProps {
   description: string;
@@ -15,7 +17,9 @@ export default function DescriptionInfo(props: DescriptionInfoProps) {
   return (
     <UploadInfoBox>
       <InfoType>
-        <UploadDescriptionIc />
+        <InfoTypeIconWrapper>
+          <UploadDescriptionIcon />
+        </InfoTypeIconWrapper>
         <InfoTypeText>Description</InfoTypeText>
       </InfoType>
       <DescriptionInput
@@ -26,3 +30,6 @@ export default function DescriptionInfo(props: DescriptionInfoProps) {
     </UploadInfoBox>
   );
 }
+const UploadDescriptionIcon = styled(UploadDescriptionIc)`
+  width: 1.246rem;
+`;
