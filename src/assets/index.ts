@@ -118,6 +118,8 @@ export { ReactComponent as UploadFileIc } from "./icon/uploadFileIc.svg";
 export { ReactComponent as UploadUnActiveSaveButtonIc } from "./icon/uploadUnActiveSaveButtonIc.svg";
 export { ReactComponent as UploadUnableBtnIc } from "./icon/uploadUnableBtnIc.svg";
 export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunIc.svg";
+export { ReactComponent as TrackSearchingFalseIc } from "./icon/trackSearchingFalseIc.svg";
+export { ReactComponent as TrackSearchingTrueIc } from "./icon/trackSearchingTrueIc.svg";
 export { ReactComponent as CheckCategoryIc } from "./icon/checkCategoryIc.svg";
 export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";

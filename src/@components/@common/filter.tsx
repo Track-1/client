@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { TrackSearchingFalseIc, TrackSearchingTrueIc } from "../../assets";
 import { CategoryId } from "../../core/common/categories";
+import { UpperCategoryType } from "../../type/common/category";
 import { PageType } from "../../type/common/pageType";
 import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
 import { updateQueryParams } from "../../utils/common/queryString";
 import { CheckBox } from "./checkBox";
-import { Select } from "./selectBox";
+
+const FilterWrapper = styled.section`
+  position: fixed;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
 
 const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
   ${({ theme }) => theme.fonts.id}
@@ -77,9 +87,26 @@ const CategoryCancelButton = styled.button<{ pageType: PageType; isChecked?: boo
     `}
 `;
 
-const FilterWrapper = styled.section`
+const TrackSearchingItem = styled.article<{ isChecked?: boolean }>`
+  ${({ theme }) => theme.fonts.body1}
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1.2rem;
+
+  height: 7.5rem;
+  margin-left: 6.2rem;
+  padding-left: 6.396rem;
+
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const TrackSearchingLabel = styled.p<{ isChecked?: boolean }>`
+  ${({ isChecked }) =>
+    isChecked &&
+    css`
+      color: ${({ theme }) => theme.colors.sub2};
+    `}
 `;
 
 interface FilterProps {
@@ -89,23 +116,43 @@ interface FilterProps {
 export default function Filter(props: FilterProps) {
   const { pageType } = props;
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<Set<string>>(new Set());
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  function selectCategory(id: number | null) {
+  const [selectedCategory, setSelectedCategory] = useState<Set<string>>(new Set());
+  const [trackSearch, setTrackSearch] = useState(false);
+
+  function selectCategory(category: UpperCategoryType) {
     const tempSelectedCategory = new Set(selectedCategory);
-    tempSelectedCategory.add(String(id));
+    const categoryId = CategoryId[category];
+
+    tempSelectedCategory.has(categoryId)
+      ? tempSelectedCategory.delete(categoryId)
+      : tempSelectedCategory.add(categoryId);
+
     setSelectedCategory(tempSelectedCategory);
   }
 
+  function toggleTrackSearching() {
+    trackSearch ? setTrackSearch(false) : setTrackSearch(true);
+  }
+
   useEffect(() => {
-    navigate(updateQueryParams("categ", Array.from(selectedCategory)));
+    const categString = updateQueryParams("categ", Array.from(selectedCategory));
+
+    navigate(categString);
   }, [selectedCategory]);
+
+  useEffect(() => {
+    trackSearch && searchParams.set("trackSearch", String(trackSearch));
+    setSearchParams(searchParams);
+    navigate("?" + searchParams.toString());
+  }, [trackSearch]);
 
   return (
     <FilterWrapper>
       {getInvariantObjectKeys(invariantOf(CategoryId)).map((category) => {
         return (
-          <CheckBox id={category}>
+          <CheckBox id={category} externalFn={() => selectCategory(category)}>
             <CheckBox.Indicator asChild>
               <CategoryItem pageType={pageType}>
                 <CheckBox.Label>{category}</CheckBox.Label>
@@ -117,6 +164,18 @@ export default function Filter(props: FilterProps) {
           </CheckBox>
         );
       })}
+      {pageType === "vocals" && (
+        <CheckBox externalFn={toggleTrackSearching}>
+          <CheckBox.Indicator asChild>
+            <TrackSearchingItem>
+              {trackSearch ? <TrackSearchingTrueIc /> : <TrackSearchingFalseIc />}
+              <CheckBox.Label asChild>
+                <TrackSearchingLabel>Track Searching</TrackSearchingLabel>
+              </CheckBox.Label>
+            </TrackSearchingItem>
+          </CheckBox.Indicator>
+        </CheckBox>
+      )}
     </FilterWrapper>
   );
 }

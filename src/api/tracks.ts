@@ -8,7 +8,7 @@ export async function getFilteredTracks(params: FilteredTrackParamsType) {
     params: {
       page: params.page,
       limit: params.limit,
-      categ: params.categ,
+      categ: params.categ.length === 0 ? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] : params.categ,
     },
   });
 

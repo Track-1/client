@@ -8,8 +8,8 @@ export async function getFilteredVocals(params: FilteredVocalsParamsType) {
     params: {
       page: params.page,
       limit: params.limit,
-      categ: params.categ,
-      trackSearch: params.trackSearch,
+      categ: params.categ.length === 0 ? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] : params.categ,
+      trackSearch: params.trackSearch ? true : false,
     },
   });
   return data;
