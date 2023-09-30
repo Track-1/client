@@ -45,7 +45,7 @@ export interface UserPortfolioType {
   portfolioAudioFileLength: number;
 }
 
-interface ProducerVocalSearchingType {
+export interface ProducerVocalSearchingType {
   trackId: number;
   trackImageFile: string;
   trackAudioFile: string;
@@ -58,6 +58,7 @@ interface ProducerVocalSearchingType {
 }
 
 export interface ProducerInfoType {
+  data: any;
   userType: UserType;
   userSelf: boolean;
   userProfile: UserProfileType;
@@ -69,9 +70,26 @@ export interface VocalInfoParamsType extends ParamsType {
   userId: number;
 }
 
-export interface VocalInfoType {
+export interface VocalProfileType {
   userType: UserType;
   userSelf: boolean;
   userProfile: UserProfileType;
   userPortfolio: UserPortfolioType[];
+}
+
+export interface VocalInfoType {
+  hasNextPage: boolean;
+  data: UserPortfolioType[];
+}
+
+export interface ProducerPortfolioType {
+  portfolioList: any;
+  hasNextPage: boolean;
+  data: UserPortfolioType[];
+}
+
+export interface ProducerVocalSearchingInfoType {
+  trackList: any;
+  hasNextPage: boolean;
+  data: ProducerVocalSearchingType[];
 }

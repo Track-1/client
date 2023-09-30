@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
 import {
   deleteTrack,
   getFilteredTracks,
@@ -52,13 +52,19 @@ export function useTrackDetail(trackId: number) {
   };
 }
 
-export function useTrackDownload(trackId: number) {
+export function useTrackDownload(trackId: number, isDownload: boolean | undefined, getFileLink: (data: any) => void) {
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.TRACK_DOWNLOAD, trackId],
     queryFn: () => getTrackDownload(trackId),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: (data) => {
+      getFileLink(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    enabled: !!isDownload,
   });
+
   return {
     trackDownload: data,
     ...restValues,
@@ -96,9 +102,13 @@ export function useEditTrack() {
 }
 
 export function useCloseTrack() {
+  const queryClient = useQueryClient();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (trackId: number) => patchTrackClose(trackId),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_INFO);
+    },
     onError: () => {},
   });
   return {

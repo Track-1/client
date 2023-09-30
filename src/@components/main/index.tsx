@@ -13,6 +13,8 @@ import mainSloganImg from "../../assets/image/mainSloganImg.png";
 import { openConventionModal } from "../../recoil/common/conventionModal";
 import ConventionModal from "../@common/conventionModal";
 import Ads from "./ads";
+import Header from "../@common/header";
+import LoginButton from "./loginButton";
 
 export default function Main() {
   const showModal = useRecoilValue(openConventionModal);
@@ -57,6 +59,9 @@ export default function Main() {
 
   return (
     <>
+      <Header homeLogo slogan>
+        <LoginButton />
+      </Header>
       <MainPageWrapper>
         <Background
           originBackground={originBackground}

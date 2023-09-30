@@ -1,12 +1,10 @@
-import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { postComment } from "../../api/trackPost/postComment";
 import { AddCommentIc, CloseCommentsBtnIc, ClosedAddCommentIc } from "../../assets";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
-import useGetComment from "../../hooks/trackPost/useGetComment";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
+import { useComments, useUploadComment } from "../../hooks/queries/comments";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
 import CommentBox from "./commentBox";
@@ -17,29 +15,25 @@ interface CommentsProp {
   handleClosecomment: () => void;
 }
 
+const PAGE_LIMIT = 5;
+
 export default function Comments(props: CommentsProp) {
-  const { handleClosecomment } = props;
-  const { trackComments } = useGetComment(1);
-  const { trackClosed } = useGetTrackInfo();
-  const [comment, setComment] = useRecoilState(commentWriteData);
-  const resetComment = useResetRecoilState(commentWriteData);
   const { id } = useParams();
-
-  const queryClient = useQueryClient();
-
-  const { mutate: uploadComment } = useMutation(() => postComment(comment, Number(id)), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
-      resetComment();
-    },
-    onError: (error) => {
-      console.log(error);
-    },
+  const { handleClosecomment } = props;
+  const { trackDetail } = useTrackDetail(Number(id));
+  const [comment, setComment] = useRecoilState(commentWriteData);
+  const { uploadComment } = useUploadComment();
+  const { trackComments, fetchNextPage, hasNextPage } = useComments({
+    limit: PAGE_LIMIT,
+    trackId: Number(id),
   });
+  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+
+  if (trackComments === undefined) return null;
 
   function handleUploadComment() {
     if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
-      uploadComment();
+      uploadComment({ trackId: Number(id), formData: comment });
     }
   }
 
@@ -48,14 +42,20 @@ export default function Comments(props: CommentsProp) {
       <CloseCommentsBtnIcon onClick={handleClosecomment} />
       <CommentWrite isUpdate={false} />
       <AddCommentIconWrapper>
-        {!trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
+        {!trackDetail?.trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
       </AddCommentIconWrapper>
       {trackComments?.map((eachComment: CommentType) => (
         <CommentBox key={eachComment?.commentId} eachComment={eachComment} />
       ))}
+      <Observer ref={observerRef} />
     </CommentLayout>
   );
 }
+
+const Observer = styled.div`
+  width: 100%;
+  height: 10px;
+`;
 
 const CloseCommentsBtnIcon = styled(CloseCommentsBtnIc)`
   width: 20rem;

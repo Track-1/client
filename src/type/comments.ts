@@ -4,6 +4,7 @@ export interface CommentsParamsType {
 }
 
 interface CommentsType {
+  map(arg0: () => any): any;
   commentId: number;
   commentAudioFile: string;
   userName: string;

@@ -24,6 +24,7 @@ export default function CommentWrite(props: CommentIsUpdateProp) {
 const InputContainer = styled.section`
   display: flex;
   flex-direction: column;
+  margin-left: 11rem;
 `;
 
 const InputWrapper = styled.article`

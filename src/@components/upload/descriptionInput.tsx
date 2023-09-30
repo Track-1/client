@@ -1,19 +1,20 @@
 import styled from "styled-components";
 
 import TextareaAutosize from "react-textarea-autosize";
-import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
+import { theme } from "../../style/theme";
 import { checkEnterCount } from "../../utils/common/checkEnterCount";
 import { InfoInput } from "./categotyInfo";
-import { theme } from "../../style/theme";
+import TextLength from "./textLength";
 
 interface DescriptionInputProps {
   description: string;
   handleChangeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
+  isProfile: boolean;
 }
 
 export default function DescriptionInput(props: DescriptionInputProps) {
-  const { description, handleChangeDescription } = props;
+  const { description, handleChangeDescription, isProfile } = props;
 
   function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = checkEnterCount(e);
@@ -21,7 +22,7 @@ export default function DescriptionInput(props: DescriptionInputProps) {
   }
 
   return (
-    <InfoInput>
+    <InfoInput isProfile={true}>
       <DescriptionText
         placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
         spellCheck="false"
@@ -31,7 +32,11 @@ export default function DescriptionInput(props: DescriptionInputProps) {
       />
       <TextLengthWrapper>
         <Empty />
-        <TextLength inputLength={description.length} limit={TEXT_LIMIT.DESCRIPTION} font={theme.fonts.description} />
+        <TextLength
+          inputLength={description.length}
+          limit={isProfile ? TEXT_LIMIT.PROFILE_DESCRIPTION : TEXT_LIMIT.DESCRIPTION}
+          font={theme.fonts.description}
+        />
       </TextLengthWrapper>
     </InfoInput>
   );
@@ -43,7 +48,7 @@ const DescriptionText = styled(TextareaAutosize)`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.description};
 
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray5};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray2};
 
   margin-top: 1.7rem;
   padding-bottom: 1rem;
