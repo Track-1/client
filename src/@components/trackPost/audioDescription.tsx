@@ -1,14 +1,16 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { DescriptionIc } from "../../assets";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 
 export default function AudioDescription() {
-  const { userIntroduction } = useGetTrackInfo();
+  const { id } = useParams();
+  const { trackDetail } = useTrackDetail(Number(id));
 
   return (
     <DescriptionBox>
       <DescriptionIcon />
-      <Description>{userIntroduction}</Description>
+      <Description>{trackDetail?.userIntroduction}</Description>
     </DescriptionBox>
   );
 }

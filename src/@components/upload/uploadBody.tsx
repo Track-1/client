@@ -1,22 +1,23 @@
-import styled from "styled-components";
-import ProducerLayout from "./producer/producerLayout";
-import VocalLayout from "./vocal/vocalLayout";
-import UploadTitle from "./uploadTitle";
-import FileUploadInfo from "./fileUploadInfo";
-import CategoryInfo from "./categotyInfo";
-import HashtagInfo from "./hashtagInfo";
-import DescriptionInfo from "./descriptionInfo";
-import { ROLE } from "../../core/common/roleType";
 import { useEffect } from "react";
+import styled from "styled-components";
+import { ROLE } from "../../core/common/roleType";
 import useUploadImageFile from "../../hooks/common/useUploadImageFile";
+import CategoryInfo from "./categotyInfo";
+import DescriptionInfo from "./descriptionInfo";
+import FileUploadInfo from "./fileUploadInfo";
+import HashtagInfo from "./hashtagInfo";
+import ProducerLayout from "./producer/producerLayout";
+import UploadTitle from "./uploadTitle";
+import VocalLayout from "./vocal/vocalLayout";
 
-import useInputText from "../../hooks/common/useInputText";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import useHashtagInput from "../../hooks/common/useHashtagInput";
-import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { useLocation } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import useHashtagInput from "../../hooks/common/useHashtagInput";
+import useInputText from "../../hooks/common/useInputText";
+import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { UploadData } from "../../recoil/upload/uploadData";
+import useDropCategory from "../../hooks/common/useDropCategory";
 
 export default function UploadBody() {
   const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
@@ -31,6 +32,16 @@ export default function UploadBody() {
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = useHashtagInput();
+  const {
+    categories,
+    setCategories,
+    isSelectedNothing,
+    selectedCategoryNumber,
+    isSelected,
+    categoryText,
+    hiddenDropBox,
+    showDropBox,
+  } = useDropCategory();
   const { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
     useUploadAudioFile();
   const [description, handleChangeDescription, changeDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
@@ -45,12 +56,12 @@ export default function UploadBody() {
       title: title,
       imageFile: imageFile,
       audioFile: audioFile,
-      category: "1",
+      category: selectedCategoryNumber(),
       keyword: hashtags,
       introduction: description,
       audioFileName: audioFileName,
     }));
-  }, [imageFile, hashtags, title, audioFile, description]);
+  }, [imageFile, hashtags, title, audioFile, description, categories]);
 
   useEffect(() => {
     if (!pathName.includes("upload")) {
@@ -73,7 +84,15 @@ export default function UploadBody() {
             isTextOverflow={isTextOverflow}
             handleUploadAudioFile={handleUploadAudioFile}
           />
-          <CategoryInfo />
+          <CategoryInfo
+            categories={categories}
+            setCategories={setCategories}
+            isSelectedNothing={isSelectedNothing}
+            isSelected={isSelected}
+            categoryText={categoryText}
+            hiddenDropBox={hiddenDropBox}
+            showDropBox={showDropBox}
+          />
           <HashtagInfo
             hashtags={hashtags}
             hashtagLength={hashtagLength}
@@ -83,7 +102,11 @@ export default function UploadBody() {
             handleRemoveHashtag={handleRemoveHashtag}
             handleChangeHashtagInputText={handleChangeHashtagInputText}
           />
-          <DescriptionInfo description={description} handleChangeDescription={handleChangeDescription} />
+          <DescriptionInfo
+            description={description}
+            handleChangeDescription={handleChangeDescription}
+            isProfile={false}
+          />
         </UploadInfoWrapper>
       </UploadDataWrapper>
     );

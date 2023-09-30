@@ -1,12 +1,14 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 
 export default function AudioTitle() {
-  const { trackTitle } = useGetTrackInfo();
+  const { id } = useParams();
+  const { trackDetail } = useTrackDetail(Number(id));
 
   return (
     <AudioTitleWrapper>
-      <Title>{trackTitle}</Title>
+      <Title>{trackDetail?.trackTitle}</Title>
     </AudioTitleWrapper>
   );
 }

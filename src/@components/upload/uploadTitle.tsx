@@ -11,13 +11,19 @@ interface UploadTitleProps {
 export default function UploadTitle(props: UploadTitleProps) {
   const { title, handleChangeTitle } = props;
 
+  function handleChangeInputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    e.target.value = e.target.value.replace("\n", "");
+    handleChangeTitle(e);
+  }
+
   return (
     <Container>
       <Empty />
       <TitleInput
         placeholder="Please enter a title"
         spellCheck="false"
-        onChange={handleChangeTitle}
+        onChange={handleChangeInputTitle}
+        value={title}
         defaultValue={title}></TitleInput>
       <TextLengthWrapper>
         <Empty />

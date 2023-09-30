@@ -1,10 +1,12 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { HashtagIc } from "../../assets";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 import HashTag from "../@common/hashTag";
 
 export default function AudioHashtags() {
-  const { userKeyword } = useGetTrackInfo();
+  const { id } = useParams();
+  const { trackDetail } = useTrackDetail(Number(id));
 
   return (
     <HashTagBox>
@@ -12,7 +14,7 @@ export default function AudioHashtags() {
         <HashTagIcon />
       </HashTagIconWrapper>
       <TagWrapper>
-        {userKeyword?.map((tag: string) => (
+        {trackDetail?.userKeyword?.map((tag: string) => (
           <HashTag key={tag} tag={tag} />
         ))}
       </TagWrapper>

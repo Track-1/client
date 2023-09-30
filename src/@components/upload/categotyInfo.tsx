@@ -1,55 +1,44 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
-import { useState } from "react";
 import UploadInfoBox from "./uploadInfoBox";
+import DropCategory from "./dropCategory";
+import { UpperCategoryType } from "../../type/common/category";
 
-export default function CategoryInfo() {
-  const [categoryState, setCategoryState] = useState(false);
-  const [hiddenDropBox, setHiddenDropBox] = useState(true);
+interface CategoryInfoProps {
+  categories: Record<UpperCategoryType, boolean>;
+  setCategories: React.Dispatch<React.SetStateAction<Record<UpperCategoryType, boolean>>>;
+  isSelectedNothing: () => boolean;
+  isSelected: (category: string) => boolean;
+  categoryText: string;
+  hiddenDropBox: boolean;
+  showDropBox: (e: React.MouseEvent<HTMLDivElement | SVGSVGElement, MouseEvent>) => void;
+}
 
-  function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    e.stopPropagation();
-    setHiddenDropBox((prev) => !prev);
-  }
+export default function CategoryInfo(props: CategoryInfoProps) {
+  const { categories, setCategories, isSelectedNothing, categoryText, hiddenDropBox, showDropBox } = props;
 
   return (
     <>
       <UploadInfoBox>
         <InfoType>
-          <UploadCategoryIc />
+          <InfoTypeIconWrapper>
+            <UploadCategoryIcon />
+          </InfoTypeIconWrapper>
           <InfoTypeText>Category</InfoTypeText>
         </InfoType>
-        <InfoInput>
+        <InfoInput isProfile={false}>
           <InputWrapper>
-            <InputCategoryTextWrapper categoryState={categoryState}>
-              <InputCategoryText categoryState={categoryState} onClick={showDropBox}>
-                {/* {uploadData.category} */}
+            <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
+              <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={showDropBox}>
+                {categoryText}
               </InputCategoryText>
             </InputCategoryTextWrapper>
             <CategoryDropDownIcon onClick={showDropBox} />
           </InputWrapper>
         </InfoInput>
+        <DropCategory categories={categories} setCategories={setCategories} hiddenDropBox={hiddenDropBox} />
       </UploadInfoBox>
-
-      {/* <DropMenuBox hiddenDropBox={hiddenDropBox} isVocal={isVocal(whom)}> */}
-      <DropMenuBox hiddenDropBox={hiddenDropBox} isVocal={false}>
-        <DropMenuWrapper>
-          {/* {Object.values(Categories).map((text: string, index: number) => (
-            <DropMenuItem
-              checkState={checkState[index]}
-              checkHoverState={checkHoverState[index]}
-              onMouseEnter={(e) => hoverCategoryMenu(e, index)}
-              onMouseLeave={(e) => hoverCategoryMenu(e, index)}
-              onClick={(e) => selectedCategory(e, index)}
-              ref={(element) => {
-                categoryRefs.current[index] = element;
-              }}>
-              <DropMenuText>{text}</DropMenuText>
-              {checkStateIcon[index] && <CheckCategoryIcon />}
-            </DropMenuItem>
-          ))} */}
-        </DropMenuWrapper>
-      </DropMenuBox>
     </>
   );
 }
@@ -68,13 +57,20 @@ export const InfoTypeText = styled.p`
   margin-left: 1rem;
 `;
 
-export const InfoInput = styled.div`
+export const InfoInput = styled.div<{ isProfile: boolean }>`
   display: flex;
-  align-items: center;
   justify-content: space-between;
 
+  flex-direction: ${({ isProfile }) => isProfile && "column"};
+  align-items: ${({ isProfile }) => (isProfile ? "flex-end" : "center")};
+
+  margin-top: ${({ isProfile }) => isProfile && -1.8}rem;
   width: 100%;
   height: 100%;
+`;
+
+export const InfoTypeIconWrapper = styled.div`
+  width: 2.23rem;
 `;
 
 // -------여기까지 공통----------
@@ -83,15 +79,15 @@ const InputWrapper = styled.div`
   display: flex;
 `;
 
-const InputCategoryTextWrapper = styled.div<{ categoryState: boolean }>`
+const InputCategoryTextWrapper = styled.div<{ isSelectedNothing: boolean }>`
   height: 4.2rem;
   width: 9.9rem;
 
   border-bottom: 0.1rem solid
-    ${(props) => (props.categoryState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+    ${(props) => (props.isSelectedNothing ? ({ theme }) => theme.colors.gray3 : ({ theme }) => theme.colors.white)};
 `;
 
-const InputCategoryText = styled.div<{ categoryState: boolean }>`
+const InputCategoryText = styled.div<{ isSelectedNothing: boolean }>`
   height: 2rem;
   width: 100%;
 
@@ -99,7 +95,8 @@ const InputCategoryText = styled.div<{ categoryState: boolean }>`
   align-items: center;
 
   ${({ theme }) => theme.fonts.hashtag};
-  color: ${(props) => (props.categoryState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+  color: ${(props) =>
+    props.isSelectedNothing ? ({ theme }) => theme.colors.gray3 : ({ theme }) => theme.colors.white};
   margin-top: 1.5rem;
   cursor: pointer;
 `;
@@ -111,38 +108,6 @@ const CategoryDropDownIcon = styled(CategoryDropDownIc)`
   cursor: pointer;
 `;
 
-const DropMenuBox = styled.div<{ hiddenDropBox: boolean; isVocal: boolean }>`
-  display: ${(props) => (props.hiddenDropBox ? "none" : "default")};
-  width: 13rem;
-
-  position: absolute;
-  top: ${({ isVocal }) => (isVocal ? 41 : 54)}rem;
-  left: ${({ isVocal }) => (isVocal ? 96.5 : 109)}rem;
-  background: rgba(30, 32, 37, 0.7);
-  backdrop-filter: blur(0.65rem);
-  border-radius: 0.5rem;
-`;
-
-const DropMenuWrapper = styled.ul`
-  width: 100%;
-
-  margin: 0.8rem 0;
-`;
-
-const DropMenuItem = styled.li<{ checkState: boolean; checkHoverState: boolean }>`
-  height: 3.2rem;
-  width: 9.3rem;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  ${({ theme }) => theme.fonts.hashtag};
-  color: ${(props) =>
-    props.checkState || props.checkHoverState ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3};
-  margin: 0 1.9rem;
-  cursor: pointer;
-`;
-
-const DropMenuText = styled.p`
-  height: 2rem;
+const UploadCategoryIcon = styled(UploadCategoryIc)`
+  width: 1.23rem;
 `;

@@ -1,4 +1,11 @@
-import { DefaultResponseType, ProducerInfoResponse, VocalInfoResponse } from "../type/api";
+import {
+  DefaultResponseType,
+  ProducerInfoResponse,
+  ProducerPortfolioResponse,
+  ProducerVocalSearchingResponse,
+  VocalInfoResponse,
+  VocalProfileResponse,
+} from "../type/api";
 import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from "../type/profile";
 import { client } from "./common/client";
 import { PROFILE } from "./path";
@@ -14,18 +21,29 @@ export async function getProducerProfile(params: ProducerInfoParamsType) {
   return data.data;
 }
 
-export async function getProducerInfo(params: ProducerInfoParamsType) {
-  const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_INFO(params.userId), {
+export async function getProducerPortfolio(params: ProducerInfoParamsType) {
+  const { data } = await client.get<ProducerPortfolioResponse>(PROFILE.PRODUCER_INFO(params.userId), {
     params: {
       page: params.page,
       limit: params.limit,
     },
   });
-  return data;
+
+  return data.data.portfolioList;
+}
+
+export async function getProducerVocalSearching(params: ProducerInfoParamsType) {
+  const { data } = await client.get<ProducerVocalSearchingResponse>(PROFILE.PRODUCER_INFO(params.userId), {
+    params: {
+      page: params.page,
+      limit: params.limit,
+    },
+  });
+  return data.data.trackList;
 }
 
 export async function getVocalProfile(params: VocalInfoParamsType) {
-  const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
+  const { data } = await client.get<VocalProfileResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
     params: {
       page: 1,
       limit: 1,
@@ -43,14 +61,13 @@ export async function getVocalInfo(params: VocalInfoParamsType) {
     },
   });
 
-  return data;
+  return data.data;
 }
 
 export async function patchProducerProfile(editData: ProfileEditType) {
   const { data } = await client.patch<DefaultResponseType>(PROFILE.PATCH_PRODUCER, editData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MywiaWF0IjoxNjkyMjAwMDkxLCJleHAiOjE2OTczODQwOTF9.3WlB_9XRaf0_rGC3J8iY6qHkSOU7nMUL-YXO-_cIFH0`,
     },
   });
   return data;
@@ -60,7 +77,6 @@ export async function patchVocalProfile(editData: VocalProfileEditType) {
   const { data } = await client.patch<DefaultResponseType>(PROFILE.PATCH_VOCAL, editData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJ2b2NhbCIsInVzZXJJZCI6MSwiaWF0IjoxNjkyMTkzMzM3LCJleHAiOjE2OTczNzczMzd9.ORQNliZNoDmNF4S8KsmPnfkmN4QkUqLONKQQukX-za8`,
     },
   });
   return data;

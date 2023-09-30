@@ -1,7 +1,8 @@
 import { UploadFileIc } from "../../assets";
 import UploadInfoBox from "./uploadInfoBox";
-import { InfoInput, InfoType, InfoTypeText } from "./categotyInfo";
+import { InfoInput, InfoType, InfoTypeIconWrapper, InfoTypeText } from "./categotyInfo";
 import AudioFileUpload from "../@common/audioFileUpload";
+import styled from "styled-components";
 
 interface FileUploadInfoProps {
   audioFileName: string;
@@ -16,10 +17,12 @@ export default function FileUploadInfo(props: FileUploadInfoProps) {
   return (
     <UploadInfoBox>
       <InfoType>
-        <UploadFileIc />
+        <InfoTypeIconWrapper>
+          <UploadFileIcon />
+        </InfoTypeIconWrapper>
         <InfoTypeText>File Upload</InfoTypeText>
       </InfoType>
-      <InfoInput>
+      <InfoInput isProfile={false}>
         <AudioFileUpload
           audioFileName={audioFileName}
           audioFileType={audioFileType}
@@ -30,3 +33,7 @@ export default function FileUploadInfo(props: FileUploadInfoProps) {
     </UploadInfoBox>
   );
 }
+
+const UploadFileIcon = styled(UploadFileIc)`
+  width: 1.3rem;
+`;

@@ -11,8 +11,137 @@ import {
 } from "../../api/mypage";
 import { MyPageTitleParamsType } from "../../type/mypage";
 
-export function useMyInfo() {
-  //무한스크롤 미적용
+import { useInfiniteQuery } from "react-query";
+
+import { getProducerPortfolio, getProducerVocalSearching, getVocalInfo } from "../../api/profile";
+import { PortfoliosParamsType } from "../../type/vocals";
+
+import { useQuery } from "react-query";
+import { getVocalProfile } from "../../api/profile";
+
+import { getProducerProfile } from "../../api/profile";
+
+export function useGetProducerProfile(userId: number) {
+  const { data: producerProfile } = useQuery(
+    "getProducerProfile",
+    () =>
+      getProducerProfile({
+        userId: userId,
+        page: 1,
+        limit: 1,
+      }),
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    },
+  );
+
+  return { producerProfile };
+}
+
+export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+  const fetchVocals = async (pageParams: number) => {
+    const response = await getProducerPortfolio({ ...params, page: pageParams, userId: params.userId });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "producerPortfolios",
+    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
+      },
+    },
+  );
+
+  const producerPortfolios = data?.pages.flatMap((data) =>
+    data.response.data.filter((producerPortfolio: any) => producerPortfolio),
+  );
+
+  return {
+    producerPortfolios,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
+}
+
+export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, "page">) {
+  const fetchVocals = async (pageParams: number) => {
+    const response = await getProducerVocalSearching({ ...params, page: pageParams, userId: params.userId });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "producerVocalSearchings",
+    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
+      },
+    },
+  );
+
+  const producerVocalSearchings = data?.pages.flatMap((data) =>
+    data.response.data.filter((producerVocalSearching: any) => producerVocalSearching),
+  );
+
+  return {
+    producerVocalSearchings,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
+}
+
+export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+  const fetchVocals = async (pageParams: number) => {
+    const response = await getVocalInfo({ ...params, page: pageParams, userId: params.userId });
+
+    return { response, nextPage: pageParams + 1 };
+  };
+
+  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
+    "vocalPortfolios",
+    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
+      },
+    },
+  );
+
+  const vocalPortfolios = data?.pages.flatMap((data) => data.response.data.filter((vocalPortfolio) => vocalPortfolio));
+
+  return {
+    vocalPortfolios,
+    fetchNextPage,
+    hasNextPage,
+    ...restValues,
+  };
+}
+
+export function useGetVocalProfile(userId: number) {
+  const { data: vocalProfile } = useQuery(
+    ["getVocalProfile"],
+    () =>
+      getVocalProfile({
+        userId: userId,
+        page: 1,
+        limit: 1,
+      }),
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    },
+  );
+
+  return { vocalProfile };
 }
 
 export function useUploadProducerPortfolio() {
@@ -20,6 +149,7 @@ export function useUploadProducerPortfolio() {
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -34,6 +164,7 @@ export function useUploadVocalPortfolio() {
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -49,6 +180,7 @@ export function useEditProducerPortfolio() {
       patchProducerPortfolio(trackId, formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -64,6 +196,7 @@ export function useEditVocalPortfolio() {
       patchVocalPortfolio(trackId, formData),
     onSuccess: (data) => {
       console.log(data);
+      alert("업로드 성공");
     },
     onError: () => {},
   });
@@ -88,7 +221,9 @@ export function useEditProducerTitle() {
 export function useEditVocalTitle() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (params: MyPageTitleParamsType) => patchVocalTitle(params),
-    onSuccess: () => {},
+    onSuccess: () => {
+      alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.");
+    },
     onError: () => {},
   });
   return {

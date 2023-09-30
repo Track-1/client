@@ -9,4 +9,5 @@ export const TEXT_LIMIT = {
   150: 150,
   200: 200,
   DESCRIPTION: 250,
+  PROFILE_DESCRIPTION: 150,
 };
