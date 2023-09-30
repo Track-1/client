@@ -106,7 +106,6 @@ export { ReactComponent as SleeperAccountIc } from "./icon/sleeperAccountIc.svg"
 export { ReactComponent as SloganIc } from "./icon/sloganIc.svg";
 export { ReactComponent as TrackPostPauseBtnIc } from "./icon/trackPostPauseBtnIc.svg";
 export { ReactComponent as TrackPostPlayBtnIc } from "./icon/trackPostPlayBtnIc.svg";
-export { ReactComponent as TrackSearchSlogunIc } from "./icon/trackSearchSlogunIc.svg";
 export { ReactComponent as TrashDeleteIc } from "./icon/trashDeleteIc.svg";
 export { ReactComponent as UnshowPasswordSignupIc } from "./icon/unshowPasswordSignupIc.svg";
 export { ReactComponent as UploadAbleBtnIc } from "./icon/uploadAbleBtnIc.svg";

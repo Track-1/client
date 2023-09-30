@@ -2,9 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
 import UploadInfoBox from "./uploadInfoBox";
-
-
-import UploadInfoBox from "./uploadInfoBox";
 import DropCategory from "./dropCategory";
 import { UpperCategoryType } from "../../type/common/category";
 
