@@ -102,6 +102,17 @@
     integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH"
     crossorigin="anonymous"></script>
 
+  <!-- Google Analytics 코드 (모바일 버전) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=MOBILE_GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "MOBILE_GA_MEASUREMENT_ID");
+  </script>
+
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon2.ico" />
