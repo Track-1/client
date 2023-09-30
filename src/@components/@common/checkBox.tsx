@@ -8,19 +8,33 @@ const DefaultIndocator = styled.input<{ isChecked: boolean }>``;
 
 const DefaultLabel = styled.label``;
 
-const CheckBoxContext = createContext({
+type CheckBoxContextType = {
+  isChecked: boolean;
+  check: (externalFn: any) => void;
+  id?: string;
+};
+
+const CheckBoxContext = createContext<CheckBoxContextType>({
   isChecked: false,
-  check: () => {},
+  check: (externalFn: any) => {},
   id: "",
 });
 
 export function CheckBoxRoot(props: PropsWithChildren<CheckBoxProps>) {
-  const { children, id } = props;
+  const { children, id, externalFn } = props;
   const [isChecked, setIsChecked] = useState(false);
-  function check() {
+  function innerCheck() {
     setIsChecked((prev) => !prev);
   }
 
+  function combineFn(externalFn: any) {
+    return (option: any) => {
+      externalFn?.(option);
+      innerCheck();
+    };
+  }
+
+  const check = combineFn(externalFn);
   return <CheckBoxContext.Provider value={{ isChecked, check, id }}>{children}</CheckBoxContext.Provider>;
 }
 
@@ -47,10 +61,10 @@ export function Indicator(props: PropsWithChildren<IndicatorProps>) {
 
 export function Label(props: PropsWithChildren<LabelProps>) {
   const { children, asChild, ...restProps } = props;
-  const { id } = useContextScope(CheckBoxContext);
+  const { id, isChecked } = useContextScope(CheckBoxContext);
 
   if (asChild) {
-    return getCustomElement(children as ReactElement, { ...restProps, htmlFor: id });
+    return getCustomElement(children as ReactElement, { ...restProps, htmlFor: id, isChecked });
   }
   return <DefaultLabel htmlFor={id}>{children}</DefaultLabel>;
 }
