@@ -23,6 +23,7 @@ const SendCodButtonWrapper = styled.label<{ isActive: boolean }>`
   align-items: center;
 
   margin-left: 1rem;
+  margin-top: -2.5rem;
 
   width: 12.7rem;
   height: 4rem;

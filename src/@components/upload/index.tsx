@@ -1,12 +1,14 @@
-import { ROLE } from "../../core/common/roleType";
-import UploadBody from "./UploadBody";
-import UploadHeader from "./UploadHeader";
+import Header from "../@common/header";
+import UploadBody from "./uploadBody";
+import UploadHeader from "./uploadHeader";
 
 export default function UploadContainer() {
   return (
     <>
-      <UploadHeader initEmptyData={true} />
-      <UploadBody roleType={ROLE.PRODUCER} initEmptyData={true} />
+      <Header backBtn>
+        <UploadHeader />
+      </Header>
+      <UploadBody />
     </>
   );
 }

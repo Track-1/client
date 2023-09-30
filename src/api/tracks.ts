@@ -8,7 +8,7 @@ export async function getFilteredTracks(params: FilteredTrackParamsType) {
     params: {
       page: params.page,
       limit: params.limit,
-      categ: params.categ,
+      categ: params.categ.length === 0 ? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] : params.categ,
     },
   });
 
@@ -17,7 +17,7 @@ export async function getFilteredTracks(params: FilteredTrackParamsType) {
 
 export async function getTrackDetail(trackId: number) {
   const { data } = await client.get<TrackDetailResponse>(TRACKS.DETAIL(trackId));
-  return data;
+  return data.data;
 }
 
 export async function getTrackDownload(trackId: number) {
@@ -25,17 +25,18 @@ export async function getTrackDownload(trackId: number) {
   return data;
 }
 
-export async function postTrack(formData: FormData) {
-  const { data } = await client.post<DefaultResponseType>(TRACKS.POST, formData, {
+export async function postTrack(uploadData: FormData) {
+  const { data } = await client.post<DefaultResponseType>(TRACKS.POST, uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MywiaWF0IjoxNjkyMjAwMDkxLCJleHAiOjE2OTczODQwOTF9.3WlB_9XRaf0_rGC3J8iY6qHkSOU7nMUL-YXO-_cIFH0`,
     },
   });
   return data;
 }
 
-export async function patchTrack(trackId: number, formData: FormData) {
-  const { data } = await client.patch<DefaultResponseType>(TRACKS.DETAIL(trackId), formData, {
+export async function patchTrack(trackId: number, uploadData: FormData) {
+  const { data } = await client.patch<DefaultResponseType>(TRACKS.DETAIL(trackId), uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

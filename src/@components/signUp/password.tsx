@@ -16,7 +16,7 @@ import InputTitle from "./inputTitle";
 import PasswordShowIcons from "./passwordShowIcons";
 
 export default function Password(props: SignupInputProps) {
-  const { methods } = props;
+  const { methods, width, placeholder } = props;
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
 
@@ -71,8 +71,8 @@ export default function Password(props: SignupInputProps) {
               },
             }}
             type={showPassword(isShow)}
-            placeholder="Create a password"
-            width={56}
+            placeholder={placeholder}
+            width={width}
           />
           <PasswordShowIcons isShow={isShow} setIsShow={setIsShow} />
         </form>

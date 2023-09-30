@@ -1,13 +1,15 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 
 export default function AudioJacketImage() {
-  const { jacketImage } = useGetTrackInfo();
+  const { id } = useParams();
+  const { trackDetail } = useTrackDetail(Number(id));
 
   return (
     <PlayImageWrapper>
       {/* <PlayImageWrapper className={!isCommentOpen && play ? "playAnimation" : "pauseAnimation"}> */}
-      <PlayerImage src={jacketImage} alt="재생 이미지" />
+      <PlayerImage src={trackDetail?.trackImageFile} alt="재생 이미지" />
     </PlayImageWrapper>
   );
 }

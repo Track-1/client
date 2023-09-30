@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 
 export default function ProducerProfile() {
-  const { producerProfileImage, producerName, producerId } = useGetTrackInfo();
+  const { id } = useParams();
+  const { trackDetail } = useTrackDetail(Number(id));
   const navigate = useNavigate();
 
   function handleMoveToProducerProfile() {
@@ -11,15 +13,15 @@ export default function ProducerProfile() {
     // pausesPlayerAudio();
     // closePlayer();
 
-    navigate(`/producer-profile/${producerId}`);
+    navigate(`/producer-profile/${trackDetail?.trackUserId}`);
   }
 
   return (
     <ProducerBox>
       <ProfileImgWrapper>
-        <ProducerProfileImage src={producerProfileImage} alt="프로듀서 프로필 이미지" />
+        <ProducerProfileImage src={trackDetail?.userImageFile} alt="프로듀서 프로필 이미지" />
       </ProfileImgWrapper>
-      <NickName onClick={handleMoveToProducerProfile}>{producerName}</NickName>
+      <NickName onClick={handleMoveToProducerProfile}>{trackDetail?.trackUserName}</NickName>
     </ProducerBox>
   );
 }

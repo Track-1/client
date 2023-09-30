@@ -45,9 +45,11 @@ export const VOCALS = {
 };
 
 export const PROFILE = {
-  PRODUCER_INFO: (userId: number) => `${PATH.profile}/producer/${userId}?`,
+  PRODUCER_PROFILE: (userId: number) => `${PATH.profile}/producer/${userId}?`,
+  PRODUCER_INFO: (userId: number) => `${PATH.profile}/producer/${userId}/works?`,
   //   PRODUCER_VOCAL_SEARCH: (userId: number) => `${PATH.profile}/producer/${userId}/tracks?`,
-  VOCAL_INFO: (userId: number) => `${PATH.profile}/vocal/${userId}?`,
+  VOCAL_PROFILE: (userId: number) => `${PATH.profile}/vocal/${userId}?`,
+  VOCAL_INFO: (userId: number) => `${PATH.profile}/vocal/${userId}/works?`,
   PATCH_PRODUCER: `${PATH.profile}/producer`,
   PATCH_VOCAL: `${PATH.profile}/vocal`,
 };

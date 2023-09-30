@@ -9,5 +9,9 @@ export default function useConventionModal() {
     setConventionModalInform({ policy: policy, isOpen: isOpen });
   }
 
-  return { conventionModalInform, showConventionModal };
+  function closeModal() {
+    setConventionModalInform({ policy: "", isOpen: false });
+  }
+
+  return { conventionModalInform, showConventionModal, closeModal };
 }

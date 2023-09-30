@@ -1,72 +1,57 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { closeTrack } from "../../api/trackPost/closeTrack";
-import { getFileLink } from "../../api/trackPost/getFileLink";
 import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
+import { useCloseTrack, useTrackDownload } from "../../hooks/queries/tracks";
 import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
 
 export default function Download() {
-  const { isMe, isClosed, title } = useGetTrackInfo();
+  const { userSelf, trackClosed, trackTitle } = useGetTrackInfo();
   const { id } = useParams();
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const queryClient = useQueryClient();
+  const { closeTrack } = useCloseTrack();
+  const { trackDownload } = useTrackDownload(Number(id), isDownload, getFileLink);
 
-  const { mutate: closeOrOpenDownload } = useMutation(closeTrack, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_INFO);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  function getFileLink(data: any) {
+    let blob = new Blob([data?.data], { type: "audio/mpeg" });
+    let url = window.URL.createObjectURL(blob); //s3링크
 
-  const { data: fileLink } = useQuery(["download"], () => getFileLink(Number(id)), {
-    onSuccess: (data) => {
-      let blob = new Blob([data?.data], { type: "audio/mpeg" });
-      let url = window.URL.createObjectURL(blob); //s3링크
-
-      var a = document.createElement("a");
-      a.href = url;
-      a.download = `${title}`;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout((_: any) => {
-        window.URL.revokeObjectURL(url);
-      }, 60000);
-      a.remove();
-      setIsDownload(undefined);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-    enabled: !!isDownload,
-  });
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = `${trackTitle}`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout((_: any) => {
+      window.URL.revokeObjectURL(url);
+    }, 60000);
+    a.remove();
+    setIsDownload(undefined);
+  }
 
   function checkIsMeOpen() {
-    return isMe && !isClosed;
+    return userSelf && !trackClosed;
   }
 
   function checkIsMeClosed() {
-    return isMe && isClosed;
+    return userSelf && trackClosed;
   }
 
   function checkIsNotMeOpen() {
-    return !isMe && !isClosed;
+    return !userSelf && !trackClosed;
   }
 
   function checkIsNotMeClosed() {
-    return !isMe && isClosed;
+    return !userSelf && trackClosed;
   }
 
   function closeTrackPost() {
-    closeOrOpenDownload(Number(id));
+    closeTrack(Number(id));
   }
 
   function openTrackPost() {
-    closeOrOpenDownload(Number(id));
+    closeTrack(Number(id));
   }
 
   function getFile() {
