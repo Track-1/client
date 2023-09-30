@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useFilteredTracks } from "../../hooks/queries/tracks";
@@ -7,12 +8,15 @@ import TrackItem from "./trackItem";
 const Container = styled.section`
   display: flex;
   flex-direction: column;
+
+  margin-left: 30.9rem;
 `;
 
 export default function TrackList() {
+  const [searchParams] = useSearchParams();
   const { trackData, fetchNextPage, hasNextPage } = useFilteredTracks({
     limit: 10,
-    categ: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], // TODO 필터링
+    categ: searchParams.getAll("categ"),
   });
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
 
