@@ -17,6 +17,7 @@ import useUploadAudioFile from "../../hooks/common/useUploadAudioFile";
 import { useLocation } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { UploadData } from "../../recoil/upload/uploadData";
+import useDropCategory from "../../hooks/common/useDropCategory";
 
 export default function UploadBody() {
   const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
@@ -31,6 +32,16 @@ export default function UploadBody() {
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = useHashtagInput();
+  const {
+    categories,
+    setCategories,
+    isSelectedNothing,
+    selectedCategoryNumber,
+    isSelected,
+    categoryText,
+    hiddenDropBox,
+    showDropBox,
+  } = useDropCategory();
   const { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
     useUploadAudioFile();
   const [description, handleChangeDescription, changeDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
@@ -45,12 +56,12 @@ export default function UploadBody() {
       title: title,
       imageFile: imageFile,
       audioFile: audioFile,
-      category: "1",
+      category: selectedCategoryNumber(),
       keyword: hashtags,
       introduction: description,
       audioFileName: audioFileName,
     }));
-  }, [imageFile, hashtags, title, audioFile, description]);
+  }, [imageFile, hashtags, title, audioFile, description, categories]);
 
   useEffect(() => {
     if (!pathName.includes("upload")) {
@@ -73,7 +84,15 @@ export default function UploadBody() {
             isTextOverflow={isTextOverflow}
             handleUploadAudioFile={handleUploadAudioFile}
           />
-          <CategoryInfo />
+          <CategoryInfo
+            categories={categories}
+            setCategories={setCategories}
+            isSelectedNothing={isSelectedNothing}
+            isSelected={isSelected}
+            categoryText={categoryText}
+            hiddenDropBox={hiddenDropBox}
+            showDropBox={showDropBox}
+          />
           <HashtagInfo
             hashtags={hashtags}
             hashtagLength={hashtagLength}
