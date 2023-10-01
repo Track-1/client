@@ -1,5 +1,6 @@
 import { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { PlayerPlayIc, PlayerStopIc } from "../../assets";
 import { FilteredTrackType } from "../../type/tracks";
 
 const Container = styled.li<{ isHovered: boolean }>`
@@ -27,7 +28,9 @@ const Container = styled.li<{ isHovered: boolean }>`
   border-radius: 11.7rem 0 0 11.7rem;
 `;
 
-const ThumnailWrapper = styled.div`
+const ThumnailWrapper = styled.div<{ isHovered: boolean }>`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +43,21 @@ const ThumnailWrapper = styled.div`
 
   border-radius: 6.55rem;
   overflow: hidden;
+
+  ${({ isHovered }) =>
+    isHovered &&
+    css`
+      ::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* 원하는 색상과 투명도를 설정 */
+      }
+    `}
 `;
 const Thumbnail = styled.img`
   width: 100%;
@@ -47,6 +65,28 @@ const Thumbnail = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+`;
+
+const PlayButton = styled(PlayerPlayIc)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: translate(-50%, -50%);
+`;
+
+const StopButton = styled(PlayerStopIc)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: translate(-50%, -50%);
 `;
 
 const TrackText = styled.div<{ isHovered: boolean }>`
@@ -105,8 +145,9 @@ export default function TrackItem(props: TrackItemProps) {
   }
   return (
     <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
-      <ThumnailWrapper>
+      <ThumnailWrapper isHovered={isHovered}>
         <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
+        {isHovered && <PlayButton />}
       </ThumnailWrapper>
       <TrackTitle isHovered={isHovered}>{trackInfo.trackTitle}</TrackTitle>
       <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>
