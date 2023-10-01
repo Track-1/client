@@ -130,3 +130,5 @@ export { ReactComponent as SignupIc } from "./icon/signupIc.svg";
 export { ReactComponent as LogoutIc } from "./icon/logoutIc.svg";
 export { ReactComponent as ProducerTextIc } from "./icon/producerTextIc.svg";
 export { ReactComponent as VocalTextIc } from "./icon/vocalTextIc.svg";
+export { ReactComponent as PlayerPlayIc } from "./icon/playerPlayIc.svg";
+export { ReactComponent as PlayerStopIc } from "./icon/playerStopIc.svg";
