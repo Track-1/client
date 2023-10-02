@@ -2,6 +2,8 @@ import styled from "styled-components";
 import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
+import { TextLengthWrapper } from "./descriptionInput";
+import TextareaAutosize from "react-textarea-autosize";
 
 interface UploadTitleProps {
   title: string;
@@ -19,16 +21,17 @@ export default function UploadTitle(props: UploadTitleProps) {
   return (
     <Container>
       <Empty />
-      <TitleInput
-        placeholder="Please enter a title"
-        spellCheck="false"
-        onChange={handleChangeInputTitle}
-        value={title}
-        defaultValue={title}></TitleInput>
-      <TextLengthWrapper>
-        <Empty />
-        <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={theme.fonts.body1} />
-      </TextLengthWrapper>
+      <TitleInputWrapper>
+        <TitleInput
+          placeholder="Please enter a title"
+          spellCheck="false"
+          onChange={handleChangeInputTitle}
+          value={title}
+          defaultValue={title}></TitleInput>
+        <TextLengthWrapper>
+          <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={theme.fonts.body1} />
+        </TextLengthWrapper>
+      </TitleInputWrapper>
     </Container>
   );
 }
@@ -38,6 +41,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
+  width: 100%;
   height: 25rem;
 `;
 
@@ -46,7 +50,7 @@ const Empty = styled.div`
   height: 100%;
 `;
 
-const TitleInput = styled.textarea`
+const TitleInput = styled(TextareaAutosize)`
   width: 100%;
 
   color: ${({ theme }) => theme.colors.white};
@@ -65,9 +69,6 @@ const TitleInput = styled.textarea`
   resize: none;
 `;
 
-const TextLengthWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  margin-top: 1.8rem;
+const TitleInputWrapper = styled.div`
+  width: 100%;
 `;

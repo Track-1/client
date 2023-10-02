@@ -34,7 +34,7 @@ export default function HashtagInfo(props: HashtagInfoProps) {
         <InfoTypeText>Hashtag</InfoTypeText>
       </InfoType>
 
-      <InfoInput isProfile={false}>
+      <InfoInput>
         <HashtagInputWrapper>
           <HashtagInput
             hashtags={hashtags}

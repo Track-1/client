@@ -61,7 +61,7 @@ const UploadImageContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 74.6rem;
+  width: 75.5rem;
   height: 100%;
 
   margin-top: 7.5rem;
@@ -70,7 +70,7 @@ const UploadImageContainer = styled.div`
 const UploadInfoContainer = styled.div`
   z-index: 1;
 
-  width: 100%;
+  width: 89.6rem;
   height: 100%;
 `;
 
@@ -123,7 +123,7 @@ const VocalUploadImageLayout = styled.img<{ fileHoverState: boolean }>`
 
 const FileChangeIcon = styled(UploadFileChangeIc)`
   position: absolute;
-  top: 14rem;
+  top: 19rem;
   left: 12rem;
 
   width: 18.9rem;
