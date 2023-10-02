@@ -37,14 +37,14 @@ export default function TrackSearchPage() {
 
   const [pageType, setPageType] = useState<PageType>("tracks");
 
-  function handleChangeType(pageType: PageType) {
+  function changeType(pageType: PageType) {
     setPageType(pageType);
   }
 
   return (
     <>
       <Header homeLogo>
-        <TrackSearchHeader pageType={pageType} handleChangeType={handleChangeType} />
+        <TrackSearchHeader pageType={pageType} changeType={changeType} />
       </Header>
       <Wrapper>
         <Filter pageType="tracks" />
