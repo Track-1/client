@@ -51,9 +51,9 @@ const NavItem = styled.button<{ checkPageType: boolean }>`
   width: 12.4rem;
   height: 6.6rem;
 
-  /* padding: 2rem; */
-
   color: ${(props) => (props.checkPageType ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
   ${({ theme }) => theme.fonts.cations};
+
   text-decoration: ${(props) => (props.checkPageType ? "underline" : "none")};
+  text-underline-position: under;
 `;
