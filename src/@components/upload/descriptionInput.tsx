@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import TextareaAutosize from "react-textarea-autosize";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
