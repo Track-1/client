@@ -29,7 +29,7 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
 
   padding-left: 6.396rem;
   margin-bottom: 1.9rem;
-  margin-left: 6.2rem;
+  margin-left: 1.2rem;
 
   border: 0.15rem solid transparent;
   border-radius: 32px;
@@ -95,7 +95,7 @@ const TrackSearchingItem = styled.article<{ isChecked?: boolean }>`
   gap: 1.2rem;
 
   height: 7.5rem;
-  margin-left: 6.2rem;
+  margin-left: 1.2rem;
   padding-left: 6.396rem;
 
   color: ${({ theme }) => theme.colors.white};

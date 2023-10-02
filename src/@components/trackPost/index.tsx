@@ -24,6 +24,7 @@ export default function TrackPost() {
   return (
     <>
       {isOpenComment && <Comments handleClosecomment={handleClosecomment} />}
+
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
           <BackButton />

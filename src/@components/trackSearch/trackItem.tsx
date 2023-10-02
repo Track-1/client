@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FilteredTrackType } from "../../type/tracks";
 
@@ -53,7 +54,7 @@ const TrackText = styled.div<{ isHovered: boolean }>`
   ${({ theme }) => theme.fonts.body1};
 
   padding-right: 3rem;
-  margin-left: 2.8rem;
+  margin-right: 1rem;
 
   color: ${({ theme }) => theme.colors.white};
   :hover {
@@ -63,7 +64,7 @@ const TrackText = styled.div<{ isHovered: boolean }>`
 `;
 
 const TrackTitle = styled(TrackText)`
-  width: 26rem;
+  width: 36rem;
 `;
 
 const Producer = styled(TrackText)`
@@ -83,6 +84,8 @@ const Tag = styled.span`
   padding: 0.7rem 1rem;
   margin: 0 0.7rem 0 0;
 
+  color: ${({ theme }) => theme.colors.white};
+
   ${({ theme }) => theme.fonts.hashtag};
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
@@ -95,6 +98,7 @@ interface TrackItemProps {
 export default function TrackItem(props: TrackItemProps) {
   const { trackInfo } = props;
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   function hoverTrack() {
     setIsHovered(true);
@@ -103,13 +107,26 @@ export default function TrackItem(props: TrackItemProps) {
   function unhoverTrack() {
     setIsHovered(false);
   }
+
+  function handleMoveToTrackDetail() {
+    navigate(`/track-post/${trackInfo.trackId}`);
+  }
+
+  function handleMoveToProducer() {
+    navigate(`/producer-profile/${trackInfo.trackUserId}`);
+  }
+
   return (
     <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
       <ThumnailWrapper>
         <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
       </ThumnailWrapper>
-      <TrackTitle isHovered={isHovered}>{trackInfo.trackTitle}</TrackTitle>
-      <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>
+      <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
+        {trackInfo.trackTitle}
+      </TrackTitle>
+      <Producer isHovered={isHovered} onClick={handleMoveToProducer}>
+        {trackInfo.trackUserName}
+      </Producer>
       <Category isHovered={isHovered}>{trackInfo.trackCategory}</Category>
       {trackInfo.trackKeyword.map((tag) => {
         return <Tag>#{tag}</Tag>;

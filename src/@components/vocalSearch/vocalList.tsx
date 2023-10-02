@@ -33,7 +33,6 @@ export default function VocalList() {
 
   return (
     <Container>
-      <ListTitle />
       <ListWrapper>
         {vocalData.map((vocalInfo) => {
           return <VocalItem vocalInfo={vocalInfo} key={vocalInfo.userId} />;
