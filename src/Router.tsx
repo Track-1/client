@@ -1,23 +1,23 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import MainPage from "./@pages/mainPage";
 import ProducerProfilePage from "./@pages/producerProfilePage";
 import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
 import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
-import UploadPage from "./@pages/uploadPage";
 import TrackSearchPage from "./@pages/trackSearchPage";
-import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
-import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
-import { LoginPage } from "./@pages/loginPage";
+import UploadPage from "./@pages/uploadPage";
 
-import VocalProfilePage from "./@pages/vocalProfilePage";
-import VocalSearchPage from "./@pages/vocalSearchPage";
+import ErrorPage from "./@pages/errorPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
+
+import LoginPage from "./@pages/loginPage";
+import ProfileEditPage from "./@pages/profileEditPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
 import UploadEditPage from "./@pages/uploadEditPage";
-import ProfileEditPage from "./@pages/profileEditPage";
-import ErrorPage from "./@pages/errorPage";
+import VocalProfilePage from "./@pages/vocalProfilePage";
+import VocalSearchPage from "./@pages/vocalSearchPage";
 
 export default function Router() {
   return (
@@ -34,7 +34,6 @@ export default function Router() {
         <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />
         <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
         <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
-        {/* [ 예원 ] 리팩토링 임시 라우터 */}
         <Route path="/profile-edit" element={<ProfileEditPage />} />
         <Route path="/track-post/:id" index element={<TrackPostPage />} />
         <Route path="/login" element={<LoginPage />} />
