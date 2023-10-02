@@ -51,6 +51,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={producerPortfolio[0].portfolioId}
+                      nowTitleNextId={producerPortfolio[1].portfolioId}
                       portfolioId={producerPortfolio.portfolioId}
                       dataState="producer vocal searching"
                     />
