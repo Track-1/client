@@ -7,6 +7,10 @@ import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
 import UploadPage from "./@pages/uploadPage";
 import TrackSearchPage from "./@pages/trackSearchPage";
+import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
+import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
+import { LoginPage } from "./@pages/loginPage";
+
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
@@ -33,6 +37,7 @@ export default function Router() {
         {/* [ 예원 ] 리팩토링 임시 라우터 */}
         <Route path="/profile-edit" element={<ProfileEditPage />} />
         <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
         <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />

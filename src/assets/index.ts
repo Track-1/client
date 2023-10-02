@@ -125,6 +125,7 @@ export { ReactComponent as VerifySignupIc } from "./icon/verifySignupIc.svg";
 export { ReactComponent as VocalPortfolioTitleTextIc } from "./icon/vocalPortfolioTitleTextIc.svg";
 export { ReactComponent as VocalProfileShadowIc } from "./icon/vocalProfileShadowIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
+export { ReactComponent as LoginButtonIc } from "./icon/loginButtonIc.svg";
 export { ReactComponent as LoginIc } from "./icon/loginIc.svg";
 export { ReactComponent as SignupIc } from "./icon/signupIc.svg";
 export { ReactComponent as LogoutIc } from "./icon/logoutIc.svg";
