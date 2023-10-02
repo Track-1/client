@@ -6,8 +6,7 @@ export const client = axios.create({
   headers: {
     // Authorization: `Bearer ${getCookie("accessToken")}`,
     // Authorization: `Bearer ${process.env.REACT_PRODUCER_ACCESSTOKEN}`,
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MywiaWF0IjoxNjk1NTM2MzU3LCJleHAiOjE3MDA3MjAzNTd9.eHl3gFaDLACd0c3tjUnuHIKJ6ylK-lzcbcDSMs1Aw-0
-    `,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJ2b2NhbCIsInVzZXJJZCI6MSwiaWF0IjoxNjk1NTM2MTA4LCJleHAiOjE3MDA3MjAxMDh9.bBGGuYDYo04pdJyLC7oKUlRMhTVjBP9ysQWbkoTruSA`,
   },
   withCredentials: true,
 });

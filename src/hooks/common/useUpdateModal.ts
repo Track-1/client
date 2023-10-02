@@ -1,33 +1,33 @@
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { isModalOpen } from "../../recoil/common/isModalOpen";
+import { isUpdateModalOpen } from "../../recoil/common/isUpdateModalOpen";
 import { isClickedOutside } from "../../utils/common/modal";
 
-export default function useModal() {
+export default function useUpdateModal() {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const [openModal, setOpenModal] = useRecoilState<boolean>(isModalOpen);
+  const [openUpdateModal, setOpenUpdateModal] = useRecoilState<boolean>(isUpdateModalOpen);
 
   useEffect(() => {
     document.addEventListener("mousedown", closeModal);
     return () => {
       document.removeEventListener("mousedown", closeModal);
     };
-  }, [openModal]);
+  }, [openUpdateModal]);
 
   function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e, modalRef, openModal)) {
-      setOpenModal(false);
+    if (isClickedOutside(e, modalRef, openUpdateModal)) {
+      setOpenUpdateModal(false);
     }
   }
 
   function unShowModal() {
-    setOpenModal(false);
+    setOpenUpdateModal(false);
   }
 
   function showModal() {
-    setOpenModal(true);
+    setOpenUpdateModal(true);
   }
 
-  return { modalRef, closeModal, unShowModal, showModal, openModal };
+  return { modalRef, closeModal, unShowModal, showModal, openUpdateModal };
 }
