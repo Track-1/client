@@ -46,8 +46,6 @@ export default function UploadButtonModal() {
 }
 
 const ModalBg = styled.section`
-  /* height: 100vh;
-  width: 100vw; */
   position: fixed;
   z-index: 2;
   top: 0;
