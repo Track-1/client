@@ -12,6 +12,7 @@ import { CheckBox } from "./checkBox";
 const FilterWrapper = styled.section`
   position: fixed;
   left: 0;
+  top: 17rem;
 
   display: flex;
   flex-direction: column;
