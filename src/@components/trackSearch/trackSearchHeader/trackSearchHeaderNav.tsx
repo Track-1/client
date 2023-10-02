@@ -1,19 +1,33 @@
 import styled from "styled-components";
 import { PageType } from "../../../type/common/pageType";
+import { useNavigate } from "react-router-dom";
 
 interface TrackSearchHeaderNavProps {
   pageType: PageType;
-  handleChangeType: (pageType: PageType) => void;
+  changeType: (pageType: PageType) => void;
 }
 
 export default function TrackSearchHeaderNav(props: TrackSearchHeaderNavProps) {
-  const { pageType, handleChangeType } = props;
+  const { pageType, changeType } = props;
+
+  const navigate = useNavigate();
+
+  function handleMoveTrackSearch() {
+    changeType("tracks");
+    navigate("/track-search");
+  }
+
+  function handleMoveVocalSearch() {
+    changeType("vocals");
+    navigate("/vocal-search");
+  }
+
   return (
     <NavTop>
-      <NavItem onClick={() => handleChangeType("tracks")} checkPageType={pageType === "tracks"}>
+      <NavItem onClick={handleMoveTrackSearch} checkPageType={pageType === "tracks"}>
         Tracks
       </NavItem>
-      <NavItem onClick={() => handleChangeType("vocals")} checkPageType={pageType === "vocals"}>
+      <NavItem onClick={handleMoveVocalSearch} checkPageType={pageType === "vocals"}>
         Vocals
       </NavItem>
     </NavTop>
@@ -37,8 +51,9 @@ const NavItem = styled.button<{ checkPageType: boolean }>`
   width: 12.4rem;
   height: 6.6rem;
 
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.cations};
+  /* padding: 2rem; */
 
+  color: ${(props) => (props.checkPageType ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+  ${({ theme }) => theme.fonts.cations};
   text-decoration: ${(props) => (props.checkPageType ? "underline" : "none")};
 `;
