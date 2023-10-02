@@ -4,15 +4,15 @@ import TrackSearchHeaderButton from "./trackSearchHeaderButton";
 
 interface TrackSearchHeaderProps {
   pageType: PageType;
-  handleChangeType: (pageType : PageType) => void;
+  changeType: (pageType: PageType) => void;
 }
 
 export default function TrackSearchHeader(props: TrackSearchHeaderProps) {
-  const { pageType, handleChangeType } = props;
+  const { pageType, changeType } = props;
 
   return (
     <>
-      <TrackSearchHeaderNav pageType={pageType} handleChangeType={handleChangeType} />
+      <TrackSearchHeaderNav pageType={pageType} changeType={changeType} />
       <TrackSearchHeaderButton />
     </>
   );
