@@ -61,7 +61,7 @@ const UserNameText = styled.p`
   margin-left: 1.2rem;
 `;
 
-const ProducerImageLayout = styled.div`
+export const ProducerImageLayout = styled.div`
   width: 3.2rem;
   height: 3.2rem;
 
