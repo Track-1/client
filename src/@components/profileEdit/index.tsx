@@ -19,6 +19,8 @@ import ProfileNameEdit from "./profileNameEdit";
 import ProfileSelectCategoryEdit from "./profileSelectCategoryEdit";
 import VocalImageEdit from "./vocalProfileEdit/vocalImageEdit";
 import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
+import { useRecoilValue } from "recoil";
+import { loginUserType } from "../../recoil/common/loginUserData";
 
 export default function ProfileEditContainer() {
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
@@ -39,12 +41,18 @@ export default function ProfileEditContainer() {
   const { editProducerProfile } = useEditProdcerProfile();
   const { editVocalProfile } = useEditVocalProfile();
 
+  const [imageFileSame, setImageFileSame] = useState(true);
+
   const nameMethods = useForm({
     defaultValues: {
       nickName: "",
     },
     mode: "onChange",
   });
+
+  useEffect(() => {
+    imageFile !== null ? setImageFileSame(false) : setImageFileSame(true);
+  }, [imageFile]);
 
   const contactMethods = useForm({
     defaultValues: {
@@ -53,7 +61,7 @@ export default function ProfileEditContainer() {
     mode: "onChange",
   });
 
-  const userType = "vocal";
+  const userType = useRecoilValue(loginUserType);
 
   useEffect(() => {
     const nickName = nameMethods.getValues().nickName;
@@ -72,7 +80,7 @@ export default function ProfileEditContainer() {
       userCategory: categories,
       userKeyword: hashtags,
       userIntroduction: description,
-      userImageFileSame: true, //변경해야됨
+      userImageFileSame: imageFileSame,
     };
     return data;
   }
@@ -85,7 +93,7 @@ export default function ProfileEditContainer() {
       userCategory: categories,
       userKeyword: hashtags,
       userIntroduction: description,
-      userImageFileSame: true, //변경해야됨
+      userImageFileSame: imageFileSame,
       userTrackSearch: isSleep,
     };
     return data;

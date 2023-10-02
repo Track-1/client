@@ -9,6 +9,7 @@ export const EMAIL_MESSAGE = {
   VERIFY: "email verify",
   ING: "email ing",
   ACTIVE: "email active",
+  NOT_EXIST: "We don’t have an account with that email address.",
 };
 
 export const VERIFICATION_CODE_MESSAGE = {

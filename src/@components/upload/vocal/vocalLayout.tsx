@@ -57,6 +57,7 @@ const UploadVocalLayout = styled.img`
 
 const UploadImageContainer = styled.div`
   z-index: 1;
+  
   display: flex;
   justify-content: center;
   align-items: center;
