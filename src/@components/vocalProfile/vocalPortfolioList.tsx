@@ -65,7 +65,7 @@ const VocalsBoxHead = styled.div`
   transform: rotate(45deg);
 
   border: 0.34rem solid ${({ theme }) => theme.colors.sub2};
-  border-radius: 5rem 2.8rem 5.4rem 2.8rem;
+  border-radius: 5rem 2.8rem 5.4rem 2.9rem;
 `;
 
 const VocalsBoxBody = styled.div`
