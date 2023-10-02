@@ -10,11 +10,13 @@ export default function ProducerUploadModal() {
   const navigate = useNavigate();
 
   function handleMoveVocalSearching() {
-    navigate("/upload/Vocal-Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
+    navigate("/upload/producer/vocal-searching", {
+      state: { producerUploadType: "Vocal Searching", prevPage: preLocation },
+    });
   }
 
   function handleMovePortfolio() {
-    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
+    navigate("/upload/producer/portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
   }
 
   return (
