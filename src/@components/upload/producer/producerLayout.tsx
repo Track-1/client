@@ -59,7 +59,6 @@ const UploadImage = styled.div`
 const ProducerUploadImageContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
 
   margin-left: 6.5rem;
   margin-right: 4.9rem;
