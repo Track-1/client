@@ -6,13 +6,15 @@ import BackButton from "./backButton";
 
 interface HeaderProps {
   backBtn?: boolean;
+  prevURL?: string;
   homeLogo?: boolean;
   slogan?: boolean;
+
   children?: ReactNode;
 }
 
 export default function Header(props: HeaderProps) {
-  const { backBtn, homeLogo, slogan, children } = props;
+  const { backBtn, homeLogo, prevURL, slogan, children } = props;
 
   const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ export default function Header(props: HeaderProps) {
     <Container>
       <Wrapper>
         {homeLogo && <HomeLogoIcon onClick={handleMoveToHome} />}
-        {backBtn && <BackButton />}
+        {backBtn && <BackButton prevURL={prevURL} />}
         {slogan && <SloganIcon />}
         {children}
       </Wrapper>
