@@ -95,20 +95,6 @@ const ProfileContentWrapper = styled.div`
   flex-direction: column;
 `;
 
-const VocalImageLayout = styled.div`
-  width: 8rem;
-  height: 8rem;
-
-  border-radius: 0.5rem;
-
-  overflow: hidden;
-
-  transform: rotate(-45deg);
-
-  object-fit: cover;
-  margin-right: 1.8rem;
-`;
-
 const UserNameText = styled.p`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.id};

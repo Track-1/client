@@ -1,6 +1,5 @@
 import { useForm, FormProvider } from "react-hook-form";
 import PasswordContainer from "../@common/passwordContainer";
-import InputTitle from "../signUp/inputTitle";
 import Input from "../signUp/Input";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
@@ -56,7 +55,6 @@ export default function ForgotPasswordInput() {
       setFontColor(theme.colors.white);
     }
   }, [methods.watch().email, producerType]);
-
 
   function checkPrevState() {
     return prevState.email === methods.watch().email && prevState.producerType === producerType;

@@ -5,14 +5,17 @@ import MypageButton from "./mypageButton";
 import { checkIsLogin } from "../../utils/common/checkIsLogined";
 import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { ROLE } from "../../core/common/roleType";
+import { useRecoilValue } from "recoil";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 
 export default function LoginButton() {
   const isLogined = checkIsLogin();
 
-  const userType = "vocal";
+  const userType = useRecoilValue(loginUserType);
+  const userId = useRecoilValue(loginUserId);
 
-  const { vocalProfile } = useGetVocalProfile(Number(2), userType);
-  const { producerProfile } = useGetProducerProfile(Number(2), userType);
+  const { vocalProfile } = useGetVocalProfile(userId, userType);
+  const { producerProfile } = useGetProducerProfile(userId, userType);
 
   const navigate = useNavigate();
 
