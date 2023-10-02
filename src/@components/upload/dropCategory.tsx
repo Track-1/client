@@ -1,16 +1,17 @@
 import styled from "styled-components";
-import { Categories, CategoryBoolean, CategoryText } from "../../core/common/categories";
+import { CategoryBoolean, CategoryText } from "../../core/common/categories";
 import { UpperCategoryType } from "../../type/common/category";
 import { CheckCategoryIc } from "../../assets";
 
 interface DropCategoryProps {
   categories: Record<UpperCategoryType, boolean>;
   setCategories: React.Dispatch<React.SetStateAction<Record<UpperCategoryType, boolean>>>;
-  hiddenDropBox: boolean;
+  openModal: boolean;
+  handleShowUpdateModal: () => void;
 }
 
 export default function DropCategory(props: DropCategoryProps) {
-  const { categories, setCategories, hiddenDropBox } = props;
+  const { categories, setCategories, openModal, handleShowUpdateModal } = props;
 
   function selectCategory(category: string) {
     const tempCategory = { ...CategoryBoolean };
@@ -23,29 +24,38 @@ export default function DropCategory(props: DropCategoryProps) {
     return categories[category as UpperCategoryType];
   }
 
+  function handleItemClick(category: string) {
+    selectCategory(category);
+    handleShowUpdateModal();
+  }
+
   return (
-    <DropMenuBox hiddenDropBox={hiddenDropBox} isVocal={false}>
-      <DropMenuWrapper>
-        {Object.keys(CategoryText).map((category: string) => (
-          <DropMenuItem onClick={() => selectCategory(category)} key={category}>
-            <DropMenuText>{CategoryText[category as UpperCategoryType]}</DropMenuText>
-            {isSelected(category) && <CheckCategoryIcon />}
-          </DropMenuItem>
-        ))}
-      </DropMenuWrapper>
-    </DropMenuBox>
+    <>
+      {openModal && (
+        <DropMenuBox isVocal={false}>
+          <DropMenuWrapper>
+            {Object.keys(CategoryText).map((category: string) => (
+              <DropMenuItem onClick={() => handleItemClick(category)} key={category}>
+                <DropMenuText isSelected={isSelected(category)}>
+                  {CategoryText[category as UpperCategoryType]}
+                </DropMenuText>
+                {isSelected(category) && <CheckCategoryIcon />}
+              </DropMenuItem>
+            ))}
+          </DropMenuWrapper>
+        </DropMenuBox>
+      )}
+    </>
   );
 }
 
-const DropMenuBox = styled.div<{ hiddenDropBox: boolean; isVocal: boolean }>`
-  display: ${(props) => (props.hiddenDropBox ? "none" : "block")};
+const DropMenuBox = styled.div<{ isVocal: boolean }>`
   width: 13rem;
 
   position: absolute;
-  /* top: ${({ isVocal }) => (isVocal ? 41 : 54)}rem;
-  left: ${({ isVocal }) => (isVocal ? 96.5 : 109)}rem; */
-  top: 57.3rem;
-  left: 103rem;
+  top: ${({ isVocal }) => (isVocal ? 41 : 57.3)}rem;
+  left: ${({ isVocal }) => (isVocal ? 96.5 : 103)}rem;
+
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);
   border-radius: 0.5rem;
@@ -76,8 +86,14 @@ const DropMenuItem = styled.li`
   }
 `;
 
-const DropMenuText = styled.p`
+const DropMenuText = styled.p<{ isSelected: boolean }>`
   height: 2rem;
+
+  color: ${(props) => (props.isSelected ? ({ theme }) => theme.colors.white : ({ theme }) => theme.colors.gray3)};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const CheckCategoryIcon = styled(CheckCategoryIc)`

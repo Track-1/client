@@ -3,6 +3,7 @@ import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
 import UploadInfoBox from "./uploadInfoBox";
 import DropCategory from "./dropCategory";
 import { UpperCategoryType } from "../../type/common/category";
+import useModal from "../../hooks/common/useModal";
 
 interface CategoryInfoProps {
   categories: Record<UpperCategoryType, boolean>;
@@ -10,12 +11,11 @@ interface CategoryInfoProps {
   isSelectedNothing: () => boolean;
   isSelected: (category: string) => boolean;
   categoryText: string;
-  hiddenDropBox: boolean;
-  showDropBox: (e: React.MouseEvent<HTMLDivElement | SVGSVGElement, MouseEvent>) => void;
 }
 
 export default function CategoryInfo(props: CategoryInfoProps) {
-  const { categories, setCategories, isSelectedNothing, categoryText, hiddenDropBox, showDropBox } = props;
+  const { categories, setCategories, isSelectedNothing, categoryText } = props;
+  const { openModal, handleShowUpdateModal } = useModal();
 
   return (
     <>
@@ -29,14 +29,19 @@ export default function CategoryInfo(props: CategoryInfoProps) {
         <InfoInput isProfile={false}>
           <InputWrapper>
             <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
-              <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={showDropBox}>
+              <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={handleShowUpdateModal}>
                 {categoryText}
               </InputCategoryText>
             </InputCategoryTextWrapper>
-            <CategoryDropDownIcon onClick={showDropBox} />
+            <CategoryDropDownIcon onClick={handleShowUpdateModal} />
           </InputWrapper>
         </InfoInput>
-        <DropCategory categories={categories} setCategories={setCategories} hiddenDropBox={hiddenDropBox} />
+        <DropCategory
+          categories={categories}
+          setCategories={setCategories}
+          openModal={openModal}
+          handleShowUpdateModal={handleShowUpdateModal}
+        />
       </UploadInfoBox>
     </>
   );
@@ -49,12 +54,10 @@ export const InfoType = styled.div`
   height: 100%;
 
   color: ${({ theme }) => theme.colors.gray3};
-  ${({ theme }) => theme.fonts.body1};
+  ${({ theme }) => theme.fonts.cations};
 `;
 
-export const InfoTypeText = styled.p`
-  margin-left: 1rem;
-`;
+export const InfoTypeText = styled.p``;
 
 export const InfoInput = styled.div<{ isProfile: boolean }>`
   display: flex;
@@ -64,7 +67,7 @@ export const InfoInput = styled.div<{ isProfile: boolean }>`
   align-items: ${({ isProfile }) => (isProfile ? "flex-end" : "center")};
 
   margin-top: ${({ isProfile }) => isProfile && -1.8}rem;
-  width: 100%;
+  width: 68.2rem;
   height: 100%;
 `;
 

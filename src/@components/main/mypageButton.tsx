@@ -13,11 +13,7 @@ interface MypageButtonProps {
 export default function MypageButton(props: MypageButtonProps) {
   const { userType, userImage, userName, userContact } = props;
 
-  const { openModal, showModal, unShowModal } = useModal();
-
-  function handleShowUpdateModal() {
-    !openModal ? showModal() : unShowModal();
-  }
+  const { openModal, handleShowUpdateModal } = useModal();
 
   return (
     <>
