@@ -1,14 +1,28 @@
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { loginUserImg } from "../../recoil/common/loginUserData";
+import { ROLE } from "../../core/common/roleType";
+import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 
 export default function CommentWriteProfileContainer() {
-  const imgSrc = useRecoilValue(loginUserImg);
+  // userType, userId
+  const userType = "producer";
+  const userId = 7;
+  const { vocalProfile } = useGetVocalProfile(userId);
+  const { producerProfile } = useGetProducerProfile(userId);
+  const defaultImage = "https://track1-default.s3.ap-northeast-2.amazonaws.com/default_user2.png";
 
   return (
     <ImageContainer>
       <ProfileImageWrapper>
-        <ProfileImage src={imgSrc} alt="프로필 이미지" />
+        <ProfileImage
+          src={
+            userType === ROLE.PRODUCER
+              ? producerProfile?.userProfile.userImageFile
+              : userType === ROLE.VOCAL
+              ? vocalProfile?.userProfile.userImageFile
+              : defaultImage
+          }
+          alt="프로필 이미지"
+        />
       </ProfileImageWrapper>
     </ImageContainer>
   );

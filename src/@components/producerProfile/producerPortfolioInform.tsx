@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { EllipsisIc, ProducerProfileTitleTextIc } from "../../assets";
-import useModal from "../../hooks/common/useModal";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
 import { useGetProducerPortfolio } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import MusicInformation from "../portfolio/musicInformation";
@@ -25,12 +25,11 @@ export default function ProducerPortfolioInform(props: ProducerPortfolioInformPr
 
   const clickedId = useRecoilValue(clickedProfileId);
   const hoveredId = useRecoilValue(hoveredProfileId);
-  const { openModal, showModal, unShowModal } = useModal();
-
+  const { openUpdateModal, showModal, unShowModal } = useUpdateModal();
   if (producerPortfolios === undefined) return null;
 
   function handleShowUpdateModal() {
-    !openModal ? showModal() : unShowModal();
+    !openUpdateModal ? showModal() : unShowModal();
   }
 
   return (
@@ -46,10 +45,11 @@ export default function ProducerPortfolioInform(props: ProducerPortfolioInformPr
                   {isMe && clickedId === producerPortfolio.portfolioId && (
                     <EllipsisIcon onClick={handleShowUpdateModal} />
                   )}
-                  {openModal && (
+                  {openUpdateModal && (
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={producerPortfolios[0].portfolioId}
+                      nowTitleNextId={producerPortfolios[1].portfolioId}
                       portfolioId={producerPortfolio.portfolioId}
                       dataState="producer portfolio"
                     />

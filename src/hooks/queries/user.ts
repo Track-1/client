@@ -13,8 +13,8 @@ import {
   postJoin,
   postLogin,
   postResetPassword,
-  postUserEmail,
   postVerifyCode,
+  postVerifyEmail,
 } from "../../api/user";
 import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
@@ -116,7 +116,7 @@ export function useAccessToken() {
 
 export function useUserEmail(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (userEmail: UserEmailRequest) => postUserEmail(userEmail),
+    mutationFn: (userEmail: UserEmailRequest) => postVerifyEmail(userEmail),
     onSuccess: () => {
       setError("email", { message: EMAIL_MESSAGE.TIME });
       alert(SIGNUP_SENDCODE);
