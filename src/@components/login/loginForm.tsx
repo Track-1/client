@@ -1,10 +1,19 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import SwitchToggle from "./switchToggle";
 import { LoginButtonIc } from "../../assets";
-import { useState } from "react";
-import { UserType } from "../../type/common/userType";
+import background from "../../assets/icon/signupBackgroundIc.svg";
+import useConventionModal from "../../hooks/common/useConventionModal";
 import { useLogin } from "../../hooks/queries/user";
+import { UserType } from "../../type/common/userType";
+import ConventionModal from "../@common/conventionModal";
+import Footer from "../@common/footer";
+import SignUpBackButton from "../signUp/signUpBackButton";
+import SwitchToggle from "./switchToggle";
+
+const BackButtonWrapper = styled.div`
+  margin: 5.9rem 0 0 7.9rem;
+`;
 
 const Container = styled.section`
   position: absolute;
@@ -122,6 +131,18 @@ const LoginButtonIcon = styled(LoginButtonIc)`
   }
 `;
 
+const Img = styled.img`
+  margin-top: 11rem;
+  position: absolute;
+  width: 192rem;
+  height: 98rem;
+`;
+
+const Body = styled.section`
+  width: 192rem;
+  height: 98rem;
+`;
+
 export default function LoginForm() {
   const {
     register,
@@ -135,54 +156,66 @@ export default function LoginForm() {
   });
   const [userType, setUserType] = useState<UserType>("vocal");
   const { login } = useLogin();
+  const { conventionModalInform } = useConventionModal();
 
   function switchUserType() {
     userType === "producer" ? setUserType("vocal") : setUserType("producer");
   }
 
   return (
-    <form
-      onChange={handleSubmit(() => {})}
-      onSubmit={handleSubmit((userInfo) => {
-        login({ userEmail: userInfo.email, userPw: userInfo.password, userType: userType });
-      })}>
-      <Container>
-        <TitleWrapper>
-          <FormTitle>Log in</FormTitle>
-          <FormDescription>
-            If you are a new user, <strong>Sign up here</strong>
-          </FormDescription>
-        </TitleWrapper>
-        <InputWrapper>
-          <InputTitle>Email</InputTitle>
-          <InputField
-            placeholder="Enter your email address"
-            {...register("email", {
-              pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
-            })}
-            error={"email" in errors}
-          />
-          <ErrorMessage>{errors.email?.message}</ErrorMessage>
-        </InputWrapper>
-        <InputWrapper>
-          <InputTitle>Password</InputTitle>
-          <InputField
-            placeholder="Enter your password"
-            {...register("password", {
-              pattern: {
-                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
-                message: "Wrong password. Try again or click Forgot password to reset it.",
-              },
-            })}
-            error={"password" in errors}
-          />
-          <ErrorMessage>{errors.password?.message}</ErrorMessage>
-        </InputWrapper>
-        <SwitchToggle switchUserType={switchUserType} />
-        <LoginButton type="submit">
-          <LoginButtonIcon />
-        </LoginButton>
-      </Container>
-    </form>
+    <>
+      {conventionModalInform?.isOpen && <ConventionModal />}
+
+      <BackButtonWrapper>
+        <SignUpBackButton />
+      </BackButtonWrapper>
+      <Img src={background} alt="배경" />
+      <Body>
+        <form
+          onChange={handleSubmit(() => {})}
+          onSubmit={handleSubmit((userInfo) => {
+            login({ userEmail: userInfo.email, userPw: userInfo.password, userType: userType });
+          })}>
+          <Container>
+            <TitleWrapper>
+              <FormTitle>Log in</FormTitle>
+              <FormDescription>
+                If you are a new user, <strong>Sign up here</strong>
+              </FormDescription>
+            </TitleWrapper>
+            <InputWrapper>
+              <InputTitle>Email</InputTitle>
+              <InputField
+                placeholder="Enter your email address"
+                {...register("email", {
+                  pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
+                })}
+                error={"email" in errors}
+              />
+              <ErrorMessage>{errors.email?.message}</ErrorMessage>
+            </InputWrapper>
+            <InputWrapper>
+              <InputTitle>Password</InputTitle>
+              <InputField
+                placeholder="Enter your password"
+                {...register("password", {
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
+                    message: "Wrong password. Try again or click Forgot password to reset it.",
+                  },
+                })}
+                error={"password" in errors}
+              />
+              <ErrorMessage>{errors.password?.message}</ErrorMessage>
+            </InputWrapper>
+            <SwitchToggle switchUserType={switchUserType} />
+            <LoginButton type="submit">
+              <LoginButtonIcon />
+            </LoginButton>
+          </Container>
+        </form>
+      </Body>
+      <Footer />
+    </>
   );
 }
