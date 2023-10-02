@@ -112,6 +112,10 @@ export default function TrackItem(props: TrackItemProps) {
     navigate(`/track-post/${trackInfo.trackId}`);
   }
 
+  function handleMoveToProducer() {
+    navigate(`/producer-profile/${trackInfo.trackUserId}`);
+  }
+
   return (
     <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
       <ThumnailWrapper>
@@ -120,7 +124,9 @@ export default function TrackItem(props: TrackItemProps) {
       <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
         {trackInfo.trackTitle}
       </TrackTitle>
-      <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>
+      <Producer isHovered={isHovered} onClick={handleMoveToProducer}>
+        {trackInfo.trackUserName}
+      </Producer>
       <Category isHovered={isHovered}>{trackInfo.trackCategory}</Category>
       {trackInfo.trackKeyword.map((tag) => {
         return <Tag>#{tag}</Tag>;
