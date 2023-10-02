@@ -95,8 +95,9 @@ const Label = styled.label`
 
 const FileChangeIcon = styled(UploadFileChangeIc)`
   position: absolute;
-  top: 47.95rem;
-  left: 42.8rem;
+
+  top: 50.9rem;
+  left: 37.8rem;
 
   width: 18.9rem;
 

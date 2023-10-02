@@ -103,7 +103,7 @@ export default function UploadBody() {
   }
 
   return (
-    <Container>
+    <Container roleType={roleType}>
       {roleType === ROLE.PRODUCER ? (
         <ProducerLayout imageFile={imageFile} previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
           {commonComponent()}
@@ -117,15 +117,16 @@ export default function UploadBody() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ roleType: string }>`
   display: flex;
-  justify-content: center;
+
+  margin-left: ${(props) => (props.roleType === ROLE.PRODUCER ? 10.5 : 6.8)}rem;
 
   margin-top: 4.2rem;
 `;
 
 const UploadDataWrapper = styled.div`
-  width: 89.6rem;
+  width: 100%;
   height: 100%;
 `;
 
