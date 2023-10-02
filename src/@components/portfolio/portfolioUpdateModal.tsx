@@ -26,7 +26,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
   function handleMoveToEditPage() {
-    navigate(`portfolio-edit/vocal/${portfolioId}`);
+    navigate(`/portfolio-edit/vocal/${portfolioId}`);
   }
 
   function handleAskToDeleteTrack() {
