@@ -26,7 +26,7 @@ export default function CategoryInfo(props: CategoryInfoProps) {
           </InfoTypeIconWrapper>
           <InfoTypeText>Category</InfoTypeText>
         </InfoType>
-        <InfoInput isProfile={false}>
+        <InfoInput>
           <InputWrapper>
             <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
               <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={handleShowUpdateModal}>
@@ -59,15 +59,12 @@ export const InfoType = styled.div`
 
 export const InfoTypeText = styled.p``;
 
-export const InfoInput = styled.div<{ isProfile: boolean }>`
+export const InfoInput = styled.div`
+  
   display: flex;
   justify-content: space-between;
 
-  flex-direction: ${({ isProfile }) => isProfile && "column"};
-  align-items: ${({ isProfile }) => (isProfile ? "flex-end" : "center")};
-
-  margin-top: ${({ isProfile }) => isProfile && -1.8}rem;
-  width: 68.2rem;
+  width: 100%;
   height: 100%;
 `;
 

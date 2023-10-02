@@ -2,6 +2,7 @@ import styled from "styled-components";
 import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
+import { TextLengthWrapper } from "./descriptionInput";
 
 interface UploadTitleProps {
   title: string;
@@ -26,7 +27,6 @@ export default function UploadTitle(props: UploadTitleProps) {
         value={title}
         defaultValue={title}></TitleInput>
       <TextLengthWrapper>
-        <Empty />
         <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={theme.fonts.body1} />
       </TextLengthWrapper>
     </Container>
@@ -63,11 +63,4 @@ const TitleInput = styled.textarea`
   }
 
   resize: none;
-`;
-
-const TextLengthWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  margin-top: 1.8rem;
 `;

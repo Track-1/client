@@ -22,22 +22,23 @@ export default function DescriptionInput(props: DescriptionInputProps) {
   }
 
   return (
-    <InfoInput isProfile={true}>
-      <DescriptionText
-        placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
-        spellCheck="false"
-        maxRows={7}
-        onChange={handleDescription}
-        value={description}
-      />
-      <TextLengthWrapper>
-        <Empty />
-        <TextLength
-          inputLength={description.length}
-          limit={isProfile ? TEXT_LIMIT.PROFILE_DESCRIPTION : TEXT_LIMIT.DESCRIPTION}
-          font={theme.fonts.description}
+    <InfoInput>
+      <DescriptionInputWrapper>
+        <DescriptionText
+          placeholder="트랙 느낌과 작업 목표 등 트랙에 대해서 자세히 설명해주세요."
+          spellCheck="false"
+          maxRows={7}
+          onChange={handleDescription}
+          value={description}
         />
-      </TextLengthWrapper>
+        <TextLengthWrapper>
+          <TextLength
+            inputLength={description.length}
+            limit={isProfile ? TEXT_LIMIT.PROFILE_DESCRIPTION : TEXT_LIMIT.DESCRIPTION}
+            font={theme.fonts.description}
+          />
+        </TextLengthWrapper>
+      </DescriptionInputWrapper>
     </InfoInput>
   );
 }
@@ -69,14 +70,11 @@ const DescriptionText = styled(TextareaAutosize)`
   resize: none;
 `;
 
-const Empty = styled.div`
+const DescriptionInputWrapper = styled.div`
   width: 100%;
-  height: 100%;
 `;
 
-const TextLengthWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
+export const TextLengthWrapper = styled.div`
+  float: right;
   margin-top: 1.8rem;
 `;
