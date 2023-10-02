@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FilteredTrackType } from "../../type/tracks";
 
@@ -95,6 +96,7 @@ interface TrackItemProps {
 export default function TrackItem(props: TrackItemProps) {
   const { trackInfo } = props;
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   function hoverTrack() {
     setIsHovered(true);
@@ -103,12 +105,19 @@ export default function TrackItem(props: TrackItemProps) {
   function unhoverTrack() {
     setIsHovered(false);
   }
+
+  function handleMoveToTrackDetail() {
+    navigate(`/track-post/${trackInfo.trackId}`);
+  }
+
   return (
     <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
       <ThumnailWrapper>
         <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
       </ThumnailWrapper>
-      <TrackTitle isHovered={isHovered}>{trackInfo.trackTitle}</TrackTitle>
+      <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
+        {trackInfo.trackTitle}
+      </TrackTitle>
       <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>
       <Category isHovered={isHovered}>{trackInfo.trackCategory}</Category>
       {trackInfo.trackKeyword.map((tag) => {
