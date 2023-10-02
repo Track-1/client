@@ -13,6 +13,7 @@ import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
 import UploadEditPage from "./@pages/uploadEditPage";
 import ProfileEditPage from "./@pages/profileEditPage";
+import ErrorPage from "./@pages/errorPage";
 
 export default function Router() {
   return (
@@ -36,6 +37,8 @@ export default function Router() {
         <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalSearchPage />} />
+
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
