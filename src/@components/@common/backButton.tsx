@@ -2,13 +2,18 @@ import styled from "styled-components";
 import { BackButtonIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 
-export default function BackButton(props: any) {
+interface BackButtonProps {
+  prevURL?: string;
+}
+
+export default function BackButton(props: BackButtonProps) {
   // const { pauseAudio } = props;
+  const { prevURL } = props;
   const navigate = useNavigate();
 
   function movePreviousPage() {
     // pauseAudio();
-    navigate(-1);
+    prevURL && navigate(prevURL);
   }
 
   return (

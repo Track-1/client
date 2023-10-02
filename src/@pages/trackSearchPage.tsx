@@ -4,6 +4,10 @@ import TrackList from "../@components/trackSearch/trackList";
 import UploadButtonModal from "../@components/trackSearch/uploadButtonModal";
 import { UploadButtonIc } from "../assets";
 import useModal from "../hooks/common/useModal";
+import Header from "../@components/@common/header";
+import TrackSearchHeader from "../@components/trackSearch/trackSearchHeader/trackSearchHeader";
+import { useState } from "react";
+import { PageType } from "../type/common/pageType";
 
 const Wrapper = styled.section`
   display: flex;
@@ -11,11 +15,10 @@ const Wrapper = styled.section`
 `;
 
 const UploadButtonIcon = styled(UploadButtonIc)`
-  position: absolute;
-
-  width: 24.6rem;
-  top: 67rem;
+  position: fixed;
+  top: 81.3rem;
   left: 7.5rem;
+  width: 24.6rem;
 `;
 
 export default function TrackSearchPage() {
@@ -32,12 +35,23 @@ export default function TrackSearchPage() {
     //   : alert("Please use this function after producer logging in.\n해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
 
+  const [pageType, setPageType] = useState<PageType>("tracks");
+
+  function handleChangeType(pageType: PageType) {
+    setPageType(pageType);
+  }
+
   return (
-    <Wrapper>
-      <Filter pageType="tracks" />
-      <UploadButtonIcon onClick={moveUploadPage} />
-      {openModal && <UploadButtonModal />}
-      <TrackList />
-    </Wrapper>
+    <>
+      <Header homeLogo>
+        <TrackSearchHeader pageType={pageType} handleChangeType={handleChangeType} />
+      </Header>
+      <Wrapper>
+        <Filter pageType="tracks" />
+        <UploadButtonIcon onClick={moveUploadPage} />
+        {openModal && <UploadButtonModal />}
+        <TrackList />
+      </Wrapper>
+    </>
   );
 }

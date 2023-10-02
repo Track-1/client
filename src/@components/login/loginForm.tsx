@@ -166,9 +166,6 @@ export default function LoginForm() {
     <>
       {conventionModalInform?.isOpen && <ConventionModal />}
 
-      <BackButtonWrapper>
-        <SignUpBackButton />
-      </BackButtonWrapper>
       <Img src={background} alt="배경" />
       <Body>
         <form
