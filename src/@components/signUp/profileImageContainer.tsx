@@ -21,10 +21,10 @@ export default function ProfilImageContainer() {
   }
 
   function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    const fileType = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1).split(".")[1];
+    const fileTypeSplit = e.target.value.split(".");
+    const fileType = fileTypeSplit.length > 0 && fileTypeSplit[fileTypeSplit.length - 1];
 
     if (e.target.files?.length === 0) {
-      //alert("사진삽입이 취소되었습니다.")
     } else {
       if (checkImageType("." + fileType) && e.target.files) {
         const file = e.target.files[0];
