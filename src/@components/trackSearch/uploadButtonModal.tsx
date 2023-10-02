@@ -66,8 +66,6 @@ const VocalSearchingWrapper = styled.article`
   position: fixed;
   display: flex;
 
-  margin-top: 3.5rem;
-
   cursor: pointer;
 `;
 
@@ -84,7 +82,6 @@ const PortfolioWrapper = styled.article`
   display: flex;
 
   cursor: pointer;
-  margin-top: 3.5rem;
 `;
 
 const PortfolioIcon = styled(PortfolioIc)`
