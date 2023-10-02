@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { LoginIc, SignupIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import MypageButton from "./mypageButton";
-import ProfileBox from "./profileBox";
 import { checkIsLogin } from "../../utils/common/checkIsLogined";
 import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { ROLE } from "../../core/common/roleType";
@@ -49,7 +48,12 @@ export default function LoginButton() {
             <SignUpIcon onClick={handleMoveSignUp} />
           </>
         ) : (
-            <MypageButton userType={userType} userImage={getUserImage()} userName={getUserName()} userContact={getUserContact()} />
+          <MypageButton
+            userType={userType}
+            userImage={getUserImage()}
+            userName={getUserName()}
+            userContact={getUserContact()}
+          />
         )}
       </LoginButtonWrapper>
     </>

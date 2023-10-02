@@ -1,8 +1,10 @@
 import styled, { css } from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
+import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/queries/user";
 import { useState } from "react";
+import { ProducerProfileImage } from "./mypageButton";
 
 interface ProfileBoxProps {
   userType: string;
@@ -15,22 +17,36 @@ export default function ProfileBox(props: ProfileBoxProps) {
   const { userType, userImage, userName, userContact } = props;
   const [logoutState, setLogoutState] = useState(false);
   const { logout } = useLogout(logoutState);
+  const navigate = useNavigate();
 
   function handleLogout() {
     setLogoutState(!logoutState);
   }
 
+  function handleMoveTo() {
+    if (userType === ROLE.PRODUCER) {
+      navigate(`/producer-profile/${1}`);
+    } else {
+      navigate(`/vocal-profile/${1}`);
+    }
+  }
+
   return (
     <ProfileBoxContainer>
-      <ProfileWrapper>
+      <ProfileWrapper onClick={handleMoveTo}>
         {userType === ROLE.PRODUCER ? (
           <ProducerImageLayout>
-            <ProfileImage src={userImage} userType={userType} />
+            <ProducerProfileImage src={userImage} alt="유저 프로필 이미지" />
           </ProducerImageLayout>
         ) : (
-          <VocalImageLayout>
-            <ProfileImage src={userImage} userType={userType} />
-          </VocalImageLayout>
+          <VocalUploadImageContainer>
+            <VocalImageFrame>
+              <VocalUploadImageLayout src={userImage} alt="유저 프로필 이미지" />
+            </VocalImageFrame>
+          </VocalUploadImageContainer>
+          // <VocalImageLayout>
+          //   <ProfileImage src={userImage} alt="유저 프로필 이미지" />
+          // </VocalImageLayout>
         )}
         <ProfileContentWrapper>
           <UserNameText>{userName}</UserNameText>
@@ -58,6 +74,8 @@ const ProfileBoxContainer = styled.div`
 
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.colors.gray5};
+
+  cursor: pointer;
 `;
 
 const ProducerImageLayout = styled.div`
@@ -128,8 +146,6 @@ const LogoutWrapper = styled.button`
 
 const LogoutIcon = styled(LogoutIc)`
   width: 4rem;
-
-  cursor: pointer;
 `;
 
 const ProducerTextIcon = styled(ProducerTextIc)`
@@ -144,12 +160,41 @@ const VocalTextIcon = styled(VocalTextIc)`
   margin-bottom: 0.9rem;
 `;
 
-const ProfileImage = styled.img<{ userType: string }>`
-  width: 100%;
-  height: 100%;
-  ${(props) =>
-    props.userType === ROLE.VOCAL &&
-    css`
-      transform: rotate(45deg);
-    `}
+const VocalUploadImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 8.6rem;
+  height: 8.6rem;
+`;
+
+const VocalImageFrame = styled.div`
+  width: 5.6rem;
+  height: 5.6rem;
+
+  margin-left: 0.9rem;
+
+  border-radius: 5rem;
+  transform: rotate(45deg);
+
+  border: 0.1rem solid ${({ theme }) => theme.colors.black};
+  border-radius: 0.5rem;
+
+  overflow: hidden;
+  object-fit: cover;
+
+  transform: rotate(-45deg);
+
+  cursor: pointer;
+`;
+
+const VocalUploadImageLayout = styled.img`
+  width: 8.6rem;
+  height: 8.6rem;
+
+  margin-top: -1.2rem;
+  margin-left: -1.2rem;
+
+  transform: rotate(45deg);
+  object-fit: cover;
 `;

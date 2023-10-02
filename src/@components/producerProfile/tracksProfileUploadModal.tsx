@@ -16,11 +16,13 @@ export default function TracksProfileUploadModal() {
   const { modalRef } = useModal();
 
   function moveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
+    navigate("/upload/producer/vocal-searching", {
+      state: { producerUploadType: "Vocal Searching", prevPage: preLocation },
+    });
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
+    navigate("/upload/producer/portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
   }
 
   return (

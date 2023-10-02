@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-
 import Footer from "../@common/footer";
-
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { MainTracksTextIc, MainVocalsTextIc } from "../../assets";

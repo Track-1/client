@@ -35,7 +35,7 @@ export default function VocalProfile() {
   }
 
   function hadnleMoveToUpload() {
-    navigate("/upload/Portfolio", {
+    navigate("/upload/vocal/portfolio", {
       state: { producerUploadType: "Portfolio", prevPage: `/vocal-profile/${vocalId}` },
     });
   }
