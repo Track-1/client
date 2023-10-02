@@ -29,7 +29,6 @@ export async function postTrack(uploadData: FormData) {
   const { data } = await client.post<DefaultResponseType>(TRACKS.POST, uploadData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MywiaWF0IjoxNjkyMjAwMDkxLCJleHAiOjE2OTczODQwOTF9.3WlB_9XRaf0_rGC3J8iY6qHkSOU7nMUL-YXO-_cIFH0`,
     },
   });
   return data;
