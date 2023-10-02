@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import BackButton from "./backButton";
 import { HomeLogoIc, SloganIc } from "../../assets";
+import BackButton from "./backButton";
 
 interface HeaderProps {
   backBtn?: boolean;
@@ -51,10 +51,12 @@ const Wrapper = styled.div`
 
 const HomeLogoIcon = styled(HomeLogoIc)`
   cursor: pointer;
+
+  width: 26.3rem;
 `;
 
 const SloganIcon = styled(SloganIc)`
   cursor: pointer;
 
-  width: 26.3rem;
+  width: 35rem;
 `;

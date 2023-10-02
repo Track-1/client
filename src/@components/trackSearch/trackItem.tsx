@@ -54,7 +54,7 @@ const TrackText = styled.div<{ isHovered: boolean }>`
   ${({ theme }) => theme.fonts.body1};
 
   padding-right: 3rem;
-  margin-left: 2.8rem;
+  margin-right: 1rem;
 
   color: ${({ theme }) => theme.colors.white};
   :hover {
@@ -64,7 +64,7 @@ const TrackText = styled.div<{ isHovered: boolean }>`
 `;
 
 const TrackTitle = styled(TrackText)`
-  width: 26rem;
+  width: 36rem;
 `;
 
 const Producer = styled(TrackText)`
@@ -83,6 +83,8 @@ const Tag = styled.span`
 
   padding: 0.7rem 1rem;
   margin: 0 0.7rem 0 0;
+
+  color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.fonts.hashtag};
   background: ${({ theme }) => theme.colors.gray4};
