@@ -116,11 +116,8 @@ export default function KoreaVersion() {
           controls
           playsInline
           className="kor-video"
-          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png">
-          <source
-            src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_Korean.mp4"
-            type="video/mp4"
-          />
+          poster="https://dtugo13y66fcg.cloudfront.net/default/sumbnail.png">
+          <source src="https://dtugo13y66fcg.cloudfront.net/default/landingVideo_Korean.mp4" type="video/mp4" />
           aaa
         </Video>
         <GotoPCBottomSection>
@@ -134,13 +131,13 @@ export default function KoreaVersion() {
       {/* <MobileBackgroundGradationIcon1 pageY={pageY} ref={bg1Ref} /> */}
       {/* <MobileBackgroundGradationIcon2 ref={bg2Ref} /> */}
       <MobileBackgroundGradationIcon1
-        src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileBackgroundGradationIc1.svg"
+        src="https://dtugo13y66fcg.cloudfront.net/default/MobileBackgroundGradationIc1.svg"
         alt="사진"
         pageY={pageY}
         loading="lazy"
       />
       <MobileBackgroundGradationIcon2
-        src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileBackgroundGradationIc2.svg"
+        src="https://dtugo13y66fcg.cloudfront.net/default/MobileBackgroundGradationIc2.svg"
         alt="사진"
         loading="lazy"
       />

@@ -53,11 +53,8 @@ export default function EnglishVersion() {
           controls
           playsInline
           className="eng-video"
-          poster="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/sumbnail.png">
-          <source
-            src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/landingVideo_English.mp4"
-            type="video/mp4"
-          />
+          poster="https://dtugo13y66fcg.cloudfront.net/default/sumbnail.png">
+          <source src="https://dtugo13y66fcg.cloudfront.net/default/landingVideo_English.mp4" type="video/mp4" />
           aaa
         </Video>
         <GotoPCBottomSection>
@@ -71,13 +68,13 @@ export default function EnglishVersion() {
       {/* <MobileEngBackgroundGradationIcon1 />
       <MobileEngBackgroundGradationIcon2 /> */}
       <MobileEngBackgroundGradationIcon1
-        src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileEngBackgroundGradationIc1.svg"
+        src="https://dtugo13y66fcg.cloudfront.net/default/MobileEngBackgroundGradationIc1.svg"
         alt="사진"
         pageY={pageY}
         loading="lazy"
       />
       <MobileEngBackgroundGradationIcon2
-        src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/MobileEngBackgroundGradationIc2.svg"
+        src="https://dtugo13y66fcg.cloudfront.net/default/MobileEngBackgroundGradationIc2.svg"
         alt="사진"
         loading="lazy"
       />
