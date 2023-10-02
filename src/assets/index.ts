@@ -132,3 +132,7 @@ export { ReactComponent as ProducerTextIc } from "./icon/producerTextIc.svg";
 export { ReactComponent as VocalTextIc } from "./icon/vocalTextIc.svg";
 export { ReactComponent as UploadWideActiveSaveButtonIc } from "./icon/uploadWideActiveSaveButtonIc.svg";
 export { ReactComponent as UploadWideUnActiveSaveButtonIc } from "./icon/uploadWideUnActiveSaveButtonIc.svg";
+export { ReactComponent as ErrorPageIc } from "./icon/errorPageIc.svg";
+export { ReactComponent as ErrorPageMainIc } from "./icon/errorPageMainIc.svg";
+export { ReactComponent as ErrorPageTextIc } from "./icon/errorPageTextIc.svg";
+export { ReactComponent as TrackOneMainLogoIc } from "./icon/track1MainLogoIc.svg";
