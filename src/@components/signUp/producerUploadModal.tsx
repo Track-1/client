@@ -18,18 +18,32 @@ export default function ProducerUploadModal() {
   }
 
   return (
-    <ModalWrapper ref={modalRef}>
-      <MoveTouploadVocalSearchingButtonIcon onClick={handleMoveVocalSearching} />
-      <MoveTouploadPortfolioButtonIcon onClick={handleMovePortfolio} />
-    </ModalWrapper>
+    <>
+      <ModalWrapper>
+        <MoveTouploadVocalSearchingButtonIcon onClick={handleMoveVocalSearching} />
+        <MoveTouploadPortfolioButtonIcon onClick={handleMovePortfolio} />
+      </ModalWrapper>
+      <ModalBackground ref={modalRef} />
+    </>
   );
 }
+
+const ModalBackground = styled.div`
+  position: absolute;
+  width: 120vw;
+  height: 100vw;
+
+  margin-left: calc(-50vw);
+  margin-top: calc(-60vw);
+`;
 
 const ModalWrapper = styled.section`
   display: flex;
   flex-direction: column;
 
   margin: 2.5rem 0 0 13.6rem;
+  position: absolute;
+  z-index: 2;
 
   cursor: pointer;
 `;
