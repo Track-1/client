@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -30,6 +31,12 @@ export default function NickName(props: NickNameProps) {
     watch,
   } = methods;
 
+  useEffect(() => {
+    if (isSuccess) {
+      setUserData({ ...userData, userName: getValues("nickName") });
+    }
+  }, [isSuccess]);
+
   return (
     <>
       <FormProvider {...methods}>
@@ -42,16 +49,11 @@ export default function NickName(props: NickNameProps) {
             name="nickName"
             rules={{
               required: true,
-              // pattern: {
-              //   value: CHECK_NICKNAME_FORM,
-              //   message: NICKNAME_MESSAGE.ERROR,
-              // },
               validate: {
                 check: (value) => {
                   if (checkNicknamForm(value)) {
                     if (checkEssentialAgree(checkedConventions)) {
                       setIsSuccess(true);
-                      setUserData({ ...userData, name: value });
                     } else {
                       setIsSuccess(false);
                     }

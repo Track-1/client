@@ -59,10 +59,15 @@ export function useJoin() {
 }
 
 export function useProfileAfterJoin() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userProfile: UserProfileRequest) => patchProfileAfterJoin(userProfile),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      navigate("/signup/success");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     profileAtferJoin: mutate,

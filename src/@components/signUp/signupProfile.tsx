@@ -111,7 +111,7 @@ const UploadButton = styled.button<{ isComplete: boolean }>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  margin: 34rem 0 0 32rem;
+  margin: 45rem 0 0 32rem;
   background-color: ${({ isComplete, theme }) => (isComplete ? theme.colors.main : theme.colors.gray3)};
 
   cursor: pointer;
@@ -120,7 +120,7 @@ const UploadButton = styled.button<{ isComplete: boolean }>`
 const SignupProfileSkipIcon = styled(SignupProfileSkipIc)`
   width: 26.7rem;
   height: 6.5rem;
-  margin: 15rem 0 0 48rem;
+  margin: 26rem 0 0 48rem;
   position: absolute;
 
   cursor: pointer;
@@ -131,6 +131,7 @@ const BackButtonWrapper = styled.div`
 `;
 
 const Img = styled.img`
+  margin-top: 11rem;
   position: absolute;
   width: 192rem;
   height: 98rem;
