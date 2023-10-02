@@ -25,7 +25,7 @@ export default function TracksProfileUploadModal() {
 
   return (
     <>
-      <UploadButtonModalWrapper ref={modalRef}>
+      <UploadButtonModalWrapper>
         <ModalWrapper>
           <VocalSearchingWrapper onClick={moveVocalSearching}>
             <VocalSearchingIcon />
@@ -43,7 +43,7 @@ export default function TracksProfileUploadModal() {
           </PortfolioWrapper>
           <ProducerProfileUploadeModalIcon />
         </ModalWrapper>
-        <ModalBackgroundShadow />
+        <ModalBackgroundShadow ref={modalRef} />
       </UploadButtonModalWrapper>
     </>
   );
