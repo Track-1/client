@@ -19,7 +19,7 @@ export const USER = {
   BASIC_PASSWORD: (token: string) => `${PATH.user}/basic/reset-password/${token}`,
   MAIL_SEND: `${PATH.user}/mail/join`,
   MAIL_SEND_RE: `${PATH.user}/mail/join/repost`,
-  MAIL_VERIFY: `${PATH.user}/mail/verify-code`,
+  MAIL_VERIFY: `${PATH.user}/mail/join/verify-code`,
   MAIL_RESET_PASSWORD: `${PATH.user}/mail/reset-password`,
   MAIL_RESET_PASSWORD_RE: `${PATH.user}/mail/reset-password/repost`,
   MAIL_PASSWORD_TOKEN: (token: string) => `${PATH.user}/mail/reset-password/${token}`,
