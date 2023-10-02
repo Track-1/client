@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-
 import Footer from "../@common/footer";
-
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { MainTracksTextIc, MainVocalsTextIc } from "../../assets";
@@ -12,8 +10,8 @@ import originBackground from "../../assets/image/mainBackgroundImg.png";
 import mainSloganImg from "../../assets/image/mainSloganImg.png";
 import { openConventionModal } from "../../recoil/common/conventionModal";
 import ConventionModal from "../@common/conventionModal";
-import Ads from "./ads";
 import Header from "../@common/header";
+import Ads from "./ads";
 import LoginButton from "./loginButton";
 
 export default function Main() {

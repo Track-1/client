@@ -4,13 +4,13 @@ import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { useForm } from "react-hook-form";
 import PasswordConfirm from "../signUp/passwordConfirm";
 import styled from "styled-components";
-import StandardButton from "../@common/button/standardButton";
 import { useEffect, useState } from "react";
 import { theme } from "../../style/theme";
 import { checkPasswordForm } from "../../utils/signUp/checkForm";
 import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
 import { usePatchPassword } from "../../hooks/queries/user";
 import { UserPasswordType } from "../../type/user";
+import { UploadWideActiveSaveButtonIc, UploadWideUnActiveSaveButtonIc } from "../../assets";
 
 export default function ResetPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
@@ -21,17 +21,9 @@ export default function ResetPasswordInput() {
     mode: "onChange",
   });
 
-  const {
-    handleSubmit,
-    setError,
-    getValues,
-    formState: { errors },
-    watch,
-  } = methods;
-
   const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
 
-  const { patchPassword, isSuccess } = usePatchPassword();
+  const { patchPassword } = usePatchPassword();
 
   useEffect(() => {
     if (
@@ -44,8 +36,15 @@ export default function ResetPasswordInput() {
     }
   }, [methods.getValues().password, methods.getValues().passwordConfirm]);
 
+  function isActive() {
+    return (
+      checkPasswordForm(methods.getValues().password) &&
+      checkPasswordMatch(methods.getValues().passwordConfirm, methods.getValues().password)
+    );
+  }
+
   function handlePatchPassword() {
-    if (buttonColor === theme.colors.main) {
+    if (isActive()) {
       const userPassword: UserPasswordType = { userPw: methods.getValues().password };
       patchPassword(userPassword);
     }
@@ -61,9 +60,11 @@ export default function ResetPasswordInput() {
       <Password methods={methods} width={56} placeholder="Enter new password" />
       <PasswordConfirm methods={methods} width={56} placeholder="Enter new password again" />
       <Instructions>{`If you save your new password,\n your account will be signed out everywhere`}</Instructions>
-      <StandardButton bgColor={buttonColor} fontColor={theme.colors.white} handleClickFunction={handlePatchPassword}>
-        save
-      </StandardButton>
+      {isActive() ? (
+        <UploadWideActiveSaveButtonIcon onClick={handlePatchPassword} />
+      ) : (
+        <UploadWideUnActiveSaveButtonIcon />
+      )}
     </PasswordContainer>
   );
 }
@@ -77,4 +78,16 @@ const Instructions = styled.p`
 
   text-align: center;
   white-space: pre-line;
+`;
+
+const UploadWideActiveSaveButtonIcon = styled(UploadWideActiveSaveButtonIc)`
+  width: 55.9rem;
+
+  cursor: pointer;
+`;
+
+const UploadWideUnActiveSaveButtonIcon = styled(UploadWideUnActiveSaveButtonIc)`
+  width: 55.9rem;
+
+  cursor: pointer;
 `;

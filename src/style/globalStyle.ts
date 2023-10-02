@@ -98,6 +98,7 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
     border: none;
     background-color: transparent;
+    padding: 0;
   }
   button {
     cursor: pointer;

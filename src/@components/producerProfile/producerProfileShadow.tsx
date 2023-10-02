@@ -40,6 +40,7 @@ const RightArrorIcon = styled(RightArrorIc)`
 
 const ProducerProfileShadowWrapper = styled.section`
   position: fixed;
+  z-index: -1;
 `;
 const ProducerProfileShadowIcon = styled(ProducerProfileShadowIc)`
   position: relative;

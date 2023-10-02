@@ -131,3 +131,5 @@ export { ReactComponent as SignupIc } from "./icon/signupIc.svg";
 export { ReactComponent as LogoutIc } from "./icon/logoutIc.svg";
 export { ReactComponent as ProducerTextIc } from "./icon/producerTextIc.svg";
 export { ReactComponent as VocalTextIc } from "./icon/vocalTextIc.svg";
+export { ReactComponent as UploadWideActiveSaveButtonIc } from "./icon/uploadWideActiveSaveButtonIc.svg";
+export { ReactComponent as UploadWideUnActiveSaveButtonIc } from "./icon/uploadWideUnActiveSaveButtonIc.svg";

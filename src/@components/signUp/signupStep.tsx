@@ -51,6 +51,7 @@ const SignUpContainer = styled.div`
 `;
 
 const Img = styled.img`
+  margin-top: 11rem;
   position: absolute;
   width: 192rem;
   height: 98rem;

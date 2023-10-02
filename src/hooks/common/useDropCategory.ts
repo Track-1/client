@@ -3,7 +3,6 @@ import { Categories, CategoryBoolean, CategoryId } from "../../core/common/categ
 import { UpperCategoryType } from "../../type/common/category";
 
 export default function useDropCategory() {
-  const [hiddenDropBox, setHiddenDropBox] = useState(true);
   const [categories, setCategories] = useState<Record<UpperCategoryType, boolean>>(CategoryBoolean);
   const [categoryText, setCategoryText] = useState("Select");
 
@@ -17,11 +16,6 @@ export default function useDropCategory() {
       }
     });
   }, [categories]);
-
-  function showDropBox(e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) {
-    e.stopPropagation();
-    setHiddenDropBox((prev) => !prev);
-  }
 
   function isSelectedNothing() {
     return categoryText === "Select";
@@ -52,7 +46,5 @@ export default function useDropCategory() {
     selectedCategoryNumber,
     isSelected,
     categoryText,
-    hiddenDropBox,
-    showDropBox,
   };
 }

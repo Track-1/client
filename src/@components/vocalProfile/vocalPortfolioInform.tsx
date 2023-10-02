@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { EllipsisIc, VocalPortfolioTitleTextIc } from "../../assets";
-import useModal from "../../hooks/common/useModal";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
 import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import MusicInformation from "../portfolio/musicInformation";
@@ -20,7 +20,7 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
   const { vocalId } = useParams();
   const clickedId = useRecoilValue(clickedProfileId);
   const hoveredId = useRecoilValue(hoveredProfileId);
-  const { openModal, showModal, unShowModal } = useModal();
+  const { openUpdateModal, showModal, unShowModal } = useUpdateModal();
   const { vocalPortfolios, fetchNextPage, hasNextPage } = useGetVocalPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
@@ -29,7 +29,7 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
   if (vocalPortfolios === undefined) return null;
 
   function handleShowUpdateModal() {
-    !openModal ? showModal() : unShowModal();
+    !openUpdateModal ? showModal() : unShowModal();
   }
 
   return (
@@ -43,10 +43,11 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
                 <TitleSection>
                   <TitleIconWrapper>{index === 0 && <VocalPortfolioTitleTextIcon />}</TitleIconWrapper>
                   {isMe && clickedId === vocalPortfolio.portfolioId && <EllipsisIcon onClick={handleShowUpdateModal} />}
-                  {openModal && (
+                  {openUpdateModal && (
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={vocalPortfolios[0].portfolioId}
+                      nowTitleNextId={vocalPortfolios[1].portfolioId}
                       portfolioId={vocalPortfolio.portfolioId}
                       dataState="vocal portfolio"
                     />

@@ -16,7 +16,7 @@ import InputTitle from "./inputTitle";
 import PasswordShowIcons from "./passwordShowIcons";
 
 export default function PasswordConfirm(props: SignupInputProps) {
-  const { methods,width,placeholder } = props;
+  const { methods, width, placeholder } = props;
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
 
@@ -47,7 +47,7 @@ export default function PasswordConfirm(props: SignupInputProps) {
                       if (checkPasswordForm(getValues("password"))) {
                         if (checkEmailVerifyOKToSuccess(errors.email?.message)) {
                           setIsSuccess(true);
-                          setUserData({ ...userData, ID: getValues("email"), PW: getValues("password") });
+                          setUserData({ ...userData, userEmail: getValues("email"), userPw: getValues("password") });
                         }
                         return PASSWORD_MESSAGE.SUCCESS;
                       }
@@ -57,7 +57,7 @@ export default function PasswordConfirm(props: SignupInputProps) {
               },
             }}
             type={showPassword(isShow)}
-            placeholder={ placeholder}
+            placeholder={placeholder}
             width={width}
           />
           <PasswordShowIcons isShow={isShow} setIsShow={setIsShow} />

@@ -27,7 +27,7 @@ const ToggleWrapper = styled.div`
 
   width: 55.9rem;
 
-  margin-top: 4.2rem;
+  margin-top: 1.2rem;
   margin-bottom: 3.1rem;
 
   ${({ theme }) => theme.fonts.body1};

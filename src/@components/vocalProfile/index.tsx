@@ -4,6 +4,7 @@ import { useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import VocalEmptyProfileImg from "../../assets/image/vocalEmptyProfileImg.png";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
 import { useGetVocalPortfolio, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
@@ -24,6 +25,7 @@ export default function VocalProfile() {
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
+  const { openUpdateModal, modalRef } = useUpdateModal();
 
   useEffect(() => {
     resetClickedId();
@@ -35,34 +37,36 @@ export default function VocalProfile() {
   }
 
   function hadnleMoveToUpload() {
-    navigate("/upload/Portfolio", {
+    navigate("/upload/vocal/portfolio", {
       state: { producerUploadType: "Portfolio", prevPage: `/vocal-profile/${vocalId}` },
     });
   }
 
   return (
-    <Container>
-      <ProfileSection>
-        <BackButtonWrapper>
-          <BackButton />
-          {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
-        </BackButtonWrapper>
-        <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
-      </ProfileSection>
-      {vocalProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
-      <PortfolioSection>
-        {vocalPortfolios && vocalPortfolios?.length > 0 ? (
-          <>
-            <VocalPortfolioList />
-            <VocalPortfolioInform isMe={vocalProfile?.userSelf} />
-          </>
-        ) : (
-          <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
-        )}
+    <>
+      <Container>
+        <ProfileSection>
+          <BackButtonWrapper>
+            <BackButton />
+            {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
+          </BackButtonWrapper>
+          <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
+        </ProfileSection>
+        {vocalProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
+        <PortfolioSection>
+          {vocalPortfolios && vocalPortfolios?.length > 0 ? (
+            <>
+              <VocalPortfolioList />
+              <VocalPortfolioInform isMe={vocalProfile?.userSelf} />
+            </>
+          ) : (
+            <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
+          )}
 
-        <VocalProfileShadow />
-      </PortfolioSection>
-    </Container>
+          <VocalProfileShadow />
+        </PortfolioSection>
+      </Container>
+    </>
   );
 }
 

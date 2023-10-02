@@ -87,11 +87,7 @@ export default function UploadHeader() {
     const uploadEdit = uploadEditAPI();
 
     const formData = uploadFormData();
-    setCookie(
-      "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZU5hbWUiOiJwcm9kdWNlciIsInVzZXJJZCI6MywiaWF0IjoxNjkyMjAwMDkxLCJleHAiOjE2OTczODQwOTF9.3WlB_9XRaf0_rGC3J8iY6qHkSOU7nMUL-YXO-_cIFH0",
-      {},
-    );
+    //삭제할 코드
 
     isUploadActive && pathname.includes("upload") ? upload(formData) : uploadEdit({ trackId, formData });
   }

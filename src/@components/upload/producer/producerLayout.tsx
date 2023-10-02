@@ -59,7 +59,6 @@ const UploadImage = styled.div`
 const ProducerUploadImageContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
 
   margin-left: 6.5rem;
   margin-right: 4.9rem;
@@ -96,8 +95,9 @@ const Label = styled.label`
 
 const FileChangeIcon = styled(UploadFileChangeIc)`
   position: absolute;
-  top: 47.95rem;
-  left: 42.8rem;
+
+  top: 50.9rem;
+  left: 37.8rem;
 
   width: 18.9rem;
 

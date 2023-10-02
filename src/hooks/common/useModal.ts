@@ -29,5 +29,9 @@ export default function useModal() {
     setOpenModal(true);
   }
 
-  return { modalRef, closeModal, unShowModal, showModal, openModal };
+  function handleShowUpdateModal() {
+    !openModal ? showModal() : unShowModal();
+  }
+
+  return { modalRef, closeModal, unShowModal, showModal, openModal, handleShowUpdateModal };
 }

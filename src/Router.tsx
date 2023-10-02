@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./@pages/mainPage";
-import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
 import ProducerProfilePage from "./@pages/producerProfilePage";
 import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
@@ -11,11 +10,13 @@ import TrackSearchPage from "./@pages/trackSearchPage";
 import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
 import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
 import { LoginPage } from "./@pages/loginPage";
+
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
 import UploadEditPage from "./@pages/uploadEditPage";
+import ProfileEditPage from "./@pages/profileEditPage";
 
 export default function Router() {
   return (
@@ -33,8 +34,7 @@ export default function Router() {
         <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
         <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
         {/* [ 예원 ] 리팩토링 임시 라우터 */}
-        <Route path="/producer/profile-edit" element={<ProducerProfileEditPage />} />
-        <Route path="/vocal/profile-edit" element={<VocalProfileEditPage />} />
+        <Route path="/profile-edit" element={<ProfileEditPage />} />
         <Route path="/track-post/:id" index element={<TrackPostPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />

@@ -20,8 +20,9 @@ import { useQuery } from "react-query";
 import { getVocalProfile } from "../../api/profile";
 
 import { getProducerProfile } from "../../api/profile";
+import { ROLE } from "../../core/common/roleType";
 
-export function useGetProducerProfile(userId: number) {
+export function useGetProducerProfile(userId: number, userType?: string) {
   const { data: producerProfile } = useQuery(
     "getProducerProfile",
     () =>
@@ -34,6 +35,7 @@ export function useGetProducerProfile(userId: number) {
       onError: (err) => {
         console.log(err);
       },
+      enabled: userType === undefined || userType === ROLE.PRODUCER,
     },
   );
 
@@ -125,7 +127,7 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">)
   };
 }
 
-export function useGetVocalProfile(userId: number) {
+export function useGetVocalProfile(userId: number, userType?: string) {
   const { data: vocalProfile } = useQuery(
     ["getVocalProfile"],
     () =>
@@ -138,6 +140,7 @@ export function useGetVocalProfile(userId: number) {
       onError: (err) => {
         console.log(err);
       },
+      enabled: userType === undefined || userType === ROLE.VOCAL,
     },
   );
 

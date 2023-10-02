@@ -76,6 +76,5 @@
     "jest": "^29.3.1",
     "prettier": "^2.8.1",
     "ts-jest": "^29.0.3"
-  },
-  "proxy": "https://www.track-1.link"
+  }
 }

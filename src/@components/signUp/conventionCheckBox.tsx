@@ -66,7 +66,7 @@ export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
       }
     });
     setCheckedCount(count);
-    setUserData({ ...userData, isAgree: `${checkedConventions[3].selected}` });
+    setUserData({ ...userData, userMarketing: `${checkedConventions[3].selected}` });
     //  //닉네임이 success이고 필수가 다 체크됨
     if (nickNameMessage === NICKNAME_MESSAGE.SUCCESS && checkEssentialAgree(checkedConventions)) {
       setIsSuccess(true);

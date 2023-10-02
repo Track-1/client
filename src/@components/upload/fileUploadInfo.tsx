@@ -22,7 +22,7 @@ export default function FileUploadInfo(props: FileUploadInfoProps) {
         </InfoTypeIconWrapper>
         <InfoTypeText>File Upload</InfoTypeText>
       </InfoType>
-      <InfoInput isProfile={false}>
+      <InfoInput>
         <AudioFileUpload
           audioFileName={audioFileName}
           audioFileType={audioFileType}

@@ -1,38 +1,60 @@
 import styled, { css } from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
+import { useNavigate } from "react-router-dom";
+import { useLogout } from "../../hooks/queries/user";
+import { useState } from "react";
+import { ProducerProfileImage } from "./mypageButton";
 
 interface ProfileBoxProps {
   userType: string;
+  userImage: string | undefined;
+  userName: string | undefined;
+  userContact: string | undefined;
 }
 
 export default function ProfileBox(props: ProfileBoxProps) {
-  const { userType } = props;
+  const { userType, userImage, userName, userContact } = props;
+  const [logoutState, setLogoutState] = useState(false);
+  const { logout } = useLogout(logoutState);
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    setLogoutState(!logoutState);
+  }
+
+  function handleMoveTo() {
+    if (userType === ROLE.PRODUCER) {
+      navigate(`/producer-profile/${1}`);
+    } else {
+      navigate(`/vocal-profile/${1}`);
+    }
+  }
+
   return (
     <ProfileBoxContainer>
-      <ProfileWrapper>
+      <ProfileWrapper onClick={handleMoveTo}>
         {userType === ROLE.PRODUCER ? (
           <ProducerImageLayout>
-            <ProfileImage
-              src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/producerProfileImage/1681374447463-70846061.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCC2F2RR2UJ%2F20230930%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230930T051833Z&X-Amz-Expires=900&X-Amz-Signature=fc8a8c547f7e4792bc9162b57a68f1c5d38556c331caf2fbdc167124423bc12a&X-Amz-SignedHeaders=host"
-              userType={userType}
-            />
+            <ProducerProfileImage src={userImage} alt="유저 프로필 이미지" />
           </ProducerImageLayout>
         ) : (
-          <VocalImageLayout>
-            <ProfileImage
-              src="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/producerProfileImage/1681374447463-70846061.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZGIYUFCC2F2RR2UJ%2F20230930%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230930T051833Z&X-Amz-Expires=900&X-Amz-Signature=fc8a8c547f7e4792bc9162b57a68f1c5d38556c331caf2fbdc167124423bc12a&X-Amz-SignedHeaders=host"
-              userType={userType}
-            />
-          </VocalImageLayout>
+          <VocalUploadImageContainer>
+            <VocalImageFrame>
+              <VocalUploadImageLayout src={userImage} alt="유저 프로필 이미지" />
+            </VocalImageFrame>
+          </VocalUploadImageContainer>
+          // <VocalImageLayout>
+          //   <ProfileImage src={userImage} alt="유저 프로필 이미지" />
+          // </VocalImageLayout>
         )}
         <ProfileContentWrapper>
-          <UserIdText>_Bepore</UserIdText>
+          <UserNameText>{userName}</UserNameText>
           {userType === ROLE.PRODUCER ? <ProducerTextIcon /> : <VocalTextIcon />}
-          <UserEmailText>yes7076@naver.com</UserEmailText>
+          <UserEmailText>{userContact}</UserEmailText>
         </ProfileContentWrapper>
       </ProfileWrapper>
-      <LogoutWrapper>
+      <LogoutWrapper onClick={handleLogout}>
         Logout
         <LogoutIcon />
       </LogoutWrapper>
@@ -52,6 +74,8 @@ const ProfileBoxContainer = styled.div`
 
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.colors.gray5};
+
+  cursor: pointer;
 `;
 
 const ProducerImageLayout = styled.div`
@@ -71,21 +95,7 @@ const ProfileContentWrapper = styled.div`
   flex-direction: column;
 `;
 
-const VocalImageLayout = styled.div`
-  width: 8rem;
-  height: 8rem;
-
-  border-radius: 0.5rem;
-
-  overflow: hidden;
-
-  transform: rotate(-45deg);
-
-  object-fit: cover;
-  margin-right: 1.8rem;
-`;
-
-const UserIdText = styled.p`
+const UserNameText = styled.p`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.id};
 `;
@@ -122,8 +132,6 @@ const LogoutWrapper = styled.button`
 
 const LogoutIcon = styled(LogoutIc)`
   width: 4rem;
-
-  cursor: pointer;
 `;
 
 const ProducerTextIcon = styled(ProducerTextIc)`
@@ -138,12 +146,41 @@ const VocalTextIcon = styled(VocalTextIc)`
   margin-bottom: 0.9rem;
 `;
 
-const ProfileImage = styled.img<{ userType: string }>`
-  width: 100%;
-  height: 100%;
-  ${(props) =>
-    props.userType === ROLE.VOCAL &&
-    css`
-      transform: rotate(45deg);
-    `}
+const VocalUploadImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 8.6rem;
+  height: 8.6rem;
+`;
+
+const VocalImageFrame = styled.div`
+  width: 5.6rem;
+  height: 5.6rem;
+
+  margin-left: 0.9rem;
+
+  border-radius: 5rem;
+  transform: rotate(45deg);
+
+  border: 0.1rem solid ${({ theme }) => theme.colors.black};
+  border-radius: 0.5rem;
+
+  overflow: hidden;
+  object-fit: cover;
+
+  transform: rotate(-45deg);
+
+  cursor: pointer;
+`;
+
+const VocalUploadImageLayout = styled.img`
+  width: 8.6rem;
+  height: 8.6rem;
+
+  margin-top: -1.2rem;
+  margin-left: -1.2rem;
+
+  transform: rotate(45deg);
+  object-fit: cover;
 `;

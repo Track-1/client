@@ -13,10 +13,10 @@ import {
   postJoin,
   postLogin,
   postResetPassword,
-  postUserEmail,
   postVerifyCode,
+  postVerifyEmail,
 } from "../../api/user";
-import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
+import { ALERT } from "../../core/common/alert/signupSendCode";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
@@ -59,10 +59,15 @@ export function useJoin() {
 }
 
 export function useProfileAfterJoin() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userProfile: UserProfileRequest) => patchProfileAfterJoin(userProfile),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      navigate("/signup/success");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     profileAtferJoin: mutate,
@@ -82,12 +87,18 @@ export function useLogin() {
   };
 }
 
-export function useLogout() {
+export function useLogout(state: boolean) {
+  const navigate = useNavigate();
+
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      //토큰제거
+      data.success && navigate("/");
+    },
     onError: () => {},
+    enabled: state,
   });
   return {
     logout: data,
@@ -110,10 +121,10 @@ export function useAccessToken() {
 
 export function useUserEmail(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (userEmail: UserEmailRequest) => postUserEmail(userEmail),
+    mutationFn: (userEmail: UserEmailRequest) => postVerifyEmail(userEmail),
     onSuccess: () => {
       setError("email", { message: EMAIL_MESSAGE.TIME });
-      alert(SIGNUP_SENDCODE);
+      alert(ALERT.SIGNUP_SENDCODE);
     },
     onError: (error: any) => {
       if (error?.response?.data.message === "중복된 이메일입니다") {
@@ -168,6 +179,7 @@ export function usePatchPassword() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userPassword: UserPasswordRequest) => patchPassword(userPassword),
     onSuccess: () => {
+      alert(ALERT.RESET_PASSWORD_SUCCESS);
       navigate("/");
     },
     onError: () => {},
@@ -178,11 +190,16 @@ export function usePatchPassword() {
   };
 }
 
-export function useResetPassword() {
+export function useResetPassword(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postResetPassword(userEmail),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setError("email", { message: EMAIL_MESSAGE.TIME });
+      alert(ALERT.RESET_PASSWORD_SUCCESS);
+    },
+    onError: () => {
+      setError("email", { message: EMAIL_MESSAGE.NOT_EXIST });
+    },
   });
   return {
     resetPassword: mutate,
