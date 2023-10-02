@@ -18,6 +18,7 @@ export default function ProducerBigPortfolio(props: ProducerBigPortfolioProps) {
   const [clickId, setClickId] = useRecoilState(clickedProfileId);
 
   function handleHoverImage() {
+    console.log("Adsf");
     setHoverId(producerPortfolios.portfolioId);
     setSavedHoverId(producerPortfolios.portfolioId);
   }

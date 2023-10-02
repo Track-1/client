@@ -88,7 +88,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
 
 const UpdateModalBackground = styled.div`
   width: 120vw;
-  margin-left: calc(-121.6vw);
+  margin-left: calc(-120.7vw);
   margin-right: calc(-10vw);
   margin-top: calc(-50vw);
   height: 200vw;
