@@ -32,7 +32,7 @@ export default function ProfilImageContainer() {
         const imageSize: number = getFileSize(file);
         if (e.target.files[0] && checkImageSize(imageSize)) {
           setImageSrc(fileUrl);
-          setUserData({ ...userData, imageFile: file });
+          setUserData({ ...userData, userImageFile: file });
         }
       }
     }

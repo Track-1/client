@@ -1,7 +1,7 @@
 export interface JoinUserDataPropsType {
-  imageFile: File | Blob | FormData;
-  ID: string;
-  PW: string;
-  name: string;
-  isAgree: string;
+  userImageFile: File | Blob | FormData;
+  userEmail: string;
+  userPw: string;
+  userName: string;
+  userMarketing: string;
 }

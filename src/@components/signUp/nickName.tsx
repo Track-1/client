@@ -51,7 +51,7 @@ export default function NickName(props: NickNameProps) {
                   if (checkNicknamForm(value)) {
                     if (checkEssentialAgree(checkedConventions)) {
                       setIsSuccess(true);
-                      setUserData({ ...userData, name: value });
+                      setUserData({ ...userData, userName: value });
                     } else {
                       setIsSuccess(false);
                     }
