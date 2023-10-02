@@ -37,6 +37,8 @@ export function checkInputUnderline(message: string | undefined) {
       return ERROR_COLOR.RED;
     case NICKNAME_MESSAGE.SUCCESS:
       return ERROR_COLOR.VIOLET;
+    case EMAIL_MESSAGE.NOT_EXIST:
+      return ERROR_COLOR.RED;
     default:
       return ERROR_COLOR.WHITE;
   }
@@ -64,6 +66,8 @@ export function checkMessageColor(message: string | undefined, userType?: string
       return ERROR_COLOR.RED;
     case NICKNAME_MESSAGE.SUCCESS:
       return ERROR_COLOR.TRANSPARENT;
+    case EMAIL_MESSAGE.NOT_EXIST:
+      return ERROR_COLOR.RED;
     default:
       return ERROR_COLOR.TRANSPARENT;
   }

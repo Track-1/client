@@ -184,11 +184,15 @@ export function usePatchPassword() {
   };
 }
 
-export function useResetPassword() {
+export function useResetPassword(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postResetPassword(userEmail),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setError("email", { message: EMAIL_MESSAGE.TIME });
+    },
+    onError: () => {
+      setError("email", { message: EMAIL_MESSAGE.NOT_EXIST });
+    },
   });
   return {
     resetPassword: mutate,
