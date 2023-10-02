@@ -54,7 +54,8 @@ const DropMenuBox = styled.div<{ isVocal: boolean }>`
 
   position: absolute;
   top: ${({ isVocal }) => (isVocal ? 41 : 57.3)}rem;
-  left: ${({ isVocal }) => (isVocal ? 96.5 : 103)}rem;
+  /* left: ${({ isVocal }) => (isVocal ? 96.5 : 103)}rem; */
+  left: 103rem;
 
   background: rgba(30, 32, 37, 0.7);
   backdrop-filter: blur(0.65rem);

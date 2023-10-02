@@ -18,32 +18,30 @@ export default function CategoryInfo(props: CategoryInfoProps) {
   const { openModal, handleShowUpdateModal } = useModal();
 
   return (
-    <>
-      <UploadInfoBox>
-        <InfoType>
-          <InfoTypeIconWrapper>
-            <UploadCategoryIcon />
-          </InfoTypeIconWrapper>
-          <InfoTypeText>Category</InfoTypeText>
-        </InfoType>
-        <InfoInput>
-          <InputWrapper>
-            <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
-              <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={handleShowUpdateModal}>
-                {categoryText}
-              </InputCategoryText>
-            </InputCategoryTextWrapper>
-            <CategoryDropDownIcon onClick={handleShowUpdateModal} />
-          </InputWrapper>
-        </InfoInput>
-        <DropCategory
-          categories={categories}
-          setCategories={setCategories}
-          openModal={openModal}
-          handleShowUpdateModal={handleShowUpdateModal}
-        />
-      </UploadInfoBox>
-    </>
+    <UploadInfoBox>
+      <InfoType>
+        <InfoTypeIconWrapper>
+          <UploadCategoryIcon />
+        </InfoTypeIconWrapper>
+        <InfoTypeText>Category</InfoTypeText>
+      </InfoType>
+      <InfoInput>
+        <InputWrapper>
+          <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
+            <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={handleShowUpdateModal}>
+              {categoryText}
+            </InputCategoryText>
+          </InputCategoryTextWrapper>
+          <CategoryDropDownIcon onClick={handleShowUpdateModal} />
+        </InputWrapper>
+      </InfoInput>
+      <DropCategory
+        categories={categories}
+        setCategories={setCategories}
+        openModal={openModal}
+        handleShowUpdateModal={handleShowUpdateModal}
+      />
+    </UploadInfoBox>
   );
 }
 export const InfoType = styled.div`
@@ -60,11 +58,10 @@ export const InfoType = styled.div`
 export const InfoTypeText = styled.p``;
 
 export const InfoInput = styled.div`
-  
   display: flex;
   justify-content: space-between;
 
-  width: 100%;
+  width: 68.2rem;
   height: 100%;
 `;
 
