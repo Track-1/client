@@ -46,8 +46,8 @@ export default function ProfilImageContainer() {
           <ImageUploadBox onMouseEnter={() => handleImageHover(true)} onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <ProducerImageWrapper>
-                <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
-                {isHover && <SignupChangePhotoProducerIcon />}
+                <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" className="profile-image" />
+                <SignupChangePhotoProducerIcon className="change-photo-ic" />
               </ProducerImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
@@ -65,8 +65,8 @@ export default function ProfilImageContainer() {
           <ImageUploadBox onMouseEnter={() => handleImageHover(true)} onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <VocalImageWrapper>
-                <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
-                {isHover && <SignupChangePhotoVocalIcon />}
+                <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" className="profile-image" />
+                <SignupChangePhotoVocalIcon className="change-photo-ic" />
               </VocalImageWrapper>
             ) : (
               <SignUpUploadImageWrapper>
@@ -87,6 +87,16 @@ const ImageInput = styled.input`
 
 const ImageUploadBox = styled.label`
   cursor: pointer;
+
+  &:hover {
+    .change-photo-ic {
+      display: block;
+    }
+
+    .profile-image {
+      filter: blur(1.7rem);
+    }
+  }
 `;
 
 const ImageContainer = styled.section`
@@ -136,10 +146,6 @@ const ProducerImage = styled.img`
 
   object-fit: cover;
   margin: auto;
-
-  &:hover {
-    filter: blur(1.7rem);
-  }
 `;
 
 const VocalImage = styled.img`
@@ -153,10 +159,6 @@ const VocalImage = styled.img`
   margin: auto;
 
   transform: rotate(45deg);
-
-  &:hover {
-    filter: blur(1.7rem);
-  }
 `;
 
 const SignUpUploadImageWrapper = styled.div`
@@ -178,6 +180,7 @@ const SignupChangePhotoProducerIcon = styled(SignupChangePhotoIc)`
   height: 5.7rem;
 
   position: relative;
+  display: none;
 `;
 
 const SignupChangePhotoVocalIcon = styled(SignupChangePhotoIc)`
@@ -185,4 +188,5 @@ const SignupChangePhotoVocalIcon = styled(SignupChangePhotoIc)`
   height: 5.7rem;
   transform: rotate(45deg);
   position: relative;
+  display: none;
 `;
