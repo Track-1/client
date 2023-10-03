@@ -4,7 +4,6 @@ export interface CommentsParamsType {
 }
 
 interface CommentsType {
-  map(arg0: () => any): any;
   commentId: number;
   commentAudioFile: string;
   userName: string;
@@ -16,4 +15,7 @@ interface CommentsType {
   commentAudioFileName: string;
 }
 
-export type CommentsListType = CommentsType[];
+export type CommentsListType = {
+  commentList: CommentsType[];
+  hasNextPage: boolean;
+};

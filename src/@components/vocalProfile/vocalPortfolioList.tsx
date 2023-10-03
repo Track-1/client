@@ -1,24 +1,25 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import VocalBigPortfolio from "../portfolio/vocalBigPortfolio";
-import VocalSmallPortfolio from "../portfolio/vocalSmallPortfolio";
+import { UserPortfolioType } from "../../type/profile";
+import VocalPortfolio from "../portfolio/vocalPortfolio";
 
 const PAGE_LIMIT = 5;
 
 export default function VocalPortfolioList() {
   const { vocalId } = useParams();
-  const clickedId = useRecoilValue(clickedProfileId);
-  const hoveredId = useRecoilValue(hoveredProfileId);
-
   const { vocalPortfolios, fetchNextPage, hasNextPage } = useGetVocalPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType["portfolioId"] | null>(null);
+
+  function selectTrack(trackId: UserPortfolioType["portfolioId"]) {
+    setPLayingTrack(trackId);
+  }
 
   if (vocalPortfolios === undefined) return null;
 
@@ -29,13 +30,12 @@ export default function VocalPortfolioList() {
         <PortfolioWrapper>
           {vocalPortfolios?.map((vocalPortfolios, index) => {
             return (
-              <>
-                {index === 0 || clickedId === vocalPortfolios.portfolioId ? (
-                  <VocalBigPortfolio vocalPortfolios={vocalPortfolios} />
-                ) : (
-                  <VocalSmallPortfolio vocalPortfolios={vocalPortfolios} />
-                )}
-              </>
+              <VocalPortfolio
+                vocalPortfolios={vocalPortfolios}
+                isFirst={index === 0}
+                playingTrack={playingTrack}
+                selectTrack={selectTrack}
+              />
             );
           })}
           <Observer ref={observerRef} />

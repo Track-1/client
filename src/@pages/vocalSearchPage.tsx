@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Filter from "../@components/@common/filter";
+import Player from "../@components/@common/player";
 import VocalList from "../@components/vocalSearch/vocalList";
+import { PlayerProvider } from "../context/playerContext";
 import TrackSearchHeader from "../@components/trackSearch/trackSearchHeader/trackSearchHeader";
 
 import Header from "../@components/@common/header";
@@ -15,8 +17,11 @@ export default function VocalSearchPage() {
         <TrackSearchHeader />
       </Header>
       <Wrapper>
-        <Filter pageType="vocals" />
-        <VocalList />
+        <PlayerProvider>
+          <Filter pageType="vocals" />
+          <VocalList />
+          <Player />
+        </PlayerProvider>
       </Wrapper>
     </>
   );

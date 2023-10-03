@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import styled from "styled-components";
-import { CommentUpldatCompleteIc, QuitIc } from "../../assets";
+import styled, { css } from "styled-components";
+import { CommentUpldatCompleteIc, PlayerPlayIc, PlayerStopIc, QuitIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
+import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 import { useEditComment } from "../../hooks/queries/comments";
 import { playMusic } from "../../recoil/common/playMusic";
 import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
@@ -14,10 +16,12 @@ import CommentWrite from "./commentWrite";
 
 interface CommentBoxProps {
   eachComment: CommentType;
+  playingTrack: CommentType["commentId"] | null;
+  selectTrack: (trackId: CommentType["commentId"]) => void;
 }
 
 export default function CommentBox(props: CommentBoxProps) {
-  const { eachComment } = props;
+  const { eachComment, playingTrack, selectTrack } = props;
   const {
     commentUserId,
     commentId,
@@ -26,35 +30,12 @@ export default function CommentBox(props: CommentBoxProps) {
     userImageFile,
     commentContent,
     userSelf,
-    commentAudioFileLength,
     commentAudioFileName,
   } = eachComment;
 
-  const [clickId, setClickId] = useRecoilState(clickedTrackId);
-  const [hoverState, setHoverState] = useState<boolean>(false);
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isDelete, setIsDelete] = useState<boolean>(false);
   const [comment, setComment] = useRecoilState(commentUpdateData);
-  const resetComment = useResetRecoilState(commentUpdateData);
-
   const { editComment } = useEditComment(() => setIsEdit(false));
-
-  function handlePlayComment() {
-    setClickId(commentId); //나중에 지우기
-
-    if (play) {
-      setPlay(false);
-      // pauseAudio;
-    } else {
-      setPlay(true);
-      // checkIsSameId(commentId, clickId) ? audio.play() : setClickId(commentId);
-    }
-  }
-
-  function handleHoverEvent(isHover: boolean) {
-    setHoverState(isHover);
-  }
 
   function handleStopUpdating() {
     setIsEdit(false);
@@ -66,11 +47,24 @@ export default function CommentBox(props: CommentBoxProps) {
     }
   }
 
+  const isSelected = playingTrack === commentId;
+  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
+    playerContext,
+    commentAudioFile,
+    commentId,
+    selectTrack,
+  );
+
   useEffect(() => {
-    if (isEdit) {
-      setComment({ ...comment, commentAudioFileName: commentAudioFileName, commentContent: commentContent });
-    }
-  }, [isEdit]);
+    if (!isSelected) return;
+
+    getPlayerInfo({
+      imageFile: userImageFile,
+      title: commentAudioFileName,
+      userName: userName,
+    });
+  }, [playingTrack]);
 
   return (
     <>
@@ -81,17 +75,19 @@ export default function CommentBox(props: CommentBoxProps) {
           <CommentUpldatCompleteIcon onClick={handleSubmitUpdateComment} />
         </UpdateCommentContainer>
       ) : (
-        <CommentContainer
-          data-play={play}
-          commentActive={checkIsSameId(commentId, clickId) && !checkIsClickedNothing(clickId)}>
-          <ProfileImageWrapper
-            onMouseOver={() => handleHoverEvent(true)}
-            onMouseOut={() => handleHoverEvent(false)}
-            onClick={handlePlayComment}>
-            <CommentProfileEventBox currentId={commentId} hoverState={hoverState}>
-              <ProfileImage src={userImageFile} />
-            </CommentProfileEventBox>
-          </ProfileImageWrapper>
+        <CommentContainer commentActive={isHovered || (isSelected && showPlayer)}>
+          <ThumnailWrapper
+            onMouseEnter={hoverTrack}
+            onMouseLeave={unhoverTrack}
+            isHovered={isHovered || (isSelected && showPlayer)}>
+            <Thumbnail src={userImageFile} alt="profile-image" />
+            {(isHovered || (isSelected && showPlayer)) &&
+              (innerPlaying && contextPlaying ? (
+                <StopButton onClick={stopAudioItem} />
+              ) : (
+                <PlayButton onClick={playAudioItem} />
+              ))}
+          </ThumnailWrapper>
           <CommentInfo
             userName={userName}
             userSelf={userSelf}
@@ -170,6 +166,68 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
       ${({ theme }) => theme.colors.sub3}
     );
   /* } */
+`;
+
+const ThumnailWrapper = styled.div<{ isHovered: boolean }>`
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 9rem;
+  width: 9rem;
+
+  margin-right: 2.8rem;
+  margin-left: 2.4rem;
+
+  border-radius: 6.55rem;
+  overflow: hidden;
+
+  ${({ isHovered }) =>
+    isHovered &&
+    css`
+      ::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* 원하는 색상과 투명도를 설정 */
+        backdrop-filter: blur(6px);
+      }
+    `}
+`;
+const Thumbnail = styled.img`
+  width: 100%;
+  height: 100%;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+`;
+
+const PlayButton = styled(PlayerPlayIc)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: translate(-50%, -50%);
+`;
+
+const StopButton = styled(PlayerStopIc)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: translate(-50%, -50%);
 `;
 
 const QuitIcon = styled(QuitIc)`

@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { CommentBtnIc } from "../../assets";
+import { CommentBtnIc, TrackPostPauseBtnIc, TrackPostPlayBtnIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 import BackButton from "../@common/backButton";
 import AudioInfo from "./audioInfo";
 import AudioTitle from "./audioTitle";
 import Comments from "./comments";
 import Download from "./download";
-import PlayButton from "./playButton";
 import ProducerProfile from "./producerProfile";
 import ShowMore from "./showMore";
 import TrackSearchHeader from "../trackSearch/trackSearchHeader/trackSearchHeader";
@@ -14,6 +16,18 @@ import Header from "../@common/header";
 
 export default function TrackPost() {
   const [isOpenComment, setIsOpenComment] = useState(false);
+  const { id } = useParams();
+  const {
+    playAudio,
+    stopAudio,
+    setAudioFile,
+    openAudioPlayer,
+    playContextState,
+    stopContextState,
+    contextPlaying,
+    getPlayerInfo,
+  } = useContext(PlayerContext);
+  const { trackDetail } = useTrackDetail(Number(id));
 
 
   function handleOpenComment() {
@@ -23,6 +37,26 @@ export default function TrackPost() {
   function handleClosecomment() {
     setIsOpenComment(false);
   }
+
+  function play() {
+    setAudioFile(trackDetail?.trackAudioFile);
+    openAudioPlayer();
+    playContextState();
+    playAudio();
+  }
+
+  function stop() {
+    stopAudio();
+    stopContextState();
+  }
+
+  useEffect(() => {
+    getPlayerInfo({
+      imageFile: trackDetail?.trackImageFile,
+      title: trackDetail?.trackTitle,
+      userName: trackDetail?.trackUserName,
+    });
+  }, []);
 
   return (
     <>
@@ -37,7 +71,7 @@ export default function TrackPost() {
           <ProducerProfile />
           <MusicPlayingWrapper>
             <Download />
-            <PlayButton />
+            {contextPlaying ? <TrackPostPauseBtnIcon onClick={stop} /> : <TrackPostPlayBtnIcon onClick={play} />}
             <ShowMore />
           </MusicPlayingWrapper>
         </AudioBasicInfoWrapper>
@@ -72,4 +106,14 @@ const AudioBasicInfoWrapper = styled.li`
 
 const TrackPostWrapper = styled.ul`
   display: flex;
+`;
+
+const TrackPostPauseBtnIcon = styled(TrackPostPauseBtnIc)`
+  width: 5.2rem;
+  height: 5.2rem;
+`;
+
+const TrackPostPlayBtnIcon = styled(TrackPostPlayBtnIc)`
+  width: 5.2rem;
+  height: 5.2rem;
 `;

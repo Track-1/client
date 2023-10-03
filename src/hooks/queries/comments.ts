@@ -23,7 +23,7 @@ export function useComments(params: Omit<CommentsRequest, "page">) {
     },
   );
 
-  const trackComments = data?.pages.flatMap(({ response }) => response.flatMap(({ commentList }: any) => commentList));
+  const trackComments = data?.pages.flatMap(({ response }) => response.flatMap(({ commentList }) => commentList));
 
   return {
     trackComments,

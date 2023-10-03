@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useFilteredTracks } from "../../hooks/queries/tracks";
+import { FilteredTrackType } from "../../type/tracks";
 import ListTitle from "./listTitle";
 import TrackItem from "./trackItem";
 
@@ -19,6 +21,11 @@ export default function TrackList() {
     categ: searchParams.getAll("categ"),
   });
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  const [playingTrack, setPLayingTrack] = useState<FilteredTrackType["trackId"] | null>(null);
+
+  function selectTrack(trackId: FilteredTrackType["trackId"]) {
+    setPLayingTrack(trackId);
+  }
 
   if (trackData === undefined) return null;
 
@@ -26,7 +33,14 @@ export default function TrackList() {
     <Container>
       <ListTitle />
       {trackData.map((trackInfo) => {
-        return <TrackItem trackInfo={trackInfo} key={trackInfo.trackUserId} />;
+        return (
+          <TrackItem
+            trackInfo={trackInfo}
+            key={trackInfo.trackUserId}
+            playingTrack={playingTrack}
+            selectTrack={selectTrack}
+          />
+        );
       })}
       <div ref={observerRef} style={{ width: "100%", height: "20px" }} />
     </Container>

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useFilteredVocals } from "../../hooks/queries/vocals";
+import { FilteredVocalType } from "../../type/vocals";
 import ListTitle from "../trackSearch/listTitle";
 import VocalItem from "./vocalItem";
 
@@ -26,8 +28,12 @@ export default function VocalList() {
     categ: searchParams.getAll("categ"),
     trackSearch: Boolean(searchParams.get("trackSearch")),
   });
-
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  const [playingTrack, setPLayingTrack] = useState<FilteredVocalType["userId"] | null>(null);
+
+  function selectTrack(trackId: FilteredVocalType["userId"]) {
+    setPLayingTrack(trackId);
+  }
 
   if (vocalData === undefined) return null;
 
@@ -35,7 +41,14 @@ export default function VocalList() {
     <Container>
       <ListWrapper>
         {vocalData.map((vocalInfo) => {
-          return <VocalItem vocalInfo={vocalInfo} key={vocalInfo.userId} />;
+          return (
+            <VocalItem
+              vocalInfo={vocalInfo}
+              key={vocalInfo.userId}
+              playingTrack={playingTrack}
+              selectTrack={selectTrack}
+            />
+          );
         })}
         <div ref={observerRef} style={{ width: "100%", height: "20px" }} />
       </ListWrapper>

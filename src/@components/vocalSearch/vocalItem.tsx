@@ -1,6 +1,9 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useContext, useEffect } from "react";
+import styled, { css } from "styled-components";
 import { FilteredVocalType } from "../../type/vocals";
+import { VocalSearchPlayIc, VocalSearchStopIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
+import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 
 const VocalContainer = styled.div`
   display: inline-block;
@@ -48,7 +51,7 @@ const CategoryNum = styled.span`
   background-color: ${({ theme }) => theme.colors.gray5};
 `;
 
-const AlbumCoverImg = styled.img`
+const AlbumCoverImg = styled.img<{ isHovered: boolean }>`
   position: relative;
   transform: rotate(-45deg);
   object-fit: cover;
@@ -56,6 +59,21 @@ const AlbumCoverImg = styled.img`
   height: 130%;
   bottom: 3rem;
   right: 3rem;
+
+  ${({ isHovered }) =>
+    isHovered &&
+    css`
+      ::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: rgba(13, 14, 17, 0.7); /* 원하는 색상과 투명도를 설정 */
+      }
+    `}
 `;
 
 const MusicProfileWrapper = styled.div<{
@@ -106,6 +124,30 @@ const GradientLine = styled.div`
   background-color: ${({ theme }) => theme.colors.sub3};
 `;
 
+const PlayButton = styled(VocalSearchPlayIc)`
+  position: absolute;
+  top: 35%;
+  left: 35%;
+
+  width: 8.4rem;
+  height: 8.4rem;
+
+  transform: translate(-50%, -50%);
+  transform: rotate(-45deg);
+`;
+
+const StopButton = styled(VocalSearchStopIc)`
+  position: absolute;
+  top: 35%;
+  left: 35%;
+
+  width: 8.4rem;
+  height: 8.4rem;
+
+  transform: translate(-50%, -50%);
+  transform: rotate(-45deg);
+`;
+
 const HashtagContainer = styled.ul`
   position: relative;
   right: 7.5rem;
@@ -131,19 +173,32 @@ const Hashtag = styled.li`
 
 interface VocalItemProps {
   vocalInfo: FilteredVocalType;
+  playingTrack: FilteredVocalType["userId"] | null;
+  selectTrack: (trackId: FilteredVocalType["userId"]) => void;
 }
 
 export default function VocalItem(props: VocalItemProps) {
-  const { vocalInfo } = props;
-  const [isHovered, setIsHovered] = useState(false);
+  const { vocalInfo, playingTrack, selectTrack } = props;
 
-  function hoverVocalItem() {
-    setIsHovered(true);
-  }
+  const isSelected = playingTrack === vocalInfo.userId;
+  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
+    playerContext,
+    vocalInfo.userAudioFile,
+    vocalInfo.userId,
+    selectTrack,
+  );
 
-  function unhoverVocalItem() {
-    setIsHovered(false);
-  }
+  useEffect(() => {
+    if (!isSelected) return;
+
+    getPlayerInfo({
+      imageFile: vocalInfo.userImageFile,
+      title: vocalInfo.userTitle,
+      userName: vocalInfo.userName,
+    });
+  }, [playingTrack]);
+
   return (
     <VocalContainer>
       <UsernameInformWrapper>
@@ -155,11 +210,24 @@ export default function VocalItem(props: VocalItemProps) {
         <CategoryNum>+{vocalInfo.userCategoryNum}</CategoryNum>
       </CategoryTextWrapper>
 
-      <MusicProfileWrapper onMouseLeave={unhoverVocalItem} onMouseEnter={hoverVocalItem} isHovered={isHovered}>
+      <MusicProfileWrapper
+        onMouseLeave={unhoverTrack}
+        onMouseEnter={hoverTrack}
+        isHovered={isHovered || (isSelected && showPlayer)}>
         <GradientLine>
-          <AlbumCoverImg src={vocalInfo.userImageFile} alt="앨범자켓사진" />
+          <AlbumCoverImg
+            src={vocalInfo.userImageFile}
+            alt="앨범자켓사진"
+            isHovered={isHovered || (isSelected && showPlayer)}
+          />
         </GradientLine>
-        <GradientProfile isHovered={isHovered}></GradientProfile>
+        <GradientProfile isHovered={isHovered || (isSelected && showPlayer)}></GradientProfile>
+        {(isHovered || (isSelected && showPlayer)) &&
+          (innerPlaying && contextPlaying ? (
+            <StopButton onClick={stopAudioItem} />
+          ) : (
+            <PlayButton onClick={playAudioItem} />
+          ))}
       </MusicProfileWrapper>
       <HashtagContainer>
         {vocalInfo.userKeyword.map((keyword, idx) => (
