@@ -1,7 +1,7 @@
 import { UseFormResetField, UseFormSetError, UseFormSetValue } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import {
   getAccessToken,
   getLogout,
@@ -30,7 +30,7 @@ import {
 import { UserType } from "../../type/common/userType";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
-import { setCookie } from "../../utils/common/cookie";
+import { removeCookie, setCookie } from "../../utils/common/cookie";
 
 export function useJoin() {
   const navigate = useNavigate();
@@ -97,12 +97,16 @@ export function useLogin() {
 
 export function useLogout(state: boolean) {
   const navigate = useNavigate();
+  const resetLoginUserId = useResetRecoilState(loginUserId);
+  const resetLoginUserType = useResetRecoilState(loginUserType);
 
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
     onSuccess: (data) => {
-      //토큰제거
+      removeCookie("accessToken", {});
+      resetLoginUserId();
+      resetLoginUserType();
       data.success && navigate("/");
     },
     onError: () => {},
@@ -203,7 +207,7 @@ export function useResetPassword(setError: UseFormSetError<EmailPasswordInputTyp
     mutationFn: (userEmail: UserEmailRequest) => postResetPassword(userEmail),
     onSuccess: () => {
       setError("email", { message: EMAIL_MESSAGE.TIME });
-      alert(ALERT.RESET_PASSWORD_SUCCESS);
+      alert(ALERT.FORGOT_PASSWORD_SEND_LINK);
     },
     onError: () => {
       setError("email", { message: EMAIL_MESSAGE.NOT_EXIST });

@@ -5,7 +5,7 @@ import UploadHeader from "./uploadHeader";
 export default function UploadContainer() {
   return (
     <>
-      <Header backBtn>
+      <Header backBtn prevURL="-1">
         <UploadHeader />
       </Header>
       <UploadBody />
