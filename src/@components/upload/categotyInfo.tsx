@@ -25,6 +25,7 @@ export default function CategoryInfo(props: CategoryInfoProps) {
         </InfoTypeIconWrapper>
         <InfoTypeText>Category</InfoTypeText>
       </InfoType>
+
       <InfoInput>
         <InputWrapper>
           <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
@@ -48,7 +49,7 @@ export const InfoType = styled.div`
   display: flex;
   align-items: center;
 
-  width: 20.7rem;
+  width: 27.4rem;
   height: 100%;
 
   color: ${({ theme }) => theme.colors.gray3};
@@ -61,7 +62,7 @@ export const InfoInput = styled.div`
   display: flex;
   justify-content: space-between;
 
-  width: 68.2rem;
+  width: 100%;
   height: 100%;
 `;
 

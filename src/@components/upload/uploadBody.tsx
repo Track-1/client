@@ -126,7 +126,7 @@ const Container = styled.div<{ roleType: string }>`
 `;
 
 const UploadDataWrapper = styled.div`
-  width: 100%;
+  width: 89.6rem;
   height: 100%;
 `;
 

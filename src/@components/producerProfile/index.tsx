@@ -46,7 +46,7 @@ export default function ProducerProfile() {
   }, []);
 
   function handleMoveProfileEditPage() {
-    navigate(`/profile-edit/producer/${producerProfile?.userProfile.userId}`);
+    navigate(`/profile-edit`);
   }
 
   return (
@@ -55,7 +55,7 @@ export default function ProducerProfile() {
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
-            <BackButton />
+            <BackButton prevURL="-1" />
             {producerProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
           </BackButtonWrapper>
           <Profile
