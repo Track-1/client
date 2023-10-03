@@ -132,3 +132,6 @@ export { ReactComponent as ProducerTextIc } from "./icon/producerTextIc.svg";
 export { ReactComponent as VocalTextIc } from "./icon/vocalTextIc.svg";
 export { ReactComponent as PlayerPlayIc } from "./icon/playerPlayIc.svg";
 export { ReactComponent as PlayerStopIc } from "./icon/playerStopIc.svg";
+export { ReactComponent as VocalSearchPlayIc } from "./icon/vocalSearchPlayIc.svg";
+export { ReactComponent as VocalSearchStopIc } from "./icon/vocalSearchStopIc.svg";
+export { ReactComponent as PlayerQuitIc } from "./icon/playerQuitIc.svg";
