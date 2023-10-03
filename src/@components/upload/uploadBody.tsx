@@ -32,16 +32,8 @@ export default function UploadBody() {
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = useHashtagInput();
-  const {
-    categories,
-    setCategories,
-    isSelectedNothing,
-    selectedCategoryNumber,
-    isSelected,
-    categoryText,
-    hiddenDropBox,
-    showDropBox,
-  } = useDropCategory();
+  const { categories, setCategories, isSelectedNothing, selectedCategoryNumber, isSelected, categoryText } =
+    useDropCategory();
   const { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
     useUploadAudioFile();
   const [description, handleChangeDescription, changeDescription] = useInputText("", TEXT_LIMIT.DESCRIPTION);
@@ -90,8 +82,6 @@ export default function UploadBody() {
             isSelectedNothing={isSelectedNothing}
             isSelected={isSelected}
             categoryText={categoryText}
-            hiddenDropBox={hiddenDropBox}
-            showDropBox={showDropBox}
           />
           <HashtagInfo
             hashtags={hashtags}
@@ -113,7 +103,7 @@ export default function UploadBody() {
   }
 
   return (
-    <Container>
+    <Container roleType={roleType}>
       {roleType === ROLE.PRODUCER ? (
         <ProducerLayout imageFile={imageFile} previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
           {commonComponent()}
@@ -127,18 +117,21 @@ export default function UploadBody() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ roleType: string }>`
   display: flex;
-  justify-content: center;
+
+  margin-left: ${(props) => (props.roleType === ROLE.PRODUCER ? 10.5 : 6.8)}rem;
+
+  margin-top: 4.2rem;
 `;
 
 const UploadDataWrapper = styled.div`
-  width: 100%;
+  width: 89.6rem;
   height: 100%;
 `;
 
 const UploadInfoWrapper = styled.div`
   width: 100%;
 
-  margin-top: 3.9rem;
+  margin-top: 2.9rem;
 `;

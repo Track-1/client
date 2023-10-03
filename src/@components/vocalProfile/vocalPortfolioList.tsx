@@ -75,7 +75,7 @@ const VocalsBoxBody = styled.div`
 
   position: absolute;
 
-  width: 48.45rem;
+  width: 48.55rem;
 
   border-left: 0.34rem solid transparent;
   border-right: 0.34rem solid transparent;

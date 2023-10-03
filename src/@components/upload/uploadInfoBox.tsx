@@ -8,9 +8,8 @@ export default function UploadInfoBox(props: PropsWithChildren) {
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
 
   width: 100%;
   height: 6rem;
-
-  margin-bottom: 0.2rem;
 `;

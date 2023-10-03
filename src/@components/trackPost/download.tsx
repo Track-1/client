@@ -3,14 +3,13 @@ import { useQueryClient } from "react-query";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
-import { useCloseTrack, useTrackDownload } from "../../hooks/queries/tracks";
-import useGetTrackInfo from "../../hooks/trackPost/useGetTrackInfo";
+import { useCloseTrack, useTrackDetail, useTrackDownload } from "../../hooks/queries/tracks";
 
 export default function Download() {
-  const { userSelf, trackClosed, trackTitle } = useGetTrackInfo();
   const { id } = useParams();
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const queryClient = useQueryClient();
+  const { trackDetail } = useTrackDetail(Number(id));
   const { closeTrack } = useCloseTrack();
   const { trackDownload } = useTrackDownload(Number(id), isDownload, getFileLink);
 
@@ -20,7 +19,7 @@ export default function Download() {
 
     var a = document.createElement("a");
     a.href = url;
-    a.download = `${trackTitle}`;
+    a.download = `${trackDetail?.trackTitle}`;
     document.body.appendChild(a);
     a.click();
     setTimeout((_: any) => {
@@ -31,19 +30,19 @@ export default function Download() {
   }
 
   function checkIsMeOpen() {
-    return userSelf && !trackClosed;
+    return trackDetail?.userSelf && !trackDetail?.trackClosed;
   }
 
   function checkIsMeClosed() {
-    return userSelf && trackClosed;
+    return trackDetail?.userSelf && trackDetail?.trackClosed;
   }
 
   function checkIsNotMeOpen() {
-    return !userSelf && !trackClosed;
+    return !trackDetail?.userSelf && !trackDetail?.trackClosed;
   }
 
   function checkIsNotMeClosed() {
-    return !userSelf && trackClosed;
+    return !trackDetail?.userSelf && trackDetail?.trackClosed;
   }
 
   function closeTrackPost() {

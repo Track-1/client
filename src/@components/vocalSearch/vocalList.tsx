@@ -39,7 +39,6 @@ export default function VocalList() {
 
   return (
     <Container>
-      <ListTitle />
       <ListWrapper>
         {vocalData.map((vocalInfo) => {
           return (

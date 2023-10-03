@@ -1,7 +1,7 @@
 import { UseFormResetField, UseFormSetError, UseFormSetValue } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import {
   getAccessToken,
   getLogout,
@@ -13,10 +13,10 @@ import {
   postJoin,
   postLogin,
   postResetPassword,
-  postUserEmail,
   postVerifyCode,
+  postVerifyEmail,
 } from "../../api/user";
-import { SIGNUP_SENDCODE } from "../../core/common/alert/signupSendCode";
+import { ALERT } from "../../core/common/alert/signupSendCode";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
@@ -30,7 +30,7 @@ import {
 import { UserType } from "../../type/common/userType";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
-import { setCookie } from "../../utils/common/cookie";
+import { removeCookie, setCookie } from "../../utils/common/cookie";
 
 export function useJoin() {
   const navigate = useNavigate();
@@ -59,10 +59,15 @@ export function useJoin() {
 }
 
 export function useProfileAfterJoin() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userProfile: UserProfileRequest) => patchProfileAfterJoin(userProfile),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      navigate("/signup/success");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     profileAtferJoin: mutate,
@@ -71,9 +76,17 @@ export function useProfileAfterJoin() {
 }
 
 export function useLogin() {
+  const setLoginUserId = useSetRecoilState(loginUserId);
+  const setLoginUserType = useSetRecoilState(loginUserType);
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
-    onSuccess: () => {},
+    onSuccess: (response: any) => {
+      setLoginUserId(response?.data?.userId);
+      setLoginUserType(response?.data?.userType);
+      setCookie("accessToken", response?.data?.accessToken, {});
+      navigate("/");
+    },
     onError: () => {},
   });
   return {
@@ -84,12 +97,16 @@ export function useLogin() {
 
 export function useLogout(state: boolean) {
   const navigate = useNavigate();
+  const resetLoginUserId = useResetRecoilState(loginUserId);
+  const resetLoginUserType = useResetRecoilState(loginUserType);
 
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
     onSuccess: (data) => {
-      //토큰제거
+      removeCookie("accessToken", {});
+      resetLoginUserId();
+      resetLoginUserType();
       data.success && navigate("/");
     },
     onError: () => {},
@@ -116,10 +133,10 @@ export function useAccessToken() {
 
 export function useUserEmail(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (userEmail: UserEmailRequest) => postUserEmail(userEmail),
+    mutationFn: (userEmail: UserEmailRequest) => postVerifyEmail(userEmail),
     onSuccess: () => {
       setError("email", { message: EMAIL_MESSAGE.TIME });
-      alert(SIGNUP_SENDCODE);
+      alert(ALERT.SIGNUP_SENDCODE);
     },
     onError: (error: any) => {
       if (error?.response?.data.message === "중복된 이메일입니다") {
@@ -174,6 +191,7 @@ export function usePatchPassword() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userPassword: UserPasswordRequest) => patchPassword(userPassword),
     onSuccess: () => {
+      alert(ALERT.RESET_PASSWORD_SUCCESS);
       navigate("/");
     },
     onError: () => {},
@@ -184,11 +202,16 @@ export function usePatchPassword() {
   };
 }
 
-export function useResetPassword() {
+export function useResetPassword(setError: UseFormSetError<EmailPasswordInputType>) {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postResetPassword(userEmail),
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setError("email", { message: EMAIL_MESSAGE.TIME });
+      alert(ALERT.FORGOT_PASSWORD_SEND_LINK);
+    },
+    onError: () => {
+      setError("email", { message: EMAIL_MESSAGE.NOT_EXIST });
+    },
   });
   return {
     resetPassword: mutate,

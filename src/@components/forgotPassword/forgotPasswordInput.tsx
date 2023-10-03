@@ -1,6 +1,5 @@
 import { useForm, FormProvider } from "react-hook-form";
 import PasswordContainer from "../@common/passwordContainer";
-import InputTitle from "../signUp/inputTitle";
 import Input from "../signUp/Input";
 import { checkEmailForm } from "../../utils/signUp/checkForm";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
@@ -14,6 +13,7 @@ import { useResetPassword } from "../../hooks/queries/user";
 import { UserEmailRequest } from "../../type/api";
 import { RequestBlackTextIc, RequestWhiteTextIc, ResendTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
+import InputContainer from "../@common/inputContainer";
 
 export default function ForgotPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
@@ -23,30 +23,22 @@ export default function ForgotPasswordInput() {
     mode: "onChange",
   });
 
-  const {
-    handleSubmit,
-    setError,
-    getValues,
-    formState: { errors },
-    watch,
-  } = methods;
+  const { setError } = methods;
 
-  const { data, resetPassword } = useResetPassword();
+  const { data, resetPassword } = useResetPassword(setError);
 
   const [producerType, setProducerType] = useState(false);
   const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
   const [fontColor, setFontColor] = useState(theme.colors.white);
   const [prevState, setPrevState] = useState({ email: "", producerType: false });
-
   const [buttonMessageType, setButtonMessageType] = useState("white");
 
   useEffect(() => {
     if (data?.success) {
-      setError("email", { message: EMAIL_MESSAGE.TIME });
       setButtonMessageType("resend");
       setPrevState((prev) => ({
         ...prev,
-        email: methods.getValues().email,
+        email: methods.watch().email,
         producerType: producerType,
       }));
     }
@@ -62,10 +54,10 @@ export default function ForgotPasswordInput() {
       setButtonMessageType("white");
       setFontColor(theme.colors.white);
     }
-  }, [methods.getValues().email, producerType]);
+  }, [methods.watch().email, producerType]);
 
   function checkPrevState() {
-    return prevState.email === methods.getValues().email && prevState.producerType === producerType;
+    return prevState.email === methods.watch().email && prevState.producerType === producerType;
   }
 
   function handleChangeUserType() {
@@ -86,34 +78,31 @@ export default function ForgotPasswordInput() {
       containerInterval={15.1}
       title="Forgot password?"
       titleIntervalTop={9.1}
-      titleIntervalBottom={2}>
+      titleIntervalBottom={6.4}>
       <FormProvider {...methods}>
-        <form>
-          <InputTitle>What’s your email?</InputTitle>
-          <EmailInputWrapper>
-            <Input
-              name="email"
-              rules={{
-                required: true,
-                // pattern: {
-                //   value: CHECK_EMAIL_FORM,
-                //   message: EMAIL_MESSAGE.FORM,
-                // },
-                validate: {
-                  check: (value) => {
-                    if (!checkEmailForm(value)) {
-                      return EMAIL_MESSAGE.FORM;
-                    }
+        <InputContainer title="What’s your email?">
+          <form>
+            <EmailInputWrapper>
+              <Input
+                name="email"
+                rules={{
+                  required: true,
+                  validate: {
+                    check: (value) => {
+                      if (!checkEmailForm(value)) {
+                        return EMAIL_MESSAGE.FORM;
+                      }
+                    },
                   },
-                },
-              }}
-              type="text"
-              placeholder="Enter your email address"
-              width={55.9}
-              userType={producerType ? ROLE.PRODUCER : ROLE.VOCAL}
-            />
-          </EmailInputWrapper>
-        </form>
+                }}
+                type="text"
+                placeholder="Enter your email address"
+                width={55.9}
+                userType={producerType ? ROLE.PRODUCER : ROLE.VOCAL}
+              />
+            </EmailInputWrapper>
+          </form>
+        </InputContainer>
       </FormProvider>
       <UserTypeToggle producerType={producerType} handleChangeUserType={handleChangeUserType} />
 

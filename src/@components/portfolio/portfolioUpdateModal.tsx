@@ -1,34 +1,58 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
-import useModal from "../../hooks/common/useModal";
-import { useDeleteVocalPortfolio, useEditProducerTitle, useEditVocalTitle } from "../../hooks/queries/mypage";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
+import {
+  useDeleteProducerPortfolio,
+  useDeleteVocalPortfolio,
+  useEditProducerTitle,
+  useEditVocalTitle,
+} from "../../hooks/queries/mypage";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
   nowTitleId: number;
+  nowTitleNextId: number;
   portfolioId: number;
   dataState: string;
 }
 
 export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
-  const { isTitle, nowTitleId, portfolioId, dataState } = props;
+  const { isTitle, nowTitleId, nowTitleNextId, portfolioId, dataState } = props;
   const navigate = useNavigate();
-  const { modalRef } = useModal();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
+  const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
+  const { modalRef, unShowModal } = useUpdateModal();
+
   function handleMoveToEditPage() {
-    navigate(`portfolio-edit/vocal/${portfolioId}`);
+    navigate(`/portfolio-edit/vocal/${portfolioId}`);
   }
 
   function handleAskToDeleteTrack() {
     if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
-      deleteVocalPortfolio(portfolioId);
+      if (nowTitleId === portfolioId) {
+        if (dataState === "vocal portfolio") {
+          editVocalTitle({
+            bef: nowTitleId,
+            aft: nowTitleNextId,
+          });
+        } else {
+          editProducerTitle({ bef: nowTitleId, aft: nowTitleNextId });
+        }
+      } else {
+        if (dataState === "vocal portfolio") {
+          deleteVocalPortfolio(portfolioId);
+        } else {
+          deleteProducerPortfolio(portfolioId);
+        }
+      }
     }
   }
 
   function handleChangeTitle() {
+    unShowModal();
     if (dataState === "vocal portfolio") {
       editVocalTitle({
         bef: nowTitleId,
@@ -40,24 +64,38 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   }
 
   return (
-    <ModalWrapper ref={modalRef}>
-      <ModalBox underline={true} onClick={handleMoveToEditPage}>
-        수정하기
-        <PencilUpdateIcon />
-      </ModalBox>
-      <ModalBox underline={false} onClick={handleAskToDeleteTrack}>
-        삭제하기
-        <TrashDeleteIcon />
-      </ModalBox>
-      {dataState !== "producer vocal searching" && !isTitle && (
-        <ModalBox underline={false} onClick={handleChangeTitle}>
-          타이틀 설정
-          <SetIsTitleIcon />
+    <>
+      <ModalWrapper>
+        <ModalBox underline={true} onClick={handleMoveToEditPage}>
+          수정하기
+          <PencilUpdateIcon />
         </ModalBox>
-      )}
-    </ModalWrapper>
+        <ModalBox underline={false} onClick={handleAskToDeleteTrack}>
+          삭제하기
+          <TrashDeleteIcon />
+        </ModalBox>
+        {dataState !== "producer vocal searching" && !isTitle && (
+          <ModalBox underline={false} onClick={handleChangeTitle}>
+            타이틀 설정
+            <SetIsTitleIcon />
+          </ModalBox>
+        )}
+      </ModalWrapper>
+      <UpdateModalBackground ref={modalRef} />
+    </>
   );
 }
+
+const UpdateModalBackground = styled.div`
+  width: 120vw;
+  margin-left: calc(-120.7vw);
+  margin-right: calc(-10vw);
+  margin-top: calc(-50vw);
+  height: 200vw;
+  text-align: center;
+
+  z-index: 1;
+`;
 
 const ModalWrapper = styled.div`
   margin-top: 4rem;
@@ -66,6 +104,7 @@ const ModalWrapper = styled.div`
   align-items: center;
 
   position: absolute;
+  z-index: 5;
   left: 17.2rem;
 
   width: 20.1rem;

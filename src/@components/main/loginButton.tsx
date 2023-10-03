@@ -2,18 +2,20 @@ import styled from "styled-components";
 import { LoginIc, SignupIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import MypageButton from "./mypageButton";
-import ProfileBox from "./profileBox";
 import { checkIsLogin } from "../../utils/common/checkIsLogined";
 import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { ROLE } from "../../core/common/roleType";
+import { useRecoilValue } from "recoil";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 
 export default function LoginButton() {
   const isLogined = checkIsLogin();
+  console.log(isLogined);
+  const userType = useRecoilValue(loginUserType);
+  const userId = useRecoilValue(loginUserId);
 
-  const userType = "vocal";
-
-  const { vocalProfile } = useGetVocalProfile(Number(2), userType);
-  const { producerProfile } = useGetProducerProfile(Number(2), userType);
+  const { vocalProfile } = useGetVocalProfile(userId, userType);
+  const { producerProfile } = useGetProducerProfile(userId, userType);
 
   const navigate = useNavigate();
 
@@ -44,12 +46,17 @@ export default function LoginButton() {
     <>
       <LoginButtonWrapper>
         {isLogined ? (
+          <MypageButton
+            userType={userType}
+            userImage={getUserImage()}
+            userName={getUserName()}
+            userContact={getUserContact()}
+          />
+        ) : (
           <>
             <LoginIcon onClick={handleMoveLogin} />
             <SignUpIcon onClick={handleMoveSignUp} />
           </>
-        ) : (
-            <MypageButton userType={userType} userImage={getUserImage()} userName={getUserName()} userContact={getUserContact()} />
         )}
       </LoginButtonWrapper>
     </>

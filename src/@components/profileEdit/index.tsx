@@ -19,10 +19,13 @@ import ProfileNameEdit from "./profileNameEdit";
 import ProfileSelectCategoryEdit from "./profileSelectCategoryEdit";
 import VocalImageEdit from "./vocalProfileEdit/vocalImageEdit";
 import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
+import { useRecoilValue } from "recoil";
+import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 
 export default function ProfileEditContainer() {
-  const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile();
-  const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.DESCRIPTION);
+  const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
+  const [description, handleChangeDescription, changeDescription] = useInputText("", TEXT_LIMIT.PROFILE_DESCRIPTION);
   const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
   const [isUploadActive, setIsUploadActive] = useState(false);
 
@@ -30,6 +33,7 @@ export default function ProfileEditContainer() {
     hashtags,
     hashtagLength,
     hashtagInputText,
+    changeHashtags,
     handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
@@ -39,6 +43,40 @@ export default function ProfileEditContainer() {
   const { editProducerProfile } = useEditProdcerProfile();
   const { editVocalProfile } = useEditVocalProfile();
 
+  const userType = useRecoilValue(loginUserType);
+  const userId = useRecoilValue(loginUserId);
+
+  const { vocalProfile } = useGetVocalProfile(userId, userType);
+  const { producerProfile } = useGetProducerProfile(userId, userType);
+
+  useEffect(() => {
+    if (vocalProfile) {
+      changePreviewImage(vocalProfile.userProfile.userImageFile);
+      changeDescription(
+        vocalProfile.userProfile.userIntroduction === null ? "" : vocalProfile.userProfile.userIntroduction,
+      );
+      vocalProfile.userProfile.userCategory.forEach((category: string) => {
+        handleSelectCategory(category);
+      });
+      nameMethods.setValue("nickName", vocalProfile.userProfile.userName, {});
+      contactMethods.setValue("contact", vocalProfile.userProfile.userContact, {});
+    }
+    if (producerProfile) {
+      changePreviewImage(producerProfile.userProfile.userImageFile);
+      changeDescription(
+        producerProfile.userProfile.userIntroduction === null ? "" : producerProfile.userProfile.userIntroduction,
+      );
+      changeHashtags(producerProfile.userProfile.userKeyword);
+      producerProfile.userProfile.userCategory.forEach((category: string) => {
+        handleSelectCategory(category);
+      });
+      nameMethods.setValue("nickName", producerProfile.userProfile.userName, {});
+      contactMethods.setValue("contact", producerProfile.userProfile.userContact, {});
+    }
+  }, [vocalProfile, producerProfile]);
+
+  const [imageFileSame, setImageFileSame] = useState(true);
+
   const nameMethods = useForm({
     defaultValues: {
       nickName: "",
@@ -46,14 +84,16 @@ export default function ProfileEditContainer() {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    imageFile !== null ? setImageFileSame(false) : setImageFileSame(true);
+  }, [imageFile]);
+
   const contactMethods = useForm({
     defaultValues: {
       contact: "",
     },
     mode: "onChange",
   });
-
-  const userType = "vocal";
 
   useEffect(() => {
     const nickName = nameMethods.getValues().nickName;
@@ -72,10 +112,12 @@ export default function ProfileEditContainer() {
       userCategory: categories,
       userKeyword: hashtags,
       userIntroduction: description,
-      userImageFileSame: true, //변경해야됨
+      userImageFileSame: imageFileSame,
     };
     return data;
   }
+
+  console.log(imageFileSame);
 
   function vocalProfileData() {
     const data: VocalProfileEditType = {
@@ -85,7 +127,7 @@ export default function ProfileEditContainer() {
       userCategory: categories,
       userKeyword: hashtags,
       userIntroduction: description,
-      userImageFileSame: true, //변경해야됨
+      userImageFileSame: imageFileSame,
       userTrackSearch: isSleep,
     };
     return data;
@@ -101,7 +143,7 @@ export default function ProfileEditContainer() {
 
   return (
     <>
-      <Header backBtn>
+      <Header backBtn prevURL={`/producer-profile/${userId}`}>
         {isUploadActive ? <UploadActiveSaveButtonIcon onClick={editProfile} /> : <UploadUnActiveSaveButtonIcon />}
       </Header>
       <ProfileBackgroundIcon />
@@ -147,7 +189,7 @@ export default function ProfileEditContainer() {
             />
             <ProfileDescriptionEdit
               description={description}
-              handleChangeDescription={handleChangeDescriptikon}
+              handleChangeDescription={handleChangeDescription}
               isProfile={true}
             />
           </ProfileEditInfoWrapper>

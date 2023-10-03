@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { PlayerPlayIc, PlayerStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import { FilteredTrackType } from "../../type/tracks";
-import test from "../../assets/ditto.mp3";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 
 const Container = styled.li<{ isHovered: boolean }>`
@@ -96,7 +96,7 @@ const TrackText = styled.div<{ isHovered: boolean }>`
   ${({ theme }) => theme.fonts.body1};
 
   padding-right: 3rem;
-  margin-left: 2.8rem;
+  margin-right: 1rem;
 
   color: ${({ theme }) => theme.colors.white};
   :hover {
@@ -106,7 +106,7 @@ const TrackText = styled.div<{ isHovered: boolean }>`
 `;
 
 const TrackTitle = styled(TrackText)`
-  width: 26rem;
+  width: 36rem;
 `;
 
 const Producer = styled(TrackText)`
@@ -125,6 +125,8 @@ const Tag = styled.span`
 
   padding: 0.7rem 1rem;
   margin: 0 0.7rem 0 0;
+
+  color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.fonts.hashtag};
   background: ${({ theme }) => theme.colors.gray4};
@@ -147,6 +149,7 @@ export default function TrackItem(props: TrackItemProps) {
     trackInfo.trackId,
     selectTrack,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isSelected) return;
@@ -157,6 +160,14 @@ export default function TrackItem(props: TrackItemProps) {
       userName: trackInfo.trackUserName,
     });
   }, [playingTrack]);
+
+  function handleMoveToTrackDetail() {
+    navigate(`/track-post/${trackInfo.trackId}`);
+  }
+
+  function handleMoveToProducer() {
+    navigate(`/producer-profile/${trackInfo.trackUserId}`);
+  }
 
   return (
     <Container
@@ -172,8 +183,12 @@ export default function TrackItem(props: TrackItemProps) {
             <PlayButton onClick={playAudioItem} />
           ))}
       </ThumnailWrapper>
-      <TrackTitle isHovered={isHovered}>{trackInfo.trackTitle}</TrackTitle>
-      <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>
+      <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
+        {trackInfo.trackTitle}
+      </TrackTitle>
+      <Producer isHovered={isHovered} onClick={handleMoveToProducer}>
+        {trackInfo.trackUserName}
+      </Producer>
       <Category isHovered={isHovered}>{trackInfo.trackCategory}</Category>
       {trackInfo.trackKeyword.map((tag) => {
         return <Tag>#{tag}</Tag>;

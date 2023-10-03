@@ -21,6 +21,23 @@ export default function SignupStep() {
     setUserType("");
   }, []);
 
+  const preventGoBack = () => {
+    window.history.pushState(null, "", window.location.href);
+    //  alert("종료하기를 눌러주세요 :D");
+  };
+
+  // 브라우저에 렌더링 시 한 번만 실행하는 코드
+  useEffect(() => {
+    (() => {
+      window.history.pushState(null, "", window.location.href);
+      window.addEventListener("popstate", preventGoBack);
+    })();
+
+    return () => {
+      window.removeEventListener("popstate", preventGoBack);
+    };
+  }, []);
+
   return (
     <>
       {conventionModalInform?.isOpen && <ConventionModal />}
@@ -51,6 +68,7 @@ const SignUpContainer = styled.div`
 `;
 
 const Img = styled.img`
+  margin-top: 11rem;
   position: absolute;
   width: 192rem;
   height: 98rem;

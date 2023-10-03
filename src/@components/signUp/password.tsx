@@ -52,7 +52,7 @@ export default function Password(props: SignupInputProps) {
                         setError("passwordConfirm", { message: PASSWORD_MESSAGE.SUCCESS });
                         if (checkEmailVerifyOKToSuccess(errors.email?.message)) {
                           setIsSuccess(true);
-                          setUserData({ ...userData, ID: getValues("email"), PW: getValues("password") });
+                          setUserData({ ...userData, userEmail: getValues("email"), userPw: getValues("password") });
                         }
                       }
                     }
