@@ -14,6 +14,7 @@ export default function useSelectCategory() {
     setCategories([...tempArray]);
   }, [isCategorySelected]);
 
+
   function handleSelectCategory(category: string) {
     setIsCategorySelected((prevState) => ({
       ...prevState,

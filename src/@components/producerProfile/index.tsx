@@ -46,7 +46,7 @@ export default function ProducerProfile() {
   }, []);
 
   function handleMoveProfileEditPage() {
-    navigate(`/profile-edit/producer/${producerProfile?.userProfile.userId}`);
+    navigate(`/profile-edit`);
   }
 
   return (
