@@ -36,5 +36,5 @@ const InfoContainer = styled.section`
 `;
 
 const DescriptionContainer = styled.div`
-  margin-left: 70rem;
+  margin-left: 5.4rem;
 `;

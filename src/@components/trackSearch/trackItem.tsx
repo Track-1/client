@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { PlayerPlayIc, PlayerStopIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
 import { FilteredTrackType } from "../../type/tracks";
+import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 
 const Container = styled.li<{ isHovered: boolean }>`
   display: flex;
@@ -28,7 +31,9 @@ const Container = styled.li<{ isHovered: boolean }>`
   border-radius: 11.7rem 0 0 11.7rem;
 `;
 
-const ThumnailWrapper = styled.div`
+const ThumnailWrapper = styled.div<{ isHovered: boolean }>`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,6 +46,21 @@ const ThumnailWrapper = styled.div`
 
   border-radius: 6.55rem;
   overflow: hidden;
+
+  ${({ isHovered }) =>
+    isHovered &&
+    css`
+      ::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* 원하는 색상과 투명도를 설정 */
+      }
+    `}
 `;
 const Thumbnail = styled.img`
   width: 100%;
@@ -48,6 +68,28 @@ const Thumbnail = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+`;
+
+const PlayButton = styled(PlayerPlayIc)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: translate(-50%, -50%);
+`;
+
+const StopButton = styled(PlayerStopIc)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: translate(-50%, -50%);
 `;
 
 const TrackText = styled.div<{ isHovered: boolean }>`
@@ -93,20 +135,31 @@ const Tag = styled.span`
 
 interface TrackItemProps {
   trackInfo: FilteredTrackType;
+  playingTrack: FilteredTrackType["trackId"] | null;
+  selectTrack: (trackId: FilteredTrackType["trackId"]) => void;
 }
 
 export default function TrackItem(props: TrackItemProps) {
-  const { trackInfo } = props;
-  const [isHovered, setIsHovered] = useState(false);
+  const { trackInfo, playingTrack, selectTrack } = props;
+  const isSelected = playingTrack === trackInfo.trackId;
+  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
+    playerContext,
+    trackInfo.trackAudioFile,
+    trackInfo.trackId,
+    selectTrack,
+  );
   const navigate = useNavigate();
 
-  function hoverTrack() {
-    setIsHovered(true);
-  }
+  useEffect(() => {
+    if (!isSelected) return;
 
-  function unhoverTrack() {
-    setIsHovered(false);
-  }
+    getPlayerInfo({
+      imageFile: trackInfo.trackImageFile,
+      title: trackInfo.trackTitle,
+      userName: trackInfo.trackUserName,
+    });
+  }, [playingTrack]);
 
   function handleMoveToTrackDetail() {
     navigate(`/track-post/${trackInfo.trackId}`);
@@ -117,9 +170,18 @@ export default function TrackItem(props: TrackItemProps) {
   }
 
   return (
-    <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
-      <ThumnailWrapper>
+    <Container
+      onMouseEnter={hoverTrack}
+      onMouseLeave={unhoverTrack}
+      isHovered={isHovered || (isSelected && showPlayer)}>
+      <ThumnailWrapper isHovered={isHovered || (isSelected && showPlayer)}>
         <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
+        {(isHovered || (isSelected && showPlayer)) &&
+          (innerPlaying && contextPlaying ? (
+            <StopButton onClick={stopAudioItem} />
+          ) : (
+            <PlayButton onClick={playAudioItem} />
+          ))}
       </ThumnailWrapper>
       <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
         {trackInfo.trackTitle}

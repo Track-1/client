@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Filter from "../@components/@common/filter";
+import Player from "../@components/@common/player";
 import TrackList from "../@components/trackSearch/trackList";
+import { PlayerProvider } from "../context/playerContext";
 import UploadButtonModal from "../@components/trackSearch/uploadButtonModal";
 import { UploadButtonIc } from "../assets";
 import useModal from "../hooks/common/useModal";
@@ -39,10 +41,13 @@ export default function TrackSearchPage() {
         <TrackSearchHeader />
       </Header>
       <Wrapper>
-        <Filter pageType="tracks" />
-        <UploadButtonIcon onClick={moveUploadPage} />
-        {openModal && <UploadButtonModal />}
-        <TrackList />
+        <PlayerProvider>
+          <Filter pageType="tracks" />
+          <UploadButtonIcon onClick={moveUploadPage} />
+          {openModal && <UploadButtonModal />}
+          <TrackList />
+          <Player />
+        </PlayerProvider>
       </Wrapper>
     </>
   );

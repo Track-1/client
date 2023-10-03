@@ -68,7 +68,6 @@ const CommentWrapper = styled.li`
   height: 8rem;
   width: 78rem;
 
-  margin-left: 15rem;
   margin-top: -3rem;
 `;
 

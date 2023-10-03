@@ -53,7 +53,6 @@ const FormTitle = styled.h1`
 const FormDescription = styled.h2`
   ${({ theme }) => theme.fonts.body1}
 
-  margin-top: 3.3rem;
   margin-left: 11rem;
   margin-bottom: 7.8rem;
 
@@ -68,7 +67,7 @@ const InputWrapper = styled.div`
   width: 100%;
   height: 11.1rem;
 
-  margin-top: 5.3rem;
+  margin-bottom: 5.3rem;
   padding: 0 11rem;
 `;
 
@@ -89,7 +88,7 @@ const InputField = styled.input<{ error: boolean }>`
 `;
 
 const ErrorMessage = styled.strong`
-  ${({ theme }) => theme.fonts.input}
+  ${({ theme }) => theme.fonts.description}
 
   width: 100%;
   height: 2rem;
@@ -99,7 +98,7 @@ const ErrorMessage = styled.strong`
   margin-top: 1.1rem;
 `;
 
-const LoginButton = styled.button<{ userType: string }>`
+const LoginButton = styled.button<{ userType: string; error: boolean }>`
   ${({ theme }) => theme.fonts.inputTitle};
   display: flex;
   justify-content: center;
@@ -110,7 +109,9 @@ const LoginButton = styled.button<{ userType: string }>`
   margin-top: 8rem;
 
   background-color: ${(props) =>
-    props.userType === ROLE.PRODUCER ? ({ theme }) => theme.colors.sub1 : ({ theme }) => theme.colors.sub2};
+    props.userType === ROLE.PRODUCER
+      ? ({ theme, error }) => (error ? theme.colors.gray4 : theme.colors.sub1)
+      : ({ theme, error }) => (error ? theme.colors.gray4 : theme.colors.sub2)};
   border-radius: 30px;
 `;
 
@@ -223,7 +224,7 @@ export default function LoginForm() {
               </InputContainer>
             </InputWrapper>
             <SwitchToggle switchUserType={switchUserType} />
-            <LoginButton type="submit" userType={userType}>
+            <LoginButton type="submit" userType={userType} error={"email" in errors || "password" in errors}>
               <LoginButtonIcon />
             </LoginButton>
             <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>

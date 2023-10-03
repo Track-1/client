@@ -20,7 +20,7 @@ const CommentContainer = styled.section`
   padding-right: 7.5rem;
 
   position: sticky;
-  z-index: 1;
+  /* z-index: 1; */
 
   top: 0;
   right: 0;
