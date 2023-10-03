@@ -76,9 +76,17 @@ export function useProfileAfterJoin() {
 }
 
 export function useLogin() {
+  const setLoginUserId = useSetRecoilState(loginUserId);
+  const setLoginUserType = useSetRecoilState(loginUserType);
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
-    onSuccess: () => {},
+    onSuccess: (response: any) => {
+      setLoginUserId(response?.data?.userId);
+      setLoginUserType(response?.data?.userType);
+      setCookie("accessToken", response?.data?.accessToken, {});
+      navigate("/");
+    },
     onError: () => {},
   });
   return {

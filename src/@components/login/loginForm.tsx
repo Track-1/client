@@ -172,6 +172,10 @@ export default function LoginForm() {
     navigate("/signup");
   }
 
+  function handleMoveToForgotPassword() {
+    navigate("/forgot-password");
+  }
+
   return (
     <>
       {conventionModalInform?.isOpen && <ConventionModal />}
@@ -222,7 +226,7 @@ export default function LoginForm() {
             <LoginButton type="submit" userType={userType}>
               <LoginButtonIcon />
             </LoginButton>
-            <ForgotEmailText>Forgot password?</ForgotEmailText>
+            <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>
           </Container>
         </form>
       </Body>
