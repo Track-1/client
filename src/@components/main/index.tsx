@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import Footer from "../@common/footer";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import styled, { css } from "styled-components";
 import { MainTracksTextIc, MainVocalsTextIc } from "../../assets";
 import hoverTracksBackground from "../../assets/image/hoverTracksImg.png";
 import hoverVocalsBackground from "../../assets/image/hoverVocalsImg.png";
@@ -10,6 +9,7 @@ import originBackground from "../../assets/image/mainBackgroundImg.png";
 import mainSloganImg from "../../assets/image/mainSloganImg.png";
 import { openConventionModal } from "../../recoil/common/conventionModal";
 import ConventionModal from "../@common/conventionModal";
+import Footer from "../@common/footer";
 import Header from "../@common/header";
 import Ads from "./ads";
 import LoginButton from "./loginButton";
@@ -93,8 +93,6 @@ const Background = styled.main<{
 `;
 
 const MainPageWrapper = styled.div`
-  position: absolute;
-
   background-color: black;
 `;
 

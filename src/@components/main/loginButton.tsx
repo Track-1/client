@@ -10,7 +10,7 @@ import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 
 export default function LoginButton() {
   const isLogined = checkIsLogin();
-  console.log(isLogined);
+
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
 
