@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Filter from "../@components/@common/filter";
+import Player from "../@components/@common/player";
 import VocalList from "../@components/vocalSearch/vocalList";
+import { PlayerProvider } from "../context/playerContext";
 
 const Wrapper = styled.section`
   display: flex;
@@ -8,8 +10,11 @@ const Wrapper = styled.section`
 export default function VocalSearchPage() {
   return (
     <Wrapper>
-      <Filter pageType="vocals" />
-      <VocalList />
+      <PlayerProvider>
+        <Filter pageType="vocals" />
+        <VocalList />
+        <Player />
+      </PlayerProvider>
     </Wrapper>
   );
 }

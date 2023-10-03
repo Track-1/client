@@ -1,11 +1,10 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useGetProducerVocalSearching } from "../../hooks/queries/mypage";
-import { clickedProfileId } from "../../recoil/common/profile";
-import ProducerBigPortfolio from "../portfolio/producerBigPortfolio";
-import ProducerSmallPortfolio from "../portfolio/producerSmallPortfolio";
+import { UserPortfolioType } from "../../type/profile";
+import ProducerVocalSearchingPortfolio from "./ProducerVocalSearchingPortfolio";
 
 const PAGE_LIMIT = 5;
 
@@ -16,23 +15,23 @@ export default function ProducerVocalSearching() {
     userId: Number(producerId),
   });
 
-  const clickedId = useRecoilValue(clickedProfileId);
-
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType["portfolioId"] | null>(null);
 
+  function selectTrack(trackId: UserPortfolioType["portfolioId"]) {
+    setPLayingTrack(trackId);
+  }
   if (producerVocalSearchings === undefined) return null;
-  console.log(producerVocalSearchings);
+
   return (
     <PortfolioWrapper>
       {producerVocalSearchings?.map((producerVocalSearchings) => {
         return (
-          <>
-            {clickedId === producerVocalSearchings.portfolioId ? (
-              <ProducerBigPortfolio producerPortfolios={producerVocalSearchings} />
-            ) : (
-              <ProducerSmallPortfolio producerPortfolios={producerVocalSearchings} />
-            )}
-          </>
+          <ProducerVocalSearchingPortfolio
+            producerVocalSearchings={producerVocalSearchings}
+            playingTrack={playingTrack}
+            selectTrack={selectTrack}
+          />
         );
       })}
       <Observer ref={observerRef} />

@@ -58,12 +58,9 @@ export interface ProducerVocalSearchingType {
 }
 
 export interface ProducerInfoType {
-  data: any;
   userType: UserType;
   userSelf: boolean;
   userProfile: UserProfileType;
-  userPortfolio: UserPortfolioType[];
-  trackList: ProducerVocalSearchingType[];
 }
 
 export interface VocalInfoParamsType extends ParamsType {
@@ -83,13 +80,11 @@ export interface VocalInfoType {
 }
 
 export interface ProducerPortfolioType {
-  portfolioList: any;
   hasNextPage: boolean;
   data: UserPortfolioType[];
 }
 
 export interface ProducerVocalSearchingInfoType {
-  trackList: any;
   hasNextPage: boolean;
   data: ProducerVocalSearchingType[];
 }

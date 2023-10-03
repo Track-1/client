@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { PlayerPlayIc, PlayerStopIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
 import { FilteredTrackType } from "../../type/tracks";
+import test from "../../assets/ditto.mp3";
+import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 
 const Container = styled.li<{ isHovered: boolean }>`
   display: flex;
@@ -130,24 +133,44 @@ const Tag = styled.span`
 
 interface TrackItemProps {
   trackInfo: FilteredTrackType;
+  playingTrack: FilteredTrackType["trackId"] | null;
+  selectTrack: (trackId: FilteredTrackType["trackId"]) => void;
 }
 
 export default function TrackItem(props: TrackItemProps) {
-  const { trackInfo } = props;
-  const [isHovered, setIsHovered] = useState(false);
+  const { trackInfo, playingTrack, selectTrack } = props;
+  const isSelected = playingTrack === trackInfo.trackId;
+  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
+    playerContext,
+    trackInfo.trackAudioFile,
+    trackInfo.trackId,
+    selectTrack,
+  );
 
-  function hoverTrack() {
-    setIsHovered(true);
-  }
+  useEffect(() => {
+    if (!isSelected) return;
 
-  function unhoverTrack() {
-    setIsHovered(false);
-  }
+    getPlayerInfo({
+      imageFile: trackInfo.trackImageFile,
+      title: trackInfo.trackTitle,
+      userName: trackInfo.trackUserName,
+    });
+  }, [playingTrack]);
+
   return (
-    <Container onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isHovered={isHovered}>
-      <ThumnailWrapper isHovered={isHovered}>
+    <Container
+      onMouseEnter={hoverTrack}
+      onMouseLeave={unhoverTrack}
+      isHovered={isHovered || (isSelected && showPlayer)}>
+      <ThumnailWrapper isHovered={isHovered || (isSelected && showPlayer)}>
         <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
-        {isHovered && <PlayButton />}
+        {(isHovered || (isSelected && showPlayer)) &&
+          (innerPlaying && contextPlaying ? (
+            <StopButton onClick={stopAudioItem} />
+          ) : (
+            <PlayButton onClick={playAudioItem} />
+          ))}
       </ThumnailWrapper>
       <TrackTitle isHovered={isHovered}>{trackInfo.trackTitle}</TrackTitle>
       <Producer isHovered={isHovered}>{trackInfo.trackUserName}</Producer>

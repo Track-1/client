@@ -27,8 +27,6 @@ const PlayImageWrapper = styled.div`
   align-items: center;
 
   overflow: hidden;
-
-  position: absolute;
 `;
 
 const PlayerImage = styled.img`
@@ -37,6 +35,4 @@ const PlayerImage = styled.img`
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
-
-  position: absolute;
 `;
