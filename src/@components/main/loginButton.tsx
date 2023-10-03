@@ -1,16 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { LoginIc, SignupIc } from "../../assets";
-import { useNavigate } from "react-router-dom";
-import MypageButton from "./mypageButton";
-import { checkIsLogin } from "../../utils/common/checkIsLogined";
-import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { ROLE } from "../../core/common/roleType";
-import { useRecoilValue } from "recoil";
+import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
+import { checkIsLogin } from "../../utils/common/checkIsLogined";
+import MypageButton from "./mypageButton";
 
 export default function LoginButton() {
   const isLogined = checkIsLogin();
-  console.log(isLogined);
+
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
 
@@ -69,11 +69,13 @@ const LoginButtonWrapper = styled.div`
 
 const LoginIcon = styled(LoginIc)`
   width: 15.9rem;
+  height: 5.2rem;
   cursor: pointer;
 `;
 
 const SignUpIcon = styled(SignupIc)`
   width: 19.5rem;
+  height: 5.2rem;
 
   margin-left: 2.2rem;
 
