@@ -6,8 +6,6 @@ import { UploadButtonIc } from "../assets";
 import useModal from "../hooks/common/useModal";
 import Header from "../@components/@common/header";
 import TrackSearchHeader from "../@components/trackSearch/trackSearchHeader/trackSearchHeader";
-import { useState } from "react";
-import { PageType } from "../type/common/pageType";
 
 const Wrapper = styled.section`
   display: flex;
@@ -35,16 +33,10 @@ export default function TrackSearchPage() {
     //   : alert("Please use this function after producer logging in.\n해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
 
-  const [pageType, setPageType] = useState<PageType>("tracks");
-
-  function changeType(pageType: PageType) {
-    setPageType(pageType);
-  }
-
   return (
     <>
       <Header homeLogo>
-        <TrackSearchHeader pageType={pageType} changeType={changeType} />
+        <TrackSearchHeader />
       </Header>
       <Wrapper>
         <Filter pageType="tracks" />

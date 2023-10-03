@@ -8,17 +8,16 @@ import { useLogin } from "../../hooks/queries/user";
 import { UserType } from "../../type/common/userType";
 import ConventionModal from "../@common/conventionModal";
 import Footer from "../@common/footer";
-import SignUpBackButton from "../signUp/signUpBackButton";
 import SwitchToggle from "./switchToggle";
-
-const BackButtonWrapper = styled.div`
-  margin: 5.9rem 0 0 7.9rem;
-`;
+import { useNavigate } from "react-router-dom";
+import InputContainer from "../@common/inputContainer";
+import { ROLE } from "../../core/common/roleType";
 
 const Container = styled.section`
   position: absolute;
   top: 9.9rem;
   left: 96rem;
+  right: 18.1rem;
 
   display: flex;
   flex-direction: column;
@@ -26,8 +25,6 @@ const Container = styled.section`
 
   width: 77.9rem;
   height: 88.8rem;
-
-  right: 18.1rem;
 
   backdrop-filter: blur(1rem);
 
@@ -47,8 +44,8 @@ const TitleWrapper = styled.div`
 const FormTitle = styled.h1`
   ${({ theme }) => theme.fonts.title}
 
-  margin-top: 9.5rem;
-  margin-left: 10.9rem;
+  margin-top: 10.9rem;
+  margin-left: 11rem;
 
   color: ${({ theme }) => theme.colors.white};
 `;
@@ -56,9 +53,9 @@ const FormTitle = styled.h1`
 const FormDescription = styled.h2`
   ${({ theme }) => theme.fonts.body1}
 
-  margin-top: 1.4rem;
-  margin-left: 10.9rem;
-  margin-bottom: 1.2rem;
+  margin-top: 3.3rem;
+  margin-left: 11rem;
+  margin-bottom: 7.8rem;
 
   color: ${({ theme }) => theme.colors.gray2};
 
@@ -72,12 +69,7 @@ const InputWrapper = styled.div`
   height: 11.1rem;
 
   margin-top: 5.3rem;
-  padding: 0 10.9rem;
-`;
-
-const InputTitle = styled.h3`
-  ${({ theme }) => theme.fonts.body1}
-  color: ${({ theme }) => theme.colors.gray2};
+  padding: 0 11rem;
 `;
 
 const InputField = styled.input<{ error: boolean }>`
@@ -86,7 +78,6 @@ const InputField = styled.input<{ error: boolean }>`
   width: 100%;
   height: 4rem;
 
-  margin-top: 2.4rem;
   padding-bottom: 1rem;
   border-bottom: 0.1rem solid ${({ theme, error }) => (error ? theme.colors.red : theme.colors.gray4)};
 
@@ -108,7 +99,7 @@ const ErrorMessage = styled.strong`
   margin-top: 1.1rem;
 `;
 
-const LoginButton = styled.button`
+const LoginButton = styled.button<{ userType: string }>`
   ${({ theme }) => theme.fonts.inputTitle};
   display: flex;
   justify-content: center;
@@ -116,9 +107,10 @@ const LoginButton = styled.button`
 
   width: 56.1rem;
   height: 6.7rem;
-  margin-top: 8.8rem;
+  margin-top: 8rem;
 
-  background-color: ${({ theme }) => theme.colors.sub1};
+  background-color: ${(props) =>
+    props.userType === ROLE.PRODUCER ? ({ theme }) => theme.colors.sub1 : ({ theme }) => theme.colors.sub2};
   border-radius: 30px;
 `;
 
@@ -143,6 +135,19 @@ const Body = styled.section`
   height: 98rem;
 `;
 
+const SignupText = styled.strong`
+  cursor: pointer;
+`;
+
+const ForgotEmailText = styled.p`
+  ${({ theme }) => theme.fonts.inputTitle};
+  color: ${({ theme }) => theme.colors.gray2};
+
+  margin-top: 3.2rem;
+
+  cursor: pointer;
+`;
+
 export default function LoginForm() {
   const {
     register,
@@ -157,9 +162,18 @@ export default function LoginForm() {
   const [userType, setUserType] = useState<UserType>("vocal");
   const { login } = useLogin();
   const { conventionModalInform } = useConventionModal();
+  const navigate = useNavigate();
 
   function switchUserType() {
     userType === "producer" ? setUserType("vocal") : setUserType("producer");
+  }
+
+  function handleMoveToSignup() {
+    navigate("/signup");
+  }
+
+  function handleMoveToForgotPassword() {
+    navigate("/forgot-password");
   }
 
   return (
@@ -177,38 +191,42 @@ export default function LoginForm() {
             <TitleWrapper>
               <FormTitle>Log in</FormTitle>
               <FormDescription>
-                If you are a new user, <strong>Sign up here</strong>
+                If you are a new user, <SignupText onClick={handleMoveToSignup}>Sign up here</SignupText>
               </FormDescription>
             </TitleWrapper>
+
             <InputWrapper>
-              <InputTitle>Email</InputTitle>
-              <InputField
-                placeholder="Enter your email address"
-                {...register("email", {
-                  pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
-                })}
-                error={"email" in errors}
-              />
+              <InputContainer title="Email">
+                <InputField
+                  placeholder="Enter your email address"
+                  {...register("email", {
+                    pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
+                  })}
+                  error={"email" in errors}
+                />
+              </InputContainer>
               <ErrorMessage>{errors.email?.message}</ErrorMessage>
             </InputWrapper>
             <InputWrapper>
-              <InputTitle>Password</InputTitle>
-              <InputField
-                placeholder="Enter your password"
-                {...register("password", {
-                  pattern: {
-                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
-                    message: "Wrong password. Try again or click Forgot password to reset it.",
-                  },
-                })}
-                error={"password" in errors}
-              />
-              <ErrorMessage>{errors.password?.message}</ErrorMessage>
+              <InputContainer title="Password">
+                <InputField
+                  placeholder="Enter your password"
+                  {...register("password", {
+                    pattern: {
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
+                      message: "Wrong password. Try again or click Forgot password to reset it.",
+                    },
+                  })}
+                  error={"password" in errors}
+                />
+                <ErrorMessage>{errors.password?.message}</ErrorMessage>
+              </InputContainer>
             </InputWrapper>
             <SwitchToggle switchUserType={switchUserType} />
-            <LoginButton type="submit">
+            <LoginButton type="submit" userType={userType}>
               <LoginButtonIcon />
             </LoginButton>
+            <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>
           </Container>
         </form>
       </Body>

@@ -33,7 +33,7 @@ export default function VocalProfile() {
   }, []);
 
   function handleMoveProfileEditPage() {
-    navigate(`/profile-edit/vocal/${vocalProfile?.userProfile.userId}`);
+    navigate(`/profile-edit`);
   }
 
   function hadnleMoveToUpload() {

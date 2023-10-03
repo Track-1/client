@@ -2,13 +2,12 @@ import styled from "styled-components";
 import { Switch } from "../@common/switch";
 
 const Container = styled.section`
-  width: 100%;
+  width: 55.9rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 
-  margin-top: 5.5rem;
-  margin-right: 11rem;
+  margin-top: 0.04rem;
 `;
 
 interface SwitchToggleProps {

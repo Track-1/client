@@ -13,7 +13,9 @@ export default function BackButton(props: BackButtonProps) {
 
   function movePreviousPage() {
     // pauseAudio();
-    prevURL && navigate(prevURL);
+    if (prevURL) {
+      prevURL === "-1" ? navigate(-1) : navigate(prevURL);
+    }
   }
 
   return (

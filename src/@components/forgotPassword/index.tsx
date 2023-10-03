@@ -7,7 +7,7 @@ import Footer from "../@common/footer";
 export default function ForgotPasswordContainer() {
   return (
     <>
-      <Header backBtn />
+      <Header backBtn prevURL="/login" />
       <MainContainer>
         <BackgroundImage src={BackgroundImg} alt="배경이미지" />
         <ForgotPasswordInput />

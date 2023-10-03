@@ -10,7 +10,7 @@ import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 
 export default function LoginButton() {
   const isLogined = checkIsLogin();
-
+  console.log(isLogined);
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
 
@@ -46,17 +46,17 @@ export default function LoginButton() {
     <>
       <LoginButtonWrapper>
         {isLogined ? (
-          <>
-            <LoginIcon onClick={handleMoveLogin} />
-            <SignUpIcon onClick={handleMoveSignUp} />
-          </>
-        ) : (
           <MypageButton
             userType={userType}
             userImage={getUserImage()}
             userName={getUserName()}
             userContact={getUserContact()}
           />
+        ) : (
+          <>
+            <LoginIcon onClick={handleMoveLogin} />
+            <SignUpIcon onClick={handleMoveSignUp} />
+          </>
         )}
       </LoginButtonWrapper>
     </>

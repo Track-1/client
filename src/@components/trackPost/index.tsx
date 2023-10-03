@@ -9,9 +9,12 @@ import Download from "./download";
 import PlayButton from "./playButton";
 import ProducerProfile from "./producerProfile";
 import ShowMore from "./showMore";
+import TrackSearchHeader from "../trackSearch/trackSearchHeader/trackSearchHeader";
+import Header from "../@common/header";
 
 export default function TrackPost() {
   const [isOpenComment, setIsOpenComment] = useState(false);
+
 
   function handleOpenComment() {
     setIsOpenComment(true);
@@ -23,11 +26,13 @@ export default function TrackPost() {
 
   return (
     <>
+      <Header homeLogo>
+        <TrackSearchHeader />
+      </Header>
       {isOpenComment && <Comments handleClosecomment={handleClosecomment} />}
-
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
-          <BackButton />
+          <BackButton prevURL="-1"/>
           <AudioTitle />
           <ProducerProfile />
           <MusicPlayingWrapper>
