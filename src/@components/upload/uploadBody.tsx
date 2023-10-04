@@ -27,7 +27,6 @@ export default function UploadBody() {
     hashtagLength,
     hashtagInputText,
     changeHashtags,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
@@ -87,7 +86,6 @@ export default function UploadBody() {
             hashtags={hashtags}
             hashtagLength={hashtagLength}
             hashtagInputText={hashtagInputText}
-            handleEnterHashtag={handleEnterHashtag}
             handleAddHashtag={handleAddHashtag}
             handleRemoveHashtag={handleRemoveHashtag}
             handleChangeHashtagInputText={handleChangeHashtagInputText}

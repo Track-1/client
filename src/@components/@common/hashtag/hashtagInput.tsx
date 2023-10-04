@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
+import { KeyboardEvent } from "react";
 
 interface HashtagInputProps {
   hashtags: string[];
   hashtagLength: number;
   hashtagInputText: string;
-  handleEnterHashtag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   handleAddHashtag: () => void;
   handleRemoveHashtag: (tag: string) => void;
   handleChangeHashtagInputText: (
@@ -18,11 +18,18 @@ export default function HashtagInput(props: HashtagInputProps) {
     hashtags,
     hashtagLength,
     hashtagInputText,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = props;
+
+  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
+    console.log("hello");
+
+    if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
+      handleAddHashtag();
+    }
+  }
 
   return (
     <>
@@ -42,7 +49,7 @@ export default function HashtagInput(props: HashtagInputProps) {
             <HashtagSharp># </HashtagSharp>
             <HashtagInputText
               placeholder="Hashtag"
-              onKeyDown={handleEnterHashtag}
+              onKeyDownCapture={handleEnterHashtag}
               onChange={handleChangeHashtagInputText}
               onBlur={handleAddHashtag}
               inputWidth={hashtagLength}

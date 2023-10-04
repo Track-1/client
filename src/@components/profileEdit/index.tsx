@@ -34,7 +34,6 @@ export default function ProfileEditContainer() {
     hashtagLength,
     hashtagInputText,
     changeHashtags,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
@@ -182,7 +181,6 @@ export default function ProfileEditContainer() {
               hashtags={hashtags}
               hashtagLength={hashtagLength}
               hashtagInputText={hashtagInputText}
-              handleEnterHashtag={handleEnterHashtag}
               handleAddHashtag={handleAddHashtag}
               handleRemoveHashtag={handleRemoveHashtag}
               handleChangeHashtagInputText={handleChangeHashtagInputText}

@@ -1,11 +1,11 @@
-import { KeyboardEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useInputText from "./useInputText";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 
 export default function useHashtagInput() {
   const [hashtagLength, setHashtagLength] = useState<number>(0);
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [hashtagInputText, handleChangeHashtagInputText, setHashtagInputText] = useInputText("", TEXT_LIMIT.HASHTAG);
+  const [hashtagInputText, handleChangeHashtagInputText, changeHashtagInputText] = useInputText("", TEXT_LIMIT.HASHTAG);
 
   useEffect(() => {
     hashtagInputText === "" ? setHashtagLength(0) : setHashtagLength(hashtagInputText.length);
@@ -15,17 +15,22 @@ export default function useHashtagInput() {
     setHashtags([...tags]);
   }
 
-  function handleAddHashtag() {
-    if (hashtagInputText && hashtags.length < 3) {
-      setHashtags((prev) => [...prev, hashtagInputText]);
-      setHashtagInputText("");
-      setHashtagLength(0);
-    }
+  function isDuplicateHashtag() {
+    const isDuplicate = hashtags.includes(hashtagInputText);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
   }
 
-  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== "Enter") return;
-    handleAddHashtag();
+  function handleAddHashtag() {
+    if (isDuplicateHashtag()) return;
+
+    if (hashtagInputText && hashtags.length < 3) {
+      const temp = [...hashtags];
+      temp.push(hashtagInputText);
+      setHashtags([...temp]);
+      changeHashtagInputText("");
+      setHashtagLength(0);
+    }
   }
 
   function handleRemoveHashtag(tag: string) {
@@ -37,7 +42,6 @@ export default function useHashtagInput() {
     hashtagLength,
     hashtagInputText,
     changeHashtags,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
