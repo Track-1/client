@@ -52,6 +52,7 @@ export default function HashtagInfo(props: HashtagInfoProps) {
 const HashtagInputWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   width: 100%;
   height: 100%;
