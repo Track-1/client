@@ -57,7 +57,7 @@ export default function ProducerProfile() {
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
-            <BackButton prevURL="-1" />
+            <BackButton prevURL="/track-search" />
             {producerProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
           </BackButtonWrapper>
           <Profile
