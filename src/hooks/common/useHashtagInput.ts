@@ -25,9 +25,7 @@ export default function useHashtagInput() {
     if (isDuplicateHashtag()) return;
 
     if (hashtagInputText && hashtags.length < 3) {
-      const temp = [...hashtags];
-      temp.push(hashtagInputText);
-      setHashtags([...temp]);
+      setHashtags((prev) => [...prev, hashtagInputText]);
       changeHashtagInputText("");
       setHashtagLength(0);
     }
