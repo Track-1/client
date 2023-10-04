@@ -6,7 +6,6 @@ interface ProfileHashtagEditProps {
   hashtags: string[];
   hashtagLength: number;
   hashtagInputText: string;
-  handleEnterHashtag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   handleAddHashtag: () => void;
   handleRemoveHashtag: (tag: string) => void;
   handleChangeHashtagInputText: (
@@ -19,7 +18,6 @@ export default function ProfileHashtagEdit(props: ProfileHashtagEditProps) {
     hashtags,
     hashtagLength,
     hashtagInputText,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
@@ -34,7 +32,6 @@ export default function ProfileHashtagEdit(props: ProfileHashtagEditProps) {
               hashtags={hashtags}
               hashtagLength={hashtagLength}
               hashtagInputText={hashtagInputText}
-              handleEnterHashtag={handleEnterHashtag}
               handleAddHashtag={handleAddHashtag}
               handleRemoveHashtag={handleRemoveHashtag}
               handleChangeHashtagInputText={handleChangeHashtagInputText}

@@ -35,7 +35,6 @@ export default function SignupProfile() {
     hashtags,
     hashtagLength,
     hashtagInputText,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
@@ -80,7 +79,6 @@ export default function SignupProfile() {
               hashtags={hashtags}
               hashtagLength={hashtagLength}
               hashtagInputText={hashtagInputText}
-              handleEnterHashtag={handleEnterHashtag}
               handleAddHashtag={handleAddHashtag}
               handleRemoveHashtag={handleRemoveHashtag}
               handleChangeHashtagInputText={handleChangeHashtagInputText}

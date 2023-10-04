@@ -21,6 +21,7 @@ import { getVocalProfile } from "../../api/profile";
 
 import { getProducerProfile } from "../../api/profile";
 import { ROLE } from "../../core/common/roleType";
+import { useNavigate } from "react-router-dom";
 
 export function useGetProducerProfile(userId: number, userType?: string) {
   const { data: producerProfile } = useQuery(
@@ -148,11 +149,12 @@ export function useGetVocalProfile(userId: number, userType?: string) {
 }
 
 export function useUploadProducerPortfolio() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       alert("업로드 성공");
+      navigate(-1);
     },
     onError: () => {},
   });
@@ -163,11 +165,12 @@ export function useUploadProducerPortfolio() {
 }
 
 export function useUploadVocalPortfolio() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
     onSuccess: (data) => {
-      console.log(data);
       alert("업로드 성공");
+      navigate(-1);
     },
     onError: () => {},
   });
@@ -178,12 +181,13 @@ export function useUploadVocalPortfolio() {
 }
 
 export function useEditProducerPortfolio() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchProducerPortfolio(trackId, formData),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       alert("업로드 성공");
+      navigate(-1);
     },
     onError: () => {},
   });
@@ -194,12 +198,13 @@ export function useEditProducerPortfolio() {
 }
 
 export function useEditVocalPortfolio() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchVocalPortfolio(trackId, formData),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       alert("업로드 성공");
+      navigate(-1);
     },
     onError: () => {},
   });

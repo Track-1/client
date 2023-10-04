@@ -6,7 +6,7 @@ export default function UploadInfoBox(props: PropsWithChildren) {
   return <Container>{children}</Container>;
 }
 
-const Container = styled.div`
+const Container = styled.li`
   display: flex;
   align-items: center;
 
