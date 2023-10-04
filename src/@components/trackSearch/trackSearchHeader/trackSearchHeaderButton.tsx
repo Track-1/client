@@ -34,15 +34,13 @@ export default function TrackSearchHeaderButton() {
 
   return (
     <>
-      {checkIsLogin() ? (
+      {checkIsLogin() && (
         <HeaderButtonWrapper onClick={handleMoveToProfile}>
           <ProducerImageLayout>
             <ProducerProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
           </ProducerImageLayout>
           <RightArrorIcon />
         </HeaderButtonWrapper>
-      ) : (
-        <Blank />
       )}
     </>
   );
