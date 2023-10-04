@@ -9,12 +9,13 @@ interface HeaderProps {
   prevURL?: string;
   homeLogo?: boolean;
   slogan?: boolean;
+  headerFixed?: boolean;
 
   children?: ReactNode;
 }
 
 export default function Header(props: HeaderProps) {
-  const { backBtn, homeLogo, prevURL, slogan, children } = props;
+  const { backBtn, homeLogo, prevURL, slogan, headerFixed, children } = props;
 
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ export default function Header(props: HeaderProps) {
   }
 
   return (
-    <Container>
+    <Container headerFixed={headerFixed}>
       <Wrapper>
         {homeLogo && <HomeLogoIcon onClick={handleMoveToHome} />}
         {backBtn && <BackButton prevURL={prevURL} />}
@@ -34,13 +35,13 @@ export default function Header(props: HeaderProps) {
   );
 }
 
-const Container = styled.header`
+const Container = styled.header<{ headerFixed: boolean | undefined }>`
   display: flex;
   justify-content: center;
 
   width: 100%;
   height: 14.3rem;
-  position: fixed;
+  position: ${(props) => (props.headerFixed ? "fixed" : "default")};
 
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 `;

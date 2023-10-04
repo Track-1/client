@@ -37,7 +37,7 @@ export default function TrackSearchPage() {
 
   return (
     <>
-      <Header homeLogo>
+      <Header homeLogo headerFixed>
         <TrackSearchHeader />
       </Header>
       <Wrapper>

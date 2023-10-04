@@ -130,7 +130,7 @@ const UploadDataWrapper = styled.div`
   height: 100%;
 `;
 
-const UploadInfoWrapper = styled.div`
+const UploadInfoWrapper = styled.ul`
   width: 100%;
 
   margin-top: 2.9rem;
