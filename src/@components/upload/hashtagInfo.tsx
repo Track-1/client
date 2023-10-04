@@ -8,7 +8,6 @@ interface HashtagInfoProps {
   hashtags: string[];
   hashtagLength: number;
   hashtagInputText: string;
-  handleEnterHashtag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   handleAddHashtag: () => void;
   handleRemoveHashtag: (tag: string) => void;
   handleChangeHashtagInputText: (
@@ -21,7 +20,6 @@ export default function HashtagInfo(props: HashtagInfoProps) {
     hashtags,
     hashtagLength,
     hashtagInputText,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
@@ -40,7 +38,6 @@ export default function HashtagInfo(props: HashtagInfoProps) {
             hashtags={hashtags}
             hashtagLength={hashtagLength}
             hashtagInputText={hashtagInputText}
-            handleEnterHashtag={handleEnterHashtag}
             handleAddHashtag={handleAddHashtag}
             handleRemoveHashtag={handleRemoveHashtag}
             handleChangeHashtagInputText={handleChangeHashtagInputText}
@@ -55,6 +52,7 @@ export default function HashtagInfo(props: HashtagInfoProps) {
 const HashtagInputWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   width: 100%;
   height: 100%;

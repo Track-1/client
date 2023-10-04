@@ -27,7 +27,6 @@ export default function UploadBody() {
     hashtagLength,
     hashtagInputText,
     changeHashtags,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
@@ -87,7 +86,6 @@ export default function UploadBody() {
             hashtags={hashtags}
             hashtagLength={hashtagLength}
             hashtagInputText={hashtagInputText}
-            handleEnterHashtag={handleEnterHashtag}
             handleAddHashtag={handleAddHashtag}
             handleRemoveHashtag={handleRemoveHashtag}
             handleChangeHashtagInputText={handleChangeHashtagInputText}
@@ -130,7 +128,7 @@ const UploadDataWrapper = styled.div`
   height: 100%;
 `;
 
-const UploadInfoWrapper = styled.div`
+const UploadInfoWrapper = styled.ul`
   width: 100%;
 
   margin-top: 2.9rem;

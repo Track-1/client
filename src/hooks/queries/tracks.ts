@@ -10,6 +10,7 @@ import {
 } from "../../api/tracks";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredTrackParamsType } from "../../type/tracks";
+import { useNavigate } from "react-router-dom";
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
   const fetchTracks = async (pageParams: number) => {
@@ -72,11 +73,13 @@ export function useTrackDownload(trackId: number, isDownload: boolean | undefine
 }
 
 export function useUploadTrack() {
+  const navigate = useNavigate();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),
     onSuccess: (data) => {
-      console.log(data);
       alert("업로드 성공");
+      navigate(-1);
     },
     onError: () => {},
   });
@@ -87,11 +90,12 @@ export function useUploadTrack() {
 }
 
 export function useEditTrack() {
+  const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
     onSuccess: (data) => {
-      console.log(data);
       alert("업로드 성공");
+      navigate(-1);
     },
     onError: () => {},
   });

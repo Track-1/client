@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
+import { KeyboardEvent, useEffect, useRef } from "react";
 
 interface HashtagInputProps {
   hashtags: string[];
   hashtagLength: number;
   hashtagInputText: string;
-  handleEnterHashtag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   handleAddHashtag: () => void;
   handleRemoveHashtag: (tag: string) => void;
   handleChangeHashtagInputText: (
@@ -18,21 +18,52 @@ export default function HashtagInput(props: HashtagInputProps) {
     hashtags,
     hashtagLength,
     hashtagInputText,
-    handleEnterHashtag,
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = props;
 
+  const hashtagRef = useRef<HTMLInputElement | null>(null);
+  const hashtagDeleteRef = useRef<SVGSVGElement | null>(null);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", clickOutSide);
+    };
+  });
+
+  function clickOutSide(e: any) {
+    if (
+      !hashtagRef.current?.contains(e.target) &&
+      !hashtagDeleteRef.current?.contains(e.target) &&
+      hashtagRef.current?.value
+    ) {
+      handleAddHashtag();
+    }
+  }
+
+  function isDuplicateHashtag() {
+    const isDuplicate = hashtags.includes(hashtagInputText);
+    isDuplicate && alert("중복된 해시태그 입니다!");
+    return isDuplicate;
+  }
+
+  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && e.nativeEvent.isComposing === false && !isDuplicateHashtag()) {
+      handleAddHashtag();
+    }
+  }
+
   return (
     <>
-      {hashtags.map((tag, index) => (
+      {hashtags.map((tag) => (
         <HashtagBox key={tag}>
           <CompleteHashtagWrapper>
             <HashtagSharp># </HashtagSharp>
             <CompletedHashtag>{tag}</CompletedHashtag>
           </CompleteHashtagWrapper>
-          <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} />
+          <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} ref={hashtagDeleteRef} />
         </HashtagBox>
       ))}
 
@@ -42,11 +73,11 @@ export default function HashtagInput(props: HashtagInputProps) {
             <HashtagSharp># </HashtagSharp>
             <HashtagInputText
               placeholder="Hashtag"
-              onKeyDown={handleEnterHashtag}
+              onKeyDownCapture={handleEnterHashtag}
               onChange={handleChangeHashtagInputText}
-              onBlur={handleAddHashtag}
               inputWidth={hashtagLength}
               value={hashtagInputText}
+              ref={hashtagRef}
             />
           </HashtagWrapper>
         </HashtagBox>
