@@ -79,11 +79,14 @@ export function useLogin() {
   const setLoginUserId = useSetRecoilState(loginUserId);
   const setLoginUserType = useSetRecoilState(loginUserType);
   const navigate = useNavigate();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
     onSuccess: (response: any) => {
       setLoginUserId(response?.data?.userId);
       setLoginUserType(response?.data?.userType);
+      
+      console.log(response?.data?.accessToken);
       setCookie("accessToken", response?.data?.accessToken, {});
       navigate("/");
     },
