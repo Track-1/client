@@ -4,13 +4,12 @@ import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaul
 import useFileHover from "../../../hooks/common/useFileHover";
 
 interface ProducerImageEditProps {
-  imageFile: File | Blob | null;
   previewImage: string | null;
   handleUploadImageFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function ProducerImageEdit(props: ProducerImageEditProps) {
-  const { imageFile, previewImage, handleUploadImageFile } = props;
+  const { previewImage, handleUploadImageFile } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
   return (
@@ -21,9 +20,9 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
             src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
             alt="썸네일 이미지"
             fileHoverState={fileHoverState}
-            imageFile={imageFile}
+            previewImage={previewImage}
           />
-          {imageFile && fileHoverState && <FileChangeIcon />}
+          {previewImage && fileHoverState && <FileChangeIcon />}
           <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
         </Label>
       </ProfileImageContainer>
@@ -31,13 +30,15 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
   );
 }
 
-export const FileChangeIcon = styled(UploadFileChangeIc)`
-  width: 18.9rem;
+const FileChangeIcon = styled(UploadFileChangeIc)`
   position: absolute;
-  top: 47.95rem;
-  left: 42.8rem;
+
+  top: 13.55rem;
+  left: 8.95rem;
+
+  width: 18.9rem;
+
   cursor: pointer;
-  z-index: 999900;
 `;
 
 const ProfileImageContainer = styled.label`
@@ -59,9 +60,9 @@ const ProfileImageContainer = styled.label`
   cursor: pointer;
 `;
 
-const ProfileImage = styled.img<{ fileHoverState: boolean; imageFile: File | Blob | null }>`
-  width: 100%;
-  height: 100%;
+const ProfileImage = styled.img<{ fileHoverState: boolean; previewImage: string | null }>`
+  width: 36.8rem;
+  height: 36.8rem;
 
   margin: auto;
 
@@ -69,7 +70,7 @@ const ProfileImage = styled.img<{ fileHoverState: boolean; imageFile: File | Blo
   object-fit: cover;
   border-radius: 50%;
   ${(props) =>
-    props.fileHoverState && props.imageFile
+    props.fileHoverState && props.previewImage !== ""
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);
