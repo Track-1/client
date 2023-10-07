@@ -18,9 +18,7 @@ const CommentContainer = styled.section`
   padding-left: 6.5rem;
   padding-top: 6.1rem;
   padding-right: 7.5rem;
-
-  position: sticky;
-  /* z-index: 1; */
+  position: fixed;
 
   top: 0;
   right: 0;

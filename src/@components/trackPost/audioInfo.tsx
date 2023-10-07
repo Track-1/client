@@ -31,7 +31,6 @@ const InfoContainer = styled.section`
   display: flex;
   align-items: center;
 
-  margin-top: 3.1rem;
   margin-left: 8.9rem;
 `;
 

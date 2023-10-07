@@ -5,14 +5,14 @@ import { CommentBtnIc, TrackPostPauseBtnIc, TrackPostPlayBtnIc } from "../../ass
 import { PlayerContext } from "../../context/playerContext";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 import BackButton from "../@common/backButton";
+import Header from "../@common/header";
+import TrackSearchHeader from "../trackSearch/trackSearchHeader/trackSearchHeader";
 import AudioInfo from "./audioInfo";
 import AudioTitle from "./audioTitle";
 import Comments from "./comments";
 import Download from "./download";
 import ProducerProfile from "./producerProfile";
 import ShowMore from "./showMore";
-import TrackSearchHeader from "../trackSearch/trackSearchHeader/trackSearchHeader";
-import Header from "../@common/header";
 
 export default function TrackPost() {
   const [isOpenComment, setIsOpenComment] = useState(false);
@@ -26,13 +26,9 @@ export default function TrackPost() {
     stopContextState,
     contextPlaying,
     getPlayerInfo,
+    closeAudioPlayer,
   } = useContext(PlayerContext);
   const { trackDetail } = useTrackDetail(Number(id));
-
-
-  function handleOpenComment() {
-    setIsOpenComment(true);
-  }
 
   function handleClosecomment() {
     setIsOpenComment(false);
@@ -50,13 +46,19 @@ export default function TrackPost() {
     stopContextState();
   }
 
+  function handleOpenComment() {
+    setIsOpenComment(true);
+    stop();
+    closeAudioPlayer();
+  }
+
   useEffect(() => {
     getPlayerInfo({
       imageFile: trackDetail?.trackImageFile,
       title: trackDetail?.trackTitle,
       userName: trackDetail?.trackUserName,
     });
-  }, []);
+  }, [trackDetail]);
 
   return (
     <>
@@ -64,9 +66,11 @@ export default function TrackPost() {
         <TrackSearchHeader />
       </Header>
       {isOpenComment && <Comments handleClosecomment={handleClosecomment} />}
+      <BackButtonWrapper>
+        <BackButton prevURL="-1" />
+      </BackButtonWrapper>
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
-          <BackButton prevURL="-1"/>
           <AudioTitle />
           <ProducerProfile />
           <MusicPlayingWrapper>
@@ -82,11 +86,16 @@ export default function TrackPost() {
   );
 }
 
+const BackButtonWrapper = styled.div`
+  margin-left: 7.6rem;
+
+  margin-bottom: -4rem;
+`;
+
 const CommentBtnIcon = styled(CommentBtnIc)`
-  position: fixed;
   width: 23rem;
-  margin-top: 4.7rem;
-  right: 7.5rem;
+  margin-top: 4rem;
+  margin-right: 7.5rem;
 
   float: right;
 
