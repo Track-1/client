@@ -1,10 +1,11 @@
+import { useContext } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
-import { PlayerProvider } from "../../context/playerContext";
+import { PlayerContext } from "../../context/playerContext";
 import useModal from "../../hooks/common/useModal";
 import {
   useGetProducerPortfolio,
@@ -13,7 +14,6 @@ import {
 } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
 import BackButton from "../@common/backButton";
-import Player from "../@common/player";
 import Profile from "../profile";
 import ProducerPortfolioInform from "./producerPortfolioInform";
 import ProducerPortfolioList from "./producerPortfolioList";
@@ -39,6 +39,8 @@ export default function ProducerProfile() {
     userId: Number(producerId),
   });
 
+  const { quitAudioForMovePage } = useContext(PlayerContext);
+
   const dataState = useRecoilValue(producerState);
   const { openModal, showModal } = useModal();
 
@@ -48,6 +50,7 @@ export default function ProducerProfile() {
   }, []);
 
   function handleMoveProfileEditPage() {
+    quitAudioForMovePage();
     navigate(`/profile-edit`);
   }
 
@@ -68,40 +71,37 @@ export default function ProducerProfile() {
         </ProfileSection>
         {producerProfile?.userSelf && <UploadButtonIcon onClick={showModal} />}
 
-        <PlayerProvider>
-          <PortfolioSection>
-            {dataState === "Portfolio" ? (
-              <>
-                {producerPortfolios && producerPortfolios.length > 0 ? (
-                  <>
-                    <DataWrapper>
-                      <ProducerPortfolioList />
-                    </DataWrapper>
-                    <ProducerPortfolioInform isMe={producerProfile?.userSelf} />
-                  </>
-                ) : (
-                  <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
-                )}
-              </>
-            ) : (
-              <>
-                {producerVocalSearchings && producerVocalSearchings.length > 0 ? (
-                  <>
-                    <DataWrapper>
-                      <ProducerVocalSearching />
-                    </DataWrapper>
-                    <ProducerVocalSearchingInform isMe={producerProfile?.userSelf} />
-                  </>
-                ) : (
-                  <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
-                )}
-              </>
-            )}
+        <PortfolioSection>
+          {dataState === "Portfolio" ? (
+            <>
+              {producerPortfolios && producerPortfolios.length > 0 ? (
+                <>
+                  <DataWrapper>
+                    <ProducerPortfolioList />
+                  </DataWrapper>
+                  <ProducerPortfolioInform isMe={producerProfile?.userSelf} />
+                </>
+              ) : (
+                <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
+              )}
+            </>
+          ) : (
+            <>
+              {producerVocalSearchings && producerVocalSearchings.length > 0 ? (
+                <>
+                  <DataWrapper>
+                    <ProducerVocalSearching />
+                  </DataWrapper>
+                  <ProducerVocalSearchingInform isMe={producerProfile?.userSelf} />
+                </>
+              ) : (
+                <ProducerEmptyProfileImage src={ProducerEmptyProfileImg} />
+              )}
+            </>
+          )}
 
-            <ProducerProfileShadow />
-          </PortfolioSection>
-          <Player />
-        </PlayerProvider>
+          <ProducerProfileShadow />
+        </PortfolioSection>
       </Container>
     </>
   );
