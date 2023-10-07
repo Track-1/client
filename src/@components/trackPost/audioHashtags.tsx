@@ -43,6 +43,7 @@ const TagWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  width: 35rem;
 `;
 
 const HashTagIconWrapper = styled.div`
