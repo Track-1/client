@@ -57,7 +57,7 @@ export default function Main() {
 
   return (
     <>
-      <Header homeLogo slogan>
+      <Header homeLogo slogan headerFixed>
         <LoginButton />
       </Header>
       <MainPageWrapper>
@@ -163,6 +163,7 @@ const TracksTextIcon = styled(MainTracksTextIc)<{ isTracksHover: boolean }>`
 
 const MainSlogan = styled.img`
   position: absolute;
+
   top: 50.6rem;
   left: 8.7rem;
 

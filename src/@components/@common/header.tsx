@@ -42,7 +42,6 @@ const Container = styled.header<{ headerFixed: boolean | undefined }>`
   width: 100%;
   height: 14.3rem;
   position: ${(props) => (props.headerFixed ? "fixed" : "default")};
-
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 `;
 
