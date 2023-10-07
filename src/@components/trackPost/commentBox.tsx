@@ -1,17 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
 import { CommentUpldatCompleteIc, PlayerPlayIc, PlayerStopIc, QuitIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 import { useEditComment } from "../../hooks/queries/comments";
-import { playMusic } from "../../recoil/common/playMusic";
-import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
+import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentUpdateData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
-import { checkIsClickedNothing, checkIsSameId } from "../../utils/common/checkHover";
 import CommentInfo from "./commentInfo";
-import CommentProfileEventBox from "./commentProfileEventBox";
 import CommentWrite from "./commentWrite";
 
 interface CommentBoxProps {
@@ -32,6 +30,9 @@ export default function CommentBox(props: CommentBoxProps) {
     userSelf,
     commentAudioFileName,
   } = eachComment;
+
+  const { id } = useParams();
+  const { trackDetail } = useTrackDetail(Number(id));
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [comment, setComment] = useRecoilState(commentUpdateData);
@@ -61,7 +62,7 @@ export default function CommentBox(props: CommentBoxProps) {
 
     getPlayerInfo({
       imageFile: userImageFile,
-      title: commentAudioFileName,
+      title: trackDetail?.trackAudioFileName,
       userName: userName,
     });
   }, [playingTrack]);
@@ -107,42 +108,12 @@ const UpdateCommentContainer = styled.section`
   flex-direction: column;
 `;
 
-const ProfileImage = styled.img`
-  width: 100%;
-  height: 100%;
-
-  position: absolute;
-  transform: translate(50, 50);
-  object-fit: cover;
-  margin: auto;
-
-  cursor: pointer;
-`;
-
-const ProfileImageWrapper = styled.div`
-  height: 9rem;
-  width: 9rem;
-
-  border-radius: 9rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: absolute;
-  overflow: hidden;
-
-  margin-left: 3.6rem;
-
-  cursor: pointer;
-`;
-
 const CommentContainer = styled.article<{ commentActive: boolean }>`
   display: flex;
   align-items: center;
 
   position: relative;
-  height: 17.4rem;
+  height: 14.2rem;
 
   border: 0.2rem solid transparent;
   border-top-left-radius: 11.7rem;

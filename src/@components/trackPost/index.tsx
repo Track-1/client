@@ -66,18 +66,19 @@ export default function TrackPost() {
         <TrackSearchHeader />
       </Header>
       {isOpenComment && <Comments handleClosecomment={handleClosecomment} />}
-      <BackButtonWrapper>
-        <BackButton prevURL="-1" />
-      </BackButtonWrapper>
+
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
-          <AudioTitle />
-          <ProducerProfile />
-          <MusicPlayingWrapper>
-            <Download />
-            {contextPlaying ? <TrackPostPauseBtnIcon onClick={stop} /> : <TrackPostPlayBtnIcon onClick={play} />}
-            <ShowMore />
-          </MusicPlayingWrapper>
+          <BackButton prevURL="-1" />
+          <TrackPostInform>
+            <AudioTitle />
+            <ProducerProfile />
+            <MusicPlayingWrapper>
+              <Download />
+              {contextPlaying ? <TrackPostPauseBtnIcon onClick={stop} /> : <TrackPostPlayBtnIcon onClick={play} />}
+              <ShowMore />
+            </MusicPlayingWrapper>
+          </TrackPostInform>
         </AudioBasicInfoWrapper>
         <AudioInfo />
       </TrackPostWrapper>
@@ -86,10 +87,12 @@ export default function TrackPost() {
   );
 }
 
-const BackButtonWrapper = styled.div`
-  margin-left: 7.6rem;
+const TrackPostInform = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 60rem;
 
-  margin-bottom: -4rem;
+  justify-content: center;
 `;
 
 const CommentBtnIcon = styled(CommentBtnIc)`
