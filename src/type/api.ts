@@ -12,7 +12,7 @@ import { UserEmailType, UserLoginInfo, UserPasswordType, UserProfileType, Verify
 import { FilteredVocalListType } from "./vocals";
 
 export type DefaultResponseType<T = unknown> = {
-  status: number;
+  status: number | string;
   success: boolean;
   message: string;
   data: T;
