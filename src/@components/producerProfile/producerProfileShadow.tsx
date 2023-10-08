@@ -40,10 +40,9 @@ const RightArrorIcon = styled(RightArrorIc)`
 
 const ProducerProfileShadowWrapper = styled.section`
   position: fixed;
-  z-index: -1;
 `;
 const ProducerProfileShadowIcon = styled(ProducerProfileShadowIc)`
-  position: relative;
+  position: fixed;
   z-index: -2;
 `;
 
@@ -60,7 +59,8 @@ const Title = styled.p<{ isSelected: boolean }>`
 const TitleWrapper = styled.header`
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
+  z-index: 1;
 
   margin: 6rem 0 0 5.6rem;
 `;
