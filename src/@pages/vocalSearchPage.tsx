@@ -13,16 +13,16 @@ const Wrapper = styled.section`
 export default function VocalSearchPage() {
   return (
     <>
-      <Header homeLogo>
-        <TrackSearchHeader />
-      </Header>
-      <Wrapper>
-        <PlayerProvider>
+      <PlayerProvider>
+        <Header homeLogo>
+          <TrackSearchHeader pageType="vocals" />
+        </Header>
+        <Wrapper>
           <Filter pageType="vocals" />
           <VocalList />
           <Player />
-        </PlayerProvider>
-      </Wrapper>
+        </Wrapper>
+      </PlayerProvider>
     </>
   );
 }
