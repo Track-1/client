@@ -150,20 +150,12 @@ export default function ProfileEditContainer() {
         <ProfileEditTitle>
           {userType === ROLE.PRODUCER ? (
             <>
-              <ProducerImageEdit
-                imageFile={imageFile}
-                previewImage={previewImage}
-                handleUploadImageFile={handleUploadImageFile}
-              />
+              <ProducerImageEdit previewImage={previewImage} handleUploadImageFile={handleUploadImageFile} />
               <ProfileNameEdit methods={nameMethods} />
             </>
           ) : (
             <>
-              <VocalImageEdit
-                imageFile={imageFile}
-                previewImage={previewImage}
-                handleUploadImageFile={handleUploadImageFile}
-              />
+              <VocalImageEdit previewImage={previewImage} handleUploadImageFile={handleUploadImageFile} />
               <ProfileNameEdit methods={nameMethods} />
               <VocalSleeper isSleep={isSleep} handleChangeIsSleep={handleChangeIsSleep} />
             </>

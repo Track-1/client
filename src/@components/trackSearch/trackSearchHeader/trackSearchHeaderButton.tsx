@@ -1,7 +1,5 @@
 import { useRecoilValue } from "recoil";
 import { useGetProducerProfile, useGetVocalProfile } from "../../../hooks/queries/mypage";
-import { ProducerImageLayout, ProducerProfileImage } from "../../main/mypageButton";
-
 import { loginUserId, loginUserType } from "../../../recoil/common/loginUserData";
 import { ROLE } from "../../../core/common/roleType";
 import styled from "styled-components";
@@ -36,9 +34,9 @@ export default function TrackSearchHeaderButton() {
     <>
       {checkIsLogin() && (
         <HeaderButtonWrapper onClick={handleMoveToProfile}>
-          <ProducerImageLayout>
-            <ProducerProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
-          </ProducerImageLayout>
+          <ProfileImageLayout>
+            <ProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
+          </ProfileImageLayout>
           <RightArrorIcon />
         </HeaderButtonWrapper>
       )}
@@ -57,7 +55,18 @@ const RightArrorIcon = styled(RightArrorIc)`
   margin-left: 1.4rem;
 `;
 
-const Blank = styled.div`
+export const ProfileImageLayout = styled.div`
+  width: 4.6rem;
+  height: 4.6rem;
+
+  border-radius: 50%;
+  border: 0.1rem solid ${({ theme }) => theme.colors.white};
+
+  object-fit: cover;
+  overflow: hidden;
+`;
+
+export const ProfileImage = styled.img`
   width: 100%;
-  height: 100%; ;
+  height: 100%;
 `;
