@@ -152,7 +152,7 @@ const ForgotEmailText = styled.p`
 export default function LoginForm() {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
   } = useForm({
     defaultValues: {
@@ -161,7 +161,7 @@ export default function LoginForm() {
     },
   });
   const [userType, setUserType] = useState<UserType>("vocal");
-  const { login } = useLogin();
+  const { login, error } = useLogin();
   const { conventionModalInform } = useConventionModal();
   const navigate = useNavigate();
 
@@ -206,7 +206,10 @@ export default function LoginForm() {
                   error={"email" in errors}
                 />
               </InputContainer>
-              <ErrorMessage>{errors.email?.message}</ErrorMessage>
+              <ErrorMessage>
+                {errors.email?.message ||
+                  (error?.response?.data.status === "U003" && "We don't have an account with that emial adress")}
+              </ErrorMessage>
             </InputWrapper>
             <InputWrapper>
               <InputContainer title="Password">
@@ -220,11 +223,18 @@ export default function LoginForm() {
                   })}
                   error={"password" in errors}
                 />
-                <ErrorMessage>{errors.password?.message}</ErrorMessage>
+                <ErrorMessage>
+                  {errors.password?.message ||
+                    (error?.response?.data.status === "U002" &&
+                      "Wrong password. Try again or click Forgot password to reset it")}
+                </ErrorMessage>
               </InputContainer>
             </InputWrapper>
             <SwitchToggle switchUserType={switchUserType} />
-            <LoginButton type="submit" userType={userType} error={"email" in errors || "password" in errors}>
+            <LoginButton
+              type="submit"
+              userType={userType}
+              error={!isDirty || "email" in errors || "password" in errors}>
               <LoginButtonIcon />
             </LoginButton>
             <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>
