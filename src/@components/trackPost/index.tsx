@@ -51,12 +51,6 @@ export default function TrackPost() {
     stopContextState();
   }
 
-  function handleOpenComment() {
-    setIsOpenComment(true);
-    stop();
-    closeAudioPlayer();
-  }
-
   useEffect(() => {
     getPlayerInfo({
       imageFile: trackDetail?.trackImageFile,
