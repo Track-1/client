@@ -15,6 +15,7 @@ export const PlayerContext = createContext<any>({
   audio: new Audio(),
   playerInfo: {},
   getPlayerInfo: (info: any) => {},
+  quitAudioForMovePage: () => {},
 });
 
 export function PlayerProvider({ children }: PropsWithChildren) {
@@ -37,6 +38,11 @@ export function PlayerProvider({ children }: PropsWithChildren) {
     setPlayerInfo(info);
   }
 
+  function quitAudioForMovePage() {
+    quitAudio();
+    closeAudioPlayer();
+  }
+
   return (
     <PlayerContext.Provider
       value={{
@@ -53,6 +59,7 @@ export function PlayerProvider({ children }: PropsWithChildren) {
         audio,
         playerInfo,
         getPlayerInfo,
+        quitAudioForMovePage,
       }}>
       {children}
     </PlayerContext.Provider>

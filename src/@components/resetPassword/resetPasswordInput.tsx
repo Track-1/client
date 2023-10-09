@@ -21,20 +21,7 @@ export default function ResetPasswordInput() {
     mode: "onChange",
   });
 
-  const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
-
   const { patchPassword } = usePatchPassword();
-
-  useEffect(() => {
-    if (
-      checkPasswordForm(methods.getValues().password) &&
-      checkPasswordMatch(methods.getValues().passwordConfirm, methods.getValues().password)
-    ) {
-      setButtonColor(theme.colors.main);
-    } else {
-      setButtonColor(theme.colors.gray4);
-    }
-  }, [methods.getValues().password, methods.getValues().passwordConfirm]);
 
   function isActive() {
     return (

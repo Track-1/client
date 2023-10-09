@@ -1,16 +1,16 @@
 import styled, { css } from "styled-components";
 import UploadVocalDefaultImg from "../../../assets/image/uploadVocalDefaultImg.png";
-import { FileChangeIcon, FileInput, Label } from "../producerProfileEdit/producerImageEdit";
+import { FileInput, Label } from "../producerProfileEdit/producerImageEdit";
 import useFileHover from "../../../hooks/common/useFileHover";
+import { UploadFileChangeIc } from "../../../assets";
 
 interface VocalImageEditProps {
-  imageFile: File | Blob | null;
   previewImage: string | null;
   handleUploadImageFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function VocalImageEdit(props: VocalImageEditProps) {
-  const { imageFile, previewImage, handleUploadImageFile } = props;
+  const { previewImage, handleUploadImageFile } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
   return (
@@ -22,9 +22,9 @@ export default function VocalImageEdit(props: VocalImageEditProps) {
               src={previewImage === "" ? UploadVocalDefaultImg : previewImage}
               alt="썸네일 이미지"
               fileHoverState={fileHoverState}
-              imageFile={imageFile}
+              previewImage={previewImage}
             />
-            {imageFile && fileHoverState && <FileChangeIcon />}
+            {previewImage && fileHoverState && <FileChangeIcon />}
             <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
           </Label>
         </ImageWrapper>
@@ -65,7 +65,7 @@ const ImageWrapper = styled.div`
   cursor: pointer;
 `;
 
-const ProfileImage = styled.img<{ fileHoverState: boolean; imageFile: File | Blob | null }>`
+const ProfileImage = styled.img<{ fileHoverState: boolean; previewImage: string | null }>`
   width: 37.9rem;
   height: 37.9rem;
 
@@ -79,7 +79,7 @@ const ProfileImage = styled.img<{ fileHoverState: boolean; imageFile: File | Blo
   object-fit: cover;
   border-radius: 50%;
   ${(props) =>
-    props.fileHoverState && props.imageFile
+    props.fileHoverState && props.previewImage !== ""
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);
@@ -88,4 +88,17 @@ const ProfileImage = styled.img<{ fileHoverState: boolean; imageFile: File | Blo
           background: default;
           filter: default;
         `}
+`;
+
+const FileChangeIcon = styled(UploadFileChangeIc)`
+  position: absolute;
+
+  top: 9.6rem;
+  left: 5.3rem;
+
+  width: 18.9rem;
+
+  transform: rotate(45deg);
+
+  cursor: pointer;
 `;

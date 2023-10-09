@@ -69,7 +69,7 @@ export default function UploadHeader() {
       formData.append("trackAudioFileName", uploadData.audioFileName);
       formData.append("trackTitle", uploadData.title);
       formData.append("trackCategory", uploadData.category);
-      formData.append("trackContent", uploadData.introduction);
+      formData.append("trackIntroduce", uploadData.introduction);
       for (let i = 0; i < uploadData.keyword.length; i++) {
         formData.append(`trackKeyword[${i}]`, uploadData.keyword[i]);
       }
