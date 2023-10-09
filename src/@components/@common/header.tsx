@@ -1,7 +1,9 @@
+import { useContext } from "react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { HomeLogoIc, SloganIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
 import BackButton from "./backButton";
 
 interface HeaderProps {
@@ -18,8 +20,10 @@ export default function Header(props: HeaderProps) {
   const { backBtn, homeLogo, prevURL, slogan, headerFixed, children } = props;
 
   const navigate = useNavigate();
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function handleMoveToHome() {
+    quitAudioForMovePage();
     navigate("/");
   }
 

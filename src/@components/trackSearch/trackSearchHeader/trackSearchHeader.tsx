@@ -1,11 +1,18 @@
-import TrackSearchHeaderNav from "./trackSearchHeaderNav";
+import PageTypeNav from "./PageTypeNav";
 import TrackSearchHeaderButton from "./trackSearchHeaderButton";
 import styled from "styled-components";
+import { PageType } from "../../../type/common/pageType";
 
-export default function TrackSearchHeader() {
+interface TrackSearchHeaderProps {
+  pageType: PageType;
+}
+
+export default function TrackSearchHeader(props: TrackSearchHeaderProps) {
+  const { pageType } = props;
+
   return (
     <HeaderWrapper>
-      <TrackSearchHeaderNav />
+      <PageTypeNav pageType={pageType} />
       <TrackSearchHeaderButton />
     </HeaderWrapper>
   );

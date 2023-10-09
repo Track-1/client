@@ -142,7 +142,8 @@ interface TrackItemProps {
 export default function TrackItem(props: TrackItemProps) {
   const { trackInfo, playingTrack, selectTrack } = props;
   const isSelected = playingTrack === trackInfo.trackId;
-  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } =
+    useContext(PlayerContext);
   const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
     playerContext,
     trackInfo.trackAudioFile,
@@ -162,10 +163,12 @@ export default function TrackItem(props: TrackItemProps) {
   }, [playingTrack]);
 
   function handleMoveToTrackDetail() {
+    quitAudioForMovePage();
     navigate(`/track-post/${trackInfo.trackId}`);
   }
 
   function handleMoveToProducer() {
+    quitAudioForMovePage();
     navigate(`/producer-profile/${trackInfo.trackUserId}`);
   }
 

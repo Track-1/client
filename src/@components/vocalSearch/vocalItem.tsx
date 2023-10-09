@@ -4,6 +4,7 @@ import { FilteredVocalType } from "../../type/vocals";
 import { VocalSearchPlayIc, VocalSearchStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
+import { useNavigate } from "react-router-dom";
 
 const VocalContainer = styled.div`
   display: inline-block;
@@ -179,15 +180,21 @@ interface VocalItemProps {
 
 export default function VocalItem(props: VocalItemProps) {
   const { vocalInfo, playingTrack, selectTrack } = props;
-
+  const navigate = useNavigate();
   const isSelected = playingTrack === vocalInfo.userId;
-  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } =
+    useContext(PlayerContext);
   const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
     playerContext,
     vocalInfo.userAudioFile,
     vocalInfo.userId,
     selectTrack,
   );
+
+  function moveVocalProfilePage() {
+    quitAudioForMovePage();
+    navigate(`/vocal-profile/${vocalInfo.userId}`);
+  }
 
   useEffect(() => {
     if (!isSelected) return;
@@ -201,7 +208,7 @@ export default function VocalItem(props: VocalItemProps) {
 
   return (
     <VocalContainer>
-      <UsernameInformWrapper>
+      <UsernameInformWrapper onClick={moveVocalProfilePage}>
         <Username>{vocalInfo.userName}</Username>
       </UsernameInformWrapper>
 

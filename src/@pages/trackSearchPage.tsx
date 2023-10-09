@@ -26,29 +26,22 @@ export default function TrackSearchPage() {
 
   function moveUploadPage() {
     openModal ? unShowModal() : showModal();
-    // setShowPlayer(false);
-    // pausesPlayerAudio();
-    // blockAccess()
-    //   ? navigate("/login")
-    //   : userType === "producer"
-    //   ? setOpenModal(true)
-    //   : alert("Please use this function after producer logging in.\n해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
 
   return (
     <>
-      <Header homeLogo headerFixed>
-        <TrackSearchHeader />
-      </Header>
-      <Wrapper>
-        <PlayerProvider>
+      <PlayerProvider>
+        <Header homeLogo headerFixed>
+          <TrackSearchHeader pageType="tracks" />
+        </Header>
+        <Wrapper>
           <Filter pageType="tracks" />
           <UploadButtonIcon onClick={moveUploadPage} />
           {openModal && <UploadButtonModal />}
           <TrackList />
           <Player />
-        </PlayerProvider>
-      </Wrapper>
+        </Wrapper>
+      </PlayerProvider>
     </>
   );
 }

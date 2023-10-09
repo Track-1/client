@@ -26,11 +26,12 @@ export default function TrackPost() {
     stopContextState,
     contextPlaying,
     getPlayerInfo,
+    quitAudioForMovePage,
   } = useContext(PlayerContext);
   const { trackDetail } = useTrackDetail(Number(id));
 
-
   function handleOpenComment() {
+    quitAudioForMovePage();
     setIsOpenComment(true);
   }
 
@@ -61,12 +62,12 @@ export default function TrackPost() {
   return (
     <>
       <Header homeLogo>
-        <TrackSearchHeader />
+        <TrackSearchHeader pageType="tracks" />
       </Header>
       {isOpenComment && <Comments handleClosecomment={handleClosecomment} />}
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
-          <BackButton prevURL="-1"/>
+          <BackButton prevURL="-1" />
           <AudioTitle />
           <ProducerProfile />
           <MusicPlayingWrapper>
