@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { UseFormResetField, UseFormSetError, UseFormSetValue } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,7 @@ import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from "../../core/signUp/errorMessage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import {
+  DefaultResponseType,
   UserEmailRequest,
   UserLoginInfoRequest,
   UserPasswordRequest,
@@ -79,11 +81,16 @@ export function useLogin() {
   const setLoginUserId = useSetRecoilState(loginUserId);
   const setLoginUserType = useSetRecoilState(loginUserType);
   const navigate = useNavigate();
-  const { mutate, ...restValues } = useMutation({
-    mutationFn: (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
+  const { mutate, ...restValues } = useMutation<
+    DefaultResponseType,
+    AxiosError<DefaultResponseType>,
+    UserLoginInfoRequest
+  >((userInfo: UserLoginInfoRequest) => postLogin(userInfo), {
     onSuccess: (response: any) => {
       setLoginUserId(response?.data?.userId);
       setLoginUserType(response?.data?.userType);
+      
+      console.log(response?.data?.accessToken);
       setCookie("accessToken", response?.data?.accessToken, {});
       navigate("/");
     },

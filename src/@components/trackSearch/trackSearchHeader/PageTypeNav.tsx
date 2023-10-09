@@ -1,22 +1,26 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { trackSearchPageType } from "../../../recoil/common/trackSearchPageType";
+import { useContext } from "react";
+import { PlayerContext } from "../../../context/playerContext";
+import { PageType } from "../../../type/common/pageType";
 
+interface PageTypeNavProps {
+  pageType: PageType;
+}
 
-export default function TrackSearchHeaderNav() {
-  const [pageType, setPageType] = useRecoilState(trackSearchPageType);
-
+export default function PageTypeNav(props: PageTypeNavProps) {
+  const { pageType } = props;
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   const navigate = useNavigate();
 
   function handleMoveTrackSearch() {
-    setPageType("tracks");
+    quitAudioForMovePage();
     navigate("/track-search");
   }
 
   function handleMoveVocalSearch() {
-    setPageType("vocals");
+    quitAudioForMovePage();
     navigate("/vocal-search");
   }
 

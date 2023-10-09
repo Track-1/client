@@ -26,9 +26,14 @@ export default function TrackPost() {
     stopContextState,
     contextPlaying,
     getPlayerInfo,
-    closeAudioPlayer,
+    quitAudioForMovePage,
   } = useContext(PlayerContext);
   const { trackDetail } = useTrackDetail(Number(id));
+
+  function handleOpenComment() {
+    quitAudioForMovePage();
+    setIsOpenComment(true);
+  }
 
   function handleClosecomment() {
     setIsOpenComment(false);
@@ -63,7 +68,7 @@ export default function TrackPost() {
   return (
     <>
       <Header homeLogo>
-        <TrackSearchHeader />
+        <TrackSearchHeader pageType="tracks" />
       </Header>
       {isOpenComment && <Comments handleClosecomment={handleClosecomment} />}
 

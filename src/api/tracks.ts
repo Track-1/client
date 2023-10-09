@@ -25,8 +25,8 @@ export async function getTrackDownload(trackId: number) {
   return data;
 }
 
-export async function postTrack(uploadData: FormData) {
-  const { data } = await client.post<DefaultResponseType>(TRACKS.POST, uploadData, {
+export async function postTrack(formData: FormData) {
+  const { data } = await client.post<DefaultResponseType>(TRACKS.POST, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -34,8 +34,8 @@ export async function postTrack(uploadData: FormData) {
   return data;
 }
 
-export async function patchTrack(trackId: number, uploadData: FormData) {
-  const { data } = await client.patch<DefaultResponseType>(TRACKS.DETAIL(trackId), uploadData, {
+export async function patchTrack(trackId: number, formData: FormData) {
+  const { data } = await client.patch<DefaultResponseType>(TRACKS.DETAIL(trackId), formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
