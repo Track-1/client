@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
 import { useCloseTrack, useTrackDetail, useTrackDownload } from "../../hooks/queries/tracks";
+import { blockAccess } from "../../utils/common/privateRouter";
 
 export default function Download() {
   const { id } = useParams();
@@ -12,6 +15,8 @@ export default function Download() {
   const { trackDetail } = useTrackDetail(Number(id));
   const { closeTrack } = useCloseTrack();
   const { trackDownload } = useTrackDownload(Number(id), isDownload, getFileLink);
+  const navigate = useNavigate();
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function getFileLink(data: any) {
     let blob = new Blob([data?.data], { type: "audio/mpeg" });
@@ -54,13 +59,12 @@ export default function Download() {
   }
 
   function getFile() {
-    // 프라이빗 라우터 추후 적용
-    // if (blockAccess()) {
-    //   pauseAudio();
-    //   navigate("/login");
-    // } else {
-    // !download && setDownload(true);
-    // }
+    if (blockAccess()) {
+      quitAudioForMovePage();
+      navigate("/login");
+    } else {
+      !isDownload && setIsDownload(true);
+    }
     setIsDownload(true);
   }
 

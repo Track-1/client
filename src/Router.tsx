@@ -6,7 +6,6 @@ import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
 import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
-import TrackSearchPage from "./@pages/trackSearchPage";
 import UploadPage from "./@pages/uploadPage";
 
 import ErrorPage from "./@pages/errorPage";
@@ -15,9 +14,11 @@ import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
+import TrackSearchPage from "./@pages/trackSearchPage";
 import UploadEditPage from "./@pages/uploadEditPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
+import PrivateRoute from "./utils/common/privateRouter";
 
 export default function Router() {
   return (
@@ -29,20 +30,23 @@ export default function Router() {
         <Route path="/signup/success" element={<SignupSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="/upload/vocal/portfolio" element={<UploadPage />} />
-        <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
-        <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />
-        <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
-        <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
-        <Route path="/profile-edit" element={<ProfileEditPage />} />
-        <Route path="/track-post/:id" index element={<TrackPostPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
-        <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalSearchPage />} />
-
+        <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<ErrorPage />} />
+
+        {/* 반드시 인증 필요 */}
+        <Route element={<PrivateRoute authentication={true} />}>
+          <Route path="/upload/vocal/portfolio" element={<UploadPage />} />
+          <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
+          <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />
+          <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
+          <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
+          <Route path="/profile-edit" element={<ProfileEditPage />} />
+          <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
+          <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
