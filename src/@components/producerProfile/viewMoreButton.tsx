@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
 
 interface ViewMoreButtonProp {
   id: number;
@@ -11,13 +12,15 @@ export default function ViewMoreButton(props: ViewMoreButtonProp) {
   const { id } = props;
   const [ishoverd, setIshoverd] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function checkViewMoreHover() {
     ishoverd ? setIshoverd(false) : setIshoverd(true);
   }
 
   function handleMoveToDetailPage() {
-    navigate(`track-post/${id}`);
+    quitAudioForMovePage();
+    navigate(`/track-post/${id}`);
   }
 
   return (

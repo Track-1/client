@@ -65,12 +65,15 @@ export default function VocalPortfolio(props: VocalBigPortfolioProps) {
       <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Image src={vocalPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </ImageWrapper>
-      {(isHovered || (isSelected && showPlayer)) &&
-        (innerPlaying && contextPlaying ? (
-          <PortfolioPauseIcon onClick={stopAudioItem} />
-        ) : (
-          <PortfolioPlayIcon onClick={playAudioItem} />
-        ))}
+      {isHovered && (
+        <>
+          {isSelected && isSelected && showPlayer && innerPlaying && contextPlaying ? (
+            <PortfolioPauseIcon onClick={stopAudioItem} />
+          ) : (
+            <PortfolioPlayIcon onClick={playAudioItem} />
+          )}
+        </>
+      )}
     </ImageContainer>
   );
 }

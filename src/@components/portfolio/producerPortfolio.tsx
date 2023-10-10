@@ -122,9 +122,6 @@ const ImageWrapper = styled.div<{ isBig: boolean }>`
   height: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
   border-radius: 50%;
 
-  /* margin: 12rem 0 0 12rem; */
-  /* margin-bottom: 12rem; */
-
   cursor: pointer;
 `;
 

@@ -4,11 +4,11 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { EllipsisIc, ProducerProfileTitleTextIc } from "../../assets";
 import useUpdateModal from "../../hooks/common/useUpdateModal";
-import { useGetProducerPortfolio } from "../../hooks/queries/mypage";
+import { useGetProducerVocalSearching } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import MusicInformation from "../portfolio/musicInformation";
 import PortfolioUpdateModal from "../portfolio/portfolioUpdateModal";
 import ViewMoreButton from "./viewMoreButton";
+import VocalSearchingMusicInform from "./vocalSearchingMusicInform";
 
 interface ProducerVocalSearchingInformProp {
   isMe: boolean | undefined;
@@ -19,7 +19,7 @@ const PAGE_LIMIT = 5;
 export default function ProducerVocalSearchingInform(props: ProducerVocalSearchingInformProp) {
   const { isMe } = props;
   const { producerId } = useParams();
-  const { producerPortfolios } = useGetProducerPortfolio({
+  const { producerVocalSearchings } = useGetProducerVocalSearching({
     limit: PAGE_LIMIT,
     userId: Number(producerId),
   });
@@ -28,7 +28,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
   const hoveredId = useRecoilValue(hoveredProfileId);
   const { openUpdateModal, showModal, unShowModal } = useUpdateModal();
 
-  if (producerPortfolios === undefined) return null;
+  if (producerVocalSearchings === undefined) return null;
 
   function handleShowUpdateModal() {
     !openUpdateModal ? showModal() : unShowModal();
@@ -36,28 +36,28 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
 
   return (
     <InformContainer>
-      {producerPortfolios?.map((producerPortfolio, index) => {
+      {producerVocalSearchings?.map((producerVocalSearching, index) => {
         return (
-          <Fragment key={producerPortfolio.portfolioId}>
-            {((hoveredId === -1 && clickedId === producerPortfolio.portfolioId) ||
-              (hoveredId !== -1 && hoveredId === producerPortfolio.portfolioId)) && (
+          <Fragment key={producerVocalSearching.trackId}>
+            {((hoveredId === -1 && clickedId === producerVocalSearching.trackId) ||
+              (hoveredId !== -1 && hoveredId === producerVocalSearching.trackId)) && (
               <>
                 <TitleSection>
-                  <ViewMoreButton id={producerPortfolio.portfolioId} />
-                  {isMe && clickedId === producerPortfolio.portfolioId && (
+                  <ViewMoreButton id={producerVocalSearching.trackId} />
+                  {isMe && clickedId === producerVocalSearching.trackId && (
                     <EllipsisIcon onClick={handleShowUpdateModal} />
                   )}
                   {openUpdateModal && (
                     <PortfolioUpdateModal
                       isTitle={index === 0}
-                      nowTitleId={producerPortfolios[0].portfolioId}
-                      nowTitleNextId={producerPortfolios[1].portfolioId}
-                      portfolioId={producerPortfolio.portfolioId}
+                      nowTitleId={producerVocalSearchings[0].trackId}
+                      nowTitleNextId={producerVocalSearchings[1].trackId}
+                      portfolioId={producerVocalSearching.trackId}
                       dataState="producer vocal searching"
                     />
                   )}
                 </TitleSection>
-                <MusicInformation portfolio={producerPortfolio} />
+                <VocalSearchingMusicInform portfolio={producerVocalSearching} />
               </>
             )}
           </Fragment>

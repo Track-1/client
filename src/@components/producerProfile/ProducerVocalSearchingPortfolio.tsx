@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 import { useGetProducerProfile } from "../../hooks/queries/mypage";
+import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
 
 interface ProducerVocalSearchingPortfolioProps {
@@ -25,6 +27,23 @@ export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSear
   const isSelected = playingTrack === producerVocalSearchings.trackId;
   const { id } = useParams();
   const { producerProfile } = useGetProducerProfile(Number(id));
+  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+  const isBig = isSelected && showPlayer;
+
+  function handlePlaying() {
+    setClickId(producerVocalSearchings.trackId);
+  }
+
+  function handleHoverTrack() {
+    hoverTrack();
+    setHoverId(producerVocalSearchings.trackId);
+  }
+
+  function handleUnhoverTrack() {
+    unhoverTrack();
+    setHoverId(-1);
+  }
 
   useEffect(() => {
     if (!isSelected) return;
@@ -37,16 +56,23 @@ export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSear
   }, [playingTrack]);
 
   return (
-    <ImageContainer onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack}>
-      <ImageWrapper className="image-wrapper">
+    <ImageContainer
+      onMouseEnter={handleHoverTrack}
+      onMouseLeave={handleUnhoverTrack}
+      onClick={handlePlaying}
+      isBig={isBig}>
+      <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Image src={producerVocalSearchings.trackImageFile} alt="포트폴리오 이미지" className="image" />
       </ImageWrapper>
-      {(isHovered || (isSelected && showPlayer)) &&
-        (innerPlaying && contextPlaying ? (
-          <PortfolioPauseIcon onClick={stopAudioItem} />
-        ) : (
-          <PortfolioPlayIcon onClick={playAudioItem} />
-        ))}
+      {isHovered && (
+        <>
+          {isSelected && isSelected && showPlayer && innerPlaying && contextPlaying ? (
+            <PortfolioPauseIcon onClick={stopAudioItem} />
+          ) : (
+            <PortfolioPlayIcon onClick={playAudioItem} />
+          )}
+        </>
+      )}
     </ImageContainer>
   );
 }
@@ -66,10 +92,10 @@ const PortfolioPlayIcon = styled(PortfolioPlayIc)`
   cursor: pointer;
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{ isBig: boolean }>`
   display: flex;
-  width: 21.8rem;
-  height: 21.8rem;
+  width: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
+  height: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
   justify-content: center;
   align-items: center;
 
@@ -87,16 +113,13 @@ const ImageContainer = styled.div`
   }
 `;
 
-const ImageWrapper = styled.div`
+const ImageWrapper = styled.div<{ isBig: boolean }>`
   display: inline-block;
 
   overflow: hidden;
-  width: 21.8rem;
-  height: 21.8rem;
+  width: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
+  height: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
   border-radius: 50%;
-
-  /* margin: 12rem 0 0 12rem; */
-  /* margin-bottom: 12rem; */
 
   cursor: pointer;
 `;
