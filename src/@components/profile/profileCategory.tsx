@@ -32,11 +32,11 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
 }
 
 const CategoryBox = styled.div`
-  margin-right: 6.3rem;
+  margin-right: 1.3rem;
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.hashtag};
 
-  width: 20.3rem;
+  width: 25.3rem;
 
   display: flex;
   flex-direction: column;

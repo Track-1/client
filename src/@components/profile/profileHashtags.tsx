@@ -29,7 +29,7 @@ const HashtagBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  width: 15rem;
+  width: 20rem;
 `;
 
 const HashtagIcon = styled(HashtagIc)`
