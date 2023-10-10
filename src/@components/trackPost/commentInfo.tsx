@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { CommentsPlayerContext } from ".";
 import { EllipsisIc } from "../../assets";
 import { isModalOpen } from "../../recoil/common/isModalOpen";
 import EditDropDownComment from "./editDropDownComment";
@@ -20,12 +21,10 @@ export default function CommentInfo(props: CommentInfoProps) {
   const navigate = useNavigate();
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
-  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const { quitAudioForMovePage } = useContext(CommentsPlayerContext);
 
   function handleMoveVocalProfile() {
-    // pauseAudio();
-    // setShowPlayer(false);
-    // setPlay(false);
+    quitAudioForMovePage();
 
     navigate(`/vocal-profile/${commentUserId}`);
   }

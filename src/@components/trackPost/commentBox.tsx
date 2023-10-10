@@ -31,7 +31,6 @@ export default function CommentBox(props: CommentBoxProps) {
     userSelf,
     commentAudioFileName,
   } = eachComment;
-
   const { id } = useParams();
   const { trackDetail } = useTrackDetail(Number(id));
 
