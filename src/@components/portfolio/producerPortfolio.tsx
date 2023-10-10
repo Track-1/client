@@ -65,12 +65,15 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
       <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Image src={producerPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </ImageWrapper>
-      {(isHovered || (isSelected && showPlayer)) &&
-        (innerPlaying && contextPlaying ? (
-          <PortfolioPauseIcon onClick={stopAudioItem} />
-        ) : (
-          <PortfolioPlayIcon onClick={playAudioItem} />
-        ))}
+      {isHovered && (
+        <>
+          {isSelected && isSelected && showPlayer && innerPlaying && contextPlaying ? (
+            <PortfolioPauseIcon onClick={stopAudioItem} />
+          ) : (
+            <PortfolioPlayIcon onClick={playAudioItem} />
+          )}
+        </>
+      )}
     </ImageContainer>
   );
 }
