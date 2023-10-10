@@ -1,18 +1,15 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { CommentsPlayerContext } from ".";
 import { AddCommentIc, CloseCommentsBtnIc, ClosedAddCommentIc } from "../../assets";
-import { PlayerProvider } from "../../context/playerContext";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
-import usePaly from "../../hooks/common/usePlay";
 import { useComments, useUploadComment } from "../../hooks/queries/comments";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
 import { blockAccess } from "../../utils/common/privateRouter";
-import Player from "../@common/player";
 import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
 import CommentWrite from "./commentWrite";
@@ -37,16 +34,20 @@ export default function Comments(props: CommentsProp) {
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
   const [playingTrack, setPLayingTrack] = useState<CommentType["commentId"] | null>(null);
   const { quitAudioForMovePage } = useContext(CommentsPlayerContext);
+  const navigate = useNavigate();
 
   function selectTrack(trackId: CommentType["commentId"]) {
     setPLayingTrack(trackId);
   }
 
   function handleUploadComment() {
+    console.log("Asdf");
     if (!blockAccess()) {
       if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
         uploadComment({ trackId: Number(id), formData: comment });
       }
+    } else {
+      navigate("/login");
     }
   }
 
