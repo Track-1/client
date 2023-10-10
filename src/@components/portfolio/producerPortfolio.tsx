@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 import { useGetProducerProfile } from "../../hooks/queries/mypage";
+import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import { UserPortfolioType } from "../../type/profile";
 
 interface ProducerBigPortfolioProps {
@@ -27,6 +29,22 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
   const isBig = isFirst || (isSelected && showPlayer);
   const { id } = useParams();
   const { producerProfile } = useGetProducerProfile(Number(id));
+  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+
+  function handlePlaying() {
+    setClickId(producerPortfolios.portfolioId);
+  }
+
+  function handleHoverTrack() {
+    hoverTrack();
+    setHoverId(producerPortfolios.portfolioId);
+  }
+
+  function handleUnhoverTrack() {
+    unhoverTrack();
+    setHoverId(-1);
+  }
 
   useEffect(() => {
     if (!isSelected) return;
@@ -39,16 +57,31 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
   }, [playingTrack]);
 
   return (
-    <ImageContainer onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isBig={isBig}>
+    <ImageContainer
+      onMouseEnter={handleHoverTrack}
+      onMouseLeave={handleUnhoverTrack}
+      onClick={handlePlaying}
+      isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
-        <Image src={producerPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
+        <Title className="title" isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}>
+          {producerPortfolios.portfolioTitle}
+        </Title>
+        <Image
+          src={producerPortfolios.portfolioImageFile}
+          alt="포트폴리오 이미지"
+          className="image"
+          isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}
+        />
       </ImageWrapper>
-      {(isHovered || (isSelected && showPlayer)) &&
-        (innerPlaying && contextPlaying ? (
-          <PortfolioPauseIcon onClick={stopAudioItem} />
-        ) : (
-          <PortfolioPlayIcon onClick={playAudioItem} />
-        ))}
+      {isHovered && (
+        <>
+          {isSelected && isSelected && showPlayer && innerPlaying && contextPlaying ? (
+            <PortfolioPauseIcon onClick={stopAudioItem} />
+          ) : (
+            <PortfolioPlayIcon onClick={playAudioItem} />
+          )}
+        </>
+      )}
     </ImageContainer>
   );
 }
@@ -86,24 +119,26 @@ const ImageContainer = styled.div<{ isBig: boolean }>`
     .image {
       filter: blur(3.5rem);
     }
+    .title {
+      display: none;
+    }
   }
 `;
 
 const ImageWrapper = styled.div<{ isBig: boolean }>`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   overflow: hidden;
   width: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
   height: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
   border-radius: 50%;
 
-  /* margin: 12rem 0 0 12rem; */
-  /* margin-bottom: 12rem; */
-
   cursor: pointer;
 `;
 
-const Image = styled.img`
+const Image = styled.img<{ isLight: boolean }>`
   border-radius: 50%;
 
   object-fit: cover;
@@ -111,5 +146,25 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
 
+  opacity: ${({ isLight }) => !isLight && 0.4};
+
   cursor: pointer;
+`;
+
+const Title = styled.h1<{ isLight: boolean }>`
+  width: 14rem;
+  height: 5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+
+  color: ${({ theme }) => theme.colors.gray2};
+  display: ${({ isLight }) => (isLight ? "none" : "flex")};
+
+  ${({ theme }) => theme.fonts.id}
+
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  overflow-wrap: break-word;
 `;

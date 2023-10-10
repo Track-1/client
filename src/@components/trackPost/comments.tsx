@@ -9,6 +9,7 @@ import { useComments, useUploadComment } from "../../hooks/queries/comments";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
+import { blockAccess } from "../../utils/common/privateRouter";
 import Player from "../@common/player";
 import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
@@ -40,8 +41,10 @@ export default function Comments(props: CommentsProp) {
   if (trackComments === undefined) return null;
 
   function handleUploadComment() {
-    if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
-      uploadComment({ trackId: Number(id), formData: comment });
+    if (!blockAccess()) {
+      if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
+        uploadComment({ trackId: Number(id), formData: comment });
+      }
     }
   }
 
