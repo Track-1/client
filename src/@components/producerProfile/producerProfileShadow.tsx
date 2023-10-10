@@ -1,14 +1,21 @@
+import { useContext } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProducerProfileShadowIc, RightArrorIc } from "../../assets";
-import { producerState } from "../../recoil/common/profile";
+import { PlayerContext } from "../../context/playerContext";
+import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
 
 export default function ProducerProfileShadow() {
   const [dataState, setDataState] = useRecoilState(producerState);
+  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function handleChangeDataState(state: string) {
-    console.log(state);
     setDataState(state);
+    setHoverId(-1);
+    setClickId(-1);
+    quitAudioForMovePage();
   }
 
   return (
@@ -39,7 +46,8 @@ const RightArrorIcon = styled(RightArrorIc)`
 `;
 
 const ProducerProfileShadowWrapper = styled.section`
-  position: fixed;
+  /* position: fixed; */
+  margin-left: 60rem;
 `;
 const ProducerProfileShadowIcon = styled(ProducerProfileShadowIc)`
   position: fixed;

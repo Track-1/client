@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -71,6 +70,7 @@ export default function ProducerProfile() {
         </ProfileSection>
         {producerProfile?.userSelf && <UploadButtonIcon onClick={showModal} />}
 
+        <ProducerProfileShadow />
         <PortfolioSection>
           {dataState === "Portfolio" ? (
             <>
@@ -99,8 +99,6 @@ export default function ProducerProfile() {
               )}
             </>
           )}
-
-          <ProducerProfileShadow />
         </PortfolioSection>
       </Container>
     </>
@@ -155,6 +153,8 @@ const PortfolioSection = styled.section`
   display: flex;
 
   margin-left: 60rem;
+
+  position: absolute;
 `;
 
 const Container = styled.div`
