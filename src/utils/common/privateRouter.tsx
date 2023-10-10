@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { checkIsCookieAuthenticated, checkIsCookieNull, checkIsLogin } from "./checkIsLogined";
 
 interface PrivateRouteProps {
@@ -8,14 +8,15 @@ interface PrivateRouteProps {
 }
 
 export default function PrivateRoute({ authentication }: PrivateRouteProps): any {
-  const navigate = useNavigate();
-
   if (authentication) {
     // 인증이 반드시 필요한 페이지
     // 인증을 안했을 경우 로그인 페이지로, 했을 경우 해당 페이지로
-    (!checkIsLogin() || checkIsCookieNull() || checkIsCookieAuthenticated()) &&
+    if (!checkIsLogin() || checkIsCookieNull() || checkIsCookieAuthenticated()) {
       alert("Please use this function after logging in.\n해당 기능은 로그인 후 이용해주세요.");
-    return !checkIsLogin() || checkIsCookieNull() || (checkIsCookieAuthenticated() && navigate("/login"));
+      return <Navigate to="/login" />;
+    } else {
+      return <Outlet />;
+    }
   }
 }
 

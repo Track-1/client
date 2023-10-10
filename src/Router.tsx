@@ -6,7 +6,6 @@ import SignupProfilePage from "./@pages/signupProfilePage";
 import SignupStepPage from "./@pages/signupStepPage";
 import SignupSuccessPage from "./@pages/signupSuccessPage";
 import TrackPostPage from "./@pages/trackPostPage";
-import TrackSearchPage from "./@pages/trackSearchPage";
 import UploadPage from "./@pages/uploadPage";
 
 import ErrorPage from "./@pages/errorPage";
@@ -15,6 +14,7 @@ import ForgotPasswordPage from "./@pages/forgotPasswordPage";
 import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
+import TrackSearchPage from "./@pages/trackSearchPage";
 import UploadEditPage from "./@pages/uploadEditPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
