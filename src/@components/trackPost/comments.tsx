@@ -41,7 +41,6 @@ export default function Comments(props: CommentsProp) {
   }
 
   function handleUploadComment() {
-    console.log("Asdf");
     if (!blockAccess()) {
       if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
         uploadComment({ trackId: Number(id), formData: comment });
