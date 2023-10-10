@@ -6,10 +6,12 @@ import styled from "styled-components";
 import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from "../../assets";
 import background from "../../assets/icon/signupProfileBackgroundIc.svg";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
+import useConventionModal from "../../hooks/common/useConventionModal";
 import useHashtagInput from "../../hooks/common/useHashtagInput";
 import useInputText from "../../hooks/common/useInputText";
 import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
 import { useProfileAfterJoin } from "../../hooks/queries/user";
+import ConventionModal from "../@common/conventionModal";
 import ProfileContactEdit from "../profileEdit/profileContactEdit";
 import ProfileDescriptionEdit from "../profileEdit/profileDescriptionEdit";
 import ProfileHashtagEdit from "../profileEdit/profileHashtagEdit";
@@ -25,7 +27,7 @@ export default function SignupProfile() {
   });
 
   const { getValues, watch } = contactMethods;
-
+  const { conventionModalInform } = useConventionModal();
   const { profileAtferJoin } = useProfileAfterJoin();
   const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.PROFILE_DESCRIPTION);
   const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
@@ -59,6 +61,8 @@ export default function SignupProfile() {
 
   return (
     <>
+      {conventionModalInform?.isOpen && <ConventionModal />}
+
       <BackButtonWrapper>
         <SignUpBackButton />
       </BackButtonWrapper>
