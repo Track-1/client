@@ -50,6 +50,8 @@ const PortfolioWrapper = styled.div`
   align-items: center;
 
   margin-top: 3rem;
+  padding-top: 10rem;
+  padding-bottom: 10rem;
 
   color: ${({ theme }) => theme.colors.white};
 `;

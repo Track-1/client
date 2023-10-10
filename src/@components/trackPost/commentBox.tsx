@@ -67,7 +67,7 @@ export default function CommentBox(props: CommentBoxProps) {
 
     getPlayerInfo({
       imageFile: userImageFile,
-      title: trackDetail?.trackAudioFileName,
+      title: trackDetail?.trackTitle,
       userName: userName,
     });
   }, [playingTrack]);
