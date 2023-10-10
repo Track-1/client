@@ -30,7 +30,7 @@ const Title = styled.h1`
 
   color: ${({ theme }) => theme.colors.white};
 
-  /* margin-top: 25.1rem; */
+  word-break: break-all;
 
   cursor: pointer;
 `;
