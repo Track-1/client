@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { HomeLogoIc, SloganIc } from "../../assets";
+import { HeaderHomeLogoIc, SloganIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import BackButton from "./backButton";
 
@@ -30,7 +30,11 @@ export default function Header(props: HeaderProps) {
   return (
     <Container headerFixed={headerFixed}>
       <Wrapper>
-        {homeLogo && <HomeLogoIcon onClick={handleMoveToHome} />}
+        {homeLogo && (
+          <HeaderHomeLogoIconWrapper>
+            <HeaderHomeLogoIcon onClick={handleMoveToHome} />
+          </HeaderHomeLogoIconWrapper>
+        )}
         {backBtn && <BackButton prevURL={prevURL} />}
         {slogan && <SloganIcon />}
         {children}
@@ -45,7 +49,8 @@ const Container = styled.header<{ headerFixed: boolean | undefined }>`
 
   width: 100%;
   height: 14.3rem;
-  position: ${(props) => (props.headerFixed ? "fixed" : "default")};
+  position: ${(props) => (props.headerFixed ? "sticky" : "default")};
+  top: ${(props) => (props.headerFixed ? "0" : "default")};
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 `;
 
@@ -58,10 +63,18 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const HomeLogoIcon = styled(HomeLogoIc)`
+const HeaderHomeLogoIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 22.5rem;
+  height: 100%;
+`;
+
+const HeaderHomeLogoIcon = styled(HeaderHomeLogoIc)`
   cursor: pointer;
 
-  width: 26.3rem;
+  width: 22.5rem;
 `;
 
 const SloganIcon = styled(SloganIc)`

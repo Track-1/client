@@ -144,3 +144,4 @@ export { ReactComponent as VocalSearchStopIc } from "./icon/vocalSearchStopIc.sv
 export { ReactComponent as PlayerQuitIc } from "./icon/playerQuitIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
 export { ReactComponent as PasswordEyeIc } from "./icon/passwordEyeIc.svg";
+export { ReactComponent as HeaderHomeLogoIc } from "./icon/headerHomeLogoIc.svg";
