@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
+import { CommentsPlayerContext } from ".";
 import { CommentUpldatCompleteIc, PlayerPlayIc, PlayerStopIc, QuitIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
@@ -49,9 +50,9 @@ export default function CommentBox(props: CommentBoxProps) {
   }
 
   const isSelected = playingTrack === commentId;
-  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { contextPlaying, getPlayerInfo, showPlayer, ...commentPlayerContext } = useContext(CommentsPlayerContext);
   const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
-    playerContext,
+    commentPlayerContext,
     commentAudioFile,
     commentId,
     selectTrack,

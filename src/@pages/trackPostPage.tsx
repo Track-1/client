@@ -1,12 +1,14 @@
 import Player from "../@components/@common/player";
-import TrackPost from "../@components/trackPost";
+import TrackPost, { CommentsPlayerProvider } from "../@components/trackPost";
 import { PlayerProvider } from "../context/playerContext";
 
 export default function TrackPostPage() {
   return (
     <PlayerProvider>
-      <TrackPost />
-      <Player />
+      <CommentsPlayerProvider>
+        <TrackPost />
+        <Player />
+      </CommentsPlayerProvider>
     </PlayerProvider>
   );
 }

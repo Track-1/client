@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PlayerPlayIc, PlayerQuitIc, PlayerStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import useControlPlayer from "../../hooks/common/useControlPlayer";
+import { CommentsPlayerContext } from "../trackPost";
 
 const PlayerContainer = styled.section`
   position: fixed;
@@ -143,7 +144,11 @@ const QuitIcon = styled(PlayerQuitIc)`
   pointer-events: auto;
 `;
 
-export default function Player() {
+interface PlayerProps {
+  comment?: boolean;
+}
+
+export default function Player({ comment }: PlayerProps) {
   const {
     playAudio,
     stopAudio,
@@ -155,7 +160,7 @@ export default function Player() {
     contextPlaying,
     audio,
     playerInfo,
-  } = useContext(PlayerContext);
+  } = useContext(comment ? CommentsPlayerContext : PlayerContext);
 
   const {
     progress,
