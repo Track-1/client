@@ -75,6 +75,7 @@ const CommentText = styled.strong`
   ${({ theme }) => theme.fonts.description}
   margin-top: 1.2rem;
   line-height: 2.88rem;
+  word-break: break-all;
 `;
 
 const UserName = styled.strong`
