@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LoginButtonIc, PasswordEyeIc } from "../../assets";
 import background from "../../assets/icon/signupBackgroundIc.svg";
+import { ROLE } from "../../core/common/roleType";
 import useConventionModal from "../../hooks/common/useConventionModal";
 import { useLogin } from "../../hooks/queries/user";
 import { UserType } from "../../type/common/userType";
 import ConventionModal from "../@common/conventionModal";
 import Footer from "../@common/footer";
-import SwitchToggle from "./switchToggle";
-import { useNavigate } from "react-router-dom";
 import InputContainer from "../@common/inputContainer";
-import { ROLE } from "../../core/common/roleType";
+import SwitchToggle from "./switchToggle";
 
 const Container = styled.section`
   position: absolute;
@@ -231,7 +231,7 @@ export default function LoginForm() {
                     placeholder="Enter your password"
                     {...register("password", {
                       pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
+                        value: /^(?=.*[a-zA-Z])(?=.*[?!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
                         message: "Wrong password. Try again or click Forgot password to reset it.",
                       },
                     })}

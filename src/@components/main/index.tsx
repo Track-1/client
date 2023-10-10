@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled, { css } from "styled-components";
@@ -18,22 +18,6 @@ export default function Main() {
   const showModal = useRecoilValue(openConventionModal);
   const navigate = useNavigate();
   const [isWhatHover, setIsWhatHover] = useState("");
-
-  useEffect(() => {
-    // localStorage.removeItem("recoil-persist");
-    // setSelectedCategorys([
-    //   { categId: 0, selected: false },
-    //   { categId: 1, selected: false },
-    //   { categId: 2, selected: false },
-    //   { categId: 3, selected: false },
-    //   { categId: 4, selected: false },
-    //   { categId: 5, selected: false },
-    //   { categId: 6, selected: false },
-    //   { categId: 7, selected: false },
-    //   { categId: 8, selected: false },
-    //   { categId: 9, selected: false },
-    // ]);
-  }, []);
 
   function handleMoveToVocals() {
     navigate("/vocal-search");
