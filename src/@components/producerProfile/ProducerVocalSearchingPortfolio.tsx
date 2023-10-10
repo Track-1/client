@@ -62,7 +62,15 @@ export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSear
       onClick={handlePlaying}
       isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
-        <Image src={producerVocalSearchings.trackImageFile} alt="포트폴리오 이미지" className="image" />
+        <Title className="title" isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}>
+          {producerVocalSearchings.trackTitle}
+        </Title>
+        <Image
+          src={producerVocalSearchings.trackImageFile}
+          alt="포트폴리오 이미지"
+          className="image"
+          isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}
+        />
       </ImageWrapper>
       {isHovered && (
         <>
@@ -110,11 +118,16 @@ const ImageContainer = styled.div<{ isBig: boolean }>`
     .image {
       filter: blur(3.5rem);
     }
+    .title {
+      display: none;
+    }
   }
 `;
 
 const ImageWrapper = styled.div<{ isBig: boolean }>`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   overflow: hidden;
   width: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
@@ -124,7 +137,7 @@ const ImageWrapper = styled.div<{ isBig: boolean }>`
   cursor: pointer;
 `;
 
-const Image = styled.img`
+const Image = styled.img<{ isLight: boolean }>`
   border-radius: 50%;
 
   object-fit: cover;
@@ -132,5 +145,25 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
 
+  opacity: ${({ isLight }) => !isLight && 0.4};
+
   cursor: pointer;
+`;
+
+const Title = styled.h1<{ isLight: boolean }>`
+  width: 14rem;
+  height: 5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+
+  color: ${({ theme }) => theme.colors.gray2};
+  display: ${({ isLight }) => (isLight ? "none" : "flex")};
+
+  ${({ theme }) => theme.fonts.id}
+
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  overflow-wrap: break-word;
 `;

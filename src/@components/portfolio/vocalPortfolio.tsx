@@ -63,7 +63,15 @@ export default function VocalPortfolio(props: VocalBigPortfolioProps) {
       onClick={handlePlaying}
       isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
-        <Image src={vocalPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
+        <Title className="title" isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}>
+          {vocalPortfolios.portfolioTitle}
+        </Title>
+        <Image
+          src={vocalPortfolios.portfolioImageFile}
+          alt="포트폴리오 이미지"
+          className="image"
+          isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}
+        />
       </ImageWrapper>
       {isHovered && (
         <>
@@ -111,15 +119,20 @@ const ImageContainer = styled.div<{ isBig: boolean }>`
     .image {
       filter: blur(3.5rem);
     }
+    .title {
+      display: none;
+    }
   }
 `;
 
 const ImageWrapper = styled.div<{ isBig: boolean }>`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   overflow: hidden;
-  width: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
-  height: ${({ isBig }) => (isBig ? 42 : 21.8)}rem;
+  width: ${({ isBig }) => (isBig ? 30.2 : 15.4)}rem;
+  height: ${({ isBig }) => (isBig ? 30.2 : 15.4)}rem;
   border-radius: 3rem;
 
   transform: rotate(-45deg);
@@ -127,17 +140,35 @@ const ImageWrapper = styled.div<{ isBig: boolean }>`
   cursor: pointer;
 `;
 
-const Image = styled.img`
+const Image = styled.img<{ isLight: boolean }>`
   border-radius: 3rem;
 
   transform: rotate(45deg);
   object-fit: cover;
 
-  margin-left: -8rem;
-  margin-top: -8rem;
-
   width: 150%;
   height: 150%;
 
+  opacity: ${({ isLight }) => !isLight && 0.4};
   cursor: pointer;
+`;
+
+const Title = styled.h1<{ isLight: boolean }>`
+  width: 14rem;
+  height: 5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+
+  color: ${({ theme }) => theme.colors.gray2};
+  display: ${({ isLight }) => (isLight ? "none" : "flex")};
+
+  ${({ theme }) => theme.fonts.id}
+
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  overflow-wrap: break-word;
+
+  transform: rotate(45deg);
 `;
