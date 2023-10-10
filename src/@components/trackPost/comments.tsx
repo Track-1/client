@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { CommentsPlayerContext } from ".";
 import { AddCommentIc, CloseCommentsBtnIc, ClosedAddCommentIc } from "../../assets";
 import { PlayerProvider } from "../../context/playerContext";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
+import usePaly from "../../hooks/common/usePlay";
 import { useComments, useUploadComment } from "../../hooks/queries/comments";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
@@ -16,14 +18,15 @@ import CommentLayout from "./commentLayout";
 import CommentWrite from "./commentWrite";
 
 interface CommentsProp {
-  handleClosecomment: () => void;
+  handleClosecomment: (quitCommentAudio: () => void) => void;
+  trackContextPlaying: boolean;
 }
 
 const PAGE_LIMIT = 5;
 
 export default function Comments(props: CommentsProp) {
   const { id } = useParams();
-  const { handleClosecomment } = props;
+  const { handleClosecomment, trackContextPlaying } = props;
   const { trackDetail } = useTrackDetail(Number(id));
   const [comment, setComment] = useRecoilState(commentWriteData);
   const { uploadComment } = useUploadComment();
@@ -33,12 +36,11 @@ export default function Comments(props: CommentsProp) {
   });
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
   const [playingTrack, setPLayingTrack] = useState<CommentType["commentId"] | null>(null);
+  const { quitAudioForMovePage } = useContext(CommentsPlayerContext);
 
   function selectTrack(trackId: CommentType["commentId"]) {
     setPLayingTrack(trackId);
   }
-
-  if (trackComments === undefined) return null;
 
   function handleUploadComment() {
     if (!blockAccess()) {
@@ -48,26 +50,35 @@ export default function Comments(props: CommentsProp) {
     }
   }
 
+  useEffect(() => {
+    if (!trackContextPlaying) return;
+
+    quitAudioForMovePage();
+  }, [trackContextPlaying]);
+
+  if (trackComments === undefined) return null;
+
   return (
-    <PlayerProvider>
-      <CommentLayout>
-        <CloseCommentsBtnIcon onClick={handleClosecomment} />
-        <CommentWrite isUpdate={false} />
-        <AddCommentIconWrapper>
-          {!trackDetail?.trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
-        </AddCommentIconWrapper>
-        {trackComments?.map((eachComment: CommentType) => (
-          <CommentBox
-            key={eachComment?.commentId}
-            eachComment={eachComment}
-            playingTrack={playingTrack}
-            selectTrack={selectTrack}
-          />
-        ))}
-        <Observer ref={observerRef} />
-      </CommentLayout>
-      <Player />
-    </PlayerProvider>
+    <CommentLayout>
+      <CloseCommentsBtnIcon
+        onClick={() => {
+          handleClosecomment(quitAudioForMovePage);
+        }}
+      />
+      <CommentWrite isUpdate={false} />
+      <AddCommentIconWrapper>
+        {!trackDetail?.trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
+      </AddCommentIconWrapper>
+      {trackComments?.map((eachComment: CommentType) => (
+        <CommentBox
+          key={eachComment?.commentId}
+          eachComment={eachComment}
+          playingTrack={playingTrack}
+          selectTrack={selectTrack}
+        />
+      ))}
+      <Observer ref={observerRef} />
+    </CommentLayout>
   );
 }
 

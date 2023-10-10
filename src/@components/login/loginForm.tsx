@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { LoginButtonIc } from "../../assets";
+import { LoginButtonIc, PasswordEyeIc } from "../../assets";
 import background from "../../assets/icon/signupBackgroundIc.svg";
 import useConventionModal from "../../hooks/common/useConventionModal";
 import { useLogin } from "../../hooks/queries/user";
@@ -71,20 +71,29 @@ const InputWrapper = styled.div`
   padding: 0 11rem;
 `;
 
-const InputField = styled.input<{ error: boolean }>`
+const InputField = styled.input`
   ${({ theme }) => theme.fonts.input}
 
   width: 100%;
   height: 4rem;
 
   padding-bottom: 1rem;
-  border-bottom: 0.1rem solid ${({ theme, error }) => (error ? theme.colors.red : theme.colors.gray4)};
 
   color: ${({ theme }) => theme.colors.white};
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray4};
   }
+`;
+
+const PasswordAndEyeWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const PasswordEyeIcon = styled(PasswordEyeIc)`
+  width: 3.5rem;
+  height: 3.5rem;
 `;
 
 const ErrorMessage = styled.strong`
@@ -164,6 +173,7 @@ export default function LoginForm() {
   const { login, error } = useLogin();
   const { conventionModalInform } = useConventionModal();
   const navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
 
   function switchUserType() {
     userType === "producer" ? setUserType("vocal") : setUserType("producer");
@@ -175,6 +185,10 @@ export default function LoginForm() {
 
   function handleMoveToForgotPassword() {
     navigate("/forgot-password");
+  }
+
+  function toggleHidePassword() {
+    setIsPasswordVisible((prev) => !prev);
   }
 
   return (
@@ -197,13 +211,12 @@ export default function LoginForm() {
             </TitleWrapper>
 
             <InputWrapper>
-              <InputContainer title="Email">
+              <InputContainer title="Email" error={"email" in errors}>
                 <InputField
                   placeholder="Enter your email address"
                   {...register("email", {
                     pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
                   })}
-                  error={"email" in errors}
                 />
               </InputContainer>
               <ErrorMessage>
@@ -212,23 +225,26 @@ export default function LoginForm() {
               </ErrorMessage>
             </InputWrapper>
             <InputWrapper>
-              <InputContainer title="Password">
-                <InputField
-                  placeholder="Enter your password"
-                  {...register("password", {
-                    pattern: {
-                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
-                      message: "Wrong password. Try again or click Forgot password to reset it.",
-                    },
-                  })}
-                  error={"password" in errors}
-                />
-                <ErrorMessage>
-                  {errors.password?.message ||
-                    (error?.response?.data.status === "U002" &&
-                      "Wrong password. Try again or click Forgot password to reset it")}
-                </ErrorMessage>
+              <InputContainer title="password" error={"password" in errors}>
+                <PasswordAndEyeWrapper>
+                  <InputField
+                    placeholder="Enter your password"
+                    {...register("password", {
+                      pattern: {
+                        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{10,}$/,
+                        message: "Wrong password. Try again or click Forgot password to reset it.",
+                      },
+                    })}
+                    type={isPasswordVisible ? "text" : "password"}
+                  />
+                  <PasswordEyeIcon onClick={toggleHidePassword} />
+                </PasswordAndEyeWrapper>
               </InputContainer>
+              <ErrorMessage>
+                {errors.password?.message ||
+                  (error?.response?.data.status === "U002" &&
+                    "Wrong password. Try again or click Forgot password to reset it")}
+              </ErrorMessage>
             </InputWrapper>
             <SwitchToggle switchUserType={switchUserType} />
             <LoginButton
