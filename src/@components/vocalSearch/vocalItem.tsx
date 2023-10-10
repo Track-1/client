@@ -38,8 +38,10 @@ const Username = styled.span`
 const CategoryTextWrapper = styled.div``;
 
 const CategoryText = styled.span`
+  position: relative;
   color: ${({ theme }) => theme.colors.gray3};
   margin-right: 0.5rem;
+  z-index: 2;
 `;
 
 const CategoryNum = styled.span`
