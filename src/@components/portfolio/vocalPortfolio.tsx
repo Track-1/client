@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -29,6 +29,22 @@ export default function VocalPortfolio(props: VocalBigPortfolioProps) {
   const isBig = isFirst || (isSelected && showPlayer);
   const { id } = useParams();
   const { vocalProfile } = useGetVocalProfile(Number(id));
+  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+
+  function handlePlaying() {
+    setClickId(vocalPortfolios.portfolioId);
+  }
+
+  function handleHoverTrack() {
+    hoverTrack();
+    setHoverId(vocalPortfolios.portfolioId);
+  }
+
+  function handleUnhoverTrack() {
+    unhoverTrack();
+    setHoverId(-1);
+  }
 
   useEffect(() => {
     if (!isSelected) return;
@@ -41,7 +57,11 @@ export default function VocalPortfolio(props: VocalBigPortfolioProps) {
   }, [playingTrack]);
 
   return (
-    <ImageContainer onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isBig={isBig}>
+    <ImageContainer
+      onMouseEnter={handleHoverTrack}
+      onMouseLeave={handleUnhoverTrack}
+      onClick={handlePlaying}
+      isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Image src={vocalPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </ImageWrapper>

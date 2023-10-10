@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 import { useGetProducerProfile } from "../../hooks/queries/mypage";
+import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
 import { UserPortfolioType } from "../../type/profile";
 
 interface ProducerBigPortfolioProps {
@@ -27,6 +29,22 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
   const isBig = isFirst || (isSelected && showPlayer);
   const { id } = useParams();
   const { producerProfile } = useGetProducerProfile(Number(id));
+  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+
+  function handlePlaying() {
+    setClickId(producerPortfolios.portfolioId);
+  }
+
+  function handleHoverTrack() {
+    hoverTrack();
+    setHoverId(producerPortfolios.portfolioId);
+  }
+
+  function handleUnhoverTrack() {
+    unhoverTrack();
+    setHoverId(-1);
+  }
 
   useEffect(() => {
     if (!isSelected) return;
@@ -39,7 +57,11 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
   }, [playingTrack]);
 
   return (
-    <ImageContainer onMouseEnter={hoverTrack} onMouseLeave={unhoverTrack} isBig={isBig}>
+    <ImageContainer
+      onMouseEnter={handleHoverTrack}
+      onMouseLeave={handleUnhoverTrack}
+      onClick={handlePlaying}
+      isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Image src={producerPortfolios.portfolioImageFile} alt="포트폴리오 이미지" className="image" />
       </ImageWrapper>
