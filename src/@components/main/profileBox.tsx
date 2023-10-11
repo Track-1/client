@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/queries/user";
 import { useState } from "react";
 import { ProducerProfileImage } from "./mypageButton";
+import { useRecoilValue } from "recoil";
+import { loginUserId } from "../../recoil/common/loginUserData";
 
 interface ProfileBoxProps {
   userType: string;
@@ -17,6 +19,8 @@ export default function ProfileBox(props: ProfileBoxProps) {
   const { userType, userImage, userName, userContact } = props;
   const [logoutState, setLogoutState] = useState(false);
   const { logout } = useLogout(logoutState);
+
+  const userId = useRecoilValue(loginUserId);
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -25,9 +29,9 @@ export default function ProfileBox(props: ProfileBoxProps) {
 
   function handleMoveTo() {
     if (userType === ROLE.PRODUCER) {
-      navigate(`/producer-profile/${1}`);
+      navigate(`/producer-profile/${userId}`);
     } else {
-      navigate(`/vocal-profile/${1}`);
+      navigate(`/vocal-profile/${userId}`);
     }
   }
 

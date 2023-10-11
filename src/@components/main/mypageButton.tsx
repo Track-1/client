@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ROLE } from "../../core/common/roleType";
 import ProfileBox from "./profileBox";
 import useModal from "../../hooks/common/useModal";
+import { useEffect } from "react";
 
 interface MypageButtonProps {
   userType: string;
@@ -13,7 +14,11 @@ interface MypageButtonProps {
 export default function MypageButton(props: MypageButtonProps) {
   const { userType, userImage, userName, userContact } = props;
 
-  const { openModal, handleShowUpdateModal } = useModal();
+  const { openModal, unShowModal, handleShowUpdateModal } = useModal();
+
+  useEffect(() => {
+    unShowModal();
+  }, []);
 
   return (
     <>
