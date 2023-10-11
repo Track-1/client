@@ -22,6 +22,7 @@ import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
 import { useRecoilValue } from "recoil";
 import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
+import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
 
 export default function ProfileEditContainer() {
   const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
@@ -94,10 +95,24 @@ export default function ProfileEditContainer() {
     mode: "onChange",
   });
 
+  const {
+    register,
+    formState: { errors, isDirty },
+    handleSubmit,
+  } = nameMethods;
+
+  console.log(nameMethods.getFieldState("nickName", nameMethods.formState).error?.message);
+
   useEffect(() => {
-    const nickName = nameMethods.getValues().nickName;
-    return nickName !== "" ? setIsUploadActive(true) : setIsUploadActive(false);
+    checkNickNameValidation() ? setIsUploadActive(true) : setIsUploadActive(false);
   }, [nameMethods.watch()]);
+
+  function checkNickNameValidation() {
+    const nickNameState = nameMethods.getFieldState("nickName", nameMethods.formState).error?.message;
+    return (
+      (nickNameState === NICKNAME_MESSAGE.SUCCESS || nickNameState === "") && nameMethods.getValues().nickName !== ""
+    );
+  }
 
   function handleChangeIsSleep() {
     setIsSleep((prev) => !prev);
@@ -115,8 +130,6 @@ export default function ProfileEditContainer() {
     };
     return data;
   }
-
-  console.log(imageFileSame);
 
   function vocalProfileData() {
     const data: VocalProfileEditType = {
