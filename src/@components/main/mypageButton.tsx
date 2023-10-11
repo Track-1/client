@@ -43,7 +43,9 @@ const Container = styled.button<{ userType: string }>`
   display: flex;
   align-items: center;
 
-  width: 19.5rem;
+  min-width: 19.5rem;
+
+  width: 100%;
   height: 5.2rem;
 
   color: ${({ theme }) => theme.colors.black};
