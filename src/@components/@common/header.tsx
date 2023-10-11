@@ -12,12 +12,13 @@ interface HeaderProps {
   homeLogo?: boolean;
   slogan?: boolean;
   headerFixed?: boolean;
+  headerStyle?: React.CSSProperties;
 
   children?: ReactNode;
 }
 
 export default function Header(props: HeaderProps) {
-  const { backBtn, homeLogo, prevURL, slogan, headerFixed, children } = props;
+  const { backBtn, homeLogo, prevURL, slogan, headerFixed, headerStyle, children } = props;
 
   const navigate = useNavigate();
   const { quitAudioForMovePage } = useContext(PlayerContext);
@@ -28,7 +29,7 @@ export default function Header(props: HeaderProps) {
   }
 
   return (
-    <Container headerFixed={headerFixed}>
+    <Container headerFixed={headerFixed} style={headerStyle}>
       <Wrapper>
         {homeLogo && (
           <HeaderHomeLogoIconWrapper>
@@ -49,8 +50,7 @@ const Container = styled.header<{ headerFixed: boolean | undefined }>`
 
   width: 100%;
   height: 14.3rem;
-  position: ${(props) => (props.headerFixed ? "sticky" : "default")};
-  top: ${(props) => (props.headerFixed ? "0" : "default")};
+
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 `;
 

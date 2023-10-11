@@ -57,7 +57,7 @@ export default function Main() {
 
   return (
     <>
-      <Header homeLogo slogan headerFixed>
+      <Header homeLogo slogan headerStyle={headerStyle}>
         <LoginButton />
       </Header>
       <MainPageWrapper>
@@ -80,6 +80,11 @@ export default function Main() {
     </>
   );
 }
+
+const headerStyle: React.CSSProperties = {
+  position: "absolute",
+  
+};
 
 const Background = styled.main<{
   originBackground: string;

@@ -12,6 +12,7 @@ import { PlayerProvider } from "../context/playerContext";
 import useModal from "../hooks/common/useModal";
 import { loginUserType } from "../recoil/common/loginUserData";
 import { blockAccess } from "../utils/common/privateRouter";
+import React from "react";
 
 const Wrapper = styled.section`
   display: flex;
@@ -45,7 +46,7 @@ export default function TrackSearchPage() {
   return (
     <>
       <PlayerProvider>
-        <Header homeLogo headerFixed>
+        <Header homeLogo headerStyle={headerStyle}>
           <TrackSearchHeader pageType="tracks" />
         </Header>
         <Wrapper>
@@ -59,3 +60,8 @@ export default function TrackSearchPage() {
     </>
   );
 }
+
+const headerStyle: React.CSSProperties = {
+  position: "sticky",
+  top: "0",
+};
