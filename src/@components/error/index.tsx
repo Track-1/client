@@ -1,15 +1,13 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { openConventionModal } from "../../recoil/common/conventionModal";
-import background from "../../assets/icon/signupBackgroundIc.svg";
+import background from "../../assets/image/backgroundImg.png";
 import { useNavigate } from "react-router-dom";
 import ConventionModal from "../@common/conventionModal";
 import styled from "styled-components";
 import { ErrorPageMainIc, ErrorPageTextIc, TrackOneMainLogoIc } from "../../assets";
+import useModal from "../../hooks/common/useModal";
 
 export default function ErrorPageContainer() {
-  const showModal = useRecoilValue(openConventionModal);
-
+  const { openModal } = useModal();
   const navigate = useNavigate();
 
   function moveToMain() {
@@ -46,13 +44,16 @@ export default function ErrorPageContainer() {
         </ErrorPageWrapper>
       </Container>
 
-      {showModal && <ConventionModal />}
+      {openModal && <ConventionModal />}
     </>
   );
 }
 
 const Container = styled.main`
   position: absolute;
+
+  width: 100%;
+  height: 100%;
 `;
 
 const ErrorPageWrapper = styled.section`
