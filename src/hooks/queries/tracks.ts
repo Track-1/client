@@ -78,7 +78,6 @@ export function useUploadTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),
     onSuccess: (data) => {
-      alert("업로드 성공");
       navigate(-1);
     },
     onError: () => {},
@@ -94,7 +93,6 @@ export function useEditTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
     onSuccess: (data) => {
-      alert("업로드 성공");
       navigate(-1);
     },
     onError: () => {},

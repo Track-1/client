@@ -153,7 +153,6 @@ export function useUploadProducerPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: () => {
-      alert("업로드 성공");
       navigate(-1);
     },
     onError: () => {},
@@ -169,7 +168,6 @@ export function useUploadVocalPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
     onSuccess: (data) => {
-      alert("업로드 성공");
       navigate(-1);
     },
     onError: () => {},
@@ -186,7 +184,6 @@ export function useEditProducerPortfolio() {
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchProducerPortfolio(trackId, formData),
     onSuccess: () => {
-      alert("업로드 성공");
       navigate(-1);
     },
     onError: () => {},
@@ -203,7 +200,6 @@ export function useEditVocalPortfolio() {
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchVocalPortfolio(trackId, formData),
     onSuccess: () => {
-      alert("업로드 성공");
       navigate(-1);
     },
     onError: () => {},
