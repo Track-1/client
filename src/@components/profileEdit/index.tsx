@@ -23,6 +23,7 @@ import { useRecoilValue } from "recoil";
 import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
 import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
+import BackButton from "../@common/backButton";
 
 export default function ProfileEditContainer() {
   const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
@@ -48,6 +49,22 @@ export default function ProfileEditContainer() {
 
   const { vocalProfile } = useGetVocalProfile(userId, userType);
   const { producerProfile } = useGetProducerProfile(userId, userType);
+
+  const [imageFileSame, setImageFileSame] = useState(true);
+
+  const nameMethods = useForm({
+    defaultValues: {
+      nickName: "",
+    },
+    mode: "onChange",
+  });
+
+  const contactMethods = useForm({
+    defaultValues: {
+      contact: "",
+    },
+    mode: "onChange",
+  });
 
   useEffect(() => {
     if (vocalProfile) {
@@ -75,33 +92,9 @@ export default function ProfileEditContainer() {
     }
   }, [vocalProfile, producerProfile]);
 
-  const [imageFileSame, setImageFileSame] = useState(true);
-
-  const nameMethods = useForm({
-    defaultValues: {
-      nickName: "",
-    },
-    mode: "onChange",
-  });
-
   useEffect(() => {
     imageFile !== null ? setImageFileSame(false) : setImageFileSame(true);
   }, [imageFile]);
-
-  const contactMethods = useForm({
-    defaultValues: {
-      contact: "",
-    },
-    mode: "onChange",
-  });
-
-  const {
-    register,
-    formState: { errors, isDirty },
-    handleSubmit,
-  } = nameMethods;
-
-  console.log(nameMethods.getFieldState("nickName", nameMethods.formState).error?.message);
 
   useEffect(() => {
     checkNickNameValidation() ? setIsUploadActive(true) : setIsUploadActive(false);
@@ -110,7 +103,8 @@ export default function ProfileEditContainer() {
   function checkNickNameValidation() {
     const nickNameState = nameMethods.getFieldState("nickName", nameMethods.formState).error?.message;
     return (
-      (nickNameState === NICKNAME_MESSAGE.SUCCESS || nickNameState === "") && nameMethods.getValues().nickName !== ""
+      (nickNameState === NICKNAME_MESSAGE.SUCCESS || nickNameState === undefined) &&
+      nameMethods.getValues().nickName !== ""
     );
   }
 
