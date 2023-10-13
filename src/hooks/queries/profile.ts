@@ -11,7 +11,9 @@ export function useEditProdcerProfile() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (editData: ProfileEditType) => patchProducerProfile(editData),
     onSuccess: () => {
-      navigate(`/producer-profile/${userId}`);
+      setTimeout(() => {
+        navigate(`/producer-profile/${userId}`);
+      }, 3000);
     },
     onError: () => {},
   });
@@ -22,9 +24,15 @@ export function useEditProdcerProfile() {
 }
 
 export function useEditVocalProfile() {
+  const navigate = useNavigate();
+  const userId = useRecoilValue(loginUserId);
   const { mutate, ...restValues } = useMutation({
     mutationFn: (editData: VocalProfileEditType) => patchVocalProfile(editData),
-    onSuccess: () => {},
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate(`/vocal-profile/${userId}`);
+      }, 3000);
+    },
     onError: () => {},
   });
   return {
