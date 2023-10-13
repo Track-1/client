@@ -15,10 +15,6 @@ export default function useModal() {
     };
   }, [openModal]);
 
-  useEffect(() => {
-    setOpenModal(false);
-  }, []);
-
   function closeModal(e: MouseEvent) {
     if (isClickedOutside(e, modalRef, openModal)) {
       setOpenModal(false);

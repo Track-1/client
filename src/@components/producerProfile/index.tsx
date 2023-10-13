@@ -41,13 +41,14 @@ export default function ProducerProfile() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
   const dataState = useRecoilValue(producerState);
-  const { openModal, showModal } = useModal();
+  const { openModal, unShowModal, showModal } = useModal();
 
   const prevURL = useLocation().state?.prevURL;
 
   useEffect(() => {
     resetClickedId();
     resetHoveredId();
+    unShowModal();
   }, []);
 
   function handleMoveProfileEditPage() {
