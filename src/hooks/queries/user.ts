@@ -89,8 +89,7 @@ export function useLogin() {
     onSuccess: (response: any) => {
       setLoginUserId(response?.data?.userId);
       setLoginUserType(response?.data?.userType);
-      
-      console.log(response?.data?.accessToken);
+
       setCookie("accessToken", response?.data?.accessToken, {});
       navigate("/");
     },

@@ -38,8 +38,6 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { modalRef, unShowModal } = useUpdateModal();
   const prevURL = useLocation().pathname;
 
-  console.log(clickedProducerVocalSearching);
-
   function handleMoveToEditPage() {
     switch (dataState) {
       case "producer portfolio":

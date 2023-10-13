@@ -4,8 +4,6 @@ export default function usePrevPage(staticPrevURL?: string | number) {
   const prevURL = useLocation().state?.prevURL;
   const navigate = useNavigate();
 
-  console.log(useLocation());
-
   function handleMovePrevPage() {
     if (switchSpecificPrevPage()) return;
 
