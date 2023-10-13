@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { CategoryIc } from "../../assets";
-import { Categories } from "../../core/common/categories";
+import { CategoryId } from "../../core/common/categories";
 import Empty from "./empty";
 
 interface ProfileCategoryProps {
@@ -15,14 +15,11 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
       <CategoryIcon />
       <CategoryArray>
         {category && category.length > 0 ? (
-          // getInvariantObjectKeys(invariantOf(CategoryId)).map((categ, index) =>
-          //   category.includes(CategoryText[categ]) ? (
-          //     <Category key={index}>{categ}</Category>
-          Categories.map((categ, index) =>
-            category.includes(categ) ? (
-              <Category key={index}>{categ}</Category>
+          Object.keys(CategoryId).map((categ: string, CategoryId: number) =>
+            category?.includes(categ) ? (
+              <Category key={CategoryId}>{categ}</Category>
             ) : (
-              <NotCategory key={index + 9}>{categ}</NotCategory>
+              <NotCategory key={CategoryId + 9}>{categ}</NotCategory>
             ),
           )
         ) : (
