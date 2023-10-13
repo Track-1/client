@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import {
   deleteTrack,
   getFilteredTracks,
@@ -10,7 +11,6 @@ import {
 } from "../../api/tracks";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredTrackParamsType } from "../../type/tracks";
-import { useNavigate } from "react-router-dom";
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
   const fetchTracks = async (pageParams: number) => {
@@ -111,7 +111,7 @@ export function useCloseTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (trackId: number) => patchTrackClose(trackId),
     onSuccess: () => {
-      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_INFO);
+      queryClient.invalidateQueries(QUERIES_KEY.TRACK_DETAIL);
     },
     onError: () => {},
   });

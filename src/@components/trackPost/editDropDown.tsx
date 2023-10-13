@@ -4,16 +4,16 @@ import { DeleteIc, EditIc } from "../../assets";
 import { useDeleteTrack } from "../../hooks/queries/tracks";
 
 export default function EditDropDown() {
-  const { beatId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const { deleteTrack } = useDeleteTrack();
 
   function handleMoveTrackPostEditPage() {
-    navigate(`/track-post/edit/${beatId}`);
+    navigate(`/vocal-searching-edit/producer/${id}`);
   }
 
   function handleDeleteTrack() {
-    deleteTrack(Number(beatId));
+    deleteTrack(Number(id));
   }
 
   return (

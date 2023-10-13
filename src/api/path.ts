@@ -30,7 +30,7 @@ export const TRACKS = {
   DETAIL: (trackId: number) => `${PATH.tracks}/${trackId}`,
   DOWNLOAD: (trackId: number) => `${PATH.tracks}/${trackId}/download`,
   POST: `${PATH.tracks}`,
-  TRACK_CLOSE: (trackId: number) => `${PATH.tracks}/${trackId}/close`,
+  TRACK_CLOSE: (trackId: number) => `${PATH.tracks}/${trackId}/closed`,
 };
 
 export const COMMENTS = {

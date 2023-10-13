@@ -43,7 +43,9 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
               (hoveredId !== -1 && hoveredId === producerVocalSearching.trackId)) && (
               <>
                 <TitleSection>
-                  <ViewMoreButton id={producerVocalSearching.trackId} />
+                  {clickedId === producerVocalSearching.trackId && (
+                    <ViewMoreButton id={producerVocalSearching.trackId} />
+                  )}
                   {isMe && clickedId === producerVocalSearching.trackId && (
                     <EllipsisIcon onClick={handleShowUpdateModal} />
                   )}
