@@ -7,7 +7,7 @@ export default function ProducerProfile() {
   const { id } = useParams();
   const { trackDetail } = useTrackDetail(Number(id));
   const navigate = useNavigate();
-  const prevURL = useLocation().state?.prevURL;
+  const prevURL = useLocation().pathname;
 
   function handleMoveToProducerProfile() {
     // 플레이어 연결 후 작업 수정

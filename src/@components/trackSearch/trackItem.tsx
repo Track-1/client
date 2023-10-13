@@ -151,7 +151,7 @@ export default function TrackItem(props: TrackItemProps) {
     selectTrack,
   );
   const navigate = useNavigate();
-  const prevURL = useLocation().state?.prevURL;
+  const prevURL = useLocation().pathname;
 
   useEffect(() => {
     if (!isSelected) return;

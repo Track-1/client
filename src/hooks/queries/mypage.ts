@@ -180,11 +180,22 @@ export function useUploadProducerPortfolio() {
 
 export function useUploadVocalPortfolio() {
   const navigate = useNavigate();
+  const prevURL = useLocation().state?.prevURL;
+  const userId = useRecoilValue(loginUserId);
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
-    onSuccess: (data) => {
+    onSuccess: () => {
       setTimeout(() => {
-        navigate(-1);
+        if (prevURL === "/signup/success") {
+          navigate(`/vocal-profile/${userId}`, {
+            state: {
+              prevURL: "/vocal-search",
+            },
+          });
+        } else {
+          navigate(-1);
+        }
       }, 3000);
     },
     onError: () => {},
