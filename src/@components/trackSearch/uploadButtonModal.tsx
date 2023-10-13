@@ -106,10 +106,7 @@ const Explain = styled.p`
 
 const UnionIcon = styled(UnionIc)`
   width: 30.4rem;
-
-  @media (min-width: 1200px) and (max-width: 1799px) {
-    margin-top: -2rem;
-  }
+  height: 17rem;
 `;
 
 const VocalSearchingTextIcon = styled(VocalSearchingTextIc)`
