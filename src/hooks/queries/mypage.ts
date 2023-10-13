@@ -158,15 +158,17 @@ export function useUploadProducerPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: () => {
-      if (prevURL === "/signup/success") {
-        navigate(`/producer-profile/${userId}`, {
-          state: {
-            prevURL: "/track-search",
-          },
-        });
-      } else {
-        navigate(-1);
-      }
+      setTimeout(() => {
+        if (prevURL === "/signup/success") {
+          navigate(`/producer-profile/${userId}`, {
+            state: {
+              prevURL: "/track-search",
+            },
+          });
+        } else {
+          navigate(-1);
+        }
+      }, 3000);
     },
     onError: () => {},
   });
@@ -181,7 +183,9 @@ export function useUploadVocalPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
     onSuccess: (data) => {
-      navigate(-1);
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });
@@ -197,7 +201,9 @@ export function useEditProducerPortfolio() {
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchProducerPortfolio(trackId, formData),
     onSuccess: () => {
-      navigate(-1);
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });
@@ -209,11 +215,14 @@ export function useEditProducerPortfolio() {
 
 export function useEditVocalPortfolio() {
   const navigate = useNavigate();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchVocalPortfolio(trackId, formData),
     onSuccess: () => {
-      navigate(-1);
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });

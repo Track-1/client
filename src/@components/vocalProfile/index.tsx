@@ -18,7 +18,6 @@ const PAGE_LIMIT = 5;
 
 export default function VocalProfile() {
   const { vocalId } = useParams();
-  console.log(vocalId);
   const { vocalProfile } = useGetVocalProfile(Number(vocalId));
   const navigate = useNavigate();
   const resetClickedId = useResetRecoilState(clickedProfileId);

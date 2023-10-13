@@ -82,15 +82,17 @@ export function useUploadTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),
     onSuccess: (data) => {
-      if (prevURL === "/signup/success") {
-        navigate(`/producer-profile/${userId}`, {
-          state: {
-            prevURL: "/track-search",
-          },
-        });
-      } else {
-        navigate(-1);
-      }
+      setTimeout(() => {
+        if (prevURL === "/signup/success") {
+          navigate(`/producer-profile/${userId}`, {
+            state: {
+              prevURL: "/track-search",
+            },
+          });
+        } else {
+          navigate(-1);
+        }
+      }, 3000);
     },
     onError: () => {},
   });
@@ -104,8 +106,10 @@ export function useEditTrack() {
   const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
-    onSuccess: (data) => {
-      navigate(-1);
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });
