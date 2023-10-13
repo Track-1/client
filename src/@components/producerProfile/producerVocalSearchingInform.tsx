@@ -54,6 +54,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
                       nowTitleNextId={producerVocalSearchings[1].trackId}
                       portfolioId={producerVocalSearching.trackId}
                       dataState="producer vocal searching"
+                      clickedProducerVocalSearching={producerVocalSearchings[index]}
                     />
                   )}
                 </TitleSection>

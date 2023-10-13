@@ -6,14 +6,13 @@ import { UploadFileChangeIc } from "../../../assets";
 import useFileHover from "../../../hooks/common/useFileHover";
 
 interface VocalLayoutProps {
-  imageFile: File | Blob | null;
   previewImage: string | ArrayBuffer | null;
   handleUploadImageFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   children: ReactNode;
 }
 
 export default function VocalLayout(props: VocalLayoutProps) {
-  const { imageFile, previewImage, handleUploadImageFile, children } = props;
+  const { previewImage, handleUploadImageFile, children } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
   return (
     <Container>
@@ -26,7 +25,7 @@ export default function VocalLayout(props: VocalLayoutProps) {
                 alt="썸네일 이미지"
                 fileHoverState={fileHoverState} //기능 변경해야됨
               />
-              {imageFile && fileHoverState && <FileChangeIcon />}
+              {previewImage && fileHoverState && <FileChangeIcon />}
               <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
             </Label>
           </VocalImageFrame>
@@ -57,7 +56,7 @@ const UploadVocalLayout = styled.img`
 
 const UploadImageContainer = styled.div`
   z-index: 1;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;

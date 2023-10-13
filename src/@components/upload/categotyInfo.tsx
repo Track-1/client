@@ -4,18 +4,23 @@ import UploadInfoBox from "./uploadInfoBox";
 import DropCategory from "./dropCategory";
 import { UpperCategoryType } from "../../type/common/category";
 import useModal from "../../hooks/common/useModal";
+import { useEffect } from "react";
 
 interface CategoryInfoProps {
   categories: Record<UpperCategoryType, boolean>;
-  setCategories: React.Dispatch<React.SetStateAction<Record<UpperCategoryType, boolean>>>;
   isSelectedNothing: () => boolean;
   isSelected: (category: string) => boolean;
+  selectCategory: (category: string) => void;
   categoryText: string;
 }
 
 export default function CategoryInfo(props: CategoryInfoProps) {
-  const { categories, setCategories, isSelectedNothing, categoryText } = props;
-  const { openModal, handleShowUpdateModal } = useModal();
+  const { categories, isSelectedNothing, selectCategory, categoryText } = props;
+  const { openModal, unShowModal, handleShowUpdateModal } = useModal();
+
+  useEffect(() => {
+    unShowModal();
+  }, []);
 
   return (
     <UploadInfoBox>
@@ -38,7 +43,7 @@ export default function CategoryInfo(props: CategoryInfoProps) {
       </InfoInput>
       <DropCategory
         categories={categories}
-        setCategories={setCategories}
+        selectCategory={selectCategory}
         openModal={openModal}
         handleShowUpdateModal={handleShowUpdateModal}
       />

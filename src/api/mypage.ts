@@ -51,7 +51,6 @@ export async function patchVocalPortfolio(trackId: number, uploadData: FormData)
 }
 
 export async function patchProducerTitle(params: MyPageTitleParamsType) {
-  console.log(params);
   // const { data } = await client.patch(MYPAGE.PATCH_PRODUDCER_TITLE, {
   //   params: {
   //     bef: params.bef,

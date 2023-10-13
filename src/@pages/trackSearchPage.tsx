@@ -1,5 +1,5 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Filter from "../@components/@common/filter";
@@ -13,6 +13,8 @@ import { PlayerProvider } from "../context/playerContext";
 import useModal from "../hooks/common/useModal";
 import { loginUserType } from "../recoil/common/loginUserData";
 import { blockAccess } from "../utils/common/privateRouter";
+import React from "react";
+import HomeLogo from "../@components/@common/homeLogo";
 
 const Wrapper = styled.section`
   display: flex;
@@ -32,6 +34,7 @@ export default function TrackSearchPage() {
   const { openModal, showModal, unShowModal } = useModal();
   const userType = useRecoilValue(loginUserType);
   const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   useEffect(() => {
     openModal && unShowModal();
@@ -39,7 +42,11 @@ export default function TrackSearchPage() {
 
   function moveUploadPage() {
     blockAccess()
-      ? navigate("/login")
+      ? navigate("/login", {
+          state: {
+            prevURL: prevURL,
+          },
+        })
       : userType === "producer"
       ? openModal
         ? unShowModal()
@@ -50,7 +57,8 @@ export default function TrackSearchPage() {
   return (
     <>
       <PlayerProvider>
-        <Header homeLogo headerFixed>
+        <Header headerStyle={headerStyle}>
+          <HomeLogo />
           <TrackSearchHeader pageType="tracks" />
         </Header>
         <Wrapper>
@@ -64,3 +72,8 @@ export default function TrackSearchPage() {
     </>
   );
 }
+
+const headerStyle: React.CSSProperties = {
+  position: "sticky",
+  top: "0",
+};

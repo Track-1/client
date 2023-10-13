@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useTrackDetail } from "../../hooks/queries/tracks";
@@ -7,13 +7,18 @@ export default function ProducerProfile() {
   const { id } = useParams();
   const { trackDetail } = useTrackDetail(Number(id));
   const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   function handleMoveToProducerProfile() {
     // 플레이어 연결 후 작업 수정
     // pausesPlayerAudio();
     // closePlayer();
 
-    navigate(`/producer-profile/${trackDetail?.trackUserId}`);
+    navigate(`/producer-profile/${trackDetail?.trackUserId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (

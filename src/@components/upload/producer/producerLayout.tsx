@@ -5,14 +5,13 @@ import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaul
 import useFileHover from "../../../hooks/common/useFileHover";
 
 interface ProducerLayoutProps {
-  imageFile: File | Blob | null;
   previewImage: string | ArrayBuffer | null;
   handleUploadImageFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   children: ReactNode;
 }
 
 export default function ProducerLayout(props: ProducerLayoutProps) {
-  const { imageFile, previewImage, handleUploadImageFile, children } = props;
+  const { previewImage, handleUploadImageFile, children } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
 
   return (
@@ -26,7 +25,7 @@ export default function ProducerLayout(props: ProducerLayoutProps) {
               fileHoverState={fileHoverState}
               previewImage={previewImage}
             />
-            {imageFile && fileHoverState && <FileChangeIcon />}
+            {previewImage && fileHoverState && <FileChangeIcon />}
             <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
           </Label>
         </ProducerUploadImageContainer>

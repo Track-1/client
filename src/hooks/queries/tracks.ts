@@ -10,7 +10,9 @@ import {
 } from "../../api/tracks";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredTrackParamsType } from "../../type/tracks";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { loginUserId } from "../../recoil/common/loginUserData";
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
   const fetchTracks = async (pageParams: number) => {
@@ -74,12 +76,23 @@ export function useTrackDownload(trackId: number, isDownload: boolean | undefine
 
 export function useUploadTrack() {
   const navigate = useNavigate();
+  const prevURL = useLocation().state?.prevURL;
+  const userId = useRecoilValue(loginUserId);
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),
     onSuccess: (data) => {
-      alert("업로드 성공");
-      navigate(-1);
+      setTimeout(() => {
+        if (prevURL === "/signup/success") {
+          navigate(`/producer-profile/${userId}`, {
+            state: {
+              prevURL: "/track-search",
+            },
+          });
+        } else {
+          navigate(-1);
+        }
+      }, 3000);
     },
     onError: () => {},
   });
@@ -93,9 +106,10 @@ export function useEditTrack() {
   const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
-    onSuccess: (data) => {
-      alert("업로드 성공");
-      navigate(-1);
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });

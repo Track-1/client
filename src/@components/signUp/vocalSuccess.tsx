@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   SignUpGetStartedButtonIc,
@@ -9,13 +9,18 @@ import {
 
 export default function VocalSuccess() {
   const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   function handelMoveToHome() {
     navigate("/");
   }
 
   function handleMoveToVocalUpload() {
-    navigate(`/upload/Portfolio`);
+    navigate("/upload/vocal/portfolio", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (

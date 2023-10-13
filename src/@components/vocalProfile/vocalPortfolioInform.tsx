@@ -50,6 +50,7 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
                       nowTitleNextId={vocalPortfolios[1].portfolioId}
                       portfolioId={vocalPortfolio.portfolioId}
                       dataState="vocal portfolio"
+                      clickedPortfolio={vocalPortfolios[index]}
                     />
                   )}
                 </TitleSection>
