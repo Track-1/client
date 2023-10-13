@@ -67,7 +67,7 @@ export default function ProfileEditContainer() {
   });
 
   useEffect(() => {
-    if (vocalProfile) {
+    if (vocalProfile && userType === ROLE.VOCAL) {
       changePreviewImage(vocalProfile.userProfile.userImageFile);
       changeDescription(
         vocalProfile.userProfile.userIntroduction === null ? "" : vocalProfile.userProfile.userIntroduction,
@@ -78,7 +78,7 @@ export default function ProfileEditContainer() {
       nameMethods.setValue("nickName", vocalProfile.userProfile.userName, {});
       contactMethods.setValue("contact", vocalProfile.userProfile.userContact, {});
     }
-    if (producerProfile) {
+    if (producerProfile && userType === ROLE.PRODUCER) {
       changePreviewImage(producerProfile.userProfile.userImageFile);
       changeDescription(
         producerProfile.userProfile.userIntroduction === null ? "" : producerProfile.userProfile.userIntroduction,
