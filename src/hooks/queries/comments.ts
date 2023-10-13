@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
-import { useResetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { deleteComment, getComments, patchComment, postComment } from "../../api/comments";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
+import { commentUpdateData, commentWriteData, editSelectId } from "../../recoil/trackPost/commentWriteData";
 import { CommentsRequest } from "../../type/api";
 import { CommentDataType } from "../../type/trackPost/commentDataType";
 
@@ -57,11 +57,14 @@ export function useUploadComment() {
 export function useEditComment(setIsEdit: (value: React.SetStateAction<boolean>) => void) {
   const queryClient = useQueryClient();
   const resetComment = useResetRecoilState(commentUpdateData);
+  const [editId, setEditId] = useRecoilState(editSelectId);
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ commentId, formData }: { commentId: number; formData: CommentDataType }) =>
       patchComment(commentId, formData),
     onSuccess: () => {
       setIsEdit(false);
+      setEditId(-1);
       resetComment();
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
     },
@@ -77,9 +80,12 @@ export function useEditComment(setIsEdit: (value: React.SetStateAction<boolean>)
 
 export function useDeleteComment() {
   const queryClient = useQueryClient();
+  const [editId, setEditId] = useRecoilState(editSelectId);
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (commentId: number) => deleteComment(commentId),
     onSuccess: () => {
+      setEditId(-1);
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
     },
     onError: (error) => {
