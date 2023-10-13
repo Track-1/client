@@ -178,8 +178,8 @@ const VocalUploadImageLayout = styled.img`
   width: 8.6rem;
   height: 8.6rem;
 
-  margin-top: -1.2rem;
-  margin-left: -1.2rem;
+  margin-top: -1.5rem;
+  margin-left: -1.5rem;
 
   transform: rotate(45deg);
   object-fit: cover;
