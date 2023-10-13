@@ -113,8 +113,7 @@ const DataWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* margin-left: 29.4rem; */
-  margin-left: 86.1rem;
+  margin-left: 29.4rem;
   margin-top: 23.3rem;
   margin-bottom: 3rem;
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
@@ -150,12 +149,7 @@ const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
 `;
 
 const PortfolioSection = styled.section`
-  width: 186rem;
   display: flex;
-
-  /* margin-left: 60rem; */
-
-  position: absolute;
 `;
 
 const Container = styled.div`

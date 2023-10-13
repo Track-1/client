@@ -33,7 +33,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
   function handleShowUpdateModal() {
     !openUpdateModal ? showModal() : unShowModal();
   }
-  console.log(clickedId);
+
   return (
     <InformContainer>
       {producerVocalSearchings?.map((producerVocalSearching, index) => {
@@ -51,7 +51,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={producerVocalSearchings[0].trackId}
-                      nowTitleNextId={producerVocalSearchings[1].trackId}
+                      nowTitleNextId={producerVocalSearchings[1]?.trackId}
                       portfolioId={producerVocalSearching.trackId}
                       dataState="producer vocal searching"
                     />
