@@ -89,11 +89,12 @@ export function useLogin() {
     onSuccess: (response: any) => {
       setLoginUserId(response?.data?.userId);
       setLoginUserType(response?.data?.userType);
-
       setCookie("accessToken", response?.data?.accessToken, {});
       navigate("/");
     },
-    onError: () => {},
+    onError: (err) => {
+      console.log(err);
+    },
   });
   return {
     login: mutate,

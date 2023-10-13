@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Filter from "../@components/@common/filter";
@@ -34,6 +35,10 @@ export default function TrackSearchPage() {
   const userType = useRecoilValue(loginUserType);
   const navigate = useNavigate();
   const prevURL = useLocation().pathname;
+
+  useEffect(() => {
+    openModal && unShowModal();
+  }, []);
 
   function moveUploadPage() {
     blockAccess()
