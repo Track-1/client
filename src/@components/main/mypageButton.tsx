@@ -98,11 +98,8 @@ const VocalImageFrame = styled.div`
 
   margin-left: 0.3rem;
 
-  border-radius: 5rem;
-  transform: rotate(45deg);
-
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
 
   overflow: hidden;
   object-fit: cover;
@@ -116,8 +113,8 @@ const VocalUploadImageLayout = styled.img`
   width: 3.2rem;
   height: 3.2rem;
 
-  margin-top: -0.4rem;
-  margin-left: -0.4rem;
+  margin-top: -0.6rem;
+  margin-left: -0.6rem;
 
   transform: rotate(45deg);
   object-fit: cover;

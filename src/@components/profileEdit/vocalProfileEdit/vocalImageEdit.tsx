@@ -38,8 +38,8 @@ const ProfileImageContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 37rem;
-  height: 37rem;
+  width: 36.8rem;
+  height: 36.8rem;
 
   margin-top: 10rem;
   margin-bottom: 7.5rem;
@@ -66,8 +66,8 @@ const ImageWrapper = styled.div`
 `;
 
 const ProfileImage = styled.img<{ fileHoverState: boolean; previewImage: string | null }>`
-  width: 37.9rem;
-  height: 37.9rem;
+  width: 39rem;
+  height: 39rem;
 
   margin: auto;
 

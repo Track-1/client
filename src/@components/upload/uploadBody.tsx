@@ -72,7 +72,7 @@ export default function UploadBody() {
         changeAudioFileName("임시데이터");
         changeHashtags([...uploadEditInitData.trackKeyword]);
         changePreviewImage(uploadEditInitData.trackImageFile);
-        changeDescription(uploadEditInitData.trackContent || "");
+        changeDescription(uploadEditInitData.trackIntroduce || "");
         selectCategory(uploadEditInitData.trackCategory);
       }
     }
@@ -117,11 +117,11 @@ export default function UploadBody() {
   return (
     <Container roleType={roleType}>
       {roleType === ROLE.PRODUCER ? (
-        <ProducerLayout imageFile={imageFile} previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
+        <ProducerLayout  previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
           {commonComponent()}
         </ProducerLayout>
       ) : (
-        <VocalLayout imageFile={imageFile} previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
+        <VocalLayout previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
           {commonComponent()}
         </VocalLayout>
       )}

@@ -57,9 +57,6 @@ export default function ProfileBox(props: ProfileBoxProps) {
               <VocalUploadImageLayout src={userImage} alt="유저 프로필 이미지" />
             </VocalImageFrame>
           </VocalUploadImageContainer>
-          // <VocalImageLayout>
-          //   <ProfileImage src={userImage} alt="유저 프로필 이미지" />
-          // </VocalImageLayout>
         )}
         <ProfileContentWrapper>
           <UserNameText>{userName}</UserNameText>
@@ -191,8 +188,8 @@ const VocalUploadImageLayout = styled.img`
   width: 8.6rem;
   height: 8.6rem;
 
-  margin-top: -1.2rem;
-  margin-left: -1.2rem;
+  margin-top: -1.6rem;
+  margin-left: -1.6rem;
 
   transform: rotate(45deg);
   object-fit: cover;
