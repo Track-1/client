@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
@@ -43,6 +43,8 @@ export default function ProducerProfile() {
   const dataState = useRecoilValue(producerState);
   const { openModal, showModal } = useModal();
 
+  const prevURL = useLocation().state?.prevURL;
+
   useEffect(() => {
     resetClickedId();
     resetHoveredId();
@@ -50,7 +52,11 @@ export default function ProducerProfile() {
 
   function handleMoveProfileEditPage() {
     quitAudioForMovePage();
-    navigate(`/profile-edit`);
+    navigate(`/profile-edit`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (
@@ -59,7 +65,7 @@ export default function ProducerProfile() {
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
-            <BackButton prevURL="/track-search" />
+            <BackButton />
             {producerProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
           </BackButtonWrapper>
           <Profile

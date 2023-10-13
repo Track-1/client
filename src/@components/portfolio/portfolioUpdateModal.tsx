@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
 import useUpdateModal from "../../hooks/common/useUpdateModal";
@@ -25,9 +25,14 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
   const { modalRef, unShowModal } = useUpdateModal();
+  const prevURL = useLocation().pathname;
 
   function handleMoveToEditPage() {
-    navigate(`/portfolio-edit/vocal/${portfolioId}`);
+    navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   function handleAskToDeleteTrack() {

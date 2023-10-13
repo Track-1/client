@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/queries/user";
 import { useState } from "react";
 import { ProducerProfileImage } from "./mypageButton";
@@ -22,6 +22,7 @@ export default function ProfileBox(props: ProfileBoxProps) {
 
   const userId = useRecoilValue(loginUserId);
   const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   function handleLogout() {
     setLogoutState(!logoutState);
@@ -29,9 +30,17 @@ export default function ProfileBox(props: ProfileBoxProps) {
 
   function handleMoveTo() {
     if (userType === ROLE.PRODUCER) {
-      navigate(`/producer-profile/${userId}`);
+      navigate(`/producer-profile/${userId}`, {
+        state: {
+          prevURL: prevURL,
+        },
+      });
     } else {
-      navigate(`/vocal-profile/${userId}`);
+      navigate(`/vocal-profile/${userId}`, {
+        state: {
+          prevURL: prevURL,
+        },
+      });
     }
   }
 

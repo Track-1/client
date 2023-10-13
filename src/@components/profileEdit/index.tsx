@@ -149,7 +149,8 @@ export default function ProfileEditContainer() {
 
   return (
     <>
-      <Header backBtn prevURL={`/producer-profile/${userId}`}>
+      <Header>
+        <BackButton staticPrevURL={-1} />
         {isUploadActive ? <UploadActiveSaveButtonIcon onClick={editProfile} /> : <UploadUnActiveSaveButtonIcon />}
       </Header>
       <ProfileBackgroundIcon />

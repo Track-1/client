@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
@@ -12,11 +12,13 @@ import Profile from "../profile";
 import VocalPortfolioInform from "./vocalPortfolioInform";
 import VocalPortfolioList from "./vocalPortfolioList";
 import VocalProfileShadow from "./vocalProfileShadow";
+import { PlayerContext } from "../../context/playerContext";
 
 const PAGE_LIMIT = 5;
 
 export default function VocalProfile() {
   const { vocalId } = useParams();
+  console.log(vocalId);
   const { vocalProfile } = useGetVocalProfile(Number(vocalId));
   const navigate = useNavigate();
   const resetClickedId = useResetRecoilState(clickedProfileId);
@@ -26,6 +28,8 @@ export default function VocalProfile() {
     userId: Number(vocalId),
   });
   const { openUpdateModal, modalRef } = useUpdateModal();
+  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const prevURL = useLocation().state?.prevURL;
 
   useEffect(() => {
     resetClickedId();
@@ -33,7 +37,12 @@ export default function VocalProfile() {
   }, []);
 
   function handleMoveProfileEditPage() {
-    navigate(`/profile-edit`);
+    quitAudioForMovePage();
+    navigate(`/profile-edit`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   function hadnleMoveToUpload() {

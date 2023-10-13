@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
@@ -10,6 +10,7 @@ import { blockAccess } from "../../utils/common/privateRouter";
 
 export default function Download() {
   const { id } = useParams();
+  const prevURL = useLocation();
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const queryClient = useQueryClient();
   const { trackDetail } = useTrackDetail(Number(id));
@@ -61,7 +62,11 @@ export default function Download() {
   function getFile() {
     if (blockAccess()) {
       quitAudioForMovePage();
-      navigate("/login");
+      navigate("/login", {
+        state: {
+          prevURL: prevURL,
+        },
+      });
     } else {
       !isDownload && setIsDownload(true);
     }
