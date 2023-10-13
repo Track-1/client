@@ -31,7 +31,7 @@ export default function UploadBody() {
     handleRemoveHashtag,
     handleChangeHashtagInputText,
   } = useHashtagInput();
-  const { categories, setCategories, isSelectedNothing, selectedCategoryNumber, isSelected, categoryText } =
+  const { categories, isSelectedNothing, selectedCategoryNumber, isSelected, selectCategory, categoryText } =
     useDropCategory();
   const { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
     useUploadAudioFile();
@@ -54,13 +54,27 @@ export default function UploadBody() {
     }));
   }, [imageFile, hashtags, title, audioFile, description, categories]);
 
+  const uploadEditInitData = useLocation().state?.uploadEditInitData;
+  const pathname = useLocation().pathname;
+
   useEffect(() => {
-    if (!pathName.includes("upload")) {
-      changeTitle("테스트 타이틀");
-      changeAudioFileName("테스트오디오파일입니다.mp3");
-      changeHashtags(["안녕", "반가워이짜식아ㅋㅋㅋ"]);
-      changePreviewImage("https://blog.kakaocdn.net/dn/cly62b/btraEfAAMcX/u7O4EDAJk4YlSp47gk5gk0/img.png");
-      changeDescription("ㅋㅋ커ㅏㅓㅇ라어라어라어라ㅓㅇ굿굿굿");
+    if (uploadEditInitData) {
+      if (pathname.includes("portfolio")) {
+        changeTitle(uploadEditInitData.portfolioTitle);
+        changeAudioFileName(uploadEditInitData.portfolioAudioFileName);
+        changeHashtags([...uploadEditInitData.portfolioKeyword]);
+        changePreviewImage(uploadEditInitData.portfolioImageFile);
+        changeDescription(uploadEditInitData.portfolioContent || "");
+        selectCategory(uploadEditInitData.portfolioCategory);
+      } else {
+        changeTitle(uploadEditInitData.trackTitle);
+        // changeAudioFileName(uploadEditInitData.trackAudioFileName);
+        changeAudioFileName("임시데이터");
+        changeHashtags([...uploadEditInitData.trackKeyword]);
+        changePreviewImage(uploadEditInitData.trackImageFile);
+        changeDescription(uploadEditInitData.trackContent || "");
+        selectCategory(uploadEditInitData.trackCategory);
+      }
     }
   }, []);
 
@@ -77,9 +91,9 @@ export default function UploadBody() {
           />
           <CategoryInfo
             categories={categories}
-            setCategories={setCategories}
             isSelectedNothing={isSelectedNothing}
             isSelected={isSelected}
+            selectCategory={selectCategory}
             categoryText={categoryText}
           />
           <HashtagInfo

@@ -8,6 +8,7 @@ import {
   useEditProducerTitle,
   useEditVocalTitle,
 } from "../../hooks/queries/mypage";
+import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
@@ -15,10 +16,20 @@ interface PortfolioUpdateModalProp {
   nowTitleNextId: number;
   portfolioId: number;
   dataState: string;
+  clickedPortfolio?: UserPortfolioType;
+  clickedProducerVocalSearching?: ProducerVocalSearchingType;
 }
 
 export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
-  const { isTitle, nowTitleId, nowTitleNextId, portfolioId, dataState } = props;
+  const {
+    isTitle,
+    nowTitleId,
+    nowTitleNextId,
+    portfolioId,
+    dataState,
+    clickedPortfolio,
+    clickedProducerVocalSearching,
+  } = props;
   const navigate = useNavigate();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
@@ -27,12 +38,37 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { modalRef, unShowModal } = useUpdateModal();
   const prevURL = useLocation().pathname;
 
+  console.log(clickedProducerVocalSearching);
+
   function handleMoveToEditPage() {
-    navigate(`/portfolio-edit/vocal/${portfolioId}`, {
-      state: {
-        prevURL: prevURL,
-      },
-    });
+    switch (dataState) {
+      case "producer portfolio":
+        navigate(`/portfolio-edit/producer/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedPortfolio,
+          },
+        });
+        break;
+      case "producer vocal searching":
+        navigate(`/vocal-searching-edit/producer/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedProducerVocalSearching,
+          },
+        });
+        break;
+      case "vocal portfolio":
+        navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedPortfolio,
+          },
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   function handleAskToDeleteTrack() {
