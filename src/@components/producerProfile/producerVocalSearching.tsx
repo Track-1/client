@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useGetProducerVocalSearching } from "../../hooks/queries/mypage";
+import { clickedProfileId } from "../../recoil/common/profile";
 import { UserPortfolioType } from "../../type/profile";
 import ProducerVocalSearchingPortfolio from "./ProducerVocalSearchingPortfolio";
 
@@ -15,6 +17,7 @@ export default function ProducerVocalSearching() {
     userId: Number(producerId),
   });
 
+  const [clickId, setClickId] = useRecoilState(clickedProfileId);
   const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
   const [playingTrack, setPLayingTrack] = useState<UserPortfolioType["portfolioId"] | null>(null);
 
@@ -23,8 +26,15 @@ export default function ProducerVocalSearching() {
   }
   if (producerVocalSearchings === undefined) return null;
 
+  function checkFirstTrackPlaying() {
+    if (producerVocalSearchings) {
+      return clickId === producerVocalSearchings[0].trackId;
+    }
+    return false;
+  }
+
   return (
-    <PortfolioWrapper>
+    <PortfolioWrapper isFirstPlaying={checkFirstTrackPlaying()}>
       {producerVocalSearchings?.map((producerVocalSearchings) => {
         return (
           <ProducerVocalSearchingPortfolio
@@ -44,13 +54,13 @@ const Observer = styled.div`
   height: 10px;
 `;
 
-const PortfolioWrapper = styled.div`
+const PortfolioWrapper = styled.div<{ isFirstPlaying: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   margin-top: 3rem;
-  padding-top: 10rem;
+  padding-top: ${({ isFirstPlaying }) => (isFirstPlaying ? 0 : 10)}rem;
   padding-bottom: 10rem;
 
   color: ${({ theme }) => theme.colors.white};
