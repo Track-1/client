@@ -27,12 +27,29 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { modalRef, unShowModal } = useUpdateModal();
 
   function handleMoveToEditPage() {
-    navigate(`/portfolio-edit/vocal/${portfolioId}`);
+    switch (dataState) {
+      case "producer vocal searching":
+        navigate(`/vocal-searching-edit/producer/${portfolioId}`);
+        return;
+      case "producer portfolio":
+        navigate(`/portfolio-edit/producer/${portfolioId}`);
+        return;
+      case "vocal portfolio":
+        navigate(`/portfolio-edit/vocal/${portfolioId}`);
+        return;
+      default:
+        return;
+    }
   }
 
   function handleAskToDeleteTrack() {
     if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
+      if (dataState === "producer vocal searching") {
+        deleteProducerPortfolio(portfolioId);
+        return;
+      }
       if (nowTitleId === portfolioId) {
+        //타이틀곡을 삭제하려는 경우
         if (dataState === "vocal portfolio") {
           editVocalTitle({
             bef: nowTitleId,

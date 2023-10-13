@@ -25,11 +25,12 @@ export default function VocalProfile() {
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
-  const { openUpdateModal, modalRef } = useUpdateModal();
+  const { openUpdateModal, modalRef, unShowModal } = useUpdateModal();
 
   useEffect(() => {
     resetClickedId();
     resetHoveredId();
+    unShowModal();
   }, []);
 
   function handleMoveProfileEditPage() {
