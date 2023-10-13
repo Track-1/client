@@ -55,11 +55,13 @@ const ModalBackgroundShadow = styled.section`
   width: 192rem;
   height: 108rem;
 
+  /* position: fixed; */
   background: rgba(0, 0, 0, 0.6);
 `;
 
 const ModalWrapper = styled.div`
-  margin: 12.5rem 0 0 156.1rem;
+  top: 12.5rem;
+  right: 7.5rem;
 
   position: absolute;
   z-index: 10;
@@ -77,7 +79,8 @@ const VocalSearchingWrapper = styled.article`
   z-index: 13;
 
   display: flex;
-  margin-top: 2.1rem;
+  padding-top: 1.5rem;
+  /* top: 6rem; */
 `;
 
 const VocalSearchingIcon = styled(VocalSearchingIc)`
@@ -89,6 +92,7 @@ const PortfolioWrapper = styled.article`
   position: absolute;
 
   display: flex;
+  /* top: 4rem; */
 `;
 
 const PortfolioIcon = styled(PortfolioIc)`
@@ -108,10 +112,7 @@ const Explain = styled.p`
 
 const ProducerProfileUploadeModalIcon = styled(ProducerProfileUploadeModalIc)`
   width: 30.4rem;
-
-  @media (min-width: 1200px) and (max-width: 1799px) {
-    margin-top: -2rem;
-  }
+  height: 19rem;
 `;
 
 const VocalSearchingTextIcon = styled(VocalSearchingTextIc)`

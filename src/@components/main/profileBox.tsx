@@ -1,9 +1,9 @@
-import styled, { css } from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
-import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/queries/user";
-import { useState } from "react";
 import { ProducerProfileImage } from "./mypageButton";
 
 interface ProfileBoxProps {

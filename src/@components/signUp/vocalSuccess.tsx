@@ -15,7 +15,7 @@ export default function VocalSuccess() {
   }
 
   function handleMoveToVocalUpload() {
-    navigate(`/upload/Portfolio`);
+    navigate(`/upload/vocal/portfolio`);
   }
 
   return (

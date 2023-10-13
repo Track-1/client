@@ -33,7 +33,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
   function handleShowUpdateModal() {
     !openUpdateModal ? showModal() : unShowModal();
   }
-
+  console.log(clickedId);
   return (
     <InformContainer>
       {producerVocalSearchings?.map((producerVocalSearching, index) => {
