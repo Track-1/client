@@ -7,7 +7,7 @@ export default function UploadEditContainer() {
   return (
     <>
       <Header>
-        <BackButton />
+        <BackButton staticPrevURL={-1}/>
         <UploadHeader />
       </Header>
       <UploadBody />

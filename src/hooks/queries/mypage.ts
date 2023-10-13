@@ -21,7 +21,9 @@ import { getVocalProfile } from "../../api/profile";
 
 import { getProducerProfile } from "../../api/profile";
 import { ROLE } from "../../core/common/roleType";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { loginUserId } from "../../recoil/common/loginUserData";
 
 export function useGetProducerProfile(userId: number, userType?: string) {
   const { data: producerProfile } = useQuery(
@@ -150,10 +152,21 @@ export function useGetVocalProfile(userId: number, userType?: string) {
 
 export function useUploadProducerPortfolio() {
   const navigate = useNavigate();
+  const prevURL = useLocation().state?.prevURL;
+  const userId = useRecoilValue(loginUserId);
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: () => {
-      navigate(-1);
+      if (prevURL === "/signup/success") {
+        navigate(`/producer-profile/${userId}`, {
+          state: {
+            prevURL: "/track-search",
+          },
+        });
+      } else {
+        navigate(-1);
+      }
     },
     onError: () => {},
   });

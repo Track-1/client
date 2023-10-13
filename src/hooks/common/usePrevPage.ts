@@ -7,6 +7,8 @@ export default function usePrevPage(staticPrevURL?: string | number) {
   console.log(useLocation());
 
   function handleMovePrevPage() {
+    if (switchSpecificPrevPage()) return;
+
     staticPrevURL
       ? typeof staticPrevURL === "string"
         ? navigate(staticPrevURL)
@@ -14,6 +16,19 @@ export default function usePrevPage(staticPrevURL?: string | number) {
       : prevURL
       ? navigate(prevURL)
       : navigate(-1);
+  }
+
+  function switchSpecificPrevPage() {
+    switch (prevURL) {
+      case "/profile-edit":
+        navigate(-1);
+        return true;
+      case "/signup/success":
+        navigate(-1);
+        return true;
+      default:
+        return false;
+    }
   }
 
   return { handleMovePrevPage };
