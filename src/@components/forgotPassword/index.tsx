@@ -1,15 +1,16 @@
 import styled from "styled-components";
-import ForgotPasswordInput from "./forgotPasswordInput";
 import BackgroundImg from "../../assets/image/backgroundImg.png";
-import Header from "../@common/header";
-import Footer from "../@common/footer";
 import BackButton from "../@common/backButton";
-import { ROUTES } from "../../core/common/routes";
+import Footer from "../@common/footer";
+import Header from "../@common/header";
+import ForgotPasswordInput from "./forgotPasswordInput";
 
 export default function ForgotPasswordContainer() {
   return (
     <>
-      <Header backBtn prevURL={ROUTES.FORGOT_PASSWORD} />
+      <Header>
+        <BackButton staticPrevURL={"/login"} />
+      </Header>
       <MainContainer>
         <BackgroundImage src={BackgroundImg} alt="배경이미지" />
         <ForgotPasswordInput />

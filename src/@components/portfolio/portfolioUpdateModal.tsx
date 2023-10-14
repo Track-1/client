@@ -40,7 +40,8 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
-  const { modalRef, unShowModal } = useUpdateModal();
+  const { unShowModal } = useModal();
+  const { modalRef, unShowModal: unShowUpdateModal } = useUpdateModal();
   const prevURL = useLocation().pathname;
 
   function handleMoveToEditPage() {
