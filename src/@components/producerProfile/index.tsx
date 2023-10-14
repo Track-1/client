@@ -6,6 +6,7 @@ import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
 import { PlayerContext } from "../../context/playerContext";
 import useModal from "../../hooks/common/useModal";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
 import {
   useGetProducerPortfolio,
   useGetProducerProfile,
@@ -41,7 +42,8 @@ export default function ProducerProfile() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
   const dataState = useRecoilValue(producerState);
-  const { openModal, unShowModal, showModal } = useModal();
+  const { openModal, showModal, unShowModal } = useModal();
+  const { unShowModal: unShowUpdateModal } = useUpdateModal();
 
   const prevURL = useLocation().state?.prevURL;
 
@@ -49,6 +51,7 @@ export default function ProducerProfile() {
     resetClickedId();
     resetHoveredId();
     unShowModal();
+    unShowUpdateModal();
   }, []);
 
   function handleMoveProfileEditPage() {
@@ -156,12 +159,7 @@ const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
 `;
 
 const PortfolioSection = styled.section`
-  width: 186rem;
   display: flex;
-
-  margin-left: 60rem;
-
-  position: absolute;
 `;
 
 const Container = styled.div`

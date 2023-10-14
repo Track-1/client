@@ -31,8 +31,9 @@ export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSear
   const [clickId, setClickId] = useRecoilState(clickedProfileId);
   const isBig = isSelected && showPlayer;
 
-  function handlePlaying() {
+  function handlePlaying(isPause: boolean) {
     setClickId(producerVocalSearchings.trackId);
+    isPause ? stopAudioItem() : playAudioItem();
   }
 
   function handleHoverTrack() {
@@ -56,11 +57,7 @@ export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSear
   }, [playingTrack]);
 
   return (
-    <ImageContainer
-      onMouseEnter={handleHoverTrack}
-      onMouseLeave={handleUnhoverTrack}
-      onClick={handlePlaying}
-      isBig={isBig}>
+    <ImageContainer onMouseEnter={handleHoverTrack} onMouseLeave={handleUnhoverTrack} isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Title className="title" isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}>
           {producerVocalSearchings.trackTitle}
@@ -75,9 +72,9 @@ export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSear
       {isHovered && (
         <>
           {isSelected && isSelected && showPlayer && innerPlaying && contextPlaying ? (
-            <PortfolioPauseIcon onClick={stopAudioItem} />
+            <PortfolioPauseIcon onClick={() => handlePlaying(true)} />
           ) : (
-            <PortfolioPlayIcon onClick={playAudioItem} />
+            <PortfolioPlayIcon onClick={() => handlePlaying(false)} />
           )}
         </>
       )}

@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
 import { CommentsPlayerContext } from ".";
 import { CommentUpldatCompleteIc, PlayerPlayIc, PlayerStopIc, QuitIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
 import { useEditComment } from "../../hooks/queries/comments";
 import { useTrackDetail } from "../../hooks/queries/tracks";
@@ -31,13 +30,18 @@ export default function CommentBox(props: CommentBoxProps) {
     userSelf,
     commentAudioFileName,
   } = eachComment;
-
   const { id } = useParams();
   const { trackDetail } = useTrackDetail(Number(id));
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [comment, setComment] = useRecoilState(commentUpdateData);
+
   const { editComment } = useEditComment(() => setIsEdit(false));
+
+  const [comment, setComment] = useRecoilState(commentUpdateData);
+
+  useEffect(() => {
+    isEdit && setComment({ ...comment, commentContent: commentContent, commentAudioFileName: commentAudioFileName });
+  }, [isEdit]);
 
   function handleStopUpdating() {
     setIsEdit(false);
@@ -63,7 +67,7 @@ export default function CommentBox(props: CommentBoxProps) {
 
     getPlayerInfo({
       imageFile: userImageFile,
-      title: trackDetail?.trackAudioFileName,
+      title: trackDetail?.trackTitle,
       userName: userName,
     });
   }, [playingTrack]);

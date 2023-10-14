@@ -1,9 +1,10 @@
-import styled, { css } from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/queries/user";
-import { useState } from "react";
 import { ProducerProfileImage } from "./mypageButton";
 import { useRecoilValue } from "recoil";
 import { loginUserId } from "../../recoil/common/loginUserData";
@@ -187,9 +188,8 @@ const VocalImageFrame = styled.div`
 const VocalUploadImageLayout = styled.img`
   width: 8.6rem;
   height: 8.6rem;
-
-  margin-top: -1.6rem;
-  margin-left: -1.6rem;
+  margin-top: -1.5rem;
+  margin-left: -1.5rem;
 
   transform: rotate(45deg);
   object-fit: cover;

@@ -51,23 +51,11 @@ export async function patchVocalPortfolio(trackId: number, uploadData: FormData)
 }
 
 export async function patchProducerTitle(params: MyPageTitleParamsType) {
-  // const { data } = await client.patch(MYPAGE.PATCH_PRODUDCER_TITLE, {
-  //   params: {
-  //     bef: params.bef,
-  //     aft: params.aft,
-  //   },
-  // });
   const { data } = await client.patch(`${MYPAGE.PATCH_PRODUDCER_TITLE}bef=${params.bef}&aft=${params.aft}`);
   return data;
 }
 
 export async function patchVocalTitle(params: MyPageTitleParamsType) {
-  // const { data } = await client.patch(MYPAGE.PATCH_VOCAL_TITLE, {
-  //   params: {
-  //     bef: params.bef,
-  //     aft: params.aft,
-  //   },
-  // });
   const { data } = await client.patch(`${MYPAGE.PATCH_VOCAL_TITLE}bef=${params.bef}&aft=${params.aft}`);
   return data;
 }

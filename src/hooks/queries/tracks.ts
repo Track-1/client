@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import {
   deleteTrack,
   getFilteredTracks,
@@ -125,7 +126,7 @@ export function useCloseTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (trackId: number) => patchTrackClose(trackId),
     onSuccess: () => {
-      queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_INFO);
+      queryClient.invalidateQueries(QUERIES_KEY.TRACK_DETAIL);
     },
     onError: () => {},
   });

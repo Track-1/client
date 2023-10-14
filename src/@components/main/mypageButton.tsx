@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ROLE } from "../../core/common/roleType";
-import ProfileBox from "./profileBox";
 import useModal from "../../hooks/common/useModal";
+import ProfileBox from "./profileBox";
 import { useEffect } from "react";
 
 interface MypageButtonProps {
@@ -113,8 +113,8 @@ const VocalUploadImageLayout = styled.img`
   width: 3.2rem;
   height: 3.2rem;
 
-  margin-top: -0.6rem;
-  margin-left: -0.6rem;
+  margin-top: -0.5rem;
+  margin-left: -0.5rem;
 
   transform: rotate(45deg);
   object-fit: cover;

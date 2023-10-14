@@ -32,8 +32,9 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
   const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
   const [clickId, setClickId] = useRecoilState(clickedProfileId);
 
-  function handlePlaying() {
+  function handlePlaying(isPause: boolean) {
     setClickId(producerPortfolios.portfolioId);
+    isPause ? stopAudioItem() : playAudioItem();
   }
 
   function handleHoverTrack() {
@@ -57,11 +58,7 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
   }, [playingTrack]);
 
   return (
-    <ImageContainer
-      onMouseEnter={handleHoverTrack}
-      onMouseLeave={handleUnhoverTrack}
-      onClick={handlePlaying}
-      isBig={isBig}>
+    <ImageContainer onMouseEnter={handleHoverTrack} onMouseLeave={handleUnhoverTrack} isBig={isBig}>
       <ImageWrapper className="image-wrapper" isBig={isBig}>
         <Title className="title" isLight={isSelected && isSelected && showPlayer && innerPlaying && contextPlaying}>
           {producerPortfolios.portfolioTitle}
@@ -76,9 +73,9 @@ export default function ProducerPortfolio(props: ProducerBigPortfolioProps) {
       {isHovered && (
         <>
           {isSelected && isSelected && showPlayer && innerPlaying && contextPlaying ? (
-            <PortfolioPauseIcon onClick={stopAudioItem} />
+            <PortfolioPauseIcon onClick={() => handlePlaying(true)} />
           ) : (
-            <PortfolioPlayIcon onClick={playAudioItem} />
+            <PortfolioPlayIcon onClick={() => handlePlaying(false)} />
           )}
         </>
       )}

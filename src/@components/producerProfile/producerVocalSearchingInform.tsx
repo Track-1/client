@@ -43,7 +43,9 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
               (hoveredId !== -1 && hoveredId === producerVocalSearching.trackId)) && (
               <>
                 <TitleSection>
-                  <ViewMoreButton id={producerVocalSearching.trackId} />
+                  {clickedId === producerVocalSearching.trackId && (
+                    <ViewMoreButton id={producerVocalSearching.trackId} />
+                  )}
                   {isMe && clickedId === producerVocalSearching.trackId && (
                     <EllipsisIcon onClick={handleShowUpdateModal} />
                   )}
@@ -51,7 +53,7 @@ export default function ProducerVocalSearchingInform(props: ProducerVocalSearchi
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={producerVocalSearchings[0].trackId}
-                      nowTitleNextId={producerVocalSearchings[1].trackId}
+                      nowTitleNextId={producerVocalSearchings[1]?.trackId}
                       portfolioId={producerVocalSearching.trackId}
                       dataState="producer vocal searching"
                       clickedProducerVocalSearching={producerVocalSearchings[index]}

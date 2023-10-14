@@ -42,6 +42,7 @@ export default function Main() {
 
   return (
     <>
+      {showModal.isOpen && <ConventionModal />}
       <Header headerStyle={headerStyle}>
         <HomeLogo />
         <SloganIcon />
@@ -62,8 +63,6 @@ export default function Main() {
         <Ads />
         <Footer />
       </MainPageWrapper>
-
-      {showModal.isOpen && <ConventionModal />}
     </>
   );
 }

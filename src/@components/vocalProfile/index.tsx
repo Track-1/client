@@ -26,13 +26,14 @@ export default function VocalProfile() {
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
-  const { openUpdateModal, modalRef } = useUpdateModal();
+  const { openUpdateModal, modalRef, unShowModal } = useUpdateModal();
   const { quitAudioForMovePage } = useContext(PlayerContext);
   const prevURL = useLocation().state?.prevURL;
 
   useEffect(() => {
     resetClickedId();
     resetHoveredId();
+    unShowModal();
   }, []);
 
   function handleMoveProfileEditPage() {

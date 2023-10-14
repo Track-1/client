@@ -49,7 +49,7 @@ export default function ProducerPortfolioInform(props: ProducerPortfolioInformPr
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={producerPortfolios[0].portfolioId}
-                      nowTitleNextId={producerPortfolios[1].portfolioId}
+                      nowTitleNextId={producerPortfolios[1]?.portfolioId}
                       portfolioId={producerPortfolio.portfolioId}
                       dataState="producer portfolio"
                       clickedPortfolio={producerPortfolios[index]}
