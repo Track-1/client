@@ -3,9 +3,10 @@ import { BackButtonIc } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { PlayerContext } from "../../context/playerContext";
+import { RoutesType } from "../../type/common/routes";
 
 interface BackButtonProps {
-  prevURL?: string;
+  prevURL: "-1" | RoutesType;
 }
 
 export default function BackButton(props: BackButtonProps) {
@@ -15,9 +16,7 @@ export default function BackButton(props: BackButtonProps) {
 
   function movePreviousPage() {
     quitAudioForMovePage();
-    if (prevURL) {
-      prevURL === "-1" ? navigate(-1) : navigate(prevURL);
-    }
+    prevURL === "-1" ? navigate(-1) : navigate(prevURL);
   }
 
   return (

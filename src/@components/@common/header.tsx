@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { HomeLogoIc, SloganIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
+import { RoutesType } from "../../type/common/routes";
 import BackButton from "./backButton";
 
 interface HeaderProps {
   backBtn?: boolean;
-  prevURL?: string;
+  prevURL?: RoutesType;
   homeLogo?: boolean;
   slogan?: boolean;
   headerFixed?: boolean;
@@ -31,7 +32,7 @@ export default function Header(props: HeaderProps) {
     <Container headerFixed={headerFixed}>
       <Wrapper>
         {homeLogo && <HomeLogoIcon onClick={handleMoveToHome} />}
-        {backBtn && <BackButton prevURL={prevURL} />}
+        {backBtn && <BackButton prevURL={prevURL ?? "-1"} />}
         {slogan && <SloganIcon />}
         {children}
       </Wrapper>
