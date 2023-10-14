@@ -173,7 +173,7 @@ export default function LoginForm() {
   const { login, error } = useLogin();
   const { conventionModalInform } = useConventionModal();
   const navigate = useNavigate();
-  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   function switchUserType() {
     userType === "producer" ? setUserType("vocal") : setUserType("producer");
