@@ -12,6 +12,7 @@ import {
   useEditProducerTitle,
   useEditVocalTitle,
 } from "../../hooks/queries/mypage";
+import { useDeleteTrack } from "../../hooks/queries/tracks";
 import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
 
 interface PortfolioUpdateModalProp {
@@ -37,6 +38,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const navigate = useNavigate();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
+  const { deleteTrack } = useDeleteTrack();
   const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
@@ -78,7 +80,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   async function handleAskToDeleteTrack() {
     if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
       if (dataState === "producer vocal searching") {
-        deleteProducerPortfolio(portfolioId);
+        deleteTrack(portfolioId);
       }
       //타이틀곡을 삭제하려는 경우
       if (nowTitleId === portfolioId) {

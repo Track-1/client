@@ -287,34 +287,6 @@ export function useEditVocalTitle() {
   };
 }
 
-export function useDeleteFirstVocalPortfolio(params: MyPageTitleParamsType, deleteVocalPortfolio: any) {
-  const { mutate, ...restValues } = useMutation({
-    mutationFn: () => patchVocalTitle(params),
-    onSuccess: () => {
-      deleteVocalPortfolio();
-    },
-    onError: () => {},
-  });
-  return {
-    deletFirstVocal: mutate,
-    ...restValues,
-  };
-}
-
-export function useDeleteFirstProducerPortfolio(params: MyPageTitleParamsType, deleteProducerPortfolio: any) {
-  const { mutate, ...restValues } = useMutation({
-    mutationFn: () => patchProducerTitle(params),
-    onSuccess: () => {
-      deleteProducerPortfolio();
-    },
-    onError: () => {},
-  });
-  return {
-    deleteFirstProducer: mutate,
-    ...restValues,
-  };
-}
-
 export function useDeleteProducerPortfolio() {
   const { unShowModal: unShowUpdateModal } = useUpdateModal();
   const { unShowModal } = useModal();
