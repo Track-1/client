@@ -13,7 +13,6 @@ export default function EditDropDownComment(props: EditDropDownCommentProps) {
   const { setIsEdit, commentId } = props;
   const { modalRef, closeModal, openModal } = useModal();
   const { deleteComment } = useDeleteComment();
-
   function handleStartUpdate() {
     setIsEdit(true);
   }

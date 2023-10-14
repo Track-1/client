@@ -22,6 +22,8 @@ import VocalSleeper from "./vocalProfileEdit/vocalSleeper";
 import { useRecoilValue } from "recoil";
 import { useGetProducerProfile, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
+import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
+import BackButton from "../@common/backButton";
 
 export default function ProfileEditContainer() {
   const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
@@ -48,8 +50,24 @@ export default function ProfileEditContainer() {
   const { vocalProfile } = useGetVocalProfile(userId, userType);
   const { producerProfile } = useGetProducerProfile(userId, userType);
 
+  const [imageFileSame, setImageFileSame] = useState(true);
+
+  const nameMethods = useForm({
+    defaultValues: {
+      nickName: "",
+    },
+    mode: "onChange",
+  });
+
+  const contactMethods = useForm({
+    defaultValues: {
+      contact: "",
+    },
+    mode: "onChange",
+  });
+
   useEffect(() => {
-    if (vocalProfile) {
+    if (vocalProfile && userType === ROLE.VOCAL) {
       changePreviewImage(vocalProfile.userProfile.userImageFile);
       changeDescription(
         vocalProfile.userProfile.userIntroduction === null ? "" : vocalProfile.userProfile.userIntroduction,
@@ -60,7 +78,7 @@ export default function ProfileEditContainer() {
       nameMethods.setValue("nickName", vocalProfile.userProfile.userName, {});
       contactMethods.setValue("contact", vocalProfile.userProfile.userContact, {});
     }
-    if (producerProfile) {
+    if (producerProfile && userType === ROLE.PRODUCER) {
       changePreviewImage(producerProfile.userProfile.userImageFile);
       changeDescription(
         producerProfile.userProfile.userIntroduction === null ? "" : producerProfile.userProfile.userIntroduction,
@@ -74,30 +92,21 @@ export default function ProfileEditContainer() {
     }
   }, [vocalProfile, producerProfile]);
 
-  const [imageFileSame, setImageFileSame] = useState(true);
-
-  const nameMethods = useForm({
-    defaultValues: {
-      nickName: "",
-    },
-    mode: "onChange",
-  });
-
   useEffect(() => {
     imageFile !== null ? setImageFileSame(false) : setImageFileSame(true);
   }, [imageFile]);
 
-  const contactMethods = useForm({
-    defaultValues: {
-      contact: "",
-    },
-    mode: "onChange",
-  });
-
   useEffect(() => {
-    const nickName = nameMethods.getValues().nickName;
-    return nickName !== "" ? setIsUploadActive(true) : setIsUploadActive(false);
+    checkNickNameValidation() ? setIsUploadActive(true) : setIsUploadActive(false);
   }, [nameMethods.watch()]);
+
+  function checkNickNameValidation() {
+    const nickNameState = nameMethods.getFieldState("nickName", nameMethods.formState).error?.message;
+    return (
+      (nickNameState === NICKNAME_MESSAGE.SUCCESS || nickNameState === undefined) &&
+      nameMethods.getValues().nickName !== ""
+    );
+  }
 
   function handleChangeIsSleep() {
     setIsSleep((prev) => !prev);
@@ -115,8 +124,6 @@ export default function ProfileEditContainer() {
     };
     return data;
   }
-
-  console.log(imageFileSame);
 
   function vocalProfileData() {
     const data: VocalProfileEditType = {
@@ -142,7 +149,8 @@ export default function ProfileEditContainer() {
 
   return (
     <>
-      <Header backBtn prevURL={`/producer-profile/${userId}`}>
+      <Header>
+        <BackButton staticPrevURL={-1} />
         {isUploadActive ? <UploadActiveSaveButtonIcon onClick={editProfile} /> : <UploadUnActiveSaveButtonIcon />}
       </Header>
       <ProfileBackgroundIcon />

@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import {
   deleteProducerPortfolio,
   deleteVocalPortfolio,
@@ -19,9 +19,14 @@ import { PortfoliosParamsType } from "../../type/vocals";
 import { useQuery } from "react-query";
 import { getVocalProfile } from "../../api/profile";
 
+import { useNavigate } from "react-router-dom";
 import { getProducerProfile } from "../../api/profile";
 import { ROLE } from "../../core/common/roleType";
-import { useNavigate } from "react-router-dom";
+import useModal from "../common/useModal";
+import useUpdateModal from "../common/useUpdateModal";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { loginUserId } from "../../recoil/common/loginUserData";
 
 export function useGetProducerProfile(userId: number, userType?: string) {
   const { data: producerProfile } = useQuery(
@@ -34,7 +39,7 @@ export function useGetProducerProfile(userId: number, userType?: string) {
       }),
     {
       onError: (err) => {
-        console.log(err);
+        // console.log(err);
       },
       enabled: userType === undefined || userType === ROLE.PRODUCER,
     },
@@ -150,11 +155,23 @@ export function useGetVocalProfile(userId: number, userType?: string) {
 
 export function useUploadProducerPortfolio() {
   const navigate = useNavigate();
+  const prevURL = useLocation().state?.prevURL;
+  const userId = useRecoilValue(loginUserId);
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: () => {
-      alert("업로드 성공");
-      navigate(-1);
+      setTimeout(() => {
+        if (prevURL === "/signup/success") {
+          navigate(`/producer-profile/${userId}`, {
+            state: {
+              prevURL: "/track-search",
+            },
+          });
+        } else {
+          navigate(-1);
+        }
+      }, 3000);
     },
     onError: () => {},
   });
@@ -166,11 +183,23 @@ export function useUploadProducerPortfolio() {
 
 export function useUploadVocalPortfolio() {
   const navigate = useNavigate();
+  const prevURL = useLocation().state?.prevURL;
+  const userId = useRecoilValue(loginUserId);
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
-    onSuccess: (data) => {
-      alert("업로드 성공");
-      navigate(-1);
+    onSuccess: () => {
+      setTimeout(() => {
+        if (prevURL === "/signup/success") {
+          navigate(`/vocal-profile/${userId}`, {
+            state: {
+              prevURL: "/vocal-search",
+            },
+          });
+        } else {
+          navigate(-1);
+        }
+      }, 3000);
     },
     onError: () => {},
   });
@@ -186,8 +215,9 @@ export function useEditProducerPortfolio() {
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchProducerPortfolio(trackId, formData),
     onSuccess: () => {
-      alert("업로드 성공");
-      navigate(-1);
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });
@@ -199,12 +229,14 @@ export function useEditProducerPortfolio() {
 
 export function useEditVocalPortfolio() {
   const navigate = useNavigate();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
       patchVocalPortfolio(trackId, formData),
     onSuccess: () => {
-      alert("업로드 성공");
-      navigate(-1);
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     },
     onError: () => {},
   });
@@ -215,9 +247,20 @@ export function useEditVocalPortfolio() {
 }
 
 export function useEditProducerTitle() {
+  const { unShowModal: unShowUpdateModal } = useUpdateModal();
+  const { unShowModal } = useModal();
+  const queryClient = useQueryClient();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (params: MyPageTitleParamsType) => patchProducerTitle(params),
-    onSuccess: () => {},
+    onSuccess: () => {
+      alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.");
+      queryClient.invalidateQueries("producerVocalSearchings");
+      queryClient.invalidateQueries("producerPortfolios");
+
+      unShowModal();
+      unShowUpdateModal();
+    },
     onError: () => {},
   });
   return {
@@ -227,10 +270,15 @@ export function useEditProducerTitle() {
 }
 
 export function useEditVocalTitle() {
+  const { unShowModal } = useUpdateModal();
+  const queryClient = useQueryClient();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (params: MyPageTitleParamsType) => patchVocalTitle(params),
     onSuccess: () => {
       alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.");
+      queryClient.invalidateQueries("vocalPortfolios");
+      unShowModal();
     },
     onError: () => {},
   });
@@ -240,10 +288,47 @@ export function useEditVocalTitle() {
   };
 }
 
+export function useDeleteFirstVocalPortfolio(params: MyPageTitleParamsType, deleteVocalPortfolio: any) {
+  const { mutate, ...restValues } = useMutation({
+    mutationFn: () => patchVocalTitle(params),
+    onSuccess: () => {
+      deleteVocalPortfolio();
+    },
+    onError: () => {},
+  });
+  return {
+    deletFirstVocal: mutate,
+    ...restValues,
+  };
+}
+
+export function useDeleteFirstProducerPortfolio(params: MyPageTitleParamsType, deleteProducerPortfolio: any) {
+  const { mutate, ...restValues } = useMutation({
+    mutationFn: () => patchProducerTitle(params),
+    onSuccess: () => {
+      deleteProducerPortfolio();
+    },
+    onError: () => {},
+  });
+  return {
+    deleteFirstProducer: mutate,
+    ...restValues,
+  };
+}
+
 export function useDeleteProducerPortfolio() {
+  const { unShowModal: unShowUpdateModal } = useUpdateModal();
+  const { unShowModal } = useModal();
+  const queryClient = useQueryClient();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (portfolioId: number) => deleteProducerPortfolio(portfolioId),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries("producerVocalSearchings");
+      queryClient.invalidateQueries("producerPortfolios");
+      unShowModal();
+      unShowUpdateModal();
+    },
     onError: () => {},
   });
   return {
@@ -253,13 +338,29 @@ export function useDeleteProducerPortfolio() {
 }
 
 export function useDeleteVocalPortfolio() {
+  const { unShowModal } = useUpdateModal();
+  const queryClient = useQueryClient();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (portfoiloId: number) => deleteVocalPortfolio(portfoiloId),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries("vocalPortfolios");
+      unShowModal();
+    },
     onError: () => {},
   });
   return {
     deleteVocalPortfolio: mutate,
     ...restValues,
   };
+}
+
+export async function deleteFirstVocal(params: MyPageTitleParamsType, portfolioId: number) {
+  await patchVocalTitle(params);
+  return deleteVocalPortfolio(portfolioId);
+}
+
+export async function deleteFirstProducer(params: MyPageTitleParamsType, portfolioId: number) {
+  await patchProducerTitle(params);
+  return deleteProducerPortfolio(portfolioId);
 }

@@ -3,6 +3,7 @@ import ForgotPasswordInput from "./forgotPasswordInput";
 import BackgroundImg from "../../assets/image/backgroundImg.png";
 import Header from "../@common/header";
 import Footer from "../@common/footer";
+import BackButton from "../@common/backButton";
 import { ROUTES } from "../../core/common/routes";
 
 export default function ForgotPasswordContainer() {

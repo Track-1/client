@@ -4,7 +4,8 @@ import { FilteredVocalType } from "../../type/vocals";
 import { VocalSearchPlayIc, VocalSearchStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { blockAccess } from "../../utils/common/privateRouter";
 
 const VocalContainer = styled.div`
   display: inline-block;
@@ -192,10 +193,23 @@ export default function VocalItem(props: VocalItemProps) {
     vocalInfo.userId,
     selectTrack,
   );
+  const prevURL = useLocation().pathname;
 
   function moveVocalProfilePage() {
     quitAudioForMovePage();
-    navigate(`/vocal-profile/${vocalInfo.userId}`);
+    if (blockAccess()) {
+      navigate("/login", {
+        state: {
+          prevURL: prevURL,
+        },
+      });
+    } else {
+      navigate(`/vocal-profile/${vocalInfo.userId}`, {
+        state: {
+          prevURL: prevURL,
+        },
+      });
+    }
   }
 
   useEffect(() => {

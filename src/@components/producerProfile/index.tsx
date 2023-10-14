@@ -1,11 +1,12 @@
 import { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
 import { PlayerContext } from "../../context/playerContext";
 import useModal from "../../hooks/common/useModal";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
 import {
   useGetProducerPortfolio,
   useGetProducerProfile,
@@ -41,16 +42,25 @@ export default function ProducerProfile() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
   const dataState = useRecoilValue(producerState);
-  const { openModal, showModal } = useModal();
+  const { openModal, showModal, unShowModal } = useModal();
+  const { unShowModal: unShowUpdateModal } = useUpdateModal();
+
+  const prevURL = useLocation().state?.prevURL;
 
   useEffect(() => {
     resetClickedId();
     resetHoveredId();
+    unShowModal();
+    unShowUpdateModal();
   }, []);
 
   function handleMoveProfileEditPage() {
     quitAudioForMovePage();
-    navigate(`/profile-edit`);
+    navigate(`/profile-edit`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (
@@ -59,7 +69,7 @@ export default function ProducerProfile() {
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
-            <BackButton prevURL="/track-search" />
+            <BackButton />
             {producerProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
           </BackButtonWrapper>
           <Profile
@@ -149,12 +159,7 @@ const ProfileEditBtnIcon = styled(ProfileEditBtnIc)`
 `;
 
 const PortfolioSection = styled.section`
-  width: 186rem;
   display: flex;
-
-  margin-left: 60rem;
-
-  position: absolute;
 `;
 
 const Container = styled.div`

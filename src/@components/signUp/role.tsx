@@ -17,11 +17,16 @@ export default function Role() {
   const [clickRole, setClickRole] = useRecoilState<string>(role);
   const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
+  useEffect(() => {
+    setIsSuccess(false);
+  }, []);
+
   function handleHoverRole(role: string) {
     setHoverRole(role);
   }
 
   function handleClickRole(role: string) {
+    setIsSuccess(true);
     setClickRole(role);
   }
 
@@ -32,12 +37,6 @@ export default function Role() {
   function checkIsProducer(role: string) {
     return role === ROLE.PRODUCER;
   }
-
-  useEffect(() => {
-    if (clickRole !== "") {
-      setIsSuccess(true);
-    }
-  }, [clickRole]);
 
   return (
     <RoleWrapper>

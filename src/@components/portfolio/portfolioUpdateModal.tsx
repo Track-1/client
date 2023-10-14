@@ -1,13 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
+import useModal from "../../hooks/common/useModal";
 import useUpdateModal from "../../hooks/common/useUpdateModal";
 import {
+  deleteFirstProducer,
+  deleteFirstVocal,
   useDeleteProducerPortfolio,
   useDeleteVocalPortfolio,
   useEditProducerTitle,
   useEditVocalTitle,
 } from "../../hooks/queries/mypage";
+import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
@@ -15,44 +20,87 @@ interface PortfolioUpdateModalProp {
   nowTitleNextId: number;
   portfolioId: number;
   dataState: string;
+  clickedPortfolio?: UserPortfolioType;
+  clickedProducerVocalSearching?: ProducerVocalSearchingType;
 }
 
 export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
-  const { isTitle, nowTitleId, nowTitleNextId, portfolioId, dataState } = props;
+  const {
+    isTitle,
+    nowTitleId,
+    nowTitleNextId,
+    portfolioId,
+    dataState,
+    clickedPortfolio,
+    clickedProducerVocalSearching,
+  } = props;
   const navigate = useNavigate();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
+  const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
   const { modalRef, unShowModal } = useUpdateModal();
+  const prevURL = useLocation().pathname;
 
   function handleMoveToEditPage() {
-    navigate(`/portfolio-edit/vocal/${portfolioId}`);
+    switch (dataState) {
+      case "producer portfolio":
+        navigate(`/portfolio-edit/producer/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedPortfolio,
+          },
+        });
+        break;
+      case "producer vocal searching":
+        navigate(`/vocal-searching-edit/producer/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedProducerVocalSearching,
+          },
+        });
+        break;
+      case "vocal portfolio":
+        navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedPortfolio,
+          },
+        });
+        break;
+      default:
+        break;
+    }
   }
 
-  function handleAskToDeleteTrack() {
+  async function handleAskToDeleteTrack() {
     if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
+      if (dataState === "producer vocal searching") {
+        deleteProducerPortfolio(portfolioId);
+      }
+      //타이틀곡을 삭제하려는 경우
       if (nowTitleId === portfolioId) {
         if (dataState === "vocal portfolio") {
-          editVocalTitle({
-            bef: nowTitleId,
-            aft: nowTitleNextId,
-          });
+          deleteFirstVocal({ bef: nowTitleId, aft: nowTitleNextId }, portfolioId);
         } else {
-          editProducerTitle({ bef: nowTitleId, aft: nowTitleNextId });
+          deleteFirstProducer({ bef: nowTitleId, aft: nowTitleNextId }, portfolioId);
         }
-      } else {
+      }
+      // 타이틀 곡 아닌 곡을 삭제하려는 경우
+      else {
         if (dataState === "vocal portfolio") {
           deleteVocalPortfolio(portfolioId);
         } else {
           deleteProducerPortfolio(portfolioId);
         }
       }
+      unShowModal();
+      unShowUpdateModal();
     }
   }
 
   function handleChangeTitle() {
-    unShowModal();
     if (dataState === "vocal portfolio") {
       editVocalTitle({
         bef: nowTitleId,
@@ -70,7 +118,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
           수정하기
           <PencilUpdateIcon />
         </ModalBox>
-        <ModalBox underline={false} onClick={handleAskToDeleteTrack}>
+        <ModalBox underline={dataState !== "producer vocal searching" && !isTitle} onClick={handleAskToDeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { BackButtonIc } from "../../assets";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { PlayerContext } from "../../context/playerContext";
 import { RoutesType } from "../../type/common/routes";
@@ -10,8 +9,8 @@ interface BackButtonProps {
 }
 
 export default function BackButton(props: BackButtonProps) {
-  const { prevURL } = props;
-  const navigate = useNavigate();
+  const { staticPrevURL } = props;
+  const { handleMovePrevPage } = usePrevPage(staticPrevURL);
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function movePreviousPage() {
@@ -20,7 +19,11 @@ export default function BackButton(props: BackButtonProps) {
   }
 
   return (
-    <ButtonContainer onClick={movePreviousPage}>
+    <ButtonContainer
+      onClick={() => {
+        quitAudioForMovePage();
+        handleMovePrevPage();
+      }}>
       <BackButtonIcon />
     </ButtonContainer>
   );

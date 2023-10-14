@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { CategoryId } from "../../core/common/categories";
 import { CategorySelectType } from "../../type/common/CategoryChecksType";
-import styled from "styled-components";
 import InputContainer from "../@common/inputContainer";
 
 interface SelectCategoryProps {

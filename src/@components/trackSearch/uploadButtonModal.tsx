@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PortfolioIc, PortfolioTextIc, UnionIc, VocalSearchingIc, VocalSearchingTextIc } from "../../assets";
 import useModal from "../../hooks/common/useModal";
@@ -6,15 +6,22 @@ import useModal from "../../hooks/common/useModal";
 export default function UploadButtonModal() {
   const navigate = useNavigate();
   const { modalRef } = useModal();
+  const prevURL = useLocation().pathname;
 
   function moveVocalSearching() {
     navigate("/upload/producer/vocal-searching", {
-      state: { producerUploadType: "Vocal Searching", prevPage: `/trackSearch` },
+      state: {
+        prevURL: prevURL,
+      },
     });
   }
 
   function movePortfolio() {
-    navigate("/upload/producer/portfolio", { state: { producerUploadType: "Portfolio", prevPage: `/trackSearch` } });
+    navigate("/upload/producer/portfolio", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (
@@ -106,10 +113,7 @@ const Explain = styled.p`
 
 const UnionIcon = styled(UnionIc)`
   width: 30.4rem;
-
-  @media (min-width: 1200px) and (max-width: 1799px) {
-    margin-top: -2rem;
-  }
+  height: 17rem;
 `;
 
 const VocalSearchingTextIcon = styled(VocalSearchingTextIc)`

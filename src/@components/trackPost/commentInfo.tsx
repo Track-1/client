@@ -1,9 +1,11 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { CommentsPlayerContext } from ".";
 import { EllipsisIc } from "../../assets";
 import { isModalOpen } from "../../recoil/common/isModalOpen";
+import { editSelectId } from "../../recoil/trackPost/commentWriteData";
 import EditDropDownComment from "./editDropDownComment";
 
 interface CommentInfoProps {
@@ -20,17 +22,18 @@ export default function CommentInfo(props: CommentInfoProps) {
   const navigate = useNavigate();
   const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
-  //   const [play, setPlay] = useRecoilState<boolean>(playMusic);
+  const { quitAudioForMovePage } = useContext(CommentsPlayerContext);
+  const [editId, setEditId] = useRecoilState(editSelectId);
 
   function handleMoveVocalProfile() {
-    // pauseAudio();
-    // setShowPlayer(false);
-    // setPlay(false);
+    quitAudioForMovePage();
 
     navigate(`/vocal-profile/${commentUserId}`);
   }
 
   function handleShowEditDropDownComment() {
+    if (editId !== -1) return;
+    setEditId(commentId);
     setEditModalToggle(true);
     setIsOpenModal(true);
   }
@@ -76,6 +79,7 @@ const CommentText = styled.strong`
   ${({ theme }) => theme.fonts.description}
   margin-top: 1.2rem;
   line-height: 2.88rem;
+  word-break: break-all;
 `;
 
 const UserName = styled.strong`

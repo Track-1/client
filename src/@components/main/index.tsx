@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled, { css } from "styled-components";
-import { MainTracksTextIc, MainVocalsTextIc } from "../../assets";
+import { MainTracksTextIc, MainVocalsTextIc, SloganIc } from "../../assets";
 import hoverTracksBackground from "../../assets/image/hoverTracksImg.png";
 import hoverVocalsBackground from "../../assets/image/hoverVocalsImg.png";
 import originBackground from "../../assets/image/mainBackgroundImg.png";
@@ -13,6 +13,7 @@ import Footer from "../@common/footer";
 import Header from "../@common/header";
 import Ads from "./ads";
 import LoginButton from "./loginButton";
+import HomeLogo from "../@common/homeLogo";
 
 export default function Main() {
   const showModal = useRecoilValue(openConventionModal);
@@ -41,7 +42,10 @@ export default function Main() {
 
   return (
     <>
-      <Header homeLogo slogan headerFixed>
+      {showModal.isOpen && <ConventionModal />}
+      <Header headerStyle={headerStyle}>
+        <HomeLogo />
+        <SloganIcon />
         <LoginButton />
       </Header>
       <MainPageWrapper>
@@ -59,11 +63,13 @@ export default function Main() {
         <Ads />
         <Footer />
       </MainPageWrapper>
-
-      {showModal.isOpen && <ConventionModal />}
     </>
   );
 }
+
+const headerStyle: React.CSSProperties = {
+  position: "absolute",
+};
 
 const Background = styled.main<{
   originBackground: string;
@@ -150,6 +156,12 @@ const MainSlogan = styled.img`
 
   top: 50.6rem;
   left: 8.7rem;
+
+  width: 35rem;
+`;
+
+const SloganIcon = styled(SloganIc)`
+  cursor: pointer;
 
   width: 35rem;
 `;

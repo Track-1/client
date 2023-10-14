@@ -10,3 +10,8 @@ export const commentUpdateData = atom<CommentDataType>({
   key: "commentUpdateData",
   default: { commentAudioFile: null, commentContent: "", commentAudioFileName: "file_upload.mp3" },
 });
+
+export const editSelectId = atom({
+  key: "editSelectId",
+  default: -1,
+});

@@ -47,9 +47,10 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
                     <PortfolioUpdateModal
                       isTitle={index === 0}
                       nowTitleId={vocalPortfolios[0].portfolioId}
-                      nowTitleNextId={vocalPortfolios[1].portfolioId}
+                      nowTitleNextId={vocalPortfolios[1]?.portfolioId}
                       portfolioId={vocalPortfolio.portfolioId}
                       dataState="vocal portfolio"
+                      clickedPortfolio={vocalPortfolios[index]}
                     />
                   )}
                 </TitleSection>

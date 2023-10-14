@@ -19,6 +19,7 @@ const CommentContainer = styled.section`
   padding-top: 6.1rem;
   padding-right: 7.5rem;
   position: fixed;
+  overflow: scroll;
 
   top: 0;
   right: 0;

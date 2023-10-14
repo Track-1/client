@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { CategoryIc } from "../../assets";
-import { CategoryId, CategoryText } from "../../core/common/categories";
-import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
+import { CategoryId } from "../../core/common/categories";
 import Empty from "./empty";
 
 interface ProfileCategoryProps {
@@ -16,11 +15,11 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
       <CategoryIcon />
       <CategoryArray>
         {category && category.length > 0 ? (
-          getInvariantObjectKeys(invariantOf(CategoryId)).map((categ, index) =>
-            category.includes(CategoryText[categ]) ? (
-              <Category key={index}>{categ}</Category>
+          Object.keys(CategoryId).map((categ: string, CategoryId: number) =>
+            category?.includes(categ) ? (
+              <Category key={CategoryId}>{categ}</Category>
             ) : (
-              <NotCategory key={index + 9}>{categ}</NotCategory>
+              <NotCategory key={CategoryId + 9}>{categ}</NotCategory>
             ),
           )
         ) : (
@@ -32,11 +31,11 @@ export default function ProfileCategory(props: ProfileCategoryProps) {
 }
 
 const CategoryBox = styled.div`
-  margin-right: 6.3rem;
+  margin-right: 1.3rem;
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.hashtag};
 
-  width: 20.3rem;
+  width: 29.3rem;
 
   display: flex;
   flex-direction: column;

@@ -1,6 +1,17 @@
 import { CategoryType, UpperCategoryType } from "../../type/common/category";
 
 export const Categories: CategoryType[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
+export const UpperCategories: UpperCategoryType[] = [
+  "R&B",
+  "HIPHOP",
+  "BALLAD",
+  "POP",
+  "ROCK",
+  "EDM",
+  "JAZZ",
+  "HOUSE",
+  "FUNK",
+];
 
 export const CategoryId: Record<UpperCategoryType, string> = {
   "R&B": "0",

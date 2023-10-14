@@ -4,6 +4,7 @@ import BackgroundImg from "../../assets/image/backgroundImg.png";
 import Footer from "../@common/footer";
 import ResetPasswordInput from "./resetPasswordInput";
 import { useTokenVerify } from "../../hooks/queries/user";
+import HomeLogo from "../@common/homeLogo";
 
 export default function ResetPasswordContainer() {
   const { tokenVerify } = useTokenVerify();
@@ -12,7 +13,10 @@ export default function ResetPasswordContainer() {
     <>
       {tokenVerify?.success ? (
         <>
-          <Header homeLogo />
+          <Header>
+            <HomeLogo />
+          </Header>
+          
           <MainContainer>
             <BackgroundImage src={BackgroundImg} alt="배경이미지" />
             <ResetPasswordInput />

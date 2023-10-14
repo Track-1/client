@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   SignUpGetStartedButtonIc,
@@ -7,18 +6,21 @@ import {
   SignUpProducerQuestionIc,
   SignUpSuccessBackgroundIc,
 } from "../../assets";
-import { isModalOpen } from "../../recoil/common/isModalOpen";
+
 import ProducerUploadModal from "./producerUploadModal";
+import useModal from "../../hooks/common/useModal";
+import { useEffect } from "react";
 
 export default function ProducerSuccess() {
-  const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
+  const { openModal, unShowModal, handleShowUpdateModal } = useModal();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    unShowModal();
+  }, []);
 
   function handleMoveToHome() {
     navigate("/");
-  }
-  function handleOpenProducerUploadModal() {
-    setIsOpenModal(true);
   }
 
   return (
@@ -30,11 +32,11 @@ export default function ProducerSuccess() {
         <UploadButtonWrapper>
           <SignUpProducerQuestionIcon />
           <UploadButton>
-            <SignUpProducerButtonIcon onClick={handleOpenProducerUploadModal} />
+            <SignUpProducerButtonIcon onClick={handleShowUpdateModal} />
           </UploadButton>
         </UploadButtonWrapper>
 
-        {isOpenModal && <ProducerUploadModal />}
+        {openModal && <ProducerUploadModal />}
       </SuccessPageWrapper>
     </SuccessPageContainer>
   );

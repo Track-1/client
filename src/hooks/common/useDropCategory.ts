@@ -39,12 +39,19 @@ export default function useDropCategory() {
     return categories[upperCategory];
   }
 
+  function selectCategory(category: string) {
+    const tempCategory = { ...CategoryBoolean };
+    tempCategory[category as UpperCategoryType] = true;
+
+    setCategories({ ...tempCategory });
+  }
+
   return {
     categories,
-    setCategories,
     isSelectedNothing,
     selectedCategoryNumber,
     isSelected,
+    selectCategory,
     categoryText,
   };
 }

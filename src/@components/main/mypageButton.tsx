@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { ROLE } from "../../core/common/roleType";
-import ProfileBox from "./profileBox";
 import useModal from "../../hooks/common/useModal";
+import ProfileBox from "./profileBox";
+import { useEffect } from "react";
 
 interface MypageButtonProps {
   userType: string;
@@ -13,7 +14,11 @@ interface MypageButtonProps {
 export default function MypageButton(props: MypageButtonProps) {
   const { userType, userImage, userName, userContact } = props;
 
-  const { openModal, handleShowUpdateModal } = useModal();
+  const { openModal, unShowModal, handleShowUpdateModal } = useModal();
+
+  useEffect(() => {
+    unShowModal();
+  }, []);
 
   return (
     <>
@@ -43,7 +48,9 @@ const Container = styled.button<{ userType: string }>`
   display: flex;
   align-items: center;
 
-  width: 19.5rem;
+  min-width: 19.5rem;
+
+  width: 100%;
   height: 5.2rem;
 
   color: ${({ theme }) => theme.colors.black};
@@ -91,11 +98,8 @@ const VocalImageFrame = styled.div`
 
   margin-left: 0.3rem;
 
-  border-radius: 5rem;
-  transform: rotate(45deg);
-
   border: 0.1rem solid ${({ theme }) => theme.colors.black};
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
 
   overflow: hidden;
   object-fit: cover;
@@ -109,8 +113,8 @@ const VocalUploadImageLayout = styled.img`
   width: 3.2rem;
   height: 3.2rem;
 
-  margin-top: -0.4rem;
-  margin-left: -0.4rem;
+  margin-top: -0.5rem;
+  margin-left: -0.5rem;
 
   transform: rotate(45deg);
   object-fit: cover;
