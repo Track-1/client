@@ -176,6 +176,8 @@ export default function Player({ comment }: PlayerProps) {
     detachPlyabar,
   } = useControlPlayer(audio, contextPlaying);
 
+  window.addEventListener("popstate", quit);
+
   function play() {
     playContextState();
     playAudio();

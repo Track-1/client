@@ -3,11 +3,12 @@ import ForgotPasswordInput from "./forgotPasswordInput";
 import BackgroundImg from "../../assets/image/backgroundImg.png";
 import Header from "../@common/header";
 import Footer from "../@common/footer";
+import { ROUTES } from "../../core/common/routes";
 
 export default function ForgotPasswordContainer() {
   return (
     <>
-      <Header backBtn prevURL="/login" />
+      <Header backBtn prevURL={ROUTES.FORGOT_PASSWORD} />
       <MainContainer>
         <BackgroundImage src={BackgroundImg} alt="배경이미지" />
         <ForgotPasswordInput />

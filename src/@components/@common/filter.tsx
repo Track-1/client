@@ -68,24 +68,26 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
       background-clip: content-box, border-box;
       color: ${({ theme }) => theme.colors.sub2};
     `}
+
+    & > button {
+    ${({ pageType, isChecked }) =>
+      pageType === "tracks" &&
+      isChecked &&
+      css`
+        color: ${({ theme }) => theme.colors.sub1};
+      `}
+
+    ${({ pageType, isChecked }) =>
+      pageType === "vocals" &&
+      isChecked &&
+      css`
+        color: ${({ theme }) => theme.colors.sub2};
+      `}
+  }
 `;
 
 const CategoryCancelButton = styled.button<{ pageType: PageType; isChecked?: boolean }>`
   margin-right: 2rem;
-
-  ${({ pageType, isChecked }) =>
-    pageType === "tracks" &&
-    isChecked &&
-    css`
-      color: ${({ theme }) => theme.colors.sub1};
-    `}
-
-  ${({ pageType, isChecked }) =>
-    pageType === "vocals" &&
-    isChecked &&
-    css`
-      color: ${({ theme }) => theme.colors.sub2};
-    `}
 `;
 
 const TrackSearchingItem = styled.article<{ isChecked?: boolean }>`
@@ -157,9 +159,7 @@ export default function Filter(props: FilterProps) {
             <CheckBox.Indicator asChild>
               <CategoryItem pageType={pageType}>
                 <CheckBox.Label>{category}</CheckBox.Label>
-                <CheckBox.Indicator asChild>
-                  <CategoryCancelButton pageType={pageType}>X</CategoryCancelButton>
-                </CheckBox.Indicator>
+                <CategoryCancelButton pageType={pageType}>X</CategoryCancelButton>
               </CategoryItem>
             </CheckBox.Indicator>
           </CheckBox>

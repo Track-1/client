@@ -23,7 +23,7 @@ export const USER = {
   MAIL_RESET_PASSWORD: `${PATH.user}/mail/reset-password`,
   MAIL_RESET_PASSWORD_RE: `${PATH.user}/mail/reset-password/repost`,
   MAIL_PASSWORD_TOKEN: (token: string) => `${PATH.user}/mail/reset-password/${token}`,
-};
+} as const;
 
 export const TRACKS = {
   FILTERED_LIST: `${PATH.tracks}?`,
@@ -31,18 +31,18 @@ export const TRACKS = {
   DOWNLOAD: (trackId: number) => `${PATH.tracks}/${trackId}/download`,
   POST: `${PATH.tracks}`,
   TRACK_CLOSE: (trackId: number) => `${PATH.tracks}/${trackId}/close`,
-};
+} as const;
 
 export const COMMENTS = {
   LIST: (trackId: number) => `${PATH.comments}/${trackId}?`,
   POST: (trackId: number) => `${PATH.comments}/${trackId}`,
   PATCH: (commentId: number) => `${PATH.comments}/${commentId}`,
   DELETE: (commentId: number) => `${PATH.comments}/${commentId}`,
-};
+} as const;
 
 export const VOCALS = {
   FILTERED_LIST: `${PATH.vocals}?`,
-};
+} as const;
 
 export const PROFILE = {
   PRODUCER_PROFILE: (userId: number) => `${PATH.profile}/producer/${userId}?`,
@@ -52,7 +52,7 @@ export const PROFILE = {
   VOCAL_INFO: (userId: number) => `${PATH.profile}/vocal/${userId}/works?`,
   PATCH_PRODUCER: `${PATH.profile}/producer`,
   PATCH_VOCAL: `${PATH.profile}/vocal`,
-};
+} as const;
 
 export const MYPAGE = {
   INFO: `${PATH.mypage}?`,
@@ -64,4 +64,4 @@ export const MYPAGE = {
   PATCH_VOCAL_TITLE: `${PATH.mypage}/vocal?`,
   DELETE_PRODUCER_PORTFOLIO: (portfolioId: number) => `${PATH.mypage}/producer/${portfolioId}`,
   DELETE_VOCAL_PORTFOLIO: (portfolioId: number) => `${PATH.mypage}/vocal/${portfolioId}`,
-};
+} as const;
