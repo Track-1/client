@@ -19,14 +19,13 @@ import { PortfoliosParamsType } from "../../type/vocals";
 import { useQuery } from "react-query";
 import { getVocalProfile } from "../../api/profile";
 
-import { useNavigate } from "react-router-dom";
-import { getProducerProfile } from "../../api/profile";
-import { ROLE } from "../../core/common/roleType";
-import useModal from "../common/useModal";
-import useUpdateModal from "../common/useUpdateModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { getProducerProfile } from "../../api/profile";
+import { ROLE } from "../../core/common/roleType";
 import { loginUserId } from "../../recoil/common/loginUserData";
+import useModal from "../common/useModal";
+import useUpdateModal from "../common/useUpdateModal";
 
 export function useGetProducerProfile(userId: number, userType?: string) {
   const { data: producerProfile } = useQuery(
@@ -284,34 +283,6 @@ export function useEditVocalTitle() {
   });
   return {
     editVocalTitle: mutate,
-    ...restValues,
-  };
-}
-
-export function useDeleteFirstVocalPortfolio(params: MyPageTitleParamsType, deleteVocalPortfolio: any) {
-  const { mutate, ...restValues } = useMutation({
-    mutationFn: () => patchVocalTitle(params),
-    onSuccess: () => {
-      deleteVocalPortfolio();
-    },
-    onError: () => {},
-  });
-  return {
-    deletFirstVocal: mutate,
-    ...restValues,
-  };
-}
-
-export function useDeleteFirstProducerPortfolio(params: MyPageTitleParamsType, deleteProducerPortfolio: any) {
-  const { mutate, ...restValues } = useMutation({
-    mutationFn: () => patchProducerTitle(params),
-    onSuccess: () => {
-      deleteProducerPortfolio();
-    },
-    onError: () => {},
-  });
-  return {
-    deleteFirstProducer: mutate,
     ...restValues,
   };
 }

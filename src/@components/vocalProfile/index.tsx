@@ -4,6 +4,7 @@ import { useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
 import VocalEmptyProfileImg from "../../assets/image/vocalEmptyProfileImg.png";
+import { PlayerContext } from "../../context/playerContext";
 import useUpdateModal from "../../hooks/common/useUpdateModal";
 import { useGetVocalPortfolio, useGetVocalProfile } from "../../hooks/queries/mypage";
 import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
@@ -12,7 +13,6 @@ import Profile from "../profile";
 import VocalPortfolioInform from "./vocalPortfolioInform";
 import VocalPortfolioList from "./vocalPortfolioList";
 import VocalProfileShadow from "./vocalProfileShadow";
-import { PlayerContext } from "../../context/playerContext";
 
 const PAGE_LIMIT = 5;
 
@@ -56,7 +56,7 @@ export default function VocalProfile() {
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
-            <BackButton prevURL="-1" />
+            <BackButton />
             {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
           </BackButtonWrapper>
           <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />
