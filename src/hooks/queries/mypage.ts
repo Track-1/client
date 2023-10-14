@@ -324,3 +324,13 @@ export function useDeleteVocalPortfolio() {
     ...restValues,
   };
 }
+
+export async function deleteFirstVocal(params: MyPageTitleParamsType, portfolioId: number) {
+  await patchVocalTitle(params);
+  return deleteVocalPortfolio(portfolioId);
+}
+
+export async function deleteFirstProducer(params: MyPageTitleParamsType, portfolioId: number) {
+  await patchProducerTitle(params);
+  return deleteProducerPortfolio(portfolioId);
+}

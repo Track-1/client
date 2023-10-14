@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
+import useModal from "../../hooks/common/useModal";
 import useUpdateModal from "../../hooks/common/useUpdateModal";
 import {
+  deleteFirstProducer,
+  deleteFirstVocal,
   useDeleteProducerPortfolio,
   useDeleteVocalPortfolio,
   useEditProducerTitle,
@@ -26,22 +29,8 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
-  const { modalRef, unShowModal } = useUpdateModal();
-  // const { deletFirstVocal } = useDeleteFirstVocalPortfolio(
-  //   {
-  //     bef: nowTitleId,
-  //     aft: nowTitleNextId,
-  //   },
-  //   deleteVocalPortfolio(portfolioId),
-  // );
-  // const { deleteFirstProducer } = useDeleteFirstProducerPortfolio(
-  //   {
-  //     bef: nowTitleId,
-  //     aft: nowTitleNextId,
-  //   },
-  //   deleteProducerPortfolio(portfolioId),
-  // );
-  // console.log(dataState);
+  const { modalRef, unShowModal: unShowUpdateModal } = useUpdateModal();
+  const { unShowModal } = useModal();
 
   function handleMoveToEditPage() {
     switch (dataState) {
@@ -59,26 +48,29 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
     }
   }
 
-  function handleAskToDeleteTrack() {
+  async function handleAskToDeleteTrack() {
     if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
       if (dataState === "producer vocal searching") {
         deleteProducerPortfolio(portfolioId);
-        return;
       }
       //타이틀곡을 삭제하려는 경우
       if (nowTitleId === portfolioId) {
         if (dataState === "vocal portfolio") {
-          // deletFirstVocal();
+          deleteFirstVocal({ bef: nowTitleId, aft: nowTitleNextId }, portfolioId);
         } else {
-          // deleteFirstProducer();
+          deleteFirstProducer({ bef: nowTitleId, aft: nowTitleNextId }, portfolioId);
         }
-      } else {
+      }
+      // 타이틀 곡 아닌 곡을 삭제하려는 경우
+      else {
         if (dataState === "vocal portfolio") {
           deleteVocalPortfolio(portfolioId);
         } else {
           deleteProducerPortfolio(portfolioId);
         }
       }
+      unShowModal();
+      unShowUpdateModal();
     }
   }
 
