@@ -3,6 +3,8 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProducerProfileShadowIc, RightArrorIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
+import useModal from "../../hooks/common/useModal";
+import useUpdateModal from "../../hooks/common/useUpdateModal";
 import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
 
 export default function ProducerProfileShadow() {
@@ -10,11 +12,15 @@ export default function ProducerProfileShadow() {
   const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
   const [clickId, setClickId] = useRecoilState(clickedProfileId);
   const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { unShowModal } = useModal();
+  const { unShowModal: unShowUpdateModal } = useUpdateModal();
 
   function handleChangeDataState(state: string) {
     setDataState(state);
     setHoverId(-1);
     setClickId(-1);
+    unShowModal();
+    unShowUpdateModal();
     quitAudioForMovePage();
   }
 

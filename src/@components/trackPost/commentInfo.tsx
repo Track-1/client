@@ -30,7 +30,7 @@ export default function CommentInfo(props: CommentInfoProps) {
 
     navigate(`/vocal-profile/${commentUserId}`);
   }
-  console.log(editId);
+
   function handleShowEditDropDownComment() {
     if (editId !== -1) return;
     setEditId(commentId);

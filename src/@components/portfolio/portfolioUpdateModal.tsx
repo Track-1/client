@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
@@ -22,9 +23,25 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const navigate = useNavigate();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
+  const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
   const { modalRef, unShowModal } = useUpdateModal();
+  // const { deletFirstVocal } = useDeleteFirstVocalPortfolio(
+  //   {
+  //     bef: nowTitleId,
+  //     aft: nowTitleNextId,
+  //   },
+  //   deleteVocalPortfolio(portfolioId),
+  // );
+  // const { deleteFirstProducer } = useDeleteFirstProducerPortfolio(
+  //   {
+  //     bef: nowTitleId,
+  //     aft: nowTitleNextId,
+  //   },
+  //   deleteProducerPortfolio(portfolioId),
+  // );
+  // console.log(dataState);
 
   function handleMoveToEditPage() {
     switch (dataState) {
@@ -48,15 +65,12 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
         deleteProducerPortfolio(portfolioId);
         return;
       }
+      //타이틀곡을 삭제하려는 경우
       if (nowTitleId === portfolioId) {
-        //타이틀곡을 삭제하려는 경우
         if (dataState === "vocal portfolio") {
-          editVocalTitle({
-            bef: nowTitleId,
-            aft: nowTitleNextId,
-          });
+          // deletFirstVocal();
         } else {
-          editProducerTitle({ bef: nowTitleId, aft: nowTitleNextId });
+          // deleteFirstProducer();
         }
       } else {
         if (dataState === "vocal portfolio") {
@@ -69,7 +83,6 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   }
 
   function handleChangeTitle() {
-    unShowModal();
     if (dataState === "vocal portfolio") {
       editVocalTitle({
         bef: nowTitleId,
@@ -87,7 +100,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
           수정하기
           <PencilUpdateIcon />
         </ModalBox>
-        <ModalBox underline={false} onClick={handleAskToDeleteTrack}>
+        <ModalBox underline={dataState !== "producer vocal searching" && !isTitle} onClick={handleAskToDeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>

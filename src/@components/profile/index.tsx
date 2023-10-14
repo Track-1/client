@@ -16,8 +16,6 @@ interface ProfileProps {
 export default function Profile(props: ProfileProps) {
   const { userType, userSelf, userProfile } = props;
 
-  console.log(userProfile);
-
   return (
     <ProfileWrapper>
       {userType === "vocal" && <VocalProfileImage />}
