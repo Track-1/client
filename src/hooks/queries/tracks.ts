@@ -136,9 +136,12 @@ export function useCloseTrack() {
 }
 
 export function useDeleteTrack() {
+  const queryClient = useQueryClient();
   const { mutate, ...restValues } = useMutation({
     mutationFn: (trackId: number) => deleteTrack(trackId),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries("producerVocalSearchings");
+    },
     onError: () => {},
   });
   return {

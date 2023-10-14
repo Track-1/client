@@ -1,6 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import { BackButtonIc } from "../../assets";
-import { useContext } from "react";
 import { PlayerContext } from "../../context/playerContext";
 import usePrevPage from "../../hooks/common/usePrevPage";
 

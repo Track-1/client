@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import ForgotPasswordInput from "./forgotPasswordInput";
 import BackgroundImg from "../../assets/image/backgroundImg.png";
-import Header from "../@common/header";
-import Footer from "../@common/footer";
 import BackButton from "../@common/backButton";
+import Footer from "../@common/footer";
+import Header from "../@common/header";
+import ForgotPasswordInput from "./forgotPasswordInput";
 
 export default function ForgotPasswordContainer() {
   return (

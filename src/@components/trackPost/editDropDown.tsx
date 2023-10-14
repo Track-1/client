@@ -14,6 +14,7 @@ export default function EditDropDown() {
 
   function handleDeleteTrack() {
     deleteTrack(Number(id));
+    navigate("/track-search");
   }
 
   return (
