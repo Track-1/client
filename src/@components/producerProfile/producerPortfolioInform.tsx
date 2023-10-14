@@ -52,6 +52,7 @@ export default function ProducerPortfolioInform(props: ProducerPortfolioInformPr
                       nowTitleNextId={producerPortfolios[1]?.portfolioId}
                       portfolioId={producerPortfolio.portfolioId}
                       dataState="producer portfolio"
+                      clickedPortfolio={producerPortfolios[index]}
                     />
                   )}
                 </TitleSection>

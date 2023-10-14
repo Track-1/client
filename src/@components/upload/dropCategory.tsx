@@ -5,20 +5,13 @@ import { CheckCategoryIc } from "../../assets";
 
 interface DropCategoryProps {
   categories: Record<UpperCategoryType, boolean>;
-  setCategories: React.Dispatch<React.SetStateAction<Record<UpperCategoryType, boolean>>>;
+  selectCategory: (category: string) => void;
   openModal: boolean;
   handleShowUpdateModal: () => void;
 }
 
 export default function DropCategory(props: DropCategoryProps) {
-  const { categories, setCategories, openModal, handleShowUpdateModal } = props;
-
-  function selectCategory(category: string) {
-    const tempCategory = { ...CategoryBoolean };
-    tempCategory[category as UpperCategoryType] = true;
-
-    setCategories({ ...tempCategory });
-  }
+  const { categories, selectCategory, openModal, handleShowUpdateModal } = props;
 
   function isSelected(category: string) {
     return categories[category as UpperCategoryType];

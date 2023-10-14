@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { PlayerPlayIc, PlayerStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
@@ -151,6 +151,7 @@ export default function TrackItem(props: TrackItemProps) {
     selectTrack,
   );
   const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   useEffect(() => {
     if (!isSelected) return;
@@ -169,7 +170,11 @@ export default function TrackItem(props: TrackItemProps) {
 
   function handleMoveToProducer() {
     quitAudioForMovePage();
-    navigate(`/producer-profile/${trackInfo.trackUserId}`);
+    navigate(`/producer-profile/${trackInfo.trackUserId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (

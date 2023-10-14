@@ -5,7 +5,7 @@ import { ROLE } from "../../../core/common/roleType";
 import styled from "styled-components";
 import { RightArrorIc } from "../../../assets";
 import { checkIsLogin } from "../../../utils/common/checkIsLogined";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function TrackSearchHeaderButton() {
   const userType = useRecoilValue(loginUserType);
@@ -13,6 +13,7 @@ export default function TrackSearchHeaderButton() {
 
   const { vocalProfile } = useGetVocalProfile(userId, userType);
   const { producerProfile } = useGetProducerProfile(userId, userType);
+  const prevURL = useLocation().pathname;
 
   const navigate = useNavigate();
 
@@ -24,9 +25,17 @@ export default function TrackSearchHeaderButton() {
 
   function handleMoveToProfile() {
     if (userType === ROLE.PRODUCER) {
-      navigate(`/producer-profile/${userId}`);
+      navigate(`/producer-profile/${userId}`, {
+        state: {
+          prevURL: prevURL,
+        },
+      });
     } else {
-      navigate(`/vocal-profile/${userId}`);
+      navigate(`/vocal-profile/${userId},`, {
+        state: {
+          prevURL: prevURL,
+        },
+      });
     }
   }
 

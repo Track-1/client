@@ -11,18 +11,24 @@ import useModal from "../../hooks/common/useModal";
 
 export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const preLocation = location.pathname.split("/")[1];
+  const prevURL = useLocation().pathname;
+
   const { modalRef } = useModal();
 
   function moveVocalSearching() {
     navigate("/upload/producer/vocal-searching", {
-      state: { producerUploadType: "Vocal Searching", prevPage: preLocation },
+      state: {
+        prevURL: prevURL,
+      },
     });
   }
 
   function movePortfolio() {
-    navigate("/upload/producer/portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
+    navigate("/upload/producer/portfolio", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (

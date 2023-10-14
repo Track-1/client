@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
 import useModal from "../../hooks/common/useModal";
@@ -12,6 +12,7 @@ import {
   useEditProducerTitle,
   useEditVocalTitle,
 } from "../../hooks/queries/mypage";
+import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
@@ -19,32 +20,57 @@ interface PortfolioUpdateModalProp {
   nowTitleNextId: number;
   portfolioId: number;
   dataState: string;
+  clickedPortfolio?: UserPortfolioType;
+  clickedProducerVocalSearching?: ProducerVocalSearchingType;
 }
 
 export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
-  const { isTitle, nowTitleId, nowTitleNextId, portfolioId, dataState } = props;
+  const {
+    isTitle,
+    nowTitleId,
+    nowTitleNextId,
+    portfolioId,
+    dataState,
+    clickedPortfolio,
+    clickedProducerVocalSearching,
+  } = props;
   const navigate = useNavigate();
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
   const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
-  const { modalRef, unShowModal: unShowUpdateModal } = useUpdateModal();
-  const { unShowModal } = useModal();
+  const { modalRef, unShowModal } = useUpdateModal();
+  const prevURL = useLocation().pathname;
 
   function handleMoveToEditPage() {
     switch (dataState) {
-      case "producer vocal searching":
-        navigate(`/vocal-searching-edit/producer/${portfolioId}`);
-        return;
       case "producer portfolio":
-        navigate(`/portfolio-edit/producer/${portfolioId}`);
-        return;
+        navigate(`/portfolio-edit/producer/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedPortfolio,
+          },
+        });
+        break;
+      case "producer vocal searching":
+        navigate(`/vocal-searching-edit/producer/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedProducerVocalSearching,
+          },
+        });
+        break;
       case "vocal portfolio":
-        navigate(`/portfolio-edit/vocal/${portfolioId}`);
-        return;
+        navigate(`/portfolio-edit/vocal/${portfolioId}`, {
+          state: {
+            prevURL: prevURL,
+            uploadEditInitData: clickedPortfolio,
+          },
+        });
+        break;
       default:
-        return;
+        break;
     }
   }
 

@@ -4,19 +4,25 @@ import { MoveTouploadPortfolioButtonIc, MoveTouploadVocalSearchingButtonIc } fro
 import useModal from "../../hooks/common/useModal";
 
 export default function ProducerUploadModal() {
-  const { modalRef, closeModal, openModal } = useModal();
-  const location = useLocation();
-  const preLocation = location.pathname.split("/")[1];
+  const { modalRef } = useModal();
+
   const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   function handleMoveVocalSearching() {
     navigate("/upload/producer/vocal-searching", {
-      state: { producerUploadType: "Vocal Searching", prevPage: preLocation },
+      state: {
+        prevURL: prevURL,
+      },
     });
   }
 
   function handleMovePortfolio() {
-    navigate("/upload/producer/portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
+    navigate("/upload/producer/portfolio", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (

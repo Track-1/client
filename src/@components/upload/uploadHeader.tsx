@@ -8,7 +8,6 @@ import { UPLOAD_TYPE } from "../../core/common/uploadType";
 import useUploadEditAPI from "../../hooks/queries/upload/useUploadEditAPI";
 import { useLocation } from "react-router-dom";
 import { ROLE } from "../../core/common/roleType";
-import { setCookie } from "../../utils/common/cookie";
 import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
 
 export default function UploadHeader() {

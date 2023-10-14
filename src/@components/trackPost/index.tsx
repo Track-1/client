@@ -15,6 +15,7 @@ import Comments from "./comments";
 import Download from "./download";
 import ProducerProfile from "./producerProfile";
 import ShowMore from "./showMore";
+import HomeLogo from "../@common/homeLogo";
 
 export const CommentsPlayerContext = createContext<any>({
   playAudio: () => {},
@@ -137,7 +138,8 @@ export default function TrackPost() {
 
   return (
     <>
-      <Header homeLogo>
+      <Header>
+        <HomeLogo />
         <TrackSearchHeader pageType="tracks" />
       </Header>
       {isOpenComment && (
@@ -149,7 +151,7 @@ export default function TrackPost() {
 
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
-          <BackButton prevURL="-1" />
+          <BackButton staticPrevURL={"/track-search"} />
           <TrackPostInform>
             <AudioTitle />
             <ProducerProfile />

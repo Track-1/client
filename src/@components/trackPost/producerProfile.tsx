@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { PlayerContext } from "../../context/playerContext";
@@ -9,11 +9,15 @@ export default function ProducerProfile() {
   const { id } = useParams();
   const { trackDetail } = useTrackDetail(Number(id));
   const navigate = useNavigate();
-  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const prevURL = useLocation().pathname;
 
   function handleMoveToProducerProfile() {
     quitAudioForMovePage();
-    navigate(`/producer-profile/${trackDetail?.trackUserId}`);
+    navigate(`/producer-profile/${trackDetail?.trackUserId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (

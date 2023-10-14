@@ -1,17 +1,24 @@
 import { useMutation } from "react-query";
 import { patchProducerProfile, patchVocalProfile } from "../../api/profile";
 import { ProfileEditType, VocalProfileEditType } from "../../type/profile";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginUserId } from "../../recoil/common/loginUserData";
 
 export function useEditProdcerProfile() {
   const navigate = useNavigate();
   const userId = useRecoilValue(loginUserId);
+  const prevURL = useLocation().state?.prevURL;
   const { mutate, ...restValues } = useMutation({
     mutationFn: (editData: ProfileEditType) => patchProducerProfile(editData),
     onSuccess: () => {
-      navigate(`/producer-profile/${userId}`);
+      setTimeout(() => {
+        navigate(`/producer-profile/${userId}`, {
+          state: {
+            prevURL: prevURL,
+          },
+        });
+      }, 3000);
     },
     onError: () => {},
   });
@@ -22,9 +29,21 @@ export function useEditProdcerProfile() {
 }
 
 export function useEditVocalProfile() {
+  const navigate = useNavigate();
+  const userId = useRecoilValue(loginUserId);
+  const prevURL = useLocation().state?.prevURL;
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (editData: VocalProfileEditType) => patchVocalProfile(editData),
-    onSuccess: () => {},
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate(`/vocal-profile/${userId}`, {
+          state: {
+            prevURL: prevURL,
+          },
+        });
+      }, 3000);
+    },
     onError: () => {},
   });
   return {

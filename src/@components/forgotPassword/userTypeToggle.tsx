@@ -10,7 +10,7 @@ export default function UserTypeToggle(props: UserTypeToggleType) {
   const { producerType, handleChangeUserType } = props;
   return (
     <ToggleWrapper>
-      producerType
+      Producer mode
       {producerType ? (
         <ProducerTypeToggleIcon onClick={handleChangeUserType} />
       ) : (

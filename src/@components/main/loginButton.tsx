@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { LoginIc, SignupIc } from "../../assets";
@@ -9,6 +9,8 @@ import { checkIsLogin } from "../../utils/common/checkIsLogined";
 import MypageButton from "./mypageButton";
 
 export default function LoginButton() {
+  const prevURL = useLocation().pathname;
+
   const isLogined = checkIsLogin();
 
   const userType = useRecoilValue(loginUserType);
@@ -36,10 +38,18 @@ export default function LoginButton() {
   }
 
   function handleMoveLogin() {
-    navigate("/login");
+    navigate("/login", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
   function handleMoveSignUp() {
-    navigate("/signup");
+    navigate("/signup", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   return (
