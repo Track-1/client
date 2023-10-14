@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/queries/user";
-import { ProducerProfileImage } from "./mypageButton";
-import { useRecoilValue } from "recoil";
 import { loginUserId } from "../../recoil/common/loginUserData";
+import { ProducerProfileImage } from "./mypageButton";
 
 interface ProfileBoxProps {
   userType: string;

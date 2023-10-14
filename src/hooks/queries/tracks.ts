@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import {
   deleteTrack,
   getFilteredTracks,
@@ -10,10 +11,8 @@ import {
   postTrack,
 } from "../../api/tracks";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { FilteredTrackParamsType } from "../../type/tracks";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import { loginUserId } from "../../recoil/common/loginUserData";
+import { FilteredTrackParamsType } from "../../type/tracks";
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
   const fetchTracks = async (pageParams: number) => {
