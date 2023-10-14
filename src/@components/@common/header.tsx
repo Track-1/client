@@ -1,8 +1,16 @@
 import { PropsWithChildren, ReactNode } from "react";
 import styled from "styled-components";
+import { HomeLogoIc, SloganIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
+import { RoutesType } from "../../type/common/routes";
+import BackButton from "./backButton";
 
 interface HeaderProps {
-  headerStyle?: React.CSSProperties;
+  backBtn?: boolean;
+  prevURL?: RoutesType;
+  homeLogo?: boolean;
+  slogan?: boolean;
+  headerFixed?: boolean;
   children?: ReactNode;
 }
 
@@ -10,8 +18,13 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   const { headerStyle, children } = props;
 
   return (
-    <Container style={headerStyle}>
-      <Wrapper>{children}</Wrapper>
+    <Container headerFixed={headerFixed}>
+      <Wrapper>
+        {homeLogo && <HomeLogoIcon onClick={handleMoveToHome} />}
+        {backBtn && <BackButton prevURL={prevURL ?? "-1"} />}
+        {slogan && <SloganIcon />}
+        {children}
+      </Wrapper>
     </Container>
   );
 }

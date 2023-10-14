@@ -56,7 +56,7 @@ export default function VocalProfile() {
       <Container>
         <ProfileSection>
           <BackButtonWrapper>
-            <BackButton />
+            <BackButton prevURL="-1" />
             {vocalProfile?.userSelf && <ProfileEditBtnIcon onClick={handleMoveProfileEditPage} />}
           </BackButtonWrapper>
           <Profile userType="vocal" userSelf={vocalProfile?.userSelf} userProfile={vocalProfile?.userProfile} />

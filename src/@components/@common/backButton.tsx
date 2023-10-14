@@ -2,16 +2,21 @@ import styled from "styled-components";
 import { BackButtonIc } from "../../assets";
 import { useContext } from "react";
 import { PlayerContext } from "../../context/playerContext";
-import usePrevPage from "../../hooks/common/usePrevPage";
+import { RoutesType } from "../../type/common/routes";
 
 interface BackButtonProps {
-  staticPrevURL?: string | number;
+  prevURL: "-1" | RoutesType;
 }
 
 export default function BackButton(props: BackButtonProps) {
   const { staticPrevURL } = props;
   const { handleMovePrevPage } = usePrevPage(staticPrevURL);
   const { quitAudioForMovePage } = useContext(PlayerContext);
+
+  function movePreviousPage() {
+    quitAudioForMovePage();
+    prevURL === "-1" ? navigate(-1) : navigate(prevURL);
+  }
 
   return (
     <ButtonContainer
