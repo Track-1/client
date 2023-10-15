@@ -30,9 +30,9 @@ export interface TrackDetailType {
   trackUserName: string;
   trackUserId: number;
   userImageFile: string;
-  userIntroduction: string;
-  userKeyword: string[];
-  userCategory: string;
+  trackIntroduction: string;
+  trackKeyword: string[];
+  trackCategory: string;
   userSelf: boolean;
   trackAudioFileLength: number;
   trackClosed: boolean;

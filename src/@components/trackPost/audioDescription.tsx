@@ -10,7 +10,7 @@ export default function AudioDescription() {
   return (
     <DescriptionBox>
       <DescriptionIcon />
-      <Description>{trackDetail?.userIntroduction}</Description>
+      <Description>{trackDetail?.trackIntroduction}</Description>
     </DescriptionBox>
   );
 }
