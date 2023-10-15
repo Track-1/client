@@ -10,7 +10,7 @@ export default function AudioCategory() {
   return (
     <CategoryBox>
       <CategoryIcon />
-      {trackDetail?.userCategory}
+      {trackDetail?.trackCategory}
     </CategoryBox>
   );
 }

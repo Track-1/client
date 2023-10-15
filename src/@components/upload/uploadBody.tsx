@@ -68,8 +68,7 @@ export default function UploadBody() {
         selectCategory(uploadEditInitData.portfolioCategory);
       } else {
         changeTitle(uploadEditInitData.trackTitle);
-        // changeAudioFileName(uploadEditInitData.trackAudioFileName);
-        changeAudioFileName("임시데이터");
+        changeAudioFileName(uploadEditInitData.trackAudioFileName);
         changeHashtags([...uploadEditInitData.trackKeyword]);
         changePreviewImage(uploadEditInitData.trackImageFile);
         changeDescription(uploadEditInitData.trackIntroduce || "");
@@ -117,7 +116,7 @@ export default function UploadBody() {
   return (
     <Container roleType={roleType}>
       {roleType === ROLE.PRODUCER ? (
-        <ProducerLayout  previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
+        <ProducerLayout previewImage={previewImage} handleUploadImageFile={handleUploadImageFile}>
           {commonComponent()}
         </ProducerLayout>
       ) : (

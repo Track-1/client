@@ -14,7 +14,7 @@ export default function AudioHashtags() {
         <HashTagIcon />
       </HashTagIconWrapper>
       <TagWrapper>
-        {trackDetail?.userKeyword?.map((tag: string) => (
+        {trackDetail?.trackKeyword?.map((tag: string) => (
           <HashTag key={tag} tag={tag} />
         ))}
       </TagWrapper>
