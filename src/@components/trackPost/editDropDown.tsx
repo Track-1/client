@@ -1,15 +1,27 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
 import { useDeleteTrack } from "../../hooks/queries/tracks";
+import { TrackDetailType } from "../../type/tracks";
 
-export default function EditDropDown() {
+interface EditDropDownProps {
+  trackDetail: TrackDetailType | undefined;
+}
+
+export default function EditDropDown(props: EditDropDownProps) {
+  const { trackDetail } = props;
   const { id } = useParams();
   const navigate = useNavigate();
   const { deleteTrack } = useDeleteTrack();
+  const prevURL = useLocation().pathname;
 
   function handleMoveTrackPostEditPage() {
-    navigate(`/vocal-searching-edit/producer/${id}`);
+    navigate(`/vocal-searching-edit/producer/${id}`, {
+      state: {
+        prevURL: prevURL,
+        uploadEditInitData: trackDetail,
+      },
+    });
   }
 
   function handleDeleteTrack() {
