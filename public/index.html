@@ -16,8 +16,120 @@
       f.parentNode.insertBefore(j, f);
     })(window, document, "script", "dataLayer", "GTM-WDQLPLZ");
   </script>
+  <!-- Meta Pixel Code -->
+  <script type="text/javascript" charset="UTF-8">
+    var inappdeny_exec_vanillajs = (callback) => {
+      if (document.readyState != "loading") {
+        callback();
+      } else {
+        document.addEventListener("DOMContentLoaded", callback);
+      }
+    };
+    inappdeny_exec_vanillajs(() => {
+      /* Do things after DOM has fully loaded */
+      function copytoclipboard(val) {
+        var t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = val;
+        t.select();
+        document.execCommand("copy");
+        document.body.removeChild(t);
+      }
+      function inappbrowserout() {
+        copytoclipboard(window.location.href);
+        alert(
+          'URL주소가 복사되었습니다.\n\nSafari가 열리면 주소창을 길게 터치한 뒤, "붙여놓기 및 이동"를 누르면 정상적으로 이용하실 수 있습니다.',
+        );
+        location.href = "x-web-search://?";
+      }
 
-  <!-- End Google Tag Manager -->
+      var useragt = navigator.userAgent.toLowerCase();
+      var target_url = location.href;
+
+      if (useragt.match(/kakaotalk/i)) {
+        //카카오톡 외부브라우저로 호출
+        location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(target_url);
+      } else if (useragt.match(/line/i)) {
+        //라인 외부브라우저로 호출
+        if (target_url.indexOf("?") !== -1) {
+          location.href = target_url + "&openExternalBrowser=1";
+        } else {
+          location.href = target_url + "?openExternalBrowser=1";
+        }
+      } else if (
+        useragt.match(
+          /inapp|naver|snapchat|wirtschaftswoche|thunderbird|instagram|everytimeapp|whatsApp|electron|wadiz|aliapp|zumapp|iphone(.*)whale|android(.*)whale|kakaostory|band|twitter|DaumApps|DaumDevice\/mobile|FB_IAB|FB4A|FBAN|FBIOS|FBSS|SamsungBrowser\/[^1]/i,
+        )
+      ) {
+        //그외 다른 인앱들
+        if (useragt.match(/iphone|ipad|ipod/i)) {
+          //아이폰은 강제로 사파리를 실행할 수 없다 ㅠㅠ
+          //모바일대응뷰포트강제설정
+          var mobile = document.createElement("meta");
+          mobile.name = "viewport";
+          mobile.content = "width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui";
+          document.getElementsByTagName("head")[0].appendChild(mobile);
+          //노토산스폰트강제설정
+          var fonts = document.createElement("link");
+          fonts.href =
+            "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap";
+          document.getElementsByTagName("head")[0].appendChild(fonts);
+          document.body.innerHTML =
+            "<style>body{margin:0;padding:0;font-family: 'Noto Sans KR', sans-serif;overflow: hidden;height: 100%;}</style><h2 style='padding-top:50px; text-align:center;font-family: 'Noto Sans KR', sans-serif;'>인앱브라우저 호환문제로 인해<br />Safari로 접속해야합니다.</h2><article style='text-align:center; font-size:17px; word-break:keep-all;color:#999;'>아래 버튼을 눌러 Safari를 실행해주세요<br />Safari가 열리면, 주소창을 길게 터치한 뒤,<br />'붙여놓기 및 이동'을 누르면<br />정상적으로 이용할 수 있습니다.<br /><br /><button onclick='inappbrowserout();' style='min-width:180px;margin-top:10px;height:54px;font-weight: 700;background-color:#31408E;color:#fff;border-radius: 4px;font-size:17px;border:0;'>Safari로 열기</button></article><img style='width:70%;margin:50px 15% 0 15%' src='https://tistory3.daumcdn.net/tistory/1893869/skin/images/inappbrowserout.jpeg' />";
+        } else {
+          //안드로이드는 Chrome이 설치되어있음으로 강제로 스킴실행한다.
+          location.href =
+            "intent://" + target_url.replace(/https?:\/\//i, "") + "#Intent;scheme=http;package=com.android.chrome;end";
+        }
+      }
+    });
+  </script>
+
+  <script>
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", "1752224175211853");
+    fbq("track", "PageView");
+  </script>
+  <noscript
+    ><img
+      height="1"
+      width="1"
+      style="display: none"
+      src="https://www.facebook.com/tr?id=1752224175211853&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- 카카오톡 공유하기 sdk -->
+  <script
+    src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js"
+    integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH"
+    crossorigin="anonymous"></script>
+
+  <!-- Google Analytics 코드 (모바일 버전) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=MOBILE_GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "MOBILE_GA_MEASUREMENT_ID");
+  </script>
 
   <head>
     <meta charset="utf-8" />
@@ -26,7 +138,7 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="icon" href="data:," />
 
-    <meta name="title" content="Track1" />
+    <meta name="title" content="Track-1" />
     <meta name="description" content="Discover Your Limitless Track" />
     <meta name="keywords" content="프로듀서,보컬,보컬매칭,음악작업" />
     <meta name="robots" content="index,follow" />
@@ -35,19 +147,19 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="www.track1.site" />
-    <meta property="og:title" content="Track1" />
+    <meta property="og:title" content="Track-1" />
     <meta property="og:description" content="Discover Your Limitless Track" />
     <meta
       property="og:image"
       content="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/KakaoTalk_Photo_2023-04-14-02-21-21.png" />
     <meta property="twitter:card" content="summary" />
-    <meta property="twitter:title" content="Track1" />
+    <meta property="twitter:title" content="Track-1" />
     <meta property="twitter:description" content="Discover Your Limitless Track" />
     <meta
       property="twitter:image"
       content="https://profile-image-bucket.s3.ap-northeast-2.amazonaws.com/default/KakaoTalk_Photo_2023-04-14-02-21-21.png" />
 
-    <title>Track1</title>
+    <title>Track-1</title>
     <link
       rel="stylesheet"
       as="style"
@@ -68,5 +180,19 @@
       ></noscript>
       <!-- End Google Tag Manager (noscript) -->
     </div>
+    <script type="text/javascript">
+      (function (w, d, a) {
+        w.__beusablerumclient__ = {
+          load: function (src) {
+            var b = d.createElement("script");
+            b.src = src;
+            b.async = true;
+            b.type = "text/javascript";
+            d.getElementsByTagName("head")[0].appendChild(b);
+          },
+        };
+        w.__beusablerumclient__.load(a + "?url=" + encodeURIComponent(d.URL));
+      })(window, document, "//rum.beusable.net/load/b230717e174735u806");
+    </script>
   </body>
 </html>
