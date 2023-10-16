@@ -14,8 +14,6 @@ export default function ShowMore() {
     isEditOpen ? setIsEditOpen(false) : setIsEditOpen(true);
   }
 
-  console.log(trackDetail);
-
   return (
     <>
       {trackDetail?.userSelf && <EditBtnIcon onClick={handleOpenEdit} />}
