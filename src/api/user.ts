@@ -42,7 +42,6 @@ export async function getAccessToken() {
 
 export async function postUserEmail(userEmail: UserEmailRequest) {
   const { data } = await client.post<DefaultResponseType>(USER.BASIC_EMAIL, userEmail);
-  console.log(data);
   return data;
 }
 

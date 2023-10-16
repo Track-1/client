@@ -50,7 +50,7 @@ export default function UploadBody() {
       category: selectedCategoryNumber(),
       keyword: hashtags,
       introduction: description,
-      audioFileName: audioFileName,
+      audioFileName: audioFile ? audioFile.name : audioFileName,
     }));
   }, [imageFile, hashtags, title, audioFile, description, categories]);
 
