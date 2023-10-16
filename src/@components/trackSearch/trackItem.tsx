@@ -92,11 +92,13 @@ const StopButton = styled(PlayerStopIc)`
   transform: translate(-50%, -50%);
 `;
 
-const TrackText = styled.div<{ isHovered: boolean }>`
+const TrackText = styled.div<{ isHovered?: boolean }>`
   ${({ theme }) => theme.fonts.body1};
 
   padding-right: 3rem;
   margin-right: 1rem;
+
+  overflow-wrap: break-word;
 
   color: ${({ theme }) => theme.colors.white};
   :hover {
@@ -115,6 +117,8 @@ const Producer = styled(TrackText)`
 
 const Category = styled(TrackText)`
   width: 20rem;
+
+  cursor: default;
 `;
 
 const Tag = styled.span`
@@ -197,7 +201,7 @@ export default function TrackItem(props: TrackItemProps) {
       <Producer isHovered={isHovered} onClick={handleMoveToProducer}>
         {trackInfo.trackUserName}
       </Producer>
-      <Category isHovered={isHovered}>{trackInfo.trackCategory}</Category>
+      <Category>{trackInfo.trackCategory}</Category>
       {trackInfo.trackKeyword.map((tag) => {
         return <Tag>#{tag}</Tag>;
       })}
