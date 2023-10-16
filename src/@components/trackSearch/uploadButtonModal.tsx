@@ -62,7 +62,7 @@ const ModalBg = styled.section`
   background-color: rgba(0, 0, 0, 0.6);
 `;
 const UploadButtonModalWrapper = styled.section`
-  position: absolute;
+  position: fixed;
   z-index: 3;
   top: 75.5rem;
   left: 34.2rem;
