@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
 import { useDeleteTrack } from "../../hooks/queries/tracks";
 import { TrackDetailType } from "../../type/tracks";
+import { useContext } from "react";
+import { PlayerContext } from "../../context/playerContext";
 
 interface EditDropDownProps {
   trackDetail: TrackDetailType | undefined;
@@ -14,8 +16,10 @@ export default function EditDropDown(props: EditDropDownProps) {
   const navigate = useNavigate();
   const { deleteTrack } = useDeleteTrack();
   const prevURL = useLocation().pathname;
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function handleMoveTrackPostEditPage() {
+    quitAudioForMovePage();
     navigate(`/vocal-searching-edit/producer/${id}`, {
       state: {
         prevURL: prevURL,

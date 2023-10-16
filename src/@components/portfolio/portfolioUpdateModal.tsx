@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
@@ -14,6 +14,7 @@ import {
 } from "../../hooks/queries/mypage";
 import { useDeleteTrack } from "../../hooks/queries/tracks";
 import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
+import { PlayerContext } from "../../context/playerContext";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
@@ -44,9 +45,11 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { editProducerTitle } = useEditProducerTitle();
   const { unShowModal } = useModal();
   const { modalRef, unShowModal: unShowUpdateModal } = useUpdateModal();
+  const { quitAudioForMovePage } = useContext(PlayerContext);
   const prevURL = useLocation().pathname;
 
   function handleMoveToEditPage() {
+    quitAudioForMovePage();
     switch (dataState) {
       case "producer portfolio":
         navigate(`/portfolio-edit/producer/${portfolioId}`, {

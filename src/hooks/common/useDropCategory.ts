@@ -41,7 +41,9 @@ export default function useDropCategory() {
 
   function selectCategory(category: string) {
     const tempCategory = { ...CategoryBoolean };
-    tempCategory[category as UpperCategoryType] = true;
+    const upperCategory = category.toUpperCase();
+
+    tempCategory[upperCategory as UpperCategoryType] = true;
 
     setCategories({ ...tempCategory });
   }
