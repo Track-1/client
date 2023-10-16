@@ -7,9 +7,9 @@ export default function useUploadAPI() {
   const location = useLocation();
   const pathName = location.pathname;
 
-  const { uploadTrack } = useUploadTrack();
-  const { uploadProducerPortfolio } = useUploadProducerPortfolio();
-  const { uploadVocalPortfolio } = useUploadVocalPortfolio();
+  const { uploadTrack, isLoading: trackLoading } = useUploadTrack();
+  const { uploadProducerPortfolio, isLoading: producerLoading } = useUploadProducerPortfolio();
+  const { uploadVocalPortfolio, isLoading: vocalLoaidng } = useUploadVocalPortfolio();
 
   function uploadAPI() {
     if (pathName.includes(ROLE.PRODUCER)) {
@@ -19,5 +19,5 @@ export default function useUploadAPI() {
     }
   }
 
-  return { uploadAPI };
+  return { uploadAPI, trackLoading, producerLoading, vocalLoaidng };
 }
