@@ -108,6 +108,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   }
 
   function handleChangeTitle() {
+    quitAudioForMovePage();
     if (dataState === "vocal portfolio") {
       editVocalTitle({
         bef: nowTitleId,
