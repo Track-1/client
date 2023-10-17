@@ -10,9 +10,15 @@ import { useLocation } from "react-router-dom";
 import { ROLE } from "../../core/common/roleType";
 import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
 
-export default function UploadHeader() {
+interface UploadHeaderProps {
+  useUploadAPI: any;
+}
+
+export default function UploadHeader(props: UploadHeaderProps) {
+  const { useUploadAPI } = props;
+  const { uploadAPI, trackLoading, producerLoading, vocalLoaidng } = useUploadAPI;
   const [uploadData, setUploadData] = useRecoilState(UploadData);
-  const { uploadAPI } = useUploadAPI();
+  // const { uploadAPI, trackLoading, producerLoading, vocalLoaidng } = useUploadAPI();
   const { uploadEditAPI, trackId } = useUploadEditAPI();
   const [isUploadActive, setIsUploadActive] = useState(false);
   const pathname = useLocation().pathname;
