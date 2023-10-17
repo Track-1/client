@@ -5,10 +5,8 @@ import styled from "styled-components";
 import { LoginButtonIc, PasswordEyeIc } from "../../assets";
 import background from "../../assets/icon/signupBackgroundIc.svg";
 import { ROLE } from "../../core/common/roleType";
-import useConventionModal from "../../hooks/common/useConventionModal";
 import { useLogin } from "../../hooks/queries/user";
 import { UserType } from "../../type/common/userType";
-import ConventionModal from "../@common/conventionModal";
 import Footer from "../@common/footer";
 import InputContainer from "../@common/inputContainer";
 import SwitchToggle from "./switchToggle";
@@ -171,7 +169,6 @@ export default function LoginForm() {
   });
   const [userType, setUserType] = useState<UserType>("vocal");
   const { login, error } = useLogin();
-  const { conventionModalInform } = useConventionModal();
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -193,8 +190,6 @@ export default function LoginForm() {
 
   return (
     <>
-      {conventionModalInform?.isOpen && <ConventionModal />}
-
       <Img src={background} alt="배경" />
       <Body>
         <form
