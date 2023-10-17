@@ -10,6 +10,7 @@ import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentWriteData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
 import { blockAccess } from "../../utils/common/privateRouter";
+import Loading from "../@common/loading";
 import CommentBox from "./commentBox";
 import CommentLayout from "./commentLayout";
 import CommentWrite from "./commentWrite";
@@ -26,7 +27,7 @@ export default function Comments(props: CommentsProp) {
   const { handleClosecomment, trackContextPlaying } = props;
   const { trackDetail } = useTrackDetail(Number(id));
   const [comment, setComment] = useRecoilState(commentWriteData);
-  const { uploadComment } = useUploadComment();
+  const { uploadComment, isLoading } = useUploadComment();
   const { trackComments, fetchNextPage, hasNextPage } = useComments({
     limit: PAGE_LIMIT,
     trackId: Number(id),
@@ -59,26 +60,29 @@ export default function Comments(props: CommentsProp) {
   if (trackComments === undefined) return null;
 
   return (
-    <CommentLayout>
-      <CloseCommentsBtnIcon
-        onClick={() => {
-          handleClosecomment(quitAudioForMovePage);
-        }}
-      />
-      <CommentWrite isUpdate={false} />
-      <AddCommentIconWrapper>
-        {!trackDetail?.trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
-      </AddCommentIconWrapper>
-      {trackComments?.map((eachComment: CommentType) => (
-        <CommentBox
-          key={eachComment?.commentId}
-          eachComment={eachComment}
-          playingTrack={playingTrack}
-          selectTrack={selectTrack}
+    <>
+      <CommentLayout>
+        {isLoading && <Loading />}
+        <CloseCommentsBtnIcon
+          onClick={() => {
+            handleClosecomment(quitAudioForMovePage);
+          }}
         />
-      ))}
-      <Observer ref={observerRef} />
-    </CommentLayout>
+        <CommentWrite isUpdate={false} />
+        <AddCommentIconWrapper>
+          {!trackDetail?.trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
+        </AddCommentIconWrapper>
+        {trackComments?.map((eachComment: CommentType) => (
+          <CommentBox
+            key={eachComment?.commentId}
+            eachComment={eachComment}
+            playingTrack={playingTrack}
+            selectTrack={selectTrack}
+          />
+        ))}
+        <Observer ref={observerRef} />
+      </CommentLayout>
+    </>
   );
 }
 
