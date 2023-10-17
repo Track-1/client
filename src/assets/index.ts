@@ -27,6 +27,7 @@ export { ReactComponent as DefaultToggleIc } from "./icon/defaultToggleIc.svg";
 export { ReactComponent as DeleteHashtagIc } from "./icon/deleteHashtagIc.svg";
 export { ReactComponent as DeleteIc } from "./icon/deleteIc.svg";
 export { ReactComponent as DescriptionIc } from "./icon/descriptionIc.svg";
+export { ReactComponent as DiscoverChanceIc } from "./icon/discoverChanceIc.svg";
 export { ReactComponent as DownloadIc } from "./icon/downloadBtnIc.svg";
 export { ReactComponent as EditBtnIc } from "./icon/editBtnIc.svg";
 export { ReactComponent as EditIc } from "./icon/editIc.svg";
