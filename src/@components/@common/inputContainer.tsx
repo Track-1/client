@@ -28,7 +28,7 @@ export default function InputContainer(props: PropsWithChildren<InputContainerPr
 
 const Container = styled.div<{ error?: boolean }>`
   width: 55.9rem;
-  border-bottom: 0.1rem solid ${({ theme, error }) => (error ? theme.colors.red : theme.colors.gray4)};
+  /* border-bottom: 0.1rem solid ${({ theme, error }) => (error ? theme.colors.red : theme.colors.gray4)}; */
 `;
 
 const InputTitleWrapper = styled.div`

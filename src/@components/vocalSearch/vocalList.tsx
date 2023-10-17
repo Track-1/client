@@ -23,6 +23,7 @@ const ListWrapper = styled.section`
 
 const DiscoverChanceIcon = styled(DiscoverChanceIc)`
   width: 143.8rem;
+  height: 21rem;
   margin-left: 30.9rem;
 `;
 

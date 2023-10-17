@@ -123,7 +123,7 @@ const ProfileWrapper = styled.div`
 
   padding: 1.5rem 2.2rem;
 
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
+  /* border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3}; */
 `;
 
 const LogoutWrapper = styled.button`
