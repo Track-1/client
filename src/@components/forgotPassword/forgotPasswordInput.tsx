@@ -1,19 +1,19 @@
-import { useForm, FormProvider } from "react-hook-form";
-import PasswordContainer from "../@common/passwordContainer";
-import Input from "../signUp/Input";
-import { checkEmailForm } from "../../utils/signUp/checkForm";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
-import styled from "styled-components";
-import UserTypeToggle from "./userTypeToggle";
-import StandardButton from "../@common/button/standardButton";
-import { theme } from "../../style/theme";
-import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { useEffect, useState } from "react";
-import { useResetPassword } from "../../hooks/queries/user";
-import { UserEmailRequest } from "../../type/api";
+import { FormProvider, useForm } from "react-hook-form";
+import styled from "styled-components";
 import { RequestBlackTextIc, RequestWhiteTextIc, ResendTextIc } from "../../assets";
 import { ROLE } from "../../core/common/roleType";
+import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { useResetPassword } from "../../hooks/queries/user";
+import { theme } from "../../style/theme";
+import { UserEmailRequest } from "../../type/api";
+import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { checkEmailForm } from "../../utils/signUp/checkForm";
+import StandardButton from "../@common/button/standardButton";
 import InputContainer from "../@common/inputContainer";
+import PasswordContainer from "../@common/passwordContainer";
+import Input from "../signUp/Input";
+import UserTypeToggle from "./userTypeToggle";
 
 export default function ForgotPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
@@ -80,7 +80,7 @@ export default function ForgotPasswordInput() {
       titleIntervalTop={9.1}
       titleIntervalBottom={6.4}>
       <FormProvider {...methods}>
-        <InputContainer title="What’s your email?">
+        <InputContainer title="What’s your email?" login>
           <form>
             <EmailInputWrapper>
               <Input
