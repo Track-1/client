@@ -211,7 +211,7 @@ export default function LoginForm() {
             </TitleWrapper>
 
             <InputWrapper>
-              <InputContainer title="Email" error={"email" in errors}>
+              <InputContainer title="Email" error={"email" in errors} login>
                 <InputField
                   placeholder="Enter your email address"
                   {...register("email", {
@@ -225,7 +225,7 @@ export default function LoginForm() {
               </ErrorMessage>
             </InputWrapper>
             <InputWrapper>
-              <InputContainer title="password" error={"password" in errors}>
+              <InputContainer title="password" error={"password" in errors} login>
                 <PasswordAndEyeWrapper>
                   <InputField
                     placeholder="Enter your password"
