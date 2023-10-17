@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { FilteredVocalType } from "../../type/vocals";
 import { VocalSearchPlayIc, VocalSearchStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
 import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FilteredVocalType } from "../../type/vocals";
 import { blockAccess } from "../../utils/common/privateRouter";
 
 const VocalContainer = styled.div`
@@ -101,6 +101,8 @@ const MusicProfileWrapper = styled.div<{
     );
   background-origin: border-box;
   background-clip: content-box, border-box;
+
+  cursor: pointer;
 `;
 
 const GradientProfile = styled.div<{ isHovered: boolean }>`
@@ -229,7 +231,7 @@ export default function VocalItem(props: VocalItemProps) {
       </UsernameInformWrapper>
 
       <CategoryTextWrapper>
-        <CategoryText>{vocalInfo.userCategory}</CategoryText>
+        <CategoryText>{vocalInfo.userCategory[0]}</CategoryText>
         <CategoryNum>+{vocalInfo.userCategoryNum}</CategoryNum>
       </CategoryTextWrapper>
 

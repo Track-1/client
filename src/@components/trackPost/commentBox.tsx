@@ -9,6 +9,7 @@ import { useEditComment } from "../../hooks/queries/comments";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 import { commentUpdateData } from "../../recoil/trackPost/commentWriteData";
 import { CommentType } from "../../type/trackPost/commentType";
+import Loading from "../@common/loading";
 import CommentInfo from "./commentInfo";
 import CommentWrite from "./commentWrite";
 
@@ -35,7 +36,7 @@ export default function CommentBox(props: CommentBoxProps) {
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const { editComment } = useEditComment(() => setIsEdit(false));
+  const { editComment, isLoading } = useEditComment(() => setIsEdit(false));
 
   const [comment, setComment] = useRecoilState(commentUpdateData);
 
@@ -74,6 +75,7 @@ export default function CommentBox(props: CommentBoxProps) {
 
   return (
     <>
+      {isLoading && <Loading />}
       {isEdit ? (
         <UpdateCommentContainer>
           <CommentWrite isUpdate={true} />

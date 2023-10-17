@@ -70,7 +70,7 @@ const ModalWrapper = styled.div`
   right: 7.5rem;
 
   position: absolute;
-  z-index: 10;
+  z-index: 8;
 
   cursor: pointer;
 `;
@@ -82,7 +82,7 @@ const UploadButtonModalWrapper = styled.section`
 
 const VocalSearchingWrapper = styled.article`
   position: absolute;
-  z-index: 13;
+  z-index: 9;
 
   display: flex;
   padding-top: 1.5rem;
