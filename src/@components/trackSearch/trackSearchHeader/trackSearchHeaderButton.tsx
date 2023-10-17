@@ -1,11 +1,11 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { useGetProducerProfile, useGetVocalProfile } from "../../../hooks/queries/mypage";
-import { loginUserId, loginUserType } from "../../../recoil/common/loginUserData";
-import { ROLE } from "../../../core/common/roleType";
 import styled from "styled-components";
 import { RightArrorIc } from "../../../assets";
+import { ROLE } from "../../../core/common/roleType";
+import { useGetProducerProfile, useGetVocalProfile } from "../../../hooks/queries/mypage";
+import { loginUserId, loginUserType } from "../../../recoil/common/loginUserData";
 import { checkIsLogin } from "../../../utils/common/checkIsLogined";
-import { useLocation, useNavigate } from "react-router-dom";
 
 export default function TrackSearchHeaderButton() {
   const userType = useRecoilValue(loginUserType);
@@ -31,7 +31,7 @@ export default function TrackSearchHeaderButton() {
         },
       });
     } else {
-      navigate(`/vocal-profile/${userId},`, {
+      navigate(`/vocal-profile/${userId}`, {
         state: {
           prevURL: prevURL,
         },

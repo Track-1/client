@@ -1,23 +1,28 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import { DiscoverChanceIc } from "../../assets";
 import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
 import { useFilteredVocals } from "../../hooks/queries/vocals";
 import { FilteredVocalType } from "../../type/vocals";
-import ListTitle from "../trackSearch/listTitle";
 import VocalItem from "./vocalItem";
 
 const Container = styled.section`
   display: flex;
   flex-direction: column;
 
-  margin-left: 30.9rem;
+  margin-left: 10rem;
 `;
 
 const ListWrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
 
+  margin-left: 30.9rem;
+`;
+
+const DiscoverChanceIcon = styled(DiscoverChanceIc)`
+  width: 143.8rem;
   margin-left: 30.9rem;
 `;
 
@@ -39,6 +44,8 @@ export default function VocalList() {
 
   return (
     <Container>
+      <DiscoverChanceIcon />
+
       <ListWrapper>
         {vocalData.map((vocalInfo) => {
           return (
