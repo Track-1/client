@@ -43,15 +43,49 @@ export default function TrackSearchHeaderButton() {
     <>
       {checkIsLogin() && (
         <HeaderButtonWrapper onClick={handleMoveToProfile}>
-          <ProfileImageLayout>
-            <ProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
-          </ProfileImageLayout>
+          {userType === ROLE.PRODUCER ? (
+            <ProfileImageLayout>
+              <ProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
+            </ProfileImageLayout>
+          ) : (
+            <VocalProfileImageWrapper>
+              <VocalProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
+            </VocalProfileImageWrapper>
+          )}
+
           <RightArrorIcon />
         </HeaderButtonWrapper>
       )}
     </>
   );
 }
+
+const VocalProfileImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+
+  width: 4rem;
+  height: 4rem;
+
+  transform: rotate(45deg);
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 0.15rem solid ${({ theme }) => theme.colors.white};
+`;
+
+const VocalProfileImage = styled.img`
+  height: 6rem;
+  width: 6rem;
+
+  border-radius: 50%;
+
+  transform: rotate(-45deg);
+`;
 
 const HeaderButtonWrapper = styled.div`
   display: flex;
