@@ -48,9 +48,11 @@ export default function ProfileBox(props: ProfileBoxProps) {
     <ProfileBoxContainer>
       <ProfileWrapper onClick={handleMoveTo}>
         {userType === ROLE.PRODUCER ? (
-          <ProducerImageLayout>
-            <ProducerProfileImage src={userImage} alt="유저 프로필 이미지" />
-          </ProducerImageLayout>
+          <ProducerImageWrapper>
+            <ProducerImageLayout>
+              <ProducerProfileImage src={userImage} alt="유저 프로필 이미지" />
+            </ProducerImageLayout>
+          </ProducerImageWrapper>
         ) : (
           <VocalUploadImageContainer>
             <VocalImageFrame>
@@ -88,6 +90,13 @@ const ProfileBoxContainer = styled.div`
   cursor: pointer;
 `;
 
+const ProducerImageWrapper = styled.div`
+  width: 8rem;
+  height: 8rem;
+
+  margin-right: 1.8rem;
+`;
+
 const ProducerImageLayout = styled.div`
   width: 8rem;
   height: 8rem;
@@ -103,6 +112,8 @@ const ProducerImageLayout = styled.div`
 const ProfileContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  width: 100%;
 `;
 
 const UserNameText = styled.p`
@@ -117,6 +128,7 @@ const UserEmailText = styled.p`
 
 const ProfileWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
 
   width: 100%;
   height: 11.4rem;

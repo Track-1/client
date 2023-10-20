@@ -4,7 +4,7 @@ import { theme } from "../../../style/theme";
 import MainNav from "./mainNav";
 import { MainLogoWhiteIc } from "../../../assets";
 import LoginBtn from "./loginBtn";
-import RecentTrackSection from "./recentTrackSection";
+import RecentInfoSection from "./recentInfoSection";
 import RecentTrackList from "./recentTrackList";
 import RecentVocalList from "./recentVocalList";
 import MainBanner from "./mainBanner";
@@ -36,6 +36,7 @@ export default function Home() {
 
   return (
     <PlayerProvider>
+      {/* HEADER */}
       <Header headerStyle={headerStyle}>
         <Styled.HeaderWrapper>
           <Styled.MainLogoWhiteIcon onClick={handleMoveHome} />
@@ -43,24 +44,22 @@ export default function Home() {
         </Styled.HeaderWrapper>
         <LoginBtn />
       </Header>
-
+      {/* MainBanner */}
       <MainBanner />
-
-      <RecentTrackSection headingText={`New Tracks\nfor vocal`} handleMoveToMore={handleMoveTrackSearch}>
+      {/* Recnet Vocal-Searhcing List*/}
+      <RecentInfoSection headingText={`New Tracks\nfor vocal`} handleMoveToMore={handleMoveTrackSearch}>
         <RecentTrackList />
-      </RecentTrackSection>
-
+      </RecentInfoSection>
       <Styled.DivisionLine />
-
-      <RecentTrackSection headingText={`New Vocals\nfor producer`} handleMoveToMore={handleMoveVocalSearch}>
+      {/* Recnet Vocal List*/}
+      <RecentInfoSection headingText={`New Vocals\nfor producer`} handleMoveToMore={handleMoveVocalSearch}>
         <RecentVocalList />
-      </RecentTrackSection>
-
+      </RecentInfoSection>
       <Styled.DivisionLine />
-      <Player />
-
+      {/* Event Section */}
       <EventSection />
       <Footer />
+      <Player />
     </PlayerProvider>
   );
 }
