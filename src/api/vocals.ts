@@ -1,4 +1,4 @@
-import { FilteredVocalsResponse } from "../type/api";
+import { FilteredVocalsResponse, RecentVocalsResponse } from "../type/api";
 import { FilteredVocalsParamsType } from "../type/vocals";
 import { client } from "./common/client";
 import { VOCALS } from "./path";
@@ -13,4 +13,13 @@ export async function getFilteredVocals(params: FilteredVocalsParamsType) {
     },
   });
   return data;
+}
+
+export async function getRecentVocals(count: number) {
+  const { data } = await client.get<RecentVocalsResponse>(VOCALS.RECENT_VOCALS(count), {
+    headers: {
+      count: count,
+    },
+  });
+  return data.data;
 }

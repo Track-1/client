@@ -7,6 +7,7 @@ export const PATH = {
   comments: "/comments",
   profile: "/profile",
   mypage: "/mypage",
+  recent: "/recent",
 };
 
 export const USER = {
@@ -31,7 +32,8 @@ export const TRACKS = {
   DOWNLOAD: (trackId: number) => `${PATH.tracks}/${trackId}/download`,
   POST: `${PATH.tracks}`,
   TRACK_CLOSE: (trackId: number) => `${PATH.tracks}/${trackId}/closed`,
-}as const;
+  RECENT_TRACKS: (count: number) => `${PATH.tracks}/${PATH.recent}/${count}`,
+} as const;
 
 export const COMMENTS = {
   LIST: (trackId: number) => `${PATH.comments}/${trackId}?`,
@@ -42,6 +44,7 @@ export const COMMENTS = {
 
 export const VOCALS = {
   FILTERED_LIST: `${PATH.vocals}?`,
+  RECENT_VOCALS: (count: number) => `${PATH.vocals}${PATH.recent}/${count}`,
 } as const;
 
 export const PROFILE = {
