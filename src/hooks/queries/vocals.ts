@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "react-query";
-import { getFilteredVocals } from "../../api/vocals";
+import { useInfiniteQuery, useQuery } from "react-query";
+import { getFilteredVocals, getRecentVocals } from "../../api/vocals";
 import { QUERIES_KEY } from "../../core/common/queriesKey";
 import { FilteredVocalsParamsType } from "../../type/vocals";
 
@@ -29,4 +29,14 @@ export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">
     hasNextPage,
     ...restValues,
   };
+}
+
+export function useGetRecentVocals(count: number) {
+  const { data: recentVocalInfo } = useQuery(["getRecentVocals"], () => getRecentVocals(count), {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  return { recentVocalInfo };
 }

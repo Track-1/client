@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import {
   deleteTrack,
   getFilteredTracks,
+  getRecentTracks,
   getTrackDetail,
   getTrackDownload,
   patchTrack,
@@ -148,4 +149,14 @@ export function useDeleteTrack() {
     deleteTrack: mutate,
     ...restValues,
   };
+}
+
+export function useGetRecentTracks(count: number) {
+  const { data: recentTrackInfo } = useQuery(["getRecentTracks"], () => getRecentTracks(count), {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  return { recentTrackInfo };
 }
