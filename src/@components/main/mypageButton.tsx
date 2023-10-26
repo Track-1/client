@@ -1,8 +1,8 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { ROLE } from "../../core/common/roleType";
 import useModal from "../../hooks/common/useModal";
 import ProfileBox from "./profileBox";
-import { useEffect } from "react";
 
 interface MypageButtonProps {
   userType: string;
@@ -47,8 +47,6 @@ export default function MypageButton(props: MypageButtonProps) {
 const Container = styled.button<{ userType: string }>`
   display: flex;
   align-items: center;
-
-  min-width: 19.5rem;
 
   width: 100%;
   height: 5.2rem;

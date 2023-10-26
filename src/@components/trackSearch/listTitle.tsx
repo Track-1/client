@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CrossLogoIc, SloganIc, TrackSearchSlogunIc } from "../../assets";
+import { CrossLogoIc, TrackSearchSlogunIc } from "../../assets";
 
 const Container = styled.div`
   margin-left: 10rem;
@@ -8,6 +8,9 @@ const Container = styled.div`
 const LogoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 21rem;
+  width: 143.4rem;
+  align-items: center;
 `;
 
 const CrossLogoIcon = styled(CrossLogoIc)`

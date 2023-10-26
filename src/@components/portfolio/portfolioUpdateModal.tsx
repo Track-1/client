@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
 import useModal from "../../hooks/common/useModal";
 import useUpdateModal from "../../hooks/common/useUpdateModal";
 import {
@@ -14,7 +15,6 @@ import {
 } from "../../hooks/queries/mypage";
 import { useDeleteTrack } from "../../hooks/queries/tracks";
 import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
-import { PlayerContext } from "../../context/playerContext";
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
@@ -81,6 +81,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   }
 
   async function handleAskToDeleteTrack() {
+    quitAudioForMovePage();
     if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
       if (dataState === "producer vocal searching") {
         deleteTrack(portfolioId);
@@ -107,6 +108,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   }
 
   function handleChangeTitle() {
+    quitAudioForMovePage();
     if (dataState === "vocal portfolio") {
       editVocalTitle({
         bef: nowTitleId,

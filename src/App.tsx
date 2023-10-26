@@ -1,9 +1,10 @@
-import { RecoilEnv, RecoilRoot } from "recoil";
+import { BrowserView, MobileView } from "react-device-detect";
+import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
+import MobileLandingPage from "./@pages/mobileLandingPage";
 import Router from "./Router";
 import { GlobalStyle } from "./style/globalStyle";
 import { theme } from "./style/theme";
-RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 function App() {
   return (
@@ -12,7 +13,12 @@ function App() {
       <RecoilRoot>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Router />
+          <BrowserView>
+            <Router />
+          </BrowserView>
+          <MobileView>
+            <MobileLandingPage />
+          </MobileView>
         </ThemeProvider>
       </RecoilRoot>
       {/* </React.StrictMode> */}

@@ -7,13 +7,14 @@ interface InputContainerProps {
   isRequired?: boolean;
   hashtagWarningIcon?: boolean;
   error?: boolean;
+  login?: boolean;
 }
 
 export default function InputContainer(props: PropsWithChildren<InputContainerProps>) {
-  const { title, isRequired, hashtagWarningIcon, children, error } = props;
+  const { title, isRequired, hashtagWarningIcon, children, error, login } = props;
 
   return (
-    <Container error={error}>
+    <Container error={error} login={login}>
       <InputTitleWrapper>
         <Wrapper>
           <InputTitle>{title}</InputTitle>
@@ -26,9 +27,10 @@ export default function InputContainer(props: PropsWithChildren<InputContainerPr
   );
 }
 
-const Container = styled.div<{ error?: boolean }>`
+const Container = styled.div<{ error?: boolean; login: boolean | undefined }>`
   width: 55.9rem;
-  border-bottom: 0.1rem solid ${({ theme, error }) => (error ? theme.colors.red : theme.colors.gray4)};
+  border-bottom: ${({ login }) => login && 0.1}px solid
+    ${({ theme, error }) => (error ? theme.colors.red : theme.colors.gray4)};
 `;
 
 const InputTitleWrapper = styled.div`

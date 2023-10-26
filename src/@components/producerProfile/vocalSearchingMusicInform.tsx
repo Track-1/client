@@ -24,11 +24,11 @@ export default function VocalSearchingMusicInform(props: MusicInformationProps) 
 }
 
 const MusicInformationWrapper = styled.div`
-  width: 38rem;
+  width: 40rem;
 `;
 
 const InformTitle = styled.h1`
-  width: 37.3rem;
+  width: 40rem;
   overflow-wrap: break-word;
 
   margin-top: 1.7rem;
@@ -46,6 +46,7 @@ const InformCategory = styled.p`
 const InformContent = styled.p`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray2};
+  word-wrap: break-word;
 
   margin-bottom: 2.4rem;
 `;

@@ -152,7 +152,7 @@ const Image = styled.img<{ isLight: boolean }>`
 
 const Title = styled.h1<{ isLight: boolean }>`
   width: 14rem;
-  height: 5rem;
+
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: normal;
@@ -166,6 +166,12 @@ const Title = styled.h1<{ isLight: boolean }>`
   align-items: center;
   position: absolute;
   overflow-wrap: break-word;
+
+  text-align: center;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   transform: rotate(45deg);
 `;

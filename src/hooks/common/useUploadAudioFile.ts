@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
 import { uploadAudioTypeWarningMessage } from "../../core/common/warningMessage";
 import { checkAudioFileType } from "../../utils/common/checkFileType";
+import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
 
 export default function useUploadAudioFile() {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -25,6 +25,13 @@ export default function useUploadAudioFile() {
     }
   }
 
+  function resetAudio() {
+    setAudioFile(null);
+    setAudioFileName("");
+    setAudioFileType("");
+    setIsTextOverflow(false);
+  }
+
   //오디오 업로드
   function handleUploadAudioFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
@@ -32,7 +39,7 @@ export default function useUploadAudioFile() {
     const audioFile = e.target.files[0];
     const audioOnlyFileName = audioFile.name.substring(audioFile.name.length - 4, -1);
     const audioFileType = audioFile.name.substring(audioFile.name.length - 4);
-
+    console.log(checkAudioFileType(audioFileType));
     if (checkAudioFileType(audioFileType)) {
       setAudioFile(audioFile);
       setAudioFileType(audioFileType);
@@ -49,5 +56,13 @@ export default function useUploadAudioFile() {
     }
   }
 
-  return { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile };
+  return {
+    audioFile,
+    resetAudio,
+    audioFileName,
+    changeAudioFileName,
+    audioFileType,
+    isTextOverflow,
+    handleUploadAudioFile,
+  };
 }

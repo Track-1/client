@@ -26,8 +26,6 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
-        <Route path="/signup/profile" element={<SignupProfilePage />} />
-        <Route path="/signup/success" element={<SignupSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
@@ -38,6 +36,8 @@ export default function Router() {
 
         {/* 반드시 인증 필요 */}
         <Route element={<PrivateRoute authentication={true} />}>
+          <Route path="/signup/profile" element={<SignupProfilePage />} />
+          <Route path="/signup/success" element={<SignupSuccessPage />} />
           <Route path="/upload/vocal/portfolio" element={<UploadPage />} />
           <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
           <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />

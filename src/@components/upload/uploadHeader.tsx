@@ -1,14 +1,13 @@
 import styled from "styled-components";
 
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { UploadData } from "../../recoil/upload/uploadData";
-import useUploadAPI from "../../hooks/queries/upload/useUploadAPI";
+import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
+import { ROLE } from "../../core/common/roleType";
 import { UPLOAD_TYPE } from "../../core/common/uploadType";
 import useUploadEditAPI from "../../hooks/queries/upload/useUploadEditAPI";
-import { useLocation } from "react-router-dom";
-import { ROLE } from "../../core/common/roleType";
-import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
+import { UploadData } from "../../recoil/upload/uploadData";
 
 interface UploadHeaderProps {
   useUploadAPI: any;
@@ -74,7 +73,7 @@ export default function UploadHeader(props: UploadHeaderProps) {
       formData.append("trackAudioFileName", uploadData.audioFileName);
       formData.append("trackTitle", uploadData.title);
       formData.append("trackCategory", uploadData.category);
-      formData.append("trackIntroduce", uploadData.introduction);
+      formData.append("trackIntroduction", uploadData.introduction);
       for (let i = 0; i < uploadData.keyword.length; i++) {
         formData.append(`trackKeyword[${i}]`, uploadData.keyword[i]);
       }
