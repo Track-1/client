@@ -152,3 +152,6 @@ export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg"
 export { ReactComponent as MainLogoWhiteIc } from "./icon/mainLogoWhiteIc.svg";
 export { ReactComponent as PlayIc } from "./icon/playIc.svg";
 export { ReactComponent as PauseIc } from "./icon/pauseIc.svg";
+export { ReactComponent as EventToggleIc } from "./icon/eventToggleIc.svg";
+export { ReactComponent as EventBackBtnIc } from "./icon/eventBackBtnIc.svg";
+export { ReactComponent as ScrollTopBtnIc } from "./icon/scrollTopBtnIc.svg";
