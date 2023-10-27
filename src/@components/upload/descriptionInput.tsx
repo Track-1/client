@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
+import styled from "styled-components";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
 import { checkEnterCount } from "../../utils/common/checkEnterCount";
@@ -54,8 +54,13 @@ const DescriptionText = styled(TextareaAutosize)`
   padding-bottom: 1rem;
 
   white-space: pre-wrap;
+  outline: none;
   word-wrap: break-word;
   word-break: break-word;
+  background: transparent;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
