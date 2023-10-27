@@ -9,8 +9,8 @@ import { useRecoilValue } from "recoil";
 import { loginUserId, loginUserType } from "../../../recoil/common/loginUserData";
 import { useGetProducerProfile, useGetVocalProfile } from "../../../hooks/queries/mypage";
 import { ROLE } from "../../../core/common/roleType";
-import ProfileBox from "../profileBox";
 import useModal from "../../../hooks/common/useModal";
+import ProfileBox from "./profileBox";
 
 export default function LoginBtn() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
@@ -67,15 +67,7 @@ export default function LoginBtn() {
         <Styled.LoginedInfoWrapper userType={userType} onClick={handleShowUpdateModal}>
           <Styled.LoginedUserImage src={getUserImage()} userType={userType} />
           {getUserName()}
-
-          {openModal && (
-            <ProfileBox
-              userType={userType}
-              userImage={getUserImage()}
-              userName={getUserName()}
-              userContact={getUserContact()}
-            />
-          )}
+          {openModal && <ProfileBox userType={userType} userName={getUserName()} userContact={getUserContact()} />}
         </Styled.LoginedInfoWrapper>
       ) : (
         <>
@@ -106,7 +98,7 @@ const Styled = {
     width: 100%;
     height: 100%;
 
-    color: ${(props) => (props.userType === ROLE.PRODUCER ? theme.colors.sub1 : theme.colors.sub3)};
+    color: ${(props) => (props.userType === ROLE.PRODUCER ? theme.colors.sub1 : theme.colors.sub2)};
     ${({ theme }) => theme.fonts.pretendard_text22};
   `,
 

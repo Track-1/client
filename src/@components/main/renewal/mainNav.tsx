@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface MainNavProps {
@@ -7,11 +8,21 @@ interface MainNavProps {
 
 export default function MainNav(props: MainNavProps) {
   const { handleMoveTrackSearch, handleMoveVocalSearch } = props;
+  const navigate = useNavigate();
+
+  function handleMoveEventPage() {
+    navigate("/event");
+  }
+
+  function handleMoveAboutPage() {
+    navigate("/about");
+  }
+
   return (
     <Styled.NavMenuContainer>
       <Styled.NavMenuWrapper>
-        <Styled.NavMenu>About</Styled.NavMenu>
-        <Styled.NavMenu>Event</Styled.NavMenu>
+        <Styled.NavMenu onClick={handleMoveAboutPage}>About</Styled.NavMenu>
+        <Styled.NavMenu onClick={handleMoveEventPage}>Event</Styled.NavMenu>
       </Styled.NavMenuWrapper>
 
       <Styled.DivisionLine />

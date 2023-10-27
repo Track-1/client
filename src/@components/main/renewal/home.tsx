@@ -1,9 +1,4 @@
-import styled, { CSSProperties } from "styled-components";
-import Header from "../../@common/header";
-import { theme } from "../../../style/theme";
-import MainNav from "./mainNav";
-import { MainLogoWhiteIc } from "../../../assets";
-import LoginBtn from "./loginBtn";
+import styled from "styled-components";
 import RecentInfoSection from "./recentInfoSection";
 import RecentTrackList from "./recentTrackList";
 import RecentVocalList from "./recentVocalList";
@@ -14,15 +9,11 @@ import Player from "../../@common/player";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../@common/footer";
+import MainHeader from "./mainHeader";
 
 export default function Home() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
   const navigate = useNavigate();
-
-  function handleMoveHome() {
-    quitAudioForMovePage();
-    navigate("/");
-  }
 
   function handleMoveVocalSearch() {
     quitAudioForMovePage();
@@ -37,13 +28,7 @@ export default function Home() {
   return (
     <PlayerProvider>
       {/* HEADER */}
-      <Header headerStyle={headerStyle}>
-        <Styled.HeaderWrapper>
-          <Styled.MainLogoWhiteIcon onClick={handleMoveHome} />
-          <MainNav handleMoveVocalSearch={handleMoveVocalSearch} handleMoveTrackSearch={handleMoveTrackSearch} />
-        </Styled.HeaderWrapper>
-        <LoginBtn />
-      </Header>
+      <MainHeader />
       {/* MainBanner */}
       <MainBanner />
       {/* Recnet Vocal-Searhcing List*/}
@@ -64,22 +49,7 @@ export default function Home() {
   );
 }
 
-const headerStyle: CSSProperties = {
-  position: "fixed",
-  zIndex: "5",
-  background: `${theme.colors.black}`,
-};
-
 const Styled = {
-  HeaderWrapper: styled.div`
-    display: flex;
-  `,
-  MainLogoWhiteIcon: styled(MainLogoWhiteIc)`
-    width: 18.3rem;
-
-    cursor: pointer;
-  `,
-
   DivisionLine: styled.hr`
     width: 100%;
 
