@@ -122,7 +122,7 @@ const Styled = {
     min-height: 5.5rem;
 
     color: ${({ theme }) => theme.colors.white};
-    ${({ theme }) => theme.fonts.heading20};
+    ${({ theme }) => theme.fonts.alexandria_heading20};
   `,
 
   InputTitle: styled.h2`

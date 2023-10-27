@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import { getEventDetail, getEventList, postEvent } from "../../../api/admin/event";
 import { QUERIES_KEY } from "../../../core/common/queriesKey";
-import { EventListParamsType } from "../../../type/event";
+import { EventInfoType, EventListParamsType } from "../../../type/event";
 
 export function useGetEventList(params: EventListParamsType) {
   const fetchEvents = async (pageParams: number) => {
@@ -21,7 +21,9 @@ export function useGetEventList(params: EventListParamsType) {
     },
   );
 
-  const eventListData = data?.pages.flatMap((data) => data.response.data[0].eventList.map((eventInfo) => eventInfo));
+  const eventListData = data?.pages.flatMap((data) =>
+    data.response.data[0].eventList.map((eventInfo: EventInfoType) => eventInfo),
+  );
 
   return {
     eventListData,
