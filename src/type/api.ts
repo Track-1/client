@@ -1,4 +1,5 @@
 import { CommentsListType, CommentsParamsType } from "./comments";
+import { EventInfoType, EventListType } from "./event";
 import { MyInfoType } from "./mypage";
 import {
   ProducerInfoType,
@@ -7,9 +8,9 @@ import {
   VocalInfoType,
   VocalProfileType,
 } from "./profile";
-import { FilteredTrackListType, TrackDetailType, TrackDownloadType } from "./tracks";
+import { FilteredTrackListType, FilteredTrackType, TrackDetailType, TrackDownloadType } from "./tracks";
 import { UserEmailType, UserLoginInfo, UserPasswordType, UserProfileType, VerifyCodeType } from "./user";
-import { FilteredVocalListType } from "./vocals";
+import { FilteredVocalListType, FilteredVocalType } from "./vocals";
 
 export type DefaultResponseType<T = unknown> = {
   status: number | string;
@@ -57,3 +58,11 @@ export type ProducerPortfolioResponse = DefaultResponseType<{
   portfolioList: ProducerPortfolioType;
   trackList: ProducerVocalSearchingInfoType;
 }>;
+
+export type RecentVocalsResponse = DefaultResponseType<FilteredVocalType[]>;
+
+export type RecentTracksResponse = DefaultResponseType<FilteredTrackType[]>;
+
+export type EventListResponse = DefaultResponseType<EventListType[]>;
+
+export type EventDetailResponse = DefaultResponseType<EventInfoType>;

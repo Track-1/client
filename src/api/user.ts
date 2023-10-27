@@ -32,7 +32,7 @@ export async function postLogin(userInfo: UserLoginInfoRequest) {
 
 export async function getLogout() {
   const { data } = await client.get<DefaultResponseType>(USER.AUTH_LOGOUT);
-  return data;
+  return data.success;
 }
 
 export async function getAccessToken() {

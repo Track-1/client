@@ -103,18 +103,16 @@ export function useLogin() {
 }
 
 export function useLogout(state: boolean) {
-  const navigate = useNavigate();
   const resetLoginUserId = useResetRecoilState(loginUserId);
   const resetLoginUserType = useResetRecoilState(loginUserType);
 
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
-    onSuccess: (data) => {
-      removeCookie("accessToken", {});
+    onSuccess: () => {
       resetLoginUserId();
       resetLoginUserType();
-      data.success && navigate("/");
+      removeCookie("accessToken", { path: "/" });
     },
     onError: () => {},
     enabled: state,

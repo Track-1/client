@@ -7,6 +7,8 @@ export const PATH = {
   comments: "/comments",
   profile: "/profile",
   mypage: "/mypage",
+  recent: "/recent",
+  event: "/event",
 };
 
 export const USER = {
@@ -31,7 +33,8 @@ export const TRACKS = {
   DOWNLOAD: (trackId: number) => `${PATH.tracks}/${trackId}/download`,
   POST: `${PATH.tracks}`,
   TRACK_CLOSE: (trackId: number) => `${PATH.tracks}/${trackId}/closed`,
-}as const;
+  RECENT_TRACKS: (count: number) => `${PATH.tracks}/${PATH.recent}/${count}`,
+} as const;
 
 export const COMMENTS = {
   LIST: (trackId: number) => `${PATH.comments}/${trackId}?`,
@@ -42,6 +45,7 @@ export const COMMENTS = {
 
 export const VOCALS = {
   FILTERED_LIST: `${PATH.vocals}?`,
+  RECENT_VOCALS: (count: number) => `${PATH.vocals}${PATH.recent}/${count}`,
 } as const;
 
 export const PROFILE = {
@@ -65,3 +69,9 @@ export const MYPAGE = {
   DELETE_PRODUCER_PORTFOLIO: (portfolioId: number) => `${PATH.mypage}/producer/${portfolioId}`,
   DELETE_VOCAL_PORTFOLIO: (portfolioId: number) => `${PATH.mypage}/vocal/${portfolioId}`,
 } as const;
+
+export const ADMIN = {
+  EVENT: `${PATH.event}`,
+  EVENT_DETAIL: (eventId: number) => `${PATH.event}/${eventId}`,
+
+};

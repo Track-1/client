@@ -1,4 +1,10 @@
-import { DefaultResponseType, FilteredTrackResponse, TrackDetailResponse, TrackDownloadResponse } from "../type/api";
+import {
+  DefaultResponseType,
+  FilteredTrackResponse,
+  RecentTracksResponse,
+  TrackDetailResponse,
+  TrackDownloadResponse,
+} from "../type/api";
 import { FilteredTrackParamsType } from "../type/tracks";
 import { client } from "./common/client";
 import { TRACKS } from "./path";
@@ -51,4 +57,13 @@ export async function patchTrackClose(trackId: number) {
 export async function deleteTrack(trackId: number) {
   const { data } = await client.delete<DefaultResponseType>(TRACKS.DETAIL(trackId));
   return data;
+}
+
+export async function getRecentTracks(count: number) {
+  const { data } = await client.get<RecentTracksResponse>(TRACKS.RECENT_TRACKS(count), {
+    headers: {
+      count: count,
+    },
+  });
+  return data.data;
 }

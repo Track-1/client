@@ -67,7 +67,7 @@ const Contact = styled.h2`
   ${({ theme }) => theme.fonts.hashtag}
 
   color: ${({ theme }) => theme.colors.gray1};
-
+  user-select: text;
   margin-top: 1.2rem;
   height: 1.2rem;
 `;

@@ -10,7 +10,6 @@ import UploadPage from "./@pages/uploadPage";
 
 import ErrorPage from "./@pages/errorPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
-
 import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
@@ -19,18 +18,27 @@ import UploadEditPage from "./@pages/uploadEditPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
 import PrivateRoute from "./utils/common/privateRouter";
+import HomePage from "./@pages/homePage";
+import EventPage from "./@pages/eventPage";
+import AdminPage from "./@pages/adminPage";
+import AboutPage from "./@pages/aboutPage";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/main" element={<HomePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/event" element={<EventPage />} />
+        <Route path="/event/:eventId" element={<EventPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalSearchPage />} />
-        <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/track-post/:id" element={<TrackPostPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<ErrorPage />} />
 

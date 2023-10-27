@@ -24,15 +24,16 @@ interface Font {
   family: boolean;
   weight: number;
   size: number;
-  lineHeight: number;
+  lineHeight: number | string;
+  renewal?: boolean;
 }
 
-function FONT({ family, weight, size, lineHeight }: Font): string {
+function FONT({ family, weight, size, lineHeight, renewal }: Font): string {
   return `
-    font-family: ${family ? "YDestreet" : "Pretendard"};
+    font-family: ${renewal ? "Alexandria" : family ? "YDestreet" : "Pretendard"};
     font-weight : ${weight};
     font-size : ${size}rem;
-    line-height : ${lineHeight}rem;
+    line-height : ${typeof lineHeight === "string" ? lineHeight : lineHeight + "rem"};
     `;
 }
 
@@ -56,6 +57,32 @@ const fonts = {
   checkbox: FONT({ family: false, weight: 400, size: 1.6, lineHeight: 1.6 }),
 
   box_title: FONT({ family: true, weight: 300, size: 2.4, lineHeight: 2 }),
+
+  // 추가 폰트
+
+  alexandria_heading100: FONT({ family: true, weight: 400, size: 9.8, lineHeight: "normal", renewal: true }),
+  alexandria_heading98: FONT({ family: true, weight: 400, size: 9.8, lineHeight: "normal", renewal: true }),
+  alexandria_heading90: FONT({ family: true, weight: 400, size: 9, lineHeight: "normal", renewal: true }),
+  alexandria_heading38: FONT({ family: true, weight: 400, size: 3.8, lineHeight: "normal", renewal: true }),
+  alexandria_heading22: FONT({ family: true, weight: 500, size: 2.2, lineHeight: "normal", renewal: true }),
+  alexandria_heading20: FONT({ family: true, weight: 500, size: 2, lineHeight: "normal", renewal: true }),
+
+  pretendard_heading70: FONT({ family: true, weight: 600, size: 7, lineHeight: "normal", renewal: true }),
+
+  alexandria_text148: FONT({ family: true, weight: 400, size: 14.8, lineHeight: "normal", renewal: true }),
+  alexandria_text30: FONT({ family: true, weight: 400, size: 3, lineHeight: "normal", renewal: true }),
+
+  pretendard_text40: FONT({ family: false, weight: 500, size: 4, lineHeight: 7.2 }),
+  pretendard_text30: FONT({ family: false, weight: 500, size: 3, lineHeight: "normal" }),
+  pretendard_text28: FONT({ family: false, weight: 400, size: 2.8, lineHeight: 4.76 }),
+  pretendard_text25: FONT({ family: false, weight: 400, size: 2.5, lineHeight: 4.375 }),
+  pretendard_text25_700: FONT({ family: false, weight: 700, size: 2.5, lineHeight: "normal" }),
+  pretendard_text22: FONT({ family: false, weight: 500, size: 2.2, lineHeight: "normal" }),
+  pretendard_text20: FONT({ family: false, weight: 400, size: 2, lineHeight: "normal" }),
+
+  text22: FONT({ family: true, weight: 400, size: 2.2, lineHeight: "normal", renewal: true }),
+  text20: FONT({ family: true, weight: 400, size: 2, lineHeight: "normal", renewal: true }),
+  text18: FONT({ family: true, weight: 400, size: 1.8, lineHeight: "normal", renewal: true }),
 };
 
 export type FontsTypes = typeof fonts;
