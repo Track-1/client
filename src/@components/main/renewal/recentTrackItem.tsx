@@ -48,7 +48,7 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
             <>
               <Styled.TrackKeywordWrapper>
                 {trackInfo.trackKeyword.map((keyword) => (
-                  <Styled.TrackKeyword key={trackInfo.trackId}>#{keyword}</Styled.TrackKeyword>
+                  <Styled.TrackKeyword key={keyword}>#{keyword}</Styled.TrackKeyword>
                 ))}
               </Styled.TrackKeywordWrapper>
               <Styled.PauseIcon onClick={stopAudioItem} />
@@ -57,7 +57,7 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
             <>
               <Styled.TrackKeywordWrapper>
                 {trackInfo.trackKeyword.map((keyword) => (
-                  <Styled.TrackKeyword key={trackInfo.trackId}>#{keyword}</Styled.TrackKeyword>
+                  <Styled.TrackKeyword key={keyword}>#{keyword}</Styled.TrackKeyword>
                 ))}
               </Styled.TrackKeywordWrapper>
               <Styled.PlayIcon onClick={playAudioItem} />

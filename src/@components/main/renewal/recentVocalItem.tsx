@@ -55,7 +55,7 @@ export default function RecentVocalItem(props: RecentVocalItemProps) {
         <Styled.TrackCategory>{vocalInfo.userCategory[0]}</Styled.TrackCategory>
         <Styled.UserName>{vocalInfo.userName}</Styled.UserName>
         {vocalInfo.userKeyword.map((keyword) => (
-          <Styled.TrackKeyword key={vocalInfo.userId}>#{keyword}</Styled.TrackKeyword>
+          <Styled.TrackKeyword key={keyword}>#{keyword}</Styled.TrackKeyword>
         ))}
       </Styled.TrackInfoWrapper>
     </Styled.Container>

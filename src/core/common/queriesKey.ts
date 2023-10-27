@@ -11,4 +11,5 @@ export const QUERIES_KEY = {
   TRACK_DETAIL: "trackDetail",
   TRACK_DOWNLOAD: "trackDownload",
   GET_UPLOAD_EDIT_INFO: "getUploadEditInfo",
+  GET_EVENT_LIST: "getEventList",
 } as const;

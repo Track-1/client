@@ -61,13 +61,17 @@ const fonts = {
   // 추가 폰트
 
   heading90: FONT({ family: true, weight: 400, size: 9, lineHeight: "normal", renewal: true }),
+  pretendard_heading70: FONT({ family: true, weight: 600, size: 7, lineHeight: "normal", renewal: true }),
   heading38: FONT({ family: true, weight: 400, size: 3.8, lineHeight: "normal", renewal: true }),
   heading22: FONT({ family: true, weight: 500, size: 2.2, lineHeight: "normal", renewal: true }),
   heading20: FONT({ family: true, weight: 500, size: 2, lineHeight: "normal", renewal: true }),
 
   alexandria_text30: FONT({ family: true, weight: 400, size: 3, lineHeight: "normal", renewal: true }),
 
+  pretendard_text40: FONT({ family: false, weight: 400, size: 4, lineHeight: "normal" }),
   pretendard_text30: FONT({ family: false, weight: 500, size: 3, lineHeight: "normal" }),
+  pretendard_text28: FONT({ family: false, weight: 400, size: 2.8, lineHeight: 4.76 }),
+  pretendard_text25_700: FONT({ family: false, weight: 700, size: 2.5, lineHeight: "normal" }),
   pretendard_text22: FONT({ family: false, weight: 500, size: 2.2, lineHeight: "normal" }),
   pretendard_text20: FONT({ family: false, weight: 400, size: 2, lineHeight: "normal" }),
 

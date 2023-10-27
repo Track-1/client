@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useGetRecentTracks } from "../../../hooks/queries/tracks";
 import { FilteredTrackType } from "../../../type/tracks";
 import { useState } from "react";
-import RecentTrackItem from "./recentTrackInfo";
+import RecentTrackItem from "./recentTrackItem";
 
 export default function RecentTrackList() {
   const { recentTrackInfo } = useGetRecentTracks(4);
