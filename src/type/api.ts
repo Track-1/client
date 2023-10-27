@@ -1,4 +1,5 @@
 import { CommentsListType, CommentsParamsType } from "./comments";
+import { EventInfoType, EventListType } from "./event";
 import { MyInfoType } from "./mypage";
 import {
   ProducerInfoType,
@@ -59,4 +60,9 @@ export type ProducerPortfolioResponse = DefaultResponseType<{
 }>;
 
 export type RecentVocalsResponse = DefaultResponseType<FilteredVocalType[]>;
+
 export type RecentTracksResponse = DefaultResponseType<FilteredTrackType[]>;
+
+export type EventListResponse = DefaultResponseType<EventListType[]>;
+
+export type EventDetailResponse = DefaultResponseType<EventInfoType>;

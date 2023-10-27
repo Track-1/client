@@ -8,6 +8,7 @@ export const PATH = {
   profile: "/profile",
   mypage: "/mypage",
   recent: "/recent",
+  event: "/event",
 };
 
 export const USER = {
@@ -68,3 +69,9 @@ export const MYPAGE = {
   DELETE_PRODUCER_PORTFOLIO: (portfolioId: number) => `${PATH.mypage}/producer/${portfolioId}`,
   DELETE_VOCAL_PORTFOLIO: (portfolioId: number) => `${PATH.mypage}/vocal/${portfolioId}`,
 } as const;
+
+export const ADMIN = {
+  EVENT: `${PATH.event}`,
+  EVENT_DETAIL: (eventId: number) => `${PATH.event}/${eventId}`,
+
+};

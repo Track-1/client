@@ -1,33 +1,49 @@
 import styled from "styled-components";
 import EventInfo from "./eventInfo";
+import { useNavigate } from "react-router-dom";
+import { useGetEventList } from "../../../hooks/queries/admin/event";
 
 export default function EventSection() {
-  const event = {
-    eventImage: "https://inclass-file.s3.ap-northeast-2.amazonaws.com/lightProduct/1_1(10).png",
-    eventTitle: "하늘공원 박람회",
-    eventPeriod: "2023. 10. 4 ~ 10. 31",
-  };
-  return (
-    <Styled.SectionContainer>
-      <Styled.HeadingWrapper>
-        <Styled.HeadingText>Hot Events here</Styled.HeadingText>
-        <Styled.ShowMoreText>more</Styled.ShowMoreText>
-      </Styled.HeadingWrapper>
+  const { eventListData } = useGetEventList({
+    page: 1,
+    limit: 2,
+  });
 
-      <Styled.EventInfoWrapper>
-        <EventInfo eventImage={event.eventImage} eventTitle={event.eventTitle} eventPeriod={event.eventPeriod} />
-        <EventInfo eventImage={event.eventImage} eventTitle={event.eventTitle} eventPeriod={event.eventPeriod} />
-      </Styled.EventInfoWrapper>
-    </Styled.SectionContainer>
+  const navigate = useNavigate();
+
+  function handleMoveEventPage() {
+    navigate("/event");
+  }
+
+  return (
+    <CommonSectionStyled.SectionContainer>
+      <CommonSectionStyled.HeadingWrapper>
+        <CommonSectionStyled.HeadingText>Hot Events here</CommonSectionStyled.HeadingText>
+        <CommonSectionStyled.ShowMoreText onClick={handleMoveEventPage}>more</CommonSectionStyled.ShowMoreText>
+      </CommonSectionStyled.HeadingWrapper>
+
+      <CommonSectionStyled.EventInfoWrapper>
+        {eventListData?.map((event) => (
+          <EventInfo
+            eventImage={event.eventImageFile}
+            eventTitle={event.eventTitle}
+            eventPeriod={event.eventDate}
+            eventDday={event.eventDday}
+            eventId={event.eventId}
+          />
+        ))}
+      </CommonSectionStyled.EventInfoWrapper>
+    </CommonSectionStyled.SectionContainer>
   );
 }
 
-const Styled = {
+export const CommonSectionStyled = {
   SectionContainer: styled.section`
     width: 100%;
-    height: 96.8em;
 
     padding: 0 10rem;
+
+    margin-bottom: 20rem;
   `,
 
   HeadingWrapper: styled.div`
@@ -36,11 +52,15 @@ const Styled = {
 
     width: 100%;
     height: 4.6rem;
+
+    margin-bottom: 5rem;
   `,
 
   HeadingText: styled.h2`
     ${({ theme }) => theme.fonts.heading38};
     color: ${({ theme }) => theme.colors.white};
+
+    white-space: pre-line;
   `,
 
   ShowMoreText: styled.p`
@@ -52,12 +72,14 @@ const Styled = {
     text-decoration: underline;
     text-underline-offset: 0.3rem;
 
-    margin-top: 2rem;
+    margin-top: 1.4rem;
   `,
 
   EventInfoWrapper: styled.div`
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15rem 0;
 
     width: 100%;
 
