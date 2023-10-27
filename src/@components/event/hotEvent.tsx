@@ -55,7 +55,7 @@ const Styled = {
 
   HotEventHeadingText: styled.h1`
     color: ${({ theme }) => theme.colors.white};
-    ${({ theme }) => theme.fonts.heading90};
+    ${({ theme }) => theme.fonts.alexandria_heading90};
 
     white-space: pre-line;
   `,

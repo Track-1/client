@@ -10,7 +10,6 @@ import UploadPage from "./@pages/uploadPage";
 
 import ErrorPage from "./@pages/errorPage";
 import ForgotPasswordPage from "./@pages/forgotPasswordPage";
-
 import LoginPage from "./@pages/loginPage";
 import ProfileEditPage from "./@pages/profileEditPage";
 import ResetPasswordPage from "./@pages/resetPasswordPage";
@@ -22,6 +21,7 @@ import PrivateRoute from "./utils/common/privateRouter";
 import HomePage from "./@pages/homePage";
 import EventPage from "./@pages/eventPage";
 import AdminPage from "./@pages/adminPage";
+import AboutPage from "./@pages/aboutPage";
 
 export default function Router() {
   return (
@@ -32,6 +32,7 @@ export default function Router() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/event" element={<EventPage />} />
         <Route path="/event/:eventId" element={<EventPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />

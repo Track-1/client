@@ -88,6 +88,7 @@ const Styled = {
     height: 109.9rem;
 
     background: url(${mainBannerImg});
+    background-repeat: no-repeat;
   `,
 
   BannerText: styled.h1`
@@ -96,7 +97,7 @@ const Styled = {
     padding-top: 22.1rem;
 
     color: ${({ theme }) => theme.colors.white};
-    ${({ theme }) => theme.fonts.heading90};
+    ${({ theme }) => theme.fonts.alexandria_heading90};
 
     white-space: pre-line;
   `,

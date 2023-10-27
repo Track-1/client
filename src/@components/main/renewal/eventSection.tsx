@@ -57,7 +57,7 @@ export const CommonSectionStyled = {
   `,
 
   HeadingText: styled.h2`
-    ${({ theme }) => theme.fonts.heading38};
+    ${({ theme }) => theme.fonts.alexandria_heading38};
     color: ${({ theme }) => theme.colors.white};
 
     white-space: pre-line;
