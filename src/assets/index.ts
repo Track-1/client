@@ -149,3 +149,6 @@ export { ReactComponent as VocalSearchPlayIc } from "./icon/vocalSearchPlayIc.sv
 export { ReactComponent as VocalSearchStopIc } from "./icon/vocalSearchStopIc.svg";
 export { ReactComponent as VocalTextIc } from "./icon/vocalTextIc.svg";
 export { ReactComponent as WeSentYouACodeIc } from "./icon/weSentYouACodeIc.svg";
+export { ReactComponent as MainLogoWhiteIc } from "./icon/mainLogoWhiteIc.svg";
+export { ReactComponent as PlayIc } from "./icon/playIc.svg";
+export { ReactComponent as PauseIc } from "./icon/pauseIc.svg";

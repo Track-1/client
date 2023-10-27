@@ -14,7 +14,7 @@ export default function Footer() {
 
   return (
     <FooterContainer>
-      <Banner />
+      {/* <Banner /> */}
       <FooterTextWrapper>
         <Text isGray={false} isStrong={true} marginRight={2.4} onClick={() => openModal(CONVENTION_TYPE.PERSONAL)}>
           개인정보처리방침
@@ -44,6 +44,10 @@ export default function Footer() {
 }
 
 const FooterContainer = styled.footer`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   width: 100%;
   height: 29rem;
 

@@ -19,12 +19,14 @@ import UploadEditPage from "./@pages/uploadEditPage";
 import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
 import PrivateRoute from "./utils/common/privateRouter";
+import HomePage from "./@pages/homePage";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/main" element={<HomePage />} />
         <Route path="/signup" element={<SignupStepPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
