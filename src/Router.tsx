@@ -20,6 +20,8 @@ import VocalProfilePage from "./@pages/vocalProfilePage";
 import VocalSearchPage from "./@pages/vocalSearchPage";
 import PrivateRoute from "./utils/common/privateRouter";
 import HomePage from "./@pages/homePage";
+import EventPage from "./@pages/eventPage";
+import AdminPage from "./@pages/adminPage";
 
 export default function Router() {
   return (
@@ -27,12 +29,15 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/main" element={<HomePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/event" element={<EventPage />} />
+        <Route path="/event/:eventId" element={<EventPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/track-search" element={<TrackSearchPage />} />
         <Route path="/vocal-search" element={<VocalSearchPage />} />
-        <Route path="/track-post/:id" index element={<TrackPostPage />} />
+        <Route path="/track-post/:id" element={<TrackPostPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<ErrorPage />} />
 

@@ -11,7 +11,7 @@ export default function UploadContainer() {
   return (
     <>
       <Header>
-        <BackButton />
+        <BackButton staticPrevURL={-1} />
         <UploadHeader useUploadAPI={{ uploadAPI, trackLoading, producerLoading, vocalLoaidng }} />
       </Header>
       {(trackLoading || producerLoading || vocalLoaidng) && <Loading />}

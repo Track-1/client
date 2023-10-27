@@ -11,7 +11,7 @@ import useModal from "../../hooks/common/useModal";
 
 export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
-  const prevURL = useLocation().pathname;
+  const prevURL = useLocation().state.prevURL;
 
   const { modalRef } = useModal();
 
