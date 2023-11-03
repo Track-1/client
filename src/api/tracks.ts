@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   DefaultResponseType,
   FilteredTrackResponse,
@@ -28,7 +29,12 @@ export async function getTrackDetail(trackId: number) {
 
 export async function getTrackDownload(trackId: number) {
   const { data } = await client.get<TrackDownloadResponse>(TRACKS.DOWNLOAD(trackId));
-  return data;
+
+  const res = await axios.get(data.data.trackAudioFile, {
+    responseType: "blob",
+  });
+
+  return res;
 }
 
 export async function postTrack(formData: FormData) {

@@ -26,11 +26,12 @@ const Styled = {
     width: 135rem;
 
     margin-top: -1.8rem;
-    margin-left: 36.9rem;
+
+    padding-left: 36.9rem;
 
     width: 100%;
 
-    padding: 0 10rem;
+    /* padding: 0 10rem; */
   `,
 
   HeadingTextWrapper: styled.div`

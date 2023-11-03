@@ -39,7 +39,7 @@ export default function useUploadAudioFile() {
     const audioFile = e.target.files[0];
     const audioOnlyFileName = audioFile.name.substring(audioFile.name.length - 4, -1);
     const audioFileType = audioFile.name.substring(audioFile.name.length - 4);
-    console.log(checkAudioFileType(audioFileType));
+
     if (checkAudioFileType(audioFileType)) {
       setAudioFile(audioFile);
       setAudioFileType(audioFileType);

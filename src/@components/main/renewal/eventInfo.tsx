@@ -45,9 +45,11 @@ const Styled = {
     height: 55.2rem;
 
     overflow: hidden;
+    object-fit: cover;
   `,
 
   EventImage: styled.img`
+    width: 100%;
     cursor: pointer;
   `,
 

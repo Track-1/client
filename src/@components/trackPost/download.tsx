@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useParams } from "react-router";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
@@ -22,6 +22,7 @@ export default function Download() {
   function getFileLink(data: any) {
     let blob = new Blob([data?.data], { type: "audio/mpeg" });
     let url = window.URL.createObjectURL(blob); //s3링크
+    console.log(blob);
 
     var a = document.createElement("a");
     a.href = url;

@@ -85,7 +85,9 @@ const Styled = {
   HowtoSection: styled.section`
     width: 100%;
 
-    margin-top: 35rem;
+    margin-top: 14.3rem;
+
+    padding-top: 11.7rem;
   `,
 
   HeadingText: styled.h1`
