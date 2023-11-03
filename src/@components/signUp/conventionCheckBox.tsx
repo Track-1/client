@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { ConventionBlanckBoxIc, ConventionFullBoxIc } from "../../assets";
-import { conventionSelectedCheck } from "../../core/signUp/conventionSelectedCheck";
-import { ConventionChecksType } from "../../type/conventionChecksType";
-import styled from "styled-components";
-import { conventionType } from "../../core/convention/conventionType";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { openConventionModal, openConventionPolicy } from "../../recoil/conventionModal";
-import { UserDataPropsType } from "../../type/signUpStepTypes";
+import styled from "styled-components";
+import { ConventionBlankBoxIc, ConventionFullBoxIc } from "../../assets";
+import { NICKNAME_MESSAGE } from "../../core/signUp/errorMessage";
+import useConventionModal from "../../hooks/common/useConventionModal";
+import { isNextStep } from "../../recoil/signUp/isNextStep";
+import { joinUserData } from "../../recoil/signUp/joinUserData";
+import { ConventionChecksType } from "../../type/signUp/conventionChecksType";
+import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
+import { checkEssentialAgree } from "../../utils/signUp/checkEssentialAgree";
 
-interface PropsType {
-  setCompleteCheck: React.Dispatch<React.SetStateAction<boolean>>;
+interface ConventionCheckBoxProp {
+  nickNameMessage: string | undefined;
   checkedConventions: ConventionChecksType[];
   setCheckedConventions: React.Dispatch<React.SetStateAction<ConventionChecksType[]>>;
-  setUserData: React.Dispatch<React.SetStateAction<UserDataPropsType>>;
 }
 
-export default function ConventionCheckBox(props: PropsType) {
-  const { setCompleteCheck, checkedConventions, setCheckedConventions, setUserData } = props;
+export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
+  const { nickNameMessage, checkedConventions, setCheckedConventions } = props;
   const [checkedCount, setCheckedCount] = useState<number>(0);
-  const [policy, setPolicy] = useRecoilState<string>(openConventionPolicy);
-  const [showModal, setShowModal] = useRecoilState<boolean>(openConventionModal);
+  const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
+  const { showConventionModal } = useConventionModal();
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
-  function categoryClick(id: number) {
+  function clickCategory(id: number) {
     setCheckedConventions(
       checkedConventions.map((checkedConvention) =>
         checkedConvention.id === id
@@ -30,7 +32,8 @@ export default function ConventionCheckBox(props: PropsType) {
       ),
     );
 
-    if (checkFirstIndex(id)) {
+    //전체 동의하기 클릭한 경우
+    if (checkTotalAgree(id)) {
       checkedConventions[id].selected
         ? setCheckedConventions(
             checkedConventions.map((checkedConvention) =>
@@ -51,43 +54,41 @@ export default function ConventionCheckBox(props: PropsType) {
 
   useEffect(() => {
     checkedConventions.forEach((checkedConvention) => {
-      !checkFirstIndex(checkedConvention.id) && checkedConvention.selected
-        ? setCheckedCount((prev) => prev + 1)
-        : setCheckedCount((prev) => prev - 1);
+      !checkTotalAgree(checkedConvention.id) && checkedConvention.selected
+        ? setCheckedCount(checkedCount + 1)
+        : setCheckedCount(checkedCount - 1);
     });
 
     let count = 0;
     checkedConventions.forEach((checkedConvention) => {
-      if (!checkFirstIndex(checkedConvention.id) && checkedConvention.selected) {
+      if (!checkTotalAgree(checkedConvention.id) && checkedConvention.selected) {
         count += 1;
       }
     });
     setCheckedCount(count);
-
-    let essentialCheck = 0;
-    checkedConventions.forEach((checkedConvention) => {
-      if (
-        !checkFirstIndex(checkedConvention.id) &&
-        !checkLastIndex(checkedConvention.id) &&
-        checkedConvention.selected
-      ) {
-        essentialCheck += 1;
-      }
-    });
-    setCompleteCheck(checkEssentialAgreeDone(essentialCheck));
-    setUserData((prev) => ({ ...prev, isAgree: `${checkedConventions[3].selected}` }));
+    setUserData({ ...userData, userMarketing: `${checkedConventions[3].selected}` });
+    //  //닉네임이 success이고 필수가 다 체크됨
+    if (nickNameMessage === NICKNAME_MESSAGE.SUCCESS && checkEssentialAgree(checkedConventions)) {
+      setIsSuccess(true);
+    } else {
+      setIsSuccess(false);
+    }
   }, [checkedConventions]);
+
+  useEffect(() => {
+    if (nickNameMessage === NICKNAME_MESSAGE.SUCCESS && checkEssentialAgree(checkedConventions)) {
+      setIsSuccess(true);
+    } else {
+      setIsSuccess(false);
+    }
+  }, [nickNameMessage]);
 
   useEffect(() => {
     checkFullChecked() ? changeTotalAgree(true) : changeTotalAgree(false);
   }, [checkFullChecked()]);
 
-  function checkFirstIndex(id: number) {
+  function checkTotalAgree(id: number) {
     return id === 0;
-  }
-
-  function checkLastIndex(id: number) {
-    return id === 3;
   }
 
   function checkFullChecked() {
@@ -100,38 +101,16 @@ export default function ConventionCheckBox(props: PropsType) {
     setCheckedConventions([...tempCheckedConventions]);
   }
 
-  function checkEssentialAgreeDone(essentialCheck: number) {
-    return essentialCheck === 2;
-  }
-
-  function openModal(id: number) {
-    setShowModal(true);
-    switch (id) {
-      case 1:
-        setPolicy(conventionType.PERSONAL);
-        break;
-      case 2:
-        setPolicy(conventionType.USINGSITE);
-        break;
-      case 3:
-        setPolicy(conventionType.MARKETING);
-        break;
-      default:
-        setPolicy("");
-        break;
-    }
-  }
-
   return (
     <ConventionCheckBoxContainer>
-      {checkedConventions.map(({ id, selected, text }: ConventionChecksType) => (
-        <ConventionCheckBoxWrapper checkFirstIndex={checkFirstIndex(id)}>
-          <CheckBox onClick={() => categoryClick(id)}>
-            {selected ? <ConventionFullBoxIcon /> : <ConventionBlanckBoxIcon />}
+      {checkedConventions.map(({ id, selected, text, policy }: ConventionChecksType) => (
+        <ConventionCheckBoxWrapper key={id} checkTotalAgree={checkTotalAgree(id)}>
+          <CheckBox onClick={() => clickCategory(id)}>
+            {selected ? <ConventionFullBoxIcon /> : <ConventionBlankBoxIcon />}
           </CheckBox>
           <TextWrapper>
-            <Title checkFirstIndex={checkFirstIndex(id)}>{text}</Title>
-            <FullConvention checkFirstIndex={checkFirstIndex(id)} onClick={() => openModal(id)}>
+            <Title checkTotalAgree={checkTotalAgree(id)}>{text}</Title>
+            <FullConvention checkTotalAgree={checkTotalAgree(id)} onClick={() => showConventionModal(policy, true)}>
               전체보기
             </FullConvention>
           </TextWrapper>
@@ -143,25 +122,24 @@ export default function ConventionCheckBox(props: PropsType) {
 
 const ConventionCheckBoxContainer = styled.section`
   margin-top: 2.6rem;
+  margin-left: -2rem;
 `;
 
 const CheckBox = styled.article`
   cursor: pointer;
 `;
 
-const ConventionCheckBoxWrapper = styled.section<{ checkFirstIndex: boolean }>`
+const ConventionCheckBoxWrapper = styled.section<{ checkTotalAgree: boolean }>`
   display: flex;
   align-items: center;
 
   width: 56rem;
-  height: ${({ checkFirstIndex }) => (checkFirstIndex ? 4.4 : 3.5)}rem;
+  height: ${({ checkTotalAgree }) => (checkTotalAgree ? 4.4 : 3.5)}rem;
 
-  padding-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.4}rem;
-  margin-bottom: ${({ checkFirstIndex }) => checkFirstIndex && 0.9}rem;
+  padding-bottom: ${({ checkTotalAgree }) => checkTotalAgree && 0.4}rem;
+  margin-bottom: ${({ checkTotalAgree }) => checkTotalAgree && 0.9}rem;
 
-  border-bottom: 0.1rem solid ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray4 : "transparent")};
-
-  margin-left: 10rem;
+  border-bottom: 0.1rem solid ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray4 : "transparent")};
 `;
 
 const TextWrapper = styled.div`
@@ -171,13 +149,13 @@ const TextWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h1<{ checkFirstIndex: boolean }>`
-  color: ${({ theme, checkFirstIndex }) => (checkFirstIndex ? theme.colors.gray1 : theme.colors.gray2)};
+const Title = styled.h1<{ checkTotalAgree: boolean }>`
+  color: ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray1 : theme.colors.gray2)};
   ${({ theme }) => theme.fonts.checkbox};
 `;
 
-const FullConvention = styled.p<{ checkFirstIndex: boolean }>`
-  visibility: ${({ checkFirstIndex }) => (checkFirstIndex ? "hidden" : "visible")};
+const FullConvention = styled.p<{ checkTotalAgree: boolean }>`
+  visibility: ${({ checkTotalAgree }) => (checkTotalAgree ? "hidden" : "visible")};
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
@@ -192,7 +170,7 @@ const ConventionFullBoxIcon = styled(ConventionFullBoxIc)`
   height: 4rem;
 `;
 
-const ConventionBlanckBoxIcon = styled(ConventionBlanckBoxIc)`
+const ConventionBlankBoxIcon = styled(ConventionBlankBoxIc)`
   width: 4rem;
   height: 4rem;
 `;

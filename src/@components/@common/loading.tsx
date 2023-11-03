@@ -27,9 +27,11 @@ const Background = styled.div`
 
 const LoadingImage = styled.img`
   height: 20rem;
+  z-index: 10;
 `;
 
 const LoadingText = styled.strong`
   ${({ theme }) => theme.fonts.title};
   color: ${({ theme }) => theme.colors.white};
+  z-index: 10;
 `;

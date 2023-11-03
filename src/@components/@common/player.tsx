@@ -1,130 +1,13 @@
+import { useContext } from "react";
 import styled from "styled-components";
-
-import { useState, useLayoutEffect, useRef } from "react";
-import { PauseIc, PlayIc, QuitIc } from "../../assets";
-import { showPlayerBar } from "../../recoil/player";
-import { tracksOrVocalsCheck } from "../../recoil/tracksOrVocalsCheck";
-import { useRecoilState, useRecoilValue } from "recoil";
-
-interface PropsType {
-  audio: HTMLAudioElement;
-  playAudio: () => void;
-  pauseAudio: () => void;
-  progress: number;
-  duration: number;
-  title: string;
-  name: string;
-  image: string;
-  play: any;
-  setPlay: any;
-}
-
-export default function Player(props: any) {
-  const { audio, playAudio, pauseAudio, progress, play, setPlay, audioInfos } = props;
-  const tracksOrVocals = useRecoilValue(tracksOrVocalsCheck);
-
-  const playBar = useRef<HTMLDivElement>(null);
-
-  const [barWidth, setBarWidth] = useState<number>(0);
-  const [down, setDown] = useState<boolean>(false);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
-  useLayoutEffect(() => {
-    playBar.current && setBarWidth(playBar.current.offsetWidth);
-  });
-
-  function createTimeText(time: number) {
-    const currentSecond = Math.round(time);
-    const minute =
-      parseInt(String(currentSecond / 60)) < 10
-        ? `0${parseInt(String(currentSecond / 60))}`
-        : `${parseInt(String(currentSecond / 60))}`;
-
-    const second = currentSecond % 60 < 10 ? `0${currentSecond % 60}` : `${currentSecond % 60}`;
-    return minute + ":" + second;
-  }
-
-  function quitAudio() {
-    audio.pause();
-    audio.currentTime = 0;
-
-    setPlay(false);
-    setShowPlayer(false);
-  }
-
-  function controlAudio(e: React.MouseEvent<HTMLDivElement>) {
-    const barPercent = Math.round((e.nativeEvent.offsetX / barWidth) * 100);
-    const currentStop = (audio.duration * barPercent) / 100;
-    audio.currentTime = currentStop;
-  }
-
-  function downMouse() {
-    setDown(true);
-  }
-
-  function upMouse() {
-    setDown(false);
-  }
-
-  function hoverPlaybar() {
-    setIsHovered(true);
-  }
-
-  function detachPlyabar() {
-    setDown(false);
-    setIsHovered(false);
-  }
-
-  function moveAudio(e: React.MouseEvent<HTMLDivElement>) {
-    if (down) {
-      const mousePoint = Math.round((e.nativeEvent.offsetX / barWidth) * 100);
-      const currentStop = (audio.duration * mousePoint) / 100;
-      audio.currentTime = currentStop;
-    }
-  }
-
-  return (
-    <PlayerContainer>
-      <PlayerWrapper>
-        <Pointer progress={progress} isActive={isHovered}></Pointer>
-        <PlayerBarWrapper
-          ref={playBar}
-          onClick={controlAudio}
-          onMouseDown={downMouse}
-          onMouseUp={upMouse}
-          onMouseMove={moveAudio}
-          onMouseOver={hoverPlaybar}
-          onMouseLeave={detachPlyabar}
-          isActive={isHovered}>
-          <Playbar progress={progress} tracksOrVocals={tracksOrVocals} isActive={isHovered} />
-        </PlayerBarWrapper>
-
-        <PlayerInformWrapper>
-          <ThumbnailWrapper>
-            <Thumbnail src={audioInfos.image} alt="썸네일 이미지" />
-          </ThumbnailWrapper>
-          <PlayerTitleText>{audioInfos.title}</PlayerTitleText>
-          <PlayerNameText>{audioInfos.name}</PlayerNameText>
-          {play ? <PlayIcon onClick={pauseAudio} /> : <PauseIcon onClick={playAudio} />}
-          <PlayerInformText width={10} whiteText={true}>
-            {createTimeText(Math.round(audio.currentTime))}
-          </PlayerInformText>
-          <PlayerInformText width={30} whiteText={false}>
-            {createTimeText(Math.round(audioInfos.duration))}
-          </PlayerInformText>
-          <QuitIcon onClick={quitAudio} />
-        </PlayerInformWrapper>
-      </PlayerWrapper>
-    </PlayerContainer>
-  );
-}
+import { PlayerPlayIc, PlayerQuitIc, PlayerStopIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
+import useControlPlayer from "../../hooks/common/useControlPlayer";
+import { CommentsPlayerContext } from "../trackPost";
 
 const PlayerContainer = styled.section`
   position: fixed;
   bottom: 0;
-  z-index: 1000;
   pointer-events: none;
 
   display: flex;
@@ -139,7 +22,6 @@ const PlayerWrapper = styled.article`
   justify-content: flex-end;
 
   cursor: pointer;
-  z-index: 1000;
 
   position: relative;
 `;
@@ -153,21 +35,18 @@ const PlayerInformWrapper = styled.div`
 
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
-  z-index: 1000;
   position: relative;
 `;
 
-const Playbar = styled.div<{ progress: number; tracksOrVocals: string; isActive: boolean }>`
+const Playbar = styled.div<{ progress: number; isActive: boolean }>`
   width: ${(props) => props.progress}%;
   height: 3rem;
 
   background-color: transparent;
 
-  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid
-    ${({ tracksOrVocals, theme }) => (tracksOrVocals === "Tracks" ? theme.colors.sub1 : theme.colors.sub2)};
+  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.sub1};
 
   pointer-events: auto;
-  z-index: 1000;
 `;
 
 const Pointer = styled.div<{ progress: number; isActive: boolean }>`
@@ -195,7 +74,6 @@ const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
   background-color: transparent;
   border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto;
-  z-index: 1000;
 `;
 
 const ThumbnailWrapper = styled.div`
@@ -227,7 +105,6 @@ const PlayerInformText = styled.div<{ width: number; whiteText: boolean }>`
   ${({ theme }) => theme.fonts.player_title};
   color: ${({ whiteText, theme }) => (whiteText ? theme.colors.white : theme.colors.gray2)};
   pointer-events: auto;
-  z-index: 1000;
 `;
 
 const PlayerTitleText = styled.div`
@@ -236,7 +113,6 @@ const PlayerTitleText = styled.div`
   ${({ theme }) => theme.fonts.player_title};
   color: ${({ theme }) => theme.colors.white};
   pointer-events: auto;
-  z-index: 1000;
 `;
 
 const PlayerNameText = styled.div`
@@ -245,27 +121,110 @@ const PlayerNameText = styled.div`
   ${({ theme }) => theme.fonts.id};
   color: ${({ theme }) => theme.colors.gray2};
   pointer-events: auto;
-  z-index: 1000;
 
   margin-right: 2rem;
 `;
 
-const PauseIcon = styled(PauseIc)`
+const PauseIcon = styled(PlayerStopIc)`
   height: 2.4rem;
   margin-right: 5.1rem;
   pointer-events: auto;
-  z-index: 1000;
 `;
 
-const PlayIcon = styled(PlayIc)`
+const PlayIcon = styled(PlayerPlayIc)`
   height: 2.4rem;
   margin-right: 5.1rem;
   pointer-events: auto;
-  z-index: 1000;
 `;
 
-const QuitIcon = styled(QuitIc)`
-  height: 1.5rem;
+const QuitIcon = styled(PlayerQuitIc)`
+  width: 3.5rem;
+  height: 3.5rem;
+
   pointer-events: auto;
-  z-index: 1000;
 `;
+
+interface PlayerProps {
+  comment?: boolean;
+}
+
+export default function Player({ comment }: PlayerProps) {
+  const {
+    playAudio,
+    stopAudio,
+    quitAudio,
+    closeAudioPlayer,
+    playContextState,
+    stopContextState,
+    showPlayer,
+    contextPlaying,
+    audio,
+    playerInfo,
+  } = useContext(comment ? CommentsPlayerContext : PlayerContext);
+
+  const {
+    progress,
+    isPlaybarHovered,
+    playBar,
+    currentTimeText,
+    totalTimetext,
+    controlAudio,
+    downMouse,
+    upMouse,
+    moveAudio,
+    hoverPlaybar,
+    detachPlyabar,
+  } = useControlPlayer(audio, contextPlaying);
+
+  window.addEventListener("popstate", quit);
+
+  function play() {
+    playContextState();
+    playAudio();
+  }
+
+  function pause() {
+    stopContextState();
+    stopAudio();
+  }
+
+  function quit() {
+    quitAudio();
+    closeAudioPlayer();
+  }
+
+  return showPlayer ? (
+    <PlayerContainer>
+      <PlayerWrapper>
+        <Pointer progress={progress} isActive={isPlaybarHovered}></Pointer>
+        <PlayerBarWrapper
+          ref={playBar}
+          onClick={controlAudio}
+          onMouseDown={downMouse}
+          onMouseUp={upMouse}
+          onMouseMove={moveAudio}
+          onMouseOver={hoverPlaybar}
+          onMouseLeave={detachPlyabar}
+          isActive={isPlaybarHovered}>
+          <Playbar progress={progress} isActive={isPlaybarHovered} />
+        </PlayerBarWrapper>
+
+        <PlayerInformWrapper>
+          <ThumbnailWrapper>
+            <Thumbnail src={playerInfo?.imageFile} alt="썸네일 이미지" />
+          </ThumbnailWrapper>
+          <PlayerTitleText>{playerInfo?.title}</PlayerTitleText>
+          <PlayerNameText>{playerInfo?.userName}</PlayerNameText>
+          {contextPlaying ? <PauseIcon onClick={pause} /> : <PlayIcon onClick={play} />}
+          <PlayerInformText width={10} whiteText={true}>
+            {currentTimeText}
+          </PlayerInformText>
+          <PlayerInformText width={30} whiteText={false}>
+            {totalTimetext}
+          </PlayerInformText>
+          <QuitIcon onClick={quit} />
+        </PlayerInformWrapper>
+      </PlayerWrapper>
+    </PlayerContainer>
+  ) : null;
+}

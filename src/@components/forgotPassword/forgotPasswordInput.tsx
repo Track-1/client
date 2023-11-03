@@ -1,313 +1,137 @@
-import styled, { css } from "styled-components";
-import {
-  RequestResetPasswordDefaultBtnIc,
-  ForgotPasswordTitleIc,
-  RequestResetPasswordProducerBtnIc,
-  RequestResetPasswordVocalBtnIc,
-  ResendPasswordProducerBtnIc,
-  ResendPasswordVocalBtnIc,
-  ProducerModeToggleIc,
-  ProducerDefaultModeToggleIc,
-  InputWarningIc,
-  ForgotPasswordEmailAskIc,
-} from "../../assets";
-
 import { useEffect, useState } from "react";
-import { checkEmailForm } from "../../utils/errorMessage/checkEmailForm";
-import { emailInvalidMessage } from "../../core/userInfoErrorMessage/emailInvalidMessage";
-import { useMutation } from "react-query";
-import { postNewPassword } from "../../core/api/newPassword";
-import Loading from "../@common/loading";
-import { useRecoilState } from "recoil";
-import { ForgotPasswordToken } from "../../recoil/forgotPasswordToken";
+import { FormProvider, useForm } from "react-hook-form";
+import styled from "styled-components";
+import { RequestBlackTextIc, RequestWhiteTextIc, ResendTextIc } from "../../assets";
+import { ROLE } from "../../core/common/roleType";
+import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
+import { useResetPassword } from "../../hooks/queries/user";
+import { theme } from "../../style/theme";
+import { UserEmailRequest } from "../../type/api";
+import { EmailPasswordInputType } from "../../type/signUp/inputType";
+import { checkEmailForm } from "../../utils/signUp/checkForm";
+import StandardButton from "../@common/button/standardButton";
+import InputContainer from "../@common/inputContainer";
+import PasswordContainer from "../@common/passwordContainer";
+import Input from "../signUp/Input";
+import UserTypeToggle from "./userTypeToggle";
 
 export default function ForgotPasswordInput() {
-  const [email, setEmail] = useState<string>("");
-  const [isProducerMode, setIsProducerMode] = useState<boolean>(false);
-  const [userType, setUserType] = useState<string>("vocal");
-  const [resendTrigger, setResendTrigger] = useState<boolean>(false);
-  const [emailMessage, setEmailMessage] = useState<string>(emailInvalidMessage.NULL);
-  const [recentEmail, setRecentEmail] = useState<string>("");
-  const [isSameRecentEmail, setIsSameRecentEmail] = useState<boolean>(true);
-  const [forgotPasswordToken, setForgotPasswordToken] = useRecoilState(ForgotPasswordToken);
-
-  const { mutate, isSuccess, isLoading, isError, error } = useMutation(() => postNewPassword(userType, email), {
-    onSuccess: (data) => {
-      const token = data.data.data.token;
-      setForgotPasswordToken(token);
-      setIsSameRecentEmail(true);
-      setRecentEmail(email);
+  const methods = useForm<EmailPasswordInputType>({
+    defaultValues: {
+      email: "",
     },
-    onError: (error: any) => {
-      error.response.status === 401 && alert(error.response.data.message);
-    },
+    mode: "onChange",
   });
-  useEffect(() => {
-    isProducerMode ? setUserType("producer") : setUserType("vocal");
-  }, [isProducerMode]);
+
+  const { setError } = methods;
+
+  const { data, resetPassword } = useResetPassword(setError);
+
+  const [producerType, setProducerType] = useState(false);
+  const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
+  const [fontColor, setFontColor] = useState(theme.colors.white);
+  const [prevState, setPrevState] = useState({ email: "", producerType: false });
+  const [buttonMessageType, setButtonMessageType] = useState("white");
 
   useEffect(() => {
-    if (isSuccess) {
-      setResendTrigger(true);
+    if (data?.success) {
+      setButtonMessageType("resend");
+      setPrevState((prev) => ({
+        ...prev,
+        email: methods.watch().email,
+        producerType: producerType,
+      }));
     }
-  }, [isSuccess]);
+  }, [data]);
 
   useEffect(() => {
-    error?.response.status === 401 && setEmailMessage("We don’t have an account with that email address");
-  }, [isError]);
-
-  useEffect(() => {
-    email === recentEmail ? setIsSameRecentEmail(true) : setIsSameRecentEmail(false);
-  }, [email]);
-
-  function writeEmail(e: React.ChangeEvent<HTMLInputElement>) {
-    const input = e.target.value;
-    setEmail(input);
-
-    if (!input) {
-      setEmailMessage(emailInvalidMessage.NULL);
+    if (checkEmailForm(methods.getValues().email)) {
+      producerType ? setButtonColor(theme.colors.sub1) : setButtonColor(theme.colors.sub2);
+      setFontColor(theme.colors.black);
+      prevState.email && checkPrevState() ? setButtonMessageType("resend") : setButtonMessageType("black");
     } else {
-      checkEmailForm(input) ? setEmailMessage(emailInvalidMessage.SUCCESS) : setEmailMessage(emailInvalidMessage.FORM);
+      setButtonColor(theme.colors.gray4);
+      setButtonMessageType("white");
+      setFontColor(theme.colors.white);
     }
+  }, [methods.watch().email, producerType]);
+
+  function checkPrevState() {
+    return prevState.email === methods.watch().email && prevState.producerType === producerType;
   }
 
-  function onRequestCapsulation() {
-    mutate();
+  function handleChangeUserType() {
+    setProducerType((prev) => !prev);
   }
 
-  function isInputWarnning() {
-    if (
-      emailMessage === emailInvalidMessage.FORM ||
-      emailMessage === "We don’t have an account with that email address"
-    ) {
-      return true;
-    }
-
-    if (emailMessage === emailInvalidMessage.NULL || emailMessage === emailInvalidMessage.SUCCESS) {
-      return false;
-    }
-  }
-
-  function requestBtnType() {
-    if (!checkEmailForm(email)) {
-      return <RequestResetPasswordDefaultBtnIcon />;
-    } else {
-      if (resendTrigger && isSameRecentEmail) {
-        return isProducerMode ? (
-          <ResendPasswordProducerBtnIcon onClick={() => onRequestCapsulation()} />
-        ) : (
-          <ResendPasswordVocalBtnIcon onClick={() => onRequestCapsulation()} />
-        );
-      } else {
-        return isProducerMode ? (
-          <RequestResetPasswordProducerBtnIcon onClick={() => onRequestCapsulation()} />
-        ) : (
-          <RequestResetPasswordVocalBtnIcon onClick={() => onRequestCapsulation()} />
-        );
-      }
-    }
-  }
-
-  function producerToggleType() {
-    return isProducerMode ? (
-      <ProducerModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
-    ) : (
-      <ProducerDefaultModeToggleIcon onClick={() => setIsProducerMode(!isProducerMode)} />
-    );
+  function requestResetPassword() {
+    const userEmail: UserEmailRequest = {
+      userType: producerType ? "producer" : "vocal",
+      userEmail: methods.getValues().email,
+    };
+    resetPassword(userEmail);
   }
 
   return (
-    <Container>
-      {isLoading && <Loading />}
-      <Wrapper>
-        <TitleWrapper>
-          <ForgotPasswordTitleIcon />
-        </TitleWrapper>
-        <InputBox>
-          <ForgotPasswordEmailAskIcon />
-          <InputWrapper>
-            <Input placeholder="Enter your email address" onChange={writeEmail} />
-            {isInputWarnning() && <InputWarningIcon />}
-          </InputWrapper>
-          <UnderLine inputState={emailMessage} />
-        </InputBox>
-        <>
-          {isSameRecentEmail && isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
-          {isInputWarnning() && <WarningMessage>{emailMessage}</WarningMessage>}
+    <PasswordContainer
+      height={49.6}
+      containerInterval={15.1}
+      title="Forgot password?"
+      titleIntervalTop={9.1}
+      titleIntervalBottom={6.4}>
+      <FormProvider {...methods}>
+        <InputContainer title="What’s your email?" login>
+          <form>
+            <EmailInputWrapper>
+              <Input
+                name="email"
+                rules={{
+                  required: true,
+                  validate: {
+                    check: (value) => {
+                      if (!checkEmailForm(value)) {
+                        return EMAIL_MESSAGE.FORM;
+                      }
+                    },
+                  },
+                }}
+                type="text"
+                placeholder="Enter your email address"
+                width={55.9}
+                userType={producerType ? ROLE.PRODUCER : ROLE.VOCAL}
+              />
+            </EmailInputWrapper>
+          </form>
+        </InputContainer>
+      </FormProvider>
+      <UserTypeToggle producerType={producerType} handleChangeUserType={handleChangeUserType} />
 
-          {checkEmailForm(email) && isSameRecentEmail && (
-            <ValidTimeMessage isProducerMode={isProducerMode}>Valid time is 3 hours.</ValidTimeMessage>
-          )}
-        </>
-        <ModeWrapper>
-          <ModeText>Producer Mode</ModeText>
-          {producerToggleType()}
-        </ModeWrapper>
-        {requestBtnType()}
-      </Wrapper>
-    </Container>
+      <StandardButton bgColor={buttonColor} fontColor={fontColor} handleClickFunction={requestResetPassword}>
+        {buttonMessageType === "resend" ? (
+          <ResendTextIcon />
+        ) : buttonMessageType === "black" ? (
+          <RequestBlackTextIcon />
+        ) : (
+          <RequestWhiteTextIcon />
+        )}
+      </StandardButton>
+    </PasswordContainer>
   );
 }
 
-const Container = styled.div`
-  position: absolute;
-  top: 29.4rem;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-
-  height: 57rem;
-  width: 77.9rem;
-
-  backdrop-filter: blur(1rem);
-  border: 0.3rem solid transparent;
-  border-radius: 5rem;
-  background-image: linear-gradient(rgba(20, 21, 23, 0.6), rgba(20, 21, 23, 0.6)),
-    linear-gradient(to top, transparent, #3e4045);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-`;
-
-const Wrapper = styled.div`
-  margin: 0 11rem;
-`;
-
-const TitleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 9.1rem;
-`;
-
-const InputBox = styled.div`
-  margin-top: 6.4rem;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-top: 3rem;
-`;
-
-const ForgotPasswordEmailAskIcon = styled(ForgotPasswordEmailAskIc)`
-  width: 20.7rem;
-`;
-
-const Input = styled.input`
-  height: 3.4rem;
-  width: 100%;
-
-  ${({ theme }) => theme.fonts.comment};
-  color: ${({ theme }) => theme.colors.white};
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.gray3};
-  }
-  border: none;
-`;
-
-const WarningMessage = styled.span`
-  width: 100%;
-  height: 3rem;
-
-  ${({ theme }) => theme.fonts.description};
-  color: ${({ theme }) => theme.colors.red};
-  margin-top: 1.1rem;
-`;
-
-const ValidTimeMessage = styled.span<{ isProducerMode: boolean }>`
-  width: 100%;
-  height: 3rem;
-
-  ${({ theme }) => theme.fonts.description};
-  ${(props) => {
-    if (props.isProducerMode) {
-      return css`
-        color: ${({ theme }) => theme.colors.sub1};
-      `;
-    } else {
-      return css`
-        color: ${({ theme }) => theme.colors.sub2};
-      `;
-    }
-  }}
-
-  margin-top: 1.1rem;
-`;
-
-const UnderLine = styled.hr<{ inputState: string }>`
-  border: 0.1rem solid;
-
-  ${(props) => {
-    if (
-      props.inputState === emailInvalidMessage.FORM ||
-      props.inputState === "We don’t have an account with that email address"
-    ) {
-      return css`
-        border-color: ${({ theme }) => theme.colors.red};
-      `;
-    } else {
-      return css`
-        border-color: ${({ theme }) => theme.colors.gray3};
-      `;
-    }
-  }}
-`;
-
-const ModeWrapper = styled.div`
+const EmailInputWrapper = styled.section`
   display: flex;
   align-items: center;
-
-  float: right;
-  margin: 1rem 0 3.5rem 0;
 `;
 
-const ModeText = styled.div`
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.gray1};
-  margin: 0 1.2rem;
+const RequestBlackTextIcon = styled(RequestBlackTextIc)`
+  width: 42.2rem;
 `;
 
-const RequestResetPasswordProducerBtnIcon = styled(RequestResetPasswordProducerBtnIc)`
-  width: 56rem;
-  cursor: pointer;
+const RequestWhiteTextIcon = styled(RequestWhiteTextIc)`
+  width: 42.2rem;
 `;
 
-const RequestResetPasswordVocalBtnIcon = styled(RequestResetPasswordVocalBtnIc)`
-  width: 56rem;
-  cursor: pointer;
-`;
-
-const ProducerDefaultModeToggleIcon = styled(ProducerDefaultModeToggleIc)`
-  width: 5.8rem;
-  cursor: pointer;
-`;
-
-const ProducerModeToggleIcon = styled(ProducerModeToggleIc)`
-  width: 5.8rem;
-  cursor: pointer;
-`;
-
-const ResendPasswordProducerBtnIcon = styled(ResendPasswordProducerBtnIc)`
-  width: 56rem;
-  cursor: pointer;
-`;
-
-const ResendPasswordVocalBtnIcon = styled(ResendPasswordVocalBtnIc)`
-  width: 56rem;
-  cursor: pointer;
-`;
-
-const InputWarningIcon = styled(InputWarningIc)`
-  width: 2.2rem;
-  height: 2.2rem;
-`;
-
-const RequestResetPasswordDefaultBtnIcon = styled(RequestResetPasswordDefaultBtnIc)`
-  width: 56rem;
-  cursor: pointer;
-`;
-
-const ForgotPasswordTitleIcon = styled(ForgotPasswordTitleIc)`
-  width: 27.8rem;
+const ResendTextIcon = styled(ResendTextIc)`
+  width: 11.6rem;
 `;

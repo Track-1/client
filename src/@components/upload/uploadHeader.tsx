@@ -1,144 +1,138 @@
 import styled from "styled-components";
-import { UploadInfo } from "../../core/api/upload";
-import { UploadBtnIc, CanUploadBtnIc } from "../../assets";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
-import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
-import { UploadInfoDataType } from "../../type/uploadInfoDataType";
-import { checkUserType } from "../../utils/common/userType";
-import { LoginUserId } from "../../recoil/loginUserData";
-import BackButton from "../@common/backButton";
-import { showPlayerBar } from "../../recoil/player";
-import loading from "../../assets/image/loading.gif";
-import Loading from "../@common/loading";
 
-interface PropsType {
-  userType: string;
-  producerUploadType: string | undefined;
-  prevPage: string | undefined;
-  uploadData: UploadInfoDataType;
-  setUploadData: React.Dispatch<React.SetStateAction<UploadInfoDataType>>;
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
+import { ROLE } from "../../core/common/roleType";
+import { UPLOAD_TYPE } from "../../core/common/uploadType";
+import useUploadEditAPI from "../../hooks/queries/upload/useUploadEditAPI";
+import { UploadData } from "../../recoil/upload/uploadData";
+
+interface UploadHeaderProps {
+  useUploadAPI: any;
 }
 
-export default function UploadHeader(props: PropsType) {
-  const { userType, producerUploadType, uploadData, prevPage } = props;
-  const navigate = useNavigate();
-  const loginUserId = useRecoilValue(LoginUserId);
-  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
-  const [isUploadActive, setIsUploadActive] = useState<boolean>(false);
-  const [cursor, setCursor] = useState<string>("pointer");
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-
-  console.log(producerUploadType, "ggg");
-
-  const { mutate, isLoading } = useMutation(() => UploadInfo(uploadData, userType, producerUploadType), {
-    onSuccess: () => {
-      setShowPlayer(false);
-      checkUserType(userType)
-        ? prevPage === "sign-up"
-          ? navigate("/")
-          : navigate(-1)
-        : navigate(`/vocal-profile/${loginUserId}`, { state: loginUserId });
-    },
-    onError: (error) => {
-      console.log("에러!!", error);
-    },
-  });
+export default function UploadHeader(props: UploadHeaderProps) {
+  const { useUploadAPI } = props;
+  const { uploadAPI, trackLoading, producerLoading, vocalLoaidng } = useUploadAPI;
+  const [uploadData, setUploadData] = useRecoilState(UploadData);
+  // const { uploadAPI, trackLoading, producerLoading, vocalLoaidng } = useUploadAPI();
+  const { uploadEditAPI, trackId } = useUploadEditAPI();
+  const [isUploadActive, setIsUploadActive] = useState(false);
+  const pathname = useLocation().pathname;
 
   useEffect(() => {
-    checkMeetConditions();
+    isActive() ? setIsUploadActive(true) : setIsUploadActive(false);
   }, [uploadData]);
 
   useEffect(() => {
-    isLoading ? setCursor("wait") : setCursor("pointer");
-  }, [isLoading]);
+    if (pathname.includes("upload")) return;
 
-  function upload(e: React.MouseEvent<SVGSVGElement>) {
-    if (!isLoading) {
-      setOpenModal(false);
-      mutate();
-    }
-  }
-
-  function checkMeetConditions(): void {
-    if (!isEmptyTitle() && !isEmptyCategory() && !isEmptyWavFile() && !isEmptyKeyword()) {
-      setIsUploadActive(true);
+    if (uploadData.imageFile) {
+      setUploadData((prev) => ({
+        ...prev,
+        imageFileSame: false,
+      }));
     } else {
-      setIsUploadActive(false);
+      setUploadData((prev) => ({
+        ...prev,
+        imageFileSame: true,
+      }));
     }
+  }, [uploadData.imageFile]);
+
+  function isActive() {
+    return (
+      uploadData.title !== "" &&
+      uploadData.audioFileName &&
+      uploadData.category !== "-1" &&
+      uploadData.keyword.length > 0
+    );
   }
 
-  function isEmptyTitle(): boolean {
-    return uploadData.title === "";
-  }
+  function uploadFormData() {
+    const formData = new FormData();
 
-  function isEmptyCategory(): boolean {
-    return uploadData.category === "Select";
-  }
+    const audioFile = uploadData.audioFile && new Blob([uploadData?.audioFile], { type: uploadData.audioFile?.type });
+    const imageFile = uploadData.imageFile && new Blob([uploadData?.imageFile], { type: uploadData.imageFile?.type });
 
-  function isEmptyWavFile(): boolean {
-    return uploadData.audioFile === null;
-  }
-
-  function isEmptyKeyword(): boolean {
-    return uploadData.keyword.length === 0;
-  }
-
-  function movePreviousPage() {
-    if (prevPage === "sign-up") {
-      navigate("/");
+    if (pathname.includes(UPLOAD_TYPE.PORTFOLIO)) {
+      formData.append("portfolioAudioFileName", uploadData.audioFileName);
+      formData.append("portfolioTitle", uploadData.title);
+      formData.append("portfolioCategory", uploadData.category);
+      formData.append("portfolioContent", uploadData.introduction);
+      for (let i = 0; i < uploadData.keyword.length; i++) {
+        formData.append(`portfolioKeyword[${i}]`, uploadData.keyword[i]);
+      }
+      audioFile && formData.append("portfolioAudioFile", audioFile);
+      imageFile && formData.append("portfolioImageFile", imageFile);
+      uploadData.imageFileSame !== undefined &&
+        formData.append("portfolioImageFileSame", uploadData.imageFileSame ? "true" : "false");
     } else {
-      navigate(-1);
+      formData.append("trackAudioFileName", uploadData.audioFileName);
+      formData.append("trackTitle", uploadData.title);
+      formData.append("trackCategory", uploadData.category);
+      formData.append("trackIntroduction", uploadData.introduction);
+      for (let i = 0; i < uploadData.keyword.length; i++) {
+        formData.append(`trackKeyword[${i}]`, uploadData.keyword[i]);
+      }
+      audioFile && formData.append("trackAudioFile", audioFile);
+      imageFile && formData.append("trackImageFile", imageFile);
+      uploadData.imageFileSame !== undefined &&
+        formData.append("trackImageFileSame", uploadData.imageFileSame ? "true" : "false");
+    }
+
+    return formData;
+  }
+
+  function handleUploadData() {
+    const upload = uploadAPI();
+    const uploadEdit = uploadEditAPI();
+
+    const formData = uploadFormData();
+    //삭제할 코드
+
+    isUploadActive && pathname.includes("upload") ? upload(formData) : uploadEdit({ trackId, formData });
+  }
+
+  function uploadTypeText() {
+    if (pathname.includes(ROLE.PRODUCER)) {
+      return pathname.includes(UPLOAD_TYPE.PORTFOLIO) ? "Portfolio" : "Vocal Searching";
+    } else {
+      return UPLOAD_TYPE.PORTFOLIO;
     }
   }
 
   return (
-    <Container>
-      {isLoading && <Loading />}
-      <HeaderWrapper>
-        <LeftWrapper>
-          <div onClick={movePreviousPage}>
-            <BackButton />
-          </div>
-          <UserClass> {producerUploadType}</UserClass>
-        </LeftWrapper>
-        {isUploadActive ? <CanUploadBtnIcon onClick={upload} cursor={cursor} /> : <UploadBtnIcon />}
-      </HeaderWrapper>
-    </Container>
+    <Wrapper>
+      <UploadTypeText>{uploadTypeText()}</UploadTypeText>
+      {isUploadActive ? <UploadAbleBtnIcon onClick={handleUploadData} /> : <UploadUnableBtnIcon />}
+    </Wrapper>
   );
 }
 
-const Container = styled.header`
-  height: 13.8rem;
-  width: 100%;
-`;
-
-const HeaderWrapper = styled.div`
-  height: 100%;
-
+const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 7.5rem;
+
+  width: 100%;
 `;
 
-const LeftWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const UserClass = styled.div`
-  ${({ theme }) => theme.fonts.id};
+const UploadTypeText = styled.div`
   color: ${({ theme }) => theme.colors.gray3};
+  ${({ theme }) => theme.fonts.id};
+
   margin-left: 6.1rem;
 `;
 
-const CanUploadBtnIcon = styled(CanUploadBtnIc)`
+const UploadUnableBtnIcon = styled(UploadUnableBtnIc)`
+  cursor: pointer;
   width: 24.6rem;
 `;
 
-const UploadBtnIcon = styled(UploadBtnIc)`
+const UploadAbleBtnIcon = styled(UploadAbleBtnIc)`
+  cursor: pointer;
   width: 24.6rem;
 `;

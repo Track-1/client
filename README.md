@@ -1,7 +1,8 @@
 <div align=center>
   <img src="https://user-images.githubusercontent.com/70846061/211734675-ab9fb60b-58c6-4c99-b658-5e51cb26cb43.png">
 
-# _Discorver Your Limitless Track_
+## _Discorver Your Limitless Track_
+
 </div>
 
 ## 💜 음악 프로듀서 - 보컬 매칭 플랫폼
@@ -12,9 +13,8 @@
 
 음악 프로듀서가 스케치 곡을 업로드하면 보컬이 이를 다운받아 녹음 후 업로드하여 보다 직관적으로 협업의 기회를 창출할 수 있는 매칭 플랫폼
 
-<<<<<<< HEAD
-
 =======
+
 ## 💜 페이지 별 핵심기능
 
 ## Track Searh(프로듀서가 올린 음악을 볼 수 있는 페이지)
@@ -38,7 +38,6 @@
 <img width="1440" alt="보컬2" src="https://user-images.githubusercontent.com/70846061/211757222-e30be678-5a63-4969-bc85-383fc2384d4a.png">
 <img width="1440" alt="보컬3" src="https://user-images.githubusercontent.com/70846061/211757231-4674cfc2-8596-4b86-bc4c-1387a9a391ee.png">
 
-
 ## Profile(보컬,프로듀서 프로필확인 페이지)
 
 ![image](https://user-images.githubusercontent.com/70846061/211759877-e53662df-703e-40df-bfee-8e7fd8c272df.png)
@@ -46,6 +45,7 @@
 - 무한스크롤 : 업로드한 자신의 음원데이터를 무한스크롤로 확인.<br><br><br>
 
 ### 5. Upload(보컬-포트폴리오 / 프로듀서-포트폴리오or게시글)
+
 <img width="1440" alt="업로드1" src="https://user-images.githubusercontent.com/70846061/211758734-999394d4-3623-4c5b-9293-461cac89151f.png">
 <img width="1440" alt="업로드2" src="https://user-images.githubusercontent.com/70846061/211758747-63a64234-a853-42a8-bbda-7f5d4b172fbb.png">
 <img width="1440" alt="업로드3" src="https://user-images.githubusercontent.com/70846061/211758771-325dbf3a-89ea-454a-9116-6355ab8d5ea1.png">
@@ -54,7 +54,8 @@
 
 - Track/Portfolio Post : UserType에 따라서 게시글을 업로드.<br><br><br>
 
->>>>>>> 97c3720101129243a8238f25ea96db6f221626f7
+> > > > > > > 97c3720101129243a8238f25ea96db6f221626f7
+
 ## 💜 기술 스택 및 사용 라이브러리
 
 ![기술스택](https://user-images.githubusercontent.com/70846061/210489329-c03c1357-ce80-49cb-a2b6-32b800a3765a.png)
@@ -133,6 +134,7 @@
 ```
 
 # _💜Tracker💚_
+
 <div align=center>
   <img src="https://user-images.githubusercontent.com/70846061/210478421-3dd3d11d-471e-412a-b64e-802b5aa3ff92.jpeg">
 </div>

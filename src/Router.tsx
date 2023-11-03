@@ -1,54 +1,75 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainPage from "./@pages/mainPage";
-import ProducerProfilePage from "./@pages/producerProfilePage";
-import TrackPostPage from "./@pages/trackPostPage";
-import TrackSearchPage from "./@pages/trackSearchPage";
-import VocalProfilePage from "./@pages/vocalProfilePage";
-import VocalsPage from "./@pages/vocalsPage";
-import UploadPage from "./@pages/uploadPage";
-import ForgotPasswordPage from "./@pages/forgotPasswordPage";
-import ResetPasswordPage from "./@pages/resetPasswordPage";
-import SignUpPage from "./@pages/signUpPage";
-import LoginPage from "./@pages/loginPage";
-import ProducerProfileEditPage from "./@pages/producerProfileEditPage";
-import ProducerPortfolioEditPage from "./@pages/producerPortfolioEditPage";
-import TrackPostEditPage from "./@pages/trackPostEditPage";
-import VocalProfileEditPage from "./@pages/vocalProfileEditPage";
-import VocalPortfolioEditPage from "./@pages/vocalPortfolioEditPage";
-import PrivateRoute from "./utils/common/privateRoute";
-import ErrorPage from "./@pages/errorPage";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import MainPage from './@pages/mainPage';
+import ProducerProfilePage from './@pages/producerProfilePage';
+import SignupProfilePage from './@pages/signupProfilePage';
+import SignupStepPage from './@pages/signupStepPage';
+import SignupSuccessPage from './@pages/signupSuccessPage';
+import TrackPostPage from './@pages/trackPostPage';
+import UploadPage from './@pages/uploadPage';
+
+import ErrorPage from './@pages/errorPage';
+import ForgotPasswordPage from './@pages/forgotPasswordPage';
+import LoginPage from './@pages/loginPage';
+import ProfileEditPage from './@pages/profileEditPage';
+import ResetPasswordPage from './@pages/resetPasswordPage';
+import TrackSearchPage from './@pages/trackSearchPage';
+import UploadEditPage from './@pages/uploadEditPage';
+import VocalProfilePage from './@pages/vocalProfilePage';
+import VocalSearchPage from './@pages/vocalSearchPage';
+import PrivateRoute from './utils/common/privateRouter';
+import HomePage from './@pages/homePage';
+import EventPage from './@pages/eventPage';
+import AdminPage from './@pages/adminPage';
+import AboutPage from './@pages/aboutPage';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" index element={<MainPage />} />
-        <Route path="/login" index element={<LoginPage />} />
-        <Route path="/track-search" index element={<TrackSearchPage />} />
-        <Route path="/vocal-search" index element={<VocalsPage />} />
-        <Route path="/track-post/:beatId" index element={<TrackPostPage />} />
-
-        {/* 반드시 인증 필요 */}
-        <Route element={<PrivateRoute authentication={true} />}>
-          <Route path="/track-post/edit/:beatId" element={<TrackPostEditPage />} />
-          <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
-          <Route path="/portfolio-edit/producer/:portfolioId" element={<ProducerPortfolioEditPage />} />
-          <Route path="/portfolio-edit/vocal/:portfolioId" element={<VocalPortfolioEditPage />} />
-          <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
-          <Route path="/upload/:producerUploadType" element={<UploadPage />} />
-        </Route>
-
-        <Route path="/forgot-password" index element={<ForgotPasswordPage />} />
-        <Route path={"/reset-password/:token"} index element={<ResetPasswordPage />} />
-        <Route path="/sign-up" index element={<SignUpPage />} />
-
-        {/* 반드시 인증 필요 */}
-        <Route element={<PrivateRoute authentication={true} />}>
-          <Route path="/profile-edit/producer/:id" element={<ProducerProfileEditPage />} />
-          <Route path="/profile-edit/vocal/:id" element={<VocalProfileEditPage />} />
-        </Route>
-
+        <Route path="/" element={<HomePage />} />
+        {/* <Route path="/main" element={<HomePage />} /> */}
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/event" element={<EventPage />} />
+        <Route path="/event/:eventId" element={<EventPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/signup" element={<SignupStepPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="/track-search" element={<TrackSearchPage />} />
+        <Route path="/vocal-search" element={<VocalSearchPage />} />
+        <Route path="/track-post/:id" element={<TrackPostPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<ErrorPage />} />
+
+        {/* 반드시 인증 필요 */}
+        <Route element={<PrivateRoute authentication={true} />}>
+          <Route path="/signup/profile" element={<SignupProfilePage />} />
+          <Route path="/signup/success" element={<SignupSuccessPage />} />
+          <Route path="/upload/vocal/portfolio" element={<UploadPage />} />
+          <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
+          <Route
+            path="/portfolio-edit/producer/:trackId"
+            element={<UploadEditPage />}
+          />
+          <Route
+            path="/vocal-searching-edit/producer/:trackId"
+            element={<UploadEditPage />}
+          />
+          <Route
+            path="/portfolio-edit/vocal/:trackId"
+            element={<UploadPage />}
+          />
+          <Route path="/profile-edit" element={<ProfileEditPage />} />
+          <Route
+            path="/vocal-profile/:vocalId"
+            element={<VocalProfilePage />}
+          />
+          <Route
+            path="/producer-profile/:producerId"
+            element={<ProducerProfilePage />}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

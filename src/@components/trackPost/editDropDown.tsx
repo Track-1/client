@@ -1,43 +1,46 @@
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
-import { deleteTrack } from "../../core/api/delete";
-import { useMutation } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useDeleteTrack } from "../../hooks/queries/tracks";
+import { TrackDetailType } from "../../type/tracks";
+import { useContext } from "react";
+import { PlayerContext } from "../../context/playerContext";
 
-export default function EditDropDown(props: any) {
-  const { trackInfoData } = props;
+interface EditDropDownProps {
+  trackDetail: TrackDetailType | undefined;
+}
+
+export default function EditDropDown(props: EditDropDownProps) {
+  const { trackDetail } = props;
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { beatId } = useParams();
+  const { deleteTrack } = useDeleteTrack();
+  const prevURL = useLocation().pathname;
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
-  const { mutate } = useMutation(deleteTrackAPI, {
-    onSuccess: () => {
-      navigate(-1);
-    },
-    onError: (error) => {
-      console.log("에러!!", error);
-    },
-  });
-
-  async function deleteTrackAPI() {
-    return await deleteTrack(beatId);
+  function handleMoveTrackPostEditPage() {
+    quitAudioForMovePage();
+    navigate(`/vocal-searching-edit/producer/${id}`, {
+      state: {
+        prevURL: prevURL,
+        uploadEditInitData: trackDetail,
+      },
+    });
   }
 
-  function deleteOwnTrack(): void {
-    mutate();
-  }
-
-  function moveTrackPostEditPage() {
-    navigate(`/track-post/edit/${beatId}`, { state: { id: beatId, prevData: trackInfoData } });
+  function handleDeleteTrack() {
+    deleteTrack(Number(id));
+    navigate("/track-search");
   }
 
   return (
     <DropDownContainer>
-      <EditWrapper onClick={moveTrackPostEditPage}>
+      <EditWrapper onClick={handleMoveTrackPostEditPage}>
         <EditText>수정하기</EditText>
         <EditIc />
       </EditWrapper>
       <DivisionBar />
-      <DeleteWrapper onClick={deleteOwnTrack}>
+      <DeleteWrapper onClick={handleDeleteTrack}>
         <DeleteText>삭제하기</DeleteText>
         <DeleteIc />
       </DeleteWrapper>
@@ -46,8 +49,12 @@ export default function EditDropDown(props: any) {
 }
 
 const DropDownContainer = styled.ul`
+  position: absolute;
+
   height: 11.2rem;
   width: 20.1rem;
+
+  margin: 6rem 0 0 26rem;
 
   background-color: ${({ theme }) => theme.colors.gray4};
 
@@ -55,8 +62,6 @@ const DropDownContainer = styled.ul`
   ${({ theme }) => theme.fonts.comment}
 
   border-radius: 0.5rem;
-
-  margin-left: 25rem;
 
   cursor: pointer;
 `;
@@ -78,6 +83,7 @@ const DivisionBar = styled.div`
 
   background-color: ${({ theme }) => theme.colors.gray3};
 `;
+
 const DeleteWrapper = styled.li`
   height: 50%;
 

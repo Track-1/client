@@ -1,60 +1,57 @@
-import React, { useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MoveTouploadPortfolioButtonIc, MoveTouploadVocalSearchingButtonIc } from "../../assets";
-import { profileCategory } from "../../core/constants/pageCategory";
+import useModal from "../../hooks/common/useModal";
 
-interface PropsType {
-  visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function ProducerUploadModal(props: PropsType) {
-  const { visible, setVisible } = props;
-  const location = useLocation();
-  const preLocation = location.pathname.split("/")[1];
+export default function ProducerUploadModal() {
+  const { modalRef } = useModal();
 
   const navigate = useNavigate();
-  const modalRef = useRef<HTMLUListElement>(null);
+  const prevURL = useLocation().pathname;
 
-  function moveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: preLocation } });
+  function handleMoveVocalSearching() {
+    navigate("/upload/producer/vocal-searching", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
-  function movePortfolio() {
-    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: preLocation } });
+  function handleMovePortfolio() {
+    navigate("/upload/producer/portfolio", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
-
-  function isClickedOutside(e: MouseEvent) {
-    return visible && !modalRef.current?.contains(e.target as Node);
-  }
-
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e)) {
-      setVisible(false);
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [visible]);
 
   return (
-    <ModalWrapper ref={modalRef}>
-      <MoveTouploadVocalSearchingButtonIcon onClick={moveVocalSearching} />
-      <MoveTouploadPortfolioButtonIcon onClick={movePortfolio} />
-    </ModalWrapper>
+    <>
+      <ModalWrapper>
+        <MoveTouploadVocalSearchingButtonIcon onClick={handleMoveVocalSearching} />
+        <MoveTouploadPortfolioButtonIcon onClick={handleMovePortfolio} />
+      </ModalWrapper>
+      <ModalBackground ref={modalRef} />
+    </>
   );
 }
+
+const ModalBackground = styled.div`
+  position: absolute;
+  width: 120vw;
+  height: 100vw;
+
+  margin-left: calc(-50vw);
+  margin-top: calc(-60vw);
+`;
 
 const ModalWrapper = styled.section`
   display: flex;
   flex-direction: column;
 
   margin: 2.5rem 0 0 13.6rem;
+  position: absolute;
+  z-index: 2;
 
   cursor: pointer;
 `;

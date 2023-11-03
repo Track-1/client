@@ -1,21 +1,13 @@
-import React from "react";
 import styled from "styled-components";
 import { SignUpModalXIc } from "../../assets";
-import { checkConventionType } from "../../utils/convention/checkConventionType";
-import { useRecoilState } from "recoil";
-import { openConventionModal, openConventionPolicy } from "../../recoil/conventionModal";
-import { useRecoilValue } from "recoil";
+import useConventionModal from "../../hooks/common/useConventionModal";
+import { checkConventionType } from "../../utils/common/convention/checkConventionType";
 
 export default function ConventionModal() {
-  const [showModal, setShowModal] = useRecoilState<boolean>(openConventionModal);
-  const policy = useRecoilValue<string>(openConventionPolicy);
+  const { conventionModalInform, showConventionModal, closeModal } = useConventionModal();
 
   function isIntroNotNull() {
-    return checkConventionType(policy)?.INTRO !== "";
-  }
-
-  function closeModal() {
-    setShowModal(false);
+    return checkConventionType(conventionModalInform?.policy)?.INTRO !== "";
   }
 
   return (
@@ -24,11 +16,11 @@ export default function ConventionModal() {
         <ModalWrapper>
           <ModalHeader>
             <SignUpModalXIcon onClick={closeModal} />
-            <Title>{checkConventionType(policy)?.TITLE}</Title>
+            <Title>{checkConventionType(conventionModalInform?.policy)?.TITLE}</Title>
           </ModalHeader>
-          <Intro intro={isIntroNotNull()}>{checkConventionType(policy)?.INTRO}</Intro>
+          <Intro intro={isIntroNotNull()}>{checkConventionType(conventionModalInform?.policy)?.INTRO}</Intro>
           <Contents intro={isIntroNotNull()}>
-            {checkConventionType(policy)?.CONTENTS.map((content, index) => (
+            {checkConventionType(conventionModalInform?.policy)?.CONTENTS.map((content, index) => (
               <div>
                 <p dangerouslySetInnerHTML={{ __html: content }}></p>
                 <br />
@@ -46,8 +38,8 @@ const ModalBackground = styled.div`
   justify-content: center;
   align-items: center;
 
-  position: relative;
-  z-index: 100;
+  position: absolute;
+  z-index: 20;
 
   width: 192rem;
   height: 108rem;

@@ -1,44 +1,32 @@
-import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { PortfolioIc, UnionIc, VocalSearchingIc, PortfolioTextIc, VocalSearchingTextIc } from "../../assets";
-import { uploadButtonClickedInTrackList } from "../../recoil/uploadButtonClicked";
+import { PortfolioIc, PortfolioTextIc, UnionIc, VocalSearchingIc, VocalSearchingTextIc } from "../../assets";
+import useModal from "../../hooks/common/useModal";
 
 export default function UploadButtonModal() {
   const navigate = useNavigate();
-
-  const [openModal, setOpenModal] = useRecoilState<boolean>(uploadButtonClickedInTrackList);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const { modalRef } = useModal();
+  const prevURL = useLocation().pathname;
 
   function moveVocalSearching() {
-    navigate("/upload/Vocal Searching", { state: { producerUploadType: "Vocal Searching", prevPage: `/trackSearch` } });
+    navigate("/upload/producer/vocal-searching", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
 
   function movePortfolio() {
-    navigate("/upload/Portfolio", { state: { producerUploadType: "Portfolio", prevPage: `/trackSearch` } });
+    navigate("/upload/producer/portfolio", {
+      state: {
+        prevURL: prevURL,
+      },
+    });
   }
-
-  function isClickedOutside(e: MouseEvent) {
-    return openModal && !modalRef.current?.contains(e.target as Node);
-  }
-
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e)) {
-      setOpenModal(false);
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [openModal]);
 
   return (
-    <ModalBg>
-      <UploadButtonModalWrapper ref={modalRef}>
+    <>
+      <UploadButtonModalWrapper>
         <VocalSearchingWrapper>
           <VocalSearchingIcon />
           <TextWrapper marginTop={2.5}>
@@ -59,15 +47,14 @@ export default function UploadButtonModal() {
         </PortfolioWrapper>
         <UnionIcon />
       </UploadButtonModalWrapper>
-    </ModalBg>
+      <ModalBg ref={modalRef} />
+    </>
   );
 }
 
 const ModalBg = styled.section`
-  /* height: 100vh;
-  width: 100vw; */
   position: fixed;
-  z-index: 10;
+  z-index: 2;
   top: 0;
   bottom: 0;
   right: 0;
@@ -75,9 +62,10 @@ const ModalBg = styled.section`
   background-color: rgba(0, 0, 0, 0.6);
 `;
 const UploadButtonModalWrapper = styled.section`
-  position: sticky;
-  margin-top: 75.5rem;
-  margin-left: 34.2rem;
+  position: fixed;
+  z-index: 3;
+  top: 75.5rem;
+  left: 34.2rem;
   pointer-events: none;
 `;
 
@@ -118,11 +106,6 @@ const TextWrapper = styled.div<{ marginTop: number }>`
   cursor: pointer;
 `;
 
-const Title = styled.h1`
-  ${({ theme }) => theme.fonts.cations};
-  color: ${({ theme }) => theme.colors.white};
-`;
-
 const Explain = styled.p`
   ${({ theme }) => theme.fonts.description};
   color: ${({ theme }) => theme.colors.gray3};
@@ -130,10 +113,7 @@ const Explain = styled.p`
 
 const UnionIcon = styled(UnionIc)`
   width: 30.4rem;
-
-  @media (min-width: 1200px) and (max-width: 1799px) {
-    margin-top: -2rem;
-  }
+  height: 17rem;
 `;
 
 const VocalSearchingTextIcon = styled(VocalSearchingTextIc)`

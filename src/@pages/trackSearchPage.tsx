@@ -1,153 +1,79 @@
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-
-import CategoryHeader from "../@components/@common/categoryHeader";
-import CategoryList from "../@components/@common/categoryList";
-import TrackListHeader from "../@components/trackSearch/trackListHeader";
-import TrackList from "../@components/trackSearch/trackList";
+import Filter from "../@components/@common/filter";
+import Header from "../@components/@common/header";
 import Player from "../@components/@common/player";
+import TrackList from "../@components/trackSearch/trackList";
+import TrackSearchHeader from "../@components/trackSearch/trackSearchHeader/trackSearchHeader";
+import UploadButtonModal from "../@components/trackSearch/uploadButtonModal";
+import { UploadButtonIc } from "../assets";
+import { PlayerProvider } from "../context/playerContext";
+import useModal from "../hooks/common/useModal";
+import { loginUserType } from "../recoil/common/loginUserData";
+import { blockAccess } from "../utils/common/privateRouter";
+import React from "react";
+import HomeLogo from "../@components/@common/homeLogo";
 
-import { showPlayerBar, playMusic } from "../recoil/player";
-import { tracksOrVocalsCheck } from "../recoil/tracksOrVocalsCheck";
+const Wrapper = styled.section`
+  display: flex;
+  justify-content: space-around;
+`;
 
-import { useRecoilState, useRecoilValue } from "recoil";
-import { Category } from "../core/constants/categoryHeader";
-import { useState, useEffect } from "react";
+const UploadButtonIcon = styled(UploadButtonIc)`
+  position: fixed;
+  top: 81.3rem;
+  left: 7.5rem;
+  width: 24.6rem;
 
-import { getTracksData } from "../core/api/trackSearch";
-import { TracksDataType } from "../type/tracksDataType";
-
-import { QueryClient, useInfiniteQuery } from "react-query";
-import { categorySelect, clickCategoryHeader } from "../recoil/categorySelect";
-import usePlayer from "../utils/hooks/usePlayer";
-import { AudioInfosType } from "../type/audioTypes";
-import useInfiniteScroll from "../utils/hooks/useInfiniteScroll";
-import useInfiniteKey from "../utils/hooks/useInfiniteKey";
-import Loading from "../@components/@common/loading";
-import { reload } from "../recoil/main";
-import { useLocation } from "react-router-dom";
+  cursor: pointer;
+`;
 
 export default function TrackSearchPage() {
-  const [tracksData, setTracksData] = useState<TracksDataType[]>([]);
-  const { key, excuteGetData } = useInfiniteKey();
-
-  const [audioInfos, setAudioInfos] = useState({});
-
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [whom, setWhom] = useRecoilState(tracksOrVocalsCheck);
-  const [showPlayer, setShowPlayer] = useRecoilState<boolean>(showPlayerBar);
-  const filteredUrlApi = useRecoilValue(categorySelect);
-  const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
-  const [pageParam, setPageParam] = useState<number>(1);
-
-  const [isClickedCategory, setIsClickedCategory] = useRecoilState(clickCategoryHeader);
-  const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
-  const [isReload, setIsReload] = useRecoilState<boolean>(reload);
-  const [isEnd, setIsEnd] = useState<boolean>(false);
-  const { progress, audio, playPlayerAudio, pausesPlayerAudio, closePlayer } = usePlayer();
+  const { openModal, showModal, unShowModal } = useModal();
+  const userType = useRecoilValue(loginUserType);
+  const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
 
   useEffect(() => {
-    isReload && window.location.reload();
-    //isReload&&excuteGetData();
-    setIsReload(false);
+    openModal && unShowModal();
   }, []);
 
-  window.onpopstate = function (event) {
-    pausesPlayerAudio();
-    closePlayer();
-  };
-
-  useEffect(() => {
-    if (isCategorySelected) {
-      setTracksData([]);
-
-      excuteGetData();
-    }
-  }, [filteredUrlApi]);
-
-  async function getData(page: number) {
-    if (hasNextPage !== false) {
-      const response = await getTracksData(filteredUrlApi, page);
-      setTracksData((prev) => [...prev, ...response]);
-      return {
-        response,
-        nextPage: page + 1,
-      };
-    }
-  }
-
-  const { data, isSuccess, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    key,
-    ({ pageParam = 1 }) => getData(pageParam), //다음 스크롤로 정보를 받아옴 console.log(lastPage)
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.response.length !== 0 ? lastPage?.nextPage : undefined;
-      },
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
-
-  useEffect(() => {
-    setWhom(Category.TRACKS);
-    setShowPlayer(false);
-  }, []);
-
-  function getInfos(currentInfos: AudioInfosType) {
-    setAudioInfos(currentInfos);
+  function moveUploadPage() {
+    blockAccess()
+      ? navigate("/login", {
+          state: {
+            prevURL: prevURL,
+          },
+        })
+      : userType === "producer"
+      ? openModal
+        ? unShowModal()
+        : showModal()
+      : alert("Please use this function after producer logging in.\n해당 기능은 프로듀서로 로그인 후 이용해주세요.");
   }
 
   return (
     <>
-      {isLoading && <Loading />}
-      <CategoryHeader excuteGetData={excuteGetData} pausesPlayerAudio={pausesPlayerAudio} />
-      <TrackSearchPageWrapper>
-        <CategoryListWrapper>
-          <CategoryList pausesPlayerAudio={pausesPlayerAudio} setIsCategorySelected={setIsCategorySelected} />
-        </CategoryListWrapper>
-        <TrackListWrapper>
-          <TrackListHeader />
-          {tracksData && (
-            <TrackList
-              audio={audio}
-              pauseAudio={pausesPlayerAudio}
-              tracksData={tracksData}
-              getInfos={getInfos}
-              excuteGetData={excuteGetData}
-              key={key}
-            />
-          )}
-        </TrackListWrapper>
-      </TrackSearchPageWrapper>
-      {showPlayer && (
-        <Player
-          audio={audio}
-          playAudio={playPlayerAudio}
-          pauseAudio={pausesPlayerAudio}
-          progress={progress}
-          audioInfos={audioInfos}
-          play={play}
-          setPlay={setPlay}
-        />
-      )}
-      <InfiniteWrapper ref={observerRef}></InfiniteWrapper>
+      <PlayerProvider>
+        <Header headerStyle={headerStyle}>
+          <HomeLogo />
+          <TrackSearchHeader pageType="tracks" />
+        </Header>
+        <Wrapper>
+          <Filter pageType="tracks" />
+          <UploadButtonIcon onClick={moveUploadPage} />
+          {openModal && <UploadButtonModal />}
+          <TrackList />
+          <Player />
+        </Wrapper>
+      </PlayerProvider>
     </>
   );
 }
 
-const InfiniteWrapper = styled.div`
-  width: 100%;
-  height: 2rem;
-`;
-
-const TrackSearchPageWrapper = styled.section`
-  display: flex;
-`;
-
-const CategoryListWrapper = styled.article`
-  width: 32.1rem;
-`;
-
-const TrackListWrapper = styled.article`
-  width: 159.9rem;
-`;
+const headerStyle: React.CSSProperties = {
+  position: "sticky",
+  top: "0",
+};

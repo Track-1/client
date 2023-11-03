@@ -1,69 +1,55 @@
-import React from 'react'
-import styled from 'styled-components'
-import { SignUpResendButtonIc, SignupSendcodeTextIc } from '../../assets'
-import { verificationCodeInvalidMessage } from '../../core/userInfoErrorMessage/verificationCodeInvalidMessage';
-import { emailInvalidMessage } from '../../core/userInfoErrorMessage/emailInvalidMessage';
+import styled from "styled-components";
+import { ResendSignupIc, SendCodeSignupIc } from "../../assets";
 
-interface ButtonPropsType{
-  isEmailSuccess:boolean;
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
-  isSendCode:boolean;
-  isResendCode:boolean;
-  emailMessage:string;
+interface SendCodeButtonProps {
+  isActive: boolean;
+  isResend: boolean;
 }
 
-export default function SendCodeButton(props:ButtonPropsType) {
-  const {isEmailSuccess, onClick, isSendCode, isResendCode, emailMessage}=props;
-
-  function checkEmailVerify(){
-    return emailMessage===emailInvalidMessage.VERIFY
-  }
-
-  function checkEmailDuplication(){
-    return emailMessage===emailInvalidMessage.DUPLICATION
-  }
-
-  function checkEmailTime(){
-    return emailMessage===emailInvalidMessage.TIME
-  }
-
-  function checkEmailSuccess(){
-    return emailMessage===emailInvalidMessage.SUCCESS
-  }
-
-  function checkEmail(){
-    return (emailMessage===emailInvalidMessage.SUCCESS||emailMessage===emailInvalidMessage.TIME||emailMessage===emailInvalidMessage.ING)&&true;
-  }
-
-  function isActive(){
-    return checkEmail()&&true;
-  }
+export default function SendCodeButton(props: SendCodeButtonProps) {
+  const { isActive, isResend } = props;
 
   return (
-    <ButtonWrapper isActive={isActive()} onClick={onClick}>
-        {checkEmailTime()?<SignUpResendButtonIcon/>:<SignupSendcodeTextIcon/>}
-    </ButtonWrapper>
-  )
+    <SendCodButtonWrapper isActive={isActive}>
+      {isResend ? <ResendSignupIcon /> : <SendCodeSignupIcon />}
+      <SendCodeBtn type="submit" />
+    </SendCodButtonWrapper>
+  );
 }
 
-const ButtonWrapper=styled.button<{isActive:boolean}>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const SendCodButtonWrapper = styled.label<{ isActive: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    width: 12.7rem;
-    height: 4rem;
+  margin-left: 1rem;
+  margin-top: -2.5rem;
 
-    margin: 2.4rem 0 0 1rem;
+  width: 12.7rem;
+  height: 4rem;
 
-    border-radius: 5rem;
-    background-color: ${({ theme,isActive }) => isActive?theme.colors.main:theme.colors.gray4};
-`
+  border-radius: 5rem;
 
-const SignupSendcodeTextIcon=styled(SignupSendcodeTextIc)`
+  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
+  border-radius: 2.2rem;
+
+  cursor: pointer;
+`;
+
+const SendCodeBtn = styled.input`
+  display: none;
+`;
+
+const SendCodeSignupIcon = styled(SendCodeSignupIc)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 9.3rem;
-`
+`;
 
-const SignUpResendButtonIcon=styled(SignUpResendButtonIc)`
+const ResendSignupIcon = styled(ResendSignupIc)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 6.3rem;
-`
+`;

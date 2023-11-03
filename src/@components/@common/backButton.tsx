@@ -1,18 +1,24 @@
+import { useContext } from "react";
 import styled from "styled-components";
-import { BackBtnIc, BackButtonIc } from "../../assets";
-import { useNavigate } from "react-router-dom";
+import { BackButtonIc } from "../../assets";
+import { PlayerContext } from "../../context/playerContext";
+import usePrevPage from "../../hooks/common/usePrevPage";
 
-export default function BackButton(props: any) {
-  const { pauseAudio } = props;
-  // const navigate = useNavigate();
+interface BackButtonProps {
+  staticPrevURL?: string | number;
+}
 
-  function movePreviousPage() {
-    pauseAudio();
-    // navigate(-1);
-  }
+export default function BackButton(props: BackButtonProps) {
+  const { staticPrevURL } = props;
+  const { handleMovePrevPage } = usePrevPage(staticPrevURL);
+  const { quitAudioForMovePage } = useContext(PlayerContext);
 
   return (
-    <ButtonContainer onClick={movePreviousPage}>
+    <ButtonContainer
+      onClick={() => {
+        quitAudioForMovePage();
+        handleMovePrevPage();
+      }}>
       <BackButtonIcon />
     </ButtonContainer>
   );
@@ -24,12 +30,6 @@ const ButtonContainer = styled.div`
   align-items: center;
 
   cursor: pointer;
-`;
-
-const ButtonText = styled.strong`
-  ${({ theme }) => theme.fonts.id}
-
-  color: ${({ theme }) => theme.colors.white};
 `;
 
 const BackButtonIcon = styled(BackButtonIc)`

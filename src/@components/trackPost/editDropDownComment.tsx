@@ -1,87 +1,48 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { DeleteIc, EditIc } from "../../assets";
-import { useMutation, useQueryClient } from "react-query";
-import { deleteComment } from "../../core/api/trackPost";
-import { useRecoilState } from "recoil";
-import { endPost } from "../../recoil/postIsCompleted";
-import { useEffect, useRef } from "react";
+import useModal from "../../hooks/common/useModal";
+import { useDeleteComment } from "../../hooks/queries/comments";
 
-interface PropsType {
-  currentId: number;
-  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  editModalToggle: boolean;
-  setEditModalToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  setKey: any;
-  setIsDeleted: any;
+interface EditDropDownCommentProps {
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
+  commentId: number;
 }
 
-export default function EditDropDownComment(props: PropsType) {
-  const { currentId, setIsEdit, editModalToggle, setEditModalToggle, setKey, setIsDeleted } = props;
-
-  const queryClient = useQueryClient();
-  const [isEnd, setIsEnd] = useRecoilState<boolean>(endPost);
-  const modalRef = useRef<HTMLUListElement>(null);
-
-  function isClickedOutside(e: MouseEvent) {
-    return editModalToggle && !modalRef.current?.contains(e.target as Node);
-  }
-
-  function closeModal(e: MouseEvent) {
-    if (isClickedOutside(e)) {
-      setEditModalToggle(false);
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("mousedown", closeModal);
-    return () => {
-      document.removeEventListener("mousedown", closeModal);
-    };
-  }, [editModalToggle]);
-
-  const { mutate } = useMutation(() => deleteComment(currentId), {
-    onSuccess: () => {
-      //다시 업로드 하는거 해줘야된다.!
-      // queryClient.invalidateQueries("comments");
-      // setIsEnd(!isEnd);
-      setEditModalToggle(false);
-      setKey((prev: any) => prev + 1);
-      setIsDeleted(true);
-    },
-    onError: (error) => {
-      console.log("에러!!", error);
-    },
-  });
-
-  function editComment() {
+export default function EditDropDownComment(props: EditDropDownCommentProps) {
+  const { setIsEdit, commentId } = props;
+  const { modalRef, closeModal, openModal } = useModal();
+  const { deleteComment } = useDeleteComment();
+  function handleStartUpdate() {
     setIsEdit(true);
   }
 
-  function deleteTrackComment() {
+  function handleDelete() {
     if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
-      mutate();
+      deleteComment(commentId);
     }
   }
 
   return (
-    <>
-      <DropDownContainer ref={modalRef}>
-        <EditWrapper onClick={editComment}>
+    <DropDownContainer ref={modalRef}>
+      <DropDownWrapper>
+        <EditWrapper onClick={handleStartUpdate}>
           <EditText>수정하기</EditText>
           <EditIcon />
         </EditWrapper>
         <DivisionBar />
-        <DeleteWrapper onClick={deleteTrackComment}>
+        <DeleteWrapper onClick={handleDelete}>
           <DeleteText>삭제하기</DeleteText>
           <DeleteIcon />
         </DeleteWrapper>
-      </DropDownContainer>
-      <DropDownBackground></DropDownBackground>
-    </>
+      </DropDownWrapper>
+    </DropDownContainer>
   );
 }
 
-const DropDownContainer = styled.ul`
+const DropDownContainer = styled.section``;
+
+const DropDownWrapper = styled.ul`
   position: absolute;
   top: 5.8rem;
   right: 0;
@@ -115,6 +76,7 @@ const DivisionBar = styled.div`
 
   background-color: ${({ theme }) => theme.colors.gray3};
 `;
+
 const DeleteWrapper = styled.li`
   height: 50%;
 
@@ -135,11 +97,4 @@ const EditIcon = styled(EditIc)`
 const DeleteIcon = styled(DeleteIc)`
   width: 2.4rem;
   height: 2.4rem;
-`;
-
-const DropDownBackground = styled.div`
-  margin-top: -35rem;
-  margin-left: -15rem;
-  width: 120rem;
-  height: 200rem;
 `;
