@@ -67,7 +67,7 @@ export default function useControlPlayer(audio: HTMLAudioElement, playingState: 
   useEffect(() => {
     if (playingState) {
       audio.addEventListener("timeupdate", () => {
-        console.log(playingState);
+        // console.log(playingState);
         goProgress();
       });
     } else {
