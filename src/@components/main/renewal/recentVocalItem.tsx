@@ -4,6 +4,7 @@ import { PlayerContext } from "../../../context/playerContext";
 import usePlaySelectedTrack from "../../../hooks/common/usePlaySelectedTrack";
 import { FilteredVocalType } from "../../../type/vocals";
 import { PauseIc, PlayIc } from "../../../assets";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface RecentVocalItemProps {
   vocalInfo: FilteredVocalType;
@@ -24,6 +25,9 @@ export default function RecentVocalItem(props: RecentVocalItemProps) {
     selectTrack,
   );
 
+  const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
+
   useEffect(() => {
     if (!isSelected) return;
 
@@ -33,6 +37,15 @@ export default function RecentVocalItem(props: RecentVocalItemProps) {
       userName: vocalInfo.userName,
     });
   }, [playingTrack]);
+
+  function handleMoveToVocalProfile() {
+    quitAudioForMovePage();
+    navigate(`/vocal-profile/${vocalInfo.userId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
+  }
 
   return (
     <Styled.Container>
@@ -52,8 +65,11 @@ export default function RecentVocalItem(props: RecentVocalItemProps) {
       </Styled.TrackImageWrapper>
 
       <Styled.TrackInfoWrapper>
-        <Styled.TrackCategory>{vocalInfo.userCategory[0]}</Styled.TrackCategory>
-        <Styled.UserName>{vocalInfo.userName}</Styled.UserName>
+        <Styled.TrackCategoryWrapper>
+          <Styled.TrackCategory>{vocalInfo.userCategory[0]}</Styled.TrackCategory>
+          <Styled.TrackCategoryCount>{vocalInfo.userCategory.length}</Styled.TrackCategoryCount>
+        </Styled.TrackCategoryWrapper>
+        <Styled.UserName onClick={handleMoveToVocalProfile}>{vocalInfo.userName}</Styled.UserName>
         {vocalInfo.userKeyword.map((keyword) => (
           <Styled.TrackKeyword key={keyword}>#{keyword}</Styled.TrackKeyword>
         ))}
@@ -68,7 +84,7 @@ const Styled = {
 
     width: 45rem;
 
-    /* padding-bottom: 10rem; */
+    cursor: pointer;
   `,
 
   TrackImageWrapper: styled.div`
@@ -120,11 +136,35 @@ const Styled = {
     flex-direction: column;
   `,
 
-  TrackCategory: styled.p`
-    margin-bottom: 1rem;
+  TrackCategoryWrapper: styled.div`
+    display: flex;
+    align-items: center;
 
+    width: 100%;
+
+    margin-bottom: 1rem;
+  `,
+
+  TrackCategory: styled.p`
     color: ${({ theme }) => theme.colors.sub2};
     ${({ theme }) => theme.fonts.pretendard_text20};
+  `,
+
+  TrackCategoryCount: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 2rem;
+    height: 2rem;
+
+    margin-left: 0.5rem;
+
+    color: ${({ theme }) => theme.colors.white};
+    ${({ theme }) => theme.fonts.pretendard_text12};
+
+    background-color: ${({ theme }) => theme.colors.sub2};
+    border-radius: 50%;
   `,
 
   UserName: styled.p`
@@ -132,6 +172,10 @@ const Styled = {
 
     color: ${({ theme }) => theme.colors.white};
     ${({ theme }) => theme.fonts.pretendard_text22};
+
+    :hover {
+      color: ${({ theme }) => theme.colors.sub2};
+    }
   `,
 
   TrackKeyword: styled.p`

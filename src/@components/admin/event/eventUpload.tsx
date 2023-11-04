@@ -33,7 +33,6 @@ export default function EventUpload() {
     formData.append("eventIntroduction", introduction);
 
     uploadEvent(formData);
-    console.log(formData);
   }
 
   return (
@@ -98,8 +97,6 @@ const Styled = {
     justify-content: center;
 
     width: 100%;
-
-    padding-top: 14.3rem;
   `,
 
   InputContainer: styled.div`

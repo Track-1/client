@@ -65,6 +65,7 @@ export default function EventList() {
 const Styled = {
   ToggleWrapper: styled.div`
     display: flex;
+    align-items: center;
 
     ${({ theme }) => theme.fonts.pretendard_text22};
     color: ${({ theme }) => theme.colors.gray1};

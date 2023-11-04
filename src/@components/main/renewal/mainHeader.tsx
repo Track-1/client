@@ -39,7 +39,7 @@ export default function MainHeader() {
 }
 
 const headerStyle: CSSProperties = {
-  position: "fixed",
+  position: "sticky",
   zIndex: "5",
   background: `${theme.colors.black}`,
 };

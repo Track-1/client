@@ -23,10 +23,10 @@ export default function EventDetail() {
       <Styled.DetailEventImage src={eventDetailData?.eventImageFile}></Styled.DetailEventImage>
 
       <Styled.DetailInfoWrapper>
-        <div>
+        <Styled.DetailEventTitleWrapper>
           <Styled.DetailEventTitle>{eventDetailData?.eventTitle}</Styled.DetailEventTitle>
           {eventDetailData?.eventDate}
-        </div>
+        </Styled.DetailEventTitleWrapper>
         <Styled.DetailEventDescriptionWrapper>
           {eventDetailData?.eventIntroduction}
         </Styled.DetailEventDescriptionWrapper>
@@ -63,8 +63,16 @@ const Styled = {
 
   DetailInfoWrapper: styled.div`
     display: flex;
+    justify-content: space-between;
+
+    gap: 10rem;
+
     width: 100%;
     padding: 10rem 10rem 20rem 10rem;
+
+    white-space: pre-line;
+
+    user-select: text;
   `,
 
   DetailInfo: styled.div`
@@ -75,6 +83,8 @@ const Styled = {
 
     letter-spacing: -0.4px;
   `,
+
+  DetailEventTitleWrapper: styled.div``,
 
   DetailEventTitle: styled.h1`
     ${({ theme }) => theme.fonts.pretendard_heading70};

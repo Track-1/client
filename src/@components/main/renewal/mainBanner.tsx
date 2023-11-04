@@ -1,23 +1,36 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import CustomButton from "../../@common/button/customButton";
 import { theme } from "../../../style/theme";
 import { useNavigate } from "react-router-dom";
 import mainBannerImg from "../../../assets/image/mainBannerBackgroundImg.png";
+import { PlayerContext } from "../../../context/playerContext";
 
 export default function MainBanner() {
-  const navigate = useNavigate();
-
-  const bannerTexts = ["Tracks", "Vocals", "Producer"];
+  const bannerTexts = ["Tracks", "Chance", "Inspiration"];
   const [textIndex, setTextIndex] = useState(0);
+
+  const { quitAudioForMovePage } = useContext(PlayerContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
       textIndex === 2 ? setTextIndex(0) : setTextIndex(textIndex + 1);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [textIndex]);
+
+  function handleMoveVocalSearch() {
+    quitAudioForMovePage();
+    navigate("/vocal-search");
+  }
+
+  function handleMoveTrackSearch() {
+    quitAudioForMovePage();
+    navigate("/track-search");
+  }
 
   function handleMoveToSignup() {
     navigate("/signup");
@@ -36,13 +49,13 @@ export default function MainBanner() {
         </Styled.BannerText>
 
         <Styled.BannerMenuWrapper>
-          <Styled.BannerTrackMenu>{"◀ Track"}</Styled.BannerTrackMenu>
+          <Styled.BannerTrackMenu onClick={handleMoveTrackSearch}>{"◀ Track"}</Styled.BannerTrackMenu>
           <Styled.BannerSignupButtonWrapper>
             <CustomButton btnStyle={btnStyle} handleClickFunction={handleMoveToSignup}>
               {"Sing up for free"}
             </CustomButton>
           </Styled.BannerSignupButtonWrapper>
-          <Styled.BannerVocalMenu>{"Vocal ▶"}</Styled.BannerVocalMenu>
+          <Styled.BannerVocalMenu onClick={handleMoveVocalSearch}>{"Vocal ▶"}</Styled.BannerVocalMenu>
         </Styled.BannerMenuWrapper>
 
         <Styled.DivisionLine />
@@ -74,7 +87,6 @@ const Styled = {
   Container: styled.section`
     width: 100%;
 
-    padding-top: 14.3rem;
     margin-bottom: 14.3rem;
   `,
 
@@ -89,6 +101,7 @@ const Styled = {
 
     background: url(${mainBannerImg});
     background-repeat: no-repeat;
+    background-size: cover;
   `,
 
   BannerText: styled.h1`
@@ -191,14 +204,14 @@ const Styled = {
     display: flex;
     justify-content: space-between;
 
-    width: 100%;
+    width: 102.5rem;
   `,
 
   AnimateText: styled.span`
     width: 47.4rem;
 
     text-align: center;
-    animation: animated-text 3s infinite;
+    animation: animated-text 4s infinite;
 
     @keyframes animated-text {
       0% {

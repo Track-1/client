@@ -72,22 +72,29 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
     & > button {
     ${({ pageType, isChecked }) =>
       pageType === "tracks" &&
-      isChecked &&
-      css`
-        color: ${({ theme }) => theme.colors.sub1};
-      `}
+      (isChecked
+        ? css`
+            color: ${({ theme }) => theme.colors.sub1};
+          `
+        : css`
+            color: ${({ theme }) => theme.colors.sub1};
+            display: none;
+          `)}
 
     ${({ pageType, isChecked }) =>
       pageType === "vocals" &&
-      isChecked &&
-      css`
-        color: ${({ theme }) => theme.colors.sub2};
-      `}
+      (isChecked
+        ? css`
+            color: ${({ theme }) => theme.colors.sub2};
+          `
+        : css`
+            color: ${({ theme }) => theme.colors.sub2};
+            display: none;
+          `)}
   }
 `;
 
-const CategoryCancelButton = styled.button<{ pageType: PageType; isChecked?: boolean }>`
-  display: ${({ isChecked }) => (isChecked !== undefined && !isChecked ? "none" : "block")};
+const CategoryCancelButton = styled.button`
   margin-right: 2rem;
 `;
 
@@ -160,7 +167,7 @@ export default function Filter(props: FilterProps) {
             <CheckBox.Indicator asChild>
               <CategoryItem pageType={pageType}>
                 <CheckBox.Label>{category}</CheckBox.Label>
-                <CategoryCancelButton pageType={pageType}>X</CategoryCancelButton>
+                <CategoryCancelButton>X</CategoryCancelButton>
               </CategoryItem>
             </CheckBox.Indicator>
           </CheckBox>

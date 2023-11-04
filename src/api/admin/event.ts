@@ -22,7 +22,6 @@ export async function getEventDetail(eventId: number) {
 }
 
 export async function postEvent(formData: FormData) {
-  console.log(formData);
   const { data } = await client.post<DefaultResponseType>(
     ADMIN.EVENT,
     { formData },

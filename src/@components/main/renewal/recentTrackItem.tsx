@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import usePlaySelectedTrack from "../../../hooks/common/usePlaySelectedTrack";
 import { PlayerContext } from "../../../context/playerContext";
 import { PauseIc, PlayIc } from "../../../assets";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface RecentTrackItemProps {
   trackInfo: FilteredTrackType;
@@ -25,6 +26,9 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
     selectTrack,
   );
 
+  const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
+
   useEffect(() => {
     if (!isSelected) return;
 
@@ -34,6 +38,15 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
       userName: trackInfo.trackUserName,
     });
   }, [playingTrack]);
+
+  function handleMoveToDetailPage() {
+    quitAudioForMovePage();
+    navigate(`/track-post/${trackInfo.trackId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
+  }
 
   return (
     <Styled.Container>
@@ -65,7 +78,7 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
           ))}
       </Styled.TrackImageWrapper>
       <Styled.TrackCategory>{trackInfo.trackCategory}</Styled.TrackCategory>
-      <Styled.TrackTitle>{trackInfo.trackTitle}</Styled.TrackTitle>
+      <Styled.TrackTitle onClick={handleMoveToDetailPage}>{trackInfo.trackTitle}</Styled.TrackTitle>
       <Styled.UserName>{trackInfo.trackUserName}</Styled.UserName>
     </Styled.Container>
   );
@@ -75,6 +88,8 @@ const Styled = {
   Container: styled.article`
     display: flex;
     flex-direction: column;
+
+    cursor: pointer;
   `,
 
   TrackImageWrapper: styled.div<{ isHovered: boolean }>`
@@ -126,6 +141,10 @@ const Styled = {
 
     color: ${({ theme }) => theme.colors.white};
     ${({ theme }) => theme.fonts.pretendard_text22};
+
+    :hover {
+      color: ${({ theme }) => theme.colors.sub1};
+    }
   `,
 
   TrackKeywordWrapper: styled.div`

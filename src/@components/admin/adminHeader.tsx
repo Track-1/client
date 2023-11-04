@@ -35,7 +35,7 @@ export default function AdminHeader() {
 }
 
 const headerStyle: CSSProperties = {
-  position: "fixed",
+  position: "sticky",
   zIndex: "5",
   background: `${theme.colors.black}`,
 };

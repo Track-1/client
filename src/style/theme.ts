@@ -79,6 +79,7 @@ const fonts = {
   pretendard_text25_700: FONT({ family: false, weight: 700, size: 2.5, lineHeight: "normal" }),
   pretendard_text22: FONT({ family: false, weight: 500, size: 2.2, lineHeight: "normal" }),
   pretendard_text20: FONT({ family: false, weight: 400, size: 2, lineHeight: "normal" }),
+  pretendard_text12: FONT({ family: false, weight: 500, size: 1.2, lineHeight: "1.432" }),
 
   text22: FONT({ family: true, weight: 400, size: 2.2, lineHeight: "normal", renewal: true }),
   text20: FONT({ family: true, weight: 400, size: 2, lineHeight: "normal", renewal: true }),

@@ -26,7 +26,7 @@ export default function AboutUs(props: AboutUsProps) {
         <Styled.LaptopImage src={laptopImg} alt="about 배경 이미지" />
       </Styled.AboutSectionWrapper>
 
-      <Styled.AboutSectionWrapper className="backgroundImg">
+      <Styled.AboutBackgroundImageSectionWrapper>
         <Styled.AboutDescriptionText className="text-center">
           {
             "Track-1은 뮤지션의 잠재력을 펼치는 데에 집중합니다.\n번뜩이는 악상이 하나의 예술작품으로 구현되는 과정을 더욱 원활히 하고,\n보다 많은 예술가와 함께할 수 있도록 협업 기회를 제공합니다."
@@ -37,9 +37,10 @@ export default function AboutUs(props: AboutUsProps) {
             "Track-1 focuses on unleashing the potential of musicians.\nWe aim to streamline the process of transforming a brilliant melody into a work of art and offer more collaborative opportunities by bringing artists together."
           }
         </Styled.SubDescriptionText>
-
         <Styled.HeadingText className="purple">{"Discover your\nLimitless\nChance and inspiration"}</Styled.HeadingText>
+      </Styled.AboutBackgroundImageSectionWrapper>
 
+      <Styled.AboutSectionWrapper className="last_wrapper">
         <Styled.AboutDescriptionText>
           {
             "뮤직 트랙에 담긴 영감과 잠재력이 무한하듯, 눈 앞에 펼쳐진 가능성의 트랙도 끝이 없습니다.\n작업실에서의 흥얼거림이 세상을 흔드는 파동이 될 수 있도록,\n잠재된 수많은 트랙을 발견하고 세상 밖으로 꺼낼 수 있도록, 우리는 준비하고 기다립니다."
@@ -56,9 +57,37 @@ export default function AboutUs(props: AboutUsProps) {
 }
 
 const Styled = {
-  Container: styled.main`
+  AboutSection: styled.section`
     width: 100%;
-    height: 100%;
+
+    margin-top: -20.3rem;
+
+    padding-top: 14.3rem;
+  `,
+
+  AboutSectionWrapper: styled.div`
+    width: 100%;
+
+    padding: 0 10rem;
+
+    &.last_wrapper {
+      margin-top: 75.3rem;
+    }
+  `,
+
+  AboutBackgroundImageSectionWrapper: styled.div`
+    position: relative;
+
+    width: 100%;
+    height: 94.4rem;
+
+    padding: 0 10rem;
+
+    padding-top: 16.7rem;
+
+    background: url(${aboutBackgroundImg});
+    background-repeat: no-repeat;
+    background-size: cover;
   `,
 
   TapMenuWrapper: styled.ul`
@@ -83,35 +112,6 @@ const Styled = {
     }
   `,
 
-  DivisionLine: styled.hr`
-    width: 100%;
-
-    background: ${({ theme }) => theme.colors.white};
-
-    &.tap-menu {
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 50.02%, rgba(255, 255, 255, 0) 100%);
-    }
-  `,
-
-  AboutSection: styled.section`
-    width: 100%;
-    height: 393rem;
-
-    margin-top: 8rem;
-  `,
-
-  AboutSectionWrapper: styled.div`
-    width: 100%;
-
-    padding: 0 10rem;
-
-    &.backgroundImg {
-      position: absolute;
-      background: url(${aboutBackgroundImg});
-      background-repeat: no-repeat;
-    }
-  `,
-
   LaptopImage: styled.img`
     width: 100%;
 
@@ -131,8 +131,9 @@ const Styled = {
     }
 
     &.purple {
-      margin: 32.3rem 0;
-
+      position: absolute;
+      top: 85.8rem;
+      margin: 0;
       color: ${({ theme }) => theme.colors.main};
       ${({ theme }) => theme.fonts.alexandria_text148};
 
@@ -172,8 +173,6 @@ const Styled = {
 
     &.text-center {
       text-align: center;
-
-      margin-top: 16.7rem;
     }
   `,
 };
