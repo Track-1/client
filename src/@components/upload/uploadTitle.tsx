@@ -56,7 +56,17 @@ const TitleInput = styled(TextareaAutosize)`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.title};
 
+  background-color: transparent;
+
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray5};
+
+  outline: none;
+  word-wrap: break-word;
+  word-break: break-word;
+  background: transparent;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
