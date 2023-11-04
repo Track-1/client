@@ -87,6 +87,7 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
 `;
 
 const CategoryCancelButton = styled.button<{ pageType: PageType; isChecked?: boolean }>`
+  display: ${({ isChecked }) => (isChecked !== undefined && !isChecked ? "none" : "block")};
   margin-right: 2rem;
 `;
 
