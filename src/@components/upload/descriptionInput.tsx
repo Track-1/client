@@ -17,7 +17,7 @@ export default function DescriptionInput(props: DescriptionInputProps) {
 
   function handleDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const enterCount = checkEnterCount(e);
-    enterCount < TEXT_LIMIT.ENTER_COUNT && handleChangeDescription(e);
+    enterCount < TEXT_LIMIT.INTRODUCE_ENTER_COUNT && handleChangeDescription(e);
   }
 
   return (
