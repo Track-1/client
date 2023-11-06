@@ -1,15 +1,22 @@
 import { ReactElement } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { checkIsCookieAuthenticated, checkIsCookieNull, checkIsLogin } from "./checkIsLogined";
+import { useRecoilValue } from "recoil";
+import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
+import { ROLE } from "../../core/common/roleType";
 
 interface PrivateRouteProps {
   children?: ReactElement; // Router.tsx에서 PrivateRoute가 감싸고 있는 Componet Element
-  authentication: boolean; // true :인증을 반드시 해야하만 접속가능, false : 인증을 반드시 안해야만 접속 가능
+  authentication: boolean | "admin"; // true :인증을 반드시 해야하만 접속가능, false : 인증을 반드시 안해야만 접속 가능
 }
 
 export default function PrivateRoute({ authentication }: PrivateRouteProps): any {
   const prevURL = useLocation().state?.prevURL;
   const navigate = useNavigate();
+
+  const userId = useRecoilValue(loginUserId);
+  const userType = useRecoilValue(loginUserType);
+
   if (authentication) {
     // 인증이 반드시 필요한 페이지
     // 인증을 안했을 경우 로그인 페이지로, 했을 경우 해당 페이지로
@@ -21,8 +28,23 @@ export default function PrivateRoute({ authentication }: PrivateRouteProps): any
         },
       });
       return <Navigate to="/login" />;
+    } else if (authentication === "admin") {
+      if (checkIsLogin() && isAdmin()) {
+        //이 부분 api만들어서 해야할듯!!
+        return <Outlet />;
+      } else {
+        return <Navigate to="/" />;
+      }
     } else {
       return <Outlet />;
+    }
+  }
+
+  function isAdmin() {
+    if (userType === ROLE.PRODUCER) {
+      return userId === 8;
+    } else {
+      return userId === 6;
     }
   }
 }
