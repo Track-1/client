@@ -1,7 +1,8 @@
-import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { getEventDetail, getEventList, postEvent } from "../../../api/admin/event";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
+import { deleteEvent, getEventDetail, getEventList, patchEvent, postEvent } from "../../../api/admin/event";
 import { QUERIES_KEY } from "../../../core/common/queriesKey";
-import { EventInfoType, EventListParamsType } from "../../../type/event";
+import { EditEventInfoType, EventInfoType, EventListParamsType } from "../../../type/event";
+import { useNavigate } from "react-router-dom";
 
 export function useGetEventList(params: EventListParamsType) {
   const fetchEvents = async (pageParams: number) => {
@@ -38,19 +39,62 @@ export function useGetEventDetail(eventId: number) {
     onError: (err) => {
       console.log(err);
     },
+    enabled: eventId !== -1,
   });
 
   return { eventDetailData };
 }
 
 export function useUploadEvent() {
+  const navigate = useNavigate();
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postEvent(formData),
-    onSuccess: () => {},
+    onSuccess: () => {
+      navigate(-1);
+    },
     onError: () => {},
   });
   return {
     uploadEvent: mutate,
+    ...restValues,
+  };
+}
+
+export function useDeleteEvent() {
+  const queryClient = useQueryClient();
+
+  const { mutate, ...restValues } = useMutation({
+    mutationFn: (eventId: number) => deleteEvent(eventId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_EVENT_LIST);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return {
+    deleteEvent: mutate,
+    ...restValues,
+  };
+}
+
+export function usePatchEvent() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { mutate, ...restValues } = useMutation({
+    mutationFn: (eventInfo: EditEventInfoType) => patchEvent(eventInfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES_KEY.GET_EVENT_LIST);
+      navigate(-1);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return {
+    patchEvent: mutate,
     ...restValues,
   };
 }
