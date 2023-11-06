@@ -1,5 +1,5 @@
 import { DefaultResponseType, EventDetailResponse, EventListResponse } from "../../type/api";
-import { EventListParamsType } from "../../type/event";
+import { EditEventInfoType, EventListParamsType } from "../../type/event";
 import { getCookie } from "../../utils/common/cookie";
 import { client } from "../common/client";
 import { ADMIN } from "../path";
@@ -22,16 +22,22 @@ export async function getEventDetail(eventId: number) {
 }
 
 export async function postEvent(formData: FormData) {
-  const { data } = await client.post<DefaultResponseType>(
-    ADMIN.EVENT,
-    { formData },
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
-      },
+  const { data } = await client.post<DefaultResponseType>(ADMIN.EVENT, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${getCookie("accessToken")}`,
     },
-  );
+  });
 
   return data.data;
+}
+
+export async function deleteEvent(eventId: number) {
+  const { data } = await client.delete<DefaultResponseType>(ADMIN.EVENT_DETAIL(eventId));
+  return data;
+}
+
+export async function patchEvent(eventInfo: EditEventInfoType) {
+  const { data } = await client.patch<DefaultResponseType>(ADMIN.EVENT_DETAIL(eventInfo.eventId), eventInfo.formData);
+  return data;
 }

@@ -13,9 +13,12 @@ export interface EventInfoType {
   eventIntroduction?: string;
 }
 
-
 export interface EventListType {
   hasNextPage: boolean;
   eventList: EventInfoType[];
 }
 
+export interface EditEventInfoType {
+  formData: FormData;
+  eventId: number;
+}

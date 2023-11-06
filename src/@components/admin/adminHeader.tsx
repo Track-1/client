@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 export default function AdminHeader() {
   const navigate = useNavigate();
 
-  function handleMoveHome() {
-    navigate("/");
+  function handleMoveEventMenu() {
+    navigate("/admin/event");
   }
 
-  function handleMoveEvent() {
-    navigate("/admin/event");
+  function handleMoveHome() {
+    navigate("/");
   }
 
   return (
@@ -23,7 +23,7 @@ export default function AdminHeader() {
         <Styled.NavMenuContainer>
           <Styled.NavMenuWrapper>
             <Styled.NavMenu>About</Styled.NavMenu>
-            <Styled.NavMenu onClick={handleMoveEvent}>Event</Styled.NavMenu>
+            <Styled.NavMenu onClick={handleMoveEventMenu}>Event</Styled.NavMenu>
           </Styled.NavMenuWrapper>
 
           <Styled.DivisionLine />
