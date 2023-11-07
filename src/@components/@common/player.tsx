@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { PlayerPlayIc, PlayerQuitIc, PlayerStopIc } from "../../assets";
 import { PlayerContext } from "../../context/playerContext";
@@ -192,6 +192,12 @@ export default function Player({ comment }: PlayerProps) {
     quitAudio();
     closeAudioPlayer();
   }
+
+  useEffect(() => {
+    if (currentTimeText === totalTimetext) {
+      stopContextState();
+    }
+  }, [currentTimeText]);
 
   return showPlayer ? (
     <PlayerContainer>
