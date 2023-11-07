@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
+import { CommentsPlayerContext } from ".";
 import { PlayerContext } from "../../context/playerContext";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 
@@ -8,9 +9,10 @@ export default function AudioJacketImage() {
   const { id } = useParams();
   const { trackDetail } = useTrackDetail(Number(id));
   const { contextPlaying } = useContext(PlayerContext);
+  const { contextPlaying: commentContextPlaying } = useContext(CommentsPlayerContext);
 
   return (
-    <PlayImageWrapper isPlay={contextPlaying}>
+    <PlayImageWrapper isPlay={!commentContextPlaying && contextPlaying}>
       <PlayerImage src={trackDetail?.trackImageFile} alt="재생 이미지" />
     </PlayImageWrapper>
   );
