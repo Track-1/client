@@ -10,6 +10,8 @@ const PlayerContainer = styled.section`
   bottom: 0;
   pointer-events: none;
 
+  z-index: 10;
+
   display: flex;
 
   width: 192rem;

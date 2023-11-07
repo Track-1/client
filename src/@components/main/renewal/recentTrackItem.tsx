@@ -41,11 +41,7 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
 
   function handleMoveToDetailPage() {
     quitAudioForMovePage();
-    navigate(`/track-post/${trackInfo.trackId}`, {
-      state: {
-        prevURL: prevURL,
-      },
-    });
+    navigate(`/track-post/${trackInfo.trackId}`);
   }
 
   return (

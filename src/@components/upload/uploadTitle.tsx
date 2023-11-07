@@ -4,6 +4,7 @@ import { TEXT_LIMIT } from "../../core/common/textLimit";
 import { theme } from "../../style/theme";
 import { TextLengthWrapper } from "./descriptionInput";
 import TextareaAutosize from "react-textarea-autosize";
+import { checkEnterCount } from "../../utils/common/checkEnterCount";
 
 interface UploadTitleProps {
   title: string;
@@ -14,8 +15,9 @@ export default function UploadTitle(props: UploadTitleProps) {
   const { title, handleChangeTitle } = props;
 
   function handleChangeInputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    e.target.value = e.target.value.replace("\n", "");
-    handleChangeTitle(e);
+    const enterCount = checkEnterCount(e);
+
+    enterCount <= TEXT_LIMIT.TITLE_ENTER_COUNT && handleChangeTitle(e);
   }
 
   return (
@@ -52,6 +54,7 @@ const Empty = styled.div`
 
 const TitleInput = styled(TextareaAutosize)`
   width: 100%;
+  max-height: 13.4rem;
 
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.title};

@@ -145,7 +145,7 @@ export default function TrackPost() {
 
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
-          <BackButton />
+          <BackButton staticPrevURL={"/track-search"} />
           <TrackPostInform>
             <AudioTitle />
             <ProducerProfile />
