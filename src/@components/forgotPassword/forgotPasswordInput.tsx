@@ -8,7 +8,7 @@ import { theme } from "../../style/theme";
 import { UserType } from "../../type/common/userType";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { Switch } from "../@common/switch";
-import { FormContainer, InputContainer, InputTitle } from "../@common/styledComponents";
+import { FormContainer, InputContainer100, InputTitle } from "../@common/styledComponents";
 import { RequestPasswordButtonType } from "../../type/user";
 
 export default function ForgotPasswordInput() {
@@ -54,7 +54,7 @@ export default function ForgotPasswordInput() {
   return (
     <PasswordContainer>
       <FormTitle>Forgot password?</FormTitle>
-      <InputContainer>
+      <InputContainer100>
         <div>
           <InputTitle>What’s your email?</InputTitle>
           <form onSubmit={requestResetPassword}>
@@ -72,7 +72,7 @@ export default function ForgotPasswordInput() {
             <ErrorMessage>{errors.email && errors.email.message}</ErrorMessage>
           </form>
         </div>
-      </InputContainer>
+      </InputContainer100>
       <SwitchContainer>
         <Switch externalState={switchUseryType}>
           <Switch.Label onLabel="Producer Mode" offLabel="Producer Mode" />
