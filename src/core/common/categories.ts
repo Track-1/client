@@ -1,4 +1,4 @@
-import { CategoryType, UpperCategoryType } from "../../type/common/category";
+import { CategoryIdType, CategoryType, UpperCategoryType } from "../../type/common/category";
 
 export const Categories: CategoryType[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
 export const UpperCategories: UpperCategoryType[] = [
@@ -13,7 +13,7 @@ export const UpperCategories: UpperCategoryType[] = [
   "FUNK",
 ];
 
-export const CategoryId: Record<UpperCategoryType, string> = {
+export const CategoryId: Record<UpperCategoryType, CategoryIdType> = {
   "R&B": "0",
   HIPHOP: "1",
   BALLAD: "2",

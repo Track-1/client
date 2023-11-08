@@ -1,3 +1,4 @@
+import { UpperCategoryType } from "./common/category";
 import { UserType } from "./common/userType";
 
 export interface ParamsType {
@@ -28,7 +29,7 @@ export interface UserProfileType {
   userImageFile: string;
   userName: string;
   userContact: string;
-  userCategory: string[];
+  userCategory: UpperCategoryType[];
   userIntroduction: string;
   userKeyword: string[];
   userTrackSearch: boolean;
