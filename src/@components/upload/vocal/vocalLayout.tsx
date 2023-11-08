@@ -13,7 +13,7 @@ interface VocalLayoutProps {
 
 export default function VocalLayout(props: VocalLayoutProps) {
   const { previewImage, handleUploadImageFile, children } = props;
-  const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
+  const { fileHoverState, changeFileHoverState } = useFileHover();
   return (
     <Container>
       <UploadImageContainer>

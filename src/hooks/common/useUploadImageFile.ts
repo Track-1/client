@@ -4,9 +4,9 @@ import { uploadImageTypeWarningMessage } from "../../core/common/warningMessage"
 import { checkFileSize } from "../../utils/common/checkFileSize";
 import { checkImageFileType } from "../../utils/common/checkFileType";
 
-export default function useUploadImageFile() {
+export default function useUploadImageFile(prevUserImage?: string) {
   const [imageFile, setImageFile] = useState<File | Blob | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>("");
+  const [previewImage, setPreviewImage] = useState<string | null>(prevUserImage ?? "");
 
   function changePreviewImage(image: string) {
     setPreviewImage(image);
