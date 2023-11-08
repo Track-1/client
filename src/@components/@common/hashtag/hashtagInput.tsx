@@ -1,19 +1,14 @@
 import styled from "styled-components";
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
-import { KeyboardEvent, useEffect, useRef } from "react";
+import { useEffect } from "react";
+import useHashtagInput from "../../../hooks/common/useHashtagInput";
 
 interface HashtagInputProps {
-  hashtags: string[];
-  hashtagLength: number;
-  hashtagInputText: string;
-  handleAddHashtag: () => void;
-  handleRemoveHashtag: (tag: string) => void;
-  handleChangeHashtagInputText: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => void;
+  getHashtags: (hashtags: string[]) => void;
 }
 
 export default function HashtagInput(props: HashtagInputProps) {
+  const { getHashtags } = props;
   const {
     hashtags,
     hashtagLength,
@@ -21,39 +16,14 @@ export default function HashtagInput(props: HashtagInputProps) {
     handleAddHashtag,
     handleRemoveHashtag,
     handleChangeHashtagInputText,
-  } = props;
-
-  const hashtagRef = useRef<HTMLInputElement | null>(null);
-  const hashtagDeleteRef = useRef<SVGSVGElement | null>(null);
+    handleEnterHashtag,
+    hashtagRef,
+    hashtagDeleteRef,
+  } = useHashtagInput();
 
   useEffect(() => {
-    document.addEventListener("mousedown", clickOutSide);
-    return () => {
-      document.removeEventListener("mousedown", clickOutSide);
-    };
-  });
-
-  function clickOutSide(e: any) {
-    if (
-      !hashtagRef.current?.contains(e.target) &&
-      !hashtagDeleteRef.current?.contains(e.target) &&
-      hashtagRef.current?.value
-    ) {
-      handleAddHashtag();
-    }
-  }
-
-  function isDuplicateHashtag() {
-    const isDuplicate = hashtags.includes(hashtagInputText);
-    isDuplicate && alert("중복된 해시태그 입니다!");
-    return isDuplicate;
-  }
-
-  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && e.nativeEvent.isComposing === false && !isDuplicateHashtag()) {
-      handleAddHashtag();
-    }
-  }
+    getHashtags(hashtags);
+  }, [hashtags]);
 
   return (
     <>
@@ -67,7 +37,7 @@ export default function HashtagInput(props: HashtagInputProps) {
         </HashtagBox>
       ))}
 
-      {hashtags?.length < 3 && (
+      {hashtags.length < 3 && (
         <HashtagBox>
           <HashtagWrapper>
             <HashtagSharp># </HashtagSharp>
@@ -82,7 +52,7 @@ export default function HashtagInput(props: HashtagInputProps) {
           </HashtagWrapper>
         </HashtagBox>
       )}
-      {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
+      {hashtags.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
     </>
   );
 }
