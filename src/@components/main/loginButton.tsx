@@ -16,8 +16,8 @@ export default function LoginButton() {
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
 
-  const { vocalProfile } = useGetVocalProfile(userId, userType);
-  const { producerProfile } = useGetProducerProfile(userId, userType);
+  const { vocalProfile } = useGetVocalProfile(userId);
+  const { producerProfile } = useGetProducerProfile(userId);
 
   const navigate = useNavigate();
 

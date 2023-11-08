@@ -22,8 +22,8 @@ export default function LoginBtn() {
 
   const { openModal, unShowModal, handleShowUpdateModal } = useModal();
 
-  const { vocalProfile } = useGetVocalProfile(userId, userType);
-  const { producerProfile } = useGetProducerProfile(userId, userType);
+  const { vocalProfile } = useGetVocalProfile(userId);
+  const { producerProfile } = useGetProducerProfile(userId);
 
   const navigate = useNavigate();
 
