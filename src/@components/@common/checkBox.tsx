@@ -21,8 +21,8 @@ const CheckBoxContext = createContext<CheckBoxContextType>({
 });
 
 export function CheckBoxRoot(props: PropsWithChildren<CheckBoxProps>) {
-  const { children, id, externalFn } = props;
-  const [isChecked, setIsChecked] = useState(false);
+  const { children, id, externalFn, defaultChecked } = props;
+  const [isChecked, setIsChecked] = useState(defaultChecked ?? false);
   function innerCheck() {
     setIsChecked((prev) => !prev);
   }

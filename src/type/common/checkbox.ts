@@ -1,6 +1,7 @@
 export type CheckBoxProps = {
   id?: string;
   externalFn?: any;
+  defaultChecked?: boolean;
 };
 
 export type IndicatorProps = {
