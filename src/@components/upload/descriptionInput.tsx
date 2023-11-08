@@ -34,7 +34,6 @@ export default function DescriptionInput(props: DescriptionInputProps) {
           <TextLength
             inputLength={description.length}
             limit={isProfile ? TEXT_LIMIT.PROFILE_DESCRIPTION : TEXT_LIMIT.DESCRIPTION}
-            font={theme.fonts.description}
           />
         </TextLengthWrapper>
       </DescriptionInputWrapper>
@@ -79,6 +78,8 @@ const DescriptionInputWrapper = styled.div`
 `;
 
 export const TextLengthWrapper = styled.div`
+  ${({ theme }) => theme.fonts.body1}
+
   float: right;
   margin-top: 1.8rem;
 `;

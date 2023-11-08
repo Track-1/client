@@ -3,24 +3,21 @@ import styled from "styled-components";
 interface TextLengthProps {
   inputLength: number;
   limit: number;
-  font: string;
 }
 
 export default function TextLength(props: TextLengthProps) {
-  const { inputLength, limit, font } = props;
+  const { inputLength, limit } = props;
 
   return (
-    <Container font={font}>
+    <Container>
       <InputLength inputLength={inputLength}>{inputLength}</InputLength>
       <Limit>/{limit}</Limit>
     </Container>
   );
 }
 
-const Container = styled.div<{ font: string }>`
+const Container = styled.div`
   display: flex;
-
-  ${(props) => props.font};
 `;
 
 const InputLength = styled.p<{ inputLength: number }>`
