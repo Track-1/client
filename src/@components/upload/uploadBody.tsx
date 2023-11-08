@@ -22,15 +22,15 @@ import useDropCategory from "../../hooks/common/useDropCategory";
 export default function UploadBody() {
   const { imageFile, previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile();
   const [title, handleChangeTitle, changeTitle] = useInputText("", TEXT_LIMIT.UPLOAD_TITLE);
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    changeHashtags,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-  } = useHashtagInput();
+  // const {
+  //   hashtags,
+  //   hashtagLength,
+  //   hashtagInputText,
+  //   changeHashtags,
+  //   handleAddHashtag,
+  //   handleRemoveHashtag,
+  //   handleChangeHashtagInputText,
+  // } = useHashtagInput();
   const { categories, isSelectedNothing, selectedCategoryNumber, isSelected, selectCategory, categoryText } =
     useDropCategory();
   const { audioFile, audioFileName, changeAudioFileName, audioFileType, isTextOverflow, handleUploadAudioFile } =
@@ -41,18 +41,18 @@ export default function UploadBody() {
   const roleType = pathName.includes(ROLE.PRODUCER) ? ROLE.PRODUCER : ROLE.VOCAL;
   const setUploadData = useSetRecoilState(UploadData);
 
-  useEffect(() => {
-    setUploadData((prev) => ({
-      ...prev,
-      title: title,
-      imageFile: imageFile,
-      audioFile: audioFile,
-      category: selectedCategoryNumber(),
-      keyword: hashtags,
-      introduction: description,
-      audioFileName: audioFile ? audioFile.name : audioFileName,
-    }));
-  }, [imageFile, hashtags, title, audioFile, description, categories]);
+  // useEffect(() => {
+  //   setUploadData((prev) => ({
+  //     ...prev,
+  //     title: title,
+  //     imageFile: imageFile,
+  //     audioFile: audioFile,
+  //     category: selectedCategoryNumber(),
+  //     keyword: hashtags,
+  //     introduction: description,
+  //     audioFileName: audioFile ? audioFile.name : audioFileName,
+  //   }));
+  // }, [imageFile, hashtags, title, audioFile, description, categories]);
 
   const uploadEditInitData = useLocation().state?.uploadEditInitData;
   const pathname = useLocation().pathname;
@@ -62,14 +62,14 @@ export default function UploadBody() {
       if (pathname.includes("portfolio")) {
         changeTitle(uploadEditInitData.portfolioTitle);
         changeAudioFileName(uploadEditInitData.portfolioAudioFileName);
-        changeHashtags([...uploadEditInitData.portfolioKeyword]);
+        // changeHashtags([...uploadEditInitData.portfolioKeyword]);
         changePreviewImage(uploadEditInitData.portfolioImageFile);
         changeDescription(uploadEditInitData.portfolioContent || "");
         selectCategory(uploadEditInitData.portfolioCategory);
       } else {
         changeTitle(uploadEditInitData.trackTitle);
         changeAudioFileName(uploadEditInitData.trackAudioFileName);
-        changeHashtags([...uploadEditInitData.trackKeyword]);
+        // changeHashtags([...uploadEditInitData.trackKeyword]);
         changePreviewImage(uploadEditInitData.trackImageFile);
         changeDescription(uploadEditInitData.trackIntroduce || "");
         selectCategory(uploadEditInitData.trackCategory);
@@ -95,14 +95,14 @@ export default function UploadBody() {
             selectCategory={selectCategory}
             categoryText={categoryText}
           />
-          <HashtagInfo
+          {/* <HashtagInfo
             hashtags={hashtags}
             hashtagLength={hashtagLength}
             hashtagInputText={hashtagInputText}
             handleAddHashtag={handleAddHashtag}
             handleRemoveHashtag={handleRemoveHashtag}
             handleChangeHashtagInputText={handleChangeHashtagInputText}
-          />
+          /> */}
           <DescriptionInfo
             description={description}
             handleChangeDescription={handleChangeDescription}

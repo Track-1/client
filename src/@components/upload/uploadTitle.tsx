@@ -29,7 +29,7 @@ export default function UploadTitle(props: UploadTitleProps) {
           value={title}
           defaultValue={title}></TitleInput>
         <TextLengthWrapper>
-          <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={theme.fonts.body1} />
+          <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} />
         </TextLengthWrapper>
       </TitleInputWrapper>
     </Container>
