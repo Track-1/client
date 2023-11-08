@@ -3,39 +3,18 @@ import HashtagInput from "../@common/hashtag/hashtagInput";
 import InputContainer from "../@common/inputContainer";
 
 interface ProfileHashtagEditProps {
-  hashtags: string[];
-  hashtagLength: number;
-  hashtagInputText: string;
-  handleAddHashtag: () => void;
-  handleRemoveHashtag: (tag: string) => void;
-  handleChangeHashtagInputText: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => void;
+  getHashtags: (hashtags: string[]) => void;
 }
 
 export default function ProfileHashtagEdit(props: ProfileHashtagEditProps) {
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-  } = props;
+  const { getHashtags } = props;
 
   return (
     <>
       <HashtagContainer>
         <InputContainer title="Hashtag" hashtagWarningIcon>
           <HashtagWrapper>
-            <HashtagInput
-              hashtags={hashtags}
-              hashtagLength={hashtagLength}
-              hashtagInputText={hashtagInputText}
-              handleAddHashtag={handleAddHashtag}
-              handleRemoveHashtag={handleRemoveHashtag}
-              handleChangeHashtagInputText={handleChangeHashtagInputText}
-            />
+            <HashtagInput getHashtags={getHashtags} />
           </HashtagWrapper>
         </InputContainer>
       </HashtagContainer>
