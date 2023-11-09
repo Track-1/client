@@ -1,8 +1,16 @@
 import InputContainer from "../../@common/inputContainer";
 import styled from "styled-components";
+import { UseFormReturn } from "react-hook-form";
 
 interface ProducerContactEditProps {
-  methods: any;
+  methods: UseFormReturn<
+    {
+      nickName: string;
+      contact: string;
+    },
+    any,
+    undefined
+  >;
 }
 
 export default function ProducerContactEdit(props: ProducerContactEditProps) {

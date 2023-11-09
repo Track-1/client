@@ -2,12 +2,18 @@ import InputContainer from "../../@common/inputContainer";
 import { NICKNAME_MESSAGE } from "../../../core/signUp/errorMessage";
 import styled from "styled-components";
 import { CHECK_NICKNAME_FORM } from "../../../core/signUp/checkForm";
-import { useGetProducerProfile } from "../../../hooks/queries/mypage";
-import { useParams } from "react-router-dom";
 import { InputContainer200 } from "../../@common/styledComponents";
+import { UseFormReturn } from "react-hook-form";
 
 interface ProducerNameEditProps {
-  methods: any;
+  methods: UseFormReturn<
+    {
+      nickName: string;
+      contact: string;
+    },
+    any,
+    undefined
+  >;
 }
 
 export default function VocalNameEdit(props: ProducerNameEditProps) {
