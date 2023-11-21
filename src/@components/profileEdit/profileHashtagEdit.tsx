@@ -1,36 +1,20 @@
+import { useEffect } from "react";
+import { useFieldArray } from "react-hook-form";
 import styled from "styled-components";
-import HashtagInput from "../@common/hashtag/hashtagInput";
 import InputContainer from "../@common/inputContainer";
+import HashtagInput from "../@common/hashtag/hashtagInput";
 
-interface ProfileHashtagEditProps {
-  getHashtags: (hashtags: string[]) => void;
-}
-
-export default function ProfileHashtagEdit(props: ProfileHashtagEditProps) {
-  const { getHashtags } = props;
-
+export default function ProfileHashtagEdit() {
   return (
     <>
       <HashtagContainer>
         <InputContainer title="Hashtag" hashtagWarningIcon>
-          <HashtagWrapper>
-            <HashtagInput getHashtags={getHashtags} />
-          </HashtagWrapper>
+          <HashtagInput />
         </InputContainer>
       </HashtagContainer>
     </>
   );
 }
-
-const HashtagWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-
-  height: 100%;
-
-  margin-bottom: 4.8rem;
-`;
 
 const HashtagContainer = styled.article`
   width: 55.9rem;

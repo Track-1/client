@@ -1,61 +1,63 @@
 import styled from "styled-components";
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
 import { useEffect } from "react";
-import useHashtagInput from "../../../hooks/common/useHashtagInput";
+import { useFromContextWithRef } from "../../../hooks/common/useFromContextWithRef";
+import { useFieldArray } from "react-hook-form";
+import { useHashtagWithReactHookForm } from "../../../hooks/common/useHashtagWithReactHookForm";
 
-interface HashtagInputProps {
-  getHashtags: (hashtags: string[]) => void;
-}
-
-export default function HashtagInput(props: HashtagInputProps) {
-  const { getHashtags } = props;
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-    handleEnterHashtag,
-    hashtagRef,
-    hashtagDeleteRef,
-  } = useHashtagInput();
+export default function HashtagInput() {
+  const formContext = useFromContextWithRef();
+  const { registerWithRef, watch, getValues } = formContext;
+  const fieldArray = useFieldArray({
+    name: "hashtag",
+  });
+  const { append, fields } = fieldArray;
+  const { handleKeyDownEnter, handleDeleteHashtag, activeInput } = useHashtagWithReactHookForm(formContext, fieldArray);
 
   useEffect(() => {
-    getHashtags(hashtags);
-  }, [hashtags]);
+    if (getValues("hashtag").length >= 3) return;
+
+    append("");
+  }, []);
 
   return (
-    <>
-      {hashtags.map((tag) => (
-        <HashtagBox key={tag}>
-          <CompleteHashtagWrapper>
-            <HashtagSharp># </HashtagSharp>
-            <CompletedHashtag>{tag}</CompletedHashtag>
-          </CompleteHashtagWrapper>
-          <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} ref={hashtagDeleteRef} />
-        </HashtagBox>
-      ))}
-
-      {hashtags.length < 3 && (
-        <HashtagBox>
-          <HashtagWrapper>
-            <HashtagSharp># </HashtagSharp>
-            <HashtagInputText
-              placeholder="Hashtag"
-              onKeyDownCapture={handleEnterHashtag}
-              onChange={handleChangeHashtagInputText}
-              inputWidth={hashtagLength}
-              value={hashtagInputText}
-              ref={hashtagRef}
-            />
-          </HashtagWrapper>
-        </HashtagBox>
-      )}
-      {hashtags.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
-    </>
+    <HashtagWrapper>
+      {fields.map((field, idx) => {
+        return (
+          <HashtagBox data-idx={idx}>
+            <HashtagInputWrapper data-idx={idx}>
+              <HashtagSharp data-idx={idx}># </HashtagSharp>
+              <HashtagInputText
+                key={field.id}
+                placeholder="hashtag"
+                onKeyPress={(e) => handleKeyDownEnter(e)}
+                onClick={activeInput}
+                inputWidth={watch("hashtag")[idx].length}
+                autoComplete="off"
+                maxLength={10}
+                data-idx={idx}
+                autoFocus
+                {...registerWithRef("hashtag", idx)}
+              />
+            </HashtagInputWrapper>
+            <DeleteHashtagIcon onClick={(e) => handleDeleteHashtag(e, idx)} />
+          </HashtagBox>
+        );
+      })}
+      {fields.length < 3 && <AddHashtagIcon />}
+    </HashtagWrapper>
   );
 }
+
+const HashtagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  height: 100%;
+
+  margin-bottom: 4.8rem;
+`;
 
 const HashtagBox = styled.div`
   display: flex;
@@ -70,7 +72,7 @@ const HashtagBox = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
 `;
 
-const HashtagWrapper = styled.div`
+const HashtagInputWrapper = styled.div`
   display: flex;
 
   padding: 0 0.5rem 0 1.5rem;
@@ -81,6 +83,14 @@ const HashtagSharp = styled.p`
 
   color: ${({ theme }) => theme.colors.gray1};
   ${({ theme }) => theme.fonts.hashtag};
+`;
+
+const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 2.8rem;
+
+  margin-left: -1rem;
+
+  cursor: pointer;
 `;
 
 const HashtagInputText = styled.input<{ inputWidth: number }>`
@@ -96,32 +106,9 @@ const HashtagInputText = styled.input<{ inputWidth: number }>`
   }
 `;
 
-const CompletedHashtag = styled.article`
-  display: flex;
-
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.hashtag}
-  align-items: center;
-`;
-
 const AddHashtagIcon = styled(AddHashtagIc)`
   width: 3.8rem;
   height: 3.8rem;
 
   cursor: pointer;
-`;
-
-const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  width: 2.8rem;
-
-  margin-left: -1rem;
-
-  cursor: pointer;
-`;
-
-const CompleteHashtagWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  padding: 0 1.5rem;
 `;
