@@ -4,7 +4,6 @@ export function useCheck<T>() {
   const [checkedOptions, setCheckedOptions] = useState<Set<T>>(new Set());
 
   function check(option: T) {
-    console.log(Array.from(checkedOptions));
     const tempCheckedSet = checkedOptions;
 
     if (tempCheckedSet.has(option)) {
