@@ -1,4 +1,4 @@
-import { UploadType } from "../../type/common/upload";
+import { ProducerUploadType } from "../../type/common/upload";
 
 export const ROUTES = {
   MAIN: "/",
@@ -13,7 +13,7 @@ export const ROUTES = {
   LOGIN: "/login",
   ERROR: "*",
   UPLOAD_VOCAL_PORTFOLIO: "/upload/vocal/portfolio",
-  UPLOAD_PRODUCER: (uploadType: UploadType) => `/upload/producer/${uploadType}`,
+  UPLOAD_PRODUCER: (uploadType: ProducerUploadType) => `/upload/producer/${uploadType}`,
   PORTFOLIO_EDIT_PRODUCER: (trackId: number) => `/portfolio-edit/producer/${trackId}`,
   VOCAL_SEARCHING_EDIT_PRODUCER: (trackId: number) => `/vocal-searching-edit/producer/${trackId}`,
   PORTFOLIO_EDIT_VOCAL: (trackId: number) => `/portfolio-edit/vocal/${trackId}`,
