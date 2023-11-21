@@ -29,6 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "react-scripts start ",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject"

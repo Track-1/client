@@ -9,7 +9,7 @@ export const client = axios.create({
 });
 
 client.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: any) => {
     const token = getCookie("accessToken");
     if (token) {
       config.headers = config.headers || {};
