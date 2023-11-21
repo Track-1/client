@@ -1,5 +1,5 @@
 {
-  "name": "track1_front_end",
+  "name": "my-turborepo",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,14 +8,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "prettier": "^3.1.0",
     "turbo": "latest"
   },
-  "packageManager": "yarn@1.22.17",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "packageManager": "pnpm@8.9.0"
 }
