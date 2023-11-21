@@ -28,7 +28,7 @@ export const InputContainer100 = styled.section`
 export const InputContainer200 = styled.input`
   color: white;
 
-  border-bottom: 1px solid ${({ color }) => color};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.white};
 
   width: 56rem;
 
