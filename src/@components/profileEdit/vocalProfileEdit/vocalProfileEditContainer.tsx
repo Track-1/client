@@ -1,50 +1,44 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from "../../../assets";
-import { TEXT_LIMIT } from "../../../core/common/textLimit";
-import useInputText from "../../../hooks/common/useInputText";
 import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
 import { useEditVocalProfile } from "../../../hooks/queries/profile";
 import Header from "../../@common/header";
 import ProfileDescriptionEdit from "../profileDescriptionEdit";
 import ProfileHashtagEdit from "../profileHashtagEdit";
-import { CategoryIdType } from "../../../type/common/category";
+import { CategoryIdType, UpperCategoryType } from "../../../type/common/category";
 import BackButton from "../../@common/backButton";
 import { useGetVocalProfile } from "../../../hooks/queries/mypage";
 import { useParams } from "react-router-dom";
-import { useCheck } from "../../../hooks/common/useCheck";
 import VocalImageEdit from "./vocalImageEdit";
-import VocalNameEdit from "./vocalNameEdit";
-import VocalContactEdit from "./vocalContactEdit";
-import VocalSelectCategoryEdit from "./vocalSelectCategoryEdit";
 import VocalSleeper from "./vocalSleeper";
+import ProfileNickname from "../../@common/profileNickname";
+import ProfileContact from "../../@common/profileContact";
+import { convertKeyToValue } from "../../../utils/common/convertKeyToValue";
+import { CategoryId } from "../../../core/common/categories";
+import ProfileSelectCategoryEdit from "../profileSelectCategoryEdit";
 
 export default function VocalProfileEditContainer() {
   const { id } = useParams();
   const prevUserInfo = useGetVocalProfile(Number(id)).vocalProfile?.userProfile;
   const { editVocalProfile } = useEditVocalProfile();
-
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile(prevUserInfo?.userImageFile);
-  const { checkedOptions: selectedCategory, check: selectCategory } = useCheck<CategoryIdType>();
-  const [description, handleChangeDescription] = useInputText("", TEXT_LIMIT.PROFILE_DESCRIPTION);
-
   const [isSleep, setIsSleep] = useState(prevUserInfo?.userTrackSearch ?? false);
   const [imageFileSame, setImageFileSame] = useState(true);
-  const [hashTags, setHashTags] = useState<string[]>([]);
-  const [isUploadActive, setIsUploadActive] = useState(true);
 
   const methods = useForm({
     defaultValues: {
       nickName: prevUserInfo?.userName ?? "",
       contact: prevUserInfo?.userContact ?? "",
+      category: prevUserInfo?.userCategory
+        ? convertKeyToValue<UpperCategoryType, CategoryIdType>(prevUserInfo?.userCategory, CategoryId)
+        : [],
+      hashtag: prevUserInfo?.userKeyword ?? [],
+      description: prevUserInfo?.userIntroduction ?? "",
     },
     mode: "onChange",
   });
-
-  function getHashtags(hashtags: string[]) {
-    setHashTags([...hashtags]);
-  }
 
   function handleChangeIsSleep() {
     setIsSleep((prev) => !prev);
@@ -54,53 +48,51 @@ export default function VocalProfileEditContainer() {
     imageFile !== null ? setImageFileSame(false) : setImageFileSame(true);
   }, [imageFile]);
 
-  useEffect(() => {
-    const required = methods.formState.isValid;
-    required ? setIsUploadActive(true) : setIsUploadActive(false);
-  }, [methods.formState.isValid]);
-
   return (
-    <form>
-      <Header>
-        <BackButton staticPrevURL={-1} />
-        {isUploadActive ? (
-          <button
-            onClick={methods.handleSubmit(({ nickName, contact }) =>
-              editVocalProfile({
-                userImageFile: imageFile,
-                userName: nickName,
-                userContact: contact,
-                userCategory: selectedCategory,
-                userKeyword: hashTags,
-                userIntroduction: description,
-                userImageFileSame: imageFileSame,
-                userTrackSearch: isSleep,
-              }),
-            )}>
-            <UploadActiveSaveButtonIcon />
-          </button>
-        ) : (
-          <UploadUnActiveSaveButtonIcon />
-        )}
-      </Header>
-      <ProfileBackgroundIcon />
-      <ProfileEditContainerBox>
-        <ProfileEditTitle>
-          <VocalImageEdit previewImage={previewImage} handleUploadImageFile={handleUploadImageFile} />
-          <VocalNameEdit methods={methods} />
-          <VocalSleeper isSleep={isSleep} handleChangeIsSleep={handleChangeIsSleep} />
-        </ProfileEditTitle>
+    <FormProvider {...methods}>
+      <form>
+        <Header>
+          <BackButton staticPrevURL={-1} />
+          {methods.formState.isValid ? (
+            <button
+              onClick={methods.handleSubmit(({ nickName, contact, category, hashtag, description }) =>
+                editVocalProfile({
+                  userImageFile: imageFile,
+                  userName: nickName,
+                  userContact: contact,
+                  userCategory: category,
+                  userKeyword: hashtag.filter((item) => item.length > 0),
+                  userIntroduction: description,
+                  userImageFileSame: imageFileSame,
+                  userTrackSearch: isSleep,
+                }),
+              )}
+              type="button">
+              <UploadActiveSaveButtonIcon />
+            </button>
+          ) : (
+            <UploadUnActiveSaveButtonIcon />
+          )}
+        </Header>
+        <ProfileBackgroundIcon />
+        <ProfileEditContainerBox>
+          <ProfileEditTitle>
+            <VocalImageEdit previewImage={previewImage} handleUploadImageFile={handleUploadImageFile} />
+            <ProfileNickname />
+            <VocalSleeper isSleep={isSleep} handleChangeIsSleep={handleChangeIsSleep} />
+          </ProfileEditTitle>
 
-        <ProfileEditInfo>
-          <ProfileEditInfoWrapper>
-            <VocalContactEdit methods={methods} />
-            <VocalSelectCategoryEdit selectCategory={selectCategory} />
-            <ProfileHashtagEdit getHashtags={getHashtags} />
-            <ProfileDescriptionEdit description={description} handleChangeDescription={handleChangeDescription} />
-          </ProfileEditInfoWrapper>
-        </ProfileEditInfo>
-      </ProfileEditContainerBox>
-    </form>
+          <ProfileEditInfo>
+            <ProfileEditInfoWrapper>
+              <ProfileContact />
+              <ProfileSelectCategoryEdit />
+              <ProfileHashtagEdit />
+              <ProfileDescriptionEdit />
+            </ProfileEditInfoWrapper>
+          </ProfileEditInfo>
+        </ProfileEditContainerBox>
+      </form>
+    </FormProvider>
   );
 }
 
