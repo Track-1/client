@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
-import { SelectCategoryContext } from "../../context/formContextWithProps";
+import { SelectCategoryContext } from "../../context/selectCategoryContext";
 
 export default function UploadHeader() {
   const {

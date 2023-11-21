@@ -7,7 +7,7 @@ import HashtagInfo from "./hashtagInfo";
 import DescriptionInfo from "./descriptionInfo";
 import { useUploadVocalPortfolio } from "../../hooks/queries/mypage";
 import { FormProvider, useForm } from "react-hook-form";
-import { SelectCategoryContext } from "../../context/formContextWithProps";
+import { SelectCategoryContext } from "../../context/selectCategoryContext";
 import Header from "../@common/header";
 import BackButton from "../@common/backButton";
 import UploadHeader from "./uploadHeader";

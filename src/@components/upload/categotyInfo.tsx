@@ -6,7 +6,7 @@ import { Select } from "../@common/selectBox";
 import { ReversedCategoryId } from "../../core/common/categories";
 import { CategoryIdType } from "../../type/common/category";
 import { useContext } from "react";
-import { SelectCategoryContext } from "../../context/formContextWithProps";
+import { SelectCategoryContext } from "../../context/selectCategoryContext";
 
 export default function CategoryInfo() {
   const { selectedOption, selectOption } = useContext(SelectCategoryContext);
