@@ -104,7 +104,7 @@ const PasswordContainer = styled(FormContainer)`
   margin-top: 15.1rem;
 `;
 
-const FormTitle = styled.label`
+const FormTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.box_title};
 
