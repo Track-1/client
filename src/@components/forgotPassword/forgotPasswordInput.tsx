@@ -10,6 +10,7 @@ import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { Switch } from "../@common/switch";
 import { FormContainer, InputContainer, InputTitle } from "../@common/styledComponents";
 import { RequestPasswordButtonType } from "../../type/user";
+import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 
 export default function ForgotPasswordInput() {
   const methods = useForm({
@@ -65,7 +66,7 @@ export default function ForgotPasswordInput() {
                 placeholder="Enter your email address"
                 {...register("email", {
                   pattern: {
-                    value: /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
+                    value: CHECK_EMAIL_FORM,
                     message: EMAIL_MESSAGE.FORM,
                   },
                 })}
@@ -103,7 +104,7 @@ const PasswordContainer = styled(FormContainer)`
   margin-top: 15.1rem;
 `;
 
-const FormTitle = styled.h1`
+const FormTitle = styled.label`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.box_title};
 
