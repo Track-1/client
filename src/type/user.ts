@@ -39,3 +39,19 @@ export interface SingupResultType {
   userResult: UserResultType;
   accessToken: string;
 }
+
+type InActiveType = {
+  isActive: false;
+  text: "Request a password reset";
+};
+type ActiveRequestType = {
+  isActive: true;
+  text: "Request a password reset";
+};
+
+type ActiveResendType = {
+  isActive: true;
+  text: "Resend";
+};
+
+export type RequestPasswordButtonType = InActiveType | ActiveRequestType | ActiveResendType;

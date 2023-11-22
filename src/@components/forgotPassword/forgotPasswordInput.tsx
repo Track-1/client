@@ -1,123 +1,116 @@
 import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import styled, { css } from "styled-components";
 import { RequestBlackTextIc, RequestWhiteTextIc, ResendTextIc } from "../../assets";
-import { ROLE } from "../../core/common/roleType";
 import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
 import { useResetPassword } from "../../hooks/queries/user";
 import { theme } from "../../style/theme";
-import { UserEmailRequest } from "../../type/api";
+import { UserType } from "../../type/common/userType";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
-import { checkEmailForm } from "../../utils/signUp/checkForm";
-import StandardButton from "../@common/button/standardButton";
-import InputContainer from "../@common/inputContainer";
-import PasswordContainer from "../@common/passwordContainer";
-import Input from "../signUp/Input";
-import UserTypeToggle from "./userTypeToggle";
+import { Switch } from "../@common/switch";
+import { FormContainer, InputContainer, InputTitle } from "../@common/styledComponents";
+import { RequestPasswordButtonType } from "../../type/user";
+import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 
 export default function ForgotPasswordInput() {
-  const methods = useForm<EmailPasswordInputType>({
+  const methods = useForm({
     defaultValues: {
       email: "",
     },
-    mode: "onChange",
   });
-
-  const { setError } = methods;
+  const {
+    register,
+    setError,
+    formState: { errors, isDirty, isValid },
+    handleSubmit,
+  } = methods;
 
   const { data, resetPassword } = useResetPassword(setError);
 
-  const [producerType, setProducerType] = useState(false);
-  const [buttonColor, setButtonColor] = useState(theme.colors.gray4);
-  const [fontColor, setFontColor] = useState(theme.colors.white);
-  const [prevState, setPrevState] = useState({ email: "", producerType: false });
-  const [buttonMessageType, setButtonMessageType] = useState("white");
+  const [userType, setUserType] = useState<UserType>("vocal");
+  const [buttonType, setButtonType] = useState<RequestPasswordButtonType>({
+    isActive: false,
+    text: "Request a password reset",
+  });
+
+  function handleRequestResetPassword(email: string) {
+    resetPassword({ userType: userType, userEmail: email });
+  }
+
+  function switchUseryType() {
+    userType === "producer" ? setUserType("vocal") : setUserType("producer");
+  }
 
   useEffect(() => {
     if (data?.success) {
-      setButtonMessageType("resend");
-      setPrevState((prev) => ({
-        ...prev,
-        email: methods.watch().email,
-        producerType: producerType,
-      }));
+      setButtonType({ isActive: true, text: "Resend" });
     }
-  }, [data]);
 
-  useEffect(() => {
-    if (checkEmailForm(methods.getValues().email)) {
-      producerType ? setButtonColor(theme.colors.sub1) : setButtonColor(theme.colors.sub2);
-      setFontColor(theme.colors.black);
-      prevState.email && checkPrevState() ? setButtonMessageType("resend") : setButtonMessageType("black");
-    } else {
-      setButtonColor(theme.colors.gray4);
-      setButtonMessageType("white");
-      setFontColor(theme.colors.white);
+    if (isDirty && isValid) {
+      setButtonType({ isActive: true, text: "Request a password reset" });
     }
-  }, [methods.watch().email, producerType]);
-
-  function checkPrevState() {
-    return prevState.email === methods.watch().email && prevState.producerType === producerType;
-  }
-
-  function handleChangeUserType() {
-    setProducerType((prev) => !prev);
-  }
-
-  function requestResetPassword() {
-    const userEmail: UserEmailRequest = {
-      userType: producerType ? "producer" : "vocal",
-      userEmail: methods.getValues().email,
-    };
-    resetPassword(userEmail);
-  }
+  }, [data, isDirty, isValid]);
 
   return (
-    <PasswordContainer
-      height={49.6}
-      containerInterval={15.1}
-      title="Forgot password?"
-      titleIntervalTop={9.1}
-      titleIntervalBottom={6.4}>
-      <FormProvider {...methods}>
-        <InputContainer title="What’s your email?" login>
-          <form>
+    <PasswordContainer>
+      <form
+        onSubmit={handleSubmit((data) => {
+          handleRequestResetPassword(data.email);
+        })}>
+        <FormTitle>Forgot password?</FormTitle>
+        <InputContainer>
+          <div>
+            <InputTitle>What’s your email?</InputTitle>
             <EmailInputWrapper>
-              <Input
-                name="email"
-                rules={{
-                  required: true,
-                  validate: {
-                    check: (value) => {
-                      if (!checkEmailForm(value)) {
-                        return EMAIL_MESSAGE.FORM;
-                      }
-                    },
-                  },
-                }}
-                type="text"
+              <EmailInput
                 placeholder="Enter your email address"
-                width={55.9}
-                userType={producerType ? ROLE.PRODUCER : ROLE.VOCAL}
+                {...register("email", {
+                  pattern: {
+                    value: CHECK_EMAIL_FORM,
+                    message: EMAIL_MESSAGE.FORM,
+                  },
+                })}
               />
             </EmailInputWrapper>
-          </form>
+            <ErrorMessage>{errors.email && errors.email.message}</ErrorMessage>
+          </div>
         </InputContainer>
-      </FormProvider>
-      <UserTypeToggle producerType={producerType} handleChangeUserType={handleChangeUserType} />
-
-      <StandardButton bgColor={buttonColor} fontColor={fontColor} handleClickFunction={requestResetPassword}>
-        {buttonMessageType === "resend" ? (
-          <ResendTextIcon />
-        ) : buttonMessageType === "black" ? (
-          <RequestBlackTextIcon />
-        ) : (
-          <RequestWhiteTextIcon />
-        )}
-      </StandardButton>
+        <SwitchContainer>
+          <Switch externalState={switchUseryType}>
+            <Switch.Label onLabel="Producer Mode" offLabel="Producer Mode" />
+            <Switch.Root>
+              <Switch.Thumb />
+            </Switch.Root>
+          </Switch>
+        </SwitchContainer>
+        <SendButton userType={userType} isActive={buttonType.isActive} type="submit">
+          {buttonType.isActive ? (
+            buttonType.text === "Resend" ? (
+              <ResendTextIcon />
+            ) : (
+              <RequestBlackTextIcon />
+            )
+          ) : (
+            <RequestWhiteTextIcon />
+          )}
+        </SendButton>
+      </form>
     </PasswordContainer>
   );
 }
+
+const PasswordContainer = styled(FormContainer)`
+  height: 49.6rem;
+  margin-top: 15.1rem;
+`;
+
+const FormTitle = styled.label`
+  color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => theme.fonts.box_title};
+
+  margin-top: 9.1rem;
+  margin-bottom: 6.4rem;
+`;
 
 const EmailInputWrapper = styled.section`
   display: flex;
@@ -134,4 +127,71 @@ const RequestWhiteTextIcon = styled(RequestWhiteTextIc)`
 
 const ResendTextIcon = styled(ResendTextIc)`
   width: 11.6rem;
+`;
+
+const SendButton = styled.button<{ userType: UserType; isActive: boolean }>`
+  ${theme.fonts.body1};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 55.9rem;
+  height: 6.7rem;
+
+  border-radius: 3.35rem;
+
+  ${({ userType, isActive }) =>
+    userType === "producer" &&
+    (isActive
+      ? css`
+          color: ${({ theme }) => theme.colors.white};
+          background-color: ${({ theme }) => theme.colors.sub1};
+        `
+      : css`
+          color: ${({ theme }) => theme.colors.black};
+          background-color: ${({ theme }) => theme.colors.gray4};
+        `)}
+
+  ${({ userType, isActive }) =>
+    userType === "vocal" &&
+    (isActive
+      ? css`
+          color: ${({ theme }) => theme.colors.white};
+          background-color: ${({ theme }) => theme.colors.sub2};
+        `
+      : css`
+          color: ${({ theme }) => theme.colors.black};
+          background-color: ${({ theme }) => theme.colors.gray4};
+        `)}
+`;
+
+const EmailInput = styled.input`
+  padding: 0.5rem 0;
+
+  color: white;
+
+  border-bottom: 1px solid ${({ color }) => color};
+
+  width: 55.9rem;
+
+  ${({ theme }) => theme.fonts.input}
+`;
+
+const ErrorMessage = styled.h1`
+  margin-top: 1.1rem;
+  height: 1.9rem;
+
+  color: ${({ theme }) => theme.colors.red};
+  ${({ theme }) => theme.fonts.message};
+`;
+
+const SwitchContainer = styled.div`
+  width: 55.9rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin-top: 1.8rem;
+  margin-bottom: 3.1rem;
 `;
