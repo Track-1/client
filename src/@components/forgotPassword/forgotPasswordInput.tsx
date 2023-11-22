@@ -12,17 +12,16 @@ import { FormContainer, InputContainer, InputTitle } from "../@common/styledComp
 import { RequestPasswordButtonType } from "../../type/user";
 
 export default function ForgotPasswordInput() {
-  const methods = useForm<EmailPasswordInputType>({
+  const methods = useForm({
     defaultValues: {
       email: "",
     },
-    mode: "onChange",
   });
   const {
     register,
     setError,
-    getValues,
     formState: { errors, isDirty, isValid },
+    handleSubmit,
   } = methods;
 
   const { data, resetPassword } = useResetPassword(setError);
@@ -33,8 +32,8 @@ export default function ForgotPasswordInput() {
     text: "Request a password reset",
   });
 
-  function requestResetPassword() {
-    resetPassword({ userType: userType, userEmail: getValues().email });
+  function handleRequestResetPassword(email: string) {
+    resetPassword({ userType: userType, userEmail: email });
   }
 
   function switchUseryType() {
@@ -53,11 +52,14 @@ export default function ForgotPasswordInput() {
 
   return (
     <PasswordContainer>
-      <FormTitle>Forgot password?</FormTitle>
-      <InputContainer>
-        <div>
-          <InputTitle>What’s your email?</InputTitle>
-          <form onSubmit={requestResetPassword}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          handleRequestResetPassword(data.email);
+        })}>
+        <FormTitle>Forgot password?</FormTitle>
+        <InputContainer>
+          <div>
+            <InputTitle>What’s your email?</InputTitle>
             <EmailInputWrapper>
               <EmailInput
                 placeholder="Enter your email address"
@@ -70,28 +72,28 @@ export default function ForgotPasswordInput() {
               />
             </EmailInputWrapper>
             <ErrorMessage>{errors.email && errors.email.message}</ErrorMessage>
-          </form>
-        </div>
-      </InputContainer>
-      <SwitchContainer>
-        <Switch externalState={switchUseryType}>
-          <Switch.Label onLabel="Producer Mode" offLabel="Producer Mode" />
-          <Switch.Root>
-            <Switch.Thumb />
-          </Switch.Root>
-        </Switch>
-      </SwitchContainer>
-      <SendButton userType={userType} isActive={buttonType.isActive} type="submit">
-        {buttonType.isActive ? (
-          buttonType.text === "Resend" ? (
-            <ResendTextIcon />
+          </div>
+        </InputContainer>
+        <SwitchContainer>
+          <Switch externalState={switchUseryType}>
+            <Switch.Label onLabel="Producer Mode" offLabel="Producer Mode" />
+            <Switch.Root>
+              <Switch.Thumb />
+            </Switch.Root>
+          </Switch>
+        </SwitchContainer>
+        <SendButton userType={userType} isActive={buttonType.isActive} type="submit">
+          {buttonType.isActive ? (
+            buttonType.text === "Resend" ? (
+              <ResendTextIcon />
+            ) : (
+              <RequestBlackTextIcon />
+            )
           ) : (
-            <RequestBlackTextIcon />
-          )
-        ) : (
-          <RequestWhiteTextIcon />
-        )}
-      </SendButton>
+            <RequestWhiteTextIcon />
+          )}
+        </SendButton>
+      </form>
     </PasswordContainer>
   );
 }
