@@ -4,6 +4,7 @@ import { GlobalStyle } from "./style/globalStyle";
 import Router from "./Router";
 
 function App() {
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />

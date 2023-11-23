@@ -10,13 +10,15 @@
     "lib": ["es2022", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "moduleDetection": "force",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
     "checkJs": true,
-    "jsx": "react-jsx"
-  }
+    "jsx": "react-jsx",
+    "noImplicitAny": true
+  },
+  "exclude": ["node_modules"]
 }

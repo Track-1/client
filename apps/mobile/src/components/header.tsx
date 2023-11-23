@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { HamburgerMenuIc, HomeLogoIc } from "../assets";
 
 export default function Header() {
+  var test = "hello";
+
   return (
     <Styled.Container>
       <HomeLogoIc />

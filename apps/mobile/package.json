@@ -5,16 +5,13 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --config config/webpack.dev.js",
-    "build": "webpack --config config/webpack.prod.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
+    "build": "webpack --config config/webpack.prod.js",
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx"
   },
   "dependencies": {
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.16",
+    "eslint-config-custom": "*",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
     "react": "^18.2.0",
@@ -41,5 +38,29 @@
     "mini-css-extract-plugin": "^2.7.6",
     "style-loader": "^3.3.3",
     "typescript": "^5.3.2"
-  }
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {},
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/Track-1/client",
+  "author": "myeongheonhong"
 }
