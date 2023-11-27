@@ -88,7 +88,7 @@ const ContinueButtonWrapper = styled.button<{ isSuccess: boolean }>`
   height: 4.6rem;
 
   border-radius: 2.5rem;
-  background-color: ${({ theme, isSuccess }) => (isSuccess ? theme.colors.main : theme.colors.gray4)};
+  background-color: ${({ theme, isSuccess }) => (isSuccess ? theme.colors.neon_purple : theme.colors.gray4)};
 `;
 
 const Blank = styled.div`

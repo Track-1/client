@@ -78,5 +78,5 @@ export default function NickName(props: NickNameProps) {
 const ImportantIcon = styled.i`
   margin-left: 0.47rem;
 
-  color: ${({ theme }) => theme.colors.main};
+  color: ${({ theme }) => theme.colors.neon_purple};
 `;

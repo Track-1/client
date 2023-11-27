@@ -2,13 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { LoginButtonIc, PasswordEyeIc } from "../../assets";
 import background from "../../assets/icon/signupBackgroundIc.svg";
 import { ROLE } from "../../core/common/roleType";
 import { useLogin } from "../../hooks/queries/user";
 import { UserType } from "../../type/common/userType";
-import Footer from "../@common/footer";
-import InputContainer from "../@common/inputContainer";
 import SwitchToggle from "./switchToggle";
 
 const Container = styled.section`
@@ -40,8 +37,6 @@ const TitleWrapper = styled.div`
 `;
 
 const FormTitle = styled.h1`
-  ${({ theme }) => theme.fonts.title}
-
   margin-top: 10.9rem;
   margin-left: 11rem;
 
@@ -49,15 +44,13 @@ const FormTitle = styled.h1`
 `;
 
 const FormDescription = styled.h2`
-  ${({ theme }) => theme.fonts.body1}
-
   margin-left: 11rem;
   margin-bottom: 7.8rem;
 
   color: ${({ theme }) => theme.colors.gray2};
 
   & > strong {
-    color: ${({ theme }) => theme.colors.main};
+    color: ${({ theme }) => theme.colors.neon_purple};
   }
 `;
 
@@ -70,8 +63,6 @@ const InputWrapper = styled.div`
 `;
 
 const InputField = styled.input`
-  ${({ theme }) => theme.fonts.input}
-
   width: 100%;
   height: 4rem;
 
@@ -95,8 +86,6 @@ const PasswordEyeIcon = styled(PasswordEyeIc)`
 `;
 
 const ErrorMessage = styled.strong`
-  ${({ theme }) => theme.fonts.description}
-
   width: 100%;
   height: 2rem;
 
@@ -106,7 +95,6 @@ const ErrorMessage = styled.strong`
 `;
 
 const LoginButton = styled.button<{ userType: string; error: boolean }>`
-  ${({ theme }) => theme.fonts.inputTitle};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,8 +105,8 @@ const LoginButton = styled.button<{ userType: string; error: boolean }>`
 
   background-color: ${(props) =>
     props.userType === ROLE.PRODUCER
-      ? ({ theme, error }) => (error ? theme.colors.gray4 : theme.colors.sub1)
-      : ({ theme, error }) => (error ? theme.colors.gray4 : theme.colors.sub2)};
+      ? ({ theme, error }) => (error ? theme.colors.gray4 : theme.colors.neon_green)
+      : ({ theme, error }) => (error ? theme.colors.gray4 : theme.colors.neon_pink)};
   border-radius: 30px;
 `;
 
@@ -148,7 +136,6 @@ const SignupText = styled.strong`
 `;
 
 const ForgotEmailText = styled.p`
-  ${({ theme }) => theme.fonts.inputTitle};
   color: ${({ theme }) => theme.colors.gray2};
 
   margin-top: 3.2rem;
@@ -210,13 +197,17 @@ export default function LoginForm() {
                 <InputField
                   placeholder="Enter your email address"
                   {...register("email", {
-                    pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Enter a valid email",
+                    },
                   })}
                 />
               </InputContainer>
               <ErrorMessage>
                 {errors.email?.message ||
-                  (error?.response?.data.status === "U003" && "We don't have an account with that emial adress")}
+                  (error?.response?.data.status === "U003" &&
+                    "We don't have an account with that emial adress")}
               </ErrorMessage>
             </InputWrapper>
             <InputWrapper>

@@ -36,5 +36,5 @@ const VerifyCodeButtonWrapper = styled.button<{ isActive: boolean }>`
   margin-top: -2.5rem;
 
   border-radius: 5rem;
-  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
+  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.neon_purple : theme.colors.gray4)};
 `;

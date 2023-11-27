@@ -53,7 +53,9 @@ export default function Input<
         {fieldState?.error && (
           <ErrorMessage color={checkMessageColor(fieldState?.error?.message, userType)}>
             {fieldState.error.message}
-            <IconWrapper marginLeft={calculateMarginLeft()}>{CheckErrorIcon(fieldState?.error?.message)}</IconWrapper>
+            <IconWrapper marginLeft={calculateMarginLeft()}>
+              {CheckErrorIcon(fieldState?.error?.message)}
+            </IconWrapper>
           </ErrorMessage>
         )}
       </ErrorMessageWrapper>
@@ -79,13 +81,10 @@ const InputWrapper = styled.input<{ width: number | undefined; color: string | u
   border-bottom: 1px solid ${({ color }) => color};
 
   width: ${({ width }) => width}rem;
-
-  ${({ theme }) => theme.fonts.input}
 `;
 
 const ErrorMessage = styled.h1<{ color: string }>`
   color: ${({ color }) => color};
-  ${({ theme }) => theme.fonts.message};
 `;
 
 const ErrorMessageWrapper = styled.div`

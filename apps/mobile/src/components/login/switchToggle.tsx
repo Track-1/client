@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Switch } from "../@common/switch";
 
 const Container = styled.section`
   width: 55.9rem;

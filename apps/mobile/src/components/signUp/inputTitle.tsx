@@ -17,5 +17,4 @@ const Title = styled.h1`
   margin-bottom: 3rem;
 
   color: ${({ theme }) => theme.colors.gray2};
-  ${({ theme }) => theme.fonts.body1};
 `;

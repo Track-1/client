@@ -114,7 +114,7 @@ const UploadButton = styled.button<{ isComplete: boolean }>`
   align-items: center;
   position: absolute;
   margin: 45rem 0 0 32rem;
-  background-color: ${({ isComplete, theme }) => (isComplete ? theme.colors.main : theme.colors.gray3)};
+  background-color: ${({ isComplete, theme }) => (isComplete ? theme.colors.neon_purple : theme.colors.gray3)};
 
   cursor: pointer;
 `;

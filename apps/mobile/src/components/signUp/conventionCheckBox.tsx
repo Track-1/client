@@ -28,8 +28,8 @@ export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
       checkedConventions.map((checkedConvention) =>
         checkedConvention.id === id
           ? { ...checkedConvention, selected: !checkedConvention.selected }
-          : checkedConvention,
-      ),
+          : checkedConvention
+      )
     );
 
     //전체 동의하기 클릭한 경우
@@ -39,15 +39,15 @@ export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
             checkedConventions.map((checkedConvention) =>
               checkedConvention.id === id
                 ? { ...checkedConvention, selected: false }
-                : { ...checkedConvention, selected: false },
-            ),
+                : { ...checkedConvention, selected: false }
+            )
           )
         : setCheckedConventions(
             checkedConventions.map((checkedConvention) =>
               checkedConvention.id === id
                 ? { ...checkedConvention, selected: true }
-                : { ...checkedConvention, selected: true },
-            ),
+                : { ...checkedConvention, selected: true }
+            )
           );
     }
   }
@@ -110,7 +110,9 @@ export default function ConventionCheckBox(props: ConventionCheckBoxProp) {
           </CheckBox>
           <TextWrapper>
             <Title checkTotalAgree={checkTotalAgree(id)}>{text}</Title>
-            <FullConvention checkTotalAgree={checkTotalAgree(id)} onClick={() => showConventionModal(policy, true)}>
+            <FullConvention
+              checkTotalAgree={checkTotalAgree(id)}
+              onClick={() => showConventionModal(policy, true)}>
               전체보기
             </FullConvention>
           </TextWrapper>
@@ -139,7 +141,8 @@ const ConventionCheckBoxWrapper = styled.section<{ checkTotalAgree: boolean }>`
   padding-bottom: ${({ checkTotalAgree }) => checkTotalAgree && 0.4}rem;
   margin-bottom: ${({ checkTotalAgree }) => checkTotalAgree && 0.9}rem;
 
-  border-bottom: 0.1rem solid ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray4 : "transparent")};
+  border-bottom: 0.1rem solid
+    ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray4 : "transparent")};
 `;
 
 const TextWrapper = styled.div`
@@ -151,7 +154,6 @@ const TextWrapper = styled.div`
 
 const Title = styled.h1<{ checkTotalAgree: boolean }>`
   color: ${({ theme, checkTotalAgree }) => (checkTotalAgree ? theme.colors.gray1 : theme.colors.gray2)};
-  ${({ theme }) => theme.fonts.checkbox};
 `;
 
 const FullConvention = styled.p<{ checkTotalAgree: boolean }>`
@@ -160,7 +162,6 @@ const FullConvention = styled.p<{ checkTotalAgree: boolean }>`
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
 
   color: ${({ theme }) => theme.colors.gray3};
-  ${({ theme }) => theme.fonts.checkbox};
 
   cursor: pointer;
 `;

@@ -36,10 +36,10 @@ export const NICKNAME_MESSAGE = {
 export const ERROR_COLOR = {
   GRAY: `${theme.colors.gray3}`,
   RED: `${theme.colors.red}`,
-  VIOLET: `${theme.colors.main}`,
+  VIOLET: `${theme.colors.neon_purple}`,
   WHITE: `${theme.colors.white}`,
-  GREEN: `${theme.colors.sub1}`,
-  PINK: `${theme.colors.sub2}`,
+  GREEN: `${theme.colors.neon_green}`,
+  PINK: `${theme.colors.neon_pink}`,
   TRANSPARENT: "transparent",
 };
 

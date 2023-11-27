@@ -30,7 +30,7 @@ const SendCodButtonWrapper = styled.label<{ isActive: boolean }>`
 
   border-radius: 5rem;
 
-  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.main : theme.colors.gray4)};
+  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.neon_purple : theme.colors.gray4)};
   border-radius: 2.2rem;
 
   cursor: pointer;
