@@ -1,8 +1,8 @@
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme, FlattenSimpleInterpolation, css } from "styled-components";
 
 const colors = {
   //컬러 변경했습니다!!
-  purple: "#5200FF",
+  neon_purple: "#5200FF",
   neon_pink: "#43FF8E",
   neon_green: "#E965FF",
 
@@ -20,27 +20,39 @@ const colors = {
 
 export type ColorsTypes = typeof colors;
 
-interface Font {
-  family: boolean;
-  weight: number;
-  size: number;
-  lineHeight: number | string;
-  renewal?: boolean;
-}
+const fonts = (() => {
+  const families = [
+    ["Pre", "Pretendard"],
+    ["Alex", "Alexandria"],
+  ] as const;
+  const sizes = [10, 12, 14, 15, 16, 18, 20, 25, 30, 34, 40, 50, 60] as const;
+  const weights = [
+    ["L", 300],
+    ["R", 400],
+    ["M", 500],
+    ["SB", 600],
+    ["B", 700],
+  ] as const;
 
-function FONT({ family, weight, size, lineHeight, renewal }: Font): string {
-  return `
-    font-family: ${renewal ? "Alexandria" : family ? "YDestreet" : "Pretendard"};
-    font-weight : ${weight};
-    font-size : ${size}rem;
-    line-height : ${typeof lineHeight === "string" ? lineHeight : lineHeight + "rem"};
-    `;
-}
+  type FontKey = `${(typeof families)[number][0]}_${(typeof sizes)[number]}_${(typeof weights)[number][0]}`;
 
-const fonts = {
-  hashtag: FONT({ family: true, weight: 300, size: 1.5, lineHeight: 1.9 }),
-  //Mobile
-};
+  type FontStylesType = { [K in FontKey]?: FlattenSimpleInterpolation };
+  const fontStyles: FontStylesType = {};
+
+  for (const family of families) {
+    for (const size of sizes) {
+      for (const weight of weights) {
+        fontStyles[`${family[0]}_${size}_${weight[0]}`] = css`
+          font-family: ${family[1]};
+          font-size: ${size / 10}rem;
+          font-weight: ${weight[1]};
+        `;
+      }
+    }
+  }
+
+  return fontStyles;
+})();
 
 export type FontsTypes = typeof fonts;
 

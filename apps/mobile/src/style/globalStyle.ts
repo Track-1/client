@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import font from "./fonts";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
@@ -55,6 +56,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /* 위에가 styled-reset 내용 */
+  ${font}
 
   * {
     box-sizing: border-box;
