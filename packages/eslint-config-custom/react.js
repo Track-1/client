@@ -14,6 +14,7 @@ module.exports = {
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "no-var": 1,
     "@typescript-eslint/no-explicit-any": 1,
+    "no-unused-vars": 1,
   },
   parserOptions: {
     project: ["../tsconfig/base.json"],
