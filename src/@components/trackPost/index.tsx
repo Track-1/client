@@ -7,6 +7,7 @@ import usePaly from "../../hooks/common/usePlay";
 import { useTrackDetail } from "../../hooks/queries/tracks";
 import BackButton from "../@common/backButton";
 import Header from "../@common/header";
+import HomeLogo from "../@common/homeLogo";
 import Player from "../@common/player";
 import TrackSearchHeader from "../trackSearch/trackSearchHeader/trackSearchHeader";
 import AudioInfo from "./audioInfo";
@@ -15,7 +16,6 @@ import Comments from "./comments";
 import Download from "./download";
 import ProducerProfile from "./producerProfile";
 import ShowMore from "./showMore";
-import HomeLogo from "../@common/homeLogo";
 
 export const CommentsPlayerContext = createContext<any>({
   playAudio: () => {},
@@ -142,12 +142,6 @@ export default function TrackPost() {
         <HomeLogo />
         <TrackSearchHeader pageType="tracks" />
       </Header>
-      {isOpenComment && (
-        <>
-          <Comments handleClosecomment={handleClosecomment} trackContextPlaying={contextPlaying} />
-          <Player comment />
-        </>
-      )}
 
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
@@ -165,6 +159,12 @@ export default function TrackPost() {
         <AudioInfo />
       </TrackPostWrapper>
       <CommentBtnIcon onClick={handleOpenComment} />
+      {isOpenComment && (
+        <>
+          <Comments handleClosecomment={handleClosecomment} trackContextPlaying={contextPlaying} />
+          <Player comment />
+        </>
+      )}
     </>
   );
 }

@@ -10,19 +10,19 @@ import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { Switch } from "../@common/switch";
 import { FormContainer, InputContainer100, InputTitle } from "../@common/styledComponents";
 import { RequestPasswordButtonType } from "../../type/user";
+import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 
 export default function ForgotPasswordInput() {
-  const methods = useForm<EmailPasswordInputType>({
+  const methods = useForm({
     defaultValues: {
       email: "",
     },
-    mode: "onChange",
   });
   const {
     register,
     setError,
-    getValues,
     formState: { errors, isDirty, isValid },
+    handleSubmit,
   } = methods;
 
   const { data, resetPassword } = useResetPassword(setError);
@@ -33,8 +33,8 @@ export default function ForgotPasswordInput() {
     text: "Request a password reset",
   });
 
-  function requestResetPassword() {
-    resetPassword({ userType: userType, userEmail: getValues().email });
+  function handleRequestResetPassword(email: string) {
+    resetPassword({ userType: userType, userEmail: email });
   }
 
   function switchUseryType() {
@@ -52,46 +52,47 @@ export default function ForgotPasswordInput() {
   }, [data, isDirty, isValid]);
 
   return (
-    <PasswordContainer>
-      <FormTitle>Forgot password?</FormTitle>
-      <InputContainer100>
-        <div>
-          <InputTitle>What’s your email?</InputTitle>
-          <form onSubmit={requestResetPassword}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          handleRequestResetPassword(data.email);
+        })}>
+        <FormTitle>Forgot password?</FormTitle>
+        <InputContainer>
+          <div>
+            <InputTitle>What’s your email?</InputTitle>
             <EmailInputWrapper>
               <EmailInput
                 placeholder="Enter your email address"
                 {...register("email", {
                   pattern: {
-                    value: /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
+                    value: CHECK_EMAIL_FORM,
                     message: EMAIL_MESSAGE.FORM,
                   },
                 })}
               />
             </EmailInputWrapper>
-            <ErrorMessage>{errors.email && errors.email.message}</ErrorMessage>
-          </form>
-        </div>
-      </InputContainer100>
-      <SwitchContainer>
-        <Switch externalState={switchUseryType}>
-          <Switch.Label onLabel="Producer Mode" offLabel="Producer Mode" />
-          <Switch.Root>
-            <Switch.Thumb />
-          </Switch.Root>
-        </Switch>
-      </SwitchContainer>
-      <SendButton userType={userType} isActive={buttonType.isActive} type="submit">
-        {buttonType.isActive ? (
-          buttonType.text === "Resend" ? (
-            <ResendTextIcon />
+          </div>
+        </InputContainer>
+        <SwitchContainer>
+          <Switch externalState={switchUseryType}>
+            <Switch.Label onLabel="Producer Mode" offLabel="Producer Mode" />
+            <Switch.Root>
+              <Switch.Thumb />
+            </Switch.Root>
+          </Switch>
+        </SwitchContainer>
+        <SendButton userType={userType} isActive={buttonType.isActive} type="submit">
+          {buttonType.isActive ? (
+            buttonType.text === "Resend" ? (
+              <ResendTextIcon />
+            ) : (
+              <RequestBlackTextIcon />
+            )
           ) : (
-            <RequestBlackTextIcon />
-          )
-        ) : (
-          <RequestWhiteTextIcon />
-        )}
-      </SendButton>
+            <RequestWhiteTextIcon />
+          )}
+        </SendButton>
+      </form>
     </PasswordContainer>
   );
 }
