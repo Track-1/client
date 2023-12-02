@@ -1,4 +1,4 @@
-import { CategoryType, UpperCategoryType } from "../../type/common/category";
+import { CategoryIdType, CategoryType, UpperCategoryType } from "../../type/common/category";
 
 export const Categories: CategoryType[] = ["R&B", "Hiphop", "Ballad", "Pop", "Rock", "EDM", "JAZZ", "House", "Funk"];
 export const UpperCategories: UpperCategoryType[] = [
@@ -13,7 +13,7 @@ export const UpperCategories: UpperCategoryType[] = [
   "FUNK",
 ];
 
-export const CategoryId: Record<UpperCategoryType, string> = {
+export const CategoryId: Record<UpperCategoryType, CategoryIdType> = {
   "R&B": "0",
   HIPHOP: "1",
   BALLAD: "2",
@@ -37,7 +37,7 @@ export const CategoryBoolean: Record<UpperCategoryType, boolean> = {
   FUNK: false,
 } as const;
 
-export const CategoryText: Record<UpperCategoryType | "EVENT", CategoryType | "Event"> = {
+export const CategoryText: Record<UpperCategoryType, CategoryType> = {
   "R&B": "R&B",
   HIPHOP: "Hiphop",
   BALLAD: "Ballad",
@@ -47,5 +47,16 @@ export const CategoryText: Record<UpperCategoryType | "EVENT", CategoryType | "E
   JAZZ: "JAZZ",
   HOUSE: "House",
   FUNK: "Funk",
-  EVENT: "Event",
+} as const;
+
+export const ReversedCategoryId: Record<CategoryIdType, CategoryType> = {
+  0: "R&B",
+  1: "Hiphop",
+  2: "Ballad",
+  3: "Pop",
+  4: "Rock",
+  5: "EDM",
+  6: "JAZZ",
+  7: "House",
+  8: "Funk",
 } as const;

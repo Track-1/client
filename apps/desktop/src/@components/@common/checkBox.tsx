@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const DefaultIndocator = styled.input<{ isChecked: boolean }>``;
 
-const DefaultLabel = styled.label``;
+const DefaultLabel = styled.label<{ isChecked: boolean }>``;
 
 type CheckBoxContextType = {
   isChecked: boolean;
@@ -21,8 +21,8 @@ const CheckBoxContext = createContext<CheckBoxContextType>({
 });
 
 export function CheckBoxRoot(props: PropsWithChildren<CheckBoxProps>) {
-  const { children, id, externalFn } = props;
-  const [isChecked, setIsChecked] = useState(false);
+  const { children, id, externalFn, defaultChecked } = props;
+  const [isChecked, setIsChecked] = useState(defaultChecked ?? false);
   function innerCheck() {
     setIsChecked((prev) => !prev);
   }
@@ -66,7 +66,11 @@ export function Label(props: PropsWithChildren<LabelProps>) {
   if (asChild) {
     return getCustomElement(children as ReactElement, { ...restProps, htmlFor: id, isChecked });
   }
-  return <DefaultLabel htmlFor={id}>{children}</DefaultLabel>;
+  return (
+    <DefaultLabel htmlFor={id} isChecked={isChecked}>
+      {children}
+    </DefaultLabel>
+  );
 }
 
 export const CheckBox = Object.assign(CheckBoxRoot, {

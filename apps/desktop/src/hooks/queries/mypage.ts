@@ -26,8 +26,9 @@ import { ROLE } from "../../core/common/roleType";
 import { loginUserId } from "../../recoil/common/loginUserData";
 import useModal from "../common/useModal";
 import useUpdateModal from "../common/useUpdateModal";
+import { UserType } from "../../type/common/userType";
 
-export function useGetProducerProfile(userId: number, userType?: string) {
+export function useGetProducerProfile(userId: number) {
   const { data: producerProfile } = useQuery(
     "getProducerProfile",
     () =>
@@ -40,7 +41,6 @@ export function useGetProducerProfile(userId: number, userType?: string) {
       onError: (err) => {
         // console.log(err);
       },
-      enabled: userType === undefined || userType === ROLE.PRODUCER,
     },
   );
 
@@ -132,7 +132,7 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">)
   };
 }
 
-export function useGetVocalProfile(userId: number, userType?: string) {
+export function useGetVocalProfile(userId: number) {
   const { data: vocalProfile } = useQuery(
     ["getVocalProfile"],
     () =>
@@ -145,7 +145,6 @@ export function useGetVocalProfile(userId: number, userType?: string) {
       onError: (err) => {
         console.log(err);
       },
-      enabled: userType === undefined || userType === ROLE.VOCAL,
     },
   );
 

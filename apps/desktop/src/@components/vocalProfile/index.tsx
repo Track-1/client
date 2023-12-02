@@ -38,7 +38,7 @@ export default function VocalProfile() {
 
   function handleMoveProfileEditPage() {
     quitAudioForMovePage();
-    navigate(`/profile-edit`, {
+    navigate(`/profile-edit/${vocalId}`, {
       state: {
         prevURL: prevURL,
       },

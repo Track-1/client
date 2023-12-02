@@ -10,7 +10,7 @@ interface ProducerImageEditProps {
 
 export default function ProducerImageEdit(props: ProducerImageEditProps) {
   const { previewImage, handleUploadImageFile } = props;
-  const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
+  const { fileHoverState, changeFileHoverState } = useFileHover();
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
             fileHoverState={fileHoverState}
             previewImage={previewImage}
           />
-          {previewImage && fileHoverState && <FileChangeIcon />}
+          {fileHoverState && <FileChangeIcon />}
           <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
         </Label>
       </ProfileImageContainer>
@@ -33,15 +33,16 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
 const FileChangeIcon = styled(UploadFileChangeIc)`
   position: absolute;
 
-  top: 13.55rem;
-  left: 8.95rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   width: 18.9rem;
 
   cursor: pointer;
 `;
 
-const ProfileImageContainer = styled.label`
+const ProfileImageContainer = styled.div`
   display: flex;
   position: relative;
 
@@ -70,7 +71,7 @@ const ProfileImage = styled.img<{ fileHoverState: boolean; previewImage: string 
   object-fit: cover;
   border-radius: 50%;
   ${(props) =>
-    props.fileHoverState && props.previewImage !== ""
+    props.fileHoverState
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

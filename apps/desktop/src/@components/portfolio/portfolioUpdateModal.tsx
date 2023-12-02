@@ -55,7 +55,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
         navigate(`/portfolio-edit/producer/${portfolioId}`, {
           state: {
             prevURL: prevURL,
-            uploadEditInitData: clickedPortfolio,
+            prevUploadData: clickedPortfolio,
           },
         });
         break;
@@ -63,7 +63,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
         navigate(`/vocal-searching-edit/producer/${portfolioId}`, {
           state: {
             prevURL: prevURL,
-            uploadEditInitData: clickedProducerVocalSearching,
+            prevUploadData: clickedProducerVocalSearching,
           },
         });
         break;
@@ -71,7 +71,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
         navigate(`/portfolio-edit/vocal/${portfolioId}`, {
           state: {
             prevURL: prevURL,
-            uploadEditInitData: clickedPortfolio,
+            prevUploadData: clickedPortfolio,
           },
         });
         break;

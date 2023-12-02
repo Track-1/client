@@ -6,11 +6,11 @@ export default function useInputText(initValue: string, inputLimit?: number) {
   const handleChangeInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
       if (inputLimit) {
-        if (inputLimit && e.currentTarget.value.length <= inputLimit) {
-          setValue(e.currentTarget.value);
+        if (e.target.value.length <= inputLimit) {
+          setValue(e.target.value);
         }
       } else {
-        setValue(e.currentTarget.value);
+        setValue(e.target.value);
       }
     },
     [],

@@ -1,22 +1,11 @@
 import styled from "styled-components";
 import TextLength from "./textLength";
 import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { theme } from "../../style/theme";
-import { TextLengthWrapper } from "./descriptionInput";
 import TextareaAutosize from "react-textarea-autosize";
+import { useFormContext } from "react-hook-form";
 
-interface UploadTitleProps {
-  title: string;
-  handleChangeTitle: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export default function UploadTitle(props: UploadTitleProps) {
-  const { title, handleChangeTitle } = props;
-
-  function handleChangeInputTitle(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    e.target.value = e.target.value.replace("\n", "");
-    handleChangeTitle(e);
-  }
+export default function UploadTitle() {
+  const { register, watch } = useFormContext();
 
   return (
     <Container>
@@ -25,11 +14,12 @@ export default function UploadTitle(props: UploadTitleProps) {
         <TitleInput
           placeholder="Please enter a title"
           spellCheck="false"
-          onChange={handleChangeInputTitle}
-          value={title}
-          defaultValue={title}></TitleInput>
+          maxLength={36}
+          {...register("title", {
+            required: true,
+          })}></TitleInput>
         <TextLengthWrapper>
-          <TextLength inputLength={title.length} limit={TEXT_LIMIT.UPLOAD_TITLE} font={theme.fonts.body1} />
+          <TextLength inputLength={watch("title").length} limit={TEXT_LIMIT.UPLOAD_TITLE} />
         </TextLengthWrapper>
       </TitleInputWrapper>
     </Container>
@@ -56,14 +46,16 @@ const TitleInput = styled(TextareaAutosize)`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.title};
 
+  border: none;
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray5};
+  background-color: transparent;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.white};
+    outline: none;
   }
 
   resize: none;
@@ -71,4 +63,11 @@ const TitleInput = styled(TextareaAutosize)`
 
 const TitleInputWrapper = styled.div`
   width: 100%;
+`;
+
+export const TextLengthWrapper = styled.div`
+  ${({ theme }) => theme.fonts.body1}
+
+  float: right;
+  margin-top: 1.8rem;
 `;

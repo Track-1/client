@@ -11,8 +11,8 @@ export default function TrackSearchHeaderButton() {
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
 
-  const { vocalProfile } = useGetVocalProfile(userId, userType);
-  const { producerProfile } = useGetProducerProfile(userId, userType);
+  const { vocalProfile } = useGetVocalProfile(userId);
+  const { producerProfile } = useGetProducerProfile(userId);
   const prevURL = useLocation().pathname;
 
   const navigate = useNavigate();

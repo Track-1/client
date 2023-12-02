@@ -12,7 +12,7 @@ interface ProducerLayoutProps {
 
 export default function ProducerLayout(props: ProducerLayoutProps) {
   const { previewImage, handleUploadImageFile, children } = props;
-  const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
+  const { fileHoverState, changeFileHoverState } = useFileHover();
 
   return (
     <Container>

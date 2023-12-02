@@ -1,27 +1,27 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import MainPage from './@pages/mainPage';
-import ProducerProfilePage from './@pages/producerProfilePage';
-import SignupProfilePage from './@pages/signupProfilePage';
-import SignupStepPage from './@pages/signupStepPage';
-import SignupSuccessPage from './@pages/signupSuccessPage';
-import TrackPostPage from './@pages/trackPostPage';
-import UploadPage from './@pages/uploadPage';
+import MainPage from "./@pages/mainPage";
+import ProducerProfilePage from "./@pages/producerProfilePage";
+import SignupProfilePage from "./@pages/signupProfilePage";
+import SignupStepPage from "./@pages/signupStepPage";
+import SignupSuccessPage from "./@pages/signupSuccessPage";
+import TrackPostPage from "./@pages/trackPostPage";
+import UploadPage from "./@pages/uploadPage";
 
-import ErrorPage from './@pages/errorPage';
-import ForgotPasswordPage from './@pages/forgotPasswordPage';
-import LoginPage from './@pages/loginPage';
-import ProfileEditPage from './@pages/profileEditPage';
-import ResetPasswordPage from './@pages/resetPasswordPage';
-import TrackSearchPage from './@pages/trackSearchPage';
-import UploadEditPage from './@pages/uploadEditPage';
-import VocalProfilePage from './@pages/vocalProfilePage';
-import VocalSearchPage from './@pages/vocalSearchPage';
-import PrivateRoute from './utils/common/privateRouter';
-import HomePage from './@pages/homePage';
-import EventPage from './@pages/eventPage';
-import AdminPage from './@pages/adminPage';
-import AboutPage from './@pages/aboutPage';
+import ErrorPage from "./@pages/errorPage";
+import ForgotPasswordPage from "./@pages/forgotPasswordPage";
+import LoginPage from "./@pages/loginPage";
+import ProfileEditPage from "./@pages/profileEditPage";
+import ResetPasswordPage from "./@pages/resetPasswordPage";
+import TrackSearchPage from "./@pages/trackSearchPage";
+import UploadEditPage from "./@pages/uploadEditPage";
+import VocalProfilePage from "./@pages/vocalProfilePage";
+import VocalSearchPage from "./@pages/vocalSearchPage";
+import PrivateRoute from "./utils/common/privateRouter";
+import HomePage from "./@pages/homePage";
+import EventPage from "./@pages/eventPage";
+import AdminPage from "./@pages/adminPage";
+import AboutPage from "./@pages/aboutPage";
 
 export default function Router() {
   return (
@@ -48,27 +48,12 @@ export default function Router() {
           <Route path="/signup/success" element={<SignupSuccessPage />} />
           <Route path="/upload/vocal/portfolio" element={<UploadPage />} />
           <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
-          <Route
-            path="/portfolio-edit/producer/:trackId"
-            element={<UploadEditPage />}
-          />
-          <Route
-            path="/vocal-searching-edit/producer/:trackId"
-            element={<UploadEditPage />}
-          />
-          <Route
-            path="/portfolio-edit/vocal/:trackId"
-            element={<UploadPage />}
-          />
-          <Route path="/profile-edit" element={<ProfileEditPage />} />
-          <Route
-            path="/vocal-profile/:vocalId"
-            element={<VocalProfilePage />}
-          />
-          <Route
-            path="/producer-profile/:producerId"
-            element={<ProducerProfilePage />}
-          />
+          <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />
+          <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
+          <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
+          <Route path="/profile-edit/:id" element={<ProfileEditPage />} />
+          <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
+          <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

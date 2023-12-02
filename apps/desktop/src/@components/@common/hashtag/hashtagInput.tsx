@@ -1,91 +1,63 @@
 import styled from "styled-components";
 import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
-import { KeyboardEvent, useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useFromContextWithRef } from "../../../hooks/common/useFromContextWithRef";
+import { useFieldArray } from "react-hook-form";
+import { useHashtagWithReactHookForm } from "../../../hooks/common/useHashtagWithReactHookForm";
 
-interface HashtagInputProps {
-  hashtags: string[];
-  hashtagLength: number;
-  hashtagInputText: string;
-  handleAddHashtag: () => void;
-  handleRemoveHashtag: (tag: string) => void;
-  handleChangeHashtagInputText: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => void;
-}
-
-export default function HashtagInput(props: HashtagInputProps) {
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-  } = props;
-
-  const hashtagRef = useRef<HTMLInputElement | null>(null);
-  const hashtagDeleteRef = useRef<SVGSVGElement | null>(null);
+export default function HashtagInput() {
+  const formContext = useFromContextWithRef();
+  const { registerWithRef, watch, getValues } = formContext;
+  const fieldArray = useFieldArray({
+    name: "hashtag",
+  });
+  const { append, fields } = fieldArray;
+  const { handleKeyDownEnter, handleDeleteHashtag, activeInput } = useHashtagWithReactHookForm(formContext, fieldArray);
 
   useEffect(() => {
-    document.addEventListener("mousedown", clickOutSide);
-    return () => {
-      document.removeEventListener("mousedown", clickOutSide);
-    };
-  });
+    if (getValues("hashtag").length >= 3) return;
 
-  function clickOutSide(e: any) {
-    if (
-      !hashtagRef.current?.contains(e.target) &&
-      !hashtagDeleteRef.current?.contains(e.target) &&
-      hashtagRef.current?.value
-    ) {
-      handleAddHashtag();
-    }
-  }
-
-  function isDuplicateHashtag() {
-    const isDuplicate = hashtags.includes(hashtagInputText);
-    isDuplicate && alert("중복된 해시태그 입니다!");
-    return isDuplicate;
-  }
-
-  function handleEnterHashtag(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && e.nativeEvent.isComposing === false && !isDuplicateHashtag()) {
-      handleAddHashtag();
-    }
-  }
+    append("");
+  }, []);
 
   return (
-    <>
-      {hashtags.map((tag) => (
-        <HashtagBox key={tag}>
-          <CompleteHashtagWrapper>
-            <HashtagSharp># </HashtagSharp>
-            <CompletedHashtag>{tag}</CompletedHashtag>
-          </CompleteHashtagWrapper>
-          <DeleteHashtagIcon onClick={() => handleRemoveHashtag(tag)} ref={hashtagDeleteRef} />
-        </HashtagBox>
-      ))}
-
-      {hashtags?.length < 3 && (
-        <HashtagBox>
-          <HashtagWrapper>
-            <HashtagSharp># </HashtagSharp>
-            <HashtagInputText
-              placeholder="Hashtag"
-              onKeyDownCapture={handleEnterHashtag}
-              onChange={handleChangeHashtagInputText}
-              inputWidth={hashtagLength}
-              value={hashtagInputText}
-              ref={hashtagRef}
-            />
-          </HashtagWrapper>
-        </HashtagBox>
-      )}
-      {hashtags?.length < 2 && <AddHashtagIcon onClick={handleAddHashtag} />}
-    </>
+    <HashtagWrapper>
+      {fields.map((field, idx) => {
+        return (
+          <HashtagBox data-idx={idx}>
+            <HashtagInputWrapper data-idx={idx}>
+              <HashtagSharp data-idx={idx}># </HashtagSharp>
+              <HashtagInputText
+                key={field.id}
+                placeholder="hashtag"
+                onKeyPress={(e) => handleKeyDownEnter(e)}
+                onClick={activeInput}
+                inputWidth={watch("hashtag")[idx].length}
+                autoComplete="off"
+                maxLength={10}
+                data-idx={idx}
+                autoFocus
+                {...registerWithRef("hashtag", idx)}
+              />
+            </HashtagInputWrapper>
+            <DeleteHashtagIcon onClick={(e) => handleDeleteHashtag(e, idx)} />
+          </HashtagBox>
+        );
+      })}
+      {fields.length < 3 && <AddHashtagIcon />}
+    </HashtagWrapper>
   );
 }
+
+const HashtagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  height: 100%;
+
+  margin-bottom: 4.8rem;
+`;
 
 const HashtagBox = styled.div`
   display: flex;
@@ -100,7 +72,7 @@ const HashtagBox = styled.div`
   background-color: ${({ theme }) => theme.colors.gray5};
 `;
 
-const HashtagWrapper = styled.div`
+const HashtagInputWrapper = styled.div`
   display: flex;
 
   padding: 0 0.5rem 0 1.5rem;
@@ -111,6 +83,14 @@ const HashtagSharp = styled.p`
 
   color: ${({ theme }) => theme.colors.gray1};
   ${({ theme }) => theme.fonts.hashtag};
+`;
+
+const DeleteHashtagIcon = styled(DeleteHashtagIc)`
+  width: 2.8rem;
+
+  margin-left: -1rem;
+
+  cursor: pointer;
 `;
 
 const HashtagInputText = styled.input<{ inputWidth: number }>`
@@ -126,32 +106,9 @@ const HashtagInputText = styled.input<{ inputWidth: number }>`
   }
 `;
 
-const CompletedHashtag = styled.article`
-  display: flex;
-
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.hashtag}
-  align-items: center;
-`;
-
 const AddHashtagIcon = styled(AddHashtagIc)`
   width: 3.8rem;
   height: 3.8rem;
 
   cursor: pointer;
-`;
-
-const DeleteHashtagIcon = styled(DeleteHashtagIc)`
-  width: 2.8rem;
-
-  margin-left: -1rem;
-
-  cursor: pointer;
-`;
-
-const CompleteHashtagWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  padding: 0 1.5rem;
 `;
