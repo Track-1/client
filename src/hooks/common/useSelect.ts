@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-export const useSelect = <T>(defaultOpen?: boolean) => {
-  const [selectedOption, setSelectedOption] = useState<T | null>(null);
+export const useSelect = <T>(defaultOpen?: boolean, defaultOption?: T) => {
+  const [selectedOption, setSelectedOption] = useState<T | null>(defaultOption ?? null);
+  const [multiSelectedOption, setMultiSelectedOption] = useState<T[]>([]);
   const [isSelecBoxOpen, setIsSelecBoxOpen] = useState(defaultOpen ?? false);
 
   const toggleBoxOpen = () => {
@@ -12,5 +13,9 @@ export const useSelect = <T>(defaultOpen?: boolean) => {
     setSelectedOption(option);
   };
 
-  return { selectedOption, selectOption, isSelecBoxOpen, toggleBoxOpen };
+  const selectMultOption = (option: T) => {
+    setMultiSelectedOption((prev) => [...prev, option]);
+  };
+
+  return { selectedOption, multiSelectedOption, selectOption, selectMultOption, isSelecBoxOpen, toggleBoxOpen };
 };

@@ -2,55 +2,48 @@ import styled from "styled-components";
 import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
 import UploadInfoBox from "./uploadInfoBox";
 import DropCategory from "./dropCategory";
-import { UpperCategoryType } from "../../type/common/category";
-import useModal from "../../hooks/common/useModal";
-import { useEffect } from "react";
+import { Select } from "../@common/selectBox";
+import { ReversedCategoryId } from "../../core/common/categories";
+import { CategoryIdType } from "../../type/common/category";
+import { useContext } from "react";
+import { SelectCategoryContext } from "../../context/selectCategoryContext";
 
-interface CategoryInfoProps {
-  categories: Record<UpperCategoryType, boolean>;
-  isSelectedNothing: () => boolean;
-  isSelected: (category: string) => boolean;
-  selectCategory: (category: string) => void;
-  categoryText: string;
-}
+export default function CategoryInfo() {
+  const { selectedOption, selectOption } = useContext(SelectCategoryContext);
 
-export default function CategoryInfo(props: CategoryInfoProps) {
-  const { categories, isSelectedNothing, selectCategory, categoryText } = props;
-  const { openModal, unShowModal, handleShowUpdateModal } = useModal();
-
-  useEffect(() => {
-    unShowModal();
-  }, []);
-
+  function selectCategory(option: number | null) {
+    selectOption(String(option) as CategoryIdType);
+  }
   return (
-    <UploadInfoBox>
-      <InfoType>
-        <InfoTypeIconWrapper>
-          <UploadCategoryIcon />
-        </InfoTypeIconWrapper>
-        <InfoTypeText>Category</InfoTypeText>
-      </InfoType>
+    <Select externalSelectState={selectCategory}>
+      <UploadInfoBox>
+        <InfoType>
+          <InfoTypeIconWrapper>
+            <UploadCategoryIcon />
+          </InfoTypeIconWrapper>
+          <p>Category</p>
+        </InfoType>
 
-      <InfoInput>
-        <InputWrapper>
-          <InputCategoryTextWrapper isSelectedNothing={isSelectedNothing()}>
-            <InputCategoryText isSelectedNothing={isSelectedNothing()} onClick={handleShowUpdateModal}>
-              {categoryText}
-            </InputCategoryText>
-          </InputCategoryTextWrapper>
-          <CategoryDropDownIcon onClick={handleShowUpdateModal} />
-        </InputWrapper>
-      </InfoInput>
-      <DropCategory
-        categories={categories}
-        selectCategory={selectCategory}
-        openModal={openModal}
-        handleShowUpdateModal={handleShowUpdateModal}
-      />
-    </UploadInfoBox>
+        <InfoInput>
+          <InputWrapper>
+            <InputCategoryTextWrapper isSelectedNothing={selectedOption === null}>
+              <Select.Trigger asChild>
+                <InputCategoryText isSelectedNothing={selectedOption === null}>
+                  {selectedOption === null ? "Select" : ReversedCategoryId[selectedOption]}
+                </InputCategoryText>
+              </Select.Trigger>
+            </InputCategoryTextWrapper>
+            <Select.Trigger asChild>
+              <CategoryDropDownIcon />
+            </Select.Trigger>
+          </InputWrapper>
+        </InfoInput>
+        <DropCategory />
+      </UploadInfoBox>
+    </Select>
   );
 }
-export const InfoType = styled.div`
+const InfoType = styled.div`
   display: flex;
   align-items: center;
 
@@ -61,9 +54,7 @@ export const InfoType = styled.div`
   ${({ theme }) => theme.fonts.cations};
 `;
 
-export const InfoTypeText = styled.p``;
-
-export const InfoInput = styled.div`
+const InfoInput = styled.div`
   display: flex;
   justify-content: space-between;
 
@@ -71,11 +62,9 @@ export const InfoInput = styled.div`
   height: 100%;
 `;
 
-export const InfoTypeIconWrapper = styled.div`
+const InfoTypeIconWrapper = styled.div`
   width: 2.23rem;
 `;
-
-// -------여기까지 공통----------
 
 const InputWrapper = styled.div`
   display: flex;

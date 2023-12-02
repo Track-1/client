@@ -1,57 +1,20 @@
+import { useEffect } from "react";
+import { useFieldArray } from "react-hook-form";
 import styled from "styled-components";
-import HashtagInput from "../@common/hashtag/hashtagInput";
 import InputContainer from "../@common/inputContainer";
+import HashtagInput from "../@common/hashtag/hashtagInput";
 
-interface ProfileHashtagEditProps {
-  hashtags: string[];
-  hashtagLength: number;
-  hashtagInputText: string;
-  handleAddHashtag: () => void;
-  handleRemoveHashtag: (tag: string) => void;
-  handleChangeHashtagInputText: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => void;
-}
-
-export default function ProfileHashtagEdit(props: ProfileHashtagEditProps) {
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-  } = props;
-
+export default function ProfileHashtagEdit() {
   return (
     <>
       <HashtagContainer>
         <InputContainer title="Hashtag" hashtagWarningIcon>
-          <HashtagWrapper>
-            <HashtagInput
-              hashtags={hashtags}
-              hashtagLength={hashtagLength}
-              hashtagInputText={hashtagInputText}
-              handleAddHashtag={handleAddHashtag}
-              handleRemoveHashtag={handleRemoveHashtag}
-              handleChangeHashtagInputText={handleChangeHashtagInputText}
-            />
-          </HashtagWrapper>
+          <HashtagInput />
         </InputContainer>
       </HashtagContainer>
     </>
   );
 }
-
-const HashtagWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-
-  height: 100%;
-
-  margin-bottom: 4.8rem;
-`;
 
 const HashtagContainer = styled.article`
   width: 55.9rem;

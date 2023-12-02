@@ -1,24 +1,22 @@
+import styled from "styled-components";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
+import { DescriptionInput } from "../@common/descriptionInput";
 import InputContainer from "../@common/inputContainer";
-import DescriptionInput from "../upload/descriptionInput";
 
-interface ProfileDescriptionEditProps {
-  description: string;
-  handleChangeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
-  isProfile: boolean;
-}
-
-export default function ProfileDescriptionEdit(props: ProfileDescriptionEditProps) {
-  const { description, handleChangeDescription, isProfile } = props;
-
+export default function ProfileDescriptionEdit() {
   return (
-    <>
-      <InputContainer title="Description">
-        <DescriptionInput
-          description={description}
-          handleChangeDescription={handleChangeDescription}
-          isProfile={isProfile}
-        />
-      </InputContainer>
-    </>
+    <InputContainer title="Description">
+      <InfoInput>
+        <DescriptionInput maxLength={TEXT_LIMIT.PROFILE_DESCRIPTION} />
+      </InfoInput>
+    </InputContainer>
   );
 }
+
+const InfoInput = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 100%;
+`;

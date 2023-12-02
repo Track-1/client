@@ -1,3 +1,5 @@
+import { FieldValues, UseFieldArrayAppend, UseFieldArrayRemove, UseFormGetValues } from "react-hook-form";
+import { CategoryType, UpperCategoryType } from "./common/category";
 import { UserType } from "./common/userType";
 
 export interface ParamsType {
@@ -28,7 +30,7 @@ export interface UserProfileType {
   userImageFile: string;
   userName: string;
   userContact: string;
-  userCategory: string[];
+  userCategory: UpperCategoryType[];
   userIntroduction: string;
   userKeyword: string[];
   userTrackSearch: boolean;
@@ -38,10 +40,11 @@ export interface UserPortfolioType {
   portfolioId: number;
   portfolioImageFile: string;
   portfolioAudioFile: string;
+  portfolioAudioFileName: string;
   portfolioTitle: string;
   portfolioContent: string;
   portfolioKeyword: string[];
-  portfolioCategory: string;
+  portfolioCategory: CategoryType;
   portfolioAudioFileLength: number;
 }
 
@@ -49,6 +52,7 @@ export interface ProducerVocalSearchingType {
   trackId: number;
   trackImageFile: string;
   trackAudioFile: string;
+  trackAudioFileName: string;
   trackTitle: string;
   trackContent: string;
   trackKeyword: string[];
@@ -88,3 +92,22 @@ export interface ProducerVocalSearchingInfoType {
   hasNextPage: boolean;
   data: ProducerVocalSearchingType[];
 }
+
+export type ProfileInfoInputType = {
+  nickName: string;
+  contact: string;
+  category: string[];
+  hashtag: string[];
+  description: string;
+};
+
+export type FormContextType = {
+  hashtagRef: React.MutableRefObject<HTMLInputElement | undefined>;
+  getValues: UseFormGetValues<FieldValues>;
+};
+
+export type FieldArrayType = {
+  append: UseFieldArrayAppend<FieldValues, "hashtag">;
+  remove: UseFieldArrayRemove;
+  fields: Record<"id", string>[];
+};

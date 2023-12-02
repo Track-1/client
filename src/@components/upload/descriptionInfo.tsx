@@ -1,35 +1,37 @@
 import { UploadDescriptionIc } from "../../assets";
-import { InfoType, InfoTypeIconWrapper, InfoTypeText } from "./categotyInfo";
 import styled from "styled-components";
-import DescriptionInput from "./descriptionInput";
 import UploadInfoBox from "./uploadInfoBox";
+import { DescriptionInput } from "../@common/descriptionInput";
+import { TEXT_LIMIT } from "../../core/common/textLimit";
 
-
-interface DescriptionInfoProps {
-  description: string;
-  handleChangeDescription: (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void;
-  isProfile: boolean;
-}
-
-export default function DescriptionInfo(props: DescriptionInfoProps) {
-  const { description, handleChangeDescription, isProfile } = props;
-
+export default function DescriptionInfo() {
   return (
     <UploadInfoBox>
       <InfoType>
         <InfoTypeIconWrapper>
           <UploadDescriptionIcon />
         </InfoTypeIconWrapper>
-        <InfoTypeText>Description</InfoTypeText>
+        <p>Description</p>
       </InfoType>
-      <DescriptionInput
-        description={description}
-        handleChangeDescription={handleChangeDescription}
-        isProfile={isProfile}
-      />
+      <DescriptionInput maxLength={TEXT_LIMIT.DESCRIPTION} />
     </UploadInfoBox>
   );
 }
 const UploadDescriptionIcon = styled(UploadDescriptionIc)`
   width: 1.246rem;
+`;
+
+const InfoType = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 27.4rem;
+  height: 100%;
+
+  color: ${({ theme }) => theme.colors.gray3};
+  ${({ theme }) => theme.fonts.cations};
+`;
+
+const InfoTypeIconWrapper = styled.div`
+  width: 2.23rem;
 `;

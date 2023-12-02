@@ -8,7 +8,7 @@ import { theme } from "../../style/theme";
 import { UserType } from "../../type/common/userType";
 import { EmailPasswordInputType } from "../../type/signUp/inputType";
 import { Switch } from "../@common/switch";
-import { FormContainer, InputContainer, InputTitle } from "../@common/styledComponents";
+import { FormContainer, InputContainer100, InputTitle } from "../@common/styledComponents";
 import { RequestPasswordButtonType } from "../../type/user";
 import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
 
@@ -52,7 +52,6 @@ export default function ForgotPasswordInput() {
   }, [data, isDirty, isValid]);
 
   return (
-    <PasswordContainer>
       <form
         onSubmit={handleSubmit((data) => {
           handleRequestResetPassword(data.email);
@@ -72,7 +71,6 @@ export default function ForgotPasswordInput() {
                 })}
               />
             </EmailInputWrapper>
-            <ErrorMessage>{errors.email && errors.email.message}</ErrorMessage>
           </div>
         </InputContainer>
         <SwitchContainer>

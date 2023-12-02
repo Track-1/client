@@ -18,11 +18,21 @@ export const FormContainer = styled.section`
   background-clip: content-box, border-box;
 `;
 
-export const InputContainer = styled.section`
+export const InputContainer100 = styled.section`
   display: flex;
   justify-content: space-between;
 
   width: 55.9rem;
+`;
+
+export const InputContainer200 = styled.input`
+  color: white;
+
+  border-bottom: 1px solid ${({ theme }) => theme.colors.white};
+
+  width: 56rem;
+
+  ${({ theme }) => theme.fonts.input}
 `;
 
 export const InputTitle = styled.h2`

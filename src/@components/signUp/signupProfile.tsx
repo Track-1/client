@@ -1,102 +1,79 @@
 import Footer from "../@common/footer";
-
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from "../../assets";
 import background from "../../assets/icon/signupProfileBackgroundIc.svg";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
 import useConventionModal from "../../hooks/common/useConventionModal";
-import useHashtagInput from "../../hooks/common/useHashtagInput";
-import useInputText from "../../hooks/common/useInputText";
-import useSelectCategory from "../../hooks/producerProfileEdit/useSelectCategories";
 import { useProfileAfterJoin } from "../../hooks/queries/user";
 import ConventionModal from "../@common/conventionModal";
-import ProfileContactEdit from "../profileEdit/profileContactEdit";
 import ProfileDescriptionEdit from "../profileEdit/profileDescriptionEdit";
 import ProfileHashtagEdit from "../profileEdit/profileHashtagEdit";
-import ProfileSelectCategoryEdit from "../profileEdit/profileSelectCategoryEdit";
 import SignUpBackButton from "./signUpBackButton";
+import ProfileContact from "../@common/profileContact";
+import ProfileSelectCategoryEdit from "../profileEdit/profileSelectCategoryEdit";
 
 export default function SignupProfile() {
-  const contactMethods = useForm({
+  const methods = useForm({
     defaultValues: {
       contact: "",
+      category: [],
+      hashtag: [""],
+      description: "",
     },
     mode: "onChange",
   });
 
-  const { getValues, watch } = contactMethods;
+  const {
+    formState: { isDirty },
+    handleSubmit,
+  } = methods;
   const { conventionModalInform } = useConventionModal();
   const { profileAtferJoin } = useProfileAfterJoin();
-  const [description, handleChangeDescriptikon] = useInputText("", TEXT_LIMIT.PROFILE_DESCRIPTION);
-  const { categories, isCategorySelected, handleSelectCategory } = useSelectCategory();
   const navigate = useNavigate();
-
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-  } = useHashtagInput();
-
-  function checkIsComplete() {
-    return watch("contact") !== "" || categories.length > 0 || hashtags.length > 0 || description !== "";
-  }
 
   function handleMoveToSuccess() {
     navigate("/signup/success");
   }
 
-  function handleCompleteProfile() {
-    profileAtferJoin({
-      userContact: getValues("contact"),
-      userCategory: categories,
-      userKeyword: hashtags,
-      userIntroduction: description,
-    });
-  }
-
   return (
-    <>
-      {conventionModalInform?.isOpen && <ConventionModal />}
-
-      <BackButtonWrapper>
-        <SignUpBackButton />
-      </BackButtonWrapper>
-      <SignUpContainer>
-        <Img src={background} alt="배경" />
-        <SignupProfileSkipIcon onClick={handleMoveToSuccess} />
-        <UploadButton type="button" isComplete={checkIsComplete()} onClick={handleCompleteProfile}>
-          <SignupProfileCompleteTextIcon />
-        </UploadButton>
-        <StepBox>
-          <ProfileEditInfoWrapper>
-            <ProfileContactEdit methods={contactMethods} />
-            <ProfileSelectCategoryEdit
-              isCategorySelected={isCategorySelected}
-              handleSelectCategory={handleSelectCategory}
-            />
-            <ProfileHashtagEdit
-              hashtags={hashtags}
-              hashtagLength={hashtagLength}
-              hashtagInputText={hashtagInputText}
-              handleAddHashtag={handleAddHashtag}
-              handleRemoveHashtag={handleRemoveHashtag}
-              handleChangeHashtagInputText={handleChangeHashtagInputText}
-            />
-            <ProfileDescriptionEdit
-              description={description}
-              handleChangeDescription={handleChangeDescriptikon}
-              isProfile={true}
-            />
-          </ProfileEditInfoWrapper>
-        </StepBox>
-      </SignUpContainer>
-      <Footer />
-    </>
+    <FormProvider {...methods}>
+      <form>
+        {conventionModalInform?.isOpen && <ConventionModal />}
+        <BackButtonWrapper>
+          <SignUpBackButton />
+        </BackButtonWrapper>
+        <SignUpContainer>
+          <Img src={background} alt="배경" />
+          {isDirty ? (
+            <UploadButton
+              isComplete={isDirty}
+              onClick={handleSubmit(({ contact, category, hashtag, description }) =>
+                profileAtferJoin({
+                  userContact: contact,
+                  userCategory: category,
+                  userKeyword: hashtag.length > 0 ? hashtag.filter((item) => item.length > 0) : [],
+                  userIntroduction: description,
+                }),
+              )}
+              type="button">
+              <SignupProfileCompleteTextIcon />
+            </UploadButton>
+          ) : (
+            <SignupProfileSkipIcon onClick={handleMoveToSuccess} />
+          )}
+          <StepBox>
+            <ProfileEditInfoWrapper>
+              <ProfileContact />
+              <ProfileSelectCategoryEdit />
+              <ProfileHashtagEdit />
+              <ProfileDescriptionEdit />
+            </ProfileEditInfoWrapper>
+          </StepBox>
+        </SignUpContainer>
+        <Footer />
+      </form>
+    </FormProvider>
   );
 }
 

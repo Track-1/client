@@ -1,28 +1,36 @@
+import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import { CategoryId } from "../../core/common/categories";
-import { CategorySelectType } from "../../type/common/CategoryChecksType";
+import { ProfileInfoInputType } from "../../type/profile";
+import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
+import { CheckBox } from "../@common/checkBox";
 import InputContainer from "../@common/inputContainer";
 
-interface SelectCategoryProps {
-  isCategorySelected: CategorySelectType;
-  handleSelectCategory: (category: string) => void;
-}
-
-export default function ProfileSelectCategoryEdit(props: SelectCategoryProps) {
-  const { isCategorySelected, handleSelectCategory } = props;
+export default function ProfileSelectCategoryEdit() {
+  const {
+    register,
+    formState: { defaultValues },
+  } = useFormContext<ProfileInfoInputType, any, undefined>();
 
   return (
     <CategoryContainer>
       <InputContainer title="Category">
         <CategoryBox>
-          {Object.keys(CategoryId).map((category: string, CategoryId: number) => {
+          {getInvariantObjectKeys(invariantOf(CategoryId)).map((category) => {
             return (
-              <CategoryItem
-                key={CategoryId}
-                isSelected={isCategorySelected[category]}
-                onClick={() => handleSelectCategory(category)}>
-                {category}
-              </CategoryItem>
+              <CheckBox
+                key={CategoryId[category]}
+                id={CategoryId[category]}
+                defaultChecked={defaultValues?.category?.includes(CategoryId[category])}>
+                <CheckBox.Label asChild>
+                  <CategoryLabel>
+                    <CheckBox.Indicator asChild>
+                      <CategoryItem {...register("category")} value={CategoryId[category]} />
+                    </CheckBox.Indicator>
+                    {category}
+                  </CategoryLabel>
+                </CheckBox.Label>
+              </CheckBox>
             );
           })}
         </CategoryBox>
@@ -49,10 +57,18 @@ const CategoryBox = styled.ul`
   cursor: pointer;
 `;
 
-const CategoryItem = styled.li<{ isSelected: boolean }>`
+const CategoryItem = styled.input<{ isChecked?: boolean }>`
   width: 25%;
 
   margin-bottom: 1.2rem;
 
-  color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray4)};
+  color: ${({ theme, isChecked }) => (isChecked ? theme.colors.white : theme.colors.gray4)};
+`;
+
+const CategoryLabel = styled.label<{ isChecked?: boolean }>`
+  width: 25%;
+
+  margin-bottom: 1.2rem;
+
+  color: ${({ theme, isChecked }) => (isChecked ? theme.colors.white : theme.colors.gray4)};
 `;

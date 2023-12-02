@@ -56,7 +56,7 @@ export default function ProducerProfile() {
 
   function handleMoveProfileEditPage() {
     quitAudioForMovePage();
-    navigate(`/profile-edit`, {
+    navigate(`/profile-edit/${producerId}`, {
       state: {
         prevURL: prevURL,
       },

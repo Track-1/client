@@ -1,58 +1,39 @@
 import styled from "styled-components";
 import HashtagInput from "../@common/hashtag/hashtagInput";
-import HashtagWarning from "../@common/hashtag/hashtagWarning";
-import { InfoInput, InfoType, InfoTypeIconWrapper, InfoTypeText } from "./categotyInfo";
 import UploadInfoBox from "./uploadInfoBox";
 
-interface HashtagInfoProps {
-  hashtags: string[];
-  hashtagLength: number;
-  hashtagInputText: string;
-  handleAddHashtag: () => void;
-  handleRemoveHashtag: (tag: string) => void;
-  handleChangeHashtagInputText: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => void;
-}
-
-export default function HashtagInfo(props: HashtagInfoProps) {
-  const {
-    hashtags,
-    hashtagLength,
-    hashtagInputText,
-    handleAddHashtag,
-    handleRemoveHashtag,
-    handleChangeHashtagInputText,
-  } = props;
-
+export default function HashtagInfo() {
   return (
     <UploadInfoBox>
       <InfoType>
         <InfoTypeIconWrapper>#</InfoTypeIconWrapper>
-        <InfoTypeText>Hashtag</InfoTypeText>
+        <p>Hashtag</p>
       </InfoType>
-
       <InfoInput>
-        <HashtagInputWrapper>
-          <HashtagInput
-            hashtags={hashtags}
-            hashtagLength={hashtagLength}
-            hashtagInputText={hashtagInputText}
-            handleAddHashtag={handleAddHashtag}
-            handleRemoveHashtag={handleRemoveHashtag}
-            handleChangeHashtagInputText={handleChangeHashtagInputText}
-          />
-        </HashtagInputWrapper>
-        <HashtagWarning />
+        <HashtagInput />
       </InfoInput>
     </UploadInfoBox>
   );
 }
 
-const HashtagInputWrapper = styled.div`
+const InfoType = styled.div`
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+
+  width: 27.4rem;
+  height: 100%;
+
+  color: ${({ theme }) => theme.colors.gray3};
+  ${({ theme }) => theme.fonts.cations};
+`;
+
+const InfoTypeIconWrapper = styled.div`
+  width: 2.23rem;
+`;
+
+const InfoInput = styled.div`
+  display: flex;
+  justify-content: space-between;
 
   width: 100%;
   height: 100%;

@@ -11,7 +11,7 @@ interface VocalImageEditProps {
 
 export default function VocalImageEdit(props: VocalImageEditProps) {
   const { previewImage, handleUploadImageFile } = props;
-  const { fileHoverState, changeFileHoverState } = useFileHover(previewImage);
+  const { fileHoverState, changeFileHoverState } = useFileHover();
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function VocalImageEdit(props: VocalImageEditProps) {
               fileHoverState={fileHoverState}
               previewImage={previewImage}
             />
-            {previewImage && fileHoverState && <FileChangeIcon />}
+            {fileHoverState && <FileChangeIcon />}
             <FileInput type="file" accept=".jpg,.jpeg,.png" onChange={handleUploadImageFile} readOnly />
           </Label>
         </ImageWrapper>
@@ -56,11 +56,11 @@ const ImageWrapper = styled.div`
   height: 28.7em;
 
   border-radius: 3rem;
-  overflow: hidden;
 
   transform: rotate(-45deg);
 
   object-fit: cover;
+  overflow: hidden;
 
   cursor: pointer;
 `;
@@ -79,7 +79,7 @@ const ProfileImage = styled.img<{ fileHoverState: boolean; previewImage: string 
   object-fit: cover;
   border-radius: 50%;
   ${(props) =>
-    props.fileHoverState && props.previewImage !== ""
+    props.fileHoverState
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);
@@ -93,8 +93,9 @@ const ProfileImage = styled.img<{ fileHoverState: boolean; previewImage: string 
 const FileChangeIcon = styled(UploadFileChangeIc)`
   position: absolute;
 
-  top: 9.6rem;
-  left: 5.3rem;
+  top: 23%;
+  left: 23%;
+  transform: translate(-25%);
 
   width: 18.9rem;
 
