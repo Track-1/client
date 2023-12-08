@@ -20,5 +20,6 @@
     "jsx": "react-jsx",
     "noImplicitAny": true
   },
+  "include": ["/packages/eslint-config-custom"],
   "exclude": ["node_modules"]
 }

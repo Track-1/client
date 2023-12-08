@@ -1,1 +1,1 @@
-module.exports = require("./packages/eslint-config-custom/prettier-preset");
+module.exports = require('./packages/eslint-config-custom/prettier-preset');

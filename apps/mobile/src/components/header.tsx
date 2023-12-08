@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { HamburgerMenuIc, HomeLogoIc } from "../assets";
+import styled from 'styled-components';
+import { HamburgerMenuIc, HomeLogoIc } from '../assets';
 
 export default function Header() {
   return (
@@ -20,6 +20,8 @@ const Styled = {
     height: 7rem;
 
     padding: 0 2.5rem;
+
+    background-color: ${({ theme }) => theme.colors.black};
   `,
 
   HomeLogoIcon: styled(HomeLogoIc)`
