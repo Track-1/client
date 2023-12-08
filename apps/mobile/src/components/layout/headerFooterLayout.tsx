@@ -19,8 +19,4 @@ export default function HeaderFooterLayout(props: PropsWithChildren) {
 
 const FixedSlot = styled.div`
   position: sticky;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 100;
 `;
