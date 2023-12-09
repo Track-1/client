@@ -18,11 +18,11 @@ function App() {
 
   const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
-  useEffect(() => {
-    if (!isMobile) {
-      window.location.href = 'https://www.track1.site';
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isMobile) {
+  //     window.location.href = 'https://www.track1.site';
+  //   }
+  // }, []);
 
   return (
     <CookiesProvider>
