@@ -4,7 +4,7 @@ import MainContainer from '../components/main';
 
 export default function MainPage() {
   return (
-    <Layout layoutKey='header'>
+    <Layout layoutKey="headerFooter">
       <MainContainer />
     </Layout>
   );
