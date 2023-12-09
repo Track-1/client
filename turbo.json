@@ -4,7 +4,12 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["SOME_ENV_VAR"],
       "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "mobile#build": {
+      "dependsOn": ["^build"],
+      "env": ["SOME_OTHER_ENV_VAR"]
     },
     "lint": {
       "dependsOn": ["^lint"]
