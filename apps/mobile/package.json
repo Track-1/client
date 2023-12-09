@@ -1,5 +1,5 @@
 {
-  "name": "mobile",
+  "name": "track1_mobile",
   "version": "1.0.0",
   "license": "Apache-2.0",
   "private": true,
@@ -9,7 +9,6 @@
     "lint": "eslint . --ext .ts,.js,.tsx,.jsx"
   },
   "dependencies": {
-    "@corefunc/v8": "^0.2.10",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.16",
     "eslint-config-custom": "*",
