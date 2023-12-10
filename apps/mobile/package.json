@@ -60,6 +60,7 @@
       }
     }
   },
+  "homepage": ".",
   "main": "index.js",
   "repository": "https://github.com/Track-1/client",
   "author": "myeongheonhong"

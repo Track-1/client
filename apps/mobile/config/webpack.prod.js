@@ -8,25 +8,13 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'cheap-module-source-map',
-  entry: `${path.resolve(__dirname, '../src')}/index.tsx`,
+  devtool: 'hidden-source-map',
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './',
-    clean: true,
   },
-  module: {
-    rules: [
-      {
-        test: /\.(sa|sc|c)ss$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-      },
-    ],
-  },
-  plugins: [new MiniCssExtractPlugin()],
+
   optimization: {
-    usedExports: true,
     minimize: true,
     minimizer: [
       new TerserPlugin({
@@ -38,13 +26,5 @@ module.exports = merge(common, {
       }),
       new CssMinimizerPlugin(),
     ],
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
   },
 });
