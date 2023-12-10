@@ -60,7 +60,7 @@
       }
     }
   },
-  "homepage": ".",
+  "homepage": "https://track1-mobile.vercel.app",
   "main": "index.js",
   "repository": "https://github.com/Track-1/client",
   "author": "myeongheonhong"
