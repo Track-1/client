@@ -23,13 +23,17 @@ export default function RecentTrackList() {
   );
 }
 
-const TrackListWrapper = styled.div`
+const TrackListWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  justify-content: space-between;
+  
+  gap: 3rem 2rem;
+
+  width: 100%;
 `;
 
-const TrackWrapper = styled.div`
+const TrackWrapper = styled.li`
   width: 16rem;
 `;
 

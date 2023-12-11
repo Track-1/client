@@ -20,15 +20,12 @@ export default function PlayTrackForm(props: any) {
 }
 
 const Container = styled.div`
-  background-color: gray;
   overflow: hidden;
 `;
 
 const ImageWrapper = styled.div<{ isPlaying: boolean }>`
   width: 100%;
   height: 100%;
-
-  background-color: orange;
 
   object-fit: cover;
 

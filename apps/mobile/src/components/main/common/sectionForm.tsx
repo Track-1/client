@@ -14,7 +14,7 @@ export function SectionForm(props: PropsWithChildren<SectionFormProps>) {
         <SectionTitle>{sectionTitle}</SectionTitle>
         <MoreBtnIc />
       </SectionHeader>
-      {children}
+      <SectionContentWrapper>{children}</SectionContentWrapper>
     </Container>
   );
 }
@@ -40,4 +40,8 @@ const SectionTitle = styled.h2`
   line-height: normal;
 
   white-space: pre-line;
+`;
+
+const SectionContentWrapper = styled.div`
+  width: 100%;
 `;
