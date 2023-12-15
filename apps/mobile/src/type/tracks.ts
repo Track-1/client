@@ -1,3 +1,5 @@
+import { CategoryType } from "./common/category";
+
 export interface FilteredTrackParamsType {
   page: number;
   limit: number;
@@ -12,7 +14,7 @@ export interface FilteredTrackType {
   trackUserId: number;
   trackUserName: string;
   trackKeyword: string[];
-  trackCategory: string;
+  trackCategory: CategoryType;
   trackAudioFileLength: number;
 }
 

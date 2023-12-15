@@ -23,8 +23,10 @@ const Container = styled.div<{ eventImage: string }>`
   height: 22.5rem;
 
   overflow: hidden;
+
   background-image: url(${(props) => props.eventImage});
   background-position: center center;
+  background-size: cover;
 `;
 
 const EventTitle = styled.h2`

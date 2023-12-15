@@ -13,6 +13,7 @@ export default function HotEvent(props: HotEventProps) {
     limit: 6,
   });
 
+
   const navigate = useNavigate();
 
   function handleMoveEventDetail() {

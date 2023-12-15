@@ -2,25 +2,55 @@ import styled, { CSSProperties } from 'styled-components';
 import { SectionForm } from './common/sectionForm';
 import PlayTrackForm from '../common/Form/playTrackForm';
 import TrackInfoForm from '../common/Form/trackInfoForm';
+import SectionHeader from './common/sectionHeader';
+import { MoreBtnIc } from '../../assets';
+import { useGetRecentVocals } from '../../hooks/queries/vocals';
+import { useState } from 'react';
+import { FilteredVocalType } from '../../type/vocals';
+import { CategoryType } from '../../type/common/category';
 
 const VOCAL_SECTION_TITLE = 'New Vocals\n For producer';
 
 export default function RecentVocalList() {
   const trackTitle = 'JETT (Deep House TRAP BEAT)';
-  const test = ['1', '2', '3', '4'];
+
+  const { recentVocalInfo } = useGetRecentVocals(4);
+
+  const [playingTrack, setPLayingTrack] = useState<FilteredVocalType['userId'] | null>(null);
+
+  function selectTrack(userId: FilteredVocalType['userId']) {
+    setPLayingTrack(userId);
+  }
+
+  if (recentVocalInfo === undefined) return null;
+
+  console.log(recentVocalInfo[0]?.userCategory, recentVocalInfo[0]?.userCategoryNum);
 
   return (
-    <SectionForm sectionTitle={VOCAL_SECTION_TITLE}>
+    <SectionForm>
+      <SectionHeader sectionTitle={VOCAL_SECTION_TITLE}>
+        <MoreBtnIc />
+      </SectionHeader>
+
       <VocalListWrapper>
-        {test.map((e) => (
-          <VocalTrackWrapper>
-            <PlayTrackForm
+        {recentVocalInfo.map((trackInfo) => (
+          <VocalTrackWrapper key={trackInfo.userId}>
+            {/* <PlayTrackForm
+              trackInfo={trackInfo}
+              playingTrack={playingTrack}
+              selectTrack={selectTrack}
               iconProperties={iconProperties}
               shapeProperties={shapeProperties}
               isPlaying={false}
-              key={e}
-            />
-            <TrackInfoForm topItem={'Rock'} topItemColor="neon_pink" middleItem={trackTitle}></TrackInfoForm>
+            /> */}
+            <TrackInfoForm
+              topItem={`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum - 1}`}
+              topItemColor="neon_pink"
+              middleItem={trackInfo.userTitle}>
+              {trackInfo.userKeyword.map((keyword) => (
+                <VocalUserKeyword key={keyword}>#{keyword}</VocalUserKeyword>
+              ))}
+            </TrackInfoForm>
           </VocalTrackWrapper>
         ))}
       </VocalListWrapper>
@@ -43,6 +73,10 @@ const VocalTrackWrapper = styled.div`
   gap: 2.5rem;
 
   width: 100%;
+`;
+
+const VocalUserKeyword = styled.span`
+  margin-bottom: 0.5rem;
 `;
 
 const shapeProperties: CSSProperties = {

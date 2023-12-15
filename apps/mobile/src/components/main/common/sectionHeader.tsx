@@ -1,29 +1,22 @@
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-interface SectionFormProps {
+interface SectionHeaderProps {
   sectionTitle: string;
 }
 
-export function SectionForm(props: PropsWithChildren<SectionFormProps>) {
+export default function SectionHeader(props: PropsWithChildren<SectionHeaderProps>) {
   const { sectionTitle, children } = props;
+
   return (
     <Container>
-      <SectionHeader>
-        <SectionTitle>{sectionTitle}</SectionTitle>
-        <MoreBtnIc />
-      </SectionHeader>
-      <SectionContentWrapper>{children}</SectionContentWrapper>
+      <SectionTitle>{sectionTitle}</SectionTitle>
+      {children}
     </Container>
   );
 }
 
-const Container = styled.section`
-  margin-top: 7rem;
-  padding: 0 2.5rem;
-`;
-
-const SectionHeader = styled.div`
+const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: end;
@@ -39,8 +32,4 @@ const SectionTitle = styled.h2`
   line-height: normal;
 
   white-space: pre-line;
-`;
-
-const SectionContentWrapper = styled.div`
-  width: 100%;
 `;
