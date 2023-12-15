@@ -1,3 +1,5 @@
+import { CategoryType } from './common/category';
+
 export interface FilteredVocalsParamsType {
   page: number;
   limit: number;
@@ -11,7 +13,7 @@ export interface FilteredVocalType {
   userAudioFile: string;
   userName: string;
   userTrackSearch: boolean;
-  userCategory: string[];
+  userCategory: CategoryType[];
   userKeyword: string[];
   userCategoryNum: number;
   userTitle: string;

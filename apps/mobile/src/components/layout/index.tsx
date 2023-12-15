@@ -2,6 +2,8 @@ import { PropsWithChildren } from 'react';
 import EmptyLayout from './emptyLayout';
 import HeaderFooterLayout from './headerFooterLayout';
 import HeaderLayout from './headerLayout';
+import { PlayerProvider } from '../../context/playerContext';
+import Player from '../common/Player/player';
 
 const layouts = {
   header: HeaderLayout,
@@ -18,5 +20,10 @@ export default function Layout(props: PropsWithChildren<LayoutProps>) {
 
   const LayoutContainer = layouts[layoutKey];
 
-  return <LayoutContainer>{children}</LayoutContainer>;
+  return (
+    <LayoutContainer>
+      <PlayerProvider>{children}</PlayerProvider>
+      {/* <Player /> */}
+    </LayoutContainer>
+  );
 }
