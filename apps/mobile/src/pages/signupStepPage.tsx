@@ -1,3 +1,5 @@
+import Title from '../components/signUp/SingupStep/Title';
+
 export default function SignupStepPage() {
-  return <></>;
+  return <Title step={1} />;
 }
