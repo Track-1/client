@@ -1,16 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import styled from "styled-components";
-import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from "../../assets";
-import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
-import { useJoin } from "../../hooks/queries/user";
-import { loginUserId, loginUserType } from "../../recoil/common/loginUserData";
-import { role } from "../../recoil/common/role";
-import { isNextStep } from "../../recoil/signUp/isNextStep";
-import { joinUserData } from "../../recoil/signUp/joinUserData";
-import { UserType } from "../../type/common/userType";
-import { JoinUserDataPropsType } from "../../type/signUp/joinUserDataType";
-import { StepMainProps } from "../../type/signUp/stepProps";
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import styled from 'styled-components';
+import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from '../../assets';
+import { SIGNUP_STEP } from '../../core/signUp/stepRenderer';
+import { useJoin } from '../../hooks/queries/user';
+import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import { role } from '../../recoil/common/role';
+import { isNextStep } from '../../recoil/signUp/isNextStep';
+import { joinUserData } from '../../recoil/signUp/joinUserData';
+import { UserType } from '../../type/common/userType';
+import { JoinUserDataPropsType } from '../../type/signUp/joinUserDataType';
+import { StepMainProps } from '../../type/signUp/stepProps';
 
 export default function StepFooter(props: StepMainProps) {
   const { step, setStep } = props;
@@ -30,7 +30,7 @@ export default function StepFooter(props: StepMainProps) {
 
   function checkPrevStep() {
     if (step === SIGNUP_STEP.EMAIL_PASSWORD) {
-      setRoleType("");
+      setRoleType('');
     }
     setStep(step - 1);
   }
@@ -50,7 +50,7 @@ export default function StepFooter(props: StepMainProps) {
 
   function handleMoveToNextStep() {
     if (checkFinalStep()) {
-      join({ userType: roleType === "producer" ? "producer" : "vocal", formData: userData });
+      join({ userType: roleType === 'producer' ? 'producer' : 'vocal', formData: userData });
     } else {
       setIsSuccess(false);
       checkNextStep();
