@@ -9,6 +9,26 @@ interface ButtonProp {
   onClick: () => void;
 }
 
+export function Prev(prop: ButtonProp) {
+  const { onClick } = prop;
+
+  return (
+    <Styled.PrevButton type="button" onClick={onClick}>
+      Prev
+    </Styled.PrevButton>
+  );
+}
+
+export function Next(prop: ButtonProp) {
+  const { onClick } = prop;
+
+  return (
+    <Styled.NextButton type="button" disabled={true} onClick={onClick}>
+      Next
+    </Styled.NextButton>
+  );
+}
+
 export default function StepButtons(props: StepMainProps) {
   const { step, setStep } = props;
   const [roleType, setRoleType] = useRecoilState<string | UserType>(role);
@@ -25,30 +45,12 @@ export default function StepButtons(props: StepMainProps) {
   }
 
   return (
-    <>
-      <Prev onClick={moveToPrevStep} />
-      <Next onClick={moveToNextStep} />
-    </>
-  );
-}
-
-function Prev(prop: ButtonProp) {
-  const { onClick } = prop;
-
-  return (
-    <Styled.PrevButton type="button" onClick={onClick}>
-      Prev
-    </Styled.PrevButton>
-  );
-}
-
-function Next(prop: ButtonProp) {
-  const { onClick } = prop;
-
-  return (
-    <Styled.NextButton type="button" disabled={true} onClick={onClick}>
-      Next
-    </Styled.NextButton>
+    <div>
+      <Styled.ButtonWrapper>
+        <Prev onClick={moveToPrevStep} />
+        <Next onClick={moveToNextStep} />
+      </Styled.ButtonWrapper>
+    </div>
   );
 }
 
@@ -58,5 +60,9 @@ const Styled = {
   `,
   NextButton: styled.button<{ disabled: boolean }>`
     color: ${({ theme, disabled }) => (disabled ? theme.colors.gray4 : theme.colors.white)};
+  `,
+  ButtonWrapper: styled.div`
+    display: flex;
+    justify-content: space-between;
   `,
 };
