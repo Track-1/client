@@ -1,7 +1,7 @@
 import styled, { CSSProperties } from 'styled-components';
 import { SectionForm } from './common/sectionForm';
 import PlayTrackForm from '../common/Form/playTrackForm';
-import TrackInfoForm from '../common/Form/trackInfoForm';
+import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import SectionHeader from './common/sectionHeader';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
@@ -37,12 +37,12 @@ export default function RecentTrackList() {
               shapeProperties={shapeProperties}
               isPlaying={true}
             />
-            <TrackInfoForm
+            <TrackInfoTextForm
               topItem={trackInfo.trackCategory}
               topItemColor="neon_green"
               middleItem={trackInfo.trackTitle}>
               {trackInfo.trackUserName}
-            </TrackInfoForm>
+            </TrackInfoTextForm>
           </TrackWrapper>
         ))}
       </TrackListWrapper>
@@ -54,7 +54,7 @@ const TrackListWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  
+
   gap: 3rem 2rem;
 
   width: 100%;

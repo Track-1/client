@@ -4,8 +4,11 @@ import MainContainer from '../components/main';
 
 export default function MainPage() {
   return (
-    <Layout layoutKey="headerFooter">
-      <MainContainer />
-    </Layout>
+    <>
+      <Header />
+      <Layout>
+        <MainContainer />
+      </Layout>
+    </>
   );
 }
