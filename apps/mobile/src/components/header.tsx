@@ -1,10 +1,22 @@
 import styled from 'styled-components';
 import { HamburgerMenuIc, HomeLogoIc } from '../assets';
+import { PropsWithChildren } from 'react';
+import { EmptyBox } from './common/Interface';
+import { PADDING_SIDE } from './layout';
 
-export default function Header() {
+type HeaderStyleType = 'left' | 'mid';
+
+interface HeaderProps {
+  headerStyle?: HeaderStyleType;
+}
+
+export default function Header(props: PropsWithChildren<HeaderProps>) {
+  const { headerStyle, children } = props;
+
   return (
     <Styled.Container>
-      <HomeLogoIc />
+      {headerStyle === 'mid' && <EmptyBox />}
+      {children}
       <HamburgerMenuIc />
     </Styled.Container>
   );
@@ -19,7 +31,7 @@ const Styled = {
     width: 100%;
     height: 7rem;
 
-    padding: 0 2.5rem;
+    padding: ${`0 ${PADDING_SIDE}`};
 
     background-color: ${({ theme }) => theme.colors.black};
   `,

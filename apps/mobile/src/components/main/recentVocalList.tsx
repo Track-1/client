@@ -1,7 +1,7 @@
 import styled, { CSSProperties } from 'styled-components';
 import { SectionForm } from './common/sectionForm';
 import PlayTrackForm from '../common/Form/playTrackForm';
-import TrackInfoForm from '../common/Form/trackInfoForm';
+import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import SectionHeader from './common/sectionHeader';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
@@ -43,14 +43,14 @@ export default function RecentVocalList() {
               shapeProperties={shapeProperties}
               isPlaying={false}
             /> */}
-            <TrackInfoForm
+            <TrackInfoTextForm
               topItem={`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum - 1}`}
               topItemColor="neon_pink"
               middleItem={trackInfo.userTitle}>
               {trackInfo.userKeyword.map((keyword) => (
                 <VocalUserKeyword key={keyword}>#{keyword}</VocalUserKeyword>
               ))}
-            </TrackInfoForm>
+            </TrackInfoTextForm>
           </VocalTrackWrapper>
         ))}
       </VocalListWrapper>

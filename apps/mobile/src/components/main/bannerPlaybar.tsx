@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import TrackInfoForm from '../common/Form/trackInfoForm';
+import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { PlayIc } from '../../assets';
 
 export default function BannerPlaybar() {
@@ -7,7 +7,7 @@ export default function BannerPlaybar() {
 
   return (
     <Container>
-      <TrackInfoForm topItem={'Rock'} topItemColor="neon_green" middleItem={trackTitle} />
+      <TrackInfoTextForm topItem={'Rock'} topItemColor="neon_green" middleItem={trackTitle} />
       <PlayIc />
     </Container>
   );

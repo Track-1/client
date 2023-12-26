@@ -1,29 +1,18 @@
 import { PropsWithChildren } from 'react';
-import EmptyLayout from './emptyLayout';
-import HeaderFooterLayout from './headerFooterLayout';
-import HeaderLayout from './headerLayout';
-import { PlayerProvider } from '../../context/playerContext';
-import Player from '../common/Player/player';
+import styled from 'styled-components';
 
-const layouts = {
-  header: HeaderLayout,
-  empty: EmptyLayout,
-  headerFooter: HeaderFooterLayout,
-};
+interface LayoutProps {}
 
-interface LayoutProps {
-  layoutKey: keyof typeof layouts;
-}
+export const PADDING_SIDE = '2.5rem';
 
 export default function Layout(props: PropsWithChildren<LayoutProps>) {
-  const { layoutKey, children } = props;
+  const { children } = props;
 
-  const LayoutContainer = layouts[layoutKey];
-
-  return (
-    <LayoutContainer>
-      <PlayerProvider>{children}</PlayerProvider>
-      {/* <Player /> */}
-    </LayoutContainer>
-  );
+  return <StyledLayout>{children}</StyledLayout>;
 }
+
+const StyledLayout = styled.main`
+  width: 100%;
+
+  padding: ${`0 ${PADDING_SIDE}`};
+`;

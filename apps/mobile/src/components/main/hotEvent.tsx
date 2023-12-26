@@ -5,7 +5,7 @@ import { useGetEventList } from '../../hooks/queries/admin/event';
 import { useNavigate } from 'react-router-dom';
 import SectionHeader from './common/sectionHeader';
 import { MoreBtnIc } from '../../assets';
-import TrackInfoForm from '../common/Form/trackInfoForm';
+import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { EventInfoType } from '../../type/event';
 
 const EVENT_TITLE = 'Hot Events here';
@@ -34,12 +34,12 @@ export default function HotEvent() {
             eventImage={eventListData[0]?.eventImageFile || ''}
             eventTitle={eventListData[0]?.eventTitle || ''}
           />
-          <TrackInfoForm
+          <TrackInfoTextForm
             topItem={'New Open'}
             topItemColor="neon_purple"
             middleItem={(eventListData && eventListData[0]?.eventTitle) || ''}>
             {eventListData[0]?.eventDate}
-          </TrackInfoForm>
+          </TrackInfoTextForm>
         </EventWrapper>
       )}
     </SectionForm>
