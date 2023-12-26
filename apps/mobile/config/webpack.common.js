@@ -24,6 +24,10 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: ['@svgr/webpack', 'file-loader'],
       },
+      {
+        test: /\.(sa|sc|c)ss$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
@@ -40,6 +44,10 @@ module.exports = {
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '../src/'),
+      'track-1-form-with-react-hook-form': path.resolve(
+        __dirname,
+        '../../../node_modules/track-1-form-with-react-hook-form/dist/lib'
+      ),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },
