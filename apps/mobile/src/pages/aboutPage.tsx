@@ -1,3 +1,5 @@
+import Layout from "../components/layout";
+
 export default function AboutPage() {
-  return <></>;
+  return <Layout layoutKey="empty"></Layout>;
 }

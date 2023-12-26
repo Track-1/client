@@ -1,5 +1,5 @@
 export type SwitchContextType = {
-  currentThumb: "on" | "off";
+  currentThumb: 'on' | 'off';
   switchThumb: () => void;
 };
 
@@ -15,8 +15,11 @@ export type LabelProps = {
 
 export type RootProps = {
   asChild?: boolean;
+  width?: number;
+  height?: number;
 };
 
 export type ThumbProps = {
   asChild?: boolean;
+  height?: number;
 };

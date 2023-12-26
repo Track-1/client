@@ -4,20 +4,20 @@ import { LabelProps, RootProps, SwitchProps, ThumbProps } from '../../type/commo
 import styled, { css, keyframes } from 'styled-components';
 
 const DefaultLabel = styled.p`
-  ${({ theme }) => theme.fonts.hashtag}
+  ${({ theme }) => theme.fonts.Pre_14_R}
 
   margin-right: 1.1rem;
 
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const DefaultRoot = styled.div<{ switchState: 'on' | 'off' }>`
+const DefaultRoot = styled.div<{ width?: number; height?: number; switchState: 'on' | 'off' }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
 
-  width: 5.8rem;
-  height: 2.8rem;
+  width: ${(props) => (props.width ? props.width : 5.8)}rem;
+  height: ${(props) => (props.height ? props.height : 2.8)}rem;
 
   border-radius: 15px;
   padding: 0 0.3rem;
@@ -25,7 +25,7 @@ const DefaultRoot = styled.div<{ switchState: 'on' | 'off' }>`
   ${({ switchState }) =>
     switchState === 'on'
       ? css`
-          background-color: ${({ theme }) => theme.colors.sub1};
+          background-color: ${({ theme }) => theme.colors.neon_green};
           justify-content: flex-start;
         `
       : css`
@@ -52,9 +52,9 @@ const moveLeftAnimation = keyframes`
   }
 `;
 
-const DefaultThumb = styled.div<{ switchState: 'on' | 'off' }>`
-  width: 2.2rem;
-  height: 2.2rem;
+const DefaultThumb = styled.div<{ switchState: 'on' | 'off'; height?: number }>`
+  width: ${(props) => (props.height ? props.height : 2.2)}rem;
+  height: ${(props) => (props.height ? props.height : 2.2)}rem;
 
   border-radius: 50%;
 
@@ -96,16 +96,21 @@ function Label(props: LabelProps) {
 }
 
 function Root(props: PropsWithChildren<RootProps>) {
-  const { children } = props;
+  const { width, height, children } = props;
   const { currentThumb } = useContext(SwitchContext);
 
-  return <DefaultRoot switchState={currentThumb}>{children}</DefaultRoot>;
+  return (
+    <DefaultRoot width={width} height={height} switchState={currentThumb}>
+      {children}
+    </DefaultRoot>
+  );
 }
 
 function Thumb(props: ThumbProps) {
+  const { height } = props;
   const { switchThumb, currentThumb } = useContext(SwitchContext);
 
-  return <DefaultThumb switchState={currentThumb} onClick={switchThumb} />;
+  return <DefaultThumb switchState={currentThumb} onClick={switchThumb} height={height} />;
 }
 
 export const Switch = Object.assign(SwitchBox, {
