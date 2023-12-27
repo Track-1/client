@@ -11,8 +11,8 @@ import SlideCards from './SlideCards';
 import WelcomeTitle from './WelcomeTitle';
 
 const WELCOME_TITLE = {
-  PRODUCER: 'DISCOVER YOUR LIMITLESS INSPIRATION',
-  VOCAL: 'DISCOVER YOUR LIMITLESS CHANCE',
+  PRODUCER: 'DISCOVER\nYOUR\nLIMITLESS\nINSPIRATION',
+  VOCAL: 'DISCOVER\nYOUR\nLIMITLESS\nCHANCE',
 } satisfies Record<string, string>;
 
 const WELCOME_SUB_TITLE = {
@@ -35,29 +35,37 @@ export default function SignupSuccess() {
     imageFile: trackImageFile,
   }));
 
-  function checkIsRoleProducer(role: string) {
-    return role === ROLE.PRODUCER;
+  function checkIsRoleProducer() {
+    return roleType === ROLE.PRODUCER;
   }
 
   return (
-    <>
+    <Styled.SuccessPageLayout>
       <Styled.Congratulations>Congratulations!</Styled.Congratulations>
-      <WelcomeTitle title={WELCOME_TITLE.PRODUCER} />
+      <WelcomeTitle title={checkIsRoleProducer() ? WELCOME_TITLE.PRODUCER : WELCOME_TITLE.VOCAL} />
       <SlideCards
-        images={checkIsRoleProducer(roleType) ? recentVocalImages ?? [] : recentTrackImages ?? []}
-        link={checkIsRoleProducer(roleType) ? `vocal-profile` : `track-post`}
+        images={checkIsRoleProducer() ? recentVocalImages ?? [] : recentTrackImages ?? []}
+        link={checkIsRoleProducer() ? `vocal-profile` : `track-post`}
       />
-      <Styled.SubTitle>{WELCOME_SUB_TITLE.PRODUCER}</Styled.SubTitle>
+      <Styled.SubTitle>{checkIsRoleProducer() ? WELCOME_SUB_TITLE.PRODUCER : WELCOME_SUB_TITLE.VOCAL}</Styled.SubTitle>
       <Link to="/">
         <Button type="bottom" backgroundColor="purple" color="white" disabled={false}>
           Get Started
         </Button>
       </Link>
-    </>
+    </Styled.SuccessPageLayout>
   );
 }
 
 const Styled = {
+  SuccessPageLayout: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+  `,
   Congratulations: styled.h1`
     color: ${({ theme }) => theme.colors.neon_purple};
     ${({ theme }) => theme.fonts.Alex_25_R}

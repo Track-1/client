@@ -15,9 +15,9 @@ export default function SlideCards(props: SlideCardsProp) {
     <Styled.CardContainer>
       <Styled.CardWrapper>
         {images.length > 0 &&
-          images.concat(images).map(({ id, imageFile }) => {
+          images.concat(images).map(({ id, imageFile }, idx) => {
             return (
-              <Link to={`/${link}/${id}`} key={id}>
+              <Link to={`/${link}/${id}`} key={`${id}${idx}`}>
                 {' '}
                 <Cover imageUrl={imageFile} shape="rectangle" width={15.8} height={15.8} />
               </Link>
