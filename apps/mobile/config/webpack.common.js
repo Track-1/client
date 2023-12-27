@@ -3,6 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 // const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const {
+  VanillaExtractPlugin
+} = require('@vanilla-extract/webpack-plugin');
+
 
 dotenv.config({
   path: path.resolve(
@@ -40,6 +44,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env),
     }),
+    new VanillaExtractPlugin({})
+
   ],
   resolve: {
     alias: {
