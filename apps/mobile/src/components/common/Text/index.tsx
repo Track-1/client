@@ -43,4 +43,5 @@ export const StyledText = styled.span<{ font: keyof FontsTypes; color: keyof Col
       theme.colors[props.color]};
 
   margin: ${(props) => props.margin && props.margin};
+  white-space: pre-line;
 `;

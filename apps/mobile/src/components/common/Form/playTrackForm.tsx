@@ -10,14 +10,11 @@ interface PlayTrackFormProps {
   trackInfo: FilteredTrackType | FilteredTrackType;
   playingTrack: FilteredTrackType['trackId'] | null;
   selectTrack: (trackId: FilteredTrackType['trackId'] | FilteredVocalType['userId']) => void;
-
-  iconProperties: CSSProperties;
-  shapeProperties: CSSProperties;
   isPlaying: boolean;
 }
 
 export default function PlayTrackForm(props: PlayTrackFormProps) {
-  const { trackInfo, playingTrack, selectTrack, iconProperties, shapeProperties, isPlaying } = props;
+  const { trackInfo, playingTrack, selectTrack, isPlaying } = props;
 
   console.log(typeof trackInfo);
 
@@ -44,9 +41,9 @@ export default function PlayTrackForm(props: PlayTrackFormProps) {
 
   return (
     <Container>
-      <ImageWrapper isPlaying={isPlaying} style={shapeProperties}>
+      <ImageWrapper isPlaying={isPlaying} >
         <TrackImage src={trackInfo.trackImageFile} alt="track 이미지" />
-        <IconWrapper style={iconProperties}>
+        <IconWrapper>
           {isSelected && showPlayer && innerPlaying && contextPlaying ? (
             <PauseIc onClick={stopAudioItem} />
           ) : (
