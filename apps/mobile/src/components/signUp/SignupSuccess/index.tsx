@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Button } from 'track-1-design-system';
+import { ROLE } from '../../../core/common/roleType';
 import { useGetRecentTracks } from '../../../hooks/queries/tracks';
 import { useGetRecentVocals } from '../../../hooks/queries/vocals';
+import { role } from '../../../recoil/common/role';
+import { UserType } from '../../../type/common/userType';
 import SlideCards from './SlideCards';
 import WelcomeTitle from './WelcomeTitle';
 
@@ -19,6 +23,7 @@ const WELCOME_SUB_TITLE = {
 export default function SignupSuccess() {
   const { recentVocalInfo } = useGetRecentVocals(6);
   const { recentTrackInfo } = useGetRecentTracks(6);
+  const roleType = useRecoilValue<string | UserType>(role);
 
   const recentVocalImages = recentVocalInfo?.map(({ userId, userImageFile }) => ({
     id: userId,
@@ -30,11 +35,18 @@ export default function SignupSuccess() {
     imageFile: trackImageFile,
   }));
 
+  function checkIsRoleProducer(role: string) {
+    return role === ROLE.PRODUCER;
+  }
+
   return (
     <>
       <Styled.Congratulations>Congratulations!</Styled.Congratulations>
       <WelcomeTitle title={WELCOME_TITLE.PRODUCER} />
-      <SlideCards images={recentVocalImages ?? []} />
+      <SlideCards
+        images={recentVocalImages ?? []}
+        link={checkIsRoleProducer(roleType) ? `vocal-profile` : `track-post`}
+      />
       <Styled.SubTitle>{WELCOME_SUB_TITLE.PRODUCER}</Styled.SubTitle>
       <Link to="/">
         <Button type="bottom" backgroundColor="purple" color="white" disabled={false}>
