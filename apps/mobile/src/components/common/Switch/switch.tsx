@@ -1,6 +1,6 @@
 import { PropsWithChildren, useContext, useState } from 'react';
-import { SwitchContext } from '../../context/switchContext';
-import { LabelProps, RootProps, SwitchProps, ThumbProps } from '../../type/common/switch';
+import { SwitchContext } from '../../../context/switchContext';
+import { LabelProps, RootProps, SwitchProps, ThumbProps } from '../../../type/common/switch';
 import styled, { css, keyframes } from 'styled-components';
 
 const DefaultLabel = styled.p`
