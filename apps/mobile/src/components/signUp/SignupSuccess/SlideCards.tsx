@@ -18,7 +18,6 @@ export default function SlideCards(props: SlideCardsProp) {
           images.concat(images).map(({ id, imageFile }, idx) => {
             return (
               <Link to={`/${link}/${id}`} key={`${id}${idx}`}>
-                {' '}
                 <Cover imageUrl={imageFile} shape="rectangle" width={15.8} height={15.8} />
               </Link>
             );
