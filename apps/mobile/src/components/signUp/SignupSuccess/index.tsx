@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from 'track-1-design-system';
+import { useGetRecentTracks } from '../../../hooks/queries/tracks';
+import { useGetRecentVocals } from '../../../hooks/queries/vocals';
+import SlideCards from './SlideCards';
 import WelcomeTitle from './WelcomeTitle';
 
 const WELCOME_TITLE = {
@@ -14,10 +17,24 @@ const WELCOME_SUB_TITLE = {
 } satisfies Record<string, string>;
 
 export default function SignupSuccess() {
+  const { recentVocalInfo } = useGetRecentVocals(6);
+  const { recentTrackInfo } = useGetRecentTracks(6);
+
+  const recentVocalImages = recentVocalInfo?.map(({ userId, userImageFile }) => ({
+    id: userId,
+    imageFile: userImageFile,
+  }));
+
+  const recentTrackImages = recentTrackInfo?.map(({ trackId, trackImageFile }) => ({
+    id: trackId,
+    imageFile: trackImageFile,
+  }));
+
   return (
     <>
       <Styled.Congratulations>Congratulations!</Styled.Congratulations>
       <WelcomeTitle title={WELCOME_TITLE.PRODUCER} />
+      <SlideCards images={recentVocalImages ?? []} />
       <Styled.SubTitle>{WELCOME_SUB_TITLE.PRODUCER}</Styled.SubTitle>
       <Link to="/">
         <Button type="bottom" backgroundColor="purple" color="white" disabled={false}>
