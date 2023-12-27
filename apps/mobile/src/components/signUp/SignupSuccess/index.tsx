@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from 'track-1-design-system';
 import WelcomeTitle from './WelcomeTitle';
 
 const WELCOME_TITLE = {
@@ -17,6 +19,11 @@ export default function SignupSuccess() {
       <Styled.Congratulations>Congratulations!</Styled.Congratulations>
       <WelcomeTitle title={WELCOME_TITLE.PRODUCER} />
       <Styled.SubTitle>{WELCOME_SUB_TITLE.PRODUCER}</Styled.SubTitle>
+      <Link to="/">
+        <Button type="bottom" backgroundColor="purple" color="white" disabled={false}>
+          Get Started
+        </Button>
+      </Link>
     </>
   );
 }
