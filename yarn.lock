@@ -3255,7 +3255,7 @@
     modern-ahocorasick "^1.0.0"
     outdent "^0.8.0"
 
-"@vanilla-extract/integration@^6.2.4":
+"@vanilla-extract/integration@^6.0.0", "@vanilla-extract/integration@^6.2.4":
   version "6.2.4"
   resolved "https://registry.yarnpkg.com/@vanilla-extract/integration/-/integration-6.2.4.tgz#bd8a5ec0916051c1ef5fb66d8484a5cad8d8c58d"
   integrity sha512-+AfymNMVq9sEUe0OJpdCokmPZg4Zi6CqKaW/PnUOfDwEn53ighHOMOBl5hAgxYR8Kiz9NG43Bn00mkjWlFi+ng==
@@ -3288,6 +3288,16 @@
     outdent "^0.8.0"
     postcss "^8.3.6"
     postcss-load-config "^4.0.1"
+
+"@vanilla-extract/webpack-plugin@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@vanilla-extract/webpack-plugin/-/webpack-plugin-2.3.1.tgz#359d93b8b579560c1dadc6ae8eb655126332e02e"
+  integrity sha512-S767iP+S67Uh+BsTe+u60BMbtRqZAxzjK7gYd6a+1hcbMKznYxdQMeP2qs9wr+NhRqZFrNxewo3/ztMnN85TOg==
+  dependencies:
+    "@vanilla-extract/integration" "^6.0.0"
+    chalk "^4.1.1"
+    debug "^4.3.1"
+    loader-utils "^2.0.0"
 
 "@webassemblyjs/ast@1.11.6", "@webassemblyjs/ast@^1.11.5":
   version "1.11.6"

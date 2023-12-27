@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { HamburgerMenuIc, HomeLogoIc } from '../assets';
+import { HamburgerMenuIc, HomeLogoIc, Track1LogoIc } from '../assets';
 import { PropsWithChildren } from 'react';
 import { EmptyBox } from './common/Interface';
 import { PADDING_SIDE } from './layout';
+import { useMovePage } from '../hooks/common/useMovePage';
 
 type HeaderStyleType = 'left' | 'mid';
 
@@ -12,9 +13,11 @@ interface HeaderProps {
 
 export default function Header(props: PropsWithChildren<HeaderProps>) {
   const { headerStyle, children } = props;
+  const {handleMovePage } = useMovePage();
 
   return (
     <Styled.Container>
+      <Track1LogoIc width={111} onClick={()=>handleMovePage('home')}/>
       {headerStyle === 'mid' && <EmptyBox />}
       {children}
       <HamburgerMenuIc />

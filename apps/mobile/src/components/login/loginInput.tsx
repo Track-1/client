@@ -1,69 +1,121 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLogin } from '../../hooks/queries/user';
 import InputForm from '../common/Form/inputForm';
 import { StyledInput } from '../common/Input';
 import { UserType } from '../../type/common/userType';
-import { useFormWithRef } from 'track-1-form-with-react-hook-form';
 import { UserLoginInfo } from '../../type/user';
 import SwitchToggle from './switchToggle';
-import { PasswordActiveIc } from '../../assets';
+import { PasswordUnVisableIc, PasswordVisableIc } from '../../assets';
 import styled from 'styled-components';
-import { EMAIL_RULE } from '../../validation/rules';
+import { EMAIL_RULE, PASSWORD_RULE } from '../../validation/rules';
+import { Button } from 'track-1-design-system';
+import Text from '../common/Text';
+import { IconButtonWrapper } from '../common/Interface';
+import { useForm } from 'react-hook-form';
 
 export default function LoginInput() {
   const [userType, setUserType] = useState<UserType>('vocal');
+  const [visiablePw, setVisiablePw] = useState(false);
 
-  const { registerWithRef, ...methods } = useFormWithRef<UserLoginInfo>({
-    userEmail: '',
-    userPw: '',
-    userType: 'vocal',
+  const {
+    register,
+    getValues,
+    setError,
+    clearErrors,
+    formState: { isValid, errors },
+  } = useForm<UserLoginInfo>({
+    mode: 'onChange',
+    defaultValues: {
+      userEmail: '',
+      userPw: '',
+    },
   });
+
+  const { login, error } = useLogin();
+
+  useEffect(() => {
+    if (error?.response?.data.message === '존재하지 않는 아이디입니다.') {
+      setError('userEmail', {
+        type: 'value',
+        message: 'We don’t have an account with that email address.',
+      });
+      clearErrors('userPw');
+    }
+
+    if (error?.response?.data.message === '잘못된 비밀번호입니다.') {
+      setError('userPw', {
+        type: 'value',
+        message: 'Wrong password. Try again or click Forgot password to reset it.',
+      });
+      clearErrors('userEmail');
+    }
+  }, [error]);
+
+  function handleLogin() {
+    if (!isValid) return;
+
+    login({
+      userEmail: getValues('userEmail'),
+      userPw: getValues('userPw'),
+      userType: userType,
+    });
+  }
 
   function switchUserType() {
     userType === 'producer' ? setUserType('vocal') : setUserType('producer');
   }
 
-  const { login, data, isError, error } = useLogin();
-
-  function handleLogin() {
-    login({
-      userEmail: methods.getValues('userEmail'),
-      userPw: methods.getValues('userPw'),
-      userType: userType,
-    });
+  function handleChangeVisiableState() {
+    setVisiablePw(!visiablePw);
   }
+
+  console.log(errors.userEmail);
 
   return (
     <>
       <InputFormWrapper>
-        <InputForm inputTitle="Email">
+        <InputForm inputTitle="Email" errorMessage={errors.userEmail?.message}>
           <StyledInput
             type="text"
             placeholder="Enter your email address"
-            {...registerWithRef('userEmail', {
+            {...register('userEmail', {
               ...EMAIL_RULE,
             })}
           />
         </InputForm>
 
-        <InputForm inputTitle="Password">
-          <StyledInput type="password" placeholder="Enter your password" {...registerWithRef('userPw', {})} />
-          <PasswordActiveIcon />
+        <InputForm inputTitle="Password" errorMessage={errors.userPw?.message}>
+          <StyledInput
+            type={visiablePw ? 'text' : 'password'}
+            placeholder="Enter your password"
+            {...register('userPw', {
+              ...PASSWORD_RULE,
+            })}
+          />
+          <IconButtonWrapper width={3} height={3} onClick={handleChangeVisiableState}>
+            {visiablePw ? <PasswordUnVisableIc /> : <PasswordVisableIc />}
+          </IconButtonWrapper>
         </InputForm>
       </InputFormWrapper>
 
       <SwitchToggle switchUserType={switchUserType} width={4.6} height={2.2} />
 
       <ButtonWrapper>
-        <button style={{ background: 'orange' }} onClick={handleLogin}>
-          로그인
-        </button>
+        {/* 버튼에 gray5컬러가 없어요..!! */}
+        {/* <Button size="large" backgroundColor="purple"> */}
+        {/* 이거 왜 모바일에서는 클릭이 안되냐...? */}
+        <StyledButton state={isValid} onClick={handleLogin} onTouchStart={handleLogin}>
+          <Text as="span" font="Alex_16_R" color="white">
+            Log in
+          </Text>
+        </StyledButton>
+        {/* </Button> */}
       </ButtonWrapper>
     </>
   );
 }
 
-const InputFormWrapper = styled.form`
+const InputFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -71,11 +123,17 @@ const InputFormWrapper = styled.form`
   margin-bottom: 2rem;
 `;
 
-const PasswordActiveIcon = styled(PasswordActiveIc)`
-  width: 3rem;
-  height: 3rem;
-`;
-
 const ButtonWrapper = styled.div`
   margin: 4rem 0 2rem;
+`;
+
+const StyledButton = styled.button<{ state: boolean }>`
+  width: 100%;
+  height: 5.2rem;
+
+  border-radius: 2.6rem;
+  background-color: ${(props) =>
+    props.state ? ({ theme }) => theme.colors.neon_purple : ({ theme }) => theme.colors.gray5};
+
+  cursor: pointer;
 `;

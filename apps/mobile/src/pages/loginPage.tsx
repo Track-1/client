@@ -3,7 +3,7 @@ import LoginContainer from '../components/login';
 
 export default function LoginPage() {
   return (
-    <Layout layoutKey="empty">
+    <Layout>
       <LoginContainer />
     </Layout>
   );

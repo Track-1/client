@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { SectionForm } from './common/sectionForm';
 import EventContainer from '../event/eventContainer';
 import { useGetEventList } from '../../hooks/queries/admin/event';
 import { useNavigate } from 'react-router-dom';
-import SectionHeader from './common/sectionHeader';
 import { MoreBtnIc } from '../../assets';
 import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { EventInfoType } from '../../type/event';
+import SectionHeader from './common/sectionHeader';
+import Text from '../common/Text';
 
 const EVENT_TITLE = 'Hot Events here';
 
@@ -23,8 +23,9 @@ export default function HotEvent() {
   }
 
   return (
-    <SectionForm>
-      <SectionHeader sectionTitle={EVENT_TITLE}>
+    <>
+      <SectionHeader >
+        <Text as='h2' color='white' font='Alex_20_M' >{ EVENT_TITLE}</Text>
         <MoreBtnIc onClick={handleMoveEventDetail} />
       </SectionHeader>
 
@@ -42,7 +43,7 @@ export default function HotEvent() {
           </TrackInfoTextForm>
         </EventWrapper>
       )}
-    </SectionForm>
+    </>
   );
 }
 
