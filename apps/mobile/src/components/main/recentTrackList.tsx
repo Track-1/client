@@ -1,12 +1,13 @@
 import styled, { CSSProperties } from 'styled-components';
-import { SectionForm } from './common/sectionForm';
 import PlayTrackForm from '../common/Form/playTrackForm';
 import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
-import SectionHeader from './common/sectionHeader';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
 import { useState } from 'react';
 import { FilteredTrackType } from '../../type/tracks';
+import SectionHeader from './common/sectionHeader';
+import Text from '../common/Text';
+import { useMovePage } from '../../hooks/common/useMovePage';
 
 const TRACK_SECTION_TITLE = 'New Tracks\n For vocal';
 
@@ -14,39 +15,40 @@ export default function RecentTrackList() {
   const { recentTrackInfo } = useGetRecentTracks(4);
   const [playingTrack, setPlayingTrack] = useState<FilteredTrackType['trackId'] | null>(null);
 
+  const { handleMovePage } = useMovePage();
   function selectTrack(trackId: FilteredTrackType['trackId']) {
     setPlayingTrack(trackId);
   }
 
-  if (recentTrackInfo === undefined) return null;
-
   return (
-    <SectionForm>
-      <SectionHeader sectionTitle={TRACK_SECTION_TITLE}>
-        <MoreBtnIc />
+    <>
+      <SectionHeader>
+        <Text as="h2" color="white" font="Alex_20_M">
+          {TRACK_SECTION_TITLE}
+        </Text>
+        <MoreBtnIc onClick={() => handleMovePage('track-search')} />
       </SectionHeader>
 
       <TrackListWrapper>
-        {recentTrackInfo.map((trackInfo) => (
-          <TrackWrapper key={trackInfo.trackId}>
-            <PlayTrackForm
-              trackInfo={trackInfo}
-              playingTrack={playingTrack}
-              selectTrack={selectTrack}
-              iconProperties={iconProperties}
-              shapeProperties={shapeProperties}
-              isPlaying={true}
-            />
-            <TrackInfoTextForm
-              topItem={trackInfo.trackCategory}
-              topItemColor="neon_green"
-              middleItem={trackInfo.trackTitle}>
-              {trackInfo.trackUserName}
-            </TrackInfoTextForm>
-          </TrackWrapper>
-        ))}
+        {recentTrackInfo &&
+          recentTrackInfo.map((trackInfo) => (
+            <TrackWrapper key={trackInfo.trackId}>
+              <PlayTrackForm
+                trackInfo={trackInfo}
+                playingTrack={playingTrack}
+                selectTrack={selectTrack}
+                isPlaying={true}
+              />
+              <TrackInfoTextForm
+                topItem={trackInfo.trackCategory}
+                topItemColor="neon_green"
+                middleItem={trackInfo.trackTitle}>
+                {trackInfo.trackUserName}
+              </TrackInfoTextForm>
+            </TrackWrapper>
+          ))}
       </TrackListWrapper>
-    </SectionForm>
+    </>
   );
 }
 
@@ -63,19 +65,3 @@ const TrackListWrapper = styled.ul`
 const TrackWrapper = styled.li`
   width: 16rem;
 `;
-
-const shapeProperties: CSSProperties = {
-  position: 'relative',
-
-  width: '16rem',
-  height: '16rem',
-
-  marginBottom: '1rem',
-};
-
-const iconProperties: CSSProperties = {
-  position: 'absolute',
-
-  right: '1rem',
-  bottom: '1rem',
-};

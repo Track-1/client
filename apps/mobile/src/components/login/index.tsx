@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Track1LogoIc } from '../../assets';
 import LoginInput from './loginInput';
 import { useMovePage } from '../../hooks/common/useMovePage';
+import Text from '../common/Text';
 
 export default function LoginContainer() {
   const { handleMovePage } = useMovePage();
@@ -10,18 +11,26 @@ export default function LoginContainer() {
     <Container>
       <LogoWrapper>
         <Track1LogoIcon />
-        {/* 텍스트 들어가야됨 */}
+        <Text as="p" font="Pre_14_R" color="gray4">
+          Discover your Limitless Track
+        </Text>
       </LogoWrapper>
 
       <LoginInput />
+
       <SignupTextWrapper>
-        <span>If you are a new user,</span>
-        <span
-          onClick={() => {
-            handleMovePage('signup');
-          }}>
-          Sign up here
-        </span>
+        <Text as="span" font="Pre_14_M" color="gray2">
+          If you are a new user,
+        </Text>
+
+        <Text as="span" font="Pre_14_M" color="neon_purple">
+          <a
+            onClick={() => {
+              handleMovePage('signup');
+            }}>
+            Sign up here
+          </a>
+        </Text>
       </SignupTextWrapper>
     </Container>
   );
@@ -40,7 +49,6 @@ const Container = styled.div`
   flex-direction: column;
 
   width: 100%;
-  padding: 0 2.5rem;
 `;
 
 const Track1LogoIcon = styled(Track1LogoIc)`
@@ -50,5 +58,4 @@ const Track1LogoIcon = styled(Track1LogoIc)`
 
 const SignupTextWrapper = styled.div`
   text-align: center;
-  background-color: white;
 `;
