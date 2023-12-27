@@ -44,7 +44,7 @@ export default function SignupSuccess() {
       <Styled.Congratulations>Congratulations!</Styled.Congratulations>
       <WelcomeTitle title={WELCOME_TITLE.PRODUCER} />
       <SlideCards
-        images={recentVocalImages ?? []}
+        images={checkIsRoleProducer(roleType) ? recentVocalImages ?? [] : recentTrackImages ?? []}
         link={checkIsRoleProducer(roleType) ? `vocal-profile` : `track-post`}
       />
       <Styled.SubTitle>{WELCOME_SUB_TITLE.PRODUCER}</Styled.SubTitle>
