@@ -3,7 +3,6 @@ import HotTrack from './hotTrack';
 import RecentTrackList from './recentTrackList';
 import RecentVocalList from './recentVocalList';
 import HotEvent from './hotEvent';
-// import DivisionLine from '../common/DivisionLine';
 import { StyledLined } from '../common/DivisionLine';
 import { PlayerProvider } from '../../context/playerContext';
 
