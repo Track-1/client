@@ -27,10 +27,23 @@ const Styled = {
     display: flex;
     min-width: 102rem;
     gap: 1.5rem;
-    margin-left: -6rem;
+    display: flex;
+  position: relative;
+  /* width: calc(31.3rem * 10); */
+  animation: autoPlay 10s linear infinite;
+
+
+  @keyframes autoPlay {
+    0% {
+      transition: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-200px * 5));
+    }
+  }
   `,
   CardContainer: styled.div`
     width: 100%;
     overflow-x: scroll;
   `,
-};
+}
