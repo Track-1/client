@@ -8,6 +8,7 @@ type PagePathType =
   | 'signup'
   | 'track-search'
   | 'track-post'
+  | 'vocal-search'
   | 'profile'
   | 'vocal-profile'
   | 'producer-profile';

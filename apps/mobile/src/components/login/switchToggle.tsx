@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Switch } from '../common/switch';
+import { Switch } from '../common/Switch/switch';
 
 const Container = styled.section`
   display: flex;
