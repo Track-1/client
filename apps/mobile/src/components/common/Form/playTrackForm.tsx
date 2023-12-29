@@ -21,7 +21,7 @@ export default function PlayTrackForm(props: PropsWithChildren<PlayTrackFormProp
 
   const isSelected = playingTrack === trackInfo.trackId;
 
-  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } =
+  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, isAudioPlaying, ...playerContext } =
     useContext(PlayerContext);
 
   const { innerPlaying, playAudioItem, stopAudioItem } = usePlaySelectedTrack(
@@ -32,8 +32,8 @@ export default function PlayTrackForm(props: PropsWithChildren<PlayTrackFormProp
   );
 
   function handlePlay() {
-    if (contextPlaying) {
-      if (playingTrack === trackInfo.trackId) {
+    if (isSelected) {
+      if (innerPlaying) {
         stopAudioItem();
       } else {
         playAudioItem();
@@ -54,14 +54,15 @@ export default function PlayTrackForm(props: PropsWithChildren<PlayTrackFormProp
   }, [playingTrack]);
 
   return (
-    <Container onClick={handlePlay} width={restProps.width} height={restProps.height}>
+    <Container width={restProps.width} height={restProps.height}>
       <Cover
         imageUrl={trackInfo.trackImageFile}
         width={restProps.width}
         height={restProps.height}
         shape={restProps.shape}
         align={restProps.align}
-        isPlay={playingTrack === trackInfo.trackId && contextPlaying}
+        isPlay={isSelected && isAudioPlaying()}
+        onPlay={handlePlay}
       />
     </Container>
   );
