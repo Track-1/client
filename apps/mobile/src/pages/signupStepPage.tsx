@@ -1,4 +1,4 @@
-import NicknameConvention from '../components/signUp/SingupStep/NicknameConvention';
+import NicknameConvention from '../components/signUp/SignupStep/NicknameConvention';
 
 export default function SignupStepPage() {
   return (
