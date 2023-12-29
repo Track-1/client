@@ -10,3 +10,5 @@ export { ReactComponent as MoreDotIc } from './icon/moreDotIc.svg';
 export { ReactComponent as CloseIc } from './icon/closeIc.svg';
 export { ReactComponent as DefaultUserIc } from './icon/defaultUserIc.svg';
 export { ReactComponent as RightArrowIc } from './icon/rightArrowIc.svg';
+export { ReactComponent as FilterIc } from './icon/filterIc.svg';
+export { ReactComponent as PlayingIc } from './icon/playingIc.svg';
