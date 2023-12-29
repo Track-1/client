@@ -16,6 +16,8 @@ type tagTpyes =
   | 'span'
   | 'del'
   | 'em'
+  | 'li'
+  | 'ul'
   | 'blockquote';
 
 interface TextProps {

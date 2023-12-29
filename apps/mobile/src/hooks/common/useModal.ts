@@ -4,7 +4,7 @@ import { isModalOpen } from "../../recoil/common/isModalOpen";
 import { isClickedOutside } from "../../utils/common/modal";
 
 export default function useModal() {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement | unknown>(null);
 
   const [openModal, setOpenModal] = useRecoilState<boolean>(isModalOpen);
 
