@@ -3,9 +3,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './style/theme';
 import { GlobalStyle } from './style/globalStyle';
-
 import Router from './Router';
 import { useEffect } from 'react';
+import { RecoilRoot } from 'recoil';
 
 function App() {
   const queryClient = new QueryClient({
@@ -27,10 +27,12 @@ function App() {
   return (
     <CookiesProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <Router />
-        </ThemeProvider>
+        <RecoilRoot>
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Router />
+          </ThemeProvider>
+        </RecoilRoot>
       </QueryClientProvider>
     </CookiesProvider>
   );

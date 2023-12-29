@@ -35,7 +35,7 @@ const Container = styled.section`
 `;
 
 const BannerText = styled.h1`
-  margin: 2.6rem 2.5rem 0;
+  margin-top: 2.6rem;
 
   ${({ theme }) => theme.fonts.Alex_34_M};
   color: ${({ theme }) => theme.colors.white};

@@ -1,28 +1,27 @@
-import styled, { CSSProperties, css } from 'styled-components';
-import { PauseIc, PlayIc } from '../../../assets';
+import styled, { css } from 'styled-components';
 import { FilteredVocalType } from '../../../type/vocals';
 import { FilteredTrackType } from '../../../type/tracks';
 import usePlaySelectedTrack from '../../../hooks/common/usePlaySelectedTrack';
 import { PlayerContext } from '../../../context/playerContext';
-import { useContext, useEffect } from 'react';
+import { PropsWithChildren, useContext, useEffect } from 'react';
+import { Cover } from 'track-1-design-system';
 
 interface PlayTrackFormProps {
-  trackInfo: FilteredTrackType | FilteredTrackType;
+  trackInfo: FilteredTrackType;
   playingTrack: FilteredTrackType['trackId'] | null;
-  selectTrack: (trackId: FilteredTrackType['trackId'] | FilteredVocalType['userId']) => void;
-
-  iconProperties: CSSProperties;
-  shapeProperties: CSSProperties;
-  isPlaying: boolean;
+  selectTrack: (trackId: FilteredTrackType['trackId']) => void;
+  width: number;
+  height: number;
+  shape: 'circle' | 'rectangle' | 'window';
+  align: 'rightBottom' | 'center';
 }
 
-export default function PlayTrackForm(props: PlayTrackFormProps) {
-  const { trackInfo, playingTrack, selectTrack, iconProperties, shapeProperties, isPlaying } = props;
-
-  console.log(typeof trackInfo);
+export default function PlayTrackForm(props: PropsWithChildren<PlayTrackFormProps>) {
+  const { trackInfo, playingTrack, selectTrack, children, ...restProps } = props;
 
   const isSelected = playingTrack === trackInfo.trackId;
-  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } =
+
+  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, isAudioPlaying, ...playerContext } =
     useContext(PlayerContext);
 
   const { innerPlaying, playAudioItem, stopAudioItem } = usePlaySelectedTrack(
@@ -31,6 +30,18 @@ export default function PlayTrackForm(props: PlayTrackFormProps) {
     trackInfo.trackId,
     selectTrack
   );
+
+  function handlePlay() {
+    if (isSelected) {
+      if (innerPlaying) {
+        stopAudioItem();
+      } else {
+        playAudioItem();
+      }
+    } else {
+      playAudioItem();
+    }
+  }
 
   useEffect(() => {
     if (!isSelected) return;
@@ -43,51 +54,23 @@ export default function PlayTrackForm(props: PlayTrackFormProps) {
   }, [playingTrack]);
 
   return (
-    <Container>
-      <ImageWrapper isPlaying={isPlaying} style={shapeProperties}>
-        <TrackImage src={trackInfo.trackImageFile} alt="track 이미지" />
-        <IconWrapper style={iconProperties}>
-          {isSelected && showPlayer && innerPlaying && contextPlaying ? (
-            <PauseIc onClick={stopAudioItem} />
-          ) : (
-            <PlayIc onClick={playAudioItem} />
-          )}
-        </IconWrapper>
-      </ImageWrapper>
+    <Container width={restProps.width} height={restProps.height}>
+      <Cover
+        imageUrl={trackInfo.trackImageFile}
+        width={restProps.width}
+        height={restProps.height}
+        shape={restProps.shape}
+        align={restProps.align}
+        isPlay={isSelected && isAudioPlaying()}
+        onPlay={handlePlay}
+      />
     </Container>
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ width: number; height: number }>`
+  width: ${(props) => props.width}rem;
+  height: ${(props) => props.height}rem;
+
   overflow: hidden;
-`;
-
-const ImageWrapper = styled.div<{ isPlaying: boolean }>`
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  overflow: hidden;
-
-  ${(props) =>
-    props.isPlaying
-      ? css`
-          background: rgba(13, 14, 17, 0.5);
-        `
-      : css`
-          background: transparent;
-        `}
-`;
-
-const TrackImage = styled.img`
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;

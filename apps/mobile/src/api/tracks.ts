@@ -1,21 +1,21 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   DefaultResponseType,
   FilteredTrackResponse,
   RecentTracksResponse,
   TrackDetailResponse,
   TrackDownloadResponse,
-} from "../type/api";
-import { FilteredTrackParamsType } from "../type/tracks";
-import { client } from "./common/client";
-import { TRACKS } from "./path";
+} from '../type/api';
+import { FilteredTrackParamsType } from '../type/tracks';
+import { client } from './common/client';
+import { TRACKS } from './path';
 
 export async function getFilteredTracks(params: FilteredTrackParamsType) {
   const { data } = await client.get<FilteredTrackResponse>(TRACKS.FILTERED_LIST, {
     params: {
       page: params.page,
       limit: params.limit,
-      categ: params.categ.length === 0 ? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] : params.categ,
+      categ: params.categ.length === 0 ? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] : params.categ,
     },
   });
 
@@ -31,7 +31,7 @@ export async function getTrackDownload(trackId: number) {
   const { data } = await client.get<TrackDownloadResponse>(TRACKS.DOWNLOAD(trackId));
 
   const res = await axios.get(data.data.trackAudioFile, {
-    responseType: "blob",
+    responseType: 'blob',
   });
 
   return res;
@@ -40,7 +40,7 @@ export async function getTrackDownload(trackId: number) {
 export async function postTrack(formData: FormData) {
   const { data } = await client.post<DefaultResponseType>(TRACKS.POST, formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
@@ -49,7 +49,7 @@ export async function postTrack(formData: FormData) {
 export async function patchTrack(trackId: number, formData: FormData) {
   const { data } = await client.patch<DefaultResponseType>(TRACKS.DETAIL(trackId), formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;

@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react';
 
-export default function usePaly() {
+export default function usePlay() {
   const audio = useMemo(() => new Audio(), []);
 
   const [showPlayer, setShowPlayer] = useState(false);
@@ -42,6 +42,10 @@ export default function usePaly() {
     setContextPlaying(false);
   }
 
+  function isAudioPlaying() {
+    return !audio.paused;
+  }
+
   return {
     playAudio,
     stopAudio,
@@ -54,5 +58,6 @@ export default function usePaly() {
     showPlayer,
     contextPlaying,
     audio,
+    isAudioPlaying,
   };
 }

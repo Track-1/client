@@ -3,6 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 // const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const {
+  VanillaExtractPlugin
+} = require('@vanilla-extract/webpack-plugin');
+
 
 dotenv.config({
   path: path.resolve(
@@ -24,6 +28,10 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: ['@svgr/webpack', 'file-loader'],
       },
+      {
+        test: /\.(sa|sc|c)ss$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
@@ -36,10 +44,16 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env),
     }),
+    new VanillaExtractPlugin({})
+
   ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '../src/'),
+      'track-1-form-with-react-hook-form': path.resolve(
+        __dirname,
+        '../../../node_modules/track-1-form-with-react-hook-form/dist/lib'
+      ),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

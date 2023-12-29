@@ -1,7 +1,7 @@
-import { PropsWithChildren, useContext, useState } from "react";
-import { SwitchContext } from "../../context/switchContext";
-import { LabelProps, RootProps, SwitchProps, ThumbProps } from "../../type/common/switch";
-import styled, { css, keyframes } from "styled-components";
+import { PropsWithChildren, useContext, useState } from 'react';
+import { SwitchContext } from '../../context/switchContext';
+import { LabelProps, RootProps, SwitchProps, ThumbProps } from '../../type/common/switch';
+import styled, { css, keyframes } from 'styled-components';
 
 const DefaultLabel = styled.p`
   ${({ theme }) => theme.fonts.hashtag}
@@ -11,7 +11,7 @@ const DefaultLabel = styled.p`
   color: ${({ theme }) => theme.colors.gray1};
 `;
 
-const DefaultRoot = styled.div<{ switchState: "on" | "off" }>`
+const DefaultRoot = styled.div<{ switchState: 'on' | 'off' }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -23,7 +23,7 @@ const DefaultRoot = styled.div<{ switchState: "on" | "off" }>`
   padding: 0 0.3rem;
 
   ${({ switchState }) =>
-    switchState === "on"
+    switchState === 'on'
       ? css`
           background-color: ${({ theme }) => theme.colors.sub1};
           justify-content: flex-start;
@@ -36,7 +36,7 @@ const DefaultRoot = styled.div<{ switchState: "on" | "off" }>`
 
 const moveRightAnimation = keyframes`
   0% {
-    transform: translateX(0); 
+    transform: translateX(0);
   }
   100% {
     transform: translateX(100%);
@@ -52,14 +52,14 @@ const moveLeftAnimation = keyframes`
   }
 `;
 
-const DefaultThumb = styled.div<{ switchState: "on" | "off" }>`
+const DefaultThumb = styled.div<{ switchState: 'on' | 'off' }>`
   width: 2.2rem;
   height: 2.2rem;
 
   border-radius: 50%;
 
   ${({ switchState }) =>
-    switchState === "on"
+    switchState === 'on'
       ? css`
           background-color: ${({ theme }) => theme.colors.black};
           ${moveRightAnimation} 0 linear forwards;
@@ -72,7 +72,7 @@ const DefaultThumb = styled.div<{ switchState: "on" | "off" }>`
 
 function SwitchBox(props: PropsWithChildren<SwitchProps>) {
   const { externalState, children } = props;
-  const [currentThumb, setCurrentThumb] = useState<"on" | "off">("off");
+  const [currentThumb, setCurrentThumb] = useState<'on' | 'off'>('off');
 
   const combineState = (externalFn: any, internalFn: any) => {
     return () => {
@@ -82,7 +82,7 @@ function SwitchBox(props: PropsWithChildren<SwitchProps>) {
   };
 
   function internalSwitchThumb() {
-    currentThumb === "on" ? setCurrentThumb("off") : setCurrentThumb("on");
+    currentThumb === 'on' ? setCurrentThumb('off') : setCurrentThumb('on');
   }
   const switchThumb = combineState(externalState, internalSwitchThumb);
   return <SwitchContext.Provider value={{ currentThumb, switchThumb }}>{children}</SwitchContext.Provider>;
@@ -92,7 +92,7 @@ function Label(props: LabelProps) {
   const { onLabel, offLabel } = props;
   const { currentThumb } = useContext(SwitchContext);
 
-  return <DefaultLabel>{currentThumb === "on" ? onLabel : offLabel}</DefaultLabel>;
+  return <DefaultLabel>{currentThumb === 'on' ? onLabel : offLabel}</DefaultLabel>;
 }
 
 function Root(props: PropsWithChildren<RootProps>) {

@@ -1,13 +1,13 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { deleteComment, getComments, patchComment, postComment } from "../../api/comments";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { commentUpdateData, commentWriteData, editSelectId } from "../../recoil/trackPost/commentWriteData";
-import { CommentsRequest } from "../../type/api";
-import { CommentDataType } from "../../type/trackPost/commentDataType";
-import useUploadAudioFile from "../common/useUploadAudioFile";
+import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { deleteComment, getComments, patchComment, postComment } from '../../api/comments';
+import { QUERIES_KEY } from '../../core/common/queriesKey';
+import { commentUpdateData, commentWriteData, editSelectId } from '../../recoil/trackPost/commentWriteData';
+import { CommentsRequest } from '../../type/api';
+import { CommentDataType } from '../../type/trackPost/commentDataType';
+import useUploadAudioFile from '../common/useUploadAudioFile';
 
-export function useComments(params: Omit<CommentsRequest, "page">) {
+export function useComments(params: Omit<CommentsRequest, 'page'>) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getComments({ ...params, page: pageParams, trackId: params.trackId });
 
@@ -21,7 +21,7 @@ export function useComments(params: Omit<CommentsRequest, "page">) {
       getNextPageParam: (lastPage) => {
         return lastPage.response.length === 0 ? undefined : lastPage.nextPage;
       },
-    },
+    }
   );
 
   const trackComments = data?.pages.flatMap(({ response }) => response.flatMap(({ commentList }) => commentList));

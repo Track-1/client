@@ -10,3 +10,15 @@ export const StyledLined = styled.hr<{ color?: keyof ColorsTypes }>`
   background-color: ${(props) =>
     props.color ? ({ theme }) => theme.colors[props.color as keyof ColorsTypes] : ({ theme }) => theme.colors.gray5};
 `;
+
+export const StyledVerticalLined = styled(StyledLined)<{ width: string }>`
+  width: ${(props) => props.width};
+  height: 1px;
+  border: none;
+
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+
+  background-color: ${({ theme }) => theme.colors.gray4};
+`;
