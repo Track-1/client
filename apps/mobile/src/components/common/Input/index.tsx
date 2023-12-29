@@ -8,7 +8,7 @@ export default function Input(props: PropsWithChildren<InputProps>) {
   return <InputWrapper>{children}</InputWrapper>;
 }
 
-const InputWrapper = styled.div`
+export const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
@@ -30,4 +30,11 @@ export const StyledInput = styled.input`
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};
   }
+`;
+
+export const InputWrapperWithButton = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: flex-end;
 `;
