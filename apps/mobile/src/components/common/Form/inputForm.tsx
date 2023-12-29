@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
-import Text, { StyledText } from '../Text';
 import { ColorsTypes } from '../../../style/theme';
+import { StyledText } from '../Text';
 
 interface InputFormProps {
   inputTitle?: string;
@@ -14,22 +14,22 @@ export default function InputForm(props: PropsWithChildren<InputFormProps>) {
   const { inputTitle, errorMessage, stabledMessage, stabledColor, children } = props;
 
   return (
-    <div>
+    <InpputContainer>
       <InputTitle>{inputTitle}</InputTitle>
       <InputWrapper errorMessage={errorMessage} stabledColor={stabledColor || 'gray4'}>
         {children}
       </InputWrapper>
       {errorMessage && (
-        <ErrorText as="p" font="Pre_14_R" color="red">
+        <Text as="p" font="Pre_14_R" color="red">
           {errorMessage}
-        </ErrorText>
+        </Text>
       )}
       {stabledMessage && (
         <Text as="p" font="Pre_14_R" color={stabledColor || 'neon_purple'}>
           {stabledMessage}
         </Text>
       )}
-    </div>
+    </InpputContainer>
   );
 }
 
@@ -65,8 +65,12 @@ const InputWrapper = styled.div<{ errorMessage?: string; stabledColor: keyof Col
     `}
 `;
 
-const ErrorText = styled(StyledText)`
+const Text = styled(StyledText)`
   position: absolute;
 
   margin-top: 0.5rem;
+`;
+
+const InpputContainer = styled.div`
+  width: 100%;
 `;
