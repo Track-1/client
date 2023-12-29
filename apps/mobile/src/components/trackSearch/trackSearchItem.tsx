@@ -71,7 +71,7 @@ const TrackUserInfoWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: calc(100% - 11.8rem);
+  width: calc(100% - 12.8rem);
   height: 100%;
 
   padding: 0.1rem 0;
