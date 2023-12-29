@@ -6,3 +6,4 @@ export { ReactComponent as PauseIc } from './icon/pauseIc.svg';
 export { ReactComponent as Track1LogoIc } from './icon/track1LogoIc.svg';
 export { ReactComponent as PasswordVisableIc } from './icon/passwordVisableIc.svg';
 export { ReactComponent as PasswordUnVisableIc } from './icon/passwordUnVisableIc.svg';
+export { ReactComponent as MoreDotIc } from './icon/moreDotIc.svg';
