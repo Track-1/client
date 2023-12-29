@@ -31,3 +31,10 @@ export const StyledInput = styled.input`
     color: ${({ theme }) => theme.colors.gray3};
   }
 `;
+
+export const InputWrapperWithButton = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: flex-end;
+`;

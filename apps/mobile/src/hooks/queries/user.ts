@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { UseFormResetField, UseFormSetError, UseFormSetValue } from 'react-hook-form';
+import { FieldValues, UseFormResetField, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
@@ -168,9 +168,9 @@ export function useVerifyEmail() {
 }
 
 export function useVerifyCode(
-  setError: UseFormSetError<EmailPasswordInputType>,
-  resetField: UseFormResetField<EmailPasswordInputType>,
-  setValue: UseFormSetValue<EmailPasswordInputType>
+  setError: UseFormSetError<FieldValues>,
+  resetField: UseFormResetField<FieldValues>,
+  setValue: UseFormSetValue<FieldValues>
 ) {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (verifyCode: VerifyCodeRequest) => postVerifyCode(verifyCode),
