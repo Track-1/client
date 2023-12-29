@@ -7,10 +7,10 @@ import { EMAIL_MESSAGE } from '../../../../core/signUp/errorMessage';
 import { useUserEmail } from '../../../../hooks/queries/user';
 import { role } from '../../../../recoil/common/role';
 import { isNextStep } from '../../../../recoil/signUp/isNextStep';
-import { checkEmailForm, checkIsResend } from '../../../../utils/signUp/check';
+import { checkEmailError, checkEmailForm, checkIsResend } from '../../../../utils/signUp/check';
 import { EMAIL_RULE } from '../../../../validation/rules';
 import InputForm from '../../../common/Form/inputForm';
-import { StyledInput } from '../../../common/Input';
+import { InputWrapperWithButton, StyledInput } from '../../../common/Input';
 
 export default function Email() {
   const { registerWithRef, ...methods } = useFormContextWithRef();
@@ -39,14 +39,12 @@ export default function Email() {
       userEmail: getValues('email'),
     });
   }
-
+  console.log(errors.email?.message);
   return (
-    <Styled.EmailInputWrapper>
+    <InputWrapperWithButton>
       <InputForm
         inputTitle="What’s your email?"
-        errorMessage={
-          errors?.email?.message && !checkIsResend(`${errors?.email?.message}`) ? `${errors?.email?.message}` : ''
-        }
+        errorMessage={checkEmailError(`${errors?.email?.message}`) ? `${errors?.email?.message}` : ''}
         stabledMessage={checkIsResend(`${errors?.email?.message}`) ? `${errors?.email?.message}` : ``}
         stabledColor={checkIsResend(`${errors?.email?.message}`) ? 'neon_purple' : 'gray4'}>
         <StyledInput
@@ -72,17 +70,17 @@ export default function Email() {
         onClick={handleSendCode}
         size="small"
         backgroundColor={checkIsActive() ? 'purple' : 'grey'}
-        color={checkIsActive() ? 'black' : 'grey'}>
-        {isSended ? <>Resend</> : <>Send Code</>}
+        color={checkIsActive() ? 'black' : 'grey'}
+        width={8.6}
+        height={3.2}>
+        <Styled.ButtonText>{isSended ? `Resend` : `Send Code`}</Styled.ButtonText>
       </Button>
-    </Styled.EmailInputWrapper>
+    </InputWrapperWithButton>
   );
 }
 
 const Styled = {
-  EmailInputWrapper: styled.section`
-    display: flex;
-    gap: 0.5rem;
-    justify-content: space-between;
+  ButtonText: styled.p`
+    ${({ theme }) => theme.fonts.Alex_10_L};
   `,
 };

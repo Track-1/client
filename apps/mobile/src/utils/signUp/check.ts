@@ -1,6 +1,10 @@
 import { EMAIL_MESSAGE } from '../../core/signUp/errorMessage';
 import { ConventionChecksType } from '../../type/signUp/conventionChecksType';
 
+export function checkEmailError(message: string) {
+  return message !== 'undefined' && !checkIsResend(message) && !checkEmailVerified(message);
+}
+
 export function checkEmailVerified(value: string | undefined) {
   return value === EMAIL_MESSAGE.VERIFY;
 }
