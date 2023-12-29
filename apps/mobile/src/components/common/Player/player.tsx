@@ -5,6 +5,7 @@ import useControlPlayer from '../../../hooks/common/useControlPlayer';
 import Text from '../Text';
 import { ImageWrapper } from '../Interface';
 import { PauseIc, PlayIc } from '../../../assets';
+import usePaly from '../../../hooks/common/usePlay';
 
 const PlayerContainer = styled.section`
   position: fixed;
@@ -127,6 +128,7 @@ export default function Player({ comment }: PlayerProps) {
     contextPlaying,
     audio,
     playerInfo,
+    isAudioPlaying,
   } = useContext(PlayerContext);
 
   const {
@@ -201,16 +203,8 @@ export default function Player({ comment }: PlayerProps) {
               </Text>
             </TimeWrapper>
 
-            <ImageWrapper as="button" width={3} height={3} onClick={contextPlaying ? pause : play}>
-              {contextPlaying ? (
-                <PauseIc
-                  onClick={() => {
-                    console.log('hello');
-                  }}
-                />
-              ) : (
-                <PlayIc />
-              )}
+            <ImageWrapper as="button" width={3} height={3} onClick={isAudioPlaying() ? pause : play}>
+              {isAudioPlaying() ? <PauseIc /> : <PlayIc />}
             </ImageWrapper>
           </IconTimeWrapper>
         </PlayerInfoWrapper>
