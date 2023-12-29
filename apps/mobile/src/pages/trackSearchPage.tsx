@@ -1,3 +1,4 @@
+import TrackFilterModal from '../components/common/Modal/Filter';
 import Player from '../components/common/Player/player';
 import Footer from '../components/footer';
 import Header from '../components/header';
