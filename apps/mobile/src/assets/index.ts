@@ -11,6 +11,8 @@ export { ReactComponent as PasswordVisableIc } from './icon/passwordVisableIc.sv
 export { ReactComponent as PauseIc } from './icon/pauseIc.svg';
 export { ReactComponent as PlayIc } from './icon/playIc.svg';
 export { ReactComponent as PlayingIc } from './icon/playingIc.svg';
+export { ReactComponent as ResetBtnIc } from './icon/resetBtnIc.svg';
+export { ReactComponent as CategoryCheckedIc } from './icon/categoryCheckedIc.svg';
 export { ReactComponent as RightArrowIc } from './icon/rightArrowIc.svg';
 export { ReactComponent as SignUpUploadImageProducerIc } from './icon/signUpUploadImageProducerIc.svg';
 export { ReactComponent as SignUpUploadImageVocalIc } from './icon/signUpUploadImageVocalIc.svg';
