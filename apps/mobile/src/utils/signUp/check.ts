@@ -1,4 +1,4 @@
-import { EMAIL_MESSAGE } from '../../core/signUp/errorMessage';
+import { EMAIL_MESSAGE, PASSWORD_MESSAGE, VERIFICATION_CODE_MESSAGE } from '../../core/signUp/errorMessage';
 import { ConventionChecksType } from '../../type/signUp/conventionChecksType';
 
 export function checkEmailError(message: string) {
@@ -30,6 +30,7 @@ export function checkNicknamForm(nickname: string) {
   const regex = /^[a-zA-z0-9~!@#$%^&*()_+|<>?:{}가-힣]{1,16}$/;
   return regex.test(nickname);
 }
+
 export function checkInputEmpty(value: string) {
   return value === '';
 }
@@ -37,9 +38,19 @@ export function checkInputEmpty(value: string) {
 export function checkIsResend(message: string | undefined) {
   return message === EMAIL_MESSAGE.TIME;
 }
+
 export function checkPasswordMatch(password: string, passwordConfirm: string) {
   return password === passwordConfirm;
 }
+
 export function showPassword(isShow: boolean) {
   return isShow ? 'text' : 'password';
+}
+
+export function checkEmailSuccess(verfiyMessage: string, emailMessage: string) {
+  return verfiyMessage === VERIFICATION_CODE_MESSAGE.SUCCESS || checkEmailVerified(emailMessage);
+}
+
+export function checkPasswordError(message: string) {
+  return message !== 'undefined' && !checkPasswordForm(message) && message !== PASSWORD_MESSAGE.SUCCESS;
 }

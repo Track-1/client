@@ -39,7 +39,7 @@ export default function Email() {
       userEmail: getValues('email'),
     });
   }
-  console.log(errors.email?.message);
+
   return (
     <InputWrapperWithButton>
       <InputForm

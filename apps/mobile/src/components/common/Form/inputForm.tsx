@@ -37,8 +37,6 @@ export default function InputForm(props: PropsWithChildren<InputFormProps>) {
 const InputTitle = styled.label`
   ${({ theme }) => theme.fonts.Pre_14_R};
   color: ${({ theme }) => theme.colors.gray2};
-
-  margin-bottom: 0.8rem;
 `;
 
 const InputWrapper = styled.div<{ errorMessage?: string; stabledColor: keyof ColorsTypes }>`
@@ -51,6 +49,8 @@ const InputWrapper = styled.div<{ errorMessage?: string; stabledColor: keyof Col
   height: 3.6rem;
 
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray4};
+
+  margin-top: 0.8rem;
 
   ${(props) =>
     props.stabledColor &&
