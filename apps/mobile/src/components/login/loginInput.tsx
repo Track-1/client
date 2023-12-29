@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { EMAIL_RULE, PASSWORD_RULE } from '../../validation/rules';
 import { Button } from 'track-1-design-system';
 import Text from '../common/Text';
-import { IconButtonWrapper } from '../common/Interface';
+import { ImageWrapper } from '../common/Interface';
 import { useForm } from 'react-hook-form';
 
 export default function LoginInput() {
@@ -69,8 +69,6 @@ export default function LoginInput() {
     setVisiablePw(!visiablePw);
   }
 
-  console.log(errors.userEmail);
-
   return (
     <>
       <InputFormWrapper>
@@ -92,9 +90,9 @@ export default function LoginInput() {
               ...PASSWORD_RULE,
             })}
           />
-          <IconButtonWrapper width={3} height={3} onClick={handleChangeVisiableState}>
+          <ImageWrapper as="button" width={3} height={3} onClick={handleChangeVisiableState}>
             {visiablePw ? <PasswordUnVisableIc /> : <PasswordVisableIc />}
-          </IconButtonWrapper>
+          </ImageWrapper>
         </InputForm>
       </InputFormWrapper>
 
@@ -125,6 +123,8 @@ const InputFormWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   margin: 4rem 0 2rem;
+
+  cursor: pointer;
 `;
 
 const StyledButton = styled.button<{ state: boolean }>`

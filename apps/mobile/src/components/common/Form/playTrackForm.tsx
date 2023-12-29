@@ -54,14 +54,15 @@ export default function PlayTrackForm(props: PropsWithChildren<PlayTrackFormProp
   }, [playingTrack]);
 
   return (
-    <Container onClick={handlePlay} width={restProps.width} height={restProps.height}>
+    <Container width={restProps.width} height={restProps.height}>
       <Cover
         imageUrl={trackInfo.trackImageFile}
         width={restProps.width}
         height={restProps.height}
         shape={restProps.shape}
         align={restProps.align}
-        isPlay={playingTrack === trackInfo.trackId && contextPlaying}
+        isPlay={playingTrack === trackInfo.trackId && contextPlaying && innerPlaying}
+        onPlay={handlePlay}
       />
     </Container>
   );

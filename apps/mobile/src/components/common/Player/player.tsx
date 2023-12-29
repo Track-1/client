@@ -1,58 +1,61 @@
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-// import { PlayerPlayIc, PlayerQuitIc, PlayerStopIc } from '../../assets';
-// import { PlayerContext } from "../../context/playerContext";
-// import useControlPlayer from "../../hooks/common/useControlPlayer";
 import { PlayerContext } from '../../../context/playerContext';
 import useControlPlayer from '../../../hooks/common/useControlPlayer';
+import Text from '../Text';
+import { ImageWrapper } from '../Interface';
+import { PauseIc, PlayIc } from '../../../assets';
 
 const PlayerContainer = styled.section`
   position: fixed;
+  left: 0;
   bottom: 0;
-  pointer-events: none;
 
   display: flex;
+  align-items: center;
 
-  width: 192rem;
-  height: 11rem;
+  width: 100%;
+  height: 10.5rem;
 `;
 
 const PlayerWrapper = styled.article`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+
+  width: 100%;
 
   cursor: pointer;
 
   position: relative;
 `;
 
-const PlayerInformWrapper = styled.div`
-  width: 192rem;
-  height: 11rem;
+const PlayerInfoWrapper = styled.div`
+  width: 100%;
+  height: 10rem;
 
   display: flex;
   align-items: center;
 
+  padding: 2.5rem;
+
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
-  position: relative;
 `;
 
 const Playbar = styled.div<{ progress: number; isActive: boolean }>`
   width: ${(props) => props.progress}%;
-  height: 3rem;
+  height: 0.5rem;
 
   background-color: transparent;
 
-  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.neon_green};
+  border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.neon_purple};
 
   pointer-events: auto;
 `;
 
 const Pointer = styled.div<{ progress: number; isActive: boolean }>`
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 1.3rem;
+  height: 1.3rem;
 
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.25);
@@ -69,27 +72,30 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
 `;
 
 const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
-  width: 192rem;
-  height: 3rem;
+  width: 100%;
+  height: 0.5rem;
 
   background-color: transparent;
   border-bottom: ${({ isActive }) => (isActive ? 0.7 : 0.3)}rem solid ${({ theme }) => theme.colors.gray3};
   pointer-events: auto;
 `;
 
-const ThumbnailWrapper = styled.div`
+const IconTimeWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
-  width: 5.7rem;
-  height: 5.7rem;
-  margin-left: 34rem;
-  margin-right: 3.069rem;
+  width: 16.2rem;
+  height: 100%;
+`;
 
-  border-radius: 5rem;
+const TrackInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  overflow: hidden;
+  width: calc(100% - 16.2rem);
+  height: 100%;
 `;
 
 const Thumbnail = styled.img`
@@ -100,50 +106,10 @@ const Thumbnail = styled.img`
   margin: auto;
 `;
 
-const PlayerInformText = styled.div<{ width: number; whiteText: boolean }>`
-  width: ${({ width }) => width}rem;
-
-  ${({ theme }) => theme.fonts.Alex_10_B};
-  color: ${({ whiteText, theme }) => (whiteText ? theme.colors.white : theme.colors.gray2)};
-  pointer-events: auto;
+const TimeWrapper = styled.div`
+  display: flex;
+  gap: 1.9rem;
 `;
-
-const PlayerTitleText = styled.div`
-  width: 74rem;
-
-  ${({ theme }) => theme.fonts.Alex_10_B};
-  color: ${({ theme }) => theme.colors.white};
-  pointer-events: auto;
-`;
-
-const PlayerNameText = styled.div`
-  width: 16rem;
-
-  ${({ theme }) => theme.fonts.Alex_10_B};
-  color: ${({ theme }) => theme.colors.gray2};
-  pointer-events: auto;
-
-  margin-right: 2rem;
-`;
-
-// const PauseIcon = styled(PlayerStopIc)`
-//   height: 2.4rem;
-//   margin-right: 5.1rem;
-//   pointer-events: auto;
-// `;
-
-// const PlayIcon = styled(PlayerPlayIc)`
-//   height: 2.4rem;
-//   margin-right: 5.1rem;
-//   pointer-events: auto;
-// `;
-
-// const QuitIcon = styled(PlayerQuitIc)`
-//   width: 3.5rem;
-//   height: 3.5rem;
-
-//   pointer-events: auto;
-// `;
 
 interface PlayerProps {
   comment?: boolean;
@@ -203,7 +169,6 @@ export default function Player({ comment }: PlayerProps) {
   return showPlayer ? (
     <PlayerContainer>
       <PlayerWrapper>
-        <Pointer progress={progress} isActive={isPlaybarHovered}></Pointer>
         <PlayerBarWrapper
           ref={playBar}
           onClick={controlAudio}
@@ -216,21 +181,39 @@ export default function Player({ comment }: PlayerProps) {
           <Playbar progress={progress} isActive={isPlaybarHovered} />
         </PlayerBarWrapper>
 
-        <PlayerInformWrapper>
-          <ThumbnailWrapper>
-            <Thumbnail src={playerInfo?.imageFile} alt="썸네일 이미지" />
-          </ThumbnailWrapper>
-          <PlayerTitleText>{playerInfo?.title}</PlayerTitleText>
-          <PlayerNameText>{playerInfo?.userName}</PlayerNameText>
-          {/* {contextPlaying ? <PauseIcon onClick={pause} /> : <PlayIcon onClick={play} />} */}
-          <PlayerInformText width={10} whiteText={true}>
-            {currentTimeText}
-          </PlayerInformText>
-          <PlayerInformText width={30} whiteText={false}>
-            {totalTimetext}
-          </PlayerInformText>
-          {/* <QuitIcon onClick={quit} /> */}
-        </PlayerInformWrapper>
+        <PlayerInfoWrapper>
+          <TrackInfoWrapper>
+            <Text as="span" font="Pre_16_M" color="white">
+              {playerInfo?.title}
+            </Text>
+            <Text as="span" font="Pre_16_M" color="white">
+              {playerInfo?.userName}
+            </Text>
+          </TrackInfoWrapper>
+
+          <IconTimeWrapper>
+            <TimeWrapper>
+              <Text as="p" font="Pre_14_R" color="white">
+                {currentTimeText}
+              </Text>
+              <Text as="p" font="Pre_14_R" color="gray3">
+                {totalTimetext}
+              </Text>
+            </TimeWrapper>
+
+            <ImageWrapper as="button" width={3} height={3} onClick={contextPlaying ? pause : play}>
+              {contextPlaying ? (
+                <PauseIc
+                  onClick={() => {
+                    console.log('hello');
+                  }}
+                />
+              ) : (
+                <PlayIc />
+              )}
+            </ImageWrapper>
+          </IconTimeWrapper>
+        </PlayerInfoWrapper>
       </PlayerWrapper>
     </PlayerContainer>
   ) : null;
