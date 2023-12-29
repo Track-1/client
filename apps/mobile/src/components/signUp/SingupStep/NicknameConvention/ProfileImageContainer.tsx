@@ -43,150 +43,156 @@ export default function ProfilImageContainer() {
     <>
       {/* 프로듀서 프로필 이미지 업로드 */}
       {isProducer(userType) && (
-        <ImageContainer>
-          <ImageUploadBox onMouseEnter={() => handleImageHover(true)} onMouseLeave={() => handleImageHover(false)}>
+        <Styled.ImageContainer>
+          <Styled.ImageUploadBox
+            onMouseEnter={() => handleImageHover(true)}
+            onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
-              <ProducerImageWrapper>
-                <ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" className="profile-image" />
-                <SignupChangePhotoProducerIcon className="change-photo-ic" />
-              </ProducerImageWrapper>
+              <Styled.ProducerImageWrapper>
+                <Styled.ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" className="profile-image" />
+                <Styled.SignupChangePhotoProducerIcon className="change-photo-ic" />
+              </Styled.ProducerImageWrapper>
             ) : (
-              <SignUpUploadImageWrapper>
-                <SignUpUploadImageProducerIcon />
-              </SignUpUploadImageWrapper>
+              <Styled.SignUpUploadImageWrapper>
+                <Styled.SignUpUploadImageProducerIcon />
+              </Styled.SignUpUploadImageWrapper>
             )}
-            <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
-          </ImageUploadBox>
-        </ImageContainer>
+            <Styled.ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
+          </Styled.ImageUploadBox>
+        </Styled.ImageContainer>
       )}
 
       {/* 보컬 프로필 이미지 업로드 */}
       {isVocal(userType) && (
-        <ImageContainer>
-          <ImageUploadBox onMouseEnter={() => handleImageHover(true)} onMouseLeave={() => handleImageHover(false)}>
+        <Styled.ImageContainer>
+          <Styled.ImageUploadBox
+            onMouseEnter={() => handleImageHover(true)}
+            onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
-              <VocalImageWrapper>
-                <VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" className="profile-image" />
-                <SignupChangePhotoVocalIcon className="change-photo-ic" />
-              </VocalImageWrapper>
+              <Styled.VocalImageWrapper>
+                <Styled.VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" className="profile-image" />
+                <Styled.SignupChangePhotoVocalIcon className="change-photo-ic" />
+              </Styled.VocalImageWrapper>
             ) : (
-              <SignUpUploadImageWrapper>
-                <SignUpUploadImageVocalIcon />
-              </SignUpUploadImageWrapper>
+              <Styled.SignUpUploadImageWrapper>
+                <Styled.SignUpUploadImageVocalIcon />
+              </Styled.SignUpUploadImageWrapper>
             )}
-            <ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
-          </ImageUploadBox>
-        </ImageContainer>
+            <Styled.ImageInput type="file" accept=".jpg,.jpeg,.png, .JPG, .JPEG, .PNG" onChange={handleUploadImage} />
+          </Styled.ImageUploadBox>
+        </Styled.ImageContainer>
       )}
     </>
   );
 }
 
-const ImageInput = styled.input`
-  display: none;
-`;
+const Styled = {
+  ImageInput: styled.input`
+    display: none;
+  `,
 
-const ImageUploadBox = styled.label`
-  cursor: pointer;
+  ImageUploadBox: styled.label`
+    cursor: pointer;
 
-  &:hover {
-    .change-photo-ic {
-      display: block;
+    &:hover {
+      .change-photo-ic {
+        display: block;
+      }
+
+      .profile-image {
+        filter: blur(1.7rem);
+      }
     }
+  `,
 
-    .profile-image {
-      filter: blur(1.7rem);
-    }
-  }
-`;
+  ImageContainer: styled.section`
+    width: 21.7rem;
+    height: 21.7rem;
+  `,
 
-const ImageContainer = styled.section`
-  width: 21.7rem;
-  height: 21.7rem;
-`;
+  ProducerImageWrapper: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-const ProducerImageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 21.7rem;
+    height: 21.7rem;
 
-  width: 21.7rem;
-  height: 21.7rem;
+    border-radius: 25rem;
 
-  border-radius: 25rem;
+    position: absolute;
+    overflow: hidden;
+  `,
 
-  position: absolute;
-  overflow: hidden;
-`;
+  VocalImageWrapper: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-const VocalImageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 16.4rem;
+    height: 16.4rem;
 
-  width: 16.4rem;
-  height: 16.4rem;
+    border-radius: 1.8rem;
 
-  border-radius: 1.8rem;
+    position: absolute;
+    overflow: hidden;
 
-  position: absolute;
-  overflow: hidden;
+    transform: rotate(-45deg);
+    right: 13rem;
+    top: 2.7rem;
+  `,
 
-  transform: rotate(-45deg);
-  right: 13rem;
-  top: 2.7rem;
-`;
+  ProducerImage: styled.img`
+    width: 100%;
+    height: 100%;
 
-const ProducerImage = styled.img`
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    transform: translate(50, 50);
 
-  position: absolute;
-  transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
+  `,
 
-  object-fit: cover;
-  margin: auto;
-`;
+  VocalImage: styled.img`
+    width: 150%;
+    height: 135%;
 
-const VocalImage = styled.img`
-  width: 150%;
-  height: 135%;
+    position: absolute;
+    transform: translate(50, 50);
 
-  position: absolute;
-  transform: translate(50, 50);
+    object-fit: cover;
+    margin: auto;
 
-  object-fit: cover;
-  margin: auto;
+    transform: rotate(45deg);
+  `,
 
-  transform: rotate(45deg);
-`;
+  SignUpUploadImageWrapper: styled.div`
+    position: absolute;
+  `,
 
-const SignUpUploadImageWrapper = styled.div`
-  position: absolute;
-`;
+  SignUpUploadImageProducerIcon: styled(SignUpUploadImageProducerIc)`
+    width: 21.7rem;
+    height: 21.7rem;
+  `,
 
-const SignUpUploadImageProducerIcon = styled(SignUpUploadImageProducerIc)`
-  width: 21.7rem;
-  height: 21.7rem;
-`;
+  SignUpUploadImageVocalIcon: styled(SignUpUploadImageVocalIc)`
+    width: 21.7rem;
+    height: 21.7rem;
+  `,
 
-const SignUpUploadImageVocalIcon = styled(SignUpUploadImageVocalIc)`
-  width: 21.7rem;
-  height: 21.7rem;
-`;
+  SignupChangePhotoProducerIcon: styled(SignupChangePhotoIc)`
+    width: 11.1rem;
+    height: 5.7rem;
 
-const SignupChangePhotoProducerIcon = styled(SignupChangePhotoIc)`
-  width: 11.1rem;
-  height: 5.7rem;
+    position: relative;
+    display: none;
+  `,
 
-  position: relative;
-  display: none;
-`;
-
-const SignupChangePhotoVocalIcon = styled(SignupChangePhotoIc)`
-  width: 11.1rem;
-  height: 5.7rem;
-  transform: rotate(45deg);
-  position: relative;
-  display: none;
-`;
+  SignupChangePhotoVocalIcon: styled(SignupChangePhotoIc)`
+    width: 11.1rem;
+    height: 5.7rem;
+    transform: rotate(45deg);
+    position: relative;
+    display: none;
+  `,
+};
