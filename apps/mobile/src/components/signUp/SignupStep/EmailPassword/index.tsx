@@ -1,6 +1,6 @@
 import { FormProvider } from 'react-hook-form';
 import { useFormWithRef } from 'track-1-form-with-react-hook-form';
-import { checkIsResend } from '../../../../utils/signUp/checkIsResendCode';
+import { checkIsResend } from '../../../../utils/signUp/check';
 import Email from './Email';
 import VerifyCode from './VerifyCode';
 
