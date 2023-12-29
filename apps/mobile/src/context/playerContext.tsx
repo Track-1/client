@@ -1,5 +1,5 @@
-import { createContext, PropsWithChildren, useMemo, useState } from "react";
-import usePaly from "../hooks/common/usePlay";
+import { createContext, PropsWithChildren, useMemo, useState } from 'react';
+import usePlay from '../hooks/common/usePlay';
 
 export const PlayerContext = createContext<any>({
   playAudio: () => {},
@@ -31,7 +31,8 @@ export function PlayerProvider({ children }: PropsWithChildren) {
     showPlayer,
     contextPlaying,
     audio,
-  } = usePaly();
+    isAudioPlaying,
+  } = usePlay();
   const [playerInfo, setPlayerInfo] = useState();
 
   function getPlayerInfo(info: any) {
@@ -60,6 +61,7 @@ export function PlayerProvider({ children }: PropsWithChildren) {
         playerInfo,
         getPlayerInfo,
         quitAudioForMovePage,
+        isAudioPlaying,
       }}>
       {children}
     </PlayerContext.Provider>

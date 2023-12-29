@@ -123,6 +123,8 @@ const InputFormWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   margin: 4rem 0 2rem;
+
+  cursor: pointer;
 `;
 
 const StyledButton = styled.button<{ state: boolean }>`

@@ -1,1 +1,1 @@
-export type UserType = "producer" | "vocal";
+export type UserType = 'producer' | 'vocal' | null;
