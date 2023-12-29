@@ -11742,23 +11742,24 @@ tr46@^2.1.0:
   dependencies:
     punycode "^2.1.1"
 
-track-1-design-system@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/track-1-design-system/-/track-1-design-system-0.0.4.tgz#8445202cbaa332aa465c4a672291fa6bb7c933f8"
-  integrity sha512-1YVR2CBQ8O99NYLb+9jtQqAMR80hDTjJNUPb5y+HWnppwZwKwCXbkJZZDvE00hOnWRugw0X5lFUT/YLbLGYt8w==
+track-1-design-system@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/track-1-design-system/-/track-1-design-system-0.1.2.tgz#c8041d6dc8facd64d1559d2aa64b75537af93b3f"
+  integrity sha512-Lj3Ha33IK/lePRAmhway+nJ/tIn6vW2edWByKJdecsWISjQnmFxVGASTmtHgWuK59AKBxcCKj0lqU0FmOlQkUg==
   dependencies:
     "@vanilla-extract/vite-plugin" "^3.9.2"
     framer-motion "^10.16.16"
     react "^18.2.0"
     react-dom "^18.2.0"
     react-modal-sheet "^2.2.0"
+    vite-plugin-babel "^1.2.0"
     vite-plugin-svgr "^4.2.0"
     vite-tsconfig-paths "^4.2.1"
 
-track-1-form-with-react-hook-form@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/track-1-form-with-react-hook-form/-/track-1-form-with-react-hook-form-0.1.5.tgz#f0ff5b7773d8f5a8ae8a0e9079f0cdba13414553"
-  integrity sha512-HnUGn+2CH/OLzzwkKTuF0XY9c4vG+SoJ1kua+FkFk37/GIH6xENM0A32f/oZzQvzLSGWvQ7LiXfv924A291LgQ==
+track-1-form-with-react-hook-form@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/track-1-form-with-react-hook-form/-/track-1-form-with-react-hook-form-0.1.9.tgz#b59c47e4dec5d7d892affefc01737c9394f0ece4"
+  integrity sha512-LHH/Ou9ah4HT6q6B+wWNjn+BILv7KshYiEbmSEKK+ayWswgt6AbNiQMZzDeJ8+SYqU7hEU5udQWqlFloS08Hxw==
   dependencies:
     "@testing-library/jest-dom" "^5.17.0"
     "@testing-library/react" "^13.4.0"
@@ -12232,6 +12233,11 @@ vite-node@^0.28.5:
     source-map "^0.6.1"
     source-map-support "^0.5.21"
     vite "^3.0.0 || ^4.0.0"
+
+vite-plugin-babel@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-babel/-/vite-plugin-babel-1.2.0.tgz#0d803d489c2a7e63ceb93e37533de298e1537c71"
+  integrity sha512-ltAnq535Ubf9sDbVCkztAdkwx5aQbNrwPFs+iZTJ5FaAhTdxjqmLGpxsAaRfJWEKBJ/kFf9KwMoTdArm0IRUUw==
 
 vite-plugin-svgr@^4.2.0:
   version "4.2.0"

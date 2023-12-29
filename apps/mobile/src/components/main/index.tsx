@@ -8,14 +8,14 @@ import { PlayerProvider } from '../../context/playerContext';
 
 export default function MainContainer() {
   return (
-    <PlayerProvider>
+    <>
       <HotTrack />
       <RecentTrackList />
       <SectionDivider />
       <RecentVocalList />
       <SectionDivider />
       <HotEvent />
-    </PlayerProvider>
+    </>
   );
 }
 

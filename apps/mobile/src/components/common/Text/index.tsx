@@ -16,6 +16,8 @@ type tagTpyes =
   | 'span'
   | 'del'
   | 'em'
+  | 'li'
+  | 'ul'
   | 'blockquote';
 
 interface TextProps {
@@ -23,25 +25,27 @@ interface TextProps {
   font: keyof FontsTypes;
   color: keyof ColorsTypes;
   margin?: string;
+  lineHeight?: string;
 }
 
 export default function Text(props: PropsWithChildren<TextProps>) {
-  const { as, font, color, margin, children } = props;
+  const { as, font, color, margin, lineHeight, children } = props;
   return (
-    <StyledText as={as} font={font} color={color} margin={margin}>
+    <StyledText as={as} font={font} color={color} margin={margin} lineHeight={lineHeight}>
       {children}
     </StyledText>
   );
 }
 
-export const StyledText = styled.span<{ font: keyof FontsTypes; color: keyof ColorsTypes; margin?: string }>`
-  ${(props) =>
-    ({ theme }) =>
-      theme.fonts[props.font]};
-  color: ${(props) =>
-    ({ theme }) =>
-      theme.colors[props.color]};
-
-  margin: ${(props) => props.margin && props.margin};
+export const StyledText = styled.span<{
+  font: keyof FontsTypes;
+  color: keyof ColorsTypes;
+  margin?: string;
+  lineHeight?: string;
+}>`
+  ${({ font, theme }) => theme.fonts[font]}
+  color: ${({ theme, color }) => theme.colors[color]};
+  margin: ${({ margin }) => margin && margin};
+  line-height: ${({ lineHeight }) => lineHeight && lineHeight};
   white-space: pre-line;
 `;
