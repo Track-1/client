@@ -12,3 +12,5 @@ export { ReactComponent as DefaultUserIc } from './icon/defaultUserIc.svg';
 export { ReactComponent as RightArrowIc } from './icon/rightArrowIc.svg';
 export { ReactComponent as FilterIc } from './icon/filterIc.svg';
 export { ReactComponent as PlayingIc } from './icon/playingIc.svg';
+export { ReactComponent as ResetBtnIc } from './icon/resetBtnIc.svg';
+export { ReactComponent as CategoryCheckedIc } from './icon/categoryCheckedIc.svg';
