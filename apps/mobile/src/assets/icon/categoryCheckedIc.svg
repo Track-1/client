@@ -1,6 +1,6 @@
-<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="16" height="12" viewBox="0 0 16 12" xmlns="http://www.w3.org/2000/svg">
 <g id="Group 44333">
-<line id="Line 47" x1="0.53033" y1="5.46967" x2="6.53033" y2="11.4697" stroke="#43FF8E" stroke-width="1.5"/>
-<line id="Line 48" x1="5.46967" y1="11.4697" x2="15.4697" y2="1.46967" stroke="#43FF8E" stroke-width="1.5"/>
+<line id="Line 47" x1="0.53033" y1="5.46967" x2="6.53033" y2="11.4697"  stroke-width="1.5"/>
+<line id="Line 48" x1="5.46967" y1="11.4697" x2="15.4697" y2="1.46967"  stroke-width="1.5"/>
 </g>
 </svg>

@@ -1,14 +1,14 @@
-import { UserType } from "../type/common/userType";
+import { UserType } from '../type/common/userType';
 
 export const PATH = {
-  user: "/user",
-  tracks: "/tracks",
-  vocals: "/vocals",
-  comments: "/comments",
-  profile: "/profile",
-  mypage: "/mypage",
-  recent: "/recent",
-  event: "/event",
+  user: '/user',
+  tracks: '/tracks',
+  vocals: '/vocals',
+  comments: '/comments',
+  profile: '/profile',
+  mypage: '/mypage',
+  recent: '/recent',
+  event: '/event',
 };
 
 export const USER = {
@@ -33,7 +33,7 @@ export const TRACKS = {
   DOWNLOAD: (trackId: number) => `${PATH.tracks}/${trackId}/download`,
   POST: `${PATH.tracks}`,
   TRACK_CLOSE: (trackId: number) => `${PATH.tracks}/${trackId}/closed`,
-  RECENT_TRACKS: (count: number) => `${PATH.tracks}/${PATH.recent}/${count}`,
+  RECENT_TRACKS: (count: number) => `${PATH.tracks}${PATH.recent}/${count}`,
 } as const;
 
 export const COMMENTS = {
@@ -73,5 +73,4 @@ export const MYPAGE = {
 export const ADMIN = {
   EVENT: `${PATH.event}`,
   EVENT_DETAIL: (eventId: number) => `${PATH.event}/${eventId}`,
-
 };
