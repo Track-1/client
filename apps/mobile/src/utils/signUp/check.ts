@@ -14,7 +14,7 @@ export function checkEmailVerifyOKToSuccess(value: string | undefined) {
 }
 
 export function checkEssentialAgree(checkedConventions: ConventionChecksType[]) {
-  return checkedConventions[1].selected === true && checkedConventions[2].selected === true;
+  return checkedConventions[1]?.selected === true && checkedConventions[2]?.selected === true;
 }
 export function checkEmailForm(email: string) {
   const regex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;

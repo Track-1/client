@@ -1,11 +1,11 @@
+import { OverlayProvider } from '@toss/use-overlay';
 import { CookiesProvider } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from 'styled-components';
-import { theme } from './style/theme';
-import { GlobalStyle } from './style/globalStyle';
-import Router from './Router';
-import { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from 'styled-components';
+import Router from './Router';
+import { GlobalStyle } from './style/globalStyle';
+import { theme } from './style/theme';
 
 function App() {
   const queryClient = new QueryClient({
@@ -25,16 +25,18 @@ function App() {
   // }, []);
 
   return (
-    <CookiesProvider>
-      <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Router />
-          </ThemeProvider>
-        </RecoilRoot>
-      </QueryClientProvider>
-    </CookiesProvider>
+    <OverlayProvider>
+      <CookiesProvider>
+        <QueryClientProvider client={queryClient}>
+          <RecoilRoot>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <Router />
+            </ThemeProvider>
+          </RecoilRoot>
+        </QueryClientProvider>
+      </CookiesProvider>
+      </OverlayProvider>
   );
 }
 

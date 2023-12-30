@@ -1,3 +1,4 @@
+export { ReactComponent as BtnDetailIc } from './icon/btnDetailIc.svg';
 export { ReactComponent as CloseIc } from './icon/closeIc.svg';
 export { ReactComponent as DefaultUserIc } from './icon/defaultUserIc.svg';
 export { ReactComponent as ErrorIc } from './icon/errorIc.svg';
