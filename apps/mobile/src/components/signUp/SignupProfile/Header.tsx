@@ -10,7 +10,7 @@ const Styled = {
     width: 39rem;
     height: 38rem;
 
-    position: absolute;
+    position: sticky;
     z-index: -1;
   `,
 };

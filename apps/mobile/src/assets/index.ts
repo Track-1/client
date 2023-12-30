@@ -1,5 +1,8 @@
 export { ReactComponent as AddHashtagIc } from './icon/addHashtagIc.svg';
 export { ReactComponent as BtnDetailIc } from './icon/btnDetailIc.svg';
+export { ReactComponent as DropdownIc } from './icon/btn_dropdown.svg';
+export { ReactComponent as DropupIc } from './icon/btn_dropup.svg';
+export { ReactComponent as CategoryCheckIc } from './icon/categoryCheckIc.svg';
 export { ReactComponent as CategoryCheckedIc } from './icon/categoryCheckedIc.svg';
 export { ReactComponent as CloseIc } from './icon/closeIc.svg';
 export { ReactComponent as DefaultUserIc } from './icon/defaultUserIc.svg';

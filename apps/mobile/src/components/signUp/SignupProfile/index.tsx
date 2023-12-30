@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -23,8 +22,8 @@ export default function SignupProfile() {
   });
 
   const {
+    getValues,
     formState: { isDirty },
-    handleSubmit,
   } = methods;
 
   const { profileAtferJoin } = useProfileAfterJoin();
@@ -35,20 +34,12 @@ export default function SignupProfile() {
   }
 
   function handleSubmitProfile() {
-    handleSubmit(({ contact, category, hashtag, description }) =>
-      profileAtferJoin({
-        userContact: contact,
-        userCategory: category,
-        userKeyword: hashtag.length > 0 ? hashtag.filter((item) => item.length > 0) : [],
-        userIntroduction: description,
-      })
-    );
-  }
-
-  const [isPlay, setIsplay] = useState(false);
-
-  function onPlay() {
-    setIsplay((prev) => !prev);
+    profileAtferJoin({
+      userContact: getValues('contact'),
+      userCategory: getValues('category'),
+      userKeyword: getValues('hashtag').length > 0 ? getValues('hashtag').filter((item) => item.length > 0) : [],
+      userIntroduction: getValues('description'),
+    });
   }
 
   return (
@@ -95,6 +86,8 @@ const Styled = {
   SignupProfileLayout: styled.div`
     width: 100%;
     height: 100vh;
+
+    overflow-y: scroll;
   `,
   Skip: styled.div`
     ${({ theme }) => theme.fonts.Pre_16_R};
@@ -110,6 +103,6 @@ const Styled = {
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    margin-top: 24.9rem;
+    margin-top: -15.1rem;
   `,
 };

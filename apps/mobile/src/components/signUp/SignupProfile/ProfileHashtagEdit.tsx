@@ -50,7 +50,7 @@ export default function ProfileHashtagEdit() {
       <HashtagWrapper>
         {fields.map((field, idx) => {
           return (
-            <HashtagBox data-idx={idx} inputWidth={watch('hashtag')[idx].length}>
+            <HashtagBox data-idx={idx} inputWidth={watch('hashtag')[idx].length} key={idx}>
               <HashtagInputWrapper data-idx={idx}>
                 <HashtagSharp data-idx={idx} inputWidth={watch('hashtag')[idx].length}>
                   #
