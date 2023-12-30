@@ -7,13 +7,12 @@ import { PlayerProvider } from '../context/playerContext';
 
 export default function VocalSearchPage() {
   return (
-    <PlayerProvider>
+    <>
       <Header />
       <Layout>
         <VocalSearchContainer />
       </Layout>
       <Footer />
-      <Player />
-    </PlayerProvider>
+    </>
   );
 }

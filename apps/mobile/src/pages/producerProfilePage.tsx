@@ -2,6 +2,7 @@ import Text from '../components/common/Text';
 import Header from '../components/header';
 import Layout from '../components/layout';
 import ProducerProfileContainer from '../components/profile/producerProfileContainer';
+import { PlayerProvider } from '../context/playerContext';
 
 export default function ProducerProfilePage() {
   return (

@@ -8,13 +8,12 @@ import { PlayerProvider } from '../context/playerContext';
 
 export default function TrackSearchPage() {
   return (
-    <PlayerProvider>
+    <>
       <Header />
       <Layout>
         <TrackSearchContainer />
       </Layout>
       <Footer />
-      <Player />
-    </PlayerProvider>
+    </>
   );
 }

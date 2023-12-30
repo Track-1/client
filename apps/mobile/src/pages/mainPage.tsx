@@ -6,12 +6,11 @@ import { PlayerProvider } from '../context/playerContext';
 
 export default function MainPage() {
   return (
-    <PlayerProvider>
+    <>
       <Header />
       <Layout>
         <MainContainer />
       </Layout>
-      <Player />
-    </PlayerProvider>
+    </>
   );
 }
