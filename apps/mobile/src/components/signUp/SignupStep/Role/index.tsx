@@ -2,6 +2,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { ROLE } from '../../../../core/common/roleType';
 import { role } from '../../../../recoil/common/role';
+import { isNextStep } from '../../../../recoil/signUp/isNextStep';
 import { theme } from '../../../../style/theme';
 import { UserType } from '../../../../type/common/userType';
 import Card from './Card';
@@ -18,9 +19,11 @@ const ROLE_DESCRIPTION = {
 
 export default function Role() {
   const [selectedRole, setSelectedRole] = useRecoilState<string | UserType>(role);
+  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   function handleSelectRole(role: string) {
     setSelectedRole(role);
+    setIsSuccess(true);
   }
 
   function checkIsSelected(role: string) {

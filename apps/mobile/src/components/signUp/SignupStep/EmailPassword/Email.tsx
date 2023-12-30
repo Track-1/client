@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Button } from 'track-1-design-system';
@@ -16,7 +15,6 @@ export default function Email() {
   const { registerWithRef, ...methods } = useFormContextWithRef();
   const selectedRole = useRecoilValue<string>(role);
   const [, setIsSuccess] = useRecoilState<boolean>(isNextStep);
-  const [isSended] = useState(false);
 
   const {
     setError,
@@ -53,6 +51,7 @@ export default function Email() {
             validate: {
               check: (value: string) => {
                 resetField('password');
+                resetField('verifyCode');
                 resetField('passwordConfirm');
                 if (!checkEmailForm(value)) {
                   return EMAIL_MESSAGE.FORM;
@@ -73,7 +72,7 @@ export default function Email() {
         color={checkIsActive() ? 'black' : 'grey'}
         width={8.6}
         height={3.2}>
-        <Styled.ButtonText>{isSended ? `Resend` : `Send Code`}</Styled.ButtonText>
+        <Styled.ButtonText>{checkIsResend(`${errors?.email?.message}`) ? `Resend` : `Send Code`}</Styled.ButtonText>
       </Button>
     </InputWrapperWithButton>
   );
