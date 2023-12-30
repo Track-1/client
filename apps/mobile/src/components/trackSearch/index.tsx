@@ -15,7 +15,6 @@ import FilterModal from '../common/Modal/Filter';
 import { useFilter } from '../../hooks/common/useFilter';
 import { PageType } from '../../type/common/pageType';
 import { Categories, LowerCategoryId } from '../../core/common/categories';
-import { CategoryType } from '../../type/common/category';
 
 export default function TrackSearchContainer() {
   const [searchParams] = useSearchParams();

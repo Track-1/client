@@ -5,6 +5,7 @@ import { PageType } from '../../../type/common/pageType';
 import Text from '../Text';
 import { CategoryType } from '../../../type/common/category';
 import { CategoryCheckedIc, ResetBtnIc } from '../../../assets';
+import { theme } from '../../../style/theme';
 
 interface FilterModalProps {
   openModal: boolean;
@@ -46,7 +47,11 @@ export default function FilterModal(props: FilterModalProps) {
                 selectCategory(category);
               }}>
               {category}
-              {selectedCategory.has(LowerCategoryId[category]) && <CategoryCheckedIc />}
+              {selectedCategory.has(LowerCategoryId[category]) && (
+                <CategoryCheckedIc
+                  stroke={pageType === 'tracks' ? `${theme.colors.neon_green}` : `${theme.colors.neon_pink}`}
+                />
+              )}
             </CategoryItem>
           ))}
         </CategorList>
@@ -60,7 +65,7 @@ export default function FilterModal(props: FilterModalProps) {
             {`Select ${selectedCategory.size > 0 ? selectedCategory.size : ''}`}
           </SelectButton>
           <ResetButton onClick={resetCategory}>
-            <ResetBtnIc />
+            <ResetBtnIc fill={pageType === 'tracks' ? `${theme.colors.neon_green}` : `${theme.colors.neon_pink}`} />
           </ResetButton>
         </SelectButtonWrapper>
       </BottomUpModal>
@@ -173,4 +178,11 @@ const ResetButton = styled.button`
   height: 100%;
 
   background-color: ${({ theme }) => theme.colors.gray4};
+`;
+
+const ResetBtnIcon = styled(ResetBtnIc)`
+  fill: 'blue';
+  path g {
+    fill: 'blue';
+  }
 `;

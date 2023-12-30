@@ -5,14 +5,14 @@ import Text from '../common/Text';
 import { MoreDotIc, PlayingIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
 
-interface TrackItemProps {
+interface TrackSearchItemProps {
   trackTitle: string;
   trackUserName: string;
   trackCategory: CategoryType;
   isSelected: boolean;
 }
 
-export default function TrackSearchItem(props: PropsWithChildren<TrackItemProps>) {
+export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItemProps>) {
   const { trackTitle, trackUserName, trackCategory, isSelected, children } = props;
 
   return (
