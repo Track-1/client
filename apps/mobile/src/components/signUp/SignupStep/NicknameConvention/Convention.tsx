@@ -1,10 +1,11 @@
-import { ReactNode, useState } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import { CheckBox } from 'track-1-design-system';
 import { useFormContextWithRef } from 'track-1-form-with-react-hook-form';
 import { BtnDetailIc } from '../../../../assets';
 import { CONVENTION_SELECTED_CHECK } from '../../../../core/common/convention/conventionSelectedCheck';
 import { StyledLined } from '../../../common/DivisionLine';
+import useConvention from '../../../common/Modal/useConvention';
 import Text from '../../../common/Text';
 
 interface ConventionLayoutProps {
@@ -14,6 +15,11 @@ interface ConventionLayoutProps {
 
 function ConventionLayout(props: ConventionLayoutProps) {
   const { children, conventionIndex = 0 } = props;
+  const { showConvention } = useConvention();
+
+  function handleShowConvention(index:number){
+    showConvention({ index: index })
+  }
 
   return (
     <Styled.ConventionBox>
@@ -24,7 +30,7 @@ function ConventionLayout(props: ConventionLayoutProps) {
           <>{CONVENTION_SELECTED_CHECK[conventionIndex]}</>
         </Text>
       </Styled.ConventionDetail>
-      {conventionIndex && <BtnDetailIc />}
+      {conventionIndex && <BtnDetailIc onClick={()=>handleShowConvention(conventionIndex)} />}
     </Styled.ConventionBox>
   );
 }
@@ -97,12 +103,12 @@ export default function Convention() {
   return (
     <Styled.ConventionContainer>
       {checked.map((check, idx) => (
-        <>
-          <ConventionLayout key={idx} conventionIndex={idx}>
+        <Fragment key={idx}>
+          <ConventionLayout conventionIndex={idx}>
             <CheckBox checked={check} onChange={() => handleCheckConvention(idx)} />
           </ConventionLayout>
           {idx === 0 && <StyledLined />}
-        </>
+        </Fragment>
       ))}
     </Styled.ConventionContainer>
   );
