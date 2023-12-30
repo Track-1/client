@@ -18,7 +18,6 @@ type ProducerPortfolioType = 'Portfolio' | 'Vocal Searching';
 export default function ProducerPortfolio(props: ProducerPortfolioProps) {
   const { producerPortfolio, producerVocalSearchings, userName } = props;
 
-  console.log(producerPortfolio, producerVocalSearchings);
   const [menu, setMenu] = useState<ProducerPortfolioType>('Portfolio');
 
   const [playingTrack, setPLayingTrack] = useState<UserPortfolioType['portfolioId'] | null>(null);
@@ -56,21 +55,7 @@ export default function ProducerPortfolio(props: ProducerPortfolioProps) {
                 category={portfolio.portfolioCategory}
                 title={portfolio.portfolioTitle}
                 hashTagList={portfolio.portfolioKeyword}
-                introduce={portfolio.portfolioContent}>
-                <PlayCoverForm
-                  imageFile={portfolio.portfolioImageFile}
-                  audioFile={portfolio.portfolioAudioFile}
-                  audioId={portfolio.portfolioId}
-                  audioTitle={portfolio.portfolioTitle}
-                  userName={userName || ''}
-                  playingTrack={playingTrack}
-                  selectTrack={selectTrack}
-                  width={12}
-                  height={12}
-                  shape="rectangle"
-                  align="rightBottom"
-                />
-              </PortfolioForm>
+                introduce={portfolio.portfolioContent}></PortfolioForm>
             ))}
           </>
         ) : (
@@ -101,7 +86,6 @@ export default function ProducerPortfolio(props: ProducerPortfolioProps) {
         )}
       </PortfolioList>
     </>
-
   );
 }
 

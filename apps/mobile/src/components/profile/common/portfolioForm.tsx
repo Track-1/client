@@ -11,7 +11,7 @@ interface PortfolioFormProps {
   category: string;
   title: string;
   hashTagList: string[];
-  introduce: string;
+  introduce?: string;
 }
 
 export default function PortfolioForm(props: PropsWithChildren<PortfolioFormProps>) {

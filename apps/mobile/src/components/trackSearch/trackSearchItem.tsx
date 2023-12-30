@@ -4,16 +4,33 @@ import { CategoryType } from '../../type/common/category';
 import Text from '../common/Text';
 import { MoreDotIc, PlayingIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
+import { useState } from 'react';
+import DetailTrackModal from '../common/Modal/DetailTrack';
+import { FilteredTrackType } from '../../type/tracks';
 
 interface TrackSearchItemProps {
-  trackTitle: string;
-  trackUserName: string;
-  trackCategory: CategoryType;
+  trackInfo: FilteredTrackType;
   isSelected: boolean;
 }
 
 export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItemProps>) {
-  const { trackTitle, trackUserName, trackCategory, isSelected, children } = props;
+  const { trackInfo, isSelected, children } = props;
+
+  const [detailId, setDetailId] = useState(-1);
+
+  const [openModal, setOpenModal] = useState(true);
+
+  function showModal() {
+    setOpenModal(true);
+  }
+
+  function unShowModal() {
+    setOpenModal(false);
+  }
+
+  function handleMoreDetail(trackId: number) {
+    setDetailId(trackId);
+  }
 
   return (
     <Container>
@@ -22,23 +39,26 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
         <TrackUserInfoWrapper>
           <TrackTitleWrapper>
             <Text as="p" font="Pre_14_M" color="white">
-              {trackTitle}
+              {trackInfo.trackTitle}
             </Text>
             {isSelected && <PlayingIc />}
           </TrackTitleWrapper>
           <Text as="p" font="Pre_12_R" color="white">
-            {trackUserName}
+            {trackInfo.trackUserName}
           </Text>
         </TrackUserInfoWrapper>
         <TrackCategoryWrapper>
           <Text as="p" font="Pre_14_R" color="neon_green">
-            {trackCategory}
+            {trackInfo.trackCategory}
           </Text>
           <ImageWrapper as="button" width={3} height={3}>
-            <MoreDotIc />
+            <MoreDotIc onClick={() => handleMoreDetail(trackInfo.trackId)} />
           </ImageWrapper>
         </TrackCategoryWrapper>
       </TrackItemInfoWrapper>
+      {detailId > 0 && (
+        <DetailTrackModal openModal={openModal} showModal={showModal} unShowModal={unShowModal} detailId={detailId} />
+      )}
     </Container>
   );
 }
