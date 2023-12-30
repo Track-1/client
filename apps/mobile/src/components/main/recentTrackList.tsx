@@ -8,6 +8,7 @@ import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
 import PlayCoverForm from '../common/Form/playCoverForm';
+import { Link } from 'react-router-dom';
 
 const TRACK_SECTION_TITLE = 'New Tracks\n For vocal';
 
@@ -48,14 +49,16 @@ export default function RecentTrackList() {
                 align="rightBottom"
               />
 
-              <TrackInfoTextForm
-                topItem={trackInfo.trackCategory}
-                topItemColor="neon_green"
-                middleItem={trackInfo.trackTitle}>
-                <Text as="span" font="Pre_14_R" color="gray3">
-                  {trackInfo.trackUserName}
-                </Text>
-              </TrackInfoTextForm>
+              <Link to={`/track-post/${trackInfo.trackId}`}>
+                <TrackInfoTextForm
+                  topItem={trackInfo.trackCategory}
+                  topItemColor="neon_green"
+                  middleItem={trackInfo.trackTitle}>
+                  <Text as="span" font="Pre_14_R" color="gray3">
+                    {trackInfo.trackUserName}
+                  </Text>
+                </TrackInfoTextForm>
+              </Link>
             </TrackItem>
           ))}
       </TrackListWrapper>

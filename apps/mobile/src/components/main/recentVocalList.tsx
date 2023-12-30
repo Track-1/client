@@ -8,6 +8,7 @@ import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
 import PlayCoverForm from '../common/Form/playCoverForm';
+import { Link } from 'react-router-dom';
 
 const VOCAL_SECTION_TITLE = 'New Vocals\n For producer';
 
@@ -51,14 +52,17 @@ export default function RecentVocalList() {
                 shape="circle"
                 align="center"
               />
-              <TrackInfoTextForm
-                topItem={`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum - 1}`}
-                topItemColor="neon_pink"
-                middleItem={trackInfo.userTitle}>
-                {trackInfo.userKeyword.map((keyword) => (
-                  <VocalUserKeyword key={keyword}>#{keyword}</VocalUserKeyword>
-                ))}
-              </TrackInfoTextForm>
+
+              <Link to={`/vocal-profile/${trackInfo.userId}`}>
+                <TrackInfoTextForm
+                  topItem={`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum - 1}`}
+                  topItemColor="neon_pink"
+                  middleItem={trackInfo.userTitle}>
+                  {trackInfo.userKeyword.map((keyword) => (
+                    <VocalUserKeyword key={keyword}>#{keyword}</VocalUserKeyword>
+                  ))}
+                </TrackInfoTextForm>
+              </Link>
             </VocalTrackWrapper>
           ))}
       </VocalListWrapper>
