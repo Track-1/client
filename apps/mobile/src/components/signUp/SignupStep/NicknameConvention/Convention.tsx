@@ -1,9 +1,14 @@
-import { Fragment, ReactNode, useState } from 'react';
+import { Fragment, ReactNode, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { CheckBox } from 'track-1-design-system';
 import { useFormContextWithRef } from 'track-1-form-with-react-hook-form';
 import { BtnDetailIc } from '../../../../assets';
 import { CONVENTION_SELECTED_CHECK } from '../../../../core/common/convention/conventionSelectedCheck';
+import { isNextStep } from '../../../../recoil/signUp/isNextStep';
+import { joinUserData } from '../../../../recoil/signUp/joinUserData';
+import { JoinUserDataPropsType } from '../../../../type/signUp/joinUserDataType';
+import { checkNicknamForm } from '../../../../utils/signUp/check';
 import { StyledLined } from '../../../common/DivisionLine';
 import useConvention from '../../../common/Modal/useConvention';
 import Text from '../../../common/Text';
@@ -38,8 +43,11 @@ function ConventionLayout(props: ConventionLayoutProps) {
 export default function Convention() {
   const { registerWithRef, ...methods } = useFormContextWithRef();
   const [checked, setChecked] = useState<boolean[]>([false, false, false, false]);
-
+  const [, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+  const [,setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
+ 
   const {
+    getValues,
     formState: { errors },
   } = methods;
 
@@ -100,6 +108,16 @@ export default function Convention() {
     }
   }
 
+  useEffect(()=>{
+    if (checkNicknamForm(getValues("nickName"))&&checked[1]&&checked[2]){
+      setIsSuccess(true);
+      setUserData((userData)=>({...userData,userName:`${getValues("nickName")}`, userMarketing:`${checked[3]}`}))
+    }else{
+      setIsSuccess(false);
+    }
+  },[checked, getValues("nickName")])
+
+
   return (
     <Styled.ConventionContainer>
       {checked.map((check, idx) => (
@@ -121,6 +139,9 @@ const Styled = {
     align-items: flex-start;
     width: 100%;
     gap: 2rem;
+
+    margin-top: 8rem;
+    margin-bottom: 3rem;
   `,
   ConventionBox: styled.article`
     display: flex;

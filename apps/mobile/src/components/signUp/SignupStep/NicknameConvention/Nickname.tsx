@@ -31,5 +31,6 @@ export default function Nickname() {
 const Style = {
   NicknameLayout: styled.div`
     width: 100%;
+    margin-top: 4rem;
   `,
 };

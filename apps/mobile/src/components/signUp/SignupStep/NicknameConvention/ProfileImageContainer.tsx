@@ -108,6 +108,9 @@ const Styled = {
   ImageContainer: styled.section`
     width: 21.7rem;
     height: 21.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `,
 
   ProducerImageWrapper: styled.div`
@@ -120,7 +123,7 @@ const Styled = {
 
     border-radius: 25rem;
 
-    position: absolute;
+    position: sticky;
     overflow: hidden;
   `,
 
@@ -134,7 +137,7 @@ const Styled = {
 
     border-radius: 1.8rem;
 
-    position: absolute;
+    position: sticky;
     overflow: hidden;
 
     transform: rotate(-45deg);
@@ -167,7 +170,7 @@ const Styled = {
   `,
 
   SignUpUploadImageWrapper: styled.div`
-    position: absolute;
+    position: sticky;
   `,
 
   SignUpUploadImageProducerIcon: styled(SignUpUploadImageProducerIc)`
