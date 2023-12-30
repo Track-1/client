@@ -1,4 +1,4 @@
-import styled, { CSSProperties } from 'styled-components';
+import styled from 'styled-components';
 import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
