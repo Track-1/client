@@ -16,9 +16,7 @@ interface TrackSearchItemProps {
 export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItemProps>) {
   const { trackInfo, isSelected, children } = props;
 
-  const [detailId, setDetailId] = useState(-1);
-
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   function showModal() {
     setOpenModal(true);
@@ -26,10 +24,6 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
 
   function unShowModal() {
     setOpenModal(false);
-  }
-
-  function handleMoreDetail(trackId: number) {
-    setDetailId(trackId);
   }
 
   return (
@@ -52,13 +46,17 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
             {trackInfo.trackCategory}
           </Text>
           <ImageWrapper as="button" width={3} height={3}>
-            <MoreDotIc onClick={() => handleMoreDetail(trackInfo.trackId)} />
+            <MoreDotIc onClick={showModal} />
           </ImageWrapper>
         </TrackCategoryWrapper>
       </TrackItemInfoWrapper>
-      {detailId > 0 && (
-        <DetailTrackModal openModal={openModal} showModal={showModal} unShowModal={unShowModal} detailId={detailId} />
-      )}
+
+      <DetailTrackModal
+        openModal={openModal}
+        showModal={showModal}
+        unShowModal={unShowModal}
+        detailId={trackInfo.trackId}
+      />
     </Container>
   );
 }
