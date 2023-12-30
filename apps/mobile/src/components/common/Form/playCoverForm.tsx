@@ -1,12 +1,16 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FilteredVocalType } from '../../../type/vocals';
 import usePlaySelectedTrack from '../../../hooks/common/usePlaySelectedTrack';
 import { PlayerContext } from '../../../context/playerContext';
 import { PropsWithChildren, useContext, useEffect } from 'react';
 import { Cover } from 'track-1-design-system';
 
-interface PlayVocalFormProps {
-  trackInfo: FilteredVocalType;
+interface PlayCoverFormProps {
+  imageFile: string;
+  audioFile: string;
+  audioId: number;
+  audioTitle: string;
+  userName: string;
   playingTrack: FilteredVocalType['userId'] | null;
   selectTrack: (userId: FilteredVocalType['userId']) => void;
   width: number;
@@ -15,18 +19,19 @@ interface PlayVocalFormProps {
   align: 'rightBottom' | 'center';
 }
 
-export default function PlayVocalForm(props: PropsWithChildren<PlayVocalFormProps>) {
-  const { trackInfo, playingTrack, selectTrack, children, ...restProps } = props;
+export default function PlayCoverForm(props: PropsWithChildren<PlayCoverFormProps>) {
+  const { imageFile, audioFile, audioId, audioTitle, userName, playingTrack, selectTrack, children, ...restProps } =
+    props;
 
-  const isSelected = playingTrack === trackInfo.userId;
+  const isSelected = playingTrack === audioId;
 
   const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, isAudioPlaying, ...playerContext } =
     useContext(PlayerContext);
 
   const { innerPlaying, playAudioItem, stopAudioItem } = usePlaySelectedTrack(
     playerContext,
-    trackInfo.userAudioFile,
-    trackInfo.userId,
+    audioFile,
+    audioId,
     selectTrack
   );
 
@@ -46,16 +51,16 @@ export default function PlayVocalForm(props: PropsWithChildren<PlayVocalFormProp
     if (!isSelected) return;
 
     getPlayerInfo({
-      imageFile: trackInfo.userImageFile,
-      title: trackInfo.userTitle,
-      userName: trackInfo.userName,
+      imageFile: imageFile,
+      title: audioTitle,
+      userName: userName,
     });
   }, [playingTrack]);
 
   return (
     <Container width={restProps.width} height={restProps.height}>
       <Cover
-        imageUrl={trackInfo.userImageFile}
+        imageUrl={imageFile}
         width={restProps.width}
         height={restProps.height}
         shape={restProps.shape}
