@@ -7,10 +7,11 @@ interface TrackInfoFormProps {
   topItem?: string;
   topItemColor?: keyof ColorsTypes;
   middleItem: string;
+  middleItemMargin?: string;
 }
 
 export default function TrackInfoTextForm(props: PropsWithChildren<TrackInfoFormProps>) {
-  const { topItem, topItemColor, middleItem, children } = props;
+  const { topItem, topItemColor, middleItem, middleItemMargin, children } = props;
   return (
     <Container>
       {topItem && topItemColor && (
@@ -18,7 +19,7 @@ export default function TrackInfoTextForm(props: PropsWithChildren<TrackInfoForm
           {topItem}
         </Text>
       )}
-      <Text as="span" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+      <Text as="span" font="Alex_16_R" color="white" margin={middleItemMargin || '0 0 1rem 0'}>
         {middleItem}
       </Text>
       <LastItemWrapper>{children}</LastItemWrapper>
