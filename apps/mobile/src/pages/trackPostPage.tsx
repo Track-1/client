@@ -1,3 +1,10 @@
+import Layout from "../components/layout";
+import TrackPostContainer from "../components/trackPost";
+
 export default function TrackPostPage() {
-  return <></>;
+  return <>
+    <Layout>
+      <TrackPostContainer/>
+    </Layout>
+  </>;
 }

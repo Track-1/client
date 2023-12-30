@@ -29,45 +29,41 @@ export default function UserProfile(props: UserInfoProfile) {
 
       <Divider />
 
-      <MusicalProfileWrapper>
-        <MusicalInfoForm>
+      <TrackProfileWrapper>
+        <TrackInfoForm>
           <Text as="h5" font="Pre_14_M" color="gray3">
             Category
           </Text>
 
-          <MusicalInfoWrapper>
+          <TrackInfoWrapper>
             {profileInfo?.userProfile.userCategory.map((category) => (
-              <Text as="h5" font="Pre_14_R" color="white">
+              <Text as="span" font="Pre_14_R" color="white">
                 {category}
               </Text>
             ))}
-          </MusicalInfoWrapper>
-        </MusicalInfoForm>
+          </TrackInfoWrapper>
+        </TrackInfoForm>
 
-        <MusicalInfoForm>
+        <TrackInfoForm>
           <Text as="h5" font="Pre_14_M" color="gray3">
             Hashtag
           </Text>
-          <MusicalInfoWrapper>
-            {profileInfo?.userProfile.userKeyword.map((keyword) => (
-              <Text as="h5" font="Pre_14_R" color="white">
-                {keyword}
-              </Text>
-            ))}
-          </MusicalInfoWrapper>
-        </MusicalInfoForm>
+          <TrackInfoWrapper>
+            {profileInfo?.userProfile.userKeyword.map((keyword) => <Keyword>{keyword}</Keyword>)}
+          </TrackInfoWrapper>
+        </TrackInfoForm>
 
-        <MusicalInfoForm>
+        <TrackInfoForm>
           <Text as="h5" font="Pre_14_M" color="gray3">
             Description
           </Text>
-          <MusicalInfoWrapper>
-            <Text as="h5" font="Pre_14_R" color="white">
+          <TrackInfoWrapper>
+            <Text as="span" font="Pre_14_R" color="white">
               {profileInfo?.userProfile.userIntroduction}
             </Text>
-          </MusicalInfoWrapper>
-        </MusicalInfoForm>
-      </MusicalProfileWrapper>
+          </TrackInfoWrapper>
+        </TrackInfoForm>
+      </TrackProfileWrapper>
     </Container>
   );
 }
@@ -99,20 +95,34 @@ const UserImage = styled.img`
   object-fit: cover;
 `;
 
-const MusicalProfileWrapper = styled.ul`
+export const Keyword = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ${({ theme }) => theme.fonts.Pre_14_R};
+  color: ${({ theme }) => theme.colors.white};
+
+  padding: 0.7rem 1rem;
+
+  background-color: ${({ theme }) => theme.colors.gray5};
+  border-radius: 2.1rem;
+`;
+
+export const TrackProfileWrapper = styled.ul`
   display: flex;
   flex-direction: column;
 
   gap: 3rem;
 `;
 
-const MusicalInfoForm = styled.li`
+export const TrackInfoForm = styled.li`
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
 `;
 
-const MusicalInfoWrapper = styled.div`
+export const TrackInfoWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
