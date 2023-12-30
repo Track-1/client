@@ -34,7 +34,7 @@ export default function InputForm(props: PropsWithChildren<InputFormProps>) {
 }
 
 //common 컴포넌트로 변경예정
-const InputTitle = styled.label`
+export const InputTitle = styled.label`
   ${({ theme }) => theme.fonts.Pre_14_R};
   color: ${({ theme }) => theme.colors.gray2};
 `;

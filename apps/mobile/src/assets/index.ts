@@ -1,3 +1,4 @@
+export { ReactComponent as AddHashtagIc } from './icon/addHashtagIc.svg';
 export { ReactComponent as BtnDetailIc } from './icon/btnDetailIc.svg';
 export { ReactComponent as CategoryCheckedIc } from './icon/categoryCheckedIc.svg';
 export { ReactComponent as CloseIc } from './icon/closeIc.svg';
@@ -5,6 +6,7 @@ export { ReactComponent as DefaultUserIc } from './icon/defaultUserIc.svg';
 export { ReactComponent as ErrorIc } from './icon/errorIc.svg';
 export { ReactComponent as FilterIc } from './icon/filterIc.svg';
 export { ReactComponent as HamburgerMenuIc } from './icon/hamburgerMenuIc.svg';
+export { ReactComponent as HashtagWarning } from './icon/hashtagWarning.svg';
 export { ReactComponent as HomeLogoIc } from './icon/homeLogoIc.svg';
 export { ReactComponent as MoreBtnIc } from './icon/moreBtnIc.svg';
 export { ReactComponent as MoreDotIc } from './icon/moreDotIc.svg';

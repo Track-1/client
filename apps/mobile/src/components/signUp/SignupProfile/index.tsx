@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -44,36 +45,59 @@ export default function SignupProfile() {
     );
   }
 
+  const [isPlay, setIsplay] = useState(false);
+
+  function onPlay() {
+    setIsplay((prev) => !prev);
+  }
+
   return (
     <FormProvider {...methods}>
       <Styled.SignupProfileLayout>
         <Header />
-        <form>
-          <ProfileContact />
-          <ProfileSelectCategoryEdit />
-          <ProfileHashtagEdit />
-          <ProfileDescriptionEdit />
-          <Button
-            size="large"
-            color={isDirty ? 'white' : 'grey'}
-            backgroundColor={isDirty ? 'purple' : 'grey'}
-            type="free"
-            disabled={isDirty ? false : true}
-            onClick={handleSubmitProfile}>
-            Complete
-          </Button>
-          <Styled.Skip onClick={handleMoveToSuccess}>Skip</Styled.Skip>
-        </form>
+        <Styled.Layout>
+          <Styled.InputWrapper>
+            <ProfileContact />
+            <ProfileSelectCategoryEdit />
+            <ProfileHashtagEdit />
+            <ProfileDescriptionEdit />
+          </Styled.InputWrapper>
+          <Styled.Buttons>
+            <Button
+              size="large"
+              color={isDirty ? 'white' : 'grey'}
+              backgroundColor={isDirty ? 'purple' : 'grey'}
+              type="free"
+              disabled={isDirty ? false : true}
+              onClick={handleSubmitProfile}>
+              Complete
+            </Button>
+            <Styled.Skip onClick={handleMoveToSuccess}>Skip</Styled.Skip>
+          </Styled.Buttons>
+        </Styled.Layout>
       </Styled.SignupProfileLayout>
     </FormProvider>
   );
 }
 
 const Styled = {
+  Layout: styled.div`
+    width: 100%;
+    height: 100vh;
+    padding: 2.5rem;
+  `,
+  Buttons: styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 6rem;
+    padding-bottom: 6rem;
+  `,
   SignupProfileLayout: styled.div`
     width: 100%;
+    height: 100vh;
   `,
   Skip: styled.div`
+    ${({ theme }) => theme.fonts.Pre_16_R};
     color: ${({ theme }) => theme.colors.gray3};
     background-color: transparent;
     height: 5.2rem;
@@ -81,5 +105,11 @@ const Styled = {
     display: flex;
     justify-content: center;
     align-items: center;
+  `,
+  InputWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 24.9rem;
   `,
 };
