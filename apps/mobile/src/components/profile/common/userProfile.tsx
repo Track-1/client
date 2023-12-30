@@ -13,7 +13,6 @@ interface UserInfoProfile {
 export default function UserProfile(props: UserInfoProfile) {
   const { userType, profileInfo } = props;
 
-  console.log(profileInfo?.userProfile);
   return (
     <Container>
       <PersonalProfileWrapper>

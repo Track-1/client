@@ -1,18 +1,18 @@
-import { useContext, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useResetRecoilState } from "recoil";
-import styled from "styled-components";
-import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
-import VocalEmptyProfileImg from "../../assets/image/vocalEmptyProfileImg.png";
-import { PlayerContext } from "../../context/playerContext";
-import useUpdateModal from "../../hooks/common/useUpdateModal";
-import { useGetVocalPortfolio, useGetVocalProfile } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import BackButton from "../@common/backButton";
-import Profile from "../profile";
-import VocalPortfolioInform from "./vocalPortfolioInform";
-import VocalPortfolioList from "./vocalPortfolioList";
-import VocalProfileShadow from "./vocalProfileShadow";
+import { useContext, useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
+import styled from 'styled-components';
+import { ProfileEditBtnIc, UploadButtonIc } from '../../assets';
+import VocalEmptyProfileImg from '../../assets/image/vocalEmptyProfileImg.png';
+import { PlayerContext } from '../../context/playerContext';
+import useUpdateModal from '../../hooks/common/useUpdateModal';
+import { useGetVocalPortfolio, useGetVocalProfile } from '../../hooks/queries/mypage';
+import { clickedProfileId, hoveredProfileId } from '../../recoil/common/profile';
+import BackButton from '../@common/backButton';
+import Profile from '../profile';
+import VocalPortfolioInform from './vocalPortfolioInform';
+import VocalPortfolioList from './vocalPortfolioList';
+import VocalProfileShadow from './vocalProfileShadow';
 
 const PAGE_LIMIT = 5;
 
@@ -46,8 +46,8 @@ export default function VocalProfile() {
   }
 
   function hadnleMoveToUpload() {
-    navigate("/upload/vocal/portfolio", {
-      state: { producerUploadType: "Portfolio", prevPage: `/vocal-profile/${vocalId}` },
+    navigate('/upload/vocal/portfolio', {
+      state: { producerUploadType: 'Portfolio', prevPage: `/vocal-profile/${vocalId}` },
     });
   }
 

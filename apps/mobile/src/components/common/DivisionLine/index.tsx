@@ -11,8 +11,8 @@ export const StyledLined = styled.hr<{ color?: keyof ColorsTypes }>`
     props.color ? ({ theme }) => theme.colors[props.color as keyof ColorsTypes] : ({ theme }) => theme.colors.gray5};
 `;
 
-export const StyledVerticalLined = styled(StyledLined)<{ width: string }>`
-  width: ${(props) => props.width};
+export const StyledVerticalLined = styled(StyledLined)<{ width: number }>`
+  width: ${(props) => props.width}rem;
   height: 1px;
   border: none;
 

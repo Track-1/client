@@ -1,16 +1,13 @@
 import styled, { CSSProperties } from 'styled-components';
-import PlayTrackForm from '../common/Form/playTrackForm';
 import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
 import { useState } from 'react';
 import { FilteredVocalType } from '../../type/vocals';
-import { CategoryType } from '../../type/common/category';
 import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
-import { Cover } from 'track-1-design-system';
 import { useMovePage } from '../../hooks/common/useMovePage';
-import PlayVocalForm from '../common/Form/playVocalForm';
+import PlayCoverForm from '../common/Form/playCoverForm';
 
 const VOCAL_SECTION_TITLE = 'New Vocals\n For producer';
 
@@ -41,8 +38,12 @@ export default function RecentVocalList() {
         {recentVocalInfo &&
           recentVocalInfo.map((trackInfo) => (
             <VocalTrackWrapper key={trackInfo.userId}>
-              <PlayVocalForm
-                trackInfo={trackInfo}
+              <PlayCoverForm
+                imageFile={trackInfo.userImageFile}
+                audioFile={trackInfo.userAudioFile}
+                audioId={trackInfo.userId}
+                audioTitle={trackInfo.userTitle}
+                userName={trackInfo.userName}
                 playingTrack={playingTrack}
                 selectTrack={selectTrack}
                 width={12}

@@ -27,8 +27,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   return (
     <>
       <Styled.Container>
-        <Track1LogoIc width={111} onClick={() => handleMovePage('home')} />
-        {headerStyle === 'mid' && <EmptyBox />}
+        {headerStyle === 'mid' ? <EmptyBox /> : <Track1LogoIc width={111} onClick={() => handleMovePage('home')} />}
         {children}
         <HamburgerMenuIc onClick={showModal} />
       </Styled.Container>
