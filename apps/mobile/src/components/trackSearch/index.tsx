@@ -8,8 +8,7 @@ import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 import styled from 'styled-components';
 import { FilterIc } from '../../assets';
 import { ImageWrapper, InfinityObserver } from '../common/Interface';
-import { StyledLined } from '../common/DivisionLine';
-import { PADDING_SIDE } from '../layout';
+import { DivisionLine, StyledLined } from '../common/DivisionLine';
 import FilterModal from '../common/Modal/Filter';
 import { useFilter } from '../../hooks/common/useFilter';
 import { PageType } from '../../type/common/pageType';
@@ -95,11 +94,7 @@ export default function TrackSearchContainer() {
         <ul>
           {trackData?.map((trackInfo) => (
             <>
-              <TrackSearchItem
-                trackTitle={trackInfo.trackTitle}
-                trackUserName={trackInfo.trackUserName}
-                trackCategory={trackInfo.trackCategory}
-                isSelected={trackInfo.trackId === playingTrack}>
+              <TrackSearchItem trackInfo={trackInfo} isSelected={trackInfo.trackId === playingTrack}>
                 <PlayCoverForm
                   imageFile={trackInfo.trackImageFile}
                   audioFile={trackInfo.trackAudioFile}
@@ -144,12 +139,6 @@ const TrackListHeaderWrapper = styled.div`
 
   width: 11.8rem;
   height: 100%;
-`;
-
-const DivisionLine = styled(StyledLined)`
-  width: calc(${`100% + ${PADDING_SIDE}*2`});
-
-  margin-left: ${`-${PADDING_SIDE}`};
 `;
 
 const SelectedCategoryWrapper = styled.div`

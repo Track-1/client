@@ -8,26 +8,30 @@ interface TrackInfoFormProps {
   topItemColor?: keyof ColorsTypes;
   middleItem: string;
   middleItemMargin?: string;
+  align?: 'space-between';
 }
 
 export default function TrackInfoTextForm(props: PropsWithChildren<TrackInfoFormProps>) {
-  const { topItem, topItemColor, middleItem, middleItemMargin, children } = props;
+  const { topItem, topItemColor, middleItem, middleItemMargin, align, children } = props;
   return (
-    <Container>
-      {topItem && topItemColor && (
-        <Text as="span" font="Pre_14_R" color={topItemColor} margin="0 0 0.5rem 0">
-          {topItem}
+    <Container align={align}>
+      <div>
+        {topItem && topItemColor && (
+          <Text as="p" font="Pre_14_R" color={topItemColor} margin="0 0 0.5rem 0">
+            {topItem}
+          </Text>
+        )}
+        <Text as="p" font="Alex_16_R" color="white" margin={middleItemMargin || '0 0 1rem 0'}>
+          {middleItem}
         </Text>
-      )}
-      <Text as="span" font="Alex_16_R" color="white" margin={middleItemMargin || '0 0 1rem 0'}>
-        {middleItem}
-      </Text>
+      </div>
       <LastItemWrapper>{children}</LastItemWrapper>
     </Container>
   );
 }
-const Container = styled.div`
+const Container = styled.div<{ align?: 'space-between' }>`
   display: flex;
+  justify-content: ${({ align }) => align && align};
   flex-direction: column;
 `;
 

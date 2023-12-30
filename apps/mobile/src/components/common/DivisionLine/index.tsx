@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { ColorsTypes } from '../../../style/theme';
+import { PADDING_SIDE } from '../../layout';
 
 export const StyledLined = styled.hr<{ color?: keyof ColorsTypes }>`
   width: 100%;
@@ -21,4 +22,10 @@ export const StyledVerticalLined = styled(StyledLined)<{ width: number }>`
   transform: rotate(90deg);
 
   background-color: ${({ theme }) => theme.colors.gray4};
+`;
+
+export const DivisionLine = styled(StyledLined)`
+  width: calc(${`100% + ${PADDING_SIDE}*2`});
+
+  margin-left: ${`-${PADDING_SIDE}`};
 `;

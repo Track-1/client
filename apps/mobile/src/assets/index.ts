@@ -20,3 +20,5 @@ export { ReactComponent as SignUpUploadImageVocalIc } from './icon/signUpUploadI
 export { ReactComponent as SignupChangePhotoIc } from './icon/signupChangePhotoIc.svg';
 export { ReactComponent as Track1LogoIc } from './icon/track1LogoIc.svg';
 export { ReactComponent as VerifyIc } from './icon/verifyIc.svg';
+export { ReactComponent as ProfileUserIc } from './icon/profileUserIc.svg';
+export { ReactComponent as TrackDetailIc } from './icon/trackDetailIc.svg';
