@@ -3,10 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 // const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const {
-  VanillaExtractPlugin
-} = require('@vanilla-extract/webpack-plugin');
-
+const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 
 dotenv.config({
   path: path.resolve(
@@ -34,6 +31,9 @@ module.exports = {
       },
     ],
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'public/index.html',
@@ -44,8 +44,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env),
     }),
-    new VanillaExtractPlugin({})
-
+    new VanillaExtractPlugin({}),
   ],
   resolve: {
     alias: {
