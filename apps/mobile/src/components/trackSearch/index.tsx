@@ -2,19 +2,19 @@ import { useSearchParams } from 'react-router-dom';
 import { useFilteredTracks } from '../../hooks/queries/tracks';
 import Text from '../common/Text';
 import TrackSearchItem from './trackSearchItem';
-import PlayTrackForm from '../common/Form/playTrackForm';
 import { FilteredTrackType } from '../../type/tracks';
 import { useState } from 'react';
 import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 import styled from 'styled-components';
 import { FilterIc } from '../../assets';
-import { ImageWrapper } from '../common/Interface';
+import { ImageWrapper, InfinityObserver } from '../common/Interface';
 import { StyledLined } from '../common/DivisionLine';
 import { PADDING_SIDE } from '../layout';
 import FilterModal from '../common/Modal/Filter';
 import { useFilter } from '../../hooks/common/useFilter';
 import { PageType } from '../../type/common/pageType';
 import { Categories, LowerCategoryId } from '../../core/common/categories';
+import PlayCoverForm from '../common/Form/playCoverForm';
 
 export default function TrackSearchContainer() {
   const [searchParams] = useSearchParams();
@@ -100,8 +100,12 @@ export default function TrackSearchContainer() {
                 trackUserName={trackInfo.trackUserName}
                 trackCategory={trackInfo.trackCategory}
                 isSelected={trackInfo.trackId === playingTrack}>
-                <PlayTrackForm
-                  trackInfo={trackInfo}
+                <PlayCoverForm
+                  imageFile={trackInfo.trackImageFile}
+                  audioFile={trackInfo.trackAudioFile}
+                  audioId={trackInfo.trackId}
+                  audioTitle={trackInfo.trackTitle}
+                  userName={trackInfo.trackUserName}
                   playingTrack={playingTrack}
                   selectTrack={selectTrack}
                   width={4}
@@ -115,7 +119,7 @@ export default function TrackSearchContainer() {
           ))}
         </ul>
       </section>
-      <div ref={observerRef} style={{ width: '100%', height: '20px' }} />
+      <InfinityObserver ref={observerRef} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Text from '../common/Text';
-import { ImageWrapper } from '../common/Interface';
+import { ImageWrapper, InfinityObserver } from '../common/Interface';
 import { FilterIc } from '../../assets';
 import FilterModal from '../common/Modal/Filter';
 import { useState } from 'react';
@@ -87,6 +87,7 @@ export default function VocalSearchContainer() {
           ))}
         </VocalListWrapper>
       </section>
+      <InfinityObserver ref={observerRef} />
     </>
   );
 }

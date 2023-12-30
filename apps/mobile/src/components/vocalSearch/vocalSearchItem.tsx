@@ -7,7 +7,7 @@ import { FilteredVocalType } from '../../type/vocals';
 import { useContext, useEffect } from 'react';
 import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
 import { PlayerContext } from '../../context/playerContext';
-import { ImageWrapper } from '../common/Interface';
+import { HashtagWrapper, ImageWrapper } from '../common/Interface';
 import { useMovePage } from '../../hooks/common/useMovePage';
 
 interface VocalSearchItemProps {
@@ -121,13 +121,6 @@ const InnerWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-`;
-
-const HashtagWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  gap: 0.5rem;
 `;
 
 const UserInfoWrapper = styled.div`

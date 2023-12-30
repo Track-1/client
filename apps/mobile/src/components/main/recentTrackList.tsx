@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import PlayTrackForm from '../common/Form/playTrackForm';
 import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
@@ -8,7 +7,7 @@ import { FilteredTrackType } from '../../type/tracks';
 import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
-import { Cover } from 'track-1-design-system';
+import PlayCoverForm from '../common/Form/playCoverForm';
 
 const TRACK_SECTION_TITLE = 'New Tracks\n For vocal';
 
@@ -35,8 +34,12 @@ export default function RecentTrackList() {
         {recentTrackInfo &&
           recentTrackInfo.map((trackInfo) => (
             <TrackItem key={trackInfo.trackId}>
-              <PlayTrackForm
-                trackInfo={trackInfo}
+              <PlayCoverForm
+                imageFile={trackInfo.trackImageFile}
+                audioFile={trackInfo.trackAudioFile}
+                audioId={trackInfo.trackId}
+                audioTitle={trackInfo.trackTitle}
+                userName={trackInfo.trackUserName}
                 playingTrack={playingTrack}
                 selectTrack={selectTrack}
                 width={16}
