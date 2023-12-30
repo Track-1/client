@@ -32,12 +32,12 @@ export default function Router() {
         {/* <Route path="*" element={<ErrorPage />} /> */}
 
         {/* 반드시 인증 필요 */}
-        {/* <Route element={<PrivateRoute authentication={true} />}> */}
-        <Route path="/signup/profile" element={<SignupProfilePage />} />
-        <Route path="/signup/success" element={<SignupSuccessPage />} />
-        <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
-        <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
-        {/* </Route> */}
+        <Route element={<PrivateRoute authentication={true} />}>
+          <Route path="/signup/profile" element={<SignupProfilePage />} />
+          <Route path="/signup/success" element={<SignupSuccessPage />} />
+          <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
+          <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

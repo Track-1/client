@@ -127,7 +127,6 @@ const Container = styled.div`
 
   width: calc(${`100% + ${PADDING_SIDE}*2`});
 
-  margin-left: ${`-${PADDING_SIDE}`};
   padding: 2.2rem 2.5rem;
 
   background: rgba(0, 0, 0, 0.5);
