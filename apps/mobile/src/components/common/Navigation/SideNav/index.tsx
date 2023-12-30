@@ -56,7 +56,7 @@ function UserInfo() {
             </UserProfileWrapper>
 
             <Text as="p" color="gray2" font="Pre_14_R">
-              Log out
+              <div onClick={handleLogout}>Log out</div>
             </Text>
           </>
         ) : (
