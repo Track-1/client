@@ -2,9 +2,10 @@ import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { ColorsTypes } from '../../../style/theme';
 import Text from '../Text';
+import { CategoryType } from '../../../type/common/category';
 
 interface TrackInfoFormProps {
-  topItem?: string;
+  topItem?: string | CategoryType;
   topItemColor?: keyof ColorsTypes;
   middleItem: string;
   middleItemMargin?: string;
