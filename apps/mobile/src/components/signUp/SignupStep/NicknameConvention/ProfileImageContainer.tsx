@@ -106,8 +106,8 @@ const Styled = {
   `,
 
   ImageContainer: styled.section`
-    width: 21.7rem;
-    height: 21.7rem;
+    width: 22.7rem;
+    height: 22.7rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,8 +118,8 @@ const Styled = {
     justify-content: center;
     align-items: center;
 
-    width: 21.7rem;
-    height: 21.7rem;
+    width: 22.7rem;
+    height: 22.7rem;
 
     border-radius: 25rem;
 
@@ -174,13 +174,13 @@ const Styled = {
   `,
 
   SignUpUploadImageProducerIcon: styled(SignUpUploadImageProducerIc)`
-    width: 21.7rem;
-    height: 21.7rem;
+    width: 22.7rem;
+    height: 22.7rem;
   `,
 
   SignUpUploadImageVocalIcon: styled(SignUpUploadImageVocalIc)`
-    width: 21.7rem;
-    height: 21.7rem;
+    width: 22.7rem;
+    height: 22.7rem;
   `,
 
   SignupChangePhotoProducerIcon: styled(SignupChangePhotoIc)`

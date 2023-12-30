@@ -84,6 +84,6 @@ const Styled = {
   ButtonWrapper: styled.div`
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8rem;
+    margin: 8rem 0;
   `,
 };

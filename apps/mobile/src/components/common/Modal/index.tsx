@@ -42,6 +42,11 @@ const Styled = {
     background-color: rgba(0, 0, 0, 0.8);
   `,
   ModalBox: styled(Dialog.Content)`
+    position: fixed;
+    z-index: 999999999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 2rem;
     border-radius: 1rem;
     border: 1px solid #313338;

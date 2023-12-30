@@ -6,7 +6,7 @@ import { CONVENTION } from '../../../core/common/convention';
 import { CONVENTION_SELECTED_CHECK } from '../../../core/common/convention/conventionSelectedCheck';
 
 
-export default function useConvention() {
+export function useConvention() {
   const { open, close } = useOverlay();
 
   const showConvention = useCallback(
@@ -20,8 +20,10 @@ export default function useConvention() {
               close();
             }}
             header={<Styled.Title>{CONVENTION_SELECTED_CHECK[options.index]}</Styled.Title>}>
+              <>
             {CONVENTION[options.index]?.INTRO && <Styled.Intro>{CONVENTION[options.index]?.INTRO}</Styled.Intro>}
             <Styled.Contents>{CONVENTION[options.index]?.CONTENTS}</Styled.Contents>
+            </>
           </Modal>
         ));
       }),
@@ -33,20 +35,18 @@ export default function useConvention() {
 
 const Styled = {
   Title: styled.header`
-    color:   ${({ theme }) => theme.colors.white};
-    ${({ theme }) => theme.fonts.Pre_16_B};
+    color:white;
+    
   `,
   Intro: styled.div`
-    color:   ${({ theme }) => theme.colors.gray1};
-    ${({ theme }) => theme.fonts.Pre_14_R};
+    color:white;
     border-bottom: 1px solid #313338;
     padding-bottom: 2rem;
 
     white-space: pre;
   `,
   Contents: styled.div`
-    color:   ${({ theme }) => theme.colors.gray2};
-    ${({ theme }) => theme.fonts.Pre_14_R};
+  color:white;
 
     white-space: pre;
 
@@ -54,3 +54,22 @@ const Styled = {
     overflow-y: scroll;
   `,
 };
+
+
+interface ModalProps {
+  index:number;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function ConventionModal({ isOpen, onClose,index }: ModalProps) {
+  return( <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    header={<Styled.Title>{CONVENTION_SELECTED_CHECK[index]}</Styled.Title>}>
+      <>
+    {CONVENTION[index]?.INTRO && <Styled.Intro>{CONVENTION[index]?.INTRO}</Styled.Intro>}
+    <Styled.Contents>{CONVENTION[index]?.CONTENTS}</Styled.Contents>
+    </>
+  </Modal>)
+}
