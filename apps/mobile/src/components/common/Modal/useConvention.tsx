@@ -35,18 +35,20 @@ export function useConvention() {
 
 const Styled = {
   Title: styled.header`
-    color:white;
-    
+    color:  ${({ theme }) => theme.colors.white};
+    ${({ theme }) => theme.fonts.Pre_16_B};
   `,
   Intro: styled.div`
-    color:white;
+    color:   ${({ theme }) => theme.colors.gray1};
+    ${({ theme }) => theme.fonts.Pre_14_R};
     border-bottom: 1px solid #313338;
     padding-bottom: 2rem;
 
     white-space: pre;
   `,
   Contents: styled.div`
-  color:white;
+    color:   ${({ theme }) => theme.colors.gray2};
+    ${({ theme }) => theme.fonts.Pre_14_R};
 
     white-space: pre;
 
