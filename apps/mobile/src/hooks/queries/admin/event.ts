@@ -1,7 +1,7 @@
-import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { getEventDetail, getEventList, postEvent } from "../../../api/admin/event";
-import { QUERIES_KEY } from "../../../core/common/queriesKey";
-import { EventInfoType, EventListParamsType } from "../../../type/event";
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
+import { getEventDetail, getEventList, postEvent } from '../../../api/admin/event';
+import { QUERIES_KEY } from '../../../core/common/queriesKey';
+import { EventInfoType, EventListParamsType } from '../../../type/event';
 
 export function useGetEventList(params: EventListParamsType) {
   const fetchEvents = async (pageParams: number) => {
@@ -15,14 +15,14 @@ export function useGetEventList(params: EventListParamsType) {
     ({ pageParam = 1 }) => fetchEvents(pageParam),
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.response.data[0].eventList.length === 0 ? undefined : lastPage.nextPage;
+        return lastPage.response.data[0]?.eventList.length === 0 ? undefined : lastPage.nextPage;
       },
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
-  const eventListData = data?.pages.flatMap((data) =>
-    data.response.data[0].eventList.map((eventInfo: EventInfoType) => eventInfo),
+  const eventListData = data?.pages.flatMap(
+    (data) => data.response.data[0]?.eventList.map((eventInfo: EventInfoType) => eventInfo)
   );
 
   return {
@@ -34,7 +34,7 @@ export function useGetEventList(params: EventListParamsType) {
 }
 
 export function useGetEventDetail(eventId: number) {
-  const { data: eventDetailData } = useQuery(["getEventDetail"], () => getEventDetail(eventId), {
+  const { data: eventDetailData } = useQuery(['getEventDetail'], () => getEventDetail(eventId), {
     onError: (err) => {
       console.log(err);
     },

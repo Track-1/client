@@ -14,6 +14,7 @@ import VocalSearchPage from './pages/vocalSearchPage';
 import PrivateRoute from './utils/common/privateRouter';
 import EventPage from './pages/eventPage';
 import AboutPage from './pages/aboutPage';
+import EventDetailPage from './pages/eventDetailPage';
 
 export default function Router() {
   return (
@@ -21,7 +22,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/event" element={<EventPage />} />
-        <Route path="/event/:eventId" element={<EventPage />} />
+        <Route path="/event/:eventId" element={<EventDetailPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
 

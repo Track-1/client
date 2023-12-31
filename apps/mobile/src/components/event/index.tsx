@@ -1,3 +1,11 @@
+import EventList from './eventList';
+import MainEvent from './mainEvent';
+
 export default function EventContainer() {
-  return <></>;
+  return (
+    <>
+      <MainEvent />
+      <EventList />
+    </>
+  );
 }

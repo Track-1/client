@@ -11948,11 +11948,12 @@ tr46@^2.1.0:
   dependencies:
     punycode "^2.1.1"
 
-track-1-design-system@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/track-1-design-system/-/track-1-design-system-0.1.2.tgz#c8041d6dc8facd64d1559d2aa64b75537af93b3f"
-  integrity sha512-Lj3Ha33IK/lePRAmhway+nJ/tIn6vW2edWByKJdecsWISjQnmFxVGASTmtHgWuK59AKBxcCKj0lqU0FmOlQkUg==
+track-1-design-system@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/track-1-design-system/-/track-1-design-system-0.1.5.tgz#5cd9884cd999392e08a333015e87459c94307b12"
+  integrity sha512-TN/5h7BpMkQZLhjw4fQyjpbQPjHlquAeGUkntPc2rQKGu/3yy3jWUkNKngwh3gE86KUP80wq4bzhWAfN/FhsIw==
   dependencies:
+    "@radix-ui/react-dialog" "^1.0.5"
     "@vanilla-extract/vite-plugin" "^3.9.2"
     framer-motion "^10.16.16"
     react "^18.2.0"
