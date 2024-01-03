@@ -66,7 +66,7 @@ const InputWrapper = styled.div<{ errorMessage?: string; stabledColor: keyof Col
 `;
 
 const Text = styled(StyledText)`
-  position: absolute;
+  position: sticky;
 
   margin-top: 0.5rem;
 `;
