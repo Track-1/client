@@ -25,7 +25,7 @@ const fonts = (() => {
     ['Pre', 'Pretendard'],
     ['Alex', 'Alexandria'],
   ] as const;
-  const sizes = [10, 12, 13, 14, 15, 16, 18, 20, 25, 30, 34, 40, 50, 60] as const;
+  const sizes = [10, 12, 13, 14, 15, 16, 18, 20, 25, 30, 34, 40, 50, 60, 62] as const;
   const weights = [
     ['L', 300],
     ['R', 400],
