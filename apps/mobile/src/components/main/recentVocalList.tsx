@@ -12,15 +12,15 @@ import { Link } from 'react-router-dom';
 
 const VOCAL_SECTION_TITLE = 'New Vocals\n For producer';
 
-export default function RecentVocalList() {
+interface RecentVocalListProps {
+  playingTrack: number | null;
+  selectTrack: <T extends number>(trackId: T) => void;
+}
+
+export default function RecentVocalList(props: RecentVocalListProps) {
+  const { playingTrack, selectTrack } = props;
   const { recentVocalInfo } = useGetRecentVocals(4);
   const { handleMovePage } = useMovePage();
-
-  const [playingTrack, setPLayingTrack] = useState<FilteredVocalType['userId'] | null>(null);
-
-  function selectTrack(userId: FilteredVocalType['userId']) {
-    setPLayingTrack(userId);
-  }
 
   return (
     <section>

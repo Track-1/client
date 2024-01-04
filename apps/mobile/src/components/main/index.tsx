@@ -8,25 +8,36 @@ import { PlayerProvider } from '../../context/playerContext';
 import { useRecoilValue } from 'recoil';
 import { loginUserType } from '../../recoil/common/loginUserData';
 import { checkIsLogin, isProducer } from '../../utils/common/check';
+import Player from '../common/Player/player';
+import { FilteredVocalType } from '../../type/vocals';
+import { useState } from 'react';
+import { FilteredTrackType } from '../../type/tracks';
 
 export default function MainContainer() {
   const userType = useRecoilValue(loginUserType);
+  const [playingTrack, setPlayingTrack] = useState<FilteredTrackType['trackId'] | FilteredVocalType['userId'] | null>(
+    null
+  );
+
+  function selectTrack<T extends FilteredTrackType['trackId'] | FilteredVocalType['userId']>(trackId: T) {
+    setPlayingTrack(trackId);
+  }
 
   return (
     <>
       <HotTrack />
       {checkIsLogin() && isProducer(userType) ? (
         <>
-          <RecentVocalList />
+          <RecentVocalList playingTrack={playingTrack} selectTrack={selectTrack<FilteredVocalType['userId']>} />
           <SectionDivider />
-          <RecentTrackList />
+          <RecentTrackList playingTrack={playingTrack} selectTrack={selectTrack<FilteredTrackType['trackId']>} />
           <SectionDivider />
         </>
       ) : (
         <>
-          <RecentTrackList />
+          <RecentTrackList playingTrack={playingTrack} selectTrack={selectTrack<FilteredTrackType['trackId']>} />
           <SectionDivider />
-          <RecentVocalList />
+          <RecentVocalList playingTrack={playingTrack} selectTrack={selectTrack<FilteredVocalType['userId']>} />
           <SectionDivider />
         </>
       )}
