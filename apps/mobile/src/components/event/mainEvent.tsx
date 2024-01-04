@@ -44,6 +44,7 @@ const MainText = styled.h1`
   ${({ theme }) => theme.fonts.Alex_50_R};
   color: ${({ theme }) => theme.colors.white};
 
+  line-height: normal;
   white-space: pre-line;
 `;
 

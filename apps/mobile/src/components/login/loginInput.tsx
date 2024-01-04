@@ -45,7 +45,7 @@ export default function LoginInput() {
     if (error?.response?.data.message === '잘못된 비밀번호입니다.') {
       setError('userPw', {
         type: 'value',
-        message: 'Wrong password. Try again or click Forgot password to reset it.',
+        message: 'Wrong password.',
       });
       clearErrors('userEmail');
     }
