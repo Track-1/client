@@ -10,7 +10,7 @@ export const Layout = styled.div`
   overflow: scroll;
 `;
 
-export const Header = styled.div`
+export const SignupHeader = styled.div`
   width: 100%;
   gap: 3rem;
   display: flex;

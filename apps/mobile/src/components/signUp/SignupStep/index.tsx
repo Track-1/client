@@ -3,23 +3,27 @@ import { SIGNUP_STEP } from '../../../core/signUp/stepRenderer';
 import ProgressBar from '../../common/ProgressBar';
 import Footer from '../common/Footer';
 
-import { Header, Layout } from './Layout';
+import Header from '../../header';
+import { Layout, SignupHeader } from './Layout';
 import StepButtons from './StepButtons';
-import Title from './Title';
 import StepMain from './StepMain';
+import Title from './Title';
 
 export default function SingupStep() {
   const [step, setStep] = useState(SIGNUP_STEP.ROLE);
 
   return (
+    <>
+    <Header />
     <Layout>
-      <Header>
+      <SignupHeader>
         <ProgressBar progress={(step / 3) * 100} />
         <Title step={step} />
-      </Header>
+      </SignupHeader>
       <StepMain step={step} />
       <StepButtons step={step} setStep={setStep} />
       <Footer />
     </Layout>
+    </>
   );
 }
