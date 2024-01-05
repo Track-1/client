@@ -5,8 +5,8 @@ import Footer from '../common/Footer';
 
 import Header from '../../header';
 import { Layout, SignupHeader } from './Layout';
+import NicknameConvention from './NicknameConvention';
 import StepButtons from './StepButtons';
-import StepMain from './StepMain';
 import Title from './Title';
 
 export default function SingupStep() {
@@ -20,7 +20,8 @@ export default function SingupStep() {
         <ProgressBar progress={(step / 3) * 100} />
         <Title step={step} />
       </SignupHeader>
-      <StepMain step={step} />
+      {/* <StepMain step={step} /> */}
+      <NicknameConvention/>
       <StepButtons step={step} setStep={setStep} />
       <Footer />
     </Layout>
