@@ -27,9 +27,9 @@ export default function ProfileSelectCategoryEdit() {
   return (
     <>
       <InputTitle>Category</InputTitle>
-      <Styled.InputWrapper>
-        <Styled.Input type="text" placeholder="Select your music category" defaultValue={showCateg().toString()} />
-        {isOpen ? <Styled.DropupIcon onClick={onClose} /> : <Styled.DropdownIcon onClick={onOpen} />}
+      <Styled.InputWrapper isSelected={showCateg().toString() !== ''} onClick={isOpen ? onClose : onOpen}>
+        <Styled.Category>{showCateg().toString() || 'Select your music category'}</Styled.Category>
+        {isOpen ? <Styled.DropupIcon /> : <Styled.DropdownIcon />}
       </Styled.InputWrapper>
       <Category isOpen={isOpen} onClose={onClose}>
         <CategoryBox>
@@ -113,8 +113,21 @@ const Styled = {
     display: flex;
     justify-content: space-between;
   `,
-  InputWrapper: styled.div`
+  Category: styled.p`
     display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+  `,
+  InputWrapper: styled.div<{ isSelected: boolean }>`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1rem 0;
+
+    ${({ theme }) => theme.fonts.Pre_16_R};
+    color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray3)};
+
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray4};
   `,
   DropupIcon: styled(DropupIc)`
     width: 3rem;
@@ -125,20 +138,6 @@ const Styled = {
     width: 3rem;
     height: 3rem;
     margin-left: -3rem;
-  `,
-  Input: styled.input`
-    width: 100%;
-    height: 100%;
-
-    padding: 1rem 0;
-
-    ${({ theme }) => theme.fonts.Pre_16_R};
-    color: ${({ theme }) => theme.colors.white};
-
-    ::placeholder {
-      color: ${({ theme }) => theme.colors.gray3};
-    }
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray4};
   `,
   CategoryBox: styled.ul`
     display: flex;
