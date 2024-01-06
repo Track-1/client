@@ -1,8 +1,6 @@
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
-import TrackInfoTextForm from '../../common/Form/trackInfoTextForm';
 import { HashtagWrapper, ImageWrapper } from '../../common/Interface';
-import { CategoryType } from '../../../type/common/category';
 import { PageType } from '../../../type/common/pageType';
 import Text from '../../common/Text';
 
@@ -23,19 +21,18 @@ export default function PortfolioForm(props: PropsWithChildren<PortfolioFormProp
           {children}
         </ImageWrapper>
 
-        <TrackInfoTextForm
-          topItem={category}
-          topItemColor={pageType === 'tracks' ? 'neon_green' : 'neon_pink'}
-          middleItem={title}
-          middleItemMargin="0 0 1.8rem 0">
-          {
-            <HashtagWrapper>
-              {hashTagList.map((hashtag) => (
-                <Text as="p" font="Pre_14_R" color="gray3">{`# ${hashtag}`}</Text>
-              ))}
-            </HashtagWrapper>
-          }
-        </TrackInfoTextForm>
+        <Text as="p" font="Pre_14_R" color={pageType === 'tracks' ? 'neon_green' : 'neon_pink'} margin="0 0 0.5rem 0">
+          {category}
+        </Text>
+        <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+          {title}
+        </Text>
+
+        <HashtagWrapper>
+          {hashTagList.map((hashtag) => (
+            <Text as="p" font="Pre_14_R" color="gray3">{`# ${hashtag}`}</Text>
+          ))}
+        </HashtagWrapper>
       </PortfolioWrapper>
       <IntroduceWrapper>{introduce}</IntroduceWrapper>
     </Container>

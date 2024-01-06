@@ -23,10 +23,10 @@ export default function MainEvent() {
         onClick={() => handleMovePage('event', recentEventId)}
       />
       <InfoTextWrapper onClick={() => handleMovePage('event', recentEventId)}>
-        <Text as="span" font="Pre_20_M" color="white" margin="0 0 1rem 0">
+        <Text as="p" font="Pre_20_M" color="white" margin="0 0 1rem 0">
           {eventListData?.[0]?.eventTitle}
         </Text>
-        <Text as="span" font="Pre_15_R" color="gray2">
+        <Text as="p" font="Pre_15_R" color="gray2">
           {eventListData?.[0]?.eventDate}
         </Text>
       </InfoTextWrapper>
@@ -67,7 +67,7 @@ const ImageWrapper = styled.div<{ eventImage: string }>`
   background-size: cover;
 `;
 
-const InfoTextWrapper = styled(StyledInfoTextWrapper)`
+const InfoTextWrapper = styled.div`
   margin-top: 3rem;
   padding: ${`0 ${PADDING_SIDE}`};
 `;

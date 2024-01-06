@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
-import { useState } from 'react';
-import { FilteredTrackType } from '../../type/tracks';
 import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
@@ -51,14 +48,15 @@ export default function RecentTrackList(props: RecentTrackListProps) {
               />
 
               <Link to={`/track-post/${trackInfo.trackId}`}>
-                <TrackInfoTextForm
-                  topItem={trackInfo.trackCategory}
-                  topItemColor="neon_green"
-                  middleItem={trackInfo.trackTitle}>
-                  <Text as="span" font="Pre_14_R" color="gray3">
-                    {trackInfo.trackUserName}
-                  </Text>
-                </TrackInfoTextForm>
+                <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
+                  {trackInfo.trackCategory}
+                </Text>
+                <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+                  {trackInfo.trackTitle}
+                </Text>
+                <Text as="p" font="Pre_14_R" color="gray3">
+                  {trackInfo.trackUserName}
+                </Text>
               </Link>
             </TrackItem>
           ))}

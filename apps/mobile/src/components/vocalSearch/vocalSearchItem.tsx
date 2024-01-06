@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { PauseIc, PlayIc } from '../../assets';
-import { CategoryType } from '../../type/common/category';
 import Text from '../common/Text';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { FilteredVocalType } from '../../type/vocals';
 import { useContext, useEffect } from 'react';
 import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
 import { PlayerContext } from '../../context/playerContext';
 import { HashtagWrapper, ImageWrapper } from '../common/Interface';
 import { useMovePage } from '../../hooks/common/useMovePage';
+import { Link } from 'react-router-dom';
 
 interface VocalSearchItemProps {
   trackInfo: FilteredVocalType;
@@ -78,11 +77,14 @@ export default function VocalSearchItem(props: VocalSearchItemProps) {
         onClick={() => {
           handleMovePage('vocal-profile', trackInfo.userId);
         }}>
-        <TrackInfoTextForm
-          topItem={`${trackInfo.userCategory[0]}+${trackInfo.userCategoryNum}`}
-          topItemColor="neon_pink"
-          middleItem={trackInfo.userName}
-        />
+        <Link to={`vocal-profile/${trackInfo.userId}`}>
+          <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
+            {`${trackInfo.userCategory[0]}+${trackInfo.userCategoryNum}`}
+          </Text>
+          <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+            {trackInfo.userName}
+          </Text>
+        </Link>
       </UserInfoWrapper>
     </Container>
   );
