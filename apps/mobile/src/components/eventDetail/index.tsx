@@ -15,7 +15,7 @@ export default function EventDetailContainer() {
     <section>
       <EventImageWrapper imageUrl={eventDetailData?.eventImageFile} />
       <EventInfoWrapper>
-        {eventDetailData?.eventInProgress && <NewopenTag>New Open</NewopenTag>}
+        {eventDetailData?.eventInProgress && <NowopenTag>Now Open</NowopenTag>}
         <Text as="h2" font="Pre_30_SB" color="white" margin="0 0 1rem 0">
           {eventDetailData?.eventTitle}
         </Text>
@@ -50,7 +50,7 @@ const EventInfoWrapper = styled.div`
   user-select: text;
 `;
 
-const NewopenTag = styled.div`
+const NowopenTag = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

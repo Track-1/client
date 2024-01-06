@@ -51,4 +51,6 @@ export const StyledText = styled.span<{
   line-height: ${({ lineHeight }) => lineHeight && lineHeight};
   letter-spacing: ${({ letterSpacing }) => letterSpacing && letterSpacing};
   white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

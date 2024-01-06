@@ -3,7 +3,6 @@ import { PADDING_SIDE } from '../layout';
 import { useGetEventList } from '../../hooks/queries/admin/event';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
-import { StyledInfoTextWrapper } from '../common/Interface';
 
 export default function MainEvent() {
   const { eventListData } = useGetEventList({

@@ -63,9 +63,9 @@ function UserInfo() {
           <>
             <Text as="span" font="Pre_18_R" color="gray2">
               {'Have an account? '}
-              <Text as="span" font="Pre_18_R" color="white">
-                <Link to="/login">Log in here</Link>
-              </Text>
+            </Text>
+            <Text as="span" font="Pre_18_R" color="white">
+              <Link to="/login">{'Log in here'}</Link>
             </Text>
           </>
         )}
