@@ -46,6 +46,8 @@ const EventImageWrapper = styled.div<{ imageUrl?: string }>`
 
 const EventInfoWrapper = styled.div`
   margin-top: 3rem;
+
+  user-select: text;
 `;
 
 const NewopenTag = styled.div`
