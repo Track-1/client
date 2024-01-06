@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
-import { PlayIc } from '../../assets';
 import { PADDING_SIDE } from '../layout';
 import { checkIsLogin, isProducer } from '../../utils/common/check';
 import PlayIcon from '../common/Form/PlayIcon';
@@ -12,6 +10,7 @@ import { useGetRecentVocals } from '../../hooks/queries/vocals';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
 import { FilteredVocalType } from '../../type/vocals';
 import Text from '../common/Text';
+import { Link } from 'react-router-dom';
 
 interface VocalPlaybarProps {
   playingTrack: number | null;
@@ -28,10 +27,13 @@ function VocalPlaybar(props: VocalPlaybarProps) {
     <>
       {trackInfo && (
         <>
-          <TrackInfoTextForm
-            topItem={`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum}`}
-            topItemColor={'neon_pink'}
-            middleItem={trackInfo.userTitle}>
+          <Link to={`/vocal-profile/${trackInfo.userId}`}>
+            <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
+              {`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum}`}
+            </Text>
+            <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+              {trackInfo.userTitle}
+            </Text>
             <KeywordWrapper>
               {trackInfo.userKeyword.map((keyword) => (
                 <Text as="p" font="Pre_14_R" color="white">
@@ -39,7 +41,8 @@ function VocalPlaybar(props: VocalPlaybarProps) {
                 </Text>
               ))}
             </KeywordWrapper>
-          </TrackInfoTextForm>
+          </Link>
+
           <PlayIcon
             imageFile={trackInfo.userImageFile}
             audioId={trackInfo.userId}
@@ -71,14 +74,18 @@ function ProducerPlaybar(props: ProducerPlaybarProps) {
     <>
       {trackInfo && (
         <>
-          <TrackInfoTextForm
-            topItem={trackInfo.trackCategory}
-            topItemColor={'neon_green'}
-            middleItem={trackInfo.trackTitle}>
+          <Link to={`/producer-profile/${trackInfo.trackId}`}>
+            <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
+              {trackInfo.trackCategory}
+            </Text>
+            <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+              {trackInfo.trackTitle}
+            </Text>
             <Text as="p" font="Pre_14_R" color="white">
               {trackInfo.trackUserName}
             </Text>
-          </TrackInfoTextForm>
+          </Link>
+
           <PlayIcon
             imageFile={trackInfo.trackImageFile}
             audioId={trackInfo.trackId}
