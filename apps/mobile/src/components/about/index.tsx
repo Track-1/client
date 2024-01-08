@@ -8,6 +8,7 @@ import desktopExampleImg from '../../assets/image/mobile/desktopExampleImg.png';
 import Text, { StyledText } from '../common/Text';
 import { RightArrowIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
+import { useRef } from 'react';
 
 const SectionContainer = styled.section`
   position: relative;
@@ -36,7 +37,9 @@ const TitleWrapper = styled.div`
   width: 100%;
 `;
 
-function AboutIntro() {
+function AboutIntro(props: { handleMoveHowToUseSection: () => void }) {
+  const { handleMoveHowToUseSection } = props;
+
   const introKoreanText =
     '예술은 창조에서 시작되고 창조는 영감에서 비롯됩니다. 머릿속에서 떠다니는 음악적 아이디어를 자유롭게 표현할 수 있도록 활발한 소통의 장을 마련하는 것이 우리의 목표입니다.';
   const introEnglishText =
@@ -54,9 +57,11 @@ function AboutIntro() {
           {'FOR MUSICIANS'}
         </Text>
 
-        <Text as="span" font="Alex_18_R" color="white" lineHeight="160%">
-          {'How to use'}
-        </Text>
+        <div onClick={handleMoveHowToUseSection}>
+          <Text as="span" font="Alex_18_R" color="white" lineHeight="160%">
+            {'How to use'}
+          </Text>
+        </div>
         <ImageWrapper width={0.8} height={1.6}>
           <DownArrawIcon />
         </ImageWrapper>
@@ -157,7 +162,8 @@ const SloganWapper = styled(TitleWrapper)`
   margin-bottom: 10rem;
 `;
 
-function AboutHowToUse() {
+function AboutHowToUse(props: { scrollRef: React.RefObject<HTMLTableSectionElement> }) {
+  const { scrollRef } = props;
   const HowToUseKoreanText =
     'Track-1은 보컬과 프로듀서가 서로 협업할 뮤지션을 찾을 수 있는 플랫폼입니다.\n번뜩이는 악상이 하나의 예술작품으로 구현되는 과정을 더욱 원활히 하고, 보다 많은 예술가와 함께할 수 있도록 협업 기회를 제공합니다.';
 
@@ -172,7 +178,7 @@ function AboutHowToUse() {
 
   return (
     <>
-      <GuideSection>
+      <GuideSection ref={scrollRef}>
         <TextWrapper>
           <GuideTitle>{'User Guideline'}</GuideTitle>
         </TextWrapper>
@@ -187,7 +193,7 @@ function AboutHowToUse() {
       </GuideSection>
 
       <HowToUseContainer>
-        <HowToUseTitle>{'Collaboration\nPlatformn\for Musicians'}</HowToUseTitle>
+        <HowToUseTitle>{'Collaboration\nPlatform\nfor Musicians'}</HowToUseTitle>
         <TextWrapper>
           <Text as="span" font="Pre_18_R" color="white" lineHeight="170%">
             {HowToUseKoreanText}
@@ -290,11 +296,17 @@ const HowToUseTitle = styled.h1`
 `;
 
 export default function AboutContainer() {
+  const howToUseSectionRef = useRef<HTMLTableSectionElement>(null);
+
+  function handleMoveHowToUseSection() {
+    howToUseSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+
   return (
     <AboutSectionWrapper>
-      <AboutIntro />
+      <AboutIntro handleMoveHowToUseSection={handleMoveHowToUseSection} />
       <AboutPurpose />
-      <AboutHowToUse />
+      <AboutHowToUse scrollRef={howToUseSectionRef} />
     </AboutSectionWrapper>
   );
 }
