@@ -3,7 +3,7 @@ import HotTrack from './hotTrack';
 import RecentTrackList from './recentTrackList';
 import RecentVocalList from './recentVocalList';
 import HotEvent from './hotEvent';
-import { StyledLined } from '../common/DivisionLine';
+import { StyledDivisionLine } from '../common/DivisionLine';
 import { PlayerProvider } from '../../context/playerContext';
 import { useRecoilValue } from 'recoil';
 import { loginUserType } from '../../recoil/common/loginUserData';
@@ -47,6 +47,7 @@ export default function MainContainer() {
   );
 }
 
-const SectionDivider = styled(StyledLined)`
-  margin: 7rem 0;
+const SectionDivider = styled(StyledDivisionLine)`
+  margin-top: 7rem;
+  margin-bottom: 7rem;
 `;

@@ -24,8 +24,14 @@ export const StyledVerticalLined = styled(StyledLined)<{ width: number }>`
   background-color: ${({ theme }) => theme.colors.gray4};
 `;
 
-export const DivisionLine = styled(StyledLined)`
+export const StyledDivisionLine = styled.hr`
   width: calc(${`100% + ${PADDING_SIDE}*2`});
+
+  height: 1px;
+
+  border: none;
+
+  background-color: ${({ theme }) => theme.colors.gray5};
 
   margin-left: ${`-${PADDING_SIDE}`};
 `;

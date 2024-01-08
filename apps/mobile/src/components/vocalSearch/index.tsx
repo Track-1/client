@@ -5,8 +5,6 @@ import { FilterIc } from '../../assets';
 import FilterModal from '../common/Modal/Filter';
 import { useState } from 'react';
 import { useFilter } from '../../hooks/common/useFilter';
-import { StyledLined } from '../common/DivisionLine';
-import { PADDING_SIDE } from '../layout';
 import { Categories, LowerCategoryId } from '../../core/common/categories';
 import { PageType } from '../../type/common/pageType';
 import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
@@ -14,6 +12,7 @@ import { useFilteredVocals } from '../../hooks/queries/vocals';
 import { useSearchParams } from 'react-router-dom';
 import VocalSearchItem from './vocalSearchItem';
 import { FilteredVocalType } from '../../type/vocals';
+import { StyledDivisionLine } from '../common/DivisionLine';
 
 export default function VocalSearchContainer() {
   const [searchParams] = useSearchParams();
@@ -67,7 +66,7 @@ export default function VocalSearchContainer() {
             />
           </ImageWrapper>
         </VocalListHeader>
-        <DivisionLine />
+        <StyledDivisionLine />
         {/* 이거 너무 쓰레기 코드다...... 리팩토링 1순위 */}
         {selectedCategory.size > 0 && (
           <SelectedCategoryWrapper>
@@ -99,12 +98,6 @@ const VocalListHeader = styled.div`
 
   width: 100%;
   height: 4.9rem;
-`;
-
-const DivisionLine = styled(StyledLined)`
-  width: calc(${`100% + ${PADDING_SIDE}*2`});
-
-  margin-left: ${`-${PADDING_SIDE}`};
 `;
 
 const SelectedCategoryWrapper = styled.div`

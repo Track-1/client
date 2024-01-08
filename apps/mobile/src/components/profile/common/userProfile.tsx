@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Text from '../../common/Text';
 import { UserType } from '../../../type/common/userType';
 import { isProducer } from '../../../utils/common/check';
-import { StyledLined } from '../../common/DivisionLine';
+import { StyledDivisionLine } from '../../common/DivisionLine';
 import { ProducerInfoType, VocalProfileType } from '../../../type/profile';
 
 interface UserInfoProfile {
@@ -27,7 +27,7 @@ export default function UserProfile(props: UserInfoProfile) {
         </Text>
       </PersonalProfileWrapper>
 
-      <Divider />
+      <DivisionLine />
 
       <TrackProfileWrapper>
         <TrackInfoForm>
@@ -49,7 +49,9 @@ export default function UserProfile(props: UserInfoProfile) {
             Hashtag
           </Text>
           <TrackInfoWrapper>
-            {profileInfo?.userProfile.userKeyword.map((keyword) => <Keyword>{keyword}</Keyword>)}
+            {profileInfo?.userProfile.userKeyword.map((keyword) => (
+              <Keyword>{keyword}</Keyword>
+            ))}
           </TrackInfoWrapper>
         </TrackInfoForm>
 
@@ -133,6 +135,7 @@ export const TrackInfoWrapper = styled.div`
   line-height: 160%;
 `;
 
-const Divider = styled(StyledLined)`
-  margin: 2.5rem 0;
+const DivisionLine = styled(StyledDivisionLine)`
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 `;

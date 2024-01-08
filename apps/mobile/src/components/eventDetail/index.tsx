@@ -3,13 +3,10 @@ import { useGetEventDetail } from '../../hooks/queries/admin/event';
 import styled from 'styled-components';
 import { PADDING_SIDE } from '../layout';
 import Text from '../common/Text';
-import { Button } from 'track-1-design-system';
 
 export default function EventDetailContainer() {
   const { eventId } = useParams();
   const { eventDetailData } = useGetEventDetail(Number(eventId));
-
-  console.log(eventDetailData);
 
   return (
     <section>

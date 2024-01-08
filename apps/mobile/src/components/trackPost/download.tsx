@@ -23,7 +23,6 @@ export default function Download(props: DownloadProps) {
   function getFileLink(data: any) {
     let blob = new Blob([data?.data], { type: 'audio/mpeg' });
     let url = window.URL.createObjectURL(blob); //s3링크
-    console.log(blob);
 
     var a = document.createElement('a');
     a.href = url;

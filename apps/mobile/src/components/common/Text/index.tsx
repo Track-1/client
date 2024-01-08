@@ -53,4 +53,6 @@ export const StyledText = styled.span<{
   white-space: pre-line;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  user-select: text;
 `;

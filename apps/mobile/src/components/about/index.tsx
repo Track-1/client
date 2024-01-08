@@ -5,7 +5,7 @@ import aboutPurposeBackgroundImg from '../../assets/image/mobile/aboutPurposeBac
 import trackSearchExampleImg from '../../assets/image/mobile/trackSearchExampleImg.png';
 import vocalSearchExampleImg from '../../assets/image/mobile/vocalSearchExampleImg.png';
 import desktopExampleImg from '../../assets/image/mobile/desktopExampleImg.png';
-import Text, { StyledText } from '../common/Text';
+import Text from '../common/Text';
 import { RightArrowIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
 import { useRef } from 'react';
@@ -240,7 +240,7 @@ function AboutHowToUse(props: { scrollRef: React.RefObject<HTMLTableSectionEleme
 }
 
 const GuideSection = styled(SectionContainer)`
-  margin: 20rem 0 15rem;
+  padding: 20rem 0 15rem;
 `;
 
 const GuideTitle = styled.h2`

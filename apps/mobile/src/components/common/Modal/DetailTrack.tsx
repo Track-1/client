@@ -4,7 +4,7 @@ import { ImageWrapper } from '../Interface';
 import { Cover } from 'track-1-design-system';
 import Text from '../Text';
 import { useTrackDetail } from '../../../hooks/queries/tracks';
-import { DivisionLine } from '../DivisionLine';
+import { StyledDivisionLine } from '../DivisionLine';
 import { ProfileUserIc, TrackDetailIc } from '../../../assets';
 import { Link } from 'react-router-dom';
 
@@ -49,7 +49,7 @@ export default function DetailTrackModal(props: DetailTrackModalProps) {
           {trackDetail?.trackIntroduction}
         </Text>
       </Container>
-      <DivisionLine />
+      <StyledDivisionLine />
       <LinkTextWrapper>
         <LinkItem>
           <ProfileUserIc />

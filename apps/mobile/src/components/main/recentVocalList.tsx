@@ -58,7 +58,7 @@ export default function RecentVocalList(props: RecentVocalListProps) {
                   {trackInfo.userName}
                 </Text>
                 {trackInfo.userKeyword.map((keyword) => (
-                  <Text as="p" font="Pre_14_R" color="gray3" margin="0 0 0.5rem 0">
+                  <Text as="p" font="Pre_14_R" color="gray3" margin="0 0 0.5rem 0" key={keyword}>
                     {`# ${keyword}`}
                   </Text>
                 ))}
