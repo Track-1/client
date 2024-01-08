@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
-import { useState } from 'react';
-import { FilteredTrackType } from '../../type/tracks';
 import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
@@ -12,15 +9,16 @@ import { Link } from 'react-router-dom';
 
 const TRACK_SECTION_TITLE = 'New Tracks\n For vocal';
 
-export default function RecentTrackList() {
+interface RecentTrackListProps {
+  playingTrack: number | null;
+  selectTrack: <T extends number>(trackId: T) => void;
+}
+
+export default function RecentTrackList(props: RecentTrackListProps) {
+  const { playingTrack, selectTrack } = props;
   const { recentTrackInfo } = useGetRecentTracks(4);
-  const [playingTrack, setPlayingTrack] = useState<FilteredTrackType['trackId'] | null>(null);
 
   const { handleMovePage } = useMovePage();
-
-  function selectTrack(trackId: FilteredTrackType['trackId']) {
-    setPlayingTrack(trackId);
-  }
 
   return (
     <section>
@@ -50,14 +48,15 @@ export default function RecentTrackList() {
               />
 
               <Link to={`/track-post/${trackInfo.trackId}`}>
-                <TrackInfoTextForm
-                  topItem={trackInfo.trackCategory}
-                  topItemColor="neon_green"
-                  middleItem={trackInfo.trackTitle}>
-                  <Text as="span" font="Pre_14_R" color="gray3">
-                    {trackInfo.trackUserName}
-                  </Text>
-                </TrackInfoTextForm>
+                <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
+                  {trackInfo.trackCategory}
+                </Text>
+                <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+                  {trackInfo.trackTitle}
+                </Text>
+                <Text as="p" font="Pre_14_R" color="gray3">
+                  {trackInfo.trackUserName}
+                </Text>
               </Link>
             </TrackItem>
           ))}

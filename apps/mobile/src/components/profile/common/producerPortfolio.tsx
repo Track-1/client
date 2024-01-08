@@ -55,7 +55,21 @@ export default function ProducerPortfolio(props: ProducerPortfolioProps) {
                 category={portfolio.portfolioCategory}
                 title={portfolio.portfolioTitle}
                 hashTagList={portfolio.portfolioKeyword}
-                introduce={portfolio.portfolioContent}></PortfolioForm>
+                introduce={portfolio.portfolioContent}>
+                <PlayCoverForm
+                  imageFile={portfolio.portfolioImageFile}
+                  audioFile={portfolio.portfolioAudioFile}
+                  audioId={portfolio.portfolioId}
+                  audioTitle={portfolio.portfolioTitle}
+                  userName={userName || ''}
+                  playingTrack={playingTrack}
+                  selectTrack={selectTrack}
+                  width={12}
+                  height={12}
+                  shape="rectangle"
+                  align="rightBottom"
+                />
+              </PortfolioForm>
             ))}
           </>
         ) : (
@@ -66,7 +80,8 @@ export default function ProducerPortfolio(props: ProducerPortfolioProps) {
                 category={trackInfo.trackCategory}
                 title={trackInfo.trackTitle}
                 hashTagList={trackInfo.trackKeyword}
-                introduce={trackInfo.trackContent}>
+                introduce={trackInfo.trackContent}
+                linkTo={`/track-post/${trackInfo.trackId}`}>
                 <PlayCoverForm
                   imageFile={trackInfo.trackImageFile}
                   audioFile={trackInfo.trackAudioFile}

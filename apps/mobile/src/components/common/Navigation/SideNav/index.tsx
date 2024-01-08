@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import { Z_INDEX } from '../../../../core/common/zIndex';
 import { useLogout } from '../../../../hooks/queries/user';
 import { useState } from 'react';
+import { theme } from '../../../../style/theme';
+import { useMovePage } from '../../../../hooks/common/useMovePage';
 
 function UserInfo() {
   const isLoggedIn = checkIsLogin();
@@ -24,6 +26,8 @@ function UserInfo() {
 
   const { logout } = useLogout(logoutState);
 
+  const { handleMovePage } = useMovePage();
+
   function handleLogout() {
     setLogoutState(!logoutState);
   }
@@ -32,7 +36,9 @@ function UserInfo() {
     <UserInfoContainer>
       <ImageWrapper width={4} height={4}>
         {isLoggedIn ? (
-          <Cover imageUrl={userProfile?.userImageFile || ''} width={4} height={4} shape="circle" />
+          <Link to={isProducer(userType) ? `/producer-profile/${userId}` : `/vocal-profile/${userId}`}>
+            <Cover imageUrl={userProfile?.userImageFile || ''} width={4} height={4} shape="circle" />
+          </Link>
         ) : (
           <DefaultUserIc />
         )}
@@ -41,7 +47,8 @@ function UserInfo() {
       <UserInfoWrapper isLoggedIn={isLoggedIn}>
         {isLoggedIn ? (
           <>
-            <UserProfileWrapper>
+            <UserProfileWrapper
+              onClick={() => handleMovePage(isProducer(userType) ? 'producer-profile' : 'vocal-profile', userId)}>
               <UserNameWrapper>
                 <Text as="p" color="white" font="Pre_18_M">
                   {userProfile?.userName}
@@ -62,10 +69,11 @@ function UserInfo() {
         ) : (
           <>
             <Text as="span" font="Pre_18_R" color="gray2">
-              {'Have an account? '}
-              <Text as="span" font="Pre_18_R" color="white">
-                <Link to="/login">Log in here</Link>
-              </Text>
+              {`Have an account? `}
+              &nbsp;
+            </Text>
+            <Text as="span" font="Pre_18_R" color="white">
+              <Link to="/login"> {`Log in here`}</Link>
             </Text>
           </>
         )}
@@ -111,6 +119,8 @@ const UserNameWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  height: 100%;
 `;
 
 interface SideNavProps {
@@ -124,7 +134,7 @@ export default function SideNav(props: SideNavProps) {
     <Container openModal={openModal}>
       <NavTopItemWrapper>
         <ImageWrapper as="button" width={1.4} height={1.4}>
-          <CloseIc onClick={unShowModal} />
+          <CloseIc onClick={unShowModal} stroke={theme.colors.white} />
         </ImageWrapper>
       </NavTopItemWrapper>
 

@@ -5,7 +5,6 @@ import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 import SectionHeader from '../main/common/sectionHeader';
 import Text from '../common/Text';
 import { css } from 'styled-components';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { InfinityObserver } from '../common/Interface';
 import { useMovePage } from '../../hooks/common/useMovePage';
 
@@ -55,14 +54,15 @@ export default function EventList() {
                     onClick={() => handleMovePage('event', event.eventId)}
                   />
                   <div onClick={() => handleMovePage('event', event.eventId)}>
-                    <TrackInfoTextForm
-                      topItem={event.eventInProgress ? 'New open' : undefined}
-                      topItemColor="neon_purple"
-                      middleItem={event.eventTitle}>
-                      <Text as="p" color="gray3" font="Pre_14_R">
-                        {event.eventDate}
-                      </Text>
-                    </TrackInfoTextForm>
+                    <Text as="p" font="Pre_14_R" color="neon_purple" margin="0 0 0.5rem 0">
+                      {event.eventNowOpen ? 'Now open' : ''}
+                    </Text>
+                    <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+                      {event.eventTitle}
+                    </Text>
+                    <Text as="p" font="Pre_14_R" color="gray3">
+                      {event.eventDate}
+                    </Text>
                   </div>
                 </EventWrapper>
               )
@@ -73,14 +73,15 @@ export default function EventList() {
                   onClick={() => handleMovePage('event', event?.eventId)}
                 />
                 <div onClick={() => handleMovePage('event', event?.eventId)}>
-                  <TrackInfoTextForm
-                    topItem={event?.eventInProgress ? 'New open' : undefined}
-                    topItemColor="neon_purple"
-                    middleItem={event?.eventTitle || ''}>
-                    <Text as="p" color="gray3" font="Pre_14_R">
-                      {event?.eventDate}
-                    </Text>
-                  </TrackInfoTextForm>
+                  <Text as="p" font="Pre_14_R" color="neon_purple" margin="0 0 0.5rem 0">
+                    {event?.eventNowOpen ? 'Now open' : ''}
+                  </Text>
+                  <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+                    {event?.eventTitle}
+                  </Text>
+                  <Text as="p" font="Pre_14_R" color="gray3">
+                    {event?.eventDate}
+                  </Text>
                 </div>
               </EventWrapper>
             )

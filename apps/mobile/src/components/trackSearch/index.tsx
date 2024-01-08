@@ -8,7 +8,7 @@ import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 import styled from 'styled-components';
 import { FilterIc } from '../../assets';
 import { ImageWrapper, InfinityObserver } from '../common/Interface';
-import { DivisionLine, StyledLined } from '../common/DivisionLine';
+import { StyledDivisionLine } from '../common/DivisionLine';
 import FilterModal from '../common/Modal/Filter';
 import { useFilter } from '../../hooks/common/useFilter';
 import { PageType } from '../../type/common/pageType';
@@ -77,7 +77,7 @@ export default function TrackSearchContainer() {
             </ImageWrapper>
           </TrackListHeaderWrapper>
         </TrackListHeader>
-        <DivisionLine />
+        <StyledDivisionLine />
         {/* 이거 너무 쓰레기 코드다...... 리팩토링 1순위 */}
         {selectedCategory.size > 0 && (
           <SelectedCategoryWrapper>
@@ -109,7 +109,7 @@ export default function TrackSearchContainer() {
                   align="center"
                 />
               </TrackSearchItem>
-              <DivisionLine />
+              <StyledDivisionLine />
             </>
           ))}
         </ul>

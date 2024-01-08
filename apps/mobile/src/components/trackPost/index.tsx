@@ -5,15 +5,15 @@ import { useTrackDetail } from '../../hooks/queries/tracks';
 import { PADDING_SIDE } from '../layout';
 import { Keyword, TrackInfoForm, TrackInfoWrapper, TrackProfileWrapper } from '../profile/common/userProfile';
 import Text from '../common/Text';
-import { DivisionLine } from '../common/DivisionLine';
 import { Cover } from 'track-1-design-system';
 import { PauseIc, PlayIc } from '../../assets';
-import usePlay from '../../hooks/common/usePlay';
 import { useContext, useEffect, useState } from 'react';
 import { PlayerContext } from '../../context/playerContext';
 import { FilteredTrackType } from '../../type/tracks';
 import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
 import Download from './download';
+import { StyledDivisionLine } from '../common/DivisionLine';
+import { Link } from 'react-router-dom';
 
 export default function TrackPostContainer() {
   const { id } = useParams();
@@ -70,14 +70,16 @@ export default function TrackPostContainer() {
             {trackDetail?.trackCategory}
           </Text>
         </UserInfoTopWrapper>
-        <UserProfileImageWrapper>
-          <ImageWrapper width={3} height={3}>
-            <Cover imageUrl={trackDetail?.userImageFile || ''} width={3} height={3} shape="circle" />
-          </ImageWrapper>
-          <Text as="span" font="Pre_16_R" color="gray1">
-            {trackDetail?.trackUserName}
-          </Text>
-        </UserProfileImageWrapper>
+        <Link to={`/producer-profile/${trackDetail?.trackUserId}`}>
+          <UserProfileImageWrapper>
+            <ImageWrapper width={3} height={3}>
+              <Cover imageUrl={trackDetail?.userImageFile || ''} width={3} height={3} shape="circle" />
+            </ImageWrapper>
+            <Text as="p" font="Pre_16_R" color="gray1">
+              {trackDetail?.trackUserName}
+            </Text>
+          </UserProfileImageWrapper>
+        </Link>
         <ButtonWrapper>
           <Download downloadId={Number(id)} />
           <ImageWrapper as="button" width={3} height={3} onClick={handlePlay}>
@@ -86,7 +88,7 @@ export default function TrackPostContainer() {
         </ButtonWrapper>
       </UserInfoWrapper>
 
-      <StyledDivsionLine />
+      <DivisionLine />
 
       <TrackProfileWrapper>
         <TrackInfoForm>
@@ -94,7 +96,9 @@ export default function TrackPostContainer() {
             Hashtag
           </Text>
           <TrackInfoWrapper>
-            {trackDetail?.trackKeyword.map((keyword) => <Keyword>{`#${keyword}`}</Keyword>)}
+            {trackDetail?.trackKeyword.map((keyword) => (
+              <Keyword>{`#${keyword}`}</Keyword>
+            ))}
           </TrackInfoWrapper>
         </TrackInfoForm>
 
@@ -172,8 +176,7 @@ const DownloadButton = styled.button`
   border-radius: 4rem;
 `;
 
-const StyledDivsionLine = styled(DivisionLine)`
-  margin: 3rem 0;
-
-  margin-left: ${`-${PADDING_SIDE}`};
+const DivisionLine = styled(StyledDivisionLine)`
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 `;

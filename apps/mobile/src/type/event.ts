@@ -11,11 +11,10 @@ export interface EventInfoType {
   eventDday: string;
   eventInProgress: boolean;
   eventIntroduction?: string;
+  eventNowOpen: boolean;
 }
-
 
 export interface EventListType {
   hasNextPage: boolean;
   eventList: EventInfoType[];
 }
-

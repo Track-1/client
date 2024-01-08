@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useGetEventList } from '../../hooks/queries/admin/event';
 import { useNavigate } from 'react-router-dom';
 import { MoreBtnIc } from '../../assets';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { EventInfoType } from '../../type/event';
 import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { EventImageWrapper } from '../event/eventList';
+import { Link } from 'react-router-dom';
 
 const EVENT_TITLE = 'Hot Events here';
 
@@ -17,34 +17,42 @@ export default function HotEvent() {
     limit: 6,
   });
 
-  const navigate = useNavigate();
-
-  function handleMoveEventDetail() {
-    eventListData && navigate(`/event/${eventListData[0]?.eventId}`);
-  }
-
   return (
-    <>
+    <Container>
       <SectionHeader>
         <Text as="h2" color="white" font="Alex_20_M">
           {EVENT_TITLE}
         </Text>
-        <MoreBtnIc onClick={handleMoveEventDetail} />
+        <Link to="/event">
+          <MoreBtnIc />
+        </Link>
       </SectionHeader>
 
       {eventListData && (
         <EventWrapper>
-          <EventImageWrapper eventImage={eventListData[0]?.eventImageFile || ''} />
-          <TrackInfoTextForm
-            topItem={'New Open'}
-            topItemColor="neon_purple"
-            middleItem={(eventListData && eventListData[0]?.eventTitle) || ''}>
-            {eventListData[0]?.eventDate}
-          </TrackInfoTextForm>
+          <Link to={`/event/${eventListData[0]?.eventId}`}>
+            <EventImageWrapper eventImage={eventListData[0]?.eventImageFile || ''} />
+          </Link>
+
+          <Link to={`/event/${eventListData[0]?.eventId}`}>
+            <Text as="p" font="Pre_14_R" color="neon_purple" margin="0 0 0.5rem 0">
+              {eventListData[0]?.eventNowOpen ? 'Now open' : ''}
+            </Text>
+            <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+              {(eventListData && eventListData[0]?.eventTitle) || ''}
+            </Text>
+            <Text as="p" font="Pre_14_R" color="gray3">
+              {eventListData[0]?.eventDate}
+            </Text>
+          </Link>
         </EventWrapper>
       )}
-    </>
+    </Container>
   );
 }
+
+const Container = styled.section`
+  margin-bottom: 10rem;
+`;
 
 const EventWrapper = styled.div``;

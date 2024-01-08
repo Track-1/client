@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import TrackInfoTextForm from '../common/Form/trackInfoTextForm';
 import { MoreBtnIc } from '../../assets';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
-import { useState } from 'react';
-import { FilteredVocalType } from '../../type/vocals';
 import SectionHeader from './common/sectionHeader';
 import Text from '../common/Text';
 import { useMovePage } from '../../hooks/common/useMovePage';
@@ -12,15 +9,15 @@ import { Link } from 'react-router-dom';
 
 const VOCAL_SECTION_TITLE = 'New Vocals\n For producer';
 
-export default function RecentVocalList() {
+interface RecentVocalListProps {
+  playingTrack: number | null;
+  selectTrack: <T extends number>(trackId: T) => void;
+}
+
+export default function RecentVocalList(props: RecentVocalListProps) {
+  const { playingTrack, selectTrack } = props;
   const { recentVocalInfo } = useGetRecentVocals(4);
   const { handleMovePage } = useMovePage();
-
-  const [playingTrack, setPLayingTrack] = useState<FilteredVocalType['userId'] | null>(null);
-
-  function selectTrack(userId: FilteredVocalType['userId']) {
-    setPLayingTrack(userId);
-  }
 
   return (
     <section>
@@ -54,14 +51,17 @@ export default function RecentVocalList() {
               />
 
               <Link to={`/vocal-profile/${trackInfo.userId}`}>
-                <TrackInfoTextForm
-                  topItem={`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum - 1}`}
-                  topItemColor="neon_pink"
-                  middleItem={trackInfo.userTitle}>
-                  {trackInfo.userKeyword.map((keyword) => (
-                    <VocalUserKeyword key={keyword}>#{keyword}</VocalUserKeyword>
-                  ))}
-                </TrackInfoTextForm>
+                <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
+                  {trackInfo.userCategory[0] ? `${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum}` : ''}
+                </Text>
+                <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+                  {trackInfo.userName}
+                </Text>
+                {trackInfo.userKeyword.map((keyword) => (
+                  <Text as="p" font="Pre_14_R" color="gray3" margin="0 0 0.5rem 0" key={keyword}>
+                    {`# ${keyword}`}
+                  </Text>
+                ))}
               </Link>
             </VocalTrackWrapper>
           ))}

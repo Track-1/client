@@ -73,5 +73,7 @@ const PortfolioList = styled.ul`
   flex-direction: column;
   gap: 5rem;
 
+  width: 100%;
+
   margin-top: 3rem;
 `;

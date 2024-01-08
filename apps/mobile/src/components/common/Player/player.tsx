@@ -31,6 +31,8 @@ const PlayerWrapper = styled.article`
 `;
 
 const PlayerInfoWrapper = styled.div`
+  position: relative;
+
   width: 100%;
   height: 10rem;
 

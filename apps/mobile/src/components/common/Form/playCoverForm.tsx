@@ -65,7 +65,7 @@ export default function PlayCoverForm(props: PropsWithChildren<PlayCoverFormProp
         height={restProps.height}
         shape={restProps.shape}
         align={restProps.align}
-        isPlay={isSelected && isAudioPlaying()}
+        isPlay={isSelected && innerPlaying}
         onPlay={handlePlay}
       />
     </Container>

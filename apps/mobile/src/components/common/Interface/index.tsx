@@ -9,6 +9,7 @@ export const ImageWrapper = styled.div<{ width: number; height: number }>`
 
   width: ${(props) => props.width}rem;
   height: ${(props) => props.height}rem;
+  
 `;
 
 export const HashtagWrapper = styled.div`
@@ -16,11 +17,12 @@ export const HashtagWrapper = styled.div`
   flex-direction: column;
 
   gap: 0.5rem;
+  height: 100%;
 `;
 
 export const InfinityObserver = styled.div`
   width: 100%;
-  height: 2rem;
+  height: 4rem;
 
   padding: 1rem 0;
 `;

@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import BottomUpModal from '../Interface/bottomUpModal';
 import { ImageWrapper } from '../Interface';
 import { Cover } from 'track-1-design-system';
-import TrackInfoTextForm from '../Form/trackInfoTextForm';
 import Text from '../Text';
 import { useTrackDetail } from '../../../hooks/queries/tracks';
-import { DivisionLine } from '../DivisionLine';
+import { StyledDivisionLine } from '../DivisionLine';
 import { ProfileUserIc, TrackDetailIc } from '../../../assets';
 import { Link } from 'react-router-dom';
 
@@ -28,25 +27,29 @@ export default function DetailTrackModal(props: DetailTrackModalProps) {
           <ImageWrapper width={9.5} height={9.5}>
             <Cover width={9.5} height={9.5} imageUrl={trackDetail?.trackImageFile || ''} shape="rectangle" />
           </ImageWrapper>
-          <TrackInfoTextForm
-            align="space-between"
-            topItem={trackDetail?.trackCategory}
-            topItemColor="neon_green"
-            middleItem={trackDetail?.trackTitle || ''}
-            middleItemMargin="0 0 3.1rem 0">
-            <Text as="span" font="Pre_16_R" color="white">
+
+          <TextInfoWrapper>
+            <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
+              {trackDetail?.trackCategory}
+            </Text>
+            <Text as="p" font="Alex_16_R" color="white" margin="0 0 3.1rem 0">
+              {trackDetail?.trackTitle || ''}
+            </Text>
+            <Text as="p" font="Pre_14_R" color="gray3">
               {trackDetail?.trackUserName}
             </Text>
-          </TrackInfoTextForm>
+          </TextInfoWrapper>
         </TrackInfoWrapper>
         <KeywordWrapper>
-          {trackDetail?.trackKeyword.map((keyword) => <Keyword>{`#${keyword}`}</Keyword>)}
+          {trackDetail?.trackKeyword.map((keyword) => (
+            <Keyword>{`#${keyword}`}</Keyword>
+          ))}
         </KeywordWrapper>
         <Text as="p" font="Pre_16_R" color="gray2" lineHeight="155%">
           {trackDetail?.trackIntroduction}
         </Text>
       </Container>
-      <DivisionLine />
+      <StyledDivisionLine />
       <LinkTextWrapper>
         <LinkItem>
           <ProfileUserIc />
@@ -115,4 +118,10 @@ const LinkItem = styled.li`
   gap: 0.5rem;
 
   margin-top: 3.5rem;
+`;
+
+const TextInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;

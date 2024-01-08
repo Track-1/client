@@ -5,7 +5,7 @@ import Text from '../common/Text';
 import { MoreDotIc, PlayingIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
 import { useState } from 'react';
-import DetailTrackModal from '../common/Modal/DetailTrack';
+import DetailTrack from '../common/Modal/DetailTrack';
 import { FilteredTrackType } from '../../type/tracks';
 
 interface TrackSearchItemProps {
@@ -46,17 +46,12 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
             {trackInfo.trackCategory}
           </Text>
           <ImageWrapper as="button" width={3} height={3}>
-            <MoreDotIc onClick={showModal} />
+            <MoreDotIc width={30} height={30} onClick={showModal} />
           </ImageWrapper>
         </TrackCategoryWrapper>
       </TrackItemInfoWrapper>
 
-      <DetailTrackModal
-        openModal={openModal}
-        showModal={showModal}
-        unShowModal={unShowModal}
-        detailId={trackInfo.trackId}
-      />
+      <DetailTrack openModal={openModal} showModal={showModal} unShowModal={unShowModal} detailId={trackInfo.trackId} />
     </Container>
   );
 }
