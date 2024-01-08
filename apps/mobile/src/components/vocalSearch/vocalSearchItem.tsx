@@ -79,7 +79,9 @@ export default function VocalSearchItem(props: VocalSearchItemProps) {
         }}>
         <Link to={`vocal-profile/${trackInfo.userId}`}>
           <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
-            {`${trackInfo.userCategory[0]}+${trackInfo.userCategoryNum}`}
+            {trackInfo.userCategory[0]
+              ? `${trackInfo.userCategory[0]} ${trackInfo.userCategoryNum > 1 ? `+${trackInfo.userCategoryNum}` : ''}`
+              : ''}
           </Text>
           <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
             {trackInfo.userName}

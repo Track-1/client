@@ -179,10 +179,3 @@ const ResetButton = styled.button`
 
   background-color: ${({ theme }) => theme.colors.gray4};
 `;
-
-const ResetBtnIcon = styled(ResetBtnIc)`
-  fill: 'blue';
-  path g {
-    fill: 'blue';
-  }
-`;
