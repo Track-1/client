@@ -19,10 +19,10 @@ export default function Footer() {
 
         <SnsWrapper>
           <Text as="li" font="Pre_14_R" color="white">
-            <SnsLinkText>Instagram</SnsLinkText>
+            <SnsLinkText href="https://www.instagram.com/track1.official/">Instagram</SnsLinkText>
           </Text>
           <Text as="li" font="Pre_14_R" color="white">
-            <SnsLinkText>Youtube</SnsLinkText>
+            <SnsLinkText href="https://www.youtube.com/@Track-1.official">Youtube</SnsLinkText>
           </Text>
           <Text as="li" font="Pre_14_R" color="white">
             admin@track-1.link
