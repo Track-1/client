@@ -55,9 +55,9 @@ export default function EventList() {
                   />
                   <div onClick={() => handleMovePage('event', event.eventId)}>
                     <Text as="p" font="Pre_14_R" color="neon_purple" margin="0 0 0.5rem 0">
-                      {event.eventInProgress ? 'Now open' : undefined}
+                      {event.eventNowOpen ? 'Now open' : ''}
                     </Text>
-                    <Text as="p" font="Alex_16_R" color="white">
+                    <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
                       {event.eventTitle}
                     </Text>
                     <Text as="p" font="Pre_14_R" color="gray3">
@@ -74,9 +74,9 @@ export default function EventList() {
                 />
                 <div onClick={() => handleMovePage('event', event?.eventId)}>
                   <Text as="p" font="Pre_14_R" color="neon_purple" margin="0 0 0.5rem 0">
-                    {event?.eventInProgress ? 'Now open' : undefined}
+                    {event?.eventNowOpen ? 'Now open' : ''}
                   </Text>
-                  <Text as="p" font="Alex_16_R" color="white">
+                  <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
                     {event?.eventTitle}
                   </Text>
                   <Text as="p" font="Pre_14_R" color="gray3">
