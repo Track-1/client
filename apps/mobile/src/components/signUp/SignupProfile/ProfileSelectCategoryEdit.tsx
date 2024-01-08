@@ -35,7 +35,7 @@ export default function ProfileSelectCategoryEdit() {
           {isOpen ? <Styled.DropupIcon /> : <Styled.DropdownIcon />}
         </Styled.InputWrapper>
         {isOpen && (
-          <div ref={modalRef}>
+          <Styled.CategoryBoxWrapper ref={modalRef}>
             <Styled.CategoryBox>
               {getInvariantObjectKeys(invariantOf(CategoryId)).map((category) => {
                 return (
@@ -58,7 +58,7 @@ export default function ProfileSelectCategoryEdit() {
 
               <Select onClick={handleShowUpdateModal}>Select</Select>
             </Styled.CategoryBox>
-          </div>
+          </Styled.CategoryBoxWrapper>
         )}
       </div>
     </ProfileSelectCategoryEditWrapper>
@@ -102,6 +102,8 @@ const CategoryLabel = styled.label<{ isSelected?: boolean }>`
 
 const Styled = {
   CategoryBox: styled.div`
+    width: 100%;
+    position: absolute;
     margin-top: 1rem;
     max-height: 40rem;
     display: flex;
@@ -145,5 +147,9 @@ const Styled = {
     width: 3rem;
     height: 3rem;
     margin-left: -3rem;
+  `,
+  CategoryBoxWrapper: styled.div`
+    position: relative;
+    width: 100%;
   `,
 };
