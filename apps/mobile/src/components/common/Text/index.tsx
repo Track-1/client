@@ -27,12 +27,20 @@ interface TextProps {
   margin?: string;
   lineHeight?: string;
   letterSpacing?: string;
+  overflow?: string;
 }
 
 export default function Text(props: PropsWithChildren<TextProps>) {
-  const { as, font, color, margin, lineHeight, letterSpacing, children } = props;
+  const { as, font, color, margin, lineHeight, letterSpacing, overflow, children } = props;
   return (
-    <StyledText as={as} font={font} color={color} margin={margin} lineHeight={lineHeight} letterSpacing={letterSpacing}>
+    <StyledText
+      as={as}
+      font={font}
+      color={color}
+      margin={margin}
+      lineHeight={lineHeight}
+      letterSpacing={letterSpacing}
+      overflow={overflow}>
       {children}
     </StyledText>
   );
@@ -44,14 +52,16 @@ export const StyledText = styled.span<{
   margin?: string;
   lineHeight?: string;
   letterSpacing?: string;
+  overflow?: string;
 }>`
   ${({ font, theme }) => theme.fonts[font]}
   color: ${({ theme, color }) => theme.colors[color]};
   margin: ${({ margin }) => margin && margin};
   line-height: ${({ lineHeight }) => lineHeight && lineHeight};
   letter-spacing: ${({ letterSpacing }) => letterSpacing && letterSpacing};
+  overflow: ${({ overflow }) => overflow && overflow};
+
   white-space: pre-line;
-  overflow: hidden;
   text-overflow: ellipsis;
 
   user-select: text;

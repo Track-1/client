@@ -51,7 +51,7 @@ export default function TrackSearchContainer() {
         {'New Tracks for\n Limitless Chance'}
       </Text>
 
-      <section>
+      <SectionContainer>
         <TrackListHeader>
           <TracksTextWrapper>
             <Text as="p" font="Pre_14_M" color="gray4">
@@ -104,11 +104,15 @@ export default function TrackSearchContainer() {
             </li>
           ))}
         </ul>
-      </section>
+      </SectionContainer>
       <InfinityObserver ref={observerRef} />
     </>
   );
 }
+
+const SectionContainer = styled.section`
+  margin-bottom: 6rem;
+`;
 
 const TrackListHeader = styled.div`
   display: flex;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { EmptyBox, HashtagWrapper, ImageWrapper } from '../../common/Interface';
 import { PageType } from '../../../type/common/pageType';
 import Text from '../../common/Text';
+import { useMovePage } from '../../../hooks/common/useMovePage';
 
 interface PortfolioFormProps {
   pageType: PageType;
@@ -10,11 +11,14 @@ interface PortfolioFormProps {
   title: string;
   hashTagList: string[];
   introduce?: string;
-  linkTo?: string;
+  trackId?: number;
 }
 
 export default function PortfolioForm(props: PropsWithChildren<PortfolioFormProps>) {
-  const { pageType, category, title, hashTagList, introduce, linkTo, children } = props;
+  const { pageType, category, title, hashTagList, introduce, trackId, children } = props;
+
+  const { handleMovePage } = useMovePage();
+
   return (
     <Container>
       <PortfolioWrapper>
@@ -23,7 +27,7 @@ export default function PortfolioForm(props: PropsWithChildren<PortfolioFormProp
         </ImageWrapper>
 
         <PortfolioInfoWrapper>
-          <EmptyBox>
+          <EmptyBox onClick={() => trackId && handleMovePage('track-post', trackId)}>
             <Text
               as="p"
               font="Pre_14_R"

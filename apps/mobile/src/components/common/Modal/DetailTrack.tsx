@@ -36,7 +36,7 @@ export default function DetailTrackModal(props: DetailTrackModalProps) {
             <Text as="p" font="Alex_16_R" color="white" margin="0 0 3.1rem 0">
               {trackDetail?.trackTitle || ''}
             </Text>
-            <Text as="p" font="Pre_14_R" color="gray3">
+            <Text as="p" font="Pre_16_R" color="white">
               {trackDetail?.trackUserName}
             </Text>
           </TextInfoWrapper>
@@ -117,7 +117,7 @@ const LinkTextWrapper = styled.ul`
 
 const LinkItem = styled.li`
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
 
   margin-top: 3.5rem;
 `;

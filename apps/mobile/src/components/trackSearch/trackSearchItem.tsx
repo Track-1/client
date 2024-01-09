@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PropsWithChildren, useContext, useEffect } from 'react';
 import Text from '../common/Text';
 import { MoreDotIc, PlayingIc } from '../../assets';
-import { ImageWrapper } from '../common/Interface';
+import { EmptyBox, ImageWrapper } from '../common/Interface';
 import { useState } from 'react';
 import DetailTrack from '../common/Modal/DetailTrack';
 import { FilteredTrackType } from '../../type/tracks';
@@ -64,15 +64,17 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
 
   return (
     <Container>
-      <Cover
-        imageUrl={trackInfo.trackImageFile}
-        width={4}
-        height={4}
-        shape={'rectangle'}
-        align={'center'}
-        isPlay={isSelected && innerPlaying}
-        onPlay={handlePlay}
-      />
+      <ImageWrapper width={4} height={4}>
+        <Cover
+          imageUrl={trackInfo.trackImageFile}
+          width={4}
+          height={4}
+          shape={'rectangle'}
+          align={'center'}
+          isPlay={isSelected && innerPlaying}
+          onPlay={handlePlay}
+        />
+      </ImageWrapper>
 
       <TrackItemInfoWrapper>
         <TrackUserInfoWrapper
@@ -81,10 +83,13 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
             handlePlay();
           }}>
           <TrackTitleWrapper>
-            <Text as="p" font="Pre_14_M" color="white">
-              {trackInfo.trackTitle}
-            </Text>
-            {isSelected && <PlayingIc />}
+            <TrackTitle>{trackInfo.trackTitle}</TrackTitle>
+
+            <ImageWrapper width={1.7} height={1.7}>
+              {isSelected && <PlayingIc />}
+            </ImageWrapper>
+
+            {/* {isSelected && <PlayingIcon />} */}
           </TrackTitleWrapper>
           <Text as="p" font="Pre_12_R" color="white">
             {trackInfo.trackUserName}
@@ -123,6 +128,7 @@ const Container = styled.div`
 
 const TrackTitleWrapper = styled.div`
   display: flex;
+
   gap: 0.5rem;
 `;
 
@@ -140,8 +146,7 @@ const TrackUserInfoWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: calc(100% - 12.8rem);
-  height: 100%;
+  width: calc(100% - 12rem);
 
   padding: 0.1rem 0;
 `;
@@ -152,4 +157,12 @@ const TrackCategoryWrapper = styled.div`
   align-items: center;
 
   width: 11.8rem;
+`;
+
+const TrackTitle = styled.div`
+  ${({ theme }) => theme.fonts.Pre_14_M};
+  color: ${({ theme }) => theme.colors.white};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

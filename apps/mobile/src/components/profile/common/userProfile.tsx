@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Text from '../../common/Text';
 import { UserType } from '../../../type/common/userType';
-import { isProducer } from '../../../utils/common/check';
+import { isProducer, isVocal } from '../../../utils/common/check';
 import { StyledDivisionLine } from '../../common/DivisionLine';
 import { ProducerInfoType, VocalProfileType } from '../../../type/profile';
 
@@ -18,6 +18,7 @@ export default function UserProfile(props: UserInfoProfile) {
       <PersonalProfileWrapper>
         <UserImageWrapper>
           <UserImage src={profileInfo?.userProfile.userImageFile} />
+          {userType && isVocal(userType) && <VocalTag>Vocal</VocalTag>}
         </UserImageWrapper>
         <Text as="span" font="Alex_25_R" color="white" margin="2rem 0 1rem">
           {profileInfo?.userProfile.userName}
@@ -85,6 +86,8 @@ const PersonalProfileWrapper = styled.div`
 `;
 
 const UserImageWrapper = styled.div`
+  position: relative;
+
   width: 22rem;
   height: 22rem;
 `;
@@ -138,4 +141,23 @@ export const TrackInfoWrapper = styled.div`
 const DivisionLine = styled(StyledDivisionLine)`
   margin-top: 3rem;
   margin-bottom: 3rem;
+`;
+
+const VocalTag = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 6rem;
+  height: 3rem;
+
+  ${({ theme }) => theme.fonts.Alex_14_R};
+  color: ${({ theme }) => theme.colors.black};
+
+  background-color: ${({ theme }) => theme.colors.neon_pink};
+  border-radius: 2rem;
 `;

@@ -61,8 +61,6 @@ export function checkMaxInputLength(textLength: number, maxLength: number) {
   return textLength <= maxLength;
 }
 
-
-
 export function isVocal(userType: string): boolean {
   return userType === ROLE.VOCAL;
 }
