@@ -13,10 +13,10 @@ export default function Card(props: CardProps) {
   const { color, isSelected, title, description, onClick } = props;
 
   return (
-    <Styled.CardContainer color={isSelected ? color : theme.colors.gray5}>
+    <Styled.CardContainer color={isSelected ? color : theme.colors.gray5} onClick={onClick}>
       <Styled.Header>
         <Styled.Title>{title}</Styled.Title>
-        <i onClick={onClick}>
+        <i>
           {isSelected ? (
             <Styled.CheckedCircle color={color}>
               <Styled.CheckedInlineCircle color={color} />
