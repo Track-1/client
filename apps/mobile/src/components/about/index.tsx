@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import aboutIntroImg from '../../assets/image/mobile/aboutIntroImg.png';
-import aboutPurposeBackgroundImg from '../../assets/image/mobile/aboutPurposeBackgroundImg.png';
+import aboutIntroImg from '../../assets/image/about/aboutIntroImg.png';
+import aboutPurposeBackgroundImg from '../../assets/image/about/aboutPurposeBackgroundImg.png';
 
-import trackSearchExampleImg from '../../assets/image/mobile/trackSearchExampleImg.png';
-import vocalSearchExampleImg from '../../assets/image/mobile/vocalSearchExampleImg.png';
-import desktopExampleImg from '../../assets/image/mobile/desktopExampleImg.png';
+import trackSearchExampleImg from '../../assets/image/about/trackSearchExampleImg.png';
+import vocalSearchExampleImg from '../../assets/image/about/vocalSearchExampleImg.png';
+import desktopExampleImg from '../../assets/image/about/desktopExampleImg.png';
 import Text from '../common/Text';
 import { RightArrowIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
