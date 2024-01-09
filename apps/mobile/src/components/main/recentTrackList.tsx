@@ -21,7 +21,7 @@ export default function RecentTrackList(props: RecentTrackListProps) {
   const { handleMovePage } = useMovePage();
 
   return (
-    <section>
+    <SectionContainer>
       <SectionHeader>
         <Text as="h2" color="white" font="Alex_20_M">
           {TRACK_SECTION_TITLE}
@@ -51,7 +51,7 @@ export default function RecentTrackList(props: RecentTrackListProps) {
                 <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
                   {trackInfo.trackCategory}
                 </Text>
-                <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
+                <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0" overflow="hidden">
                   {trackInfo.trackTitle}
                 </Text>
                 <Text as="p" font="Pre_14_R" color="gray3">
@@ -61,9 +61,13 @@ export default function RecentTrackList(props: RecentTrackListProps) {
             </TrackItem>
           ))}
       </TrackListWrapper>
-    </section>
+    </SectionContainer>
   );
 }
+
+const SectionContainer = styled.section`
+  margin-bottom: 10rem;
+`;
 
 const TrackListWrapper = styled.ul`
   display: flex;

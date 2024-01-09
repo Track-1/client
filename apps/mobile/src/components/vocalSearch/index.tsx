@@ -54,16 +54,18 @@ export default function VocalSearchContainer() {
           </Text>
           <ImageWrapper width={3} height={3}>
             <FilterIc onClick={showModal} />
-            <FilterModal
-              openModal={openModal}
-              showModal={showModal}
-              unShowModal={unShowModal}
-              pageType="vocals"
-              selectCategory={selectCategory}
-              selectedCategory={selectedCategory}
-              handleSelectCategory={handleSelectCategory}
-              resetCategory={resetCategory}
-            />
+            {openModal && (
+              <FilterModal
+                openModal={openModal}
+                showModal={showModal}
+                unShowModal={unShowModal}
+                pageType="vocals"
+                selectCategory={selectCategory}
+                selectedCategory={selectedCategory}
+                handleSelectCategory={handleSelectCategory}
+                resetCategory={resetCategory}
+              />
+            )}
           </ImageWrapper>
         </VocalListHeader>
         <StyledDivisionLine />

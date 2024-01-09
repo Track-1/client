@@ -81,7 +81,7 @@ export default function ProducerPortfolio(props: ProducerPortfolioProps) {
                 title={trackInfo.trackTitle}
                 hashTagList={trackInfo.trackKeyword}
                 introduce={trackInfo.trackContent}
-                linkTo={`/track-post/${trackInfo.trackId}`}>
+                trackId={trackInfo.trackId}>
                 <PlayCoverForm
                   imageFile={trackInfo.trackImageFile}
                   audioFile={trackInfo.trackAudioFile}

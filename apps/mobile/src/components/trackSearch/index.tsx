@@ -51,7 +51,7 @@ export default function TrackSearchContainer() {
         {'New Tracks for\n Limitless Chance'}
       </Text>
 
-      <section>
+      <SectionContainer>
         <TrackListHeader>
           <TracksTextWrapper>
             <Text as="p" font="Pre_14_M" color="gray4">
@@ -93,31 +93,26 @@ export default function TrackSearchContainer() {
         )}
         <ul>
           {trackData?.map((trackInfo) => (
-            <>
-              <TrackSearchItem trackInfo={trackInfo} isSelected={trackInfo.trackId === playingTrack}>
-                <PlayCoverForm
-                  imageFile={trackInfo.trackImageFile}
-                  audioFile={trackInfo.trackAudioFile}
-                  audioId={trackInfo.trackId}
-                  audioTitle={trackInfo.trackTitle}
-                  userName={trackInfo.trackUserName}
-                  playingTrack={playingTrack}
-                  selectTrack={selectTrack}
-                  width={4}
-                  height={4}
-                  shape="rectangle"
-                  align="center"
-                />
-              </TrackSearchItem>
+            <li key={trackInfo.trackId}>
+              <TrackSearchItem
+                trackInfo={trackInfo}
+                isSelected={trackInfo.trackId === playingTrack}
+                playingTrack={playingTrack}
+                selectTrack={selectTrack}
+              />
               <StyledDivisionLine />
-            </>
+            </li>
           ))}
         </ul>
-      </section>
+      </SectionContainer>
       <InfinityObserver ref={observerRef} />
     </>
   );
 }
+
+const SectionContainer = styled.section`
+  margin-bottom: 6rem;
+`;
 
 const TrackListHeader = styled.div`
   display: flex;

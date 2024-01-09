@@ -28,7 +28,7 @@ export default function LoginContainer() {
             onClick={() => {
               handleMovePage('signup');
             }}>
-            Sign up here
+            &nbsp;Sign up here
           </a>
         </Text>
       </SignupTextWrapper>

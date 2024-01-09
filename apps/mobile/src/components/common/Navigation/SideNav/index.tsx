@@ -40,7 +40,7 @@ function UserInfo() {
             <Cover imageUrl={userProfile?.userImageFile || ''} width={4} height={4} shape="circle" />
           </Link>
         ) : (
-          <DefaultUserIc />
+          <DefaultUserIc width={40} height={40} />
         )}
       </ImageWrapper>
 
@@ -67,15 +67,14 @@ function UserInfo() {
             </Text>
           </>
         ) : (
-          <>
-            <Text as="span" font="Pre_18_R" color="gray2">
+          <UserProfileWrapper>
+            <Text as="p" font="Pre_18_R" color="gray2">
               {`Have an account? `}
-              &nbsp;
             </Text>
-            <Text as="span" font="Pre_18_R" color="white">
+            <Text as="p" font="Pre_18_R" color="white">
               <Link to="/login"> {`Log in here`}</Link>
             </Text>
-          </>
+          </UserProfileWrapper>
         )}
       </UserInfoWrapper>
     </UserInfoContainer>
@@ -86,7 +85,8 @@ const UserInfoContainer = styled.div`
   display: flex;
 
   width: 100%;
-  padding: 0.8rem 0;
+  height: 6rem;
+  padding: 1rem 0;
 `;
 
 const UserInfoWrapper = styled.div<{ isLoggedIn: boolean }>`
@@ -95,16 +95,9 @@ const UserInfoWrapper = styled.div<{ isLoggedIn: boolean }>`
   align-items: center;
 
   width: 100%;
+  height: 100%;
 
-  ${(props) =>
-    props.isLoggedIn
-      ? css`
-          justify-content: space-between;
-          margin-left: 1.3rem;
-        `
-      : css`
-          margin-left: 1rem;
-        `}
+  margin-left: 1rem;
 `;
 
 const UserProfileWrapper = styled.div`
@@ -119,8 +112,6 @@ const UserNameWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-
-  height: 100%;
 `;
 
 interface SideNavProps {
@@ -160,7 +151,7 @@ export default function SideNav(props: SideNavProps) {
 
 const slideIn = keyframes`
   from {
-    transform: translateX(-100%);
+    transform: translateX(100%);
   }
   to {
     transform: translateX(0);
@@ -179,14 +170,21 @@ const slideOut = keyframes`
 const Container = styled.nav<{ openModal: boolean }>`
   position: fixed;
   top: 0;
-  left: ${({ openModal }) => (openModal ? '0' : '-100%')};
+  right: ${({ openModal }) => (openModal ? '0' : '-100%')};
   animation: ${({ openModal }) => (openModal ? slideIn : slideOut)} 0.5s ease-in-out;
   z-index: ${Z_INDEX.SIDE_NAV};
 
-  width: 100%;
+  width: 29.7rem;
   height: 100%;
 
   padding: 0 2.5rem;
+
+  border-radius: 10px 0px 0px 10px;
+  border-top: 1px solid #2f2f2f;
+  border-bottom: 1px solid #2f2f2f;
+  border-left: 1px solid #2f2f2f;
+  background: rgba(20, 21, 23, 0.7);
+  backdrop-filter: blur(15px);
 
   background-color: ${({ theme }) => theme.colors.gray6};
 `;

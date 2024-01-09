@@ -30,13 +30,13 @@ export default function EventDetailContainer() {
 
 const EventImageWrapper = styled.div<{ imageUrl?: string }>`
   width: calc(${`100% + ${PADDING_SIDE}*2`});
-  height: 45.8rem;
+  aspect-ratio: 1/1;
 
   margin-left: ${`-${PADDING_SIDE}`};
 
   background-image: linear-gradient(180deg, #0d0e11 0%, rgba(13, 14, 17, 0) 100%), url(${({ imageUrl }) => imageUrl});
 
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 `;

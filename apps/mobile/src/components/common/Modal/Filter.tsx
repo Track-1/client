@@ -1,11 +1,12 @@
 import styled, { css } from 'styled-components';
-import BottomUpModal from '../Interface/bottomUpModal';
+
 import { Categories, LowerCategoryId } from '../../../core/common/categories';
 import { PageType } from '../../../type/common/pageType';
 import Text from '../Text';
 import { CategoryType } from '../../../type/common/category';
 import { CategoryCheckedIc, ResetBtnIc } from '../../../assets';
 import { theme } from '../../../style/theme';
+import BottomUpModal from './bottomUpModal';
 
 interface FilterModalProps {
   openModal: boolean;
@@ -41,6 +42,7 @@ export default function FilterModal(props: FilterModalProps) {
         <CategorList>
           {Categories.map((category) => (
             <CategoryItem
+              key={category}
               pageType={pageType}
               isChecked={selectedCategory.has(LowerCategoryId[category])}
               onClick={() => {
