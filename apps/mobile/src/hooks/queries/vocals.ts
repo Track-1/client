@@ -1,9 +1,9 @@
-import { useInfiniteQuery, useQuery } from "react-query";
-import { getFilteredVocals, getRecentVocals } from "../../api/vocals";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { FilteredVocalsParamsType } from "../../type/vocals";
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { getFilteredVocals, getRecentVocals } from '../../api/vocals';
+import { QUERIES_KEY } from '../../core/common/queriesKey';
+import { FilteredVocalsParamsType } from '../../type/vocals';
 
-export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">) {
+export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, 'page'>) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getFilteredVocals({ ...params, page: pageParams });
 
@@ -15,13 +15,13 @@ export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">
     ({ pageParam = 1 }) => fetchVocals(pageParam),
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.response.data[0].vocalList.length === 0 ? undefined : lastPage.nextPage;
+        return lastPage.response.data[0]?.vocalList.length === 0 ? undefined : lastPage.nextPage;
       },
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
-  const vocalData = data?.pages.flatMap((data) => data.response.data[0].vocalList.map((trackInfo) => trackInfo));
+  const vocalData = data?.pages.flatMap((data) => data.response.data[0]?.vocalList.map((trackInfo) => trackInfo));
 
   return {
     vocalData,
@@ -32,11 +32,13 @@ export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">
 }
 
 export function useGetRecentVocals(count: number) {
-  const { data: recentVocalInfo } = useQuery(["getRecentVocals"], () => getRecentVocals(count), {
+  const { data } = useQuery(['getRecentVocals'], () => getRecentVocals(count), {
     onError: (err) => {
       console.log(err);
     },
   });
+
+  const recentVocalInfo = data && data.slice(0, count);
 
   return { recentVocalInfo };
 }
