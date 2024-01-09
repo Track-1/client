@@ -93,24 +93,15 @@ export default function TrackSearchContainer() {
         )}
         <ul>
           {trackData?.map((trackInfo) => (
-            <>
-              <TrackSearchItem trackInfo={trackInfo} isSelected={trackInfo.trackId === playingTrack}>
-                <PlayCoverForm
-                  imageFile={trackInfo.trackImageFile}
-                  audioFile={trackInfo.trackAudioFile}
-                  audioId={trackInfo.trackId}
-                  audioTitle={trackInfo.trackTitle}
-                  userName={trackInfo.trackUserName}
-                  playingTrack={playingTrack}
-                  selectTrack={selectTrack}
-                  width={4}
-                  height={4}
-                  shape="rectangle"
-                  align="center"
-                />
-              </TrackSearchItem>
+            <li key={trackInfo.trackId}>
+              <TrackSearchItem
+                trackInfo={trackInfo}
+                isSelected={trackInfo.trackId === playingTrack}
+                playingTrack={playingTrack}
+                selectTrack={selectTrack}
+              />
               <StyledDivisionLine />
-            </>
+            </li>
           ))}
         </ul>
       </section>
