@@ -16,7 +16,7 @@ interface RecentVocalListProps {
 
 export default function RecentVocalList(props: RecentVocalListProps) {
   const { playingTrack, selectTrack } = props;
-  const { recentVocalInfo } = useGetRecentVocals(4);
+  const { recentVocalInfo } = useGetRecentVocals(3);
   const { handleMovePage } = useMovePage();
 
   return (

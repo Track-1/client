@@ -25,10 +25,10 @@ export default function EventList() {
   }
 
   return (
-    <section>
+    <SectionContainer>
       <SectionHeader>
         <Text as="h2" color="white" font="Alex_20_M">
-          {'Events for you'}
+          {'New Events\nFor you'}
         </Text>
 
         <ToggleWrapper>
@@ -88,9 +88,13 @@ export default function EventList() {
           )}
       </EventListWrapper>
       <InfinityObserver ref={observerRef} />
-    </section>
+    </SectionContainer>
   );
 }
+
+const SectionContainer = styled.section`
+  margin: 3rem 0 10rem;
+`;
 
 const DefaultRoot = styled.div<{ width?: number; height?: number; switchState: 'on' | 'off' }>`
   display: flex;
@@ -107,11 +111,11 @@ const DefaultRoot = styled.div<{ width?: number; height?: number; switchState: '
     switchState === 'on'
       ? css`
           background-color: ${({ theme }) => theme.colors.neon_purple};
-          justify-content: flex-start;
+          justify-content: flex-end;
         `
       : css`
           background-color: ${({ theme }) => theme.colors.gray4};
-          justify-content: flex-end;
+          justify-content: flex-start;
         `}
 `;
 
@@ -143,11 +147,11 @@ const DefaultThumb = styled.div<{ switchState: 'on' | 'off'; height?: number }>`
     switchState === 'on'
       ? css`
           background-color: ${({ theme }) => theme.colors.gray2};
-          ${moveRightAnimation} 0 linear forwards;
+          ${moveLeftAnimation} 0 linear forwards;
         `
       : css`
           background-color: ${({ theme }) => theme.colors.gray2};
-          ${moveLeftAnimation} 0 linear forwards;
+          ${moveRightAnimation} 0 linear forwards;
         `}
 `;
 
@@ -175,7 +179,7 @@ export const EventImageWrapper = styled.div<{ eventImage: string }>`
   align-items: center;
 
   width: 100%;
-  height: 22.5rem;
+  aspect-ratio: 1/1;
 
   overflow: hidden;
 
