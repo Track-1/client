@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import BottomUpModal from '../Interface/bottomUpModal';
+
 import { ImageWrapper } from '../Interface';
 import { Cover } from 'track-1-design-system';
 import Text from '../Text';
@@ -7,6 +7,7 @@ import { useTrackDetail } from '../../../hooks/queries/tracks';
 import { StyledDivisionLine } from '../DivisionLine';
 import { ProfileUserIc, TrackDetailIc } from '../../../assets';
 import { Link } from 'react-router-dom';
+import BottomUpModal from './bottomUpModal';
 
 interface DetailTrackModalProps {
   openModal: boolean;
@@ -70,6 +71,7 @@ export default function DetailTrackModal(props: DetailTrackModalProps) {
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
 
   padding: 0 3rem;
   margin: 2.8rem 0 4.2rem;

@@ -1,5 +1,5 @@
-import { PropsWithChildren, TouchEvent, useEffect, useRef, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import { PropsWithChildren, TouchEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { Z_INDEX } from '../../../core/common/zIndex';
 import Modal from '.';
 
@@ -12,13 +12,12 @@ interface BottomUpModalProps {
 export default function BottomUpModal(props: PropsWithChildren<BottomUpModalProps>) {
   const { openModal, showModal, unShowModal, children } = props;
 
-  const testRef = useRef<any>();
+  const modalRef = useRef<any>();
   const [touchStartPoint, setTouchStartPoint] = useState(0);
   const [touchMovingPoint, setTouchMovingPoint] = useState(0);
 
   function handleTouchMove(e: TouchEvent<HTMLDivElement>) {
     e.changedTouches[0] && setTouchMovingPoint(e.changedTouches[0]?.clientY);
-    console.log(e.changedTouches[0]?.clientY);
   }
 
   function handleTouchStart(e: TouchEvent<HTMLDivElement>) {
@@ -26,9 +25,19 @@ export default function BottomUpModal(props: PropsWithChildren<BottomUpModalProp
     e.changedTouches[0] && setTouchMovingPoint(e.changedTouches[0]?.clientY);
   }
 
-  console.log((touchMovingPoint - touchStartPoint) / 10);
+  function handleTouchEnd(e: TouchEvent<HTMLDivElement>) {
+    if ((touchMovingPoint - touchStartPoint) / 10 > 10) {
+      unShowModal();
+    } else {
+      setTouchStartPoint(0);
+      setTouchMovingPoint(0);
+    }
+  }
 
-  console.log(testRef?.current?.scrollHeight);
+  useEffect(() => {
+    // 최초 렌더링 시에만 modalRef의 scrollHeight를 출력
+    console.log(modalRef?.current?.scrollHeight);
+  }, []);
 
   return (
     <>
@@ -37,10 +46,10 @@ export default function BottomUpModal(props: PropsWithChildren<BottomUpModalProp
       </Modal>
       <Container
         openModal={openModal}
-        resizeHeight={(testRef?.current?.scrollHeight - (touchMovingPoint - touchStartPoint)) / 10}
-        maxHeight={testRef?.current?.scrollHeight / 10}
-        ref={testRef}>
-        <ModalHeader onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
+        resizeHeight={(modalRef?.current?.scrollHeight - (touchMovingPoint - touchStartPoint)) / 10}
+        maxHeight={modalRef?.current?.scrollHeight / 10}
+        ref={modalRef}>
+        <ModalHeader onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
           <StyledLine />
         </ModalHeader>
         <ModalContentWrapper>{children}</ModalContentWrapper>
@@ -67,7 +76,7 @@ const slideDown = keyframes`
   }
 `;
 
-const Container = styled.div<{ openModal: boolean; resizeHeight: number; maxHeight: number }>`
+const Container = styled.div<{ openModal: boolean; resizeHeight?: number; maxHeight?: number }>`
   position: fixed;
   left: 0;
   bottom: ${({ openModal }) => (openModal ? '0' : '-100%')};
