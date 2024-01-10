@@ -1,10 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { PlayerContext } from '../../context/playerContext';
 import { useCloseTrack, useTrackDetail, useTrackDownload } from '../../hooks/queries/tracks';
 import { blockAccess } from '../../utils/common/privateRouter';
 import Text from '../common/Text';
+import axios from 'axios';
 
 interface DownloadProps {
   downloadId: number;
@@ -16,12 +17,27 @@ export default function Download(props: DownloadProps) {
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const { trackDetail } = useTrackDetail(Number(downloadId));
   const { closeTrack } = useCloseTrack();
-  const { trackDownload } = useTrackDownload(Number(downloadId), isDownload, getFileLink);
+  const { trackDownload, isSuccess } = useTrackDownload(Number(downloadId), isDownload);
   const navigate = useNavigate();
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
-  function getFileLink(data: any) {
-    let blob = new Blob([data?.data], { type: 'audio/mpeg' });
+  useEffect(() => {
+    if (isSuccess) {
+      trackDownload && getFileLink(trackDownload?.trackAudioFile);
+    }
+  }, [isSuccess]);
+
+  async function getFileLink(audioFile: string) {
+    console.log(audioFile);
+    const audioFileBlob = await axios.get(audioFile, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      responseType: 'blob',
+    });
+
+    let blob = new Blob([audioFileBlob.data], { type: 'audio/mpeg' });
     let url = window.URL.createObjectURL(blob); //s3링크
 
     var a = document.createElement('a');

@@ -30,11 +30,7 @@ export async function getTrackDetail(trackId: number) {
 export async function getTrackDownload(trackId: number) {
   const { data } = await client.get<TrackDownloadResponse>(TRACKS.DOWNLOAD(trackId));
 
-  const res = await axios.get(data.data.trackAudioFile, {
-    responseType: 'blob',
-  });
-
-  return res;
+  return data.data;
 }
 
 export async function postTrack(formData: FormData) {
