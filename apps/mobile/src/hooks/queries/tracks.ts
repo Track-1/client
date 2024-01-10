@@ -27,13 +27,13 @@ export function useFilteredTracks(params: Omit<FilteredTrackParamsType, 'page'>)
     ({ pageParam = 1 }) => fetchTracks(pageParam),
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.response.data[0].trackList.length === 0 ? undefined : lastPage.nextPage;
+        return lastPage.response.data[0]?.trackList.length === 0 ? undefined : lastPage.nextPage;
       },
       refetchOnWindowFocus: false,
     }
   );
 
-  const trackData = data?.pages.flatMap((data) => data.response.data[0].trackList.map((trackInfo) => trackInfo));
+  const trackData = data?.pages.flatMap((data) => data.response.data[0]?.trackList.map((trackInfo) => trackInfo));
 
   return {
     trackData,
@@ -57,13 +57,10 @@ export function useTrackDetail(trackId: number) {
   };
 }
 
-export function useTrackDownload(trackId: number, isDownload: boolean | undefined, getFileLink: (data: any) => void) {
+export function useTrackDownload(trackId: number, isDownload: boolean | undefined) {
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.TRACK_DOWNLOAD, trackId],
     queryFn: () => getTrackDownload(trackId),
-    onSuccess: (data) => {
-      getFileLink(data);
-    },
     onError: (error) => {
       console.log(error);
     },
