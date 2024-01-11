@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { isLoggedIn } from '../../utils/common/check';
 
 type PagePathType =
   | 'home'
@@ -25,5 +26,16 @@ export function useMovePage() {
     parameter ? navigate(`/${pagePath}/${parameter}`) : navigate(`/${pagePath}`);
   }
 
-  return { navigate, handleMovePage };
+  function checkUserPermission() {
+    if (!isLoggedIn()) {
+      alert('Please use this function after logging in.\n해당 기능은 로그인 후 이용해주세요.');
+      navigate('/login');
+      return false;
+    }
+    return true;
+  }
+
+  return { navigate, handleMovePage, checkUserPermission };
 }
+
+export function handleMovePage() {}

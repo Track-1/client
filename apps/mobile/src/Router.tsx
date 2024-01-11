@@ -30,10 +30,8 @@ export default function Router() {
         <Route path="/vocal-search" element={<VocalSearchPage />} />
         <Route path="/track-post/:id" element={<TrackPostPage />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="*" element={<ErrorPage />} /> */}
 
-        {/* 반드시 인증 필요 */}
-        <Route element={<PrivateRoute authentication={true} />}>
+        <Route element={<PrivateRoute authentication />}>
           <Route path="/signup/profile" element={<SignupProfilePage />} />
           <Route path="/signup/success" element={<SignupSuccessPage />} />
           <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
