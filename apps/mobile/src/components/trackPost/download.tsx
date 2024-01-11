@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { PlayerContext } from '../../context/playerContext';
 import { useCloseTrack, useTrackDetail, useTrackDownload } from '../../hooks/queries/tracks';
-import { blockAccess } from '../../utils/common/privateRouter';
 import Text from '../common/Text';
-import axios from 'axios';
+import { useMovePage } from '../../hooks/common/useMovePage';
 
 interface DownloadProps {
   downloadId: number;
@@ -17,27 +16,13 @@ export default function Download(props: DownloadProps) {
   const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
   const { trackDetail } = useTrackDetail(Number(downloadId));
   const { closeTrack } = useCloseTrack();
-  const { trackDownload, isSuccess } = useTrackDownload(Number(downloadId), isDownload);
+  const { trackDownload } = useTrackDownload(Number(downloadId), isDownload, getFileLink);
   const navigate = useNavigate();
   const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { checkUserPermission } = useMovePage();
 
-  useEffect(() => {
-    if (isSuccess) {
-      trackDownload && getFileLink(trackDownload?.trackAudioFile);
-    }
-  }, [isSuccess]);
-
-  async function getFileLink(audioFile: string) {
-    console.log(audioFile);
-    const audioFileBlob = await axios.get(audioFile, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      responseType: 'blob',
-    });
-
-    let blob = new Blob([audioFileBlob.data], { type: 'audio/mpeg' });
+  function getFileLink(data: any) {
+    let blob = new Blob([data?.data], { type: 'audio/mpeg' });
     let url = window.URL.createObjectURL(blob); //s3링크
 
     var a = document.createElement('a');
@@ -52,32 +37,8 @@ export default function Download(props: DownloadProps) {
     setIsDownload(undefined);
   }
 
-  function checkIsMeOpen() {
-    return trackDetail?.userSelf && !trackDetail?.trackClosed;
-  }
-
-  function checkIsMeClosed() {
-    return trackDetail?.userSelf && trackDetail?.trackClosed;
-  }
-
-  function checkIsNotMeOpen() {
-    return !trackDetail?.userSelf && !trackDetail?.trackClosed;
-  }
-
-  function checkIsNotMeClosed() {
-    return !trackDetail?.userSelf && trackDetail?.trackClosed;
-  }
-
-  function closeTrackPost() {
-    closeTrack(Number(downloadId));
-  }
-
-  function openTrackPost() {
-    closeTrack(Number(downloadId));
-  }
-
   function getFile() {
-    if (blockAccess()) {
+    if (checkUserPermission()) {
       quitAudioForMovePage();
       navigate('/login', {
         state: {

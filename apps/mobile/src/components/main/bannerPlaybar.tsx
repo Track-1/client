@@ -11,6 +11,7 @@ import { useGetRecentTracks } from '../../hooks/queries/tracks';
 import { FilteredVocalType } from '../../type/vocals';
 import Text from '../common/Text';
 import { Link } from 'react-router-dom';
+import { useMovePage } from '../../hooks/common/useMovePage';
 
 interface VocalPlaybarProps {
   playingTrack: number | null;
@@ -22,26 +23,27 @@ function VocalPlaybar(props: VocalPlaybarProps) {
   const { recentVocalInfo } = useGetRecentVocals(4);
 
   const trackInfo = recentVocalInfo && recentVocalInfo[0] ? recentVocalInfo[0] : undefined;
+  const { handleMovePage, checkUserPermission } = useMovePage();
 
   return (
     <>
       {trackInfo && (
         <>
-          <Link to={`/vocal-profile/${trackInfo.userId}`}>
+          <a onClick={() => checkUserPermission() && handleMovePage('vocal-profile', trackInfo?.userId)}>
             <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
               {`${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum}`}
             </Text>
             <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
               {trackInfo.userTitle}
             </Text>
-            <KeywordWrapper>
-              {trackInfo.userKeyword.map((keyword) => (
-                <Text as="p" font="Pre_14_R" color="white">
-                  {`#${keyword}`}
-                </Text>
-              ))}
-            </KeywordWrapper>
-          </Link>
+          </a>
+          <KeywordWrapper>
+            {trackInfo.userKeyword.map((keyword) => (
+              <Text as="p" font="Pre_14_R" color="white">
+                {`#${keyword}`}
+              </Text>
+            ))}
+          </KeywordWrapper>
 
           <PlayIcon
             imageFile={trackInfo.userImageFile}
@@ -69,12 +71,13 @@ function ProducerPlaybar(props: ProducerPlaybarProps) {
   const { recentTrackInfo } = useGetRecentTracks(4);
 
   const trackInfo = recentTrackInfo && recentTrackInfo[0] ? recentTrackInfo[0] : undefined;
+  const { handleMovePage, checkUserPermission } = useMovePage();
 
   return (
     <>
       {trackInfo && (
         <>
-          <Link to={`/producer-profile/${trackInfo.trackId}`}>
+          <a onClick={() => checkUserPermission() && handleMovePage('producer-profile', trackInfo?.trackUserId)}>
             <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
               {trackInfo.trackCategory}
             </Text>
@@ -84,7 +87,7 @@ function ProducerPlaybar(props: ProducerPlaybarProps) {
             <Text as="p" font="Pre_14_R" color="white">
               {trackInfo.trackUserName}
             </Text>
-          </Link>
+          </a>
 
           <PlayIcon
             imageFile={trackInfo.trackImageFile}
