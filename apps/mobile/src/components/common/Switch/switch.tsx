@@ -84,7 +84,9 @@ function SwitchBox(props: PropsWithChildren<SwitchProps>) {
   function internalSwitchThumb() {
     currentThumb === 'on' ? setCurrentThumb('off') : setCurrentThumb('on');
   }
+
   const switchThumb = combineState(externalState, internalSwitchThumb);
+
   return <SwitchContext.Provider value={{ currentThumb, switchThumb }}>{children}</SwitchContext.Provider>;
 }
 
@@ -97,10 +99,10 @@ function Label(props: LabelProps) {
 
 function Root(props: PropsWithChildren<RootProps>) {
   const { width, height, children } = props;
-  const { currentThumb } = useContext(SwitchContext);
+  const { currentThumb, switchThumb } = useContext(SwitchContext);
 
   return (
-    <DefaultRoot width={width} height={height} switchState={currentThumb}>
+    <DefaultRoot width={width} height={height} switchState={currentThumb} onClick={switchThumb}>
       {children}
     </DefaultRoot>
   );
@@ -108,9 +110,9 @@ function Root(props: PropsWithChildren<RootProps>) {
 
 function Thumb(props: ThumbProps) {
   const { height } = props;
-  const { switchThumb, currentThumb } = useContext(SwitchContext);
+  const { currentThumb } = useContext(SwitchContext);
 
-  return <DefaultThumb switchState={currentThumb} onClick={switchThumb} height={height} />;
+  return <DefaultThumb switchState={currentThumb} height={height} />;
 }
 
 export const Switch = Object.assign(SwitchBox, {
