@@ -1,7 +1,8 @@
-import { PropsWithChildren, TouchEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import { PropsWithChildren, TouchEvent, useRef, useState } from 'react';
+import styled, { css, keyframes } from 'styled-components';
 import { Z_INDEX } from '../../../core/common/zIndex';
 import Modal from '.';
+import * as Dialog from '@radix-ui/react-dialog';
 
 interface BottomUpModalProps {
   openModal: boolean;
@@ -34,26 +35,27 @@ export default function BottomUpModal(props: PropsWithChildren<BottomUpModalProp
     }
   }
 
-  useEffect(() => {
-    // 최초 렌더링 시에만 modalRef의 scrollHeight를 출력
-    console.log(modalRef?.current?.scrollHeight);
-  }, []);
-
   return (
     <>
-      <Modal isOpen={openModal} onClose={unShowModal}>
-        <div></div>
-      </Modal>
-      <Container
-        openModal={openModal}
-        resizeHeight={(modalRef?.current?.scrollHeight - (touchMovingPoint - touchStartPoint)) / 10}
-        maxHeight={modalRef?.current?.scrollHeight / 10}
-        ref={modalRef}>
-        <ModalHeader onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-          <StyledLine />
-        </ModalHeader>
-        <ModalContentWrapper>{children}</ModalContentWrapper>
-      </Container>
+      <Dialog.Root open={openModal} onOpenChange={unShowModal}>
+        <Dialog.Portal>
+          <Background>
+            <Dialog.Content>
+              <Container
+                openModal={openModal}
+                resizeHeight={(modalRef?.current?.scrollHeight - (touchMovingPoint - touchStartPoint)) / 10}
+                maxHeight={modalRef?.current?.scrollHeight / 10}
+                isInit={touchStartPoint === 0 && touchMovingPoint === 0}
+                ref={modalRef}>
+                <ModalHeader onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+                  <StyledLine />
+                </ModalHeader>
+                <ModalContentWrapper>{children}</ModalContentWrapper>
+              </Container>
+            </Dialog.Content>
+          </Background>
+        </Dialog.Portal>
+      </Dialog.Root>
     </>
   );
 }
@@ -76,7 +78,7 @@ const slideDown = keyframes`
   }
 `;
 
-const Container = styled.div<{ openModal: boolean; resizeHeight?: number; maxHeight?: number }>`
+const Container = styled.div<{ openModal: boolean; resizeHeight?: number; maxHeight?: number; isInit: boolean }>`
   position: fixed;
   left: 0;
   bottom: ${({ openModal }) => (openModal ? '0' : '-100%')};
@@ -85,9 +87,12 @@ const Container = styled.div<{ openModal: boolean; resizeHeight?: number; maxHei
   z-index: ${Z_INDEX.FILTER_NAV};
 
   width: 100%;
-  height: ${({ resizeHeight }) => resizeHeight}rem;
-
-  max-height: ${({ maxHeight }) => maxHeight}rem;
+  ${({ isInit, resizeHeight, maxHeight }) =>
+    !isInit &&
+    css`
+      height: ${resizeHeight}rem;
+      max-height: ${maxHeight}rem;
+    `}
 
   border-radius: 20px 20px 0px 0px;
   border: 1px solid var(#313338);
@@ -117,4 +122,8 @@ const StyledLine = styled.div`
 
   border-radius: 3px;
   background: ${({ theme }) => theme.colors.gray4};
+`;
+
+const Background = styled(Dialog.Overlay)`
+  background-color: rgba(0, 0, 0, 0.2);
 `;

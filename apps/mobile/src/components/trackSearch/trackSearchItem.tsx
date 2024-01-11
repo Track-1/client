@@ -88,8 +88,6 @@ export default function TrackSearchItem(props: PropsWithChildren<TrackSearchItem
             <ImageWrapper width={1.7} height={1.7}>
               {isSelected && <PlayingIc />}
             </ImageWrapper>
-
-            {/* {isSelected && <PlayingIcon />} */}
           </TrackTitleWrapper>
           <Text as="p" font="Pre_12_R" color="white">
             {trackInfo.trackUserName}
@@ -160,6 +158,7 @@ const TrackCategoryWrapper = styled.div`
 `;
 
 const TrackTitle = styled.div`
+  max-width: 15rem;
   ${({ theme }) => theme.fonts.Pre_14_M};
   color: ${({ theme }) => theme.colors.white};
 
