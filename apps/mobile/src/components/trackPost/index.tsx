@@ -13,7 +13,7 @@ import { FilteredTrackType } from '../../type/tracks';
 import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
 import Download from './download';
 import { StyledDivisionLine } from '../common/DivisionLine';
-import { Link } from 'react-router-dom';
+import { useMovePage } from '../../hooks/common/useMovePage';
 
 export default function TrackPostContainer() {
   const { id } = useParams();
@@ -34,6 +34,8 @@ export default function TrackPostContainer() {
     trackDetail?.trackId || 0,
     selectTrack
   );
+
+  const { handleMovePage, checkUserPermission } = useMovePage();
 
   function handlePlay() {
     if (isSelected) {
@@ -70,7 +72,7 @@ export default function TrackPostContainer() {
             {trackDetail?.trackCategory}
           </Text>
         </UserInfoTopWrapper>
-        <Link to={`/producer-profile/${trackDetail?.trackUserId}`}>
+        <a onClick={() => checkUserPermission() && handleMovePage('producer-profile', trackDetail?.trackUserId)}>
           <UserProfileImageWrapper>
             <ImageWrapper width={3} height={3}>
               <Cover imageUrl={trackDetail?.userImageFile || ''} width={3} height={3} shape="circle" />
@@ -79,7 +81,7 @@ export default function TrackPostContainer() {
               {trackDetail?.trackUserName}
             </Text>
           </UserProfileImageWrapper>
-        </Link>
+        </a>
         <ButtonWrapper>
           <Download downloadId={Number(id)} />
           <ImageWrapper as="button" width={3} height={3} onClick={handlePlay}>
@@ -162,18 +164,6 @@ const ButtonWrapper = styled.div`
   width: 100%;
 
   margin-top: 4rem;
-`;
-
-const DownloadButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 28.8rem;
-  height: 4.8rem;
-
-  background-color: ${({ theme }) => theme.colors.neon_green};
-  border-radius: 4rem;
 `;
 
 const DivisionLine = styled(StyledDivisionLine)`
