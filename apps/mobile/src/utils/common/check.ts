@@ -44,6 +44,10 @@ export function checkIsLogin() {
   return getCookie('accessToken') !== undefined;
 }
 
+export function isLoggedIn() {
+  return getCookie('accessToken');
+}
+
 export function checkIsCookieNull() {
   return getCookie('accessToken') === null;
 }
