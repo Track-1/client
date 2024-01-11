@@ -8,7 +8,6 @@ import SwitchToggle from './switchToggle';
 import { PasswordUnVisableIc, PasswordVisableIc } from '../../assets';
 import styled from 'styled-components';
 import { EMAIL_RULE, PASSWORD_RULE } from '../../validation/rules';
-import { Button } from 'track-1-design-system';
 import Text from '../common/Text';
 import { ImageWrapper } from '../common/Interface';
 import { useForm } from 'react-hook-form';
@@ -51,9 +50,12 @@ export default function LoginInput() {
     }
   }, [error]);
 
-  function handleLogin() {
-    if (!isValid) return;
+  useEffect(() => {
+    clearErrors('userPw');
+    clearErrors('userEmail');
+  }, [userType]);
 
+  function handleLogin() {
     login({
       userEmail: getValues('userEmail'),
       userPw: getValues('userPw'),
@@ -67,6 +69,10 @@ export default function LoginInput() {
 
   function handleChangeVisiableState() {
     setVisiablePw(!visiablePw);
+  }
+
+  function getButtonState() {
+    return !errors.userEmail && !errors.userPw && getValues('userPw').length > 0;
   }
 
   return (
@@ -102,7 +108,7 @@ export default function LoginInput() {
         {/* 버튼에 gray5컬러가 없어요..!! */}
         {/* <Button size="large" backgroundColor="purple"> */}
         {/* 이거 왜 모바일에서는 클릭이 안되냐...? */}
-        <StyledButton state={isValid} onClick={handleLogin} onTouchStart={handleLogin}>
+        <StyledButton state={getButtonState()} onClick={handleLogin} onTouchStart={handleLogin}>
           <Text as="span" font="Alex_16_R" color="white">
             Log in
           </Text>
