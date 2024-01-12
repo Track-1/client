@@ -102,7 +102,7 @@ export function useLogin() {
   };
 }
 
-export function useLogout(state: boolean) {
+export function useLogout(state: boolean, unShowModal: () => void) {
   const resetLoginUserId = useResetRecoilState(loginUserId);
   const resetLoginUserType = useResetRecoilState(loginUserType);
 
@@ -113,6 +113,7 @@ export function useLogout(state: boolean) {
       resetLoginUserId();
       resetLoginUserType();
       removeCookie('accessToken', { path: '/' });
+      unShowModal();
     },
     onError: () => {},
     enabled: state,

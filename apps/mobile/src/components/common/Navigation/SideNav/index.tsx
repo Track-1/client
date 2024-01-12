@@ -14,7 +14,12 @@ import { useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { useMovePage } from '../../../../hooks/common/useMovePage';
 
-function UserInfo() {
+interface UserInfoProps {
+  unShowModal: () => void;
+}
+
+function UserInfo(props: UserInfoProps) {
+  const { unShowModal } = props;
   const isLoggedIn = checkIsLogin();
   const userId = useRecoilValue(loginUserId);
   const userType = useRecoilValue(loginUserType);
@@ -24,7 +29,7 @@ function UserInfo() {
 
   const [logoutState, setLogoutState] = useState(false);
 
-  const { logout } = useLogout(logoutState);
+  const { logout } = useLogout(logoutState, unShowModal);
 
   const { handleMovePage } = useMovePage();
 
@@ -129,7 +134,7 @@ export default function SideNav(props: SideNavProps) {
         </ImageWrapper>
       </NavTopItemWrapper>
 
-      <UserInfo />
+      <UserInfo unShowModal={unShowModal} />
 
       <NavItemWrapper>
         <Text as="li" font="Pre_40_R" color="white">
