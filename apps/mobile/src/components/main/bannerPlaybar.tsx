@@ -71,13 +71,13 @@ function ProducerPlaybar(props: ProducerPlaybarProps) {
   const { recentTrackInfo } = useGetRecentTracks(4);
 
   const trackInfo = recentTrackInfo && recentTrackInfo[0] ? recentTrackInfo[0] : undefined;
-  const { handleMovePage, checkUserPermission } = useMovePage();
+  const { handleMovePage } = useMovePage();
 
   return (
     <>
       {trackInfo && (
         <>
-          <a onClick={() => checkUserPermission() && handleMovePage('producer-profile', trackInfo?.trackUserId)}>
+          <a onClick={() => handleMovePage('track-post', trackInfo?.trackId)}>
             <Text as="p" font="Pre_14_R" color="neon_green" margin="0 0 0.5rem 0">
               {trackInfo.trackCategory}
             </Text>
