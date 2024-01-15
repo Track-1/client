@@ -22,10 +22,13 @@ function UserInfo(props: UserInfoProps) {
   const { unShowModal } = props;
   const isLoggedIn = checkIsLogin();
   const userId = useRecoilValue(loginUserId);
+  console.log(userId, isLoggedIn);
   const userType = useRecoilValue(loginUserType);
-  const userProfile = isProducer(userType)
-    ? useGetProducerProfile(userId).producerProfile?.userProfile
-    : useGetVocalProfile(userId).vocalProfile?.userProfile;
+  const userProfile = isLoggedIn
+    ? isProducer(userType)
+      ? useGetProducerProfile(userId).producerProfile?.userProfile
+      : useGetVocalProfile(userId).vocalProfile?.userProfile
+    : undefined;
 
   const [logoutState, setLogoutState] = useState(false);
 
@@ -59,7 +62,7 @@ function UserInfo(props: UserInfoProps) {
                   {userProfile?.userName}
                 </Text>
                 <ImageWrapper width={0.7} height={1.1}>
-                  <RightArrowIc />
+                  <RightArrowIc width={7} height={11} />
                 </ImageWrapper>
               </UserNameWrapper>
               <Text as="p" color={isProducer(userType) ? 'neon_green' : 'neon_pink'} font="Pre_14_R">
