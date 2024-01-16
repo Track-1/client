@@ -26,7 +26,7 @@ export default function Modal(props: ModalProps) {
                 {header && <header>{header}</header>}
                 {children}
                 <Dialog.Close>
-                  <CloseIc />
+                  <CloseIc width={14} height={14} />
                 </Dialog.Close>
               </m.div>
             </Styled.ModalBox>
