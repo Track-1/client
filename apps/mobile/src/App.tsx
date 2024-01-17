@@ -1,14 +1,14 @@
 import { OverlayProvider } from '@toss/use-overlay';
+import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import Router from './Router';
+import Player from './components/common/Player/player';
+import { PlayerProvider } from './context/playerContext';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
-import { useEffect } from 'react';
-import { PlayerProvider } from './context/playerContext';
-import Player from './components/common/Player/player';
 
 function App() {
   const queryClient = new QueryClient({
@@ -28,21 +28,21 @@ function App() {
   }, [isMobile]);
 
   return (
-    <OverlayProvider>
-      <CookiesProvider>
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <ThemeProvider theme={theme}>
+    <CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ThemeProvider theme={theme}>
+            <OverlayProvider>
               <PlayerProvider>
                 <GlobalStyle />
                 <Router />
                 <Player />
               </PlayerProvider>
-            </ThemeProvider>
-          </RecoilRoot>
-        </QueryClientProvider>
-      </CookiesProvider>
-    </OverlayProvider>
+            </OverlayProvider>
+          </ThemeProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
+    </CookiesProvider>
   );
 }
 
