@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
@@ -6,19 +7,16 @@ import { useFormContextWithRef } from '../../../hooks/common/useFormContextWithR
 import { InputTitle } from '../../common/Form/inputForm';
 import SimpleModal from '../../common/Modal/SimpleModal';
 import Hashtag from '../../common/Hashtag';
+import useModals from '../../../hooks/common/useModals';
 
 export default function ProfileHashtagEdit() {
   const { registerWithRef, ...methods } = useFormContextWithRef();
 
   const [isRulesOpen, setIsRulesOpen] = useState(false);
-
-  function onClose() {
-    setIsRulesOpen(false);
-  }
-
-  function onOpen() {
-    setIsRulesOpen(true);
-  }
+  const { modalRef, unShowModal, handleShowUpdateModal } = useModals({
+    isOpen: isRulesOpen,
+    setIsOpen: setIsRulesOpen,
+  });
 
   return (
     <div>
@@ -31,10 +29,25 @@ export default function ProfileHashtagEdit() {
           3. 작업의 분위기에 대해 설명해주세요. (ex. Dynamic)
         </>
       </SimpleModal>
-
       <Styled.HashtagHeader>
-        <InputTitle>Hashtag</InputTitle>
-        <HashtagWarning onClick={onOpen} />
+        <Styled.Header>
+          <InputTitle>Hashtag</InputTitle>
+          <HashtagWarning onClick={handleShowUpdateModal} />
+        </Styled.Header>
+        {isRulesOpen && (
+          <Styled.ModalWrapper>
+            <Styled.HashtagModal ref={modalRef}>
+              <Styled.CloseIcon onClick={unShowModal} />
+              <div>
+                1. 해시태그는 최대 3개까지 추가 가능합니다.
+                <br />
+                2. 최대 10자까지 작성이 가능합니다.
+                <br />
+                3. 작업의 분위기에 대해 설명해주세요. (ex. Dynamic)
+              </div>
+            </Styled.HashtagModal>
+          </Styled.ModalWrapper>
+        )}
       </Styled.HashtagHeader>
 
       <HashtagWrapper>
@@ -45,12 +58,47 @@ export default function ProfileHashtagEdit() {
 }
 
 const Styled = {
+  ModalWrapper: styled.div`
+    width: 100%;
+    position: relative;
+  `,
+  CloseIcon: styled(CloseIc)`
+    width: 1.2rem;
+    height: 1.2rem;
+    position: absolute;
+    margin: -0.5rem -0.5rem 0 0;
+  `,
   HashtagHeader: styled.header`
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    margin-bottom: 2.5rem;
+  `,
+  Header: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  `,
+  HashtagModal: styled.aside`
     width: 100%;
-    margin-bottom: 2.5rem;
+    position: absolute;
+    line-height: 180%;
+    padding: 2.7rem;
+    margin-top: 1rem;
+
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-radius: 1rem;
+    border: 1px solid rgb(49, 51, 56);
+    background: rgba(27, 28, 32, 0.5);
+    backdrop-filter: blur(15px);
+
+    color: ${({ theme }) => theme.colors.gray2};
+    ${({ theme }) => theme.fonts.Pre_14_R};
   `,
 };
 

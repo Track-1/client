@@ -49,8 +49,7 @@ export default function ProfilImageContainer() {
             onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <Styled.ProducerImageWrapper>
-                <Styled.ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" className="profile-image" />
-                <Styled.SignupChangePhotoProducerIcon className="change-photo-ic" />
+                <Styled.ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기"  />
               </Styled.ProducerImageWrapper>
             ) : (
               <Styled.SignUpUploadImageWrapper>
@@ -70,8 +69,7 @@ export default function ProfilImageContainer() {
             onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <Styled.VocalImageWrapper>
-                <Styled.VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" className="profile-image" />
-                <Styled.SignupChangePhotoVocalIcon className="change-photo-ic" />
+                <Styled.VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기"/>
               </Styled.VocalImageWrapper>
             ) : (
               <Styled.SignUpUploadImageWrapper>
@@ -94,15 +92,6 @@ const Styled = {
   ImageUploadBox: styled.label`
     cursor: pointer;
 
-    &:hover {
-      .change-photo-ic {
-        display: block;
-      }
-
-      .profile-image {
-        filter: blur(1.7rem);
-      }
-    }
   `,
 
   ImageContainer: styled.section`

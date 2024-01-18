@@ -1,14 +1,14 @@
 import { OverlayProvider } from '@toss/use-overlay';
+import { Suspense, useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import Router from './Router';
+import Player from './components/common/Player/player';
+import { PlayerProvider } from './context/playerContext';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
-import { Suspense, useEffect } from 'react';
-import { PlayerProvider } from './context/playerContext';
-import Player from './components/common/Player/player';
 import Loading from './components/common/Loading';
 
 function App() {
@@ -30,11 +30,11 @@ function App() {
   }, [isMobile]);
 
   return (
-    <OverlayProvider>
-      <CookiesProvider>
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <ThemeProvider theme={theme}>
+    <CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ThemeProvider theme={theme}>
+            <OverlayProvider>
               <PlayerProvider>
                 <GlobalStyle />
                 <Suspense fallback={<Loading />}>
@@ -42,11 +42,11 @@ function App() {
                   <Player />
                 </Suspense>
               </PlayerProvider>
-            </ThemeProvider>
-          </RecoilRoot>
-        </QueryClientProvider>
-      </CookiesProvider>
-    </OverlayProvider>
+            </OverlayProvider>
+          </ThemeProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
+    </CookiesProvider>
   );
 }
 
