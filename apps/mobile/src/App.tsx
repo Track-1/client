@@ -36,8 +36,8 @@ function App() {
           <RecoilRoot>
             <ThemeProvider theme={theme}>
               <PlayerProvider>
+                <GlobalStyle />
                 <Suspense fallback={<Loading />}>
-                  <GlobalStyle />
                   <Router />
                   <Player />
                 </Suspense>
