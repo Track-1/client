@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { PlayerContext } from '../../context/playerContext';
-import { useCloseTrack, useTrackDetail, useTrackDownload } from '../../hooks/queries/tracks';
-import { blockAccess } from '../../utils/common/privateRouter';
+import { useTrackDetail, useTrackDownload } from '../../hooks/queries/tracks';
 import Text from '../common/Text';
+import { useMovePage } from '../../hooks/common/useMovePage';
 import axios from 'axios';
 
 interface DownloadProps {
@@ -13,86 +12,55 @@ interface DownloadProps {
 
 export default function Download(props: DownloadProps) {
   const { downloadId } = props;
-  const prevURL = useLocation();
-  const [isDownload, setIsDownload] = useState<boolean | undefined>(undefined);
-  const { trackDetail } = useTrackDetail(Number(downloadId));
-  const { closeTrack } = useCloseTrack();
-  const { trackDownload, isSuccess } = useTrackDownload(Number(downloadId), isDownload);
-  const navigate = useNavigate();
+  const { trackDetail, refetch: getTrackDetail } = useTrackDetail(Number(downloadId));
+  const { data, refetch } = useTrackDownload(Number(downloadId));
   const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { checkUserPermission } = useMovePage();
 
   useEffect(() => {
-    if (isSuccess) {
-      trackDownload && getFileLink(trackDownload?.trackAudioFile);
-    }
-  }, [isSuccess]);
+    getTrackDetail();
+    refetch();
 
-  async function getFileLink(audioFile: string) {
-    console.log(audioFile);
-    const audioFileBlob = await axios.get(audioFile, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      responseType: 'blob',
-    });
+  }, []);
 
-    let blob = new Blob([audioFileBlob.data], { type: 'audio/mpeg' });
-    let url = window.URL.createObjectURL(blob); //s3링크
-
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = `${trackDetail?.trackTitle}`;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout((_: any) => {
-      window.URL.revokeObjectURL(url);
-    }, 60000);
-    a.remove();
-    setIsDownload(undefined);
-  }
-
-  function checkIsMeOpen() {
-    return trackDetail?.userSelf && !trackDetail?.trackClosed;
-  }
-
-  function checkIsMeClosed() {
-    return trackDetail?.userSelf && trackDetail?.trackClosed;
-  }
-
-  function checkIsNotMeOpen() {
-    return !trackDetail?.userSelf && !trackDetail?.trackClosed;
-  }
-
-  function checkIsNotMeClosed() {
-    return !trackDetail?.userSelf && trackDetail?.trackClosed;
-  }
-
-  function closeTrackPost() {
-    closeTrack(Number(downloadId));
-  }
-
-  function openTrackPost() {
-    closeTrack(Number(downloadId));
-  }
-
-  function getFile() {
-    if (blockAccess()) {
-      quitAudioForMovePage();
-      navigate('/login', {
-        state: {
-          prevURL: prevURL,
+  async function getDownloadLink(s3Link: string) {
+    await axios
+      .get(s3Link, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
         },
+        responseType: 'blob',
+      })
+      .then((response) => {
+        let blob = new Blob([response?.data], { type: 'audio/mpeg' });
+        let url = window.URL.createObjectURL(blob);
+
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.target = '_blank';
+        anchor.download = `${trackDetail?.trackTitle}`;
+        document.body.appendChild(anchor);
+        anchor.click();
+        setTimeout((_: any) => {
+          window.URL.revokeObjectURL(url);
+        }, 60000);
+        anchor.remove();
+        console.log('download success');
       });
+  }
+
+  function handleDownloadFile() {
+    if (!checkUserPermission()) {
+      quitAudioForMovePage();
     } else {
-      !isDownload && setIsDownload(true);
+      data && getDownloadLink(data.data.trackAudioFile);
     }
-    setIsDownload(true);
   }
 
   return (
-    <DownloadButton onClick={getFile}>
-      <Text as="h5" font="Pre_16_R" color="black">
+    <DownloadButton onClick={handleDownloadFile}>
+      <Text as="span" font="Pre_16_R" color="black">
         Download
       </Text>
     </DownloadButton>

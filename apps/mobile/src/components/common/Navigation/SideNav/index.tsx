@@ -14,22 +14,28 @@ import { useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { useMovePage } from '../../../../hooks/common/useMovePage';
 
-function UserInfo() {
+interface UserInfoProps {
+  unShowModal: () => void;
+}
+
+function UserInfo(props: UserInfoProps) {
+  const { unShowModal } = props;
   const isLoggedIn = checkIsLogin();
   const userId = useRecoilValue(loginUserId);
   const userType = useRecoilValue(loginUserType);
-  const userProfile = isProducer(userType)
-    ? useGetProducerProfile(userId).producerProfile?.userProfile
-    : useGetVocalProfile(userId).vocalProfile?.userProfile;
+  const userProfile = isLoggedIn
+    ? isProducer(userType)
+      ? useGetProducerProfile(userId).producerProfile?.userProfile
+      : useGetVocalProfile(userId).vocalProfile?.userProfile
+    : undefined;
 
-  const [logoutState, setLogoutState] = useState(false);
-
-  const { logout } = useLogout(logoutState);
+  const { refetch } = useLogout(unShowModal);
 
   const { handleMovePage } = useMovePage();
 
+
   function handleLogout() {
-    setLogoutState(!logoutState);
+    refetch();
   }
 
   return (
@@ -54,7 +60,7 @@ function UserInfo() {
                   {userProfile?.userName}
                 </Text>
                 <ImageWrapper width={0.7} height={1.1}>
-                  <RightArrowIc />
+                  <RightArrowIc width={7} height={11} />
                 </ImageWrapper>
               </UserNameWrapper>
               <Text as="p" color={isProducer(userType) ? 'neon_green' : 'neon_pink'} font="Pre_14_R">
@@ -125,11 +131,11 @@ export default function SideNav(props: SideNavProps) {
     <Container openModal={openModal}>
       <NavTopItemWrapper>
         <ImageWrapper as="button" width={1.4} height={1.4}>
-          <CloseIc onClick={unShowModal} stroke={theme.colors.white} />
+          <CloseIc width={14} height={14} onClick={unShowModal} stroke={theme.colors.white} />
         </ImageWrapper>
       </NavTopItemWrapper>
 
-      <UserInfo />
+      <UserInfo unShowModal={unShowModal} />
 
       <NavItemWrapper>
         <Text as="li" font="Pre_40_R" color="white">

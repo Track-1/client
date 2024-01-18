@@ -9,6 +9,7 @@ import ProducerPortfolio from './common/producerPortfolio';
 import { useState } from 'react';
 import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 import { InfinityObserver } from '../common/Interface';
+import Loading from '../common/Loading';
 
 export default function ProducerProfileContainer() {
   const { producerId } = useParams();
@@ -32,14 +33,20 @@ export default function ProducerProfileContainer() {
 
   return (
     <>
-      <UserProfile userType="producer" profileInfo={producerProfile} />
-      <ProducerPortfolio
-        producerPortfolio={producerPortfolios}
-        producerVocalSearchings={producerVocalSearchings}
-        userName={producerProfile?.userProfile.userName}
-      />
-      <InfinityObserver ref={portfolioRef} />
-      <InfinityObserver ref={observerRef} />
+      {Number(producerId) === producerProfile?.userProfile.userId ? (
+        <>
+          <UserProfile userType="producer" profileInfo={producerProfile} />
+          <ProducerPortfolio
+            producerPortfolio={producerPortfolios}
+            producerVocalSearchings={producerVocalSearchings}
+            userName={producerProfile?.userProfile.userName}
+          />
+          <InfinityObserver ref={portfolioRef} />
+          <InfinityObserver ref={observerRef} />
+        </>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 }

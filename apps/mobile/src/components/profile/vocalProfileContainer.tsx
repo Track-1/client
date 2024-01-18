@@ -5,6 +5,7 @@ import { useGetVocalPortfolio, useGetVocalProfile } from '../../hooks/queries/my
 import VocalPortfolio from './common/vocalPortfolio';
 import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 import { InfinityObserver } from '../common/Interface';
+import Loading from '../common/Loading';
 
 export default function VocalProfileContainer() {
   const { vocalId } = useParams();
@@ -18,9 +19,17 @@ export default function VocalProfileContainer() {
 
   return (
     <>
-      <UserProfile userType="vocal" profileInfo={vocalProfile} />
-      <VocalPortfolio vocalPortfolios={vocalPortfolios} userName={vocalProfile?.userProfile.userName}></VocalPortfolio>
-      <InfinityObserver ref={observerRef} />
+      {Number(vocalId) === vocalProfile?.userProfile.userId ? (
+        <>
+          <UserProfile userType="vocal" profileInfo={vocalProfile} />
+          <VocalPortfolio
+            vocalPortfolios={vocalPortfolios}
+            userName={vocalProfile?.userProfile.userName}></VocalPortfolio>
+          <InfinityObserver ref={observerRef} />
+        </>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 }

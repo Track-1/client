@@ -28,7 +28,7 @@ export async function getTrackDetail(trackId: number) {
 }
 
 export async function getTrackDownload(trackId: number) {
-  const { data } = await client.get<TrackDownloadResponse>(TRACKS.DOWNLOAD(trackId));
+  const data = await client.get<TrackDownloadResponse>(TRACKS.DOWNLOAD(trackId));
 
   return data.data;
 }

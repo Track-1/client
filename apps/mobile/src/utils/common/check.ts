@@ -3,6 +3,7 @@ import { AUDIO_FILE_TYPE, IMAGE_FILE_TYPE } from '../../core/common/fileType';
 import { getCookie } from './cookie';
 import { ROLE } from '../../core/common/roleType';
 import { UserType } from '../../type/common/userType';
+import { useNavigate } from 'react-router-dom';
 
 export function checkFileSize(imageSize: number) {
   if (imageSize > LIMIT_IMAGE_SIZE) {
@@ -42,6 +43,10 @@ export function checkIsClickedNothing(clickedId: number) {
 
 export function checkIsLogin() {
   return getCookie('accessToken') !== undefined;
+}
+
+export function isLoggedIn() {
+  return getCookie('accessToken');
 }
 
 export function checkIsCookieNull() {

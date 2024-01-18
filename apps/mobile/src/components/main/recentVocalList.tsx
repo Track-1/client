@@ -17,7 +17,7 @@ interface RecentVocalListProps {
 export default function RecentVocalList(props: RecentVocalListProps) {
   const { playingTrack, selectTrack } = props;
   const { recentVocalInfo } = useGetRecentVocals(3);
-  const { handleMovePage } = useMovePage();
+  const { handleMovePage, checkUserPermission } = useMovePage();
 
   return (
     <section>
@@ -50,7 +50,7 @@ export default function RecentVocalList(props: RecentVocalListProps) {
                 align="center"
               />
 
-              <Link to={`/vocal-profile/${trackInfo.userId}`}>
+              <a onClick={() => checkUserPermission() && handleMovePage('vocal-profile', trackInfo.userId)}>
                 <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
                   {trackInfo.userCategory[0] ? `${trackInfo.userCategory[0]} +${trackInfo.userCategoryNum}` : ''}
                 </Text>
@@ -62,7 +62,7 @@ export default function RecentVocalList(props: RecentVocalListProps) {
                     {`# ${keyword}`}
                   </Text>
                 ))}
-              </Link>
+              </a>
             </VocalTrackWrapper>
           ))}
       </VocalListWrapper>

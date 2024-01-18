@@ -15,3 +15,16 @@ export const loginUserId = atom<number>({
   default: -1,
   effects_UNSTABLE: [persistAtom],
 });
+
+interface LoginUserDataType {
+  userType: UserType;
+  userId: number;
+}
+
+export const loginUserData = atom<LoginUserDataType>({
+  key: 'loginUserData',
+  default: {
+    userType: 'vocal',
+    userId: -1,
+  },
+});

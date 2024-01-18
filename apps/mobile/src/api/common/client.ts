@@ -42,8 +42,6 @@ client.interceptors.response.use(
     return response;
   },
   async function (error) {
-    console.log(error);
-
     const originConfig = error.config;
 
     if (error.response && error.response.status === 401) {

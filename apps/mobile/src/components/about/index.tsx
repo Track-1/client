@@ -62,8 +62,8 @@ function AboutIntro(props: { handleMoveHowToUseSection: () => void }) {
             {'How to use'}
           </Text>
         </div>
-        <ImageWrapper width={0.8} height={1.6}>
-          <DownArrawIcon />
+        <ImageWrapper as="button" width={0.8} height={1.6}>
+          <DownArrowIcon width={8} height={16} />
         </ImageWrapper>
       </MainTitle>
 
@@ -89,7 +89,7 @@ const MainTitle = styled(TitleWrapper)`
   margin-top: 4rem;
 `;
 
-const DownArrawIcon = styled(RightArrowIc)`
+const DownArrowIcon = styled(RightArrowIc)`
   transform: rotate(90deg);
 `;
 
@@ -311,7 +311,7 @@ export default function AboutContainer() {
   );
 }
 
-const AboutSectionWrapper = styled.div`
+const AboutSectionWrapper = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: center;

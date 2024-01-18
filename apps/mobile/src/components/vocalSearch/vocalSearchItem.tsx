@@ -18,7 +18,7 @@ interface VocalSearchItemProps {
 export default function VocalSearchItem(props: VocalSearchItemProps) {
   const { trackInfo, playingTrack, selectTrack } = props;
 
-  const { handleMovePage } = useMovePage();
+  const { handleMovePage, checkUserPermission } = useMovePage();
 
   const isSelected = playingTrack === trackInfo.userId;
 
@@ -73,11 +73,8 @@ export default function VocalSearchItem(props: VocalSearchItemProps) {
           </ImageWrapper>
         </InnerWrapper>
       </ImageContainer>
-      <UserInfoWrapper
-        onClick={() => {
-          handleMovePage('vocal-profile', trackInfo.userId);
-        }}>
-        <Link to={`vocal-profile/${trackInfo.userId}`}>
+      <UserInfoWrapper>
+        <a onClick={() => checkUserPermission() && handleMovePage('vocal-profile', trackInfo.userId)}>
           <Text as="p" font="Pre_14_R" color="neon_pink" margin="0 0 0.5rem 0">
             {trackInfo.userCategory[0]
               ? `${trackInfo.userCategory[0]} ${trackInfo.userCategoryNum > 1 ? `+${trackInfo.userCategoryNum}` : ''}`
@@ -86,7 +83,7 @@ export default function VocalSearchItem(props: VocalSearchItemProps) {
           <Text as="p" font="Alex_16_R" color="white" margin="0 0 1rem 0">
             {trackInfo.userName}
           </Text>
-        </Link>
+        </a>
       </UserInfoWrapper>
     </Container>
   );

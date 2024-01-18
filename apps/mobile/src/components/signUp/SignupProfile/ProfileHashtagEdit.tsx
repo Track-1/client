@@ -1,27 +1,16 @@
 
 import { useEffect, useState } from 'react';
-import { useFieldArray } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
 import { AddHashtagIc, CloseIc, HashtagWarning } from '../../../assets';
 import { useFormContextWithRef } from '../../../hooks/common/useFormContextWithRef';
-import { useHashtagWithReactHookForm } from '../../../hooks/common/useHashtagWithReactHookForm';
-import useModals from '../../../hooks/common/useModals';
 import { InputTitle } from '../../common/Form/inputForm';
+import SimpleModal from '../../common/Modal/SimpleModal';
+import Hashtag from '../../common/Hashtag';
+import useModals from '../../../hooks/common/useModals';
 
 export default function ProfileHashtagEdit() {
-  const formContext = useFormContextWithRef();
-  const { registerWithRef, watch, getValues } = formContext;
-  const fieldArray = useFieldArray({
-    name: 'hashtag',
-  });
-  const { append, fields } = fieldArray;
-  const { handleKeyDownEnter, handleDeleteHashtag, activeInput } = useHashtagWithReactHookForm(formContext, fieldArray);
-
-  useEffect(() => {
-    if (getValues('hashtag').length >= 3) return;
-
-    append('');
-  }, []);
+  const { registerWithRef, ...methods } = useFormContextWithRef();
 
   const [isRulesOpen, setIsRulesOpen] = useState(false);
   const { modalRef, unShowModal, handleShowUpdateModal } = useModals({
@@ -31,6 +20,15 @@ export default function ProfileHashtagEdit() {
 
   return (
     <div>
+      <SimpleModal isOpen={isRulesOpen} onClose={onClose}>
+        <>
+          1. 해시태그는 최대 3개까지 추가 가능합니다.
+          <br />
+          2. 최대 10자까지 작성이 가능합니다.
+          <br />
+          3. 작업의 분위기에 대해 설명해주세요. (ex. Dynamic)
+        </>
+      </SimpleModal>
       <Styled.HashtagHeader>
         <Styled.Header>
           <InputTitle>Hashtag</InputTitle>
@@ -53,31 +51,7 @@ export default function ProfileHashtagEdit() {
       </Styled.HashtagHeader>
 
       <HashtagWrapper>
-        {fields.map((field, idx) => {
-          return (
-            <HashtagBox data-idx={idx} inputWidth={watch('hashtag')[idx].length} key={idx}>
-              <HashtagInputWrapper data-idx={idx}>
-                <HashtagSharp data-idx={idx} inputWidth={watch('hashtag')[idx].length}>
-                  #
-                </HashtagSharp>
-                <HashtagInputText
-                  key={field.id}
-                  placeholder="Hashtag"
-                  onKeyPress={(e) => handleKeyDownEnter(e)}
-                  onClick={activeInput}
-                  inputWidth={watch('hashtag')[idx].length}
-                  autoComplete="off"
-                  maxLength={10}
-                  data-idx={idx}
-                  autoFocus
-                  {...registerWithRef('hashtag', idx)}
-                />
-              </HashtagInputWrapper>
-              <DeleteHashtagIcon onClick={(e) => handleDeleteHashtag(e, idx)} />
-            </HashtagBox>
-          );
-        })}
-        {fields.length < 3 && <AddHashtagIcon />}
+        {<Hashtag hashtags={methods.watch('hashtag')} hashtagSet={methods.setValue} hashtagGet={methods.getValues} />}
       </HashtagWrapper>
     </div>
   );
@@ -136,51 +110,35 @@ const HashtagWrapper = styled.div`
   height: 100%;
 `;
 
-const HashtagBox = styled.div<{ inputWidth: number }>`
+const HashtagBox = styled.div`
   display: flex;
   align-items: center;
   white-space: nowrap;
 
-  height: 3.8rem;
+  height: 3rem;
 
   padding: 1rem;
 
-  margin-right: 1rem;
-  margin-top: 0.5rem;
+  border-radius: 1.5rem;
 
-  border-radius: 2.1rem;
-  background-color: ${({ theme, inputWidth }) => (inputWidth > 0 ? theme.colors.neon_purple : theme.colors.gray5)};
-`;
-
-const HashtagInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const HashtagSharp = styled.p<{ inputWidth: number }>`
-  color: ${({ theme, inputWidth }) => (inputWidth > 0 ? theme.colors.white : theme.colors.gray3)};
-
-  ${({ theme }) => theme.fonts.Pre_14_R};
+  background-color: ${({ theme }) => theme.colors.gray5};
 `;
 
 const DeleteHashtagIcon = styled(CloseIc)`
-  width: 1rem;
-  height: 1rem;
-
   margin-left: -1rem;
 
   cursor: pointer;
 `;
 
-const HashtagInputText = styled.input<{ inputWidth: number }>`
+const HashtagInput = styled.input`
   display: flex;
 
   ${({ theme }) => theme.fonts.Pre_14_R};
-  width: ${({ inputWidth }) => (inputWidth === 0 ? 8 : inputWidth * 1.5)}rem;
-  color: ${({ theme, inputWidth }) => (inputWidth > 0 ? theme.colors.white : theme.colors.gray3)};
+  width: auto;
+  color: ${({ theme }) => theme.colors.white};
 
   ::placeholder {
+    width: 8rem;
     color: ${({ theme }) => theme.colors.gray3};
   }
 `;

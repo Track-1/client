@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 export default function useControlPlayer(audio: HTMLAudioElement, playingState: boolean) {
   const playBar = useRef<HTMLDivElement>(null);
@@ -51,7 +51,7 @@ export default function useControlPlayer(audio: HTMLAudioElement, playingState: 
         : `${parseInt(String(currentSecond / 60))}`;
     const second = currentSecond % 60 < 10 ? `0${currentSecond % 60}` : `${currentSecond % 60}`;
 
-    return minute + ":" + second;
+    return minute + ':' + second;
   }
 
   function goProgress() {
@@ -66,12 +66,11 @@ export default function useControlPlayer(audio: HTMLAudioElement, playingState: 
 
   useEffect(() => {
     if (playingState) {
-      audio.addEventListener("timeupdate", () => {
-        // console.log(playingState);
+      audio.addEventListener('timeupdate', () => {
         goProgress();
       });
     } else {
-      audio.removeEventListener("timeupdate", () => {
+      audio.removeEventListener('timeupdate', () => {
         goProgress();
       });
     }

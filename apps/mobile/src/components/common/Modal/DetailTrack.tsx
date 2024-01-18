@@ -9,6 +9,9 @@ import { ProfileUserIc, TrackDetailIc } from '../../../assets';
 import { Link } from 'react-router-dom';
 import BottomUpModal from './bottomUpModal';
 
+import { useMovePage } from '../../../hooks/common/useMovePage';
+import { useEffect } from 'react';
+
 interface DetailTrackModalProps {
   openModal: boolean;
   showModal: () => void;
@@ -19,7 +22,12 @@ interface DetailTrackModalProps {
 export default function DetailTrackModal(props: DetailTrackModalProps) {
   const { openModal, showModal, unShowModal, detailId } = props;
 
-  const { trackDetail } = useTrackDetail(detailId);
+  const { trackDetail, refetch } = useTrackDetail(detailId);
+  const { handleMovePage, checkUserPermission } = useMovePage();
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <BottomUpModal openModal={openModal} showModal={showModal} unShowModal={unShowModal}>
@@ -55,7 +63,9 @@ export default function DetailTrackModal(props: DetailTrackModalProps) {
         <LinkItem>
           <ProfileUserIc />
           <Text as="span" font="Pre_18_R" color="white">
-            <Link to={`/producer-profile/${trackDetail?.trackUserId}`}>Go to Producer Profile</Link>
+            <a onClick={() => checkUserPermission() && handleMovePage('producer-profile', trackDetail?.trackUserId)}>
+              Go to Producer Profile
+            </a>
           </Text>
         </LinkItem>
         <LinkItem>
