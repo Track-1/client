@@ -1,60 +1,60 @@
 import styled, { css } from 'styled-components';
-import useHashtagInput from '../../../hooks/common/useHashtagInput';
 import { AddHashtagIc, CloseIc } from '../../../assets';
-import { useForm, useWatch } from 'react-hook-form';
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { FieldValues, UseFormGetValues, UseFormSetValue, useForm, useWatch } from 'react-hook-form';
+import { checkMaxInputLength } from '../../../utils/common/check';
+import { useEffect } from 'react';
 
 interface HashtagProps {
-  maxTags: number;
+  hashtags: string[];
+  hashtagSet: UseFormSetValue<FieldValues>;
+  hashtagGet: UseFormGetValues<FieldValues>;
 }
 
 export default function Hashtag(props: HashtagProps) {
-  const { maxTags } = props;
+  const { hashtags, hashtagGet, hashtagSet } = props;
 
-  const methods = useForm<{ hashtagInput: string; hashtags: string[] }>({
+  const methods = useForm<{ hashtagInput: string }>({
     defaultValues: {
       hashtagInput: '',
-      hashtags: [],
     },
   });
 
-  const { register, setValue, watch, control } = methods;
+  const { register, setValue, watch } = methods;
 
-  const { ref, ...rest } = register('hashtagInput');
+  useEffect(() => {
+    const inputValue = watch('hashtagInput');
 
-  const hashtagInputBoxRef = useRef<HTMLLIElement | null>(null);
-
-  const hashtags = useWatch({
-    control,
-    name: 'hashtags',
-  });
+    if (inputValue.length > 10) {
+      setValue('hashtagInput', inputValue.substring(0, 10));
+    }
+  }, [watch('hashtagInput')]);
 
   function handleRemoveHashtag(index: number) {
     const updatedHashtags = [...hashtags];
     updatedHashtags.splice(index, 1);
-    setValue('hashtags', updatedHashtags);
+    hashtagSet('hashtag', updatedHashtags);
   }
 
   function handleAddHashtag() {
     const inputValue = watch('hashtagInput');
-    const hashtags = methods.getValues('hashtags');
+    const hashtags = hashtagGet('hashtag');
 
-    if (methods.getValues('hashtags').includes(inputValue)) {
+    //중복조건 체크
+    if (hashtags.includes(inputValue)) {
       alert('중복된 해시태그 입니다!');
       return;
     }
 
     if (inputValue && hashtags.length < 3) {
-      setValue('hashtags', [...hashtags, inputValue]);
+      hashtagSet('hashtag', [...hashtags, inputValue]);
+      setValue('hashtagInput', '');
     }
-
-    setValue('hashtagInput', '');
   }
 
   return (
     <>
       <HashtagWrapper>
-        {hashtags.map((tag, index) => (
+        {hashtags.map((tag: string, index: number) => (
           <HashtagBox key={tag}>
             {`# ${tag}`}
             <DeleteHashtagIcon width={7.5} height={7.5} onClick={() => handleRemoveHashtag(index)} />
@@ -64,7 +64,12 @@ export default function Hashtag(props: HashtagProps) {
           <>
             <HashtagInputBox>
               <Span inputLength={watch('hashtagInput').length}>{watch('hashtagInput')}</Span>
-              <HashtagInput placeholder="#Hashtag" {...register} inputLength={watch('hashtagInput').length} />
+              <HashtagInput
+                placeholder="#Hashtag"
+                {...register('hashtagInput')}
+                inputLength={watch('hashtagInput').length}
+                value={watch('hashtagInput')}
+              />
             </HashtagInputBox>
 
             <AddHashtagIcon onClick={handleAddHashtag} />
