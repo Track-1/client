@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import BottomUpModal from './bottomUpModal';
 
 import { useMovePage } from '../../../hooks/common/useMovePage';
+import { useEffect } from 'react';
 
 interface DetailTrackModalProps {
   openModal: boolean;
@@ -21,8 +22,12 @@ interface DetailTrackModalProps {
 export default function DetailTrackModal(props: DetailTrackModalProps) {
   const { openModal, showModal, unShowModal, detailId } = props;
 
-  const { trackDetail } = useTrackDetail(detailId);
+  const { trackDetail, refetch } = useTrackDetail(detailId);
   const { handleMovePage, checkUserPermission } = useMovePage();
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <BottomUpModal openModal={openModal} showModal={showModal} unShowModal={unShowModal}>

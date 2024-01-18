@@ -10,7 +10,6 @@ import { useGetRecentVocals } from '../../hooks/queries/vocals';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
 import { FilteredVocalType } from '../../type/vocals';
 import Text from '../common/Text';
-import { Link } from 'react-router-dom';
 import { useMovePage } from '../../hooks/common/useMovePage';
 
 interface VocalPlaybarProps {

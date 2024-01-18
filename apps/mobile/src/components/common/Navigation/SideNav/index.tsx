@@ -22,7 +22,6 @@ function UserInfo(props: UserInfoProps) {
   const { unShowModal } = props;
   const isLoggedIn = checkIsLogin();
   const userId = useRecoilValue(loginUserId);
-  console.log(userId, isLoggedIn);
   const userType = useRecoilValue(loginUserType);
   const userProfile = isLoggedIn
     ? isProducer(userType)
@@ -30,14 +29,13 @@ function UserInfo(props: UserInfoProps) {
       : useGetVocalProfile(userId).vocalProfile?.userProfile
     : undefined;
 
-  const [logoutState, setLogoutState] = useState(false);
-
-  const { logout } = useLogout(logoutState, unShowModal);
+  const { refetch } = useLogout(unShowModal);
 
   const { handleMovePage } = useMovePage();
 
+
   function handleLogout() {
-    setLogoutState(!logoutState);
+    refetch();
   }
 
   return (
@@ -133,7 +131,7 @@ export default function SideNav(props: SideNavProps) {
     <Container openModal={openModal}>
       <NavTopItemWrapper>
         <ImageWrapper as="button" width={1.4} height={1.4}>
-          <CloseIc onClick={unShowModal} stroke={theme.colors.white} />
+          <CloseIc width={14} height={14} onClick={unShowModal} stroke={theme.colors.white} />
         </ImageWrapper>
       </NavTopItemWrapper>
 

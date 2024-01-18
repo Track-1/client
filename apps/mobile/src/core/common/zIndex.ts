@@ -3,4 +3,5 @@ export const Z_INDEX = {
   SIDE_NAV: 20,
   PLAYER: 10,
   FILTER_NAV: 15,
+  LOADING: 30,
 };

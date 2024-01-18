@@ -99,7 +99,7 @@ export default function TrackPostContainer() {
           </Text>
           <TrackInfoWrapper>
             {trackDetail?.trackKeyword.map((keyword) => (
-              <Keyword>{`#${keyword}`}</Keyword>
+              <Keyword key={keyword}>{`#${keyword}`}</Keyword>
             ))}
           </TrackInfoWrapper>
         </TrackInfoForm>
