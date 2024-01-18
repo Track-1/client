@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from 'react-query';
 import {
   deleteProducerPortfolio,
   deleteVocalPortfolio,
@@ -8,28 +8,24 @@ import {
   patchVocalTitle,
   postProducerPortfolio,
   postVocalPortfolio,
-} from "../../api/mypage";
-import { MyPageTitleParamsType } from "../../type/mypage";
-
-import { useInfiniteQuery } from "react-query";
-
-import { getProducerPortfolio, getProducerVocalSearching, getVocalInfo } from "../../api/profile";
-import { PortfoliosParamsType } from "../../type/vocals";
-
-import { useQuery } from "react-query";
-import { getVocalProfile } from "../../api/profile";
-
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { getProducerProfile } from "../../api/profile";
-import { ROLE } from "../../core/common/roleType";
-import { loginUserId } from "../../recoil/common/loginUserData";
-import useModal from "../common/useModal";
-import useUpdateModal from "../common/useUpdateModal";
+} from '../../api/mypage';
+import { MyPageTitleParamsType } from '../../type/mypage';
+import { useInfiniteQuery } from 'react-query';
+import { getProducerPortfolio, getProducerVocalSearching, getVocalInfo } from '../../api/profile';
+import { PortfoliosParamsType } from '../../type/vocals';
+import { useQuery } from 'react-query';
+import { getVocalProfile } from '../../api/profile';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { getProducerProfile } from '../../api/profile';
+import { ROLE } from '../../core/common/roleType';
+import { loginUserId } from '../../recoil/common/loginUserData';
+import useModal from '../common/useModal';
+import useUpdateModal from '../common/useUpdateModal';
 
 export function useGetProducerProfile(userId: number, userType?: string) {
   const { data: producerProfile } = useQuery(
-    "getProducerProfile",
+    'getProducerProfile',
     () =>
       getProducerProfile({
         userId: userId,
@@ -37,17 +33,14 @@ export function useGetProducerProfile(userId: number, userType?: string) {
         limit: 1,
       }),
     {
-      onError: (err) => {
-        // console.log(err);
-      },
       enabled: userType === undefined || userType === ROLE.PRODUCER,
-    },
+    }
   );
 
   return { producerProfile };
 }
 
-export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, 'page'>) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getProducerPortfolio({ ...params, page: pageParams, userId: params.userId });
 
@@ -55,17 +48,17 @@ export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page
   };
 
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    "producerPortfolios",
+    'producerPortfolios',
     ({ pageParam = 1 }) => fetchVocals(pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
       },
-    },
+    }
   );
 
   const producerPortfolios = data?.pages.flatMap((data) =>
-    data.response.data.filter((producerPortfolio: any) => producerPortfolio),
+    data.response.data.filter((producerPortfolio: any) => producerPortfolio)
   );
 
   return {
@@ -76,7 +69,7 @@ export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, "page
   };
 }
 
-export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, "page">) {
+export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, 'page'>) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getProducerVocalSearching({ ...params, page: pageParams, userId: params.userId });
 
@@ -84,17 +77,17 @@ export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, 
   };
 
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    "producerVocalSearchings",
+    'producerVocalSearchings',
     ({ pageParam = 1 }) => fetchVocals(pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
       },
-    },
+    }
   );
 
   const producerVocalSearchings = data?.pages.flatMap((data) =>
-    data.response.data.filter((producerVocalSearching: any) => producerVocalSearching),
+    data.response.data.filter((producerVocalSearching: any) => producerVocalSearching)
   );
 
   return {
@@ -105,7 +98,7 @@ export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, 
   };
 }
 
-export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">) {
+export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, 'page'>) {
   const fetchVocals = async (pageParams: number) => {
     const response = await getVocalInfo({ ...params, page: pageParams, userId: params.userId });
 
@@ -113,13 +106,13 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">)
   };
 
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    "vocalPortfolios",
+    'vocalPortfolios',
     ({ pageParam = 1 }) => fetchVocals(pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
       },
-    },
+    }
   );
 
   const vocalPortfolios = data?.pages.flatMap((data) => data.response.data.filter((vocalPortfolio) => vocalPortfolio));
@@ -134,7 +127,7 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, "page">)
 
 export function useGetVocalProfile(userId: number, userType?: string) {
   const { data: vocalProfile } = useQuery(
-    ["getVocalProfile"],
+    ['getVocalProfile'],
     () =>
       getVocalProfile({
         userId: userId,
@@ -142,11 +135,8 @@ export function useGetVocalProfile(userId: number, userType?: string) {
         limit: 1,
       }),
     {
-      onError: (err) => {
-        console.log(err);
-      },
       enabled: userType === undefined || userType === ROLE.VOCAL,
-    },
+    }
   );
 
   return { vocalProfile };
@@ -161,10 +151,10 @@ export function useUploadProducerPortfolio() {
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
     onSuccess: () => {
       setTimeout(() => {
-        if (prevURL === "/signup/success") {
+        if (prevURL === '/signup/success') {
           navigate(`/producer-profile/${userId}`, {
             state: {
-              prevURL: "/track-search",
+              prevURL: '/track-search',
             },
           });
         } else {
@@ -189,10 +179,10 @@ export function useUploadVocalPortfolio() {
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),
     onSuccess: () => {
       setTimeout(() => {
-        if (prevURL === "/signup/success") {
+        if (prevURL === '/signup/success') {
           navigate(`/vocal-profile/${userId}`, {
             state: {
-              prevURL: "/vocal-search",
+              prevURL: '/vocal-search',
             },
           });
         } else {
@@ -253,9 +243,9 @@ export function useEditProducerTitle() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (params: MyPageTitleParamsType) => patchProducerTitle(params),
     onSuccess: () => {
-      alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.");
-      queryClient.invalidateQueries("producerVocalSearchings");
-      queryClient.invalidateQueries("producerPortfolios");
+      alert('The title song has been changed.\n타이틀 곡이 변경되었습니다.');
+      queryClient.invalidateQueries('producerVocalSearchings');
+      queryClient.invalidateQueries('producerPortfolios');
 
       unShowModal();
       unShowUpdateModal();
@@ -275,8 +265,8 @@ export function useEditVocalTitle() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (params: MyPageTitleParamsType) => patchVocalTitle(params),
     onSuccess: () => {
-      alert("The title song has been changed.\n타이틀 곡이 변경되었습니다.");
-      queryClient.invalidateQueries("vocalPortfolios");
+      alert('The title song has been changed.\n타이틀 곡이 변경되었습니다.');
+      queryClient.invalidateQueries('vocalPortfolios');
       unShowModal();
     },
     onError: () => {},
@@ -295,8 +285,8 @@ export function useDeleteProducerPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (portfolioId: number) => deleteProducerPortfolio(portfolioId),
     onSuccess: () => {
-      queryClient.invalidateQueries("producerVocalSearchings");
-      queryClient.invalidateQueries("producerPortfolios");
+      queryClient.invalidateQueries('producerVocalSearchings');
+      queryClient.invalidateQueries('producerPortfolios');
       unShowModal();
       unShowUpdateModal();
     },
@@ -315,7 +305,7 @@ export function useDeleteVocalPortfolio() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (portfoiloId: number) => deleteVocalPortfolio(portfoiloId),
     onSuccess: () => {
-      queryClient.invalidateQueries("vocalPortfolios");
+      queryClient.invalidateQueries('vocalPortfolios');
       unShowModal();
     },
     onError: () => {},

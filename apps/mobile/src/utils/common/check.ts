@@ -46,7 +46,7 @@ export function checkIsLogin() {
 }
 
 export function isLoggedIn() {
-  return !!getCookie('accessToken');
+  return getCookie('accessToken');
 }
 
 export function checkIsCookieNull() {

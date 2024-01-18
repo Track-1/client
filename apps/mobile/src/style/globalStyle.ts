@@ -68,7 +68,7 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
 
     font-family: sans-serif;
-    /* font-size: 62.5%; */
+    font-size: 62.5%;
     user-select: none;
 
     /* 모바일 */
@@ -148,13 +148,14 @@ export const GlobalStyle = createGlobalStyle`
     color: inherit;
   }
   input, button {
+    padding: 0;
     outline: none;
     border: none;
     background-color: transparent;
   }
   button {
     cursor: pointer;
-    padding: 0;
+
   }
   input {
     appearance: none;

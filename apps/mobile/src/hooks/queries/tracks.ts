@@ -48,29 +48,29 @@ export function useTrackDetail(trackId: number) {
     queryKey: [QUERIES_KEY.TRACK_DETAIL, trackId],
     queryFn: () => getTrackDetail(trackId),
     onSuccess: () => {},
-    onError: () => {},
-    enabled: trackId > 0,
+    onError: (error) => {
+      console.log(error);
+    },
+    enabled: false,
   });
+
   return {
     trackDetail: data,
     ...restValues,
   };
 }
 
-export function useTrackDownload(trackId: number, isDownload: boolean | undefined) {
+export function useTrackDownload(trackId: number) {
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.TRACK_DOWNLOAD, trackId],
     queryFn: () => getTrackDownload(trackId),
     onError: (error) => {
       console.log(error);
     },
-    enabled: !!isDownload,
+    enabled: false,
   });
 
-  return {
-    trackDownload: data,
-    ...restValues,
-  };
+  return { data, ...restValues };
 }
 
 export function useUploadTrack() {
@@ -110,7 +110,9 @@ export function useEditTrack() {
         navigate(-1);
       }, 3000);
     },
-    onError: () => {},
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     editTrack: mutate,
@@ -126,7 +128,9 @@ export function useCloseTrack() {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES_KEY.TRACK_DETAIL);
     },
-    onError: () => {},
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     closeTrack: mutate,
@@ -141,7 +145,9 @@ export function useDeleteTrack() {
     onSuccess: () => {
       queryClient.invalidateQueries('producerVocalSearchings');
     },
-    onError: () => {},
+    onError: (error) => {
+      console.log(error);
+    },
   });
   return {
     deleteTrack: mutate,
@@ -150,11 +156,7 @@ export function useDeleteTrack() {
 }
 
 export function useGetRecentTracks(count: number) {
-  const { data: recentTrackInfo } = useQuery(['getRecentTracks'], () => getRecentTracks(count), {
-    onError: (err) => {
-      console.log(err);
-    },
-  });
+  const { data: recentTrackInfo } = useQuery(['getRecentTracks'], () => getRecentTracks(count), {});
 
   return { recentTrackInfo };
 }

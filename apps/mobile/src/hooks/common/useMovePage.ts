@@ -37,5 +37,3 @@ export function useMovePage() {
 
   return { navigate, handleMovePage, checkUserPermission };
 }
-
-export function handleMovePage() {}
