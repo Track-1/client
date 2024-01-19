@@ -1,24 +1,27 @@
-import styled from "styled-components";
-import UploadVocalLayoutImg from "../../assets/image/uploadVocalLayoutImg.png";
-import CategoryInfo from "./categotyInfo";
-import FileUploadInfo from "./fileUploadInfo";
-import UploadTitle from "./uploadTitle";
-import HashtagInfo from "./hashtagInfo";
-import DescriptionInfo from "./descriptionInfo";
-import { useUploadVocalPortfolio } from "../../hooks/queries/mypage";
-import { FormProvider, useForm } from "react-hook-form";
-import { SelectCategoryContext } from "../../context/selectCategoryContext";
-import Header from "../@common/header";
-import BackButton from "../@common/backButton";
-import UploadHeader from "./uploadHeader";
-import { useSelect } from "../../hooks/common/useSelect";
-import { CategoryIdType, UpperCategoryType } from "../../type/common/category";
-import { ImageInfo } from "./imageInfo";
-import { UserPortfolioType } from "../../type/profile";
-import { UploadInputType } from "../../type/common/upload";
-import UploadVocalDefaultImg from "../../assets/image/uploadVocalDefaultImg.png";
-import { CategoryId } from "../../core/common/categories";
-import { useParams } from "react-router-dom";
+import { isSafari } from 'react-device-detect';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import UploadVocalDefaultImg from '../../assets/image/uploadVocalDefaultImg.png';
+import UploadVocalLayoutImg from '../../assets/image/uploadVocalLayoutImg.png';
+import { SelectCategoryContext } from '../../context/selectCategoryContext';
+import { CategoryId } from '../../core/common/categories';
+import useModalState from '../../hooks/common/useModalState';
+import { useSelect } from '../../hooks/common/useSelect';
+import { useUploadVocalPortfolio } from '../../hooks/queries/mypage';
+import { CategoryIdType, UpperCategoryType } from '../../type/common/category';
+import { UploadInputType } from '../../type/common/upload';
+import { UserPortfolioType } from '../../type/profile';
+import BackButton from '../@common/backButton';
+import Header from '../@common/header';
+import CategoryInfo from './categotyInfo';
+import DescriptionInfo from './descriptionInfo';
+import FileUploadInfo from './fileUploadInfo';
+import HashtagInfo from './hashtagInfo';
+import { ImageInfo } from './imageInfo';
+import SafariIssueMdoal from './safariIssueModal';
+import UploadHeader from './uploadHeader';
+import UploadTitle from './uploadTitle';
 
 type VocalUploadBodyProps =
   | {
@@ -40,22 +43,22 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
   const { uploadVocalPortfolio } = useUploadVocalPortfolio();
   const { selectedOption, selectOption } = useSelect<CategoryIdType | null>(
     false,
-    CategoryId[prevUploadData?.portfolioCategory.toUpperCase() as UpperCategoryType],
+    CategoryId[prevUploadData?.portfolioCategory.toUpperCase() as UpperCategoryType]
   );
 
   emptyList.items.add(
-    new File([prevUploadData?.portfolioAudioFileName ?? ""], prevUploadData?.portfolioAudioFileName ?? "", {
-      type: "mp3",
-    }),
+    new File([prevUploadData?.portfolioAudioFileName ?? ''], prevUploadData?.portfolioAudioFileName ?? '', {
+      type: 'mp3',
+    })
   );
 
   const methods = useForm({
     defaultValues: {
-      image: isEditPage ? prevUploadData?.portfolioImageFile ?? "" : "",
-      title: isEditPage ? prevUploadData?.portfolioTitle ?? "" : "",
+      image: isEditPage ? prevUploadData?.portfolioImageFile ?? '' : '',
+      title: isEditPage ? prevUploadData?.portfolioTitle ?? '' : '',
       audioFile: isEditPage ? emptyList.files ?? defaultList.files : defaultList.files,
       hashtag: isEditPage ? prevUploadData?.portfolioKeyword ?? [] : [],
-      description: "",
+      description: '',
     },
   });
 
@@ -63,21 +66,24 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
     if (selectedOption === null) return;
 
     const formData = new FormData();
-    formData.append("portfolioTitle", data.title);
-    formData.append("portfolioCategory", selectedOption);
-    formData.append("portfolioAudioFile", data.audioFile[0]);
+    formData.append('portfolioTitle', data.title);
+    formData.append('portfolioCategory', selectedOption);
+    formData.append('portfolioAudioFile', data.audioFile[0]);
     data.hashtag.forEach((tag, idx) => {
       if (tag.length === 0) return;
       formData.append(`portfolioContent${idx}`, tag);
     });
-    formData.append("portfolioImageFile", data.image ?? UploadVocalDefaultImg);
-    formData.append("portfolioAudioFileName", String(data.audioFile));
+    formData.append('portfolioImageFile', data.image ?? UploadVocalDefaultImg);
+    formData.append('portfolioAudioFileName', String(data.audioFile));
 
     return formData;
   }
 
+  const { isOpen, onClose } = useModalState(true);
+
   return (
     <FormProvider {...methods}>
+      {isSafari && isOpen && <SafariIssueMdoal isOpen={isOpen} onClose={onClose} />}
       <form
         onSubmit={methods.handleSubmit((data) => {
           const uploadData = createVocalUploadFormData(data);
