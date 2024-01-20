@@ -3,7 +3,7 @@ import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
 import UploadInfoBox from "./uploadInfoBox";
 import DropCategory from "./dropCategory";
 import { Select } from "../@common/selectBox";
-import { ReversedCategoryId } from "../../core/common/categories";
+import { EventReversedCategoryId, ReversedCategoryId } from "../../core/common/categories";
 import { CategoryIdType } from "../../type/common/category";
 import { useContext } from "react";
 import { SelectCategoryContext } from "../../context/selectCategoryContext";
@@ -29,7 +29,7 @@ export default function CategoryInfo() {
             <InputCategoryTextWrapper isSelectedNothing={selectedOption === null}>
               <Select.Trigger asChild>
                 <InputCategoryText isSelectedNothing={selectedOption === null}>
-                  {selectedOption === null ? "Select" : ReversedCategoryId[selectedOption]}
+                  {selectedOption === null ? "Select" : EventReversedCategoryId[selectedOption]}
                 </InputCategoryText>
               </Select.Trigger>
             </InputCategoryTextWrapper>

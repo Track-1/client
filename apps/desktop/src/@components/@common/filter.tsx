@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { TrackSearchingFalseIc, TrackSearchingTrueIc } from "../../assets";
-import { CategoryId } from "../../core/common/categories";
-import { UpperCategoryType } from "../../type/common/category";
-import { PageType } from "../../type/common/pageType";
-import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
-import { updateQueryParams } from "../../utils/common/queryString";
-import { CheckBox } from "./checkBox";
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { TrackSearchingFalseIc, TrackSearchingTrueIc } from '../../assets';
+import { CategoryId, EventCategoryId } from '../../core/common/categories';
+import { EventUpperCategoryType, UpperCategoryType } from '../../type/common/category';
+import { PageType } from '../../type/common/pageType';
+import { getInvariantObjectKeys, invariantOf } from '../../utils/common/invarientType';
+import { updateQueryParams } from '../../utils/common/queryString';
+import { CheckBox } from './checkBox';
 
 const FilterWrapper = styled.section`
   position: fixed;
@@ -38,7 +38,7 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
   color: ${({ theme }) => theme.colors.white};
 
   ${({ pageType, isChecked }) =>
-    pageType === "tracks" &&
+    pageType === 'tracks' &&
     isChecked &&
     css`
       background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
@@ -54,7 +54,7 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
     `}
 
   ${({ pageType, isChecked }) =>
-    pageType === "vocals" &&
+    pageType === 'vocals' &&
     isChecked &&
     css`
       background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
@@ -71,7 +71,7 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
 
     & > button {
     ${({ pageType, isChecked }) =>
-      pageType === "tracks" &&
+      pageType === 'tracks' &&
       (isChecked
         ? css`
             color: ${({ theme }) => theme.colors.sub1};
@@ -82,7 +82,7 @@ const CategoryItem = styled.div<{ pageType: PageType; isChecked?: boolean }>`
           `)}
 
     ${({ pageType, isChecked }) =>
-      pageType === "vocals" &&
+      pageType === 'vocals' &&
       (isChecked
         ? css`
             color: ${({ theme }) => theme.colors.sub2};
@@ -132,9 +132,9 @@ export default function Filter(props: FilterProps) {
   const [selectedCategory, setSelectedCategory] = useState<Set<string>>(new Set());
   const [trackSearch, setTrackSearch] = useState(false);
 
-  function selectCategory(category: UpperCategoryType) {
+  function selectCategory(category: EventUpperCategoryType) {
     const tempSelectedCategory = new Set(selectedCategory);
-    const categoryId = CategoryId[category];
+    const categoryId = EventCategoryId[category];
 
     tempSelectedCategory.has(categoryId)
       ? tempSelectedCategory.delete(categoryId)
@@ -148,20 +148,20 @@ export default function Filter(props: FilterProps) {
   }
 
   useEffect(() => {
-    const categString = updateQueryParams("categ", Array.from(selectedCategory));
+    const categString = updateQueryParams('categ', Array.from(selectedCategory));
 
     navigate(categString);
   }, [selectedCategory]);
 
   useEffect(() => {
-    trackSearch && searchParams.set("trackSearch", String(trackSearch));
+    trackSearch && searchParams.set('trackSearch', String(trackSearch));
     setSearchParams(searchParams);
-    navigate("?" + searchParams.toString());
+    navigate('?' + searchParams.toString());
   }, [trackSearch]);
 
   return (
     <FilterWrapper>
-      {getInvariantObjectKeys(invariantOf(CategoryId)).map((category) => {
+      {getInvariantObjectKeys(invariantOf(EventCategoryId)).map((category) => {
         return (
           <CheckBox id={category} externalFn={() => selectCategory(category)}>
             <CheckBox.Indicator asChild>
@@ -173,7 +173,7 @@ export default function Filter(props: FilterProps) {
           </CheckBox>
         );
       })}
-      {pageType === "vocals" && (
+      {pageType === 'vocals' && (
         <CheckBox externalFn={toggleTrackSearching}>
           <CheckBox.Indicator asChild>
             <TrackSearchingItem>

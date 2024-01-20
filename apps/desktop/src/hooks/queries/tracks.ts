@@ -1,6 +1,6 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import {
   deleteTrack,
   getFilteredTracks,
@@ -10,12 +10,12 @@ import {
   patchTrack,
   patchTrackClose,
   postTrack,
-} from "../../api/tracks";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { loginUserId } from "../../recoil/common/loginUserData";
-import { FilteredTrackParamsType } from "../../type/tracks";
+} from '../../api/tracks';
+import { QUERIES_KEY } from '../../core/common/queriesKey';
+import { loginUserId } from '../../recoil/common/loginUserData';
+import { FilteredTrackParamsType } from '../../type/tracks';
 
-export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">) {
+export function useFilteredTracks(params: Omit<FilteredTrackParamsType, 'page'>) {
   const fetchTracks = async (pageParams: number) => {
     const response = await getFilteredTracks({ ...params, page: pageParams });
 
@@ -30,7 +30,7 @@ export function useFilteredTracks(params: Omit<FilteredTrackParamsType, "page">)
         return lastPage.response.data[0].trackList.length === 0 ? undefined : lastPage.nextPage;
       },
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   const trackData = data?.pages.flatMap((data) => data.response.data[0].trackList.map((trackInfo) => trackInfo));
@@ -84,10 +84,10 @@ export function useUploadTrack() {
     mutationFn: (formData: FormData) => postTrack(formData),
     onSuccess: (data) => {
       setTimeout(() => {
-        if (prevURL === "/signup/success") {
+        if (prevURL === '/signup/success') {
           navigate(`/producer-profile/${userId}`, {
             state: {
-              prevURL: "/track-search",
+              prevURL: '/track-search',
             },
           });
         } else {
@@ -141,7 +141,7 @@ export function useDeleteTrack() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (trackId: number) => deleteTrack(trackId),
     onSuccess: () => {
-      queryClient.invalidateQueries("producerVocalSearchings");
+      queryClient.invalidateQueries('producerVocalSearchings');
     },
     onError: () => {},
   });
@@ -152,7 +152,7 @@ export function useDeleteTrack() {
 }
 
 export function useGetRecentTracks(count: number) {
-  const { data: recentTrackInfo } = useQuery(["getRecentTracks"], () => getRecentTracks(count), {
+  const { data: recentTrackInfo } = useQuery(['getRecentTracks'], () => getRecentTracks(count), {
     onError: (err) => {
       console.log(err);
     },

@@ -1,43 +1,43 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import styled, { css } from "styled-components";
-import { MainTracksTextIc, MainVocalsTextIc, SloganIc } from "../../assets";
-import hoverTracksBackground from "../../assets/image/hoverTracksImg.png";
-import hoverVocalsBackground from "../../assets/image/hoverVocalsImg.png";
-import originBackground from "../../assets/image/mainBackgroundImg.png";
-import mainSloganImg from "../../assets/image/mainSloganImg.png";
-import { openConventionModal } from "../../recoil/common/conventionModal";
-import ConventionModal from "../@common/conventionModal";
-import Footer from "../@common/footer";
-import Header from "../@common/header";
-import Ads from "./ads";
-import LoginButton from "./loginButton";
-import HomeLogo from "../@common/homeLogo";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import styled, { css } from 'styled-components';
+import { MainTracksTextIc, MainVocalsTextIc, SloganIc } from '../../assets';
+import hoverTracksBackground from '../../assets/image/hoverTracksImg.png';
+import hoverVocalsBackground from '../../assets/image/hoverVocalsImg.png';
+import originBackground from '../../assets/image/mainBackgroundImg.png';
+import mainSloganImg from '../../assets/image/mainSloganImg.png';
+import { openConventionModal } from '../../recoil/common/conventionModal';
+import ConventionModal from '../@common/conventionModal';
+import Footer from '../@common/footer';
+import Header from '../@common/header';
+import Ads from './ads';
+import LoginButton from './loginButton';
+import HomeLogo from '../@common/homeLogo';
 
 export default function Main() {
   const showModal = useRecoilValue(openConventionModal);
   const navigate = useNavigate();
-  const [isWhatHover, setIsWhatHover] = useState("");
+  const [isWhatHover, setIsWhatHover] = useState('');
 
   function handleMoveToVocals() {
-    navigate("/vocal-search");
+    navigate('/vocal-search');
   }
 
   function handleMoveToTracks() {
-    navigate("/track-search");
+    navigate('/track-search');
   }
 
   function handleResetHover() {
-    setIsWhatHover("");
+    setIsWhatHover('');
   }
 
   function handleVocalHover() {
-    setIsWhatHover("vocals");
+    setIsWhatHover('vocals');
   }
 
   function handleTrackHover() {
-    setIsWhatHover("tracks");
+    setIsWhatHover('tracks');
   }
 
   return (
@@ -55,8 +55,8 @@ export default function Main() {
           hoverTracksBackground={hoverTracksBackground}
           isWhatHover={isWhatHover}
         />
-        <VocalsTextIcon isVocalsHover={isWhatHover === "vocals"} />
-        <TracksTextIcon isTracksHover={isWhatHover === "tracks"} />
+        <VocalsTextIcon isVocalsHover={isWhatHover === 'vocals'} />
+        <TracksTextIcon isTracksHover={isWhatHover === 'tracks'} />
         <VocalsArea onMouseEnter={handleVocalHover} onMouseLeave={handleResetHover} onClick={handleMoveToVocals} />
         <TracksArea onMouseEnter={handleTrackHover} onMouseLeave={handleResetHover} onClick={handleMoveToTracks} />
         <MainSlogan src={mainSloganImg} alt="슬로건" />
@@ -68,7 +68,7 @@ export default function Main() {
 }
 
 const headerStyle: React.CSSProperties = {
-  position: "absolute",
+  position: 'absolute',
 };
 
 const Background = styled.main<{
@@ -79,7 +79,7 @@ const Background = styled.main<{
 }>`
   width: 192rem;
   content: url(${({ isWhatHover, originBackground, hoverTracksBackground, hoverVocalsBackground }) =>
-    isWhatHover === "" ? originBackground : isWhatHover === "vocals" ? hoverVocalsBackground : hoverTracksBackground});
+    isWhatHover === '' ? originBackground : isWhatHover === 'vocals' ? hoverVocalsBackground : hoverTracksBackground});
 `;
 
 const MainPageWrapper = styled.div`

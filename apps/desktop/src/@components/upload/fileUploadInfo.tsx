@@ -1,10 +1,10 @@
-import { FolderUploadIc, UploadFileIc } from "../../assets";
-import UploadInfoBox from "./uploadInfoBox";
-import styled from "styled-components";
-import { useFormContext } from "react-hook-form";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { UploadInputType } from "../../type/common/upload";
-import { useState } from "react";
+import { FolderUploadIc, UploadFileIc } from '../../assets';
+import UploadInfoBox from './uploadInfoBox';
+import styled from 'styled-components';
+import { useFormContext } from 'react-hook-form';
+import { TEXT_LIMIT } from '../../core/common/textLimit';
+import { UploadInputType } from '../../type/common/upload';
+import { useState } from 'react';
 
 export default function FileUploadInfo() {
   const {
@@ -12,7 +12,7 @@ export default function FileUploadInfo() {
     getValues,
     formState: { dirtyFields },
   } = useFormContext<UploadInputType>();
-  const [fileType, setFileType] = useState("");
+  const [fileType, setFileType] = useState('');
   const [isTextOverflow, setIsTextOverflow] = useState(false);
 
   return (
@@ -26,24 +26,24 @@ export default function FileUploadInfo() {
       <InfoInput>
         <InputWrapper>
           <InputFileTextWrapper isDirty={dirtyFields.audioFile ?? false}>
-            <FileName value={getValues("audioFile")?.[0]?.name} isTextOverflow={isTextOverflow} disabled />
+            <FileName value={getValues('audioFile')?.[0]?.name} isTextOverflow={isTextOverflow} disabled />
             {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{fileType}</FileAttribute>}
             <FileInput
               type="file"
               id="wavFileUpload"
               accept=".wav,.mp3, .WAV, .MP3"
               readOnly
-              {...register("audioFile", {
+              {...register('audioFile', {
                 validate: (value) => {
                   return (
                     (value as unknown as FileList)?.[0] ===
-                    ((document.getElementById("wavFileUpload") as unknown as HTMLInputElement)
+                    ((document.getElementById('wavFileUpload') as unknown as HTMLInputElement)
                       ?.files?.[0] as unknown as File)
                   );
                 },
                 onChange: (e) => {
-                  setFileType(getValues("audioFile")?.[0]?.name.slice(-4));
-                  setIsTextOverflow(getValues("audioFile")?.[0]?.name.length > TEXT_LIMIT.UPLOAD_AUDIO);
+                  setFileType(getValues('audioFile')?.[0]?.name.slice(-4));
+                  setIsTextOverflow(getValues('audioFile')?.[0]?.name.length > TEXT_LIMIT.UPLOAD_AUDIO);
                 },
               })}
             />
@@ -100,12 +100,12 @@ const InputFileTextWrapper = styled.div<{ isDirty: boolean }>`
 
 const FileName = styled.input<{ isTextOverflow: boolean }>`
   height: 2.5rem;
-  width: ${(props) => (props.isTextOverflow ? "16.4rem" : "100%")};
+  width: ${(props) => (props.isTextOverflow ? '16.4rem' : '100%')};
 
   display: flex;
   align-items: center;
 
-  text-overflow: ${(props) => (props.isTextOverflow ? "ellipsis" : "default")};
+  text-overflow: ${(props) => (props.isTextOverflow ? 'ellipsis' : 'default')};
 
   ${({ theme }) => theme.fonts.hashtag};
   color: ${({ theme }) => theme.colors.white};
@@ -115,7 +115,7 @@ const FileName = styled.input<{ isTextOverflow: boolean }>`
 
 const FileAttribute = styled.div<{ isTextOverflow: boolean }>`
   height: 2.5rem;
-  width: ${(props) => (props.isTextOverflow ? "100%" : 0)};
+  width: ${(props) => (props.isTextOverflow ? '100%' : 0)};
   width: 100%;
 
   display: flex;
