@@ -1,16 +1,16 @@
-import styled, { CSSProperties } from "styled-components";
-import SamllButton from "../../@common/button/customButton";
-import { theme } from "../../../style/theme";
-import { useContext, useEffect } from "react";
-import { PlayerContext } from "../../../context/playerContext";
-import { useNavigate } from "react-router-dom";
-import { checkIsLogin } from "../../../utils/common/checkIsLogined";
-import { useRecoilValue } from "recoil";
-import { loginUserId, loginUserType } from "../../../recoil/common/loginUserData";
-import { useGetProducerProfile, useGetVocalProfile } from "../../../hooks/queries/mypage";
-import { ROLE } from "../../../core/common/roleType";
-import useModal from "../../../hooks/common/useModal";
-import ProfileBox from "./profileBox";
+import styled, { CSSProperties } from 'styled-components';
+import SamllButton from '../../@common/button/customButton';
+import { theme } from '../../../style/theme';
+import { useContext, useEffect } from 'react';
+import { PlayerContext } from '../../../context/playerContext';
+import { useNavigate } from 'react-router-dom';
+import { checkIsLogin } from '../../../utils/common/checkIsLogined';
+import { useRecoilValue } from 'recoil';
+import { loginUserId, loginUserType } from '../../../recoil/common/loginUserData';
+import { useGetProducerProfile, useGetVocalProfile } from '../../../hooks/queries/mypage';
+import { ROLE } from '../../../core/common/roleType';
+import useModal from '../../../hooks/common/useModal';
+import ProfileBox from './profileBox';
 
 export default function LoginBtn() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
@@ -49,21 +49,21 @@ export default function LoginBtn() {
 
   function handleMoveToLogin() {
     quitAudioForMovePage();
-    navigate("/login", {
+    navigate('/login', {
       state: {
-        prevURL: "/",
+        prevURL: '/',
       },
     });
   }
 
   function handleMoveToSignup() {
     quitAudioForMovePage();
-    navigate("/signup");
+    navigate('/signup');
   }
 
   return (
     <Styled.LoginBtnWrapper>
-      {isLogined ? (
+      {isLogined && userId > 0 ? (
         <Styled.LoginedInfoWrapper userType={userType} onClick={handleShowUpdateModal}>
           <Styled.LoginedUserImage src={getUserImage()} userType={userType} />
           {getUserName()}
@@ -116,34 +116,34 @@ const Styled = {
 };
 
 const LoginBtnStyle: CSSProperties = {
-  fontFamily: "Pretendard",
+  fontFamily: 'Pretendard',
   fontWeight: 500,
-  fontSize: "2.2rem",
-  lineHeight: "normal",
+  fontSize: '2.2rem',
+  lineHeight: 'normal',
 
-  width: "17.6rem",
-  height: "4.9rem",
+  width: '17.6rem',
+  height: '4.9rem',
 
   color: `${theme.colors.white}`,
   background: `${theme.colors.black}`,
 
   border: `0.1rem solid ${theme.colors.white}`,
-  borderRadius: "3rem",
+  borderRadius: '3rem',
 };
 
 const SignupBtnStyle: CSSProperties = {
-  fontFamily: "Pretendard",
+  fontFamily: 'Pretendard',
   fontWeight: 500,
-  fontSize: "2.2rem",
-  lineHeight: "normal",
+  fontSize: '2.2rem',
+  lineHeight: 'normal',
 
-  width: "17.6rem",
-  height: "4.9rem",
+  width: '17.6rem',
+  height: '4.9rem',
 
   color: `${theme.colors.black}`,
 
   background: `${theme.colors.white}`,
-  borderRadius: "3rem",
+  borderRadius: '3rem',
 
-  marginLeft: "2rem",
+  marginLeft: '2rem',
 };

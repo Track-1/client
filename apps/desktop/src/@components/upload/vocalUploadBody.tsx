@@ -1,24 +1,26 @@
-import styled from "styled-components";
-import UploadVocalLayoutImg from "../../assets/image/uploadVocalLayoutImg.png";
-import CategoryInfo from "./categotyInfo";
-import FileUploadInfo from "./fileUploadInfo";
-import UploadTitle from "./uploadTitle";
-import HashtagInfo from "./hashtagInfo";
-import DescriptionInfo from "./descriptionInfo";
-import { useUploadVocalPortfolio } from "../../hooks/queries/mypage";
-import { FormProvider, useForm } from "react-hook-form";
-import { SelectCategoryContext } from "../../context/selectCategoryContext";
-import Header from "../@common/header";
-import BackButton from "../@common/backButton";
-import UploadHeader from "./uploadHeader";
-import { useSelect } from "../../hooks/common/useSelect";
-import { CategoryIdType, UpperCategoryType } from "../../type/common/category";
-import { ImageInfo } from "./imageInfo";
-import { UserPortfolioType } from "../../type/profile";
-import { UploadInputType } from "../../type/common/upload";
-import UploadVocalDefaultImg from "../../assets/image/uploadVocalDefaultImg.png";
-import { CategoryId } from "../../core/common/categories";
-import { useParams } from "react-router-dom";
+import styled from 'styled-components';
+import UploadVocalLayoutImg from '../../assets/image/uploadVocalLayoutImg.png';
+import CategoryInfo from './categotyInfo';
+import FileUploadInfo from './fileUploadInfo';
+import UploadTitle from './uploadTitle';
+import HashtagInfo from './hashtagInfo';
+import DescriptionInfo from './descriptionInfo';
+import { useUploadVocalPortfolio } from '../../hooks/queries/mypage';
+import { FormProvider, useForm } from 'react-hook-form';
+import { SelectCategoryContext } from '../../context/selectCategoryContext';
+import Header from '../@common/header';
+import BackButton from '../@common/backButton';
+import UploadHeader from './uploadHeader';
+import { useSelect } from '../../hooks/common/useSelect';
+import { CategoryIdType, EventCategoryIdType, UpperCategoryType } from '../../type/common/category';
+import { ImageInfo } from './imageInfo';
+import { UserPortfolioType } from '../../type/profile';
+import { UploadInputType } from '../../type/common/upload';
+
+import { CategoryId } from '../../core/common/categories';
+import { useParams } from 'react-router-dom';
+import { createFileName } from '../../utils/common/createFileName';
+import { TEXT_LIMIT } from '../../core/common/textLimit';
 
 type VocalUploadBodyProps =
   | {
@@ -38,40 +40,46 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
   const { uploadType } = useParams();
 
   const { uploadVocalPortfolio } = useUploadVocalPortfolio();
-  const { selectedOption, selectOption } = useSelect<CategoryIdType | null>(
+  const { selectedOption, selectOption } = useSelect<EventCategoryIdType | null>(
     false,
-    CategoryId[prevUploadData?.portfolioCategory.toUpperCase() as UpperCategoryType],
+    CategoryId[prevUploadData?.portfolioCategory.toUpperCase() as UpperCategoryType]
   );
 
   emptyList.items.add(
-    new File([prevUploadData?.portfolioAudioFileName ?? ""], prevUploadData?.portfolioAudioFileName ?? "", {
-      type: "mp3",
-    }),
+    new File([prevUploadData?.portfolioAudioFileName ?? ''], prevUploadData?.portfolioAudioFileName ?? '', {
+      type: 'mp3',
+    })
   );
 
   const methods = useForm({
     defaultValues: {
-      image: isEditPage ? prevUploadData?.portfolioImageFile ?? "" : "",
-      title: isEditPage ? prevUploadData?.portfolioTitle ?? "" : "",
+      image: isEditPage ? prevUploadData?.portfolioImageFile ?? '' : '',
+      title: isEditPage ? prevUploadData?.portfolioTitle ?? '' : '',
       audioFile: isEditPage ? emptyList.files ?? defaultList.files : defaultList.files,
       hashtag: isEditPage ? prevUploadData?.portfolioKeyword ?? [] : [],
-      description: "",
+      description: '',
     },
   });
 
   function createVocalUploadFormData(data: UploadInputType) {
     if (selectedOption === null) return;
+    if (selectedOption === null) return;
 
     const formData = new FormData();
-    formData.append("portfolioTitle", data.title);
-    formData.append("portfolioCategory", selectedOption);
-    formData.append("portfolioAudioFile", data.audioFile[0]);
-    data.hashtag.forEach((tag, idx) => {
-      if (tag.length === 0) return;
-      formData.append(`portfolioContent${idx}`, tag);
-    });
-    formData.append("portfolioImageFile", data.image ?? UploadVocalDefaultImg);
-    formData.append("portfolioAudioFileName", String(data.audioFile));
+
+    const audioFile = data.audioFile[0] && new Blob([data.audioFile[0]], { type: data.audioFile[0]?.type });
+    const imageFile = typeof data.image !== 'string' ? new Blob([data?.image[0]], { type: data.image[0]?.type }) : '';
+
+    formData.append('portfolioAudioFileName', createFileName(data.audioFile[0], TEXT_LIMIT.UPLOAD_AUDIO));
+    formData.append('portfolioTitle', data.title);
+    formData.append('portfolioCategory', selectedOption);
+    formData.append('portfolioContent', data.description);
+    for (let i = 0; i < data.hashtag.length; i++) {
+      formData.append(`portfolioKeyword[${i}]`, data.hashtag[i]);
+    }
+    formData.append('portfolioIntroduction', data.description);
+    audioFile && formData.append('portfolioAudioFile', audioFile);
+    imageFile && formData.append('portfolioImageFile', imageFile);
 
     return formData;
   }

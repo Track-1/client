@@ -1,18 +1,20 @@
-import { useContext } from "react";
-import { useFormContext } from "react-hook-form";
-import styled from "styled-components";
-import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../assets";
-import { SelectCategoryContext } from "../../context/selectCategoryContext";
+import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+import { UploadAbleBtnIc, UploadUnableBtnIc } from '../../assets';
+import { SelectCategoryContext } from '../../context/selectCategoryContext';
 
 export default function UploadHeader() {
   const {
+    getValues,
     formState: { isValid },
   } = useFormContext();
   const { selectedOption } = useContext(SelectCategoryContext);
+
   return (
     <Wrapper>
       <UploadTypeText>{}</UploadTypeText>
-      {isValid && selectedOption !== null ? (
+      {getValues('hashtag')[0] !== '' && isValid && selectedOption !== null ? (
         <button type="submit">
           <UploadAbleBtnIcon />
         </button>

@@ -1,23 +1,23 @@
-import styled from "styled-components";
-import { AddHashtagIc, DeleteHashtagIc } from "../../../assets";
-import { useEffect } from "react";
-import { useFromContextWithRef } from "../../../hooks/common/useFromContextWithRef";
-import { useFieldArray } from "react-hook-form";
-import { useHashtagWithReactHookForm } from "../../../hooks/common/useHashtagWithReactHookForm";
+import styled from 'styled-components';
+import { AddHashtagIc, DeleteHashtagIc } from '../../../assets';
+import { useEffect } from 'react';
+import { useFromContextWithRef } from '../../../hooks/common/useFromContextWithRef';
+import { useFieldArray } from 'react-hook-form';
+import { useHashtagWithReactHookForm } from '../../../hooks/common/useHashtagWithReactHookForm';
 
 export default function HashtagInput() {
   const formContext = useFromContextWithRef();
   const { registerWithRef, watch, getValues } = formContext;
   const fieldArray = useFieldArray({
-    name: "hashtag",
+    name: 'hashtag',
   });
   const { append, fields } = fieldArray;
   const { handleKeyDownEnter, handleDeleteHashtag, activeInput } = useHashtagWithReactHookForm(formContext, fieldArray);
 
   useEffect(() => {
-    if (getValues("hashtag").length >= 3) return;
+    if (getValues('hashtag').length >= 3) return;
 
-    append("");
+    append('');
   }, []);
 
   return (
@@ -32,12 +32,12 @@ export default function HashtagInput() {
                 placeholder="hashtag"
                 onKeyPress={(e) => handleKeyDownEnter(e)}
                 onClick={activeInput}
-                inputWidth={watch("hashtag")[idx].length}
+                inputWidth={watch('hashtag')[idx].length}
                 autoComplete="off"
                 maxLength={10}
                 data-idx={idx}
                 autoFocus
-                {...registerWithRef("hashtag", idx)}
+                {...registerWithRef('hashtag', idx)}
               />
             </HashtagInputWrapper>
             <DeleteHashtagIcon onClick={(e) => handleDeleteHashtag(e, idx)} />

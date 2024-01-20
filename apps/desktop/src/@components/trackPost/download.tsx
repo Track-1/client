@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
-import { useQueryClient } from "react-query";
-import { useParams } from "react-router";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import { useCloseTrack, useTrackDetail, useTrackDownload } from "../../hooks/queries/tracks";
-import { blockAccess } from "../../utils/common/privateRouter";
+import { useContext, useState } from 'react';
+import { useQueryClient } from 'react-query';
+import { useParams } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { CloseDownloadIc, ClosedDownloadIc, DownloadIc, OpenDownloadIc } from '../../assets';
+import { PlayerContext } from '../../context/playerContext';
+import { useCloseTrack, useTrackDetail, useTrackDownload } from '../../hooks/queries/tracks';
+import { blockAccess } from '../../utils/common/privateRouter';
 
 export default function Download() {
   const { id } = useParams();
@@ -20,11 +20,10 @@ export default function Download() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
   function getFileLink(data: any) {
-    let blob = new Blob([data?.data], { type: "audio/mpeg" });
+    let blob = new Blob([data?.data], { type: 'audio/mpeg' });
     let url = window.URL.createObjectURL(blob); //s3링크
-    console.log(blob);
 
-    var a = document.createElement("a");
+    var a = document.createElement('a');
     a.href = url;
     a.download = `${trackDetail?.trackTitle}`;
     document.body.appendChild(a);
@@ -63,7 +62,7 @@ export default function Download() {
   function getFile() {
     if (blockAccess()) {
       quitAudioForMovePage();
-      navigate("/login", {
+      navigate('/login', {
         state: {
           prevURL: prevURL,
         },
