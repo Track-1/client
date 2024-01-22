@@ -9,6 +9,7 @@ import Text from '../common/Text';
 import { RightArrowIc } from '../../assets';
 import { ImageWrapper } from '../common/Interface';
 import { useRef } from 'react';
+import { PADDING_SIDE } from '../layout';
 
 const SectionContainer = styled.section`
   position: relative;
@@ -315,6 +316,9 @@ const AboutSectionWrapper = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  width: calc(${`100% + ${PADDING_SIDE}*2`});
+  margin-left: ${`-${PADDING_SIDE}`};
 
   overflow: hidden;
 `;

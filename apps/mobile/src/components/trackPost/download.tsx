@@ -20,7 +20,6 @@ export default function Download(props: DownloadProps) {
   useEffect(() => {
     getTrackDetail();
     refetch();
-
   }, []);
 
   async function getDownloadLink(s3Link: string) {
@@ -44,9 +43,8 @@ export default function Download(props: DownloadProps) {
         anchor.click();
         setTimeout((_: any) => {
           window.URL.revokeObjectURL(url);
-        }, 60000);
+        }, 1000);
         anchor.remove();
-        console.log('download success');
       });
   }
 
@@ -54,7 +52,10 @@ export default function Download(props: DownloadProps) {
     if (!checkUserPermission()) {
       quitAudioForMovePage();
     } else {
-      data && getDownloadLink(data.data.trackAudioFile);
+      if (data) {
+        alert('파일의 용량에 따라 시간이 소요될 수 있습니다.');
+        getDownloadLink(data.data.trackAudioFile);
+      }
     }
   }
 

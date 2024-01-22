@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { SIGNUP_STEP } from '../../../core/signUp/stepRenderer';
 import ProgressBar from '../../common/ProgressBar';
 import Footer from '../common/Footer';
-
 import Header from '../../header';
 import { Layout, SignupHeader } from './Layout';
 import NicknameConvention from './NicknameConvention';
 import StepButtons from './StepButtons';
 import Title from './Title';
+import StepMain from './StepMain';
 
 export default function SingupStep() {
   const [step, setStep] = useState(SIGNUP_STEP.ROLE);
@@ -20,8 +20,7 @@ export default function SingupStep() {
           <ProgressBar progress={(step / 3) * 100} />
           <Title step={step} />
         </SignupHeader>
-        <NicknameConvention />
-        {/* <StepMain step={step} /> */}
+        <StepMain step={step} />
         <StepButtons step={step} setStep={setStep} />
         <Footer />
       </Layout>

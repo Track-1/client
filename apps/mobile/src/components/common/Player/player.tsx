@@ -4,8 +4,7 @@ import { PlayerContext } from '../../../context/playerContext';
 import useControlPlayer from '../../../hooks/common/useControlPlayer';
 import Text from '../Text';
 import { ImageWrapper } from '../Interface';
-import { PauseIc, PlayIc } from '../../../assets';
-import usePaly from '../../../hooks/common/usePlay';
+import { CloseIc, PauseIc, PlayIc } from '../../../assets';
 
 const PlayerContainer = styled.section`
   position: fixed;
@@ -114,6 +113,12 @@ const TimeWrapper = styled.div`
   gap: 1.9rem;
 `;
 
+const CloseIcon = styled(CloseIc)`
+  position: fixed;
+  right: 2rem;
+  bottom: 7rem;
+`;
+
 interface PlayerProps {
   comment?: boolean;
 }
@@ -208,6 +213,7 @@ export default function Player({ comment }: PlayerProps) {
             <ImageWrapper as="button" width={3} height={3} onClick={isAudioPlaying() ? pause : play}>
               {isAudioPlaying() ? <PauseIc /> : <PlayIc />}
             </ImageWrapper>
+            {/* <CloseIcon width={10} height={10} onClick={quit} /> */}
           </IconTimeWrapper>
         </PlayerInfoWrapper>
       </PlayerWrapper>
