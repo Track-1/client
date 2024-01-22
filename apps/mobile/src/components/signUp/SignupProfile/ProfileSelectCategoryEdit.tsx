@@ -7,6 +7,7 @@ import useModals from '../../../hooks/common/useModals';
 import { getInvariantObjectKeys, invariantOf } from '../../../utils/common/invarientType';
 import { InputTitle } from '../../common/Form/inputForm';
 import { CheckBox } from '../../common/checkBox';
+import { Z_INDEX } from '../../../core/common/zIndex';
 
 export default function ProfileSelectCategoryEdit() {
   const { registerWithRef, ...methods } = useFormContextWithRef();
@@ -150,6 +151,7 @@ const Styled = {
   `,
   CategoryBoxWrapper: styled.div`
     position: relative;
+    z-index: ${Z_INDEX.CATEGORY_DROPDOWN};
     width: 100%;
   `,
 };

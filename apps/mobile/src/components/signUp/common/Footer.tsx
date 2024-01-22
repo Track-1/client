@@ -1,26 +1,28 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Text from '../../common/Text';
 
 export default function Footer() {
   return (
     <Style.FooterWrapper>
-      <Style.Font>Have an account?</Style.Font>
+      <Text as="span" font="Pre_14_R" color={'gray4'}>
+        {'Have an account?'}
+      </Text>
       <Link to="/login">
-        <Style.Font color="purple">Log in here</Style.Font>
+        <Text as="span" font="Pre_14_R" color={'neon_purple'}>
+          {' Log in here'}
+        </Text>
       </Link>
     </Style.FooterWrapper>
   );
 }
 
 const Style = {
-  Font: styled.p<{ color?: string }>`
-    ${({ theme }) => theme.fonts.Pre_14_R}
-    color: ${({ theme, color }) => (color === 'purple' ? theme.colors.neon_purple : theme.colors.gray4)};
-    margin-left: 0.5ch;
-  `,
   FooterWrapper: styled.footer`
     display: flex;
     justify-content: center;
     width: 100%;
+
+    padding-bottom: 7rem;
   `,
 };

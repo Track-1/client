@@ -42,14 +42,14 @@ export default function ProfilImageContainer() {
   return (
     <>
       {/* 프로듀서 프로필 이미지 업로드 */}
-      {isProducer(userType) && (
+      {userType && isProducer(userType) && (
         <Styled.ImageContainer>
           <Styled.ImageUploadBox
             onMouseEnter={() => handleImageHover(true)}
             onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <Styled.ProducerImageWrapper>
-                <Styled.ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기"  />
+                <Styled.ProducerImage src={imageSrc} alt="프로듀서 프로필 이미지 미리보기" />
               </Styled.ProducerImageWrapper>
             ) : (
               <Styled.SignUpUploadImageWrapper>
@@ -62,14 +62,14 @@ export default function ProfilImageContainer() {
       )}
 
       {/* 보컬 프로필 이미지 업로드 */}
-      {isVocal(userType) && (
+      {userType && isVocal(userType) && (
         <Styled.ImageContainer>
           <Styled.ImageUploadBox
             onMouseEnter={() => handleImageHover(true)}
             onMouseLeave={() => handleImageHover(false)}>
             {imageSrc ? (
               <Styled.VocalImageWrapper>
-                <Styled.VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기"/>
+                <Styled.VocalImage src={imageSrc} alt="보컬 프로필 이미지 미리보기" />
               </Styled.VocalImageWrapper>
             ) : (
               <Styled.SignUpUploadImageWrapper>
@@ -91,7 +91,6 @@ const Styled = {
 
   ImageUploadBox: styled.label`
     cursor: pointer;
-
   `,
 
   ImageContainer: styled.section`

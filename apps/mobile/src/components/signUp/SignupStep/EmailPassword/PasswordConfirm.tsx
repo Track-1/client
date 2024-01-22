@@ -39,7 +39,8 @@ export default function PasswordConfirm() {
           errors?.passwordConfirm?.message && !checkPasswordMatch(getValues('password'), getValues('passwordConfirm'))
             ? `${errors?.passwordConfirm?.message}`
             : ''
-        }>
+        }
+        checkedState={errors.passwordConfirm?.message === 'password success'}>
         <StyledInput
           type={visiblePw ? 'text' : 'password'}
           placeholder="Enter a password again"

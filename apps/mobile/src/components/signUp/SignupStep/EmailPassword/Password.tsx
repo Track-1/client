@@ -37,7 +37,8 @@ export default function Password() {
     <Styled.PasswordInput>
       <InputForm
         inputTitle="Password"
-        errorMessage={checkPasswordError(`${errors?.password?.message}`) ? `${errors?.password?.message}` : ''}>
+        errorMessage={checkPasswordError(`${errors?.password?.message}`) ? `${errors?.password?.message}` : ''}
+        checkedState={errors.password?.message === 'password success'}>
         <StyledInput
           type={visiblePw ? 'text' : 'password'}
           placeholder="Create a password"

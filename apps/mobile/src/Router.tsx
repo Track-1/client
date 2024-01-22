@@ -6,7 +6,6 @@ import SignupProfilePage from './pages/signupProfilePage';
 import SignupStepPage from './pages/signupStepPage';
 import SignupSuccessPage from './pages/signupSuccessPage';
 import TrackPostPage from './pages/trackPostPage';
-import ErrorPage from './pages/errorPage';
 import LoginPage from './pages/loginPage';
 import TrackSearchPage from './pages/trackSearchPage';
 import VocalProfilePage from './pages/vocalProfilePage';

@@ -34,12 +34,6 @@ export default function SignupProfile() {
   }
 
   function handleSubmitProfile() {
-    console.log({
-      userContact: getValues('contact'),
-      userCategory: getValues('category'),
-      userKeyword: getValues('hashtag').length > 0 ? getValues('hashtag').filter((item) => item.length > 0) : [],
-      userIntroduction: getValues('description'),
-    });
     profileAtferJoin({
       userContact: getValues('contact'),
       userCategory: getValues('category'),

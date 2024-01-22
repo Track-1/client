@@ -10,10 +10,15 @@ import { checkEmailError, checkEmailForm, checkIsResend } from '../../../../util
 import { EMAIL_RULE } from '../../../../validation/rules';
 import InputForm from '../../../common/Form/inputForm';
 import { InputWrapperWithButton, StyledInput } from '../../../common/Input';
+import { UserType } from '../../../../type/common/userType';
+import { isProducer } from '../../../../utils/common/check';
+import { useEffect } from 'react';
+import { ALERT } from '../../../../core/common/alert/signupSendCode';
 
-export default function Email() {
+export default function Email(props: { checkedEmail: boolean }) {
+  const { checkedEmail } = props;
   const { registerWithRef, ...methods } = useFormContextWithRef();
-  const selectedRole = useRecoilValue<string>(role);
+  const selectedRole = useRecoilValue<UserType>(role);
   const [, setIsSuccess] = useRecoilState<boolean>(isNextStep);
 
   const {
@@ -23,7 +28,21 @@ export default function Email() {
     formState: { errors },
   } = methods;
 
-  const { sendEmail } = useUserEmail(setError);
+  const { sendEmail, isSuccess, isError, error } = useUserEmail();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setError('email', { message: EMAIL_MESSAGE.TIME });
+      alert(ALERT.SIGNUP_SENDCODE);
+    }
+
+    if (isError) {
+      const errorMessage: any = error;
+      if (errorMessage?.response?.data.message === '중복된 이메일입니다') {
+        setError('email', { message: EMAIL_MESSAGE.DUPLICATION });
+      }
+    }
+  }, [isSuccess, isError]);
 
   function checkIsActive() {
     return (
@@ -33,7 +52,7 @@ export default function Email() {
 
   function handleSendCode() {
     sendEmail({
-      userType: selectedRole === 'producer' ? 'producer' : 'vocal',
+      userType: isProducer(selectedRole) ? 'producer' : 'vocal',
       userEmail: getValues('email'),
     });
   }
@@ -44,7 +63,8 @@ export default function Email() {
         inputTitle="What’s your email?"
         errorMessage={checkEmailError(`${errors?.email?.message}`) ? `${errors?.email?.message}` : ''}
         stabledMessage={checkIsResend(`${errors?.email?.message}`) ? `${errors?.email?.message}` : ``}
-        stabledColor={checkIsResend(`${errors?.email?.message}`) ? 'neon_purple' : 'gray4'}>
+        stabledColor={checkIsResend(`${errors?.email?.message}`) ? 'neon_purple' : 'gray4'}
+        checkedState={checkedEmail}>
         <StyledInput
           {...registerWithRef('email', {
             ...EMAIL_RULE,
@@ -66,10 +86,10 @@ export default function Email() {
         />
       </InputForm>
       <Button
-        onClick={handleSendCode}
+        onClick={() => checkIsActive() && handleSendCode()}
         size="small"
         backgroundColor={checkIsActive() ? 'purple' : 'grey'}
-        color={checkIsActive() ? 'black' : 'grey'}
+        color={checkIsActive() ? 'white' : 'grey'}
         width={8.6}
         height={3.2}>
         <Styled.ButtonText>{checkIsResend(`${errors?.email?.message}`) ? `Resend` : `Send Code`}</Styled.ButtonText>
