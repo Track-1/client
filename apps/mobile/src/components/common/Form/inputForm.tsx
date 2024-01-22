@@ -2,22 +2,31 @@ import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
 import { ColorsTypes } from '../../../style/theme';
 import { StyledText } from '../Text';
+import { UnverifyIc, VerifyIc } from '../../../assets';
 
 interface InputFormProps {
   inputTitle?: string;
   errorMessage?: string;
   stabledMessage?: string;
   stabledColor?: keyof ColorsTypes;
+  checkedState?: boolean;
+  focusState?: boolean;
 }
 
 export default function InputForm(props: PropsWithChildren<InputFormProps>) {
-  const { inputTitle, errorMessage, stabledMessage, stabledColor, children } = props;
+  const { inputTitle, errorMessage, stabledMessage, stabledColor, checkedState, focusState, children } = props;
+
+  function getInputStateIcon() {
+    if (errorMessage) return <UnverifyIc />;
+    if (checkedState) return <VerifyIc />;
+  }
 
   return (
-    <InpputContainer>
+    <InputContainer>
       <InputTitle>{inputTitle}</InputTitle>
       <InputWrapper errorMessage={errorMessage} stabledColor={stabledColor || 'gray4'}>
         {children}
+        {getInputStateIcon()}
       </InputWrapper>
       {errorMessage && (
         <Text as="p" font="Pre_14_R" color="red">
@@ -29,7 +38,7 @@ export default function InputForm(props: PropsWithChildren<InputFormProps>) {
           {stabledMessage}
         </Text>
       )}
-    </InpputContainer>
+    </InputContainer>
   );
 }
 
@@ -66,11 +75,13 @@ const InputWrapper = styled.div<{ errorMessage?: string; stabledColor: keyof Col
 `;
 
 const Text = styled(StyledText)`
-  position: sticky;
+  position: absolute;
 
   margin-top: 0.5rem;
 `;
 
-const InpputContainer = styled.div`
+const InputContainer = styled.div`
   width: 100%;
+
+  overflow: hidden;
 `;
