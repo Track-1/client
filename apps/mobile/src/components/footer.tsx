@@ -1,19 +1,22 @@
 import styled from 'styled-components';
 import Text from './common/Text';
+import { useConvention } from './common/Modal/useConvention';
 
 export default function Footer() {
+  const { showConvention, close } = useConvention();
+
   return (
     <>
       <Container>
         <FooterItemWrapper>
           <Text as="li" font="Pre_14_R" color="gray2">
-            개인정보처리방침
+            <span onClick={() => showConvention({ index: 1 })}>개인정보 처리방침</span>
           </Text>
           <Text as="li" font="Pre_14_R" color="gray2">
             |
           </Text>
           <Text as="li" font="Pre_14_R" color="gray2">
-            서비스 이용약관
+            <span onClick={() => showConvention({ index: 2 })}>서비스 이용약관</span>
           </Text>
         </FooterItemWrapper>
 
