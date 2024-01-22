@@ -8,3 +8,9 @@ export interface SetStepProp {
 export interface StepMainProps extends StepProp {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface StepButtonsProps {
+  step: number;
+  moveToNextStep: () => void;
+  moveToPrevStep: () => void;
+}
