@@ -7,10 +7,9 @@ import { Cover } from 'track-1-design-system';
 import { useRecoilValue } from 'recoil';
 import { loginUserId, loginUserType } from '../../../../recoil/common/loginUserData';
 import { useGetProducerProfile, useGetVocalProfile } from '../../../../hooks/queries/mypage';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Z_INDEX } from '../../../../core/common/zIndex';
 import { useLogout } from '../../../../hooks/queries/user';
-import { useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { useMovePage } from '../../../../hooks/common/useMovePage';
 
@@ -25,14 +24,13 @@ function UserInfo(props: UserInfoProps) {
   const userType = useRecoilValue(loginUserType);
   const userProfile = isLoggedIn
     ? isProducer(userType)
-      ? useGetProducerProfile(userId).producerProfile?.userProfile
-      : useGetVocalProfile(userId).vocalProfile?.userProfile
+      ? useGetProducerProfile(userId)?.producerProfile?.userProfile
+      : useGetVocalProfile(userId)?.vocalProfile?.userProfile
     : undefined;
 
   const { refetch } = useLogout(unShowModal);
 
   const { handleMovePage } = useMovePage();
-
 
   function handleLogout() {
     refetch();
@@ -41,7 +39,7 @@ function UserInfo(props: UserInfoProps) {
   return (
     <UserInfoContainer>
       <ImageWrapper width={4} height={4}>
-        {isLoggedIn ? (
+        {isLoggedIn && userProfile ? (
           <Link to={isProducer(userType) ? `/producer-profile/${userId}` : `/vocal-profile/${userId}`}>
             <Cover imageUrl={userProfile?.userImageFile || ''} width={4} height={4} shape="circle" />
           </Link>
@@ -51,7 +49,7 @@ function UserInfo(props: UserInfoProps) {
       </ImageWrapper>
 
       <UserInfoWrapper isLoggedIn={isLoggedIn}>
-        {isLoggedIn ? (
+        {isLoggedIn && userProfile ? (
           <>
             <UserProfileWrapper
               onClick={() => handleMovePage(isProducer(userType) ? 'producer-profile' : 'vocal-profile', userId)}>
@@ -68,7 +66,7 @@ function UserInfo(props: UserInfoProps) {
               </Text>
             </UserProfileWrapper>
 
-            <Text as="p" color="gray2" font="Pre_14_R">
+            <Text as="span" color="gray2" font="Pre_14_R">
               <div onClick={handleLogout}>Log out</div>
             </Text>
           </>
@@ -111,6 +109,9 @@ const UserProfileWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
+  gap: 0.5rem;
+
+  width: calc(100% - 5rem);
   height: 100%;
 `;
 
@@ -127,6 +128,9 @@ interface SideNavProps {
 
 export default function SideNav(props: SideNavProps) {
   const { openModal, unShowModal } = props;
+  const { handleMovePage } = useMovePage();
+  const location = useLocation();
+
   return (
     <Container openModal={openModal}>
       <NavTopItemWrapper>
@@ -139,16 +143,68 @@ export default function SideNav(props: SideNavProps) {
 
       <NavItemWrapper>
         <Text as="li" font="Pre_40_R" color="white">
-          <Link to="/about">About</Link>
+          <a
+            onClick={() => {
+              if (location.pathname.includes('signup')) {
+                if (window.confirm('회원가입을 종료하시겠습니까?')) {
+                  handleMovePage('about');
+                  unShowModal();
+                }
+              } else {
+                handleMovePage('about');
+                unShowModal();
+              }
+            }}>
+            About
+          </a>
         </Text>
         <Text as="li" font="Pre_40_R" color="white">
-          <Link to="/event">Events</Link>
+          <a
+            onClick={() => {
+              if (location.pathname.includes('signup')) {
+                if (window.confirm('회원가입을 종료하시겠습니까?')) {
+                  handleMovePage('event');
+                  unShowModal();
+                }
+              } else {
+                handleMovePage('event');
+                unShowModal();
+              }
+            }}>
+            Events
+          </a>
         </Text>
         <Text as="li" font="Pre_40_R" color="white">
-          <Link to="/track-search">Tracks</Link>
+          <a
+            onClick={() => {
+              if (location.pathname.includes('signup')) {
+                if (window.confirm('회원가입을 종료하시겠습니까?')) {
+                  handleMovePage('track-search');
+                  unShowModal();
+                }
+              } else {
+                handleMovePage('track-search');
+                unShowModal();
+              }
+            }}>
+            Tracks
+          </a>
         </Text>
         <Text as="li" font="Pre_40_R" color="white">
-          <Link to="/vocal-search">Vocals</Link>
+          <a
+            onClick={() => {
+              if (location.pathname.includes('signup')) {
+                if (window.confirm('회원가입을 종료하시겠습니까?')) {
+                  handleMovePage('vocal-search');
+                  unShowModal();
+                }
+              } else {
+                handleMovePage('vocal-search');
+                unShowModal();
+              }
+            }}>
+            Vocals
+          </a>
         </Text>
       </NavItemWrapper>
     </Container>
