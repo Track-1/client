@@ -91,17 +91,18 @@ export default function TrackSearchContainer() {
           </SelectedCategoryWrapper>
         )}
         <ul>
-          {trackData?.map((trackInfo) => (
-            <li key={trackInfo.trackId}>
-              <TrackSearchItem
-                trackInfo={trackInfo}
-                isSelected={trackInfo.trackId === playingTrack}
-                playingTrack={playingTrack}
-                selectTrack={selectTrack}
-              />
-              <StyledDivisionLine />
-            </li>
-          ))}
+          {trackData &&
+            trackData?.map((trackInfo) => (
+              <li key={trackInfo?.trackId}>
+                <TrackSearchItem
+                  trackInfo={trackInfo}
+                  isSelected={trackInfo?.trackId === playingTrack}
+                  playingTrack={playingTrack}
+                  selectTrack={selectTrack}
+                />
+                <StyledDivisionLine />
+              </li>
+            ))}
         </ul>
       </SectionContainer>
       <InfinityObserver ref={observerRef} />
