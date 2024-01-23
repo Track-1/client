@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useFormContextWithRef } from 'track-1-form-with-react-hook-form';
 import { CategoryCheckIc, DropdownIc, DropupIc } from '../../../assets';
@@ -14,12 +14,13 @@ export default function ProfileSelectCategoryEdit() {
 
   const {
     getValues,
+    watch,
     formState: { defaultValues },
   } = methods;
 
   function showCateg() {
     let category: (string | undefined)[] = [];
-    getValues('category').map((categIdx: number) => category.push(`${UpperCategories[categIdx]}`));
+    watch('category').map((categIdx: number) => category.push(`${UpperCategories[categIdx]}`));
 
     return category;
   }
@@ -27,8 +28,22 @@ export default function ProfileSelectCategoryEdit() {
   const [isOpen, setIsOpen] = useState(false);
   const { modalRef, handleShowUpdateModal } = useModals({ isOpen, setIsOpen });
 
+  const categoryInputRef = useRef<HTMLDivElement>(null);
+
+  function handleMoveScrollHeight() {
+    categoryInputRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      handleMoveScrollHeight();
+    } else {
+      window.scroll(0, 0);
+    }
+  }, [isOpen]);
+
   return (
-    <ProfileSelectCategoryEditWrapper>
+    <ProfileSelectCategoryEditWrapper ref={categoryInputRef}>
       <InputTitle>Category</InputTitle>
       <div>
         <Styled.InputWrapper isSelected={showCateg().toString() !== ''} onClick={handleShowUpdateModal}>
@@ -86,8 +101,6 @@ const Select = styled.div`
 `;
 
 const CategoryItem = styled.input<{ isChecked?: boolean }>`
-  margin-bottom: 1.2rem;
-
   color: ${({ theme, isChecked }) => (isChecked ? theme.colors.white : theme.colors.gray2)};
 `;
 
@@ -95,29 +108,33 @@ const CategoryLabel = styled.label<{ isSelected?: boolean }>`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 2rem;
+  align-items: center;
 
   color: ${({ theme, isSelected }) => (isSelected ? theme.colors.white : theme.colors.gray2)};
 `;
 
 const Styled = {
   CategoryBox: styled.div`
-    width: 100%;
     position: absolute;
-    margin-top: 1rem;
-    max-height: 40rem;
+
     display: flex;
-    padding: 3rem;
     flex-direction: column;
-    justify-content: space-between;
+
     align-items: center;
+    gap: 2rem;
+
+    width: 100%;
+    height: 45.6rem;
+
+    ${({ theme }) => theme.fonts.Pre_16_R};
+
+    margin-top: 1rem;
+    padding: 3rem;
+
     border-radius: 1rem;
     border: 1px solid rgb(49, 51, 56);
     background: rgba(27, 28, 32, 0.5);
     backdrop-filter: blur(15px);
-
-    ${({ theme }) => theme.fonts.Pre_16_R};
   `,
   Box: styled.div`
     width: 100%;
