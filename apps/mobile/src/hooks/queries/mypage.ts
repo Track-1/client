@@ -24,6 +24,8 @@ import useModal from '../common/useModal';
 import useUpdateModal from '../common/useUpdateModal';
 
 export function useGetProducerProfile(userId: number, userType?: string) {
+  if (userId < 0) return;
+
   const { data: producerProfile } = useQuery(
     'getProducerProfile',
     () =>
@@ -126,6 +128,8 @@ export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, 'page'>)
 }
 
 export function useGetVocalProfile(userId: number, userType?: string) {
+  if (userId < 0) return;
+
   const { data: vocalProfile } = useQuery(
     ['getVocalProfile'],
     () =>

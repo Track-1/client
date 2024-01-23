@@ -48,7 +48,7 @@ const DescriptionText = styled(TextareaAutosize)`
   color: ${({ theme }) => theme.colors.white};
   ${({ theme }) => theme.fonts.Pre_16_R};
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray2};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray4};
 
   margin-top: 1.7rem;
   padding-bottom: 1rem;
@@ -61,6 +61,8 @@ const DescriptionText = styled(TextareaAutosize)`
   border-top: transparent;
   border-left: transparent;
   border-right: transparent;
+
+  border-radius: 0;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.gray3};

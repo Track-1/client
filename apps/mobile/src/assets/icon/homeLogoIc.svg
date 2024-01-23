@@ -11,7 +11,7 @@
 <path id="1" d="M111.361 11H103.33L103.803 8.184H106.661L107.495 3.19497L104.438 4.10766L104.929 1.29166L108.876 0H111.412L110.025 8.184H111.835L111.361 11Z" fill="#5200FF"/>
 </g>
 <defs>
-<filter id="filter0_b_6493_3056" x="-70" y="-70" width="251.835" height="151" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_b_6493_3056" x="-70" y="-70" width="251.835" height="151" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feGaussianBlur in="BackgroundImageFix" stdDeviation="35"/>
 <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6493_3056"/>

@@ -12,7 +12,6 @@ export function useConvention() {
   const showConvention = useCallback(
     (options: { index: number }) =>
       new Promise<boolean>((resolve) => {
-        console.log(options.index);
         open(({ isOpen, close }) => (
           <Modal
             isOpen={isOpen}

@@ -19,7 +19,7 @@ import {
 } from '../../api/user';
 import { ALERT } from '../../core/common/alert/signupSendCode';
 import { QUERIES_KEY } from '../../core/common/queriesKey';
-import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from '../../core/signUp/errorMessage';
+import { EMAIL_MESSAGE } from '../../core/signUp/errorMessage';
 import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
 import {
   DefaultResponseType,
@@ -137,18 +137,9 @@ export function useAccessToken() {
   };
 }
 
-export function useUserEmail(setError: UseFormSetError<EmailPasswordInputType>) {
+export function useUserEmail() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (userEmail: UserEmailRequest) => postVerifyEmail(userEmail),
-    onSuccess: () => {
-      setError('email', { message: EMAIL_MESSAGE.TIME });
-      alert(ALERT.SIGNUP_SENDCODE);
-    },
-    onError: (error: any) => {
-      if (error?.response?.data.message === '중복된 이메일입니다') {
-        setError('email', { message: EMAIL_MESSAGE.DUPLICATION });
-      }
-    },
   });
   return {
     sendEmail: mutate,
@@ -168,23 +159,9 @@ export function useVerifyEmail() {
   };
 }
 
-export function useVerifyCode(
-  setError: UseFormSetError<FieldValues>,
-  resetField: UseFormResetField<FieldValues>,
-  setValue: UseFormSetValue<FieldValues>
-) {
+export function useVerifyCode() {
   const { mutate, ...restValues } = useMutation({
     mutationFn: (verifyCode: VerifyCodeRequest) => postVerifyCode(verifyCode),
-    onSuccess: () => {
-      setError('email', { message: EMAIL_MESSAGE.VERIFY });
-      setError('verifyCode', { message: VERIFICATION_CODE_MESSAGE.SUCCESS });
-      setValue('verifyCode', '');
-      resetField('passwordConfirm');
-    },
-    onError: () => {
-      setError('verifyCode', { message: VERIFICATION_CODE_MESSAGE.ERROR });
-      setError('email', { message: EMAIL_MESSAGE.TIME });
-    },
   });
   return {
     verifyCode: mutate,

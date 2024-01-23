@@ -24,10 +24,26 @@ function App() {
   const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
   useEffect(() => {
+    const $existingMeta = document.querySelector('meta[name="viewport"]');
+
     if (!isMobile) {
       window.location.href = 'https://www.track1.site';
     }
-  }, [isMobile]);
+
+    if (isMobile) {
+      const $meta = $existingMeta ?? document.createElement('meta');
+
+      $meta.setAttribute('name', 'viewport');
+      $meta.setAttribute(
+        'content',
+        'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'
+      );
+
+      if (!$existingMeta) {
+        document.head.appendChild($meta);
+      }
+    }
+  }, []);
 
   return (
     <CookiesProvider>

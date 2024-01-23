@@ -27,3 +27,4 @@ export { ReactComponent as SignupChangePhotoIc } from './icon/signupChangePhotoI
 export { ReactComponent as Track1LogoIc } from './icon/track1LogoIc.svg';
 export { ReactComponent as TrackDetailIc } from './icon/trackDetailIc.svg';
 export { ReactComponent as VerifyIc } from './icon/verifyIc.svg';
+export { ReactComponent as UnverifyIc } from './icon/unverifyIc.svg';

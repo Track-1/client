@@ -15,7 +15,8 @@ export default function Nickname() {
     <Style.NicknameLayout>
       <InputForm
         inputTitle="What’s your name?"
-        errorMessage={errors.nickName?.message && `${errors.nickName?.message}`}>
+        errorMessage={errors.nickName?.message && `${errors.nickName?.message}`}
+        checkedState={methods.watch('nickName') && !errors.nickName}>
         <StyledInput
           type="text"
           placeholder="Enter your user name"

@@ -2,19 +2,21 @@ import styled from 'styled-components';
 import { checkIsLogin, isProducer } from '../../utils/common/check';
 import BannerPlaybar from './bannerPlaybar';
 import { useRecoilValue } from 'recoil';
-import { loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
 import { PADDING_SIDE } from '../layout';
 import { useMovePage } from '../../hooks/common/useMovePage';
 
 const NOT_LOGGED_IN = 'Listen to this\n Awesome music\n Before you Sign up';
-const LOGGED_IN_PRODUCER = 'Discover your\n Limitless Inspiration\n with Vocals here';
-const LOGGED_IN_VOCAL = 'Discover your\n Limitless Chance\n with Producers here';
+const LOGGED_IN_PRODUCER = 'Discover your\nLimitless Inspiration\nwith Vocals here';
+const LOGGED_IN_VOCAL = 'Discover your\nLimitless Chance\n with Producers here';
 
 export default function HotTrack() {
+  const userId = useRecoilValue(loginUserId);
   const userType = useRecoilValue(loginUserType);
-  const BANNER_TEXT = checkIsLogin() ? (isProducer(userType) ? LOGGED_IN_PRODUCER : LOGGED_IN_VOCAL) : NOT_LOGGED_IN;
+  const BANNER_TEXT =
+    checkIsLogin() && userId > 0 ? (isProducer(userType) ? LOGGED_IN_PRODUCER : LOGGED_IN_VOCAL) : NOT_LOGGED_IN;
   const { handleMovePage } = useMovePage();
 
   const { recentTrackInfo } = useGetRecentTracks(4);
@@ -27,7 +29,8 @@ export default function HotTrack() {
     <Container imageUrl={isProducer(userType) ? vocalImage : trackImage}>
       <BannerText>{BANNER_TEXT}</BannerText>
 
-      {!checkIsLogin() && <SignupButton onClick={() => handleMovePage('signup')}>Sign up for free</SignupButton>}
+      {!checkIsLogin() ||
+        (userId < 0 && <SignupButton onClick={() => handleMovePage('signup')}>Sign up for free</SignupButton>)}
       <BannerPlaybar />
     </Container>
   );
@@ -56,7 +59,7 @@ const Container = styled.section<{ imageUrl: string }>`
 const BannerText = styled.h1`
   margin-top: 2.6rem;
 
-  ${({ theme }) => theme.fonts.Alex_34_M};
+  ${({ theme }) => theme.fonts.Alex_34_R};
   color: ${({ theme }) => theme.colors.white};
   line-height: 150%;
 `;

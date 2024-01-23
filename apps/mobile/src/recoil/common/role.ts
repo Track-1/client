@@ -1,10 +1,7 @@
 import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import { UserType } from '../../type/common/userType';
 
-const { persistAtom } = recoilPersist();
-
-export const role = atom({
+export const role = atom<UserType | null>({
   key: 'role',
   default: null,
-  effects_UNSTABLE: [persistAtom],
 });

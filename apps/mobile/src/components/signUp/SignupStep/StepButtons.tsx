@@ -1,13 +1,7 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { SIGNUP_STEP } from '../../../core/signUp/stepRenderer';
-import { useJoin } from '../../../hooks/queries/user';
-import { role } from '../../../recoil/common/role';
 import { isNextStep } from '../../../recoil/signUp/isNextStep';
-import { joinUserData } from '../../../recoil/signUp/joinUserData';
-import { UserType } from '../../../type/common/userType';
-import { JoinUserDataPropsType } from '../../../type/signUp/joinUserDataType';
-import { StepMainProps } from '../../../type/signUp/stepProps';
+import { StepButtonsProps, StepProp } from '../../../type/signUp/stepProps';
 
 interface ButtonProp {
   onClick: () => void;
@@ -25,7 +19,7 @@ export function Prev(prop: ButtonProp) {
 
 export function Next(prop: ButtonProp) {
   const { onClick } = prop;
-  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
+  const isSuccess = useRecoilValue<boolean>(isNextStep);
 
   return (
     <Styled.NextButton type="button" disabled={!isSuccess} onClick={onClick}>
@@ -34,40 +28,13 @@ export function Next(prop: ButtonProp) {
   );
 }
 
-export default function StepButtons(props: StepMainProps) {
-  const { step, setStep } = props;
-  const [roleType, setRoleType] = useRecoilState<string | UserType>(role);
-  const [isSuccess, setIsSuccess] = useRecoilState<boolean>(isNextStep);
-  const [userData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
-  const { join } = useJoin();
-
-  function checkFinalStep() {
-    return step === SIGNUP_STEP.NICKNAME_CONVENTION;
-  }
-
-  function moveToNextStep() {
-    if (checkFinalStep()) {
-      join({ userType: roleType === 'producer' ? 'producer' : 'vocal', formData: userData });
-    } else {
-      setStep(step + 1);
-
-      setIsSuccess(false);
-    }
-  }
-
-  function moveToPrevStep() {
-    if (step === SIGNUP_STEP.EMAIL_PASSWORD) {
-      setRoleType(null);
-    }
-    setStep(step - 1);
-
-    setIsSuccess(false);
-  }
+export default function StepButtons(props: StepButtonsProps) {
+  const { step, moveToNextStep, moveToPrevStep } = props;
 
   return (
     <Styled.ButtonWrapper>
       {step !== 1 ? <Prev onClick={moveToPrevStep} /> : <p></p>}
-      <Next onClick={moveToNextStep} />
+      {step > 1 && <Next onClick={moveToNextStep} />}
     </Styled.ButtonWrapper>
   );
 }
@@ -84,6 +51,6 @@ const Styled = {
   ButtonWrapper: styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 8rem 0;
+    padding: 8rem 0;
   `,
 };

@@ -51,6 +51,12 @@ export default function Hashtag(props: HashtagProps) {
     }
   }
 
+  function handleKeyDownEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.code === 'Enter') {
+      handleAddHashtag();
+    }
+  }
+
   return (
     <>
       <HashtagWrapper>
@@ -69,6 +75,7 @@ export default function Hashtag(props: HashtagProps) {
                 {...register('hashtagInput')}
                 inputLength={watch('hashtagInput').length}
                 value={watch('hashtagInput')}
+                onKeyDown={handleKeyDownEnter}
               />
             </HashtagInputBox>
 

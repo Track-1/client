@@ -4,4 +4,5 @@ export const Z_INDEX = {
   PLAYER: 10,
   FILTER_NAV: 15,
   LOADING: 30,
+  CATEGORY_DROPDOWN: 5,
 };

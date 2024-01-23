@@ -17,7 +17,7 @@ export default function SimpleModal({ isOpen, onClose, children }: ModalProps) {
         <Box>
           <Dialog.Close asChild>
             <ButtonWrapper>
-              <CloseIcon />
+              <CloseIcon width={14} height={14} />
             </ButtonWrapper>
           </Dialog.Close>
           {children}

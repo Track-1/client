@@ -7,7 +7,9 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-      <AboutContainer />
+      <Layout>
+        <AboutContainer />
+      </Layout>
       <Footer />
     </>
   );

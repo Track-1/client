@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
@@ -13,6 +12,7 @@ export default function ProfileHashtagEdit() {
   const { registerWithRef, ...methods } = useFormContextWithRef();
 
   const [isRulesOpen, setIsRulesOpen] = useState(false);
+
   const { modalRef, unShowModal, handleShowUpdateModal } = useModals({
     isOpen: isRulesOpen,
     setIsOpen: setIsRulesOpen,
@@ -20,7 +20,7 @@ export default function ProfileHashtagEdit() {
 
   return (
     <div>
-      <SimpleModal isOpen={isRulesOpen} onClose={onClose}>
+      <SimpleModal isOpen={isRulesOpen} onClose={unShowModal}>
         <>
           1. 해시태그는 최대 3개까지 추가 가능합니다.
           <br />

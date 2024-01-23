@@ -34,18 +34,12 @@ export default function SignupProfile() {
   }
 
   function handleSubmitProfile() {
-    console.log({
+    profileAtferJoin({
       userContact: getValues('contact'),
       userCategory: getValues('category'),
       userKeyword: getValues('hashtag').length > 0 ? getValues('hashtag').filter((item) => item.length > 0) : [],
       userIntroduction: getValues('description'),
     });
-    // profileAtferJoin({
-    //   userContact: getValues('contact'),
-    //   userCategory: getValues('category'),
-    //   userKeyword: getValues('hashtag').length > 0 ? getValues('hashtag').filter((item) => item.length > 0) : [],
-    //   userIntroduction: getValues('description'),
-    // });
   }
 
   return (
@@ -116,7 +110,7 @@ const Styled = {
   `,
 
   Background: styled.div`
-    position: fixed;
+    position: absolute;
     top: 0;
     z-index: -1;
 
