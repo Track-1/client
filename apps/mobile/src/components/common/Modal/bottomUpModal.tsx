@@ -124,6 +124,6 @@ const StyledLine = styled.div`
   background: ${({ theme }) => theme.colors.gray4};
 `;
 
-const Background = styled(Dialog.Overlay)`
+export const Background = styled(Dialog.Overlay)`
   background-color: rgba(0, 0, 0, 0.2);
 `;

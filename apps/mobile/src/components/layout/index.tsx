@@ -23,7 +23,7 @@ export const StyledLayout = styled.main`
   flex-direction: column;
 
   width: 100%;
-  height: 100svh;
+  height: 100%;
 
   padding: ${`0 ${PADDING_SIDE}`};
 `;

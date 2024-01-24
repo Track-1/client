@@ -84,7 +84,12 @@ export default function VocalSearchContainer() {
         )}
         <VocalListWrapper>
           {vocalData?.map((trackInfo) => (
-            <VocalSearchItem trackInfo={trackInfo} playingTrack={playingTrack} selectTrack={selectTrack} />
+            <VocalSearchItem
+              trackInfo={trackInfo}
+              playingTrack={playingTrack}
+              selectTrack={selectTrack}
+              key={trackInfo.userId}
+            />
           ))}
         </VocalListWrapper>
       </section>

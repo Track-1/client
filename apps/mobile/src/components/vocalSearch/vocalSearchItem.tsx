@@ -7,7 +7,6 @@ import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
 import { PlayerContext } from '../../context/playerContext';
 import { HashtagWrapper, ImageWrapper } from '../common/Interface';
 import { useMovePage } from '../../hooks/common/useMovePage';
-import { Link } from 'react-router-dom';
 
 interface VocalSearchItemProps {
   trackInfo: FilteredVocalType;

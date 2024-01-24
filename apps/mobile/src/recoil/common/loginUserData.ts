@@ -4,21 +4,11 @@ import { UserType } from '../../type/common/userType';
 
 const { persistAtom } = recoilPersist();
 
-export const loginUserType = atom<UserType>({
-  key: 'loginUserType',
-  default: 'vocal',
-  effects_UNSTABLE: [persistAtom],
-});
-
-export const loginUserId = atom<number>({
-  key: 'loginUserId',
-  default: -1,
-  effects_UNSTABLE: [persistAtom],
-});
-
 interface LoginUserDataType {
   userType: UserType;
   userId: number;
+  userImageFile: string;
+  userName: string;
 }
 
 export const loginUserData = atom<LoginUserDataType>({
@@ -26,5 +16,8 @@ export const loginUserData = atom<LoginUserDataType>({
   default: {
     userType: 'vocal',
     userId: -1,
+    userImageFile: '',
+    userName: '',
   },
+  effects_UNSTABLE: [persistAtom],
 });

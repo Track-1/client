@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { FieldValues, UseFormResetField, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import {
   getAccessToken,
@@ -20,9 +20,10 @@ import {
 import { ALERT } from '../../core/common/alert/signupSendCode';
 import { QUERIES_KEY } from '../../core/common/queriesKey';
 import { EMAIL_MESSAGE } from '../../core/signUp/errorMessage';
-import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import {
   DefaultResponseType,
+  LoginResponse,
   UserEmailRequest,
   UserLoginInfoRequest,
   UserPasswordRequest,
@@ -36,8 +37,7 @@ import { removeCookie, setCookie } from '../../utils/common/cookie';
 
 export function useJoin() {
   const navigate = useNavigate();
-  const setLoginUserType = useSetRecoilState(loginUserType);
-  const setLoginUserId = useSetRecoilState(loginUserId);
+  const setLoginUserData = useSetRecoilState(loginUserData);
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ userType, formData }: { userType: UserType; formData: JoinUserDataPropsType }) =>
@@ -45,8 +45,13 @@ export function useJoin() {
     onSuccess: (response: any) => {
       const accessToken = response.accessToken;
       setCookie('accessToken', accessToken, {});
-      setLoginUserType(response.userResult.userType);
-      setLoginUserId(response.userResult.userId);
+      setLoginUserData({
+        userId: response.userResult.userId,
+        userType: response.userResult.userType,
+        userName: response.userResult.userName,
+        userImageFile: response.userResult.userImageFile,
+      });
+
       navigate('/signup/profile');
     },
     onError: (error) => {
@@ -78,48 +83,42 @@ export function useProfileAfterJoin() {
 }
 
 export function useLogin() {
-  const setLoginUserId = useSetRecoilState(loginUserId);
-  const setLoginUserType = useSetRecoilState(loginUserType);
+  const setLoginUserData = useSetRecoilState(loginUserData);
   const navigate = useNavigate();
-  const { mutate, ...restValues } = useMutation<
-    DefaultResponseType,
-    AxiosError<DefaultResponseType>,
-    UserLoginInfoRequest
-  >((userInfo: UserLoginInfoRequest) => postLogin(userInfo), {
-    onSuccess: (response: any) => {
-      setLoginUserId(response?.data?.userId);
-      setLoginUserType(response?.data?.userType);
-      setCookie('accessToken', response?.data?.accessToken, {});
-      navigate('/');
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
+  const prevPage = useLocation().state.prevPage;
+
+  const { mutate, ...restValues } = useMutation<LoginResponse, AxiosError<DefaultResponseType>, UserLoginInfoRequest>(
+    (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
+    {
+      onSuccess: (data: LoginResponse) => {
+        setCookie('accessToken', data?.data?.accessToken, {});
+        setLoginUserData({
+          userId: data?.data.userId,
+          userType: data?.data.userType,
+          userName: data?.data.userName,
+          userImageFile: data?.data.userImageFile,
+        });
+        prevPage ? navigate(prevPage) : navigate(-1);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
   return {
     login: mutate,
     ...restValues,
   };
 }
 
-export function useLogout(unShowModal: () => void) {
-  const resetLoginUserId = useResetRecoilState(loginUserId);
-  const resetLoginUserType = useResetRecoilState(loginUserType);
-
+export function useLogout() {
   const { data, ...restValues } = useQuery({
-    queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
-    onSuccess: () => {
-      resetLoginUserId();
-      resetLoginUserType();
-      removeCookie('accessToken', { path: '/' });
-      unShowModal();
-    },
     onError: () => {},
     enabled: false,
   });
   return {
-    logout: data,
+    isLoggedOut: data,
     ...restValues,
   };
 }

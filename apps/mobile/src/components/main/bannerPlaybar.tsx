@@ -3,7 +3,7 @@ import { PADDING_SIDE } from '../layout';
 import { checkIsLogin, isProducer } from '../../utils/common/check';
 import PlayIcon from '../common/Form/PlayIcon';
 import { useRecoilValue } from 'recoil';
-import { loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import { FilteredTrackType } from '../../type/tracks';
 import { useState } from 'react';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
@@ -104,7 +104,7 @@ function ProducerPlaybar(props: ProducerPlaybarProps) {
 }
 
 export default function BannerPlaybar() {
-  const userType = useRecoilValue(loginUserType);
+  const { userType } = useRecoilValue(loginUserData);
 
   const [playingTrack, setPlayingTrack] = useState<FilteredTrackType['trackId'] | FilteredVocalType['userId'] | null>(
     null

@@ -9,7 +9,7 @@ import {
   VocalProfileType,
 } from "./profile";
 import { FilteredTrackListType, FilteredTrackType, TrackDetailType, TrackDownloadType } from "./tracks";
-import { UserEmailType, UserLoginInfo, UserPasswordType, UserProfileType, VerifyCodeType } from "./user";
+import { LoginResponseType, UserEmailType, UserJoinResponseType, UserLoginInfo, UserPasswordType, UserProfileType, VerifyCodeType } from "./user";
 import { FilteredVocalListType, FilteredVocalType } from "./vocals";
 
 export type DefaultResponseType<T = unknown> = {
@@ -46,6 +46,10 @@ export type ProducerInfoResponse = DefaultResponseType<ProducerInfoType>;
 export type VocalProfileResponse = DefaultResponseType<VocalProfileType>;
 
 export type MyInfoResponse = DefaultResponseType<MyInfoType>;
+
+export type LoginResponse = DefaultResponseType<LoginResponseType>;
+
+export type UserJoinResponse = DefaultResponseType<UserJoinResponseType>;
 
 export type VocalInfoResponse = DefaultResponseType<VocalInfoType>;
 
