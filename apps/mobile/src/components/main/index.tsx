@@ -5,14 +5,14 @@ import RecentVocalList from './recentVocalList';
 import HotEvent from './hotEvent';
 import { StyledDivisionLine } from '../common/DivisionLine';
 import { useRecoilValue } from 'recoil';
-import { loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import { checkIsLogin, isProducer } from '../../utils/common/check';
 import { FilteredVocalType } from '../../type/vocals';
 import { useState } from 'react';
 import { FilteredTrackType } from '../../type/tracks';
 
 export default function MainContainer() {
-  const userType = useRecoilValue(loginUserType);
+  const { userType } = useRecoilValue(loginUserData);
   const [playingTrack, setPlayingTrack] = useState<FilteredTrackType['trackId'] | FilteredVocalType['userId'] | null>(
     null
   );

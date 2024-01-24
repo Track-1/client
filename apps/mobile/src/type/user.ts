@@ -1,4 +1,4 @@
-import { UserType } from "./common/userType";
+import { UserType } from './common/userType';
 
 export interface UserLoginInfo {
   userEmail: string;
@@ -28,14 +28,14 @@ export interface VerifyCodeType {
   userCode: string;
 }
 
-export interface UserResultType {
-  userId: number;
-  userName: string;
-  userType: string;
+export interface UserJoinResponseType extends LoginResponseType {
   userEmail: string;
 }
 
-export interface SingupResultType {
-  userResult: UserResultType;
+export interface LoginResponseType {
+  userId: number;
+  userName: string;
+  userType: UserType;
+  userImageFile: string;
   accessToken: string;
 }

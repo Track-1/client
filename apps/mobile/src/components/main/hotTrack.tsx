@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { checkIsLogin, isProducer } from '../../utils/common/check';
 import BannerPlaybar from './bannerPlaybar';
 import { useRecoilValue } from 'recoil';
-import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import { useGetRecentTracks } from '../../hooks/queries/tracks';
 import { useGetRecentVocals } from '../../hooks/queries/vocals';
 import { PADDING_SIDE } from '../layout';
@@ -13,8 +13,7 @@ const LOGGED_IN_PRODUCER = 'Discover your\nLimitless Inspiration\nwith Vocals he
 const LOGGED_IN_VOCAL = 'Discover your\nLimitless Chance\n with Producers here';
 
 export default function HotTrack() {
-  const userId = useRecoilValue(loginUserId);
-  const userType = useRecoilValue(loginUserType);
+  const { userId, userType } = useRecoilValue(loginUserData);
   const BANNER_TEXT =
     checkIsLogin() && userId > 0 ? (isProducer(userType) ? LOGGED_IN_PRODUCER : LOGGED_IN_VOCAL) : NOT_LOGGED_IN;
   const { handleMovePage } = useMovePage();
