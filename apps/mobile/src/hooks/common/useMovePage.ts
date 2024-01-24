@@ -17,13 +17,15 @@ type PagePathType =
 export function useMovePage() {
   const navigate = useNavigate();
 
-  function handleMovePage(pagePath: PagePathType, parameter?: number) {
+  function handleMovePage(pagePath: PagePathType, parameter?: number, prevPage?: string) {
     if (pagePath === 'home') {
       navigate('/');
       return;
     }
 
-    parameter ? navigate(`/${pagePath}/${parameter}`) : navigate(`/${pagePath}`);
+    parameter
+      ? navigate(`/${pagePath}/${parameter}`, { state: { prevPage: prevPage } })
+      : navigate(`/${pagePath}`, { state: { prevPage: prevPage } });
   }
 
   function checkUserPermission() {
