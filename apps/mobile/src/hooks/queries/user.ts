@@ -87,7 +87,6 @@ export function useLogin() {
   const navigate = useNavigate();
   const prevPage = useLocation().state.prevPage;
 
-  console.log(useLocation().state?.prevPage);
   const { mutate, ...restValues } = useMutation<LoginResponse, AxiosError<DefaultResponseType>, UserLoginInfoRequest>(
     (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
     {
@@ -113,23 +112,13 @@ export function useLogin() {
 }
 
 export function useLogout() {
-  const resetLoginUserData = useResetRecoilState(loginUserData);
-
   const { data, ...restValues } = useQuery({
-    queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
-    onSuccess: () => {
-      resetLoginUserData();
-      removeCookie('accessToken', {
-        path: '',
-        domain: 'http://localhost:3000' || 'https://www.track1.site' || 'https://www.m.track1.site',
-      });
-    },
     onError: () => {},
     enabled: false,
   });
   return {
-    logout: data,
+    isLoggedOut: data,
     ...restValues,
   };
 }
