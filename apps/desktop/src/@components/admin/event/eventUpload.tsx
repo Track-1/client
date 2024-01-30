@@ -1,18 +1,18 @@
-import styled from "styled-components";
-import PasswordContainer from "../../@common/passwordContainer";
-import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
-import { UploadAbleBtnIc, UploadUnableBtnIc } from "../../../assets";
-import useInputText from "../../../hooks/common/useInputText";
-import { useUploadEvent } from "../../../hooks/queries/admin/event";
+import styled from 'styled-components';
+import PasswordContainer from '../../@common/passwordContainer';
+import useUploadImageFile from '../../../hooks/common/useUploadImageFile';
+import { UploadAbleBtnIc, UploadUnableBtnIc } from '../../../assets';
+import useInputText from '../../../hooks/common/useInputText';
+import { useUploadEvent } from '../../../hooks/queries/admin/event';
 
 export default function EventUpload() {
-  const [title, handleChangeTitle] = useInputText("");
+  const [title, handleChangeTitle] = useInputText('');
   const { imageFile, handleUploadImageFile } = useUploadImageFile();
-  const [startDate, handleChangeStartDate] = useInputText("");
-  const [startTime, handleChangeStartTime] = useInputText("");
-  const [endDate, handleChangeEndDate] = useInputText("");
-  const [endTime, handleChangeEndTime] = useInputText("");
-  const [introduction, handleChangeIntroduction] = useInputText("");
+  const [startDate, handleChangeStartDate] = useInputText('');
+  const [startTime, handleChangeStartTime] = useInputText('');
+  const [endDate, handleChangeEndDate] = useInputText('');
+  const [endTime, handleChangeEndTime] = useInputText('');
+  const [introduction, handleChangeIntroduction] = useInputText('');
 
   const { uploadEvent } = useUploadEvent();
 
@@ -24,13 +24,13 @@ export default function EventUpload() {
     const formData = new FormData();
     const eventImageFile = imageFile && new Blob([imageFile], { type: imageFile?.type });
 
-    formData.append("eventTitle", title);
-    eventImageFile && formData.append("eventImageFile", eventImageFile);
-    formData.append("eventStartDate", startDate);
-    formData.append("eventStartTime", startTime);
-    formData.append("eventendDate", endDate);
-    formData.append("eventEndTime", endTime);
-    formData.append("eventIntroduction", introduction);
+    formData.append('eventTitle', title);
+    eventImageFile && formData.append('eventImageFile', eventImageFile);
+    formData.append('eventStartDate', startDate);
+    formData.append('eventStartTime', startTime);
+    formData.append('eventendDate', endDate);
+    formData.append('eventEndTime', endTime);
+    formData.append('eventIntroduction', introduction);
 
     uploadEvent(formData);
   }
@@ -147,8 +147,10 @@ const Styled = {
     height: 12rem;
     padding: 0.5rem 2rem;
 
-    ${({ theme }) => theme.fonts.input}
+    ${({ theme }) => theme.fonts.input};
     color: white;
+
+    
 
     border: 1px solid ${({ theme }) => theme.colors.main};
     border-radius: 1rem;
