@@ -25,12 +25,14 @@ export default function EventUpload() {
     const eventImageFile = imageFile && new Blob([imageFile], { type: imageFile?.type });
 
     formData.append('eventTitle', title);
-    eventImageFile && formData.append('eventImageFile', eventImageFile);
     formData.append('eventStartDate', startDate);
     formData.append('eventStartTime', startTime);
-    formData.append('eventendDate', endDate);
+    formData.append('eventEndDate', endDate);
     formData.append('eventEndTime', endTime);
     formData.append('eventIntroduction', introduction);
+
+    eventImageFile && formData.append('eventImageFile', eventImageFile);
+
 
     uploadEvent(formData);
   }
@@ -149,8 +151,6 @@ const Styled = {
 
     ${({ theme }) => theme.fonts.input};
     color: white;
-
-    
 
     border: 1px solid ${({ theme }) => theme.colors.main};
     border-radius: 1rem;
