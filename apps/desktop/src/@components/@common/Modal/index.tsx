@@ -55,20 +55,20 @@ export function PopupModal() {
                     `[Track-1 Song Camp Pt.1: Romance]
 
 #Korea Track
-Track-1 Song Camp Korea는 다른 인디 아티스트와 협업하여 결과물을 도출하는 온라인 송캠프 프로그램으로, 1위 팀은 믹싱/마스터링부터 유통까지 앨범 제작 전체 지원\n`}
+Track-1 Song Camp Korea는 다른 인디 아티스트와 협업하여 결과물을 도출하는 온라인 송캠프 프로그램으로,1위 팀은 믹싱/마스터링부터 유통까지 앨범 제작 전체 지원\n`}
 <EventDetailText onClick={()=> {navigate(`/event/${eventListData[0].eventId}`)}}>모집 요강 상세 보기</EventDetailText>
 
 {`\n\n#Global Track
-Track-1 Song Camp Korea is an online song camp program where independent artists collaborate to produce outcomes. The 1st place team receives full support for the entire album production process, from mixing/mastering to distribution.
-View detailed recruitment guidelines.`
-              }
+Track-1 Song Camp Korea is an online song camp program where independent artists collaborate to produce outcomes. The 1st place team receives full support for the entire album production process, from mixing/mastering to distribution.\n`
+                  }
+                  <EventDetailText onClick={()=> {navigate(`/event/${eventListData[1].eventId}`)}}>View detailed recruitment guidelines.</EventDetailText>
             </EventContent>
           </ModalContent>
 
         <BottomWrapper>
           <CheckBoxWrapper>
-            <CheckBoxLabel onClick={handleCheckedBox}>오늘하루 보지 않기</CheckBoxLabel>
-            <CheckBox type="checkbox" checked={checkedState } onClick={handleCheckedBox}/>
+            <CheckBoxLabel onChange={handleCheckedBox}>오늘하루 보지 않기</CheckBoxLabel>
+            <CheckBox type="checkbox" checked={checkedState } onChange={handleCheckedBox}/>
           </CheckBoxWrapper>
 
           <Styled.CloseIconWrapper>
