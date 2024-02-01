@@ -10,11 +10,10 @@ import { removeCookie } from '../../utils/common/cookie';
 interface ProfileBoxProps {
   userType: string;
   userName: string | undefined;
-  userContact: string | undefined;
 }
 
 export default function ProfileBox(props: ProfileBoxProps) {
-  const { userType, userName, userContact } = props;
+  const { userType, userName } = props;
 
   const userId = useRecoilValue(loginUserId);
   const navigate = useNavigate();
@@ -54,7 +53,7 @@ export default function ProfileBox(props: ProfileBoxProps) {
       <Styled.ProfileInfoWrapper onClick={handleMoveTo}>
         <Styled.ProfileContentWrapper>
           <Styled.UserNameText>{userName}</Styled.UserNameText>
-          <Styled.UserEmailText>{userContact}</Styled.UserEmailText>
+          {/* <Styled.UserEmailText>{userContact}</Styled.UserEmailText> */}
         </Styled.ProfileContentWrapper>
         <Styled.ProfileUserTypeWrapper>
           <Styled.UserTypeText userType={userType}>{userType}</Styled.UserTypeText>

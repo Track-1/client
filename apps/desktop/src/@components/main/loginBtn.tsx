@@ -6,7 +6,7 @@ import { PlayerContext } from '../../context/playerContext';
 import { useNavigate } from 'react-router-dom';
 import { checkIsLogin } from '../../utils/common/checkIsLogined';
 import { useRecoilValue } from 'recoil';
-import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserId, loginUserImage, loginUserName, loginUserType } from '../../recoil/common/loginUserData';
 import { useGetProducerProfile, useGetVocalProfile } from '../../hooks/queries/mypage';
 import { ROLE } from '../../core/common/roleType';
 import useModal from '../../hooks/common/useModal';
@@ -19,11 +19,13 @@ export default function LoginBtn() {
 
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
+  const userImage = useRecoilValue(loginUserImage);
+  const userName = useRecoilValue(loginUserName);
 
   const { openModal, unShowModal, handleShowUpdateModal } = useModal();
 
-  const { vocalProfile } = useGetVocalProfile(userId);
-  const { producerProfile } = useGetProducerProfile(userId);
+  // const { vocalProfile, refetch: refetchVocalProfile } = useGetVocalProfile(userId);
+  // const { producerProfile, refetch: refetchProducerProfile } = useGetProducerProfile(userId);
 
   const navigate = useNavigate();
 
@@ -31,21 +33,21 @@ export default function LoginBtn() {
     unShowModal();
   }, []);
 
-  function getUserImage() {
-    return userType === ROLE.PRODUCER
-      ? producerProfile?.userProfile.userImageFile
-      : vocalProfile?.userProfile.userImageFile;
-  }
+  // function getUserImage() {
+  //   return userType === ROLE.PRODUCER
+  //     ? producerProfile?.userProfile.userImageFile
+  //     : vocalProfile?.userProfile.userImageFile;
+  // }
 
-  function getUserName() {
-    return userType === ROLE.PRODUCER ? producerProfile?.userProfile.userName : vocalProfile?.userProfile.userName;
-  }
+  // function getUserName() {
+  //   return userType === ROLE.PRODUCER ? producerProfile?.userProfile.userName : vocalProfile?.userProfile.userName;
+  // }
 
-  function getUserContact() {
-    return userType === ROLE.PRODUCER
-      ? producerProfile?.userProfile.userContact
-      : vocalProfile?.userProfile.userContact;
-  }
+  // function getUserContact() {
+  //   return userType === ROLE.PRODUCER
+  //     ? producerProfile?.userProfile.userContact
+  //     : vocalProfile?.userProfile.userContact;
+  // }
 
   function handleMoveToLogin() {
     quitAudioForMovePage();
@@ -63,11 +65,11 @@ export default function LoginBtn() {
 
   return (
     <Styled.LoginBtnWrapper>
-      {isLogined && userId > 0 ? (
+      {userId > 0 ? (
         <Styled.LoginedInfoWrapper userType={userType} onClick={handleShowUpdateModal}>
-          <Styled.LoginedUserImage src={getUserImage()} userType={userType} />
-          {getUserName()}
-          {openModal && <ProfileBox userType={userType} userName={getUserName()} userContact={getUserContact()} />}
+          <Styled.LoginedUserImage src={userImage} userType={userType} />
+          {userName}
+          {openModal && <ProfileBox userType={userType} userName={userName} />}
         </Styled.LoginedInfoWrapper>
       ) : (
         <>
