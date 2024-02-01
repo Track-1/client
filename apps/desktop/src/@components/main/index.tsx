@@ -6,10 +6,12 @@ import MainBanner from './mainBanner';
 import EventSection from './eventSection';
 import { PlayerContext, PlayerProvider } from '../../context/playerContext';
 import Player from '../@common/player';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../@common/footer';
 import MainHeader from './mainHeader';
+import { PopupModal } from '../@common/Modal';
+import { getCookie } from '../../utils/common/cookie';
 
 export default function MainPageContainer() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
@@ -25,8 +27,10 @@ export default function MainPageContainer() {
     navigate('/track-search');
   }
 
+
   return (
     <PlayerProvider>
+      {!getCookie('popup') &&<PopupModal />}
       {/* HEADER */}
       <MainHeader />
       {/* MainBanner */}
