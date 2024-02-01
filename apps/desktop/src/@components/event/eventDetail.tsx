@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { EventBackBtnIc } from "../../assets";
-import { CommonSectionStyled } from "../main/renewal/eventSection";
-import { useParams } from "react-router-dom";
-import { useGetEventDetail } from "../../hooks/queries/admin/event";
-import usePrevPage from "../../hooks/common/usePrevPage";
+import styled from 'styled-components';
+import { EventBackBtnIc } from '../../assets';
+import { CommonSectionStyled } from '../main/eventSection';
+import { useParams } from 'react-router-dom';
+import { useGetEventDetail } from '../../hooks/queries/admin/event';
+import usePrevPage from '../../hooks/common/usePrevPage';
 
 export default function EventDetail() {
   const { eventId } = useParams();
@@ -20,7 +20,9 @@ export default function EventDetail() {
         <Styled.DdayText>{eventDetailData?.eventDday}</Styled.DdayText>
       </Styled.DetailTopWrapper>
 
-      <Styled.DetailEventImage src={eventDetailData?.eventImageFile}></Styled.DetailEventImage>
+      <Styled.DetailEventImageWarpper>
+        <Styled.DetailEventImage src={eventDetailData?.eventImageFile}></Styled.DetailEventImage>
+      </Styled.DetailEventImageWarpper>
 
       <Styled.DetailInfoWrapper>
         <Styled.DetailEventTitleWrapper>
@@ -40,9 +42,9 @@ const Styled = {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 32.9rem;
 
-    padding: 24.3rem 10rem 0 10rem;
+    padding: 10rem 10rem 0;
+    margin-bottom: 5rem;
   `,
 
   EventBackBtnIcon: styled(EventBackBtnIc)`
@@ -57,8 +59,17 @@ const Styled = {
   `,
 
   DetailEventImage: styled.img`
-    width: 192rem;
-    height: 108rem;
+    width: 100%;
+    aspect-ratio: 1/1;
+
+    /* padding: 0 10rem; */
+  `,
+
+  DetailEventImageWarpper: styled.div`
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
   `,
 
   DetailInfoWrapper: styled.div`
