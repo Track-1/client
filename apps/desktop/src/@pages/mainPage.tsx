@@ -1,5 +1,5 @@
-import Main from "../@components/main";
+import MainPageContainer from '../@components/main';
 
 export default function MainPage() {
-  return <Main />;
+  return <MainPageContainer />;
 }

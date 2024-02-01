@@ -1,31 +1,35 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { LogoutIc, ProducerTextIc, VocalTextIc } from "../../assets";
-import { ROLE } from "../../core/common/roleType";
-import { useLogout } from "../../hooks/queries/user";
-import { loginUserId } from "../../recoil/common/loginUserData";
-import { ProducerProfileImage } from "./mypageButton";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import styled from 'styled-components';
+import { ROLE } from '../../core/common/roleType';
+
+import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import { getLogout } from '../../api/user';
+import { removeCookie } from '../../utils/common/cookie';
 
 interface ProfileBoxProps {
   userType: string;
-  userImage: string | undefined;
   userName: string | undefined;
-  userContact: string | undefined;
 }
 
 export default function ProfileBox(props: ProfileBoxProps) {
-  const { userType, userImage, userName, userContact } = props;
-  const [logoutState, setLogoutState] = useState(false);
-  const { logout } = useLogout(logoutState);
+  const { userType, userName } = props;
 
   const userId = useRecoilValue(loginUserId);
   const navigate = useNavigate();
   const prevURL = useLocation().pathname;
 
-  function handleLogout() {
-    setLogoutState(!logoutState);
+  const resetLoginUserId = useResetRecoilState(loginUserId);
+  const resetLoginUserType = useResetRecoilState(loginUserType);
+
+  async function handleLogout() {
+    const data = await getLogout();
+
+    if (data) {
+      resetLoginUserId();
+      resetLoginUserType();
+      removeCookie('accessToken', { path: '/' });
+    }
   }
 
   function handleMoveTo() {
@@ -45,163 +49,95 @@ export default function ProfileBox(props: ProfileBoxProps) {
   }
 
   return (
-    <ProfileBoxContainer>
-      <ProfileWrapper onClick={handleMoveTo}>
-        {userType === ROLE.PRODUCER ? (
-          <ProducerImageWrapper>
-            <ProducerImageLayout>
-              <ProducerProfileImage src={userImage} alt="유저 프로필 이미지" />
-            </ProducerImageLayout>
-          </ProducerImageWrapper>
-        ) : (
-          <VocalUploadImageContainer>
-            <VocalImageFrame>
-              <VocalUploadImageLayout src={userImage} alt="유저 프로필 이미지" />
-            </VocalImageFrame>
-          </VocalUploadImageContainer>
-        )}
-        <ProfileContentWrapper>
-          <UserNameText>{userName}</UserNameText>
-          {userType === ROLE.PRODUCER ? <ProducerTextIcon /> : <VocalTextIcon />}
-          <UserEmailText>{userContact}</UserEmailText>
-        </ProfileContentWrapper>
-      </ProfileWrapper>
-      <LogoutWrapper onClick={handleLogout}>
-        Logout
-        <LogoutIcon />
-      </LogoutWrapper>
-    </ProfileBoxContainer>
+    <Styled.ProfileBoxContainer>
+      <Styled.ProfileInfoWrapper onClick={handleMoveTo}>
+        <Styled.ProfileContentWrapper>
+          <Styled.UserNameText>{userName}</Styled.UserNameText>
+          {/* <Styled.UserEmailText>{userContact}</Styled.UserEmailText> */}
+        </Styled.ProfileContentWrapper>
+        <Styled.ProfileUserTypeWrapper>
+          <Styled.UserTypeText userType={userType}>{userType}</Styled.UserTypeText>
+        </Styled.ProfileUserTypeWrapper>
+      </Styled.ProfileInfoWrapper>
+      <Styled.LogoutWrapper onClick={handleLogout}>
+        <Styled.LogoutText>Logout</Styled.LogoutText>
+      </Styled.LogoutWrapper>
+    </Styled.ProfileBoxContainer>
   );
 }
 
-const ProfileBoxContainer = styled.div`
-  position: absolute;
-  z-index: 2;
+const Styled = {
+  ProfileBoxContainer: styled.div`
+    position: absolute;
 
-  top: 12.4rem;
-  right: 7rem;
+    top: 12.4rem;
+    right: 7rem;
 
-  width: 37.1rem;
-  height: 17.1rem;
+    width: 37.1rem;
+    height: 16.5rem;
 
-  border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.gray5};
+    border-radius: 1rem;
+    background-color: ${({ theme }) => theme.colors.gray5};
 
-  cursor: pointer;
-`;
+    cursor: pointer;
+  `,
 
-const ProducerImageWrapper = styled.div`
-  width: 8rem;
-  height: 8rem;
+  ProfileInfoWrapper: styled.div`
+    display: flex;
+    justify-content: space-between;
 
-  margin-right: 1.8rem;
-`;
+    width: 100%;
+    height: 10.6rem;
 
-const ProducerImageLayout = styled.div`
-  width: 8rem;
-  height: 8rem;
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
 
-  border-radius: 50%;
+    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3};
+  `,
 
-  object-fit: cover;
-  overflow: hidden;
+  ProfileContentWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
 
-  margin-right: 1.8rem;
-`;
+    width: 25rem;
+  `,
 
-const ProfileContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  ProfileUserTypeWrapper: styled.div`
+    width: calc(100% - 25rem);
+  `,
 
-  width: 100%;
-`;
+  UserNameText: styled.p`
+    color: ${({ theme }) => theme.colors.white};
+    ${({ theme }) => theme.fonts.id};
+  `,
 
-const UserNameText = styled.p`
-  color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.fonts.id};
-`;
+  UserEmailText: styled.p`
+    color: ${({ theme }) => theme.colors.gray3};
+    ${({ theme }) => theme.fonts.description};
+  `,
 
-const UserEmailText = styled.p`
-  color: ${({ theme }) => theme.colors.gray3};
-  ${({ theme }) => theme.fonts.description};
-`;
+  UserTypeText: styled.p<{ userType: string }>`
+    color: ${(props) =>
+      props.userType === ROLE.PRODUCER ? ({ theme }) => theme.colors.sub1 : ({ theme }) => theme.colors.sub2};
+    ${({ theme }) => theme.fonts.description};
+  `,
 
-const ProfileWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
+  LogoutWrapper: styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  width: 100%;
-  height: 11.4rem;
+    width: 100%;
+    height: 5.7rem;
 
-  padding: 1.5rem 2.2rem;
+    padding: 0.9rem 2rem;
+  `,
 
-  /* border-bottom: 0.1rem solid ${({ theme }) => theme.colors.gray3}; */
-`;
+  LogoutText: styled.p`
+    color: ${({ theme }) => theme.colors.gray3};
+    ${({ theme }) => theme.fonts.description};
 
-const LogoutWrapper = styled.button`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    text-decoration: underline;
 
-  ${({ theme }) => theme.fonts.body1};
-  color: ${({ theme }) => theme.colors.white};
-
-  width: 100%;
-  height: 5.7rem;
-
-  padding: 0.9rem 2rem;
-`;
-
-const LogoutIcon = styled(LogoutIc)`
-  width: 4rem;
-`;
-
-const ProducerTextIcon = styled(ProducerTextIc)`
-  width: 7.9rem;
-
-  margin-bottom: 0.9rem;
-`;
-
-const VocalTextIcon = styled(VocalTextIc)`
-  width: 7.9rem;
-
-  margin-bottom: 0.9rem;
-`;
-
-const VocalUploadImageContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  width: 8.6rem;
-  height: 8.6rem;
-`;
-
-const VocalImageFrame = styled.div`
-  width: 5.6rem;
-  height: 5.6rem;
-
-  margin-left: 0.9rem;
-
-  border-radius: 5rem;
-  transform: rotate(45deg);
-
-  border: 0.1rem solid ${({ theme }) => theme.colors.black};
-  border-radius: 0.5rem;
-
-  overflow: hidden;
-  object-fit: cover;
-
-  transform: rotate(-45deg);
-
-  cursor: pointer;
-`;
-
-const VocalUploadImageLayout = styled.img`
-  width: 8.6rem;
-  height: 8.6rem;
-  margin-top: -1.5rem;
-  margin-left: -1.5rem;
-
-  transform: rotate(45deg);
-  object-fit: cover;
-`;
+    cursor: pointer;
+  `,
+};

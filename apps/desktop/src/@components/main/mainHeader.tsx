@@ -1,12 +1,12 @@
-import styled, { CSSProperties } from "styled-components";
-import Header from "../../@common/header";
-import { MainLogoWhiteIc } from "../../../assets";
-import MainNav from "./mainNav";
-import { useContext } from "react";
-import { PlayerContext } from "../../../context/playerContext";
-import { useNavigate } from "react-router-dom";
-import LoginBtn from "./loginBtn";
-import { theme } from "../../../style/theme";
+import styled, { CSSProperties } from 'styled-components';
+import Header from '../@common/header';
+import { MainLogoWhiteIc } from '../../assets';
+import MainNav from './mainNav';
+import { useContext } from 'react';
+import { PlayerContext } from '../../context/playerContext';
+import { useNavigate } from 'react-router-dom';
+import LoginBtn from './loginBtn';
+import { theme } from '../../style/theme';
 
 export default function MainHeader() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
@@ -14,17 +14,17 @@ export default function MainHeader() {
 
   function handleMoveHome() {
     quitAudioForMovePage();
-    navigate("/");
+    navigate('/');
   }
 
   function handleMoveVocalSearch() {
     quitAudioForMovePage();
-    navigate("/vocal-search");
+    navigate('/vocal-search');
   }
 
   function handleMoveTrackSearch() {
     quitAudioForMovePage();
-    navigate("/track-search");
+    navigate('/track-search');
   }
 
   return (
@@ -39,8 +39,8 @@ export default function MainHeader() {
 }
 
 const headerStyle: CSSProperties = {
-  position: "sticky",
-  zIndex: "5",
+  position: 'sticky',
+  zIndex: '5',
   background: `${theme.colors.black}`,
 };
 

@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { useGetEventList } from "../../hooks/queries/admin/event";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import { useGetEventList } from '../../hooks/queries/admin/event';
+import { useNavigate } from 'react-router-dom';
 
 interface HotEventProps {
   scrollRef: React.RefObject<HTMLTableSectionElement>;
@@ -12,7 +12,6 @@ export default function HotEvent(props: HotEventProps) {
     page: 1,
     limit: 6,
   });
-
 
   const navigate = useNavigate();
 
@@ -77,7 +76,7 @@ const Styled = {
 
   HotEventThumbnailImage: styled.img`
     width: 83.5rem;
-    height: 55.2rem;
+    height: 83.5rem;
 
     cursor: pointer;
   `,

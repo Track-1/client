@@ -1,19 +1,19 @@
-import styled, { CSSProperties } from "styled-components";
-import Header from "../@common/header";
-import { MainLogoWhiteIc } from "../../assets";
-import LoginBtn from "../main/renewal/loginBtn";
-import { theme } from "../../style/theme";
-import { useNavigate } from "react-router-dom";
+import styled, { CSSProperties } from 'styled-components';
+import Header from '../@common/header';
+import { MainLogoWhiteIc } from '../../assets';
+import LoginBtn from '../main/loginBtn';
+import { theme } from '../../style/theme';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminHeader() {
   const navigate = useNavigate();
 
   function handleMoveHome() {
-    navigate("/");
+    navigate('/');
   }
 
   function handleMoveEvent() {
-    navigate("/admin/event");
+    navigate('/admin/event');
   }
 
   return (
@@ -35,8 +35,8 @@ export default function AdminHeader() {
 }
 
 const headerStyle: CSSProperties = {
-  position: "sticky",
-  zIndex: "5",
+  position: 'sticky',
+  zIndex: '5',
   background: `${theme.colors.black}`,
 };
 

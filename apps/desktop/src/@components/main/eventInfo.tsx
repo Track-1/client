@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface EventInfoProps {
   eventImage: string;
@@ -42,7 +42,7 @@ const Styled = {
     position: relative;
 
     width: 83.5rem;
-    height: 55.2rem;
+    height: 83.5rem;
 
     overflow: hidden;
     object-fit: cover;

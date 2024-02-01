@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import styled, { CSSProperties } from "styled-components";
-import CustomButton from "../../@common/button/customButton";
-import { theme } from "../../../style/theme";
-import { useNavigate } from "react-router-dom";
-import mainBannerImg from "../../../assets/image/mainBannerBackgroundImg.png";
-import { PlayerContext } from "../../../context/playerContext";
+import { useContext, useEffect, useState } from 'react';
+import styled, { CSSProperties } from 'styled-components';
+import CustomButton from '../@common/button/customButton';
+import { theme } from '../../style/theme';
+import { useNavigate } from 'react-router-dom';
+import mainBannerImg from '../../assets/image/mainBannerBackgroundImg.png';
+import { PlayerContext } from '../../context/playerContext';
 
 export default function MainBanner() {
-  const bannerTexts = ["Tracks", "Chance", "Inspiration"];
+  const bannerTexts = ['Tracks', 'Chance', 'Inspiration'];
   const [textIndex, setTextIndex] = useState(0);
 
   const { quitAudioForMovePage } = useContext(PlayerContext);
@@ -24,38 +24,38 @@ export default function MainBanner() {
 
   function handleMoveVocalSearch() {
     quitAudioForMovePage();
-    navigate("/vocal-search");
+    navigate('/vocal-search');
   }
 
   function handleMoveTrackSearch() {
     quitAudioForMovePage();
-    navigate("/track-search");
+    navigate('/track-search');
   }
 
   function handleMoveToSignup() {
-    navigate("/signup");
+    navigate('/signup');
   }
 
   return (
     <Styled.Container>
       <Styled.BannerWrapper>
         <Styled.BannerText>
-          {"DISCOVER\nYOUR"}
+          {'DISCOVER\nYOUR'}
           <Styled.AnimateTextWrapper>
-            <p>{"LIMITLESS ("}</p>
+            <p>{'LIMITLESS ('}</p>
             <Styled.AnimateText className="animated-tracks">{bannerTexts[textIndex]}</Styled.AnimateText>
-            <p>{")"}</p>
+            <p>{')'}</p>
           </Styled.AnimateTextWrapper>
         </Styled.BannerText>
 
         <Styled.BannerMenuWrapper>
-          <Styled.BannerTrackMenu onClick={handleMoveTrackSearch}>{"◀ Track"}</Styled.BannerTrackMenu>
+          <Styled.BannerTrackMenu onClick={handleMoveTrackSearch}>{'◀ Track'}</Styled.BannerTrackMenu>
           <Styled.BannerSignupButtonWrapper>
             <CustomButton btnStyle={btnStyle} handleClickFunction={handleMoveToSignup}>
-              {"Sing up for free"}
+              {'Sing up for free'}
             </CustomButton>
           </Styled.BannerSignupButtonWrapper>
-          <Styled.BannerVocalMenu onClick={handleMoveVocalSearch}>{"Vocal ▶"}</Styled.BannerVocalMenu>
+          <Styled.BannerVocalMenu onClick={handleMoveVocalSearch}>{'Vocal ▶'}</Styled.BannerVocalMenu>
         </Styled.BannerMenuWrapper>
 
         <Styled.DivisionLine />
@@ -69,18 +69,18 @@ export default function MainBanner() {
 }
 
 const btnStyle: CSSProperties = {
-  fontFamily: "Alexandria",
+  fontFamily: 'Alexandria',
   fontWeight: 400,
-  fontSize: "2.5rem",
-  lineHeight: "normal",
+  fontSize: '2.5rem',
+  lineHeight: 'normal',
 
-  width: "27.6rem",
-  height: "6.8rem",
+  width: '27.6rem',
+  height: '6.8rem',
 
   color: `${theme.colors.white}`,
 
   backgroundColor: `${theme.colors.main}`,
-  borderRadius: "3.55rem",
+  borderRadius: '3.55rem',
 };
 
 const Styled = {

@@ -1,14 +1,14 @@
-import styled from "styled-components";
-import RecentVocalItem from "./recentVocalItem";
-import { useGetRecentVocals } from "../../../hooks/queries/vocals";
-import { useState } from "react";
-import { FilteredVocalType } from "../../../type/vocals";
+import styled from 'styled-components';
+import RecentVocalItem from './recentVocalItem';
+import { useGetRecentVocals } from '../../hooks/queries/vocals';
+import { useState } from 'react';
+import { FilteredVocalType } from '../../type/vocals';
 
 export default function RecentVocalList() {
   const { recentVocalInfo } = useGetRecentVocals(6);
-  const [playingTrack, setPLayingTrack] = useState<FilteredVocalType["userId"] | null>(null);
+  const [playingTrack, setPLayingTrack] = useState<FilteredVocalType['userId'] | null>(null);
 
-  function selectTrack(userId: FilteredVocalType["userId"]) {
+  function selectTrack(userId: FilteredVocalType['userId']) {
     setPLayingTrack(userId);
   }
 
