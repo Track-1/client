@@ -1,15 +1,15 @@
-import styled, { css } from "styled-components";
-import { useContext, useEffect } from "react";
-import { PlayerContext } from "../../../context/playerContext";
-import usePlaySelectedTrack from "../../../hooks/common/usePlaySelectedTrack";
-import { FilteredVocalType } from "../../../type/vocals";
-import { PauseIc, PlayIc } from "../../../assets";
-import { useLocation, useNavigate } from "react-router-dom";
+import styled, { css } from 'styled-components';
+import { useContext, useEffect } from 'react';
+import { PlayerContext } from '../../context/playerContext';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { FilteredVocalType } from '../../type/vocals';
+import { PauseIc, PlayIc } from '../../assets';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface RecentVocalItemProps {
   vocalInfo: FilteredVocalType;
-  playingTrack: FilteredVocalType["userId"] | null;
-  selectTrack: (trackId: FilteredVocalType["userId"]) => void;
+  playingTrack: FilteredVocalType['userId'] | null;
+  selectTrack: (trackId: FilteredVocalType['userId']) => void;
 }
 
 export default function RecentVocalItem(props: RecentVocalItemProps) {
@@ -22,7 +22,7 @@ export default function RecentVocalItem(props: RecentVocalItemProps) {
     playerContext,
     vocalInfo.userAudioFile,
     vocalInfo.userId,
-    selectTrack,
+    selectTrack
   );
 
   const navigate = useNavigate();
@@ -115,7 +115,7 @@ const Styled = {
           top: 0;
           right: 0;
 
-          content: "";
+          content: '';
           width: 100%;
           height: 100%;
           background-color: rgba(0, 0, 0, 0.75); /* 원하는 색상과 투명도를 설정 */

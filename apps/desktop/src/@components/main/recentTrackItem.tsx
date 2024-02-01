@@ -1,15 +1,15 @@
-import styled, { css } from "styled-components";
-import { FilteredTrackType } from "../../../type/tracks";
-import { useContext, useEffect } from "react";
-import usePlaySelectedTrack from "../../../hooks/common/usePlaySelectedTrack";
-import { PlayerContext } from "../../../context/playerContext";
-import { PauseIc, PlayIc } from "../../../assets";
-import { useLocation, useNavigate } from "react-router-dom";
+import styled, { css } from 'styled-components';
+import { FilteredTrackType } from '../../type/tracks';
+import { useContext, useEffect } from 'react';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { PlayerContext } from '../../context/playerContext';
+import { PauseIc, PlayIc } from '../../assets';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface RecentTrackItemProps {
   trackInfo: FilteredTrackType;
-  playingTrack: FilteredTrackType["trackId"] | null;
-  selectTrack: (trackId: FilteredTrackType["trackId"]) => void;
+  playingTrack: FilteredTrackType['trackId'] | null;
+  selectTrack: (trackId: FilteredTrackType['trackId']) => void;
 }
 
 export default function RecentTrackItem(props: RecentTrackItemProps) {
@@ -23,7 +23,7 @@ export default function RecentTrackItem(props: RecentTrackItemProps) {
     playerContext,
     trackInfo.trackAudioFile,
     trackInfo.trackId,
-    selectTrack,
+    selectTrack
   );
 
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ const Styled = {
           top: 0;
           right: 0;
 
-          content: "";
+          content: '';
           width: 100%;
           height: 100%;
 

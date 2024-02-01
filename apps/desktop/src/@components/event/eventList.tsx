@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import EventInfo from "../main/renewal/eventInfo";
-import { CommonSectionStyled } from "../main/renewal/eventSection";
-import { DefaultToggleIc, EventToggleIc } from "../../assets";
-import { useState } from "react";
-import { useGetEventList } from "../../hooks/queries/admin/event";
-import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
+import styled from 'styled-components';
+import EventInfo from '../main/eventInfo';
+import { CommonSectionStyled } from '../main/eventSection';
+import { DefaultToggleIc, EventToggleIc } from '../../assets';
+import { useState } from 'react';
+import { useGetEventList } from '../../hooks/queries/admin/event';
+import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
 
 export default function EventList() {
   const { eventListData, fetchNextPage, hasNextPage } = useGetEventList({
@@ -54,7 +54,7 @@ export default function EventList() {
               eventId={event.eventId}
               key={event.eventId}
             />
-          ),
+          )
         )}
       </CommonSectionStyled.EventInfoWrapper>
       <Styled.Observer ref={observerRef} />

@@ -18,7 +18,6 @@ import UploadEditPage from './@pages/uploadEditPage';
 import VocalProfilePage from './@pages/vocalProfilePage';
 import VocalSearchPage from './@pages/vocalSearchPage';
 import PrivateRoute from './utils/common/privateRouter';
-import HomePage from './@pages/homePage';
 import EventPage from './@pages/eventPage';
 import AdminPage from './@pages/adminPage';
 import AboutPage from './@pages/aboutPage';
@@ -27,8 +26,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        {/* <Route path="/main" element={<HomePage />} /> */}
+        <Route path="/" element={<MainPage />} />
         <Route path="/event" element={<EventPage />} />
         <Route path="/event/:eventId" element={<EventPage />} />
         <Route path="/about" element={<AboutPage />} />

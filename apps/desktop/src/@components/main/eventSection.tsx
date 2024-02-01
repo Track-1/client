@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import EventInfo from "./eventInfo";
-import { useNavigate } from "react-router-dom";
-import { useGetEventList } from "../../../hooks/queries/admin/event";
+import styled from 'styled-components';
+import EventInfo from './eventInfo';
+import { useNavigate } from 'react-router-dom';
+import { useGetEventList } from '../../hooks/queries/admin/event';
 
 export default function EventSection() {
   const { eventListData } = useGetEventList({
@@ -12,7 +12,7 @@ export default function EventSection() {
   const navigate = useNavigate();
 
   function handleMoveEventPage() {
-    navigate("/event");
+    navigate('/event');
   }
 
   return (

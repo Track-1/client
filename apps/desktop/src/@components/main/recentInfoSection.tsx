@@ -1,6 +1,6 @@
-import { PropsWithChildren } from "react";
-import styled from "styled-components";
-import { CommonSectionStyled } from "./eventSection";
+import { PropsWithChildren } from 'react';
+import styled from 'styled-components';
+import { CommonSectionStyled } from './eventSection';
 
 interface RecentTrackSectionProps {
   headingText: string;

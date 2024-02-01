@@ -1,15 +1,15 @@
 import styled, { CSSProperties } from 'styled-components';
-import SamllButton from '../../@common/button/customButton';
-import { theme } from '../../../style/theme';
+import SamllButton from '../@common/button/customButton';
+import { theme } from '../../style/theme';
 import { useContext, useEffect } from 'react';
-import { PlayerContext } from '../../../context/playerContext';
+import { PlayerContext } from '../../context/playerContext';
 import { useNavigate } from 'react-router-dom';
-import { checkIsLogin } from '../../../utils/common/checkIsLogined';
+import { checkIsLogin } from '../../utils/common/checkIsLogined';
 import { useRecoilValue } from 'recoil';
-import { loginUserId, loginUserType } from '../../../recoil/common/loginUserData';
-import { useGetProducerProfile, useGetVocalProfile } from '../../../hooks/queries/mypage';
-import { ROLE } from '../../../core/common/roleType';
-import useModal from '../../../hooks/common/useModal';
+import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import { useGetProducerProfile, useGetVocalProfile } from '../../hooks/queries/mypage';
+import { ROLE } from '../../core/common/roleType';
+import useModal from '../../hooks/common/useModal';
 import ProfileBox from './profileBox';
 
 export default function LoginBtn() {
