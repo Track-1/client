@@ -143,7 +143,6 @@ export function useGetVocalProfile(userId: number) {
     {
       onError: (err) => {
         console.log(err);
-        alert(userId);
       },
       enabled: userId > 0,
     }

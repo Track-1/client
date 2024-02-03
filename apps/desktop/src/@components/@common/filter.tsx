@@ -163,7 +163,7 @@ export default function Filter(props: FilterProps) {
     <FilterWrapper>
       {getInvariantObjectKeys(invariantOf(EventCategoryId)).map((category) => {
         return (
-          <CheckBox id={category} externalFn={() => selectCategory(category)}>
+          <CheckBox id={category} externalFn={() => selectCategory(category)} key={category}>
             <CheckBox.Indicator asChild>
               <CategoryItem pageType={pageType}>
                 <CheckBox.Label>{category}</CheckBox.Label>

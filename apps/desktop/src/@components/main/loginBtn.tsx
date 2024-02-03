@@ -4,18 +4,14 @@ import { theme } from '../../style/theme';
 import { useContext, useEffect } from 'react';
 import { PlayerContext } from '../../context/playerContext';
 import { useNavigate } from 'react-router-dom';
-import { checkIsLogin } from '../../utils/common/checkIsLogined';
 import { useRecoilValue } from 'recoil';
 import { loginUserId, loginUserImage, loginUserName, loginUserType } from '../../recoil/common/loginUserData';
-import { useGetProducerProfile, useGetVocalProfile } from '../../hooks/queries/mypage';
 import { ROLE } from '../../core/common/roleType';
 import useModal from '../../hooks/common/useModal';
 import ProfileBox from './profileBox';
 
 export default function LoginBtn() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
-
-  const isLogined = checkIsLogin();
 
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
@@ -24,30 +20,11 @@ export default function LoginBtn() {
 
   const { openModal, unShowModal, handleShowUpdateModal } = useModal();
 
-  // const { vocalProfile, refetch: refetchVocalProfile } = useGetVocalProfile(userId);
-  // const { producerProfile, refetch: refetchProducerProfile } = useGetProducerProfile(userId);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     unShowModal();
   }, []);
-
-  // function getUserImage() {
-  //   return userType === ROLE.PRODUCER
-  //     ? producerProfile?.userProfile.userImageFile
-  //     : vocalProfile?.userProfile.userImageFile;
-  // }
-
-  // function getUserName() {
-  //   return userType === ROLE.PRODUCER ? producerProfile?.userProfile.userName : vocalProfile?.userProfile.userName;
-  // }
-
-  // function getUserContact() {
-  //   return userType === ROLE.PRODUCER
-  //     ? producerProfile?.userProfile.userContact
-  //     : vocalProfile?.userProfile.userContact;
-  // }
 
   function handleMoveToLogin() {
     quitAudioForMovePage();

@@ -1,10 +1,10 @@
-import { useContext, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { PlayerPlayIc, PlayerStopIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import { FilteredTrackType } from "../../type/tracks";
-import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
+import { useContext, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { PlayerPlayIc, PlayerStopIc } from '../../assets';
+import { PlayerContext } from '../../context/playerContext';
+import { FilteredTrackType } from '../../type/tracks';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
 
 const Container = styled.li<{ isHovered: boolean }>`
   display: flex;
@@ -55,7 +55,7 @@ const ThumnailWrapper = styled.div<{ isHovered: boolean }>`
         top: 0;
         right: 0;
 
-        content: "";
+        content: '';
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.8); /* 원하는 색상과 투명도를 설정 */
@@ -139,8 +139,8 @@ const Tag = styled.span`
 
 interface TrackItemProps {
   trackInfo: FilteredTrackType;
-  playingTrack: FilteredTrackType["trackId"] | null;
-  selectTrack: (trackId: FilteredTrackType["trackId"]) => void;
+  playingTrack: FilteredTrackType['trackId'] | null;
+  selectTrack: (trackId: FilteredTrackType['trackId']) => void;
 }
 
 export default function TrackItem(props: TrackItemProps) {
@@ -152,7 +152,7 @@ export default function TrackItem(props: TrackItemProps) {
     playerContext,
     trackInfo.trackAudioFile,
     trackInfo.trackId,
-    selectTrack,
+    selectTrack
   );
   const navigate = useNavigate();
   const prevURL = useLocation().pathname;
@@ -203,7 +203,7 @@ export default function TrackItem(props: TrackItemProps) {
       </Producer>
       <Category>{trackInfo.trackCategory}</Category>
       {trackInfo.trackKeyword.map((tag) => {
-        return <Tag>#{tag}</Tag>;
+        return <Tag key={tag}>#{tag}</Tag>;
       })}
     </Container>
   );
