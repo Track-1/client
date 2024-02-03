@@ -1,27 +1,19 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { RightArrorIc } from "../../../assets";
-import { ROLE } from "../../../core/common/roleType";
-import { useGetProducerProfile, useGetVocalProfile } from "../../../hooks/queries/mypage";
-import { loginUserId, loginUserType } from "../../../recoil/common/loginUserData";
-import { checkIsLogin } from "../../../utils/common/checkIsLogined";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import styled from 'styled-components';
+import { RightArrorIc } from '../../../assets';
+import { ROLE } from '../../../core/common/roleType';
+import { loginUserId, loginUserImage, loginUserType } from '../../../recoil/common/loginUserData';
+import { checkIsLogin } from '../../../utils/common/checkIsLogined';
 
 export default function TrackSearchHeaderButton() {
   const userType = useRecoilValue(loginUserType);
   const userId = useRecoilValue(loginUserId);
+  const userImage = useRecoilValue(loginUserImage);
 
-  const { vocalProfile } = useGetVocalProfile(userId);
-  const { producerProfile } = useGetProducerProfile(userId);
   const prevURL = useLocation().pathname;
 
   const navigate = useNavigate();
-
-  function getUserImage() {
-    return userType === ROLE.PRODUCER
-      ? producerProfile?.userProfile.userImageFile
-      : vocalProfile?.userProfile.userImageFile;
-  }
 
   function handleMoveToProfile() {
     if (userType === ROLE.PRODUCER) {
@@ -45,11 +37,11 @@ export default function TrackSearchHeaderButton() {
         <HeaderButtonWrapper onClick={handleMoveToProfile}>
           {userType === ROLE.PRODUCER ? (
             <ProfileImageLayout>
-              <ProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
+              <ProfileImage src={userImage} alt="유저 프로필 이미지" />
             </ProfileImageLayout>
           ) : (
             <VocalProfileImageWrapper>
-              <VocalProfileImage src={getUserImage()} alt="유저 프로필 이미지" />
+              <VocalProfileImage src={userImage} alt="유저 프로필 이미지" />
             </VocalProfileImageWrapper>
           )}
 
