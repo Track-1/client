@@ -36,7 +36,7 @@ export default function TrackList() {
         return (
           <TrackItem
             trackInfo={trackInfo}
-            key={trackInfo.trackUserId}
+            key={trackInfo.trackId}
             playingTrack={playingTrack}
             selectTrack={selectTrack}
           />

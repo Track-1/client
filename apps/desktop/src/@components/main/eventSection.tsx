@@ -30,6 +30,7 @@ export default function EventSection() {
             eventPeriod={event.eventDate}
             eventDday={event.eventDday}
             eventId={event.eventId}
+            key={event.eventId}
           />
         ))}
       </CommonSectionStyled.EventInfoWrapper>
