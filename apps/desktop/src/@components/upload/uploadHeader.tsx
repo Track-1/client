@@ -14,7 +14,7 @@ export default function UploadHeader() {
   return (
     <Wrapper>
       <UploadTypeText>{}</UploadTypeText>
-      {getValues('hashtag')[0] !== '' && isValid && selectedOption !== null ? (
+      {getValues('hashtag') && getValues('hashtag')?.[0] !== '' && isValid && selectedOption !== null ? (
         <button type="submit">
           <UploadAbleBtnIcon />
         </button>

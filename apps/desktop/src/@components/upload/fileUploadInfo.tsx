@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
 import { UploadInputType } from '../../type/common/upload';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function FileUploadInfo() {
   const {
@@ -14,6 +15,14 @@ export default function FileUploadInfo() {
   } = useFormContext<UploadInputType>();
   const [fileType, setFileType] = useState('');
   const [isTextOverflow, setIsTextOverflow] = useState(false);
+
+  const pathname = useLocation().pathname;
+  const { prevUploadData } = useLocation().state;
+  const audioFileName = prevUploadData
+    ? pathname.includes('portfolio-edit')
+      ? prevUploadData.portfolioAudioFileName
+      : prevUploadData.trackAudioFileName
+    : '';
 
   return (
     <UploadInfoBox>
@@ -26,7 +35,11 @@ export default function FileUploadInfo() {
       <InfoInput>
         <InputWrapper>
           <InputFileTextWrapper isDirty={dirtyFields.audioFile ?? false}>
-            <FileName value={getValues('audioFile')?.[0]?.name} isTextOverflow={isTextOverflow} disabled />
+            <FileName
+              value={prevUploadData ? audioFileName : getValues('audioFile')?.[0]?.name}
+              isTextOverflow={isTextOverflow}
+              disabled
+            />
             {isTextOverflow && <FileAttribute isTextOverflow={isTextOverflow}>{fileType}</FileAttribute>}
             <FileInput
               type="file"

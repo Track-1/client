@@ -1,19 +1,49 @@
-import styled from "styled-components";
-import { CategoryDropDownIc, UploadCategoryIc } from "../../assets";
-import UploadInfoBox from "./uploadInfoBox";
-import DropCategory from "./dropCategory";
-import { Select } from "../@common/selectBox";
-import { EventReversedCategoryId, ReversedCategoryId } from "../../core/common/categories";
-import { CategoryIdType } from "../../type/common/category";
-import { useContext } from "react";
-import { SelectCategoryContext } from "../../context/selectCategoryContext";
+import styled from 'styled-components';
+import { CategoryDropDownIc, UploadCategoryIc } from '../../assets';
+import UploadInfoBox from './uploadInfoBox';
+import DropCategory from './dropCategory';
+import { Select } from '../@common/selectBox';
+import {
+  EventCategoryId,
+  EventLowerCategoryId,
+  EventReversedCategoryId,
+  ReversedCategoryId,
+} from '../../core/common/categories';
+import {
+  CategoryIdType,
+  EventCategoryIdType,
+  EventCategoryType,
+  EventUpperCategoryType,
+} from '../../type/common/category';
+import { useContext, useEffect } from 'react';
+import { SelectCategoryContext } from '../../context/selectCategoryContext';
+import { useLocation } from 'react-router-dom';
 
 export default function CategoryInfo() {
   const { selectedOption, selectOption } = useContext(SelectCategoryContext);
 
+  const pathname = useLocation().pathname;
+
+  const prevUploadData = useLocation().state.prevUploadData;
+
+  useEffect(() => {
+    if (prevUploadData) {
+      if (pathname.includes('portfolio-edit')) {
+        const prevCategory: EventCategoryType = prevUploadData.portfolioCategory;
+        selectCategory(Number(EventLowerCategoryId[prevCategory]));
+      }
+
+      if (pathname.includes('vocal-searching-edit')) {
+        const prevCategory: EventCategoryType = prevUploadData.trackCategory;
+        selectCategory(Number(EventLowerCategoryId[prevCategory]));
+      }
+    }
+  }, []);
+
   function selectCategory(option: number | null) {
-    selectOption(String(option) as CategoryIdType);
+    selectOption(String(option) as EventCategoryIdType);
   }
+
   return (
     <Select externalSelectState={selectCategory}>
       <UploadInfoBox>
@@ -29,7 +59,7 @@ export default function CategoryInfo() {
             <InputCategoryTextWrapper isSelectedNothing={selectedOption === null}>
               <Select.Trigger asChild>
                 <InputCategoryText isSelectedNothing={selectedOption === null}>
-                  {selectedOption === null ? "Select" : EventReversedCategoryId[selectedOption]}
+                  {selectedOption === null ? 'Select' : EventReversedCategoryId[selectedOption]}
                 </InputCategoryText>
               </Select.Trigger>
             </InputCategoryTextWrapper>

@@ -5,7 +5,7 @@ import FileUploadInfo from './fileUploadInfo';
 import UploadTitle from './uploadTitle';
 import HashtagInfo from './hashtagInfo';
 import DescriptionInfo from './descriptionInfo';
-import { useUploadVocalPortfolio } from '../../hooks/queries/mypage';
+import { useEditVocalPortfolio, useUploadVocalPortfolio } from '../../hooks/queries/mypage';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SelectCategoryContext } from '../../context/selectCategoryContext';
 import Header from '../@common/header';
@@ -18,14 +18,15 @@ import { UserPortfolioType } from '../../type/profile';
 import { UploadInputType } from '../../type/common/upload';
 
 import { CategoryId } from '../../core/common/categories';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { createFileName } from '../../utils/common/createFileName';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
+import { useEffect } from 'react';
 
 type VocalUploadBodyProps =
   | {
       isEditPage: true;
-      prevUploadData: UserPortfolioType;
+      prevUploadData: any;
     }
   | {
       isEditPage: false;
@@ -37,9 +38,9 @@ const defaultList = new DataTransfer();
 
 export default function VocalUploadBody(props: VocalUploadBodyProps) {
   const { isEditPage, prevUploadData } = props;
-  const { uploadType } = useParams();
 
   const { uploadVocalPortfolio } = useUploadVocalPortfolio();
+  const { editVocalPortfolio } = useEditVocalPortfolio();
   const { selectedOption, selectOption } = useSelect<EventCategoryIdType | null>(
     false,
     CategoryId[prevUploadData?.portfolioCategory.toUpperCase() as UpperCategoryType]
@@ -53,16 +54,26 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
 
   const methods = useForm({
     defaultValues: {
-      image: isEditPage ? prevUploadData?.portfolioImageFile ?? '' : '',
-      title: isEditPage ? prevUploadData?.portfolioTitle ?? '' : '',
-      audioFile: isEditPage ? emptyList.files ?? defaultList.files : defaultList.files,
-      hashtag: isEditPage ? prevUploadData?.portfolioKeyword ?? [] : [],
+      image: '',
+      title: '',
+      audioFile: defaultList.files,
+      hashtag: [],
       description: '',
     },
   });
 
+  useEffect(() => {
+    if (prevUploadData) {
+      methods.setValue('image', prevUploadData.portfolioImageFile);
+      methods.setValue('title', prevUploadData.portfolioTitle);
+      methods.setValue('hashtag', prevUploadData.portfolioKeyword);
+      methods.setValue('description', prevUploadData.portfolioContent);
+    }
+  }, []);
+
+  console.log(prevUploadData);
+
   function createVocalUploadFormData(data: UploadInputType) {
-    if (selectedOption === null) return;
     if (selectedOption === null) return;
 
     const formData = new FormData();
@@ -70,26 +81,40 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
     const audioFile = data.audioFile[0] && new Blob([data.audioFile[0]], { type: data.audioFile[0]?.type });
     const imageFile = typeof data.image !== 'string' ? new Blob([data?.image[0]], { type: data.image[0]?.type }) : '';
 
-    formData.append('portfolioAudioFileName', createFileName(data.audioFile[0], TEXT_LIMIT.UPLOAD_AUDIO));
+    data.audioFile.length > 0 &&
+      formData.append('portfolioAudioFileName', createFileName(data.audioFile[0], TEXT_LIMIT.UPLOAD_AUDIO));
     formData.append('portfolioTitle', data.title);
     formData.append('portfolioCategory', selectedOption);
     formData.append('portfolioContent', data.description);
     for (let i = 0; i < data.hashtag.length; i++) {
+      if (data.hashtag[i] === '') continue;
       formData.append(`portfolioKeyword[${i}]`, data.hashtag[i]);
     }
-    formData.append('portfolioIntroduction', data.description);
+
     audioFile && formData.append('portfolioAudioFile', audioFile);
     imageFile && formData.append('portfolioImageFile', imageFile);
+
+    if (isEditPage && typeof data.image === 'string') {
+      formData.append('portfolioImageFileSame', 'true');
+    }
 
     return formData;
   }
 
+  console.log(isEditPage);
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit((data) => {
           const uploadData = createVocalUploadFormData(data);
-          uploadData && uploadVocalPortfolio(uploadData);
+          let trackId;
+          if (prevUploadData) {
+            trackId = prevUploadData.portfolioId;
+          }
+
+          if (uploadData) {
+            isEditPage ? editVocalPortfolio({ trackId, uploadData }) : uploadVocalPortfolio(uploadData);
+          }
         })}>
         <SelectCategoryContext.Provider value={{ selectedOption, selectOption }}>
           <Header>

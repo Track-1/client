@@ -210,8 +210,8 @@ export function useUploadVocalPortfolio() {
 export function useEditProducerPortfolio() {
   const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
-      patchProducerPortfolio(trackId, formData),
+    mutationFn: ({ trackId, uploadData }: { trackId: number; uploadData: FormData }) =>
+      patchProducerPortfolio(trackId, uploadData),
     onSuccess: () => {
       setTimeout(() => {
         navigate(-1);
@@ -229,8 +229,8 @@ export function useEditVocalPortfolio() {
   const navigate = useNavigate();
 
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) =>
-      patchVocalPortfolio(trackId, formData),
+    mutationFn: ({ trackId, uploadData }: { trackId: number; uploadData: FormData }) =>
+      patchVocalPortfolio(trackId, uploadData),
     onSuccess: () => {
       setTimeout(() => {
         navigate(-1);
