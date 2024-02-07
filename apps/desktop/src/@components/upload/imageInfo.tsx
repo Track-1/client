@@ -1,11 +1,12 @@
-import { useFormContext } from "react-hook-form";
-import styled, { css } from "styled-components";
-import useFileHover from "../../hooks/common/useFileHover";
-import useUploadImageFile from "../../hooks/common/useUploadImageFile";
-import { UserType } from "../../type/common/userType";
-import UploadVocalDefaultImg from "../../assets/image/uploadVocalDefaultImg.png";
-import { UploadFileChangeIc } from "../../assets";
-import UploadProducerDefaultImg from "../../assets/image/uploadProducerDefaultImg.png";
+import { useFormContext } from 'react-hook-form';
+import styled, { css } from 'styled-components';
+import useFileHover from '../../hooks/common/useFileHover';
+import useUploadImageFile from '../../hooks/common/useUploadImageFile';
+import { UserType } from '../../type/common/userType';
+import UploadVocalDefaultImg from '../../assets/image/uploadVocalDefaultImg.png';
+import { UploadFileChangeIc } from '../../assets';
+import UploadProducerDefaultImg from '../../assets/image/uploadProducerDefaultImg.png';
+import { useEffect } from 'react';
 
 interface ImageInfoProps {
   userType: UserType;
@@ -14,26 +15,33 @@ export function ImageInfo(props: ImageInfoProps) {
   const { userType } = props;
   const { register, getValues } = useFormContext();
   const { fileHoverState, changeFileHoverState } = useFileHover();
-  const { previewImage, handleUploadImageFile } = useUploadImageFile(getValues("image"));
+  const { previewImage, changePreviewImage, handleUploadImageFile } = useUploadImageFile(getValues('image'));
+
+  useEffect(() => {
+    if (typeof getValues('image') === 'string') {
+      changePreviewImage(getValues('image'));
+    }
+  }, [getValues('image')]);
 
   return (
     <UploadImage>
-      {userType === "vocal" && (
+      {userType === 'vocal' && (
         <UploadImageContainer>
           <VocalUploadImageContainer>
             <VocalImageFrame onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
               <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
                 <VocalUploadImageLayout
-                  src={previewImage === "" ? UploadVocalDefaultImg : previewImage}
+                  src={getValues('image') ? previewImage : UploadVocalDefaultImg}
                   alt="썸네일 이미지"
                   fileHoverState={fileHoverState}
+                  previewImage={previewImage}
                 />
                 {previewImage && fileHoverState && <FileChangeIcon />}
                 <FileInput
                   type="file"
                   accept=".jpg,.jpeg,.png"
                   readOnly
-                  {...register("image", {
+                  {...register('image', {
                     onChange: handleUploadImageFile,
                   })}
                 />
@@ -42,11 +50,11 @@ export function ImageInfo(props: ImageInfoProps) {
           </VocalUploadImageContainer>
         </UploadImageContainer>
       )}
-      {userType === "producer" && (
+      {userType === 'producer' && (
         <ProducerUploadImageContainer>
           <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
             <ProducerUploadImageLayout
-              src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
+              src={getValues('image') ? previewImage : UploadProducerDefaultImg}
               alt="썸네일 이미지"
               fileHoverState={fileHoverState}
               previewImage={previewImage}
@@ -56,7 +64,7 @@ export function ImageInfo(props: ImageInfoProps) {
               type="file"
               accept=".jpg,.jpeg,.png"
               readOnly
-              {...register("image", {
+              {...register('image', {
                 onChange: handleUploadImageFile,
               })}
             />
@@ -107,7 +115,7 @@ const VocalImageFrame = styled.div`
   object-fit: cover;
 `;
 
-const VocalUploadImageLayout = styled.img<{ fileHoverState: boolean }>`
+const VocalUploadImageLayout = styled.img<{ fileHoverState: boolean; previewImage: string | ArrayBuffer | null }>`
   width: 59.8rem;
   height: 59.8rem;
 
@@ -118,7 +126,7 @@ const VocalUploadImageLayout = styled.img<{ fileHoverState: boolean }>`
   object-fit: cover;
 
   ${(props) =>
-    props.fileHoverState
+    props.fileHoverState && props.previewImage
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);
@@ -153,7 +161,7 @@ const ProducerUploadImageLayout = styled.img<{ fileHoverState: boolean; previewI
   border-radius: 50%;
 
   ${(props) =>
-    props.fileHoverState && props.previewImage !== ""
+    props.fileHoverState && props.previewImage !== ''
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

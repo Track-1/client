@@ -44,6 +44,20 @@ export const CategoryId: Record<UpperCategoryType, CategoryIdType> = {
   FUNK: '8',
 } as const;
 
+export const EventLowerCategoryId: Record<EventCategoryType, EventCategoryIdType> = {
+  'R&B': '0',
+  Hiphop: '1',
+  Ballad: '2',
+  Pop: '3',
+  Rock: '4',
+  EDM: '5',
+  JAZZ: '6',
+  House: '7',
+  Funk: '8',
+  Korea: '10',
+  Global: '11',
+} as const;
+
 export const EventCategoryId: Record<EventUpperCategoryType, EventCategoryIdType> = {
   'R&B': '0',
   HIPHOP: '1',

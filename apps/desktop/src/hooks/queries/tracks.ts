@@ -106,7 +106,7 @@ export function useUploadTrack() {
 export function useEditTrack() {
   const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ trackId, formData }: { trackId: number; formData: FormData }) => patchTrack(trackId, formData),
+    mutationFn: ({ trackId, uploadData }: { trackId: number; uploadData: FormData }) => patchTrack(trackId, uploadData),
     onSuccess: () => {
       setTimeout(() => {
         navigate(-1);
