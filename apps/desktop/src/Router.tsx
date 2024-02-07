@@ -48,7 +48,7 @@ export default function Router() {
           <Route path="/upload/producer/:uploadType" element={<UploadPage />} />
           <Route path="/portfolio-edit/producer/:trackId" element={<UploadEditPage />} />
           <Route path="/vocal-searching-edit/producer/:trackId" element={<UploadEditPage />} />
-          <Route path="/portfolio-edit/vocal/:trackId" element={<UploadPage />} />
+          <Route path="/portfolio-edit/vocal/:trackId" element={<UploadEditPage />} />
           <Route path="/profile-edit/:id" element={<ProfileEditPage />} />
           <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
           <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
