@@ -97,11 +97,12 @@ export function useLogin() {
     UserLoginInfoRequest
   >((userInfo: UserLoginInfoRequest) => postLogin(userInfo), {
     onSuccess: (response: any) => {
+      console.log(response);
       setLoginUserId(response?.data?.userId);
       setLoginUserType(response?.data?.userType);
       setLoginUserImage(response?.data?.userImageFile);
       setLoginUserName(response?.data?.userName);
-      setLoginUserContact(response?.data?.user);
+      setLoginUserContact(response?.data?.userContact);
       setCookie('accessToken', response?.data?.accessToken, {});
       navigate('/');
     },

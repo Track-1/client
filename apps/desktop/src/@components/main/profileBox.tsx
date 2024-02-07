@@ -3,7 +3,13 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { ROLE } from '../../core/common/roleType';
 
-import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
+import {
+  loginUserContact,
+  loginUserId,
+  loginUserImage,
+  loginUserName,
+  loginUserType,
+} from '../../recoil/common/loginUserData';
 import { getLogout } from '../../api/user';
 import { removeCookie } from '../../utils/common/cookie';
 
@@ -16,11 +22,15 @@ export default function ProfileBox(props: ProfileBoxProps) {
   const { userType, userName } = props;
 
   const userId = useRecoilValue(loginUserId);
+  const userContact = useRecoilValue(loginUserContact);
   const navigate = useNavigate();
   const prevURL = useLocation().pathname;
 
   const resetLoginUserId = useResetRecoilState(loginUserId);
   const resetLoginUserType = useResetRecoilState(loginUserType);
+  const resetLoginUserContact = useResetRecoilState(loginUserContact);
+  const resetLoginUserImage = useResetRecoilState(loginUserImage);
+  const resetLoginUserName = useResetRecoilState(loginUserName);
 
   async function handleLogout() {
     const data = await getLogout();
@@ -28,6 +38,9 @@ export default function ProfileBox(props: ProfileBoxProps) {
     if (data) {
       resetLoginUserId();
       resetLoginUserType();
+      resetLoginUserContact();
+      resetLoginUserImage();
+      resetLoginUserName();
       removeCookie('accessToken', { path: '/' });
     }
   }
@@ -53,7 +66,7 @@ export default function ProfileBox(props: ProfileBoxProps) {
       <Styled.ProfileInfoWrapper onClick={handleMoveTo}>
         <Styled.ProfileContentWrapper>
           <Styled.UserNameText>{userName}</Styled.UserNameText>
-          {/* <Styled.UserEmailText>{userContact}</Styled.UserEmailText> */}
+          <Styled.UserEmailText>{userContact}</Styled.UserEmailText>
         </Styled.ProfileContentWrapper>
         <Styled.ProfileUserTypeWrapper>
           <Styled.UserTypeText userType={userType}>{userType}</Styled.UserTypeText>
