@@ -1,17 +1,25 @@
-import { useMutation } from "react-query";
-import { patchProducerProfile, patchVocalProfile } from "../../api/profile";
-import { ProfileEditType, VocalProfileEditType } from "../../type/profile";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { loginUserId } from "../../recoil/common/loginUserData";
+import { useMutation } from 'react-query';
+import { patchProducerProfile, patchVocalProfile } from '../../api/profile';
+import { ProfileEditType, VocalProfileEditType } from '../../type/profile';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { loginUserData } from '../../recoil/common/loginUserData';
 
 export function useEditProdcerProfile() {
   const navigate = useNavigate();
-  const userId = useRecoilValue(loginUserId);
+  const [userData, setUserData] = useRecoilState(loginUserData);
+  const userId = userData.userId;
   const prevURL = useLocation().state?.prevURL;
+
   const { mutate, ...restValues } = useMutation({
     mutationFn: (editData: ProfileEditType) => patchProducerProfile(editData),
-    onSuccess: () => {
+    onSuccess: (data, editData) => {
+      setUserData({
+        ...userData,
+        userName: editData.userName,
+        userContact: editData.userContact,
+        userImageFile: data.data.userImageFile,
+      });
       setTimeout(() => {
         navigate(`/producer-profile/${userId}`, {
           state: {
@@ -30,12 +38,21 @@ export function useEditProdcerProfile() {
 
 export function useEditVocalProfile() {
   const navigate = useNavigate();
-  const userId = useRecoilValue(loginUserId);
+  const [userData, setUserData] = useRecoilState(loginUserData);
+  const userId = userData.userId;
   const prevURL = useLocation().state?.prevURL;
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: (editData: VocalProfileEditType) => patchVocalProfile(editData),
-    onSuccess: () => {
+    onSuccess: (data, editData) => {
+      setUserData({
+        ...userData,
+        userName: editData.userName,
+        userContact: editData.userContact,
+        userImageFile: data.data.userImageFile,
+      });
+      console.log(data);
+      console.log(editData);
       setTimeout(() => {
         navigate(`/vocal-profile/${userId}`, {
           state: {

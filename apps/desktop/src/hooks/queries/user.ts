@@ -20,13 +20,7 @@ import {
 import { ALERT } from '../../core/common/alert/signupSendCode';
 import { QUERIES_KEY } from '../../core/common/queriesKey';
 import { EMAIL_MESSAGE, VERIFICATION_CODE_MESSAGE } from '../../core/signUp/errorMessage';
-import {
-  loginUserContact,
-  loginUserId,
-  loginUserImage,
-  loginUserName,
-  loginUserType,
-} from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import {
   DefaultResponseType,
   UserEmailRequest,
@@ -35,15 +29,14 @@ import {
   UserProfileRequest,
   VerifyCodeRequest,
 } from '../../type/api';
-import { UserType } from '../../type/common/userType';
+import { LoginSuccessDataType, UserType } from '../../type/common/userType';
 import { EmailPasswordInputType } from '../../type/signUp/inputType';
 import { JoinUserDataPropsType } from '../../type/signUp/joinUserDataType';
 import { removeCookie, setCookie } from '../../utils/common/cookie';
 
 export function useJoin() {
   const navigate = useNavigate();
-  const setLoginUserType = useSetRecoilState(loginUserType);
-  const setLoginUserId = useSetRecoilState(loginUserId);
+  const setLoginUserData = useSetRecoilState(loginUserData);
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: ({ userType, formData }: { userType: UserType; formData: JoinUserDataPropsType }) =>
@@ -51,8 +44,14 @@ export function useJoin() {
     onSuccess: (response: any) => {
       const accessToken = response.accessToken;
       setCookie('accessToken', accessToken, {});
-      setLoginUserType(response.userResult.userType);
-      setLoginUserId(response.userResult.userId);
+      setLoginUserData({
+        userType: response.userResult.userType,
+        userId: response.userResult.userId,
+        userImageFile: response.userResult.userImage,
+        userName: response.userResult.userName,
+        userContact: response.userResult.userContact,
+      });
+
       navigate('/signup/profile');
     },
     onError: (error) => {
@@ -84,25 +83,23 @@ export function useProfileAfterJoin() {
 }
 
 export function useLogin() {
-  const setLoginUserId = useSetRecoilState(loginUserId);
-  const setLoginUserType = useSetRecoilState(loginUserType);
-  const setLoginUserImage = useSetRecoilState(loginUserImage);
-  const setLoginUserName = useSetRecoilState(loginUserName);
-  const setLoginUserContact = useSetRecoilState(loginUserContact);
+  const setLoginUserData = useSetRecoilState(loginUserData);
 
   const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation<
-    DefaultResponseType,
-    AxiosError<DefaultResponseType>,
+    DefaultResponseType<LoginSuccessDataType>,
+    AxiosError<DefaultResponseType<LoginSuccessDataType>>,
     UserLoginInfoRequest
   >((userInfo: UserLoginInfoRequest) => postLogin(userInfo), {
-    onSuccess: (response: any) => {
-      console.log(response);
-      setLoginUserId(response?.data?.userId);
-      setLoginUserType(response?.data?.userType);
-      setLoginUserImage(response?.data?.userImageFile);
-      setLoginUserName(response?.data?.userName);
-      setLoginUserContact(response?.data?.userContact);
+    onSuccess: (response: DefaultResponseType<LoginSuccessDataType>) => {
+      setLoginUserData({
+        userType: response.data.userType,
+        userId: response.data.userId,
+        userImageFile: response.data.userImageFile,
+        userName: response.data.userName,
+        userContact: response.data.userContact,
+      });
+
       setCookie('accessToken', response?.data?.accessToken, {});
       navigate('/');
     },
@@ -117,15 +114,14 @@ export function useLogin() {
 }
 
 export function useLogout(state: boolean) {
-  const resetLoginUserId = useResetRecoilState(loginUserId);
-  const resetLoginUserType = useResetRecoilState(loginUserType);
+  const resetLoginUserData = useResetRecoilState(loginUserData);
 
   const { data, ...restValues } = useQuery({
     queryKey: [QUERIES_KEY.LOGOUT],
     queryFn: getLogout,
     onSuccess: () => {
-      resetLoginUserId();
-      resetLoginUserType();
+      resetLoginUserData();
+
       removeCookie('accessToken', { path: '/' });
     },
     onError: () => {},

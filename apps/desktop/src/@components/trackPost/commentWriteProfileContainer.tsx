@@ -1,9 +1,9 @@
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { loginUserImage } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 
 export default function CommentWriteProfileContainer() {
-  const userImage = useRecoilValue(loginUserImage);
+  const userImage = useRecoilValue(loginUserData).userImageFile;
 
   return (
     <ImageContainer>

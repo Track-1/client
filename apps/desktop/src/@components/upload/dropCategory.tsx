@@ -4,10 +4,10 @@ import { CheckCategoryIc } from '../../assets';
 import { Select } from '../@common/selectBox';
 import { getInvariantObjectKeys, invariantOf } from '../../utils/common/invarientType';
 import { useRecoilValue } from 'recoil';
-import { loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 
 export default function DropCategory() {
-  const userType = useRecoilValue(loginUserType);
+  const userType = useRecoilValue(loginUserData).userType;
 
   return (
     <Select.OptionGroup asChild>

@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SignupCompleteIc, SignupStepBackArrowIc, SignupStepContinueIc } from '../../assets';
 import { SIGNUP_STEP } from '../../core/signUp/stepRenderer';
 import { useJoin } from '../../hooks/queries/user';
-import { loginUserId, loginUserType } from '../../recoil/common/loginUserData';
 import { role } from '../../recoil/common/role';
 import { isNextStep } from '../../recoil/signUp/isNextStep';
 import { joinUserData } from '../../recoil/signUp/joinUserData';
@@ -18,8 +17,7 @@ export default function StepFooter(props: StepMainProps) {
   const navigate = useNavigate();
   const [roleType, setRoleType] = useRecoilState<string | UserType>(role);
   const [userData, setUserData] = useRecoilState<JoinUserDataPropsType>(joinUserData);
-  const setLoginUserType = useSetRecoilState(loginUserType);
-  const setLoginUserId = useSetRecoilState(loginUserId);
+
   const { join } = useJoin();
 
   function checkNextStep() {

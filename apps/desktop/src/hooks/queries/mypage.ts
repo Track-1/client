@@ -22,9 +22,9 @@ import { getVocalProfile } from '../../api/profile';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { getProducerProfile } from '../../api/profile';
-import { loginUserId } from '../../recoil/common/loginUserData';
 import useModal from '../common/useModal';
 import useUpdateModal from '../common/useUpdateModal';
+import { loginUserData } from '../../recoil/common/loginUserData';
 
 export function useGetProducerProfile(userId: number) {
   const { data: producerProfile, ...restProps } = useQuery(
@@ -154,7 +154,7 @@ export function useGetVocalProfile(userId: number) {
 export function useUploadProducerPortfolio() {
   const navigate = useNavigate();
   const prevURL = useLocation().state?.prevURL;
-  const userId = useRecoilValue(loginUserId);
+  const userId = useRecoilValue(loginUserData).userId;
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postProducerPortfolio(formData),
@@ -182,7 +182,7 @@ export function useUploadProducerPortfolio() {
 export function useUploadVocalPortfolio() {
   const navigate = useNavigate();
   const prevURL = useLocation().state?.prevURL;
-  const userId = useRecoilValue(loginUserId);
+  const userId = useRecoilValue(loginUserData).userId;
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postVocalPortfolio(formData),

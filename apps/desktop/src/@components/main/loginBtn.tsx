@@ -5,7 +5,7 @@ import { useContext, useEffect } from 'react';
 import { PlayerContext } from '../../context/playerContext';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { loginUserId, loginUserImage, loginUserName, loginUserType } from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import { ROLE } from '../../core/common/roleType';
 import useModal from '../../hooks/common/useModal';
 import ProfileBox from './profileBox';
@@ -13,10 +13,7 @@ import ProfileBox from './profileBox';
 export default function LoginBtn() {
   const { quitAudioForMovePage } = useContext(PlayerContext);
 
-  const userType = useRecoilValue(loginUserType);
-  const userId = useRecoilValue(loginUserId);
-  const userImage = useRecoilValue(loginUserImage);
-  const userName = useRecoilValue(loginUserName);
+  const userData = useRecoilValue(loginUserData);
 
   const { openModal, unShowModal, handleShowUpdateModal } = useModal();
 
@@ -42,11 +39,11 @@ export default function LoginBtn() {
 
   return (
     <Styled.LoginBtnWrapper>
-      {userId > 0 ? (
-        <Styled.LoginedInfoWrapper userType={userType} onClick={handleShowUpdateModal}>
-          <Styled.LoginedUserImage src={userImage} userType={userType} />
-          {userName}
-          {openModal && <ProfileBox userType={userType} userName={userName} />}
+      {userData.userId > 0 ? (
+        <Styled.LoginedInfoWrapper userType={userData.userType} onClick={handleShowUpdateModal}>
+          <Styled.LoginedUserImage src={userData.userImageFile} userType={userData.userType} />
+          {userData.userName}
+          {openModal && <ProfileBox />}
         </Styled.LoginedInfoWrapper>
       ) : (
         <>
