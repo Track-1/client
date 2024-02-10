@@ -1,16 +1,16 @@
-import { CommentsListType, CommentsParamsType } from "./comments";
-import { EventInfoType, EventListType } from "./event";
-import { MyInfoType } from "./mypage";
+import { CommentsListType, CommentsParamsType } from './comments';
+import { EventInfoType, EventListType } from './event';
+import { MyInfoType } from './mypage';
 import {
   ProducerInfoType,
   ProducerPortfolioType,
   ProducerVocalSearchingInfoType,
   VocalInfoType,
   VocalProfileType,
-} from "./profile";
-import { FilteredTrackListType, FilteredTrackType, TrackDetailType, TrackDownloadType } from "./tracks";
-import { UserEmailType, UserLoginInfo, UserPasswordType, UserProfileType, VerifyCodeType } from "./user";
-import { FilteredVocalListType, FilteredVocalType } from "./vocals";
+} from './profile';
+import { FilteredTrackListType, FilteredTrackType, TrackDetailType, TrackDownloadType } from './tracks';
+import { UserEmailType, UserLoginInfo, UserPasswordType, UserProfileType, VerifyCodeType } from './user';
+import { FilteredVocalListType, FilteredVocalType } from './vocals';
 
 export type DefaultResponseType<T = unknown> = {
   status: number | string;
