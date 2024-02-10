@@ -11,10 +11,11 @@ import UploadButtonModal from '../@components/trackSearch/uploadButtonModal';
 import { UploadButtonIc } from '../assets';
 import { PlayerProvider } from '../context/playerContext';
 import useModal from '../hooks/common/useModal';
-import { loginUserType } from '../recoil/common/loginUserData';
 import { blockAccess } from '../utils/common/privateRouter';
 import React from 'react';
 import HomeLogo from '../@components/@common/homeLogo';
+import { loginUserData } from '../recoil/common/loginUserData';
+import Layout from '../@components/@common/Layout';
 
 const Wrapper = styled.section`
   display: flex;
@@ -32,7 +33,7 @@ const UploadButtonIcon = styled(UploadButtonIc)`
 
 export default function TrackSearchPage() {
   const { openModal, showModal, unShowModal } = useModal();
-  const userType = useRecoilValue(loginUserType);
+  const userType = useRecoilValue(loginUserData).userType;
   const navigate = useNavigate();
   const prevURL = useLocation().pathname;
 
@@ -55,21 +56,18 @@ export default function TrackSearchPage() {
   }
 
   return (
-    <>
-      <PlayerProvider>
-        <Header headerStyle={headerStyle}>
-          <HomeLogo />
-          <TrackSearchHeader pageType="tracks" />
-        </Header>
-        <Wrapper>
-          <Filter pageType="tracks" />
-          <UploadButtonIcon onClick={moveUploadPage} />
-          {openModal && <UploadButtonModal />}
-          <TrackList />
-          <Player />
-        </Wrapper>
-      </PlayerProvider>
-    </>
+    <Layout>
+      <Header headerStyle={headerStyle}>
+        <HomeLogo />
+        <TrackSearchHeader pageType="tracks" />
+      </Header>
+      <Wrapper>
+        <Filter pageType="tracks" />
+        <UploadButtonIcon onClick={moveUploadPage} />
+        {openModal && <UploadButtonModal />}
+        <TrackList />
+      </Wrapper>
+    </Layout>
   );
 }
 

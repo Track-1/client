@@ -1,13 +1,13 @@
 import { useRecoilValue } from 'recoil';
 import Admin from '../@components/admin';
-import { loginUserId, loginUserType } from '../recoil/common/loginUserData';
 import { ROLE } from '../core/common/roleType';
 import ErrorPage from './errorPage';
+import { loginUserData } from '../recoil/common/loginUserData';
+import Layout from '../@components/@common/Layout';
 
 export default function AdminPage() {
-  const userId = useRecoilValue(loginUserId);
-  const userType = useRecoilValue(loginUserType);
-
+  const userId = useRecoilValue(loginUserData).userId;
+  const userType = useRecoilValue(loginUserData).userType;
 
   function checkAdmin() {
     if (userType === ROLE.PRODUCER) {
@@ -17,5 +17,5 @@ export default function AdminPage() {
     }
   }
 
-  return checkAdmin() ? <Admin /> : <ErrorPage />;
+  return <Layout>{checkAdmin() ? <Admin /> : <ErrorPage />}</Layout>;
 }

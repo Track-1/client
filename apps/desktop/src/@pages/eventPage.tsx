@@ -1,5 +1,10 @@
-import Event from "../@components/event";
+import Layout from '../@components/@common/Layout';
+import Event from '../@components/event';
 
 export default function EventPage() {
-  return <Event />;
+  return (
+    <Layout>
+      <Event />
+    </Layout>
+  );
 }

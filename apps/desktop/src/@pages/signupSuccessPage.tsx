@@ -1,5 +1,10 @@
-import SignupSuccess from "../@components/signUp/signupSeccess";
+import Layout from '../@components/@common/Layout';
+import SignupSuccess from '../@components/signUp/signupSeccess';
 
 export default function SignupSuccessPage() {
-  return <SignupSuccess />;
+  return (
+    <Layout>
+      <SignupSuccess />
+    </Layout>
+  );
 }

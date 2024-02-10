@@ -1,5 +1,10 @@
-import About from "../@components/about";
+import Layout from '../@components/@common/Layout';
+import About from '../@components/about';
 
 export default function AboutPage() {
-  return <About />;
+  return (
+    <Layout>
+      <About />
+    </Layout>
+  );
 }
