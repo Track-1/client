@@ -46,7 +46,7 @@ client.interceptors.response.use(
 
     if (error.response && error.response.status === 401) {
       try {
-        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/etc/refresh`, {
+        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/auth/refresh`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${getCookie('accessToken')}`,

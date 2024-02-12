@@ -30,6 +30,13 @@ export async function postLogin(userInfo: UserLoginInfoRequest) {
   return data;
 }
 
+// export async function postLogin(userInfo: UserLoginInfoRequest) {
+//   const { data } = await client.post<DefaultResponseType<LoginSuccessDataType>>(USER.AUTH_LOGIN, userInfo);
+
+//   console.log(data);
+//   return data;
+// }
+
 export async function getLogout() {
   const { data } = await client.get<DefaultResponseType>(USER.AUTH_LOGOUT);
   return data.success;

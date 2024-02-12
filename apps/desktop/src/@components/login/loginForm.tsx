@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { LoginButtonIc, PasswordEyeIc } from "../../assets";
-import background from "../../assets/icon/signupBackgroundIc.svg";
-import { ROLE } from "../../core/common/roleType";
-import { useLogin } from "../../hooks/queries/user";
-import { UserType } from "../../type/common/userType";
-import Footer from "../@common/footer";
-import InputContainer from "../@common/inputContainer";
-import SwitchToggle from "./switchToggle";
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { LoginButtonIc, PasswordEyeIc } from '../../assets';
+import background from '../../assets/icon/signupBackgroundIc.svg';
+import { ROLE } from '../../core/common/roleType';
+import { useLogin } from '../../hooks/queries/user';
+import { UserType } from '../../type/common/userType';
+import Footer from '../@common/footer';
+import InputContainer from '../@common/inputContainer';
+import SwitchToggle from './switchToggle';
+import { CHECK_EMAIL_FORM, CHECK_PASSWORD_FORM } from '../../core/signUp/checkForm';
 
 const Container = styled.section`
   position: absolute;
@@ -160,28 +161,49 @@ export default function LoginForm() {
   const {
     register,
     formState: { errors, isDirty },
+    setError,
+    clearErrors,
     handleSubmit,
   } = useForm({
+    mode: 'onChange',
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
-  const [userType, setUserType] = useState<UserType>("vocal");
-  const { login, error } = useLogin();
+  const [userType, setUserType] = useState<UserType>('vocal');
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { login, error } = useLogin();
+
+  useEffect(() => {
+    if (error?.response?.data.message === '존재하지 않는 아이디입니다.') {
+      setError('email', {
+        type: 'value',
+        message: 'We don’t have an account with that email address.',
+      });
+      clearErrors('password');
+    }
+
+    if (error?.response?.data.message === '잘못된 비밀번호입니다.') {
+      setError('password', {
+        type: 'value',
+        message: 'Wrong password.',
+      });
+      clearErrors('email');
+    }
+  }, [error]);
 
   function switchUserType() {
-    userType === "producer" ? setUserType("vocal") : setUserType("producer");
+    userType === 'producer' ? setUserType('vocal') : setUserType('producer');
   }
 
   function handleMoveToSignup() {
-    navigate("/signup");
+    navigate('/signup');
   }
 
   function handleMoveToForgotPassword() {
-    navigate("/forgot-password");
+    navigate('/forgot-password');
   }
 
   function toggleHidePassword() {
@@ -206,46 +228,43 @@ export default function LoginForm() {
             </TitleWrapper>
 
             <InputWrapper>
-              <InputContainer title="Email" error={"email" in errors} login>
+              <InputContainer title="Email" error={'email' in errors} login>
                 <InputField
                   placeholder="Enter your email address"
-                  {...register("email", {
-                    pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid email" },
+                  {...register('email', {
+                    required: true,
+                    pattern: {
+                      value: CHECK_EMAIL_FORM,
+                      message: 'Enter a valid email.',
+                    },
                   })}
                 />
               </InputContainer>
-              <ErrorMessage>
-                {errors.email?.message ||
-                  (error?.response?.data.status === "U003" && "We don't have an account with that emial adress")}
-              </ErrorMessage>
+              <ErrorMessage>{errors.email?.message}</ErrorMessage>
             </InputWrapper>
             <InputWrapper>
-              <InputContainer title="password" error={"password" in errors} login>
+              <InputContainer title="password" error={'password' in errors} login>
                 <PasswordAndEyeWrapper>
                   <InputField
                     placeholder="Enter your password"
-                    {...register("password", {
+                    {...register('password', {
                       pattern: {
                         value: /^(?=.*[a-zA-Z])(?=.*[?!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
-                        message: "Wrong password. Try again or click Forgot password to reset it.",
+                        message: 'Wrong password. Try again or click Forgot password to reset it.',
                       },
                     })}
-                    type={isPasswordVisible ? "text" : "password"}
+                    type={isPasswordVisible ? 'text' : 'password'}
                   />
                   <PasswordEyeIcon onClick={toggleHidePassword} />
                 </PasswordAndEyeWrapper>
               </InputContainer>
-              <ErrorMessage>
-                {errors.password?.message ||
-                  (error?.response?.data.status === "U002" &&
-                    "Wrong password. Try again or click Forgot password to reset it")}
-              </ErrorMessage>
+              <ErrorMessage>{errors.password?.message}</ErrorMessage>
             </InputWrapper>
             <SwitchToggle switchUserType={switchUserType} />
             <LoginButton
               type="submit"
               userType={userType}
-              error={!isDirty || "email" in errors || "password" in errors}>
+              error={!isDirty || 'email' in errors || 'password' in errors}>
               <LoginButtonIcon />
             </LoginButton>
             <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>

@@ -88,7 +88,7 @@ export function useLogin() {
   const navigate = useNavigate();
   const { mutate, ...restValues } = useMutation<
     DefaultResponseType<LoginSuccessDataType>,
-    AxiosError<DefaultResponseType<LoginSuccessDataType>>,
+    AxiosError<DefaultResponseType>,
     UserLoginInfoRequest
   >((userInfo: UserLoginInfoRequest) => postLogin(userInfo), {
     onSuccess: (response: DefaultResponseType<LoginSuccessDataType>) => {
@@ -103,10 +103,11 @@ export function useLogin() {
       setCookie('accessToken', response?.data?.accessToken, {});
       navigate('/');
     },
-    onError: (err) => {
-      console.log(err);
+    onError: (error) => {
+      console.log(error);
     },
   });
+
   return {
     login: mutate,
     ...restValues,
