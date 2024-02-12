@@ -1,5 +1,10 @@
-import SignupProfile from "../@components/signUp/signupProfile";
+import Layout from '../@components/@common/Layout';
+import SignupProfile from '../@components/signUp/signupProfile';
 
 export default function SignupProfilePage() {
-  return <SignupProfile />;
+  return (
+    <Layout>
+      <SignupProfile />
+    </Layout>
+  );
 }

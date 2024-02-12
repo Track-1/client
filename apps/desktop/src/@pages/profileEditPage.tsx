@@ -1,10 +1,11 @@
-import { useRecoilValue } from "recoil";
-import ProducerProfileEditContainer from "../@components/profileEdit/producerProfileEdit/producerProfileEditContainer";
-import VocalProfileEditContainer from "../@components/profileEdit/vocalProfileEdit/vocalProfileEditContainer";
-import { loginUserType } from "../recoil/common/loginUserData";
+import { useRecoilValue } from 'recoil';
+import ProducerProfileEditContainer from '../@components/profileEdit/producerProfileEdit/producerProfileEditContainer';
+import VocalProfileEditContainer from '../@components/profileEdit/vocalProfileEdit/vocalProfileEditContainer';
+import { loginUserData } from '../recoil/common/loginUserData';
+import Layout from '../@components/@common/Layout';
 
 export default function ProfileEditPage() {
-  const user = useRecoilValue(loginUserType);
+  const userType = useRecoilValue(loginUserData).userType;
 
-  return user === "producer" ? <ProducerProfileEditContainer /> : <VocalProfileEditContainer />;
+  return <Layout>{userType === 'producer' ? <ProducerProfileEditContainer /> : <VocalProfileEditContainer />};</Layout>;
 }

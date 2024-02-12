@@ -5,16 +5,16 @@ import {
   UserPasswordRequest,
   UserProfileRequest,
   VerifyCodeRequest,
-} from "../type/api";
-import { UserType } from "../type/common/userType";
-import { JoinUserDataPropsType } from "../type/signUp/joinUserDataType";
-import { client } from "./common/client";
-import { USER } from "./path";
+} from '../type/api';
+import { LoginSuccessDataType, UserType } from '../type/common/userType';
+import { JoinUserDataPropsType } from '../type/signUp/joinUserDataType';
+import { client } from './common/client';
+import { USER } from './path';
 
 export async function postJoin(userType: UserType, formData: JoinUserDataPropsType) {
   const { data } = await client.post<DefaultResponseType>(USER.JOIN(userType), formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data.data;
@@ -26,9 +26,16 @@ export async function patchProfileAfterJoin(userProfile: UserProfileRequest) {
 }
 
 export async function postLogin(userInfo: UserLoginInfoRequest) {
-  const { data } = await client.post<DefaultResponseType>(USER.AUTH_LOGIN, userInfo);
+  const { data } = await client.post<DefaultResponseType<LoginSuccessDataType>>(USER.AUTH_LOGIN, userInfo);
   return data;
 }
+
+// export async function postLogin(userInfo: UserLoginInfoRequest) {
+//   const { data } = await client.post<DefaultResponseType<LoginSuccessDataType>>(USER.AUTH_LOGIN, userInfo);
+
+//   console.log(data);
+//   return data;
+// }
 
 export async function getLogout() {
   const { data } = await client.get<DefaultResponseType>(USER.AUTH_LOGOUT);
@@ -46,7 +53,7 @@ export async function postUserEmail(userEmail: UserEmailRequest) {
 }
 
 export async function patchPassword(userPassword: UserPasswordRequest) {
-  const token = window.location.pathname.replace("/reset-password/", "");
+  const token = window.location.pathname.replace('/reset-password/', '');
 
   const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD(token), {
     userPw: userPassword.userPw,
@@ -80,7 +87,7 @@ export async function patchResetPassword(userEmail: UserEmailRequest) {
 }
 
 export async function getTokenVerify() {
-  const token = window.location.pathname.replace("/reset-password/", "");
+  const token = window.location.pathname.replace('/reset-password/', '');
   const { data } = await client.get(USER.MAIL_PASSWORD_TOKEN(token));
   return data;
 }

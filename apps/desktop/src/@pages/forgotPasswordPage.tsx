@@ -1,5 +1,10 @@
-import ForgotPasswordContainer from "../@components/forgotPassword";
+import Layout from '../@components/@common/Layout';
+import ForgotPasswordContainer from '../@components/forgotPassword';
 
 export default function ForgotPasswordPage() {
-  return <ForgotPasswordContainer />;
+  return (
+    <Layout>
+      <ForgotPasswordContainer />
+    </Layout>
+  );
 }

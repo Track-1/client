@@ -1,5 +1,10 @@
-import MobileLanding from "../@components/mobileLanding";
+import Layout from '../@components/@common/Layout';
+import MobileLanding from '../@components/mobileLanding';
 
 export default function MobileLandingPage() {
-  return <MobileLanding />;
+  return (
+    <Layout>
+      <MobileLanding />
+    </Layout>
+  );
 }

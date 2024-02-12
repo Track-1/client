@@ -12,8 +12,8 @@ import {
   postTrack,
 } from '../../api/tracks';
 import { QUERIES_KEY } from '../../core/common/queriesKey';
-import { loginUserId } from '../../recoil/common/loginUserData';
 import { FilteredTrackParamsType } from '../../type/tracks';
+import { loginUserData } from '../../recoil/common/loginUserData';
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, 'page'>) {
   const fetchTracks = async (pageParams: number) => {
@@ -78,7 +78,7 @@ export function useTrackDownload(trackId: number, isDownload: boolean | undefine
 export function useUploadTrack() {
   const navigate = useNavigate();
   const prevURL = useLocation().state?.prevURL;
-  const userId = useRecoilValue(loginUserId);
+  const userId = useRecoilValue(loginUserData).userId;
 
   const { mutate, ...restValues } = useMutation({
     mutationFn: (formData: FormData) => postTrack(formData),

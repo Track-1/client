@@ -3,27 +3,25 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { RightArrorIc } from '../../../assets';
 import { ROLE } from '../../../core/common/roleType';
-import { loginUserId, loginUserImage, loginUserType } from '../../../recoil/common/loginUserData';
+import { loginUserData } from '../../../recoil/common/loginUserData';
 import { checkIsLogin } from '../../../utils/common/checkIsLogined';
 
 export default function TrackSearchHeaderButton() {
-  const userType = useRecoilValue(loginUserType);
-  const userId = useRecoilValue(loginUserId);
-  const userImage = useRecoilValue(loginUserImage);
+  const userData = useRecoilValue(loginUserData);
 
   const prevURL = useLocation().pathname;
 
   const navigate = useNavigate();
 
   function handleMoveToProfile() {
-    if (userType === ROLE.PRODUCER) {
-      navigate(`/producer-profile/${userId}`, {
+    if (userData.userType === ROLE.PRODUCER) {
+      navigate(`/producer-profile/${userData.userId}`, {
         state: {
           prevURL: prevURL,
         },
       });
     } else {
-      navigate(`/vocal-profile/${userId}`, {
+      navigate(`/vocal-profile/${userData.userId}`, {
         state: {
           prevURL: prevURL,
         },
@@ -35,13 +33,13 @@ export default function TrackSearchHeaderButton() {
     <>
       {checkIsLogin() && (
         <HeaderButtonWrapper onClick={handleMoveToProfile}>
-          {userType === ROLE.PRODUCER ? (
+          {userData.userType === ROLE.PRODUCER ? (
             <ProfileImageLayout>
-              <ProfileImage src={userImage} alt="유저 프로필 이미지" />
+              <ProfileImage src={userData.userImageFile} alt="유저 프로필 이미지" />
             </ProfileImageLayout>
           ) : (
             <VocalProfileImageWrapper>
-              <VocalProfileImage src={userImage} alt="유저 프로필 이미지" />
+              <VocalProfileImage src={userData.userImageFile} alt="유저 프로필 이미지" />
             </VocalProfileImageWrapper>
           )}
 

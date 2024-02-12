@@ -5,10 +5,10 @@ import {
   ProducerVocalSearchingResponse,
   VocalInfoResponse,
   VocalProfileResponse,
-} from "../type/api";
-import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from "../type/profile";
-import { client } from "./common/client";
-import { PROFILE } from "./path";
+} from '../type/api';
+import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from '../type/profile';
+import { client } from './common/client';
+import { PROFILE } from './path';
 
 export async function getProducerProfile(params: ProducerInfoParamsType) {
   const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_PROFILE(params.userId), {
@@ -67,7 +67,7 @@ export async function getVocalInfo(params: VocalInfoParamsType) {
 export async function patchProducerProfile(editData: ProfileEditType) {
   const { data } = await client.patch<DefaultResponseType>(PROFILE.PATCH_PRODUCER, editData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
@@ -76,7 +76,7 @@ export async function patchProducerProfile(editData: ProfileEditType) {
 export async function patchVocalProfile(editData: VocalProfileEditType) {
   const { data } = await client.patch<DefaultResponseType>(PROFILE.PATCH_VOCAL, editData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;

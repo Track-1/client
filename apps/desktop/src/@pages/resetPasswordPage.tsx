@@ -1,5 +1,10 @@
-import ResetPasswordContainer from "../@components/resetPassword";
+import Layout from '../@components/@common/Layout';
+import ResetPasswordContainer from '../@components/resetPassword';
 
 export default function ResetPasswordPage() {
-  return <ResetPasswordContainer />;
+  return (
+    <Layout>
+      <ResetPasswordContainer />
+    </Layout>
+  );
 }

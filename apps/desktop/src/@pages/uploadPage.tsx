@@ -1,17 +1,16 @@
-import { useRecoilState } from "recoil";
-import ProducerUploadBody from "../@components/upload/producerUploadBody";
-import VocalUploadBody from "../@components/upload/vocalUploadBody";
-import { loginUserType } from "../recoil/common/loginUserData";
+import { useRecoilValue } from 'recoil';
+import ProducerUploadBody from '../@components/upload/producerUploadBody';
+import VocalUploadBody from '../@components/upload/vocalUploadBody';
+import { loginUserData } from '../recoil/common/loginUserData';
+import Layout from '../@components/@common/Layout';
 
 export default function UploadPage() {
-  const [user] = useRecoilState(loginUserType);
+  const userType = useRecoilValue(loginUserData).userType;
 
-  if (user === "producer") {
-    return <ProducerUploadBody isEditPage={false} />;
-  }
-  if (user === "vocal") {
-    return <VocalUploadBody isEditPage={false} />;
-  }
-
-  return null;
+  return (
+    <Layout>
+      {userType === 'producer' && <ProducerUploadBody isEditPage={false} />}
+      {userType === 'vocal' && <VocalUploadBody isEditPage={false} />}
+    </Layout>
+  );
 }

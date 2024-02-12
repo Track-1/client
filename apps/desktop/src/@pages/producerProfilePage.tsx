@@ -1,12 +1,11 @@
-import Player from "../@components/@common/player";
-import ProducerProfile from "../@components/producerProfile";
-import { PlayerProvider } from "../context/playerContext";
+import Layout from '../@components/@common/Layout';
+
+import ProducerProfile from '../@components/producerProfile';
 
 export default function ProducerProfilePage() {
   return (
-    <PlayerProvider>
+    <Layout>
       <ProducerProfile />
-      <Player />
-    </PlayerProvider>
+    </Layout>
   );
 }

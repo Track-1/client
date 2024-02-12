@@ -1,19 +1,18 @@
-import { useLocation } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import ProducerUploadBody from "../@components/upload/producerUploadBody";
-import VocalUploadBody from "../@components/upload/vocalUploadBody";
-import { loginUserType } from "../recoil/common/loginUserData";
+import { useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import ProducerUploadBody from '../@components/upload/producerUploadBody';
+import VocalUploadBody from '../@components/upload/vocalUploadBody';
+import { loginUserData } from '../recoil/common/loginUserData';
+import Layout from '../@components/@common/Layout';
 
 export default function UploadEditPage() {
-  const [user] = useRecoilState(loginUserType);
+  const userType = useRecoilValue(loginUserData).userType;
   const { prevUploadData } = useLocation().state;
 
-  if (user === "producer") {
-    return <ProducerUploadBody isEditPage prevUploadData={prevUploadData} />;
-  }
-  if (user === "vocal") {
-    return <VocalUploadBody isEditPage prevUploadData={prevUploadData} />;
-  }
-
-  return null;
+  return (
+    <Layout>
+      {userType === 'producer' && <ProducerUploadBody isEditPage prevUploadData={prevUploadData} />}
+      {userType === 'vocal' && <VocalUploadBody isEditPage prevUploadData={prevUploadData} />}
+    </Layout>
+  );
 }

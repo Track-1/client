@@ -3,57 +3,35 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { ROLE } from '../../core/common/roleType';
 
-import {
-  loginUserContact,
-  loginUserId,
-  loginUserImage,
-  loginUserName,
-  loginUserType,
-} from '../../recoil/common/loginUserData';
+import { loginUserData } from '../../recoil/common/loginUserData';
 import { getLogout } from '../../api/user';
 import { removeCookie } from '../../utils/common/cookie';
 
-interface ProfileBoxProps {
-  userType: string;
-  userName: string | undefined;
-}
-
-export default function ProfileBox(props: ProfileBoxProps) {
-  const { userType, userName } = props;
-
-  const userId = useRecoilValue(loginUserId);
-  const userContact = useRecoilValue(loginUserContact);
+export default function ProfileBox() {
   const navigate = useNavigate();
   const prevURL = useLocation().pathname;
 
-  const resetLoginUserId = useResetRecoilState(loginUserId);
-  const resetLoginUserType = useResetRecoilState(loginUserType);
-  const resetLoginUserContact = useResetRecoilState(loginUserContact);
-  const resetLoginUserImage = useResetRecoilState(loginUserImage);
-  const resetLoginUserName = useResetRecoilState(loginUserName);
+  const userData = useRecoilValue(loginUserData);
+  const resetLoginUserData = useResetRecoilState(loginUserData);
 
   async function handleLogout() {
     const data = await getLogout();
 
     if (data) {
-      resetLoginUserId();
-      resetLoginUserType();
-      resetLoginUserContact();
-      resetLoginUserImage();
-      resetLoginUserName();
+      resetLoginUserData();
       removeCookie('accessToken', { path: '/' });
     }
   }
 
   function handleMoveTo() {
-    if (userType === ROLE.PRODUCER) {
-      navigate(`/producer-profile/${userId}`, {
+    if (userData.userType === ROLE.PRODUCER) {
+      navigate(`/producer-profile/${userData.userId}`, {
         state: {
           prevURL: prevURL,
         },
       });
     } else {
-      navigate(`/vocal-profile/${userId}`, {
+      navigate(`/vocal-profile/${userData.userId}`, {
         state: {
           prevURL: prevURL,
         },
@@ -65,11 +43,11 @@ export default function ProfileBox(props: ProfileBoxProps) {
     <Styled.ProfileBoxContainer>
       <Styled.ProfileInfoWrapper onClick={handleMoveTo}>
         <Styled.ProfileContentWrapper>
-          <Styled.UserNameText>{userName}</Styled.UserNameText>
-          <Styled.UserEmailText>{userContact}</Styled.UserEmailText>
+          <Styled.UserNameText>{userData.userName}</Styled.UserNameText>
+          <Styled.UserEmailText>{userData.userContact}</Styled.UserEmailText>
         </Styled.ProfileContentWrapper>
         <Styled.ProfileUserTypeWrapper>
-          <Styled.UserTypeText userType={userType}>{userType}</Styled.UserTypeText>
+          <Styled.UserTypeText userType={userData.userType}>{userData.userType}</Styled.UserTypeText>
         </Styled.ProfileUserTypeWrapper>
       </Styled.ProfileInfoWrapper>
       <Styled.LogoutWrapper onClick={handleLogout}>

@@ -6,6 +6,7 @@ import {
   VocalInfoResponse,
   VocalProfileResponse,
 } from "../type/api";
+import { LoginUserDataType } from "../type/common/userType";
 import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from "../type/profile";
 import { client } from "./common/client";
 import { PROFILE } from "./path";
@@ -65,16 +66,16 @@ export async function getVocalInfo(params: VocalInfoParamsType) {
 }
 
 export async function patchProducerProfile(editData: ProfileEditType) {
-  const { data } = await client.patch<DefaultResponseType>(PROFILE.PATCH_PRODUCER, editData, {
+  const { data } = await client.patch<DefaultResponseType<LoginUserDataType>>(PROFILE.PATCH_PRODUCER, editData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
 }
 
 export async function patchVocalProfile(editData: VocalProfileEditType) {
-  const { data } = await client.patch<DefaultResponseType>(PROFILE.PATCH_VOCAL, editData, {
+  const { data } = await client.patch<DefaultResponseType<LoginUserDataType>>(PROFILE.PATCH_VOCAL, editData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
