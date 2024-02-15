@@ -21,7 +21,8 @@ import { CategoryId } from '../../core/common/categories';
 import { useLocation, useParams } from 'react-router-dom';
 import { createFileName } from '../../utils/common/createFileName';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Loading from '../@common/loading';
 
 type VocalUploadBodyProps =
   | {
@@ -39,6 +40,7 @@ const defaultList = new DataTransfer();
 export default function VocalUploadBody(props: VocalUploadBodyProps) {
   const { isEditPage, prevUploadData } = props;
 
+  const [showLoading, setShowLoading] = useState(false);
   const { uploadVocalPortfolio } = useUploadVocalPortfolio();
   const { editVocalPortfolio } = useEditVocalPortfolio();
   const { selectedOption, selectOption } = useSelect<EventCategoryIdType | null>(
@@ -71,8 +73,6 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
     }
   }, []);
 
-  console.log(prevUploadData);
-
   function createVocalUploadFormData(data: UploadInputType) {
     if (selectedOption === null) return;
 
@@ -101,42 +101,49 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
     return formData;
   }
 
-  console.log(isEditPage);
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit((data) => {
-          const uploadData = createVocalUploadFormData(data);
-          let trackId;
-          if (prevUploadData) {
-            trackId = prevUploadData.portfolioId;
-          }
+    <>
+      {showLoading && <Loading />}
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit((data) => {
+            const uploadData = createVocalUploadFormData(data);
+            let trackId;
+            if (prevUploadData) {
+              trackId = prevUploadData.portfolioId;
+            }
 
-          if (uploadData) {
-            isEditPage ? editVocalPortfolio({ trackId, uploadData }) : uploadVocalPortfolio(uploadData);
-          }
-        })}>
-        <SelectCategoryContext.Provider value={{ selectedOption, selectOption }}>
-          <Header>
-            <BackButton staticPrevURL={-1} />
-            <UploadHeader />
-          </Header>
-          <Container>
-            <ImageInfo userType="vocal" />
-            <UploadDataWrapper>
-              <UploadTitle />
-              <UploadInfoWrapper>
-                <FileUploadInfo />
-                <CategoryInfo />
-                <HashtagInfo />
-                <DescriptionInfo />
-              </UploadInfoWrapper>
-            </UploadDataWrapper>
-            <UploadVocalLayout src={UploadVocalLayoutImg} />
-          </Container>
-        </SelectCategoryContext.Provider>
-      </form>
-    </FormProvider>
+            if (uploadData) {
+              isEditPage ? editVocalPortfolio({ trackId, uploadData }) : uploadVocalPortfolio(uploadData);
+            }
+
+            setShowLoading(true);
+            setTimeout(() => {
+              setShowLoading(false);
+            }, 3000);
+          })}>
+          <SelectCategoryContext.Provider value={{ selectedOption, selectOption }}>
+            <Header>
+              <BackButton staticPrevURL={-1} />
+              <UploadHeader />
+            </Header>
+            <Container>
+              <ImageInfo userType="vocal" />
+              <UploadDataWrapper>
+                <UploadTitle />
+                <UploadInfoWrapper>
+                  <FileUploadInfo />
+                  <CategoryInfo />
+                  <HashtagInfo />
+                  <DescriptionInfo />
+                </UploadInfoWrapper>
+              </UploadDataWrapper>
+              <UploadVocalLayout src={UploadVocalLayoutImg} />
+            </Container>
+          </SelectCategoryContext.Provider>
+        </form>
+      </FormProvider>
+    </>
   );
 }
 

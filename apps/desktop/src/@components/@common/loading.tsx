@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import loading from "../../assets/image/loading.gif";
+import styled from 'styled-components';
+import loading from '../../assets/image/loading.gif';
 
 export default function Loading() {
   return (
@@ -12,6 +12,7 @@ export default function Loading() {
 
 const Background = styled.div`
   position: fixed;
+  z-index: 10000000;
   top: 0;
   right: 0;
   bottom: 0;
@@ -21,6 +22,9 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  width: 100%;
+  height: 100%;
 
   background-color: rgb(0, 0, 0, 0.7);
 `;
