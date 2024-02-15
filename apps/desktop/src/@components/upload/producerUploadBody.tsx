@@ -25,7 +25,8 @@ import { useLocation, useParams } from 'react-router-dom';
 import { CategoryId, EventCategoryId } from '../../core/common/categories';
 import { createFileName } from '../../utils/common/createFileName';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Loading from '../@common/loading';
 
 type ProducerUploadBodyyProps =
   | {
@@ -44,6 +45,7 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
   const { isEditPage, prevUploadData } = props;
 
   const pathname = useLocation().pathname;
+  const [showLoading, setShowLoading] = useState(false);
 
   const { uploadProducerPortfolio } = useUploadProducerPortfolio();
   const { editProducerPortfolio } = useEditProducerPortfolio();
@@ -148,6 +150,11 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
       trackId = pathname.includes('portfolio') ? prevUploadData.portfolioId : prevUploadData.trackId;
     }
 
+    setShowLoading(true);
+    setTimeout(() => {
+      setShowLoading(false);
+    }, 3000);
+
     if (pathname.includes('portfolio') || pathname.includes('portfolio-edit')) {
       const uploadData = createProducerUploadFormData(data);
       if (uploadData) {
@@ -167,34 +174,36 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit((data) => {
-          console.log(data);
-          upload(data);
-        })}>
-        <SelectCategoryContext.Provider value={{ selectedOption, selectOption }}>
-          <Header>
-            <BackButton staticPrevURL={-1} />
-            <UploadHeader />
-          </Header>
-          <Container>
-            <UploadImage>
-              <ImageInfo userType="producer" />
-            </UploadImage>
-            <UploadDataWrapper>
-              <UploadTitle />
-              <UploadInfoWrapper>
-                <FileUploadInfo />
-                <CategoryInfo />
-                <HashtagInfo />
-                <DescriptionInfo />
-              </UploadInfoWrapper>
-            </UploadDataWrapper>
-          </Container>
-        </SelectCategoryContext.Provider>
-      </form>
-    </FormProvider>
+    <>
+      {showLoading && <Loading />}
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit((data) => {
+            upload(data);
+          })}>
+          <SelectCategoryContext.Provider value={{ selectedOption, selectOption }}>
+            <Header>
+              <BackButton staticPrevURL={-1} />
+              <UploadHeader />
+            </Header>
+            <Container>
+              <UploadImage>
+                <ImageInfo userType="producer" />
+              </UploadImage>
+              <UploadDataWrapper>
+                <UploadTitle />
+                <UploadInfoWrapper>
+                  <FileUploadInfo />
+                  <CategoryInfo />
+                  <HashtagInfo />
+                  <DescriptionInfo />
+                </UploadInfoWrapper>
+              </UploadDataWrapper>
+            </Container>
+          </SelectCategoryContext.Provider>
+        </form>
+      </FormProvider>
+    </>
   );
 }
 

@@ -1,11 +1,11 @@
-import { useContext, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { VocalSearchPlayIc, VocalSearchStopIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
-import { FilteredVocalType } from "../../type/vocals";
-import { blockAccess } from "../../utils/common/privateRouter";
+import { useContext, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { VocalSearchPlayIc, VocalSearchStopIc } from '../../assets';
+import { PlayerContext } from '../../context/playerContext';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { FilteredVocalType } from '../../type/vocals';
+import { blockAccess } from '../../utils/common/privateRouter';
 
 const VocalContainer = styled.div`
   display: inline-block;
@@ -72,7 +72,7 @@ const AlbumCoverImg = styled.img<{ isHovered: boolean }>`
         top: 0;
         right: 0;
 
-        content: "";
+        content: '';
         width: 100%;
         height: 100%;
         background-color: rgba(13, 14, 17, 0.7); /* 원하는 색상과 투명도를 설정 */
@@ -115,7 +115,7 @@ const GradientProfile = styled.div<{ isHovered: boolean }>`
   background: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.sub3} 15.32%,
-    ${({ isHovered }) => (isHovered ? " rgba(13, 14, 17, 0.7) 53.49%" : " rgba(13, 14, 17, 0) 53.49%")},
+    ${({ isHovered }) => (isHovered ? ' rgba(13, 14, 17, 0.7) 53.49%' : ' rgba(13, 14, 17, 0) 53.49%')},
     ${({ theme }) => theme.colors.sub3} 92.93%
   );
 `;
@@ -179,8 +179,8 @@ const Hashtag = styled.li`
 
 interface VocalItemProps {
   vocalInfo: FilteredVocalType;
-  playingTrack: FilteredVocalType["userId"] | null;
-  selectTrack: (trackId: FilteredVocalType["userId"]) => void;
+  playingTrack: FilteredVocalType['userId'] | null;
+  selectTrack: (trackId: FilteredVocalType['userId']) => void;
 }
 
 export default function VocalItem(props: VocalItemProps) {
@@ -193,14 +193,14 @@ export default function VocalItem(props: VocalItemProps) {
     playerContext,
     vocalInfo.userAudioFile,
     vocalInfo.userId,
-    selectTrack,
+    selectTrack
   );
   const prevURL = useLocation().pathname;
 
   function moveVocalProfilePage() {
     quitAudioForMovePage();
     if (blockAccess()) {
-      navigate("/login", {
+      navigate('/login', {
         state: {
           prevURL: prevURL,
         },
@@ -212,6 +212,15 @@ export default function VocalItem(props: VocalItemProps) {
         },
       });
     }
+  }
+
+  function handlePlay() {
+    if (vocalInfo.userAudioFile === '') {
+      alert('해당 음원이 존재하지 않습니다!');
+      return;
+    }
+
+    playAudioItem();
   }
 
   useEffect(() => {
@@ -251,7 +260,7 @@ export default function VocalItem(props: VocalItemProps) {
           (innerPlaying && contextPlaying ? (
             <StopButton onClick={stopAudioItem} />
           ) : (
-            <PlayButton onClick={playAudioItem} />
+            <PlayButton onClick={handlePlay} />
           ))}
       </MusicProfileWrapper>
       <HashtagContainer>
