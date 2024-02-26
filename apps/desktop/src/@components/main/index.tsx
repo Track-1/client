@@ -30,7 +30,7 @@ export default function MainPageContainer() {
 
   return (
     <PlayerProvider>
-      {!getCookie('popup') &&<PopupModal />}
+      {/*!getCookie('popup') &&<PopupModal />*/}
       {/* HEADER */}
       <MainHeader />
       {/* MainBanner */}
