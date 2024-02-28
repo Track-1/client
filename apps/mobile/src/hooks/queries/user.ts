@@ -85,7 +85,6 @@ export function useProfileAfterJoin() {
 export function useLogin() {
   const setLoginUserData = useSetRecoilState(loginUserData);
   const navigate = useNavigate();
-  const prevPage = useLocation().state.prevPage;
 
   const { mutate, ...restValues } = useMutation<LoginResponse, AxiosError<DefaultResponseType>, UserLoginInfoRequest>(
     (userInfo: UserLoginInfoRequest) => postLogin(userInfo),
@@ -98,7 +97,7 @@ export function useLogin() {
           userName: data?.data.userName,
           userImageFile: data?.data.userImageFile,
         });
-        prevPage ? navigate(prevPage) : navigate(-1);
+        navigate(-1);
       },
       onError: (err) => {
         console.log(err);
