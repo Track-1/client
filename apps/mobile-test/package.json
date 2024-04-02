@@ -1,12 +1,12 @@
 {
-  "name": "mobile",
+  "name": "mobile-test",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "private": "true",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --config config/webpack.dev.js",
-    "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'"
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx"
   },
   "dependencies": {}
 }
