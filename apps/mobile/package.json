@@ -1,5 +1,5 @@
 {
-  "name": "mobile",
+  "name": "track-1-mobile",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -7,6 +7,5 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --config config/webpack.dev.js",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'"
-  },
-  "dependencies": {}
+  }
 }

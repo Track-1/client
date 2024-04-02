@@ -1,5 +1,4 @@
 module.exports = {
-
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'eslint-plugin-prettier'],
   extends: ['prettier'],
@@ -7,5 +6,5 @@ module.exports = {
     'no-var': 1,
     '@typescript-eslint/no-explicit-any': 1,
     'no-unused-vars': 1,
-  }
+  },
 };
