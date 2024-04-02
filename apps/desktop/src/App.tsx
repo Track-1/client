@@ -1,65 +1,6 @@
-import { RecoilRoot } from 'recoil';
-import { ThemeProvider } from 'styled-components';
-import MobileLandingPage from './@pages/mobileLandingPage';
-import Router from './Router';
-import { GlobalStyle } from './style/globalStyle';
-import { theme } from './style/theme';
-import { Suspense, useEffect } from 'react';
-import Loading from './@components/@common/loading';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { CookiesProvider } from 'react-cookie';
-import { PlayerProvider } from './context/playerContext';
-import Player from './@components/@common/player';
+import { useRecoilState } from 'recoil';
 
-function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 0,
-        suspense: true,
-      },
-    },
-  });
-
-  const isMobile = /Mobi/i.test(window.navigator.userAgent);
-
-  useEffect(() => {
-    const $existingMeta = document.querySelector('meta[name="viewport"]');
-
-    if (isMobile) {
-      window.location.href = 'https://m.track1.site';
-
-      const $meta = $existingMeta ?? document.createElement('meta');
-
-      $meta.setAttribute('name', 'viewport');
-      $meta.setAttribute(
-        'content',
-        'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'
-      );
-
-      if (!$existingMeta) {
-        document.head.appendChild($meta);
-      }
-    }
-  }, []);
-
-  return (
-    <CookiesProvider>
-      <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Suspense fallback={<Loading />}>
-              <PlayerProvider>
-                <Router />
-                <Player />
-              </PlayerProvider>
-            </Suspense>
-          </ThemeProvider>
-        </RecoilRoot>
-      </QueryClientProvider>
-    </CookiesProvider>
-  );
+export default function App() {
+  const test = useRecoilState;
+  return <h1>Hello Mobile-Test</h1>;
 }
-
-export default App;
