@@ -7,5 +7,10 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --config config/webpack.dev.js",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'"
-  }
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@toss/use-overlay": "^1.4.0"
+  },
+  "devDependencies": {}
 }
