@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import Router from './Router';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
-import { EventListParamsType } from 'track-1-shared/src/types';
+import { EventListParamsType } from 'track-1-shared/types';
 
 function App() {
   const queryClient = new QueryClient({
