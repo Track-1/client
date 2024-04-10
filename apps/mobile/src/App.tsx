@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import Router from './Router';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
-import { EventListParamsType } from 'track-1-shared/src/types';
+import AudioProvider from './context/audioContext';
 
 function App() {
   const queryClient = new QueryClient({
@@ -19,14 +19,7 @@ function App() {
     },
   });
 
-  const test: EventListParamsType = {
-    page: 1,
-    limit: 3,
-  };
-
-  console.log(test);
-
-  const isMobile = /Mobi/i.test(window.navigator.userAgent);
+  // const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
   // console.log(checkMaxInputLength(13, 10));
 
@@ -57,10 +50,12 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
           <ThemeProvider theme={theme}>
-            <OverlayProvider>
-              <GlobalStyle />
-              <Router />
-            </OverlayProvider>
+            <AudioProvider>
+              <OverlayProvider>
+                <GlobalStyle />
+                <Router />
+              </OverlayProvider>
+            </AudioProvider>
           </ThemeProvider>
         </RecoilRoot>
       </QueryClientProvider>

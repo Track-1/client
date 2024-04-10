@@ -8,9 +8,9 @@ import { Z_INDEX } from '../../../constant/zIndex';
 import { theme } from '../../../style/theme';
 import * as Dialog from '@radix-ui/react-dialog';
 // import { Background } from '../../Modal/bottomUpModal';
-import { removeCookie } from 'track-1-shared/src/utils';
+
 import { getLogout } from 'track-1-shared/src/api';
-import { checkIsProducer } from 'track-1-shared/src/utils';
+import { checkIsProducer, removeCookie } from 'track-1-shared/src/utils';
 
 interface UserInfoProps {
   unShowModal: () => void;
