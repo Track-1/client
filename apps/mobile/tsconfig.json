@@ -1,4 +1,15 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "track-1-shared": ["../shared/src/index.ts"]
+    }
+  },
+  "references": [
+    {
+      "path": "../shared/"
+    }
+  ],
   "include": ["**/*.ts", "**/*.tsx"]
 }

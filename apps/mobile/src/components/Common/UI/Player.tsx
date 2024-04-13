@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-
 import Text from '../Text';
-import { CloseIc, PauseIc, PlayIc } from '../../../assets';
-import useControlPlayer from '../../../hooks/useControlPlayer';
-import { useAudioContext } from '../../../context/audioContext';
+import { CloseIc, PauseIc, PlayIc } from 'src/assets';
+import useControlPlayer from 'src/hooks/useControlPlayer';
+import { useAudioContext } from 'src/context/audioContext';
+import { Z_INDEX } from 'src/constant/style';
 
 interface PlayerProps {
   isPlaying: boolean;
@@ -103,6 +103,7 @@ const PlayerContainer = styled.section`
 
   width: 100%;
   height: 10.5rem;
+  z-index: ${Z_INDEX.PLAYER};
 `;
 
 const PlayerWrapper = styled.article`

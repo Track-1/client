@@ -1,6 +1,6 @@
-import { FilteredVocalsResponse, RecentVocalsResponse } from '../type/api';
-import { FilteredVocalsParamsType } from '../type/vocals';
+import { FilteredVocalsParamsType, FilteredVocalsResponse, RecentVocalsResponse } from '../../types';
 import { client } from './client';
+
 import { VOCALS } from './path';
 
 export async function getFilteredVocals(params: FilteredVocalsParamsType) {

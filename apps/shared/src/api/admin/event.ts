@@ -1,5 +1,5 @@
-import { DefaultResponseType, EventDetailResponse, EventListResponse } from '../../types/api/api';
-import { EventListParamsType } from '../../types';
+import { DefaultResponseType, EventDetailResponse, EventListResponse } from '../../types';
+import { EventListParamsType } from '../../types/event';
 import { getCookie } from '../../utils';
 import { client } from '../common/client';
 import { ADMIN } from '../common/path';

@@ -16,7 +16,14 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx|js|jsx)$/,
-        use: 'babel-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+          },
+        ],
         exclude: /node_modules/,
       },
       {
@@ -49,11 +56,9 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '../src/'),
-      'track-1-form-with-react-hook-form': path.resolve(
-        __dirname,
-        '../../../node_modules/track-1-form-with-react-hook-form/dist/lib'
-      ),
+      // '@': path.resolve(__dirname, '../src/'),
+      src: path.resolve(__dirname, '../src/'),
+      'track-1-shared': path.resolve(__dirname, '../../shared/src/index.ts'),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

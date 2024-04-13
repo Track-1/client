@@ -1,9 +1,9 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { SyntheticEvent } from 'react';
-import { PauseIc, PlayIc } from '../../../assets';
-import { useAudioContext } from '../../../context/audioContext';
 import Player from './Player';
+import { PauseIc, PlayIc } from 'src/assets';
+import { useAudioContext } from 'src/context/audioContext';
 
 export type CoverShapeTypes = 'circle' | 'squre';
 export type CoverSizeTypes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -37,7 +37,6 @@ export function MusicCover(props: PropsWithChildren<MusicCoverProps>) {
   const { imageSrc, imageAlt, coverSize, coverShape, audioSrc, audioTitle, userName, iconPosition } = props;
 
   const [isPlaying, setIsPlaying] = useState(false);
-
   const { audio, playingAudioSrc, changePlayingAudioSrc } = useAudioContext();
 
   useEffect(() => {

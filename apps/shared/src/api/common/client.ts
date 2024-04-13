@@ -3,7 +3,8 @@ import { getCookie, removeCookie, setCookie } from '../../utils';
 
 //서버통신 함수
 export const client = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  // baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: 'https://api.track1-test.store',
   headers: {},
   withCredentials: true,
 });

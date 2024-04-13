@@ -1,4 +1,4 @@
-import { UserType } from '../common/userType';
+import { UserType } from './common/userType';
 
 export interface UserLoginInfo {
   userEmail: string;

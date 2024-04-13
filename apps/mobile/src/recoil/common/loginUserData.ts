@@ -1,7 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-import { UserType } from 'track-1-shared/src/types';
-
+import { UserType } from 'track-1-shared/src/types/common/userType';
 
 const { persistAtom } = recoilPersist();
 

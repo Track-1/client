@@ -1,1 +1,1 @@
-export * from './react-queries';
+export * from './query'

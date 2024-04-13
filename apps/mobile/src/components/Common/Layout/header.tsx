@@ -1,13 +1,9 @@
 import styled from 'styled-components';
-import { HamburgerMenuIc, HomeLogoIc, Track1LogoIc } from '../../../assets';
 import { PropsWithChildren, useEffect } from 'react';
-
-import { PADDING_SIDE } from './';
-// import { useMovePage } from '../hooks/common/useMovePage';
-import SideNav from './sideNav';
-// import useModal from '../hooks/common/useModal';
-import { Z_INDEX } from '../../../constant/zIndex';
+// import SideNav from './sideNav';
 import { useLocation } from 'react-router-dom';
+import { HamburgerMenuIc, HomeLogoIc, Track1LogoIc } from 'src/assets';
+import { PADDING_SIDE, Z_INDEX } from 'src/constant/style';
 
 type HeaderStyleType = 'left' | 'mid';
 
@@ -39,13 +35,12 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   return (
     <>
       <Styled.Container>
-        {/* {headerStyle === 'mid' ? (
-          <EmptyBox />
+        {headerStyle === 'mid' ? (
+          // <EmptyBox />
+          <div></div>
         ) : (
-          <ImageWrapper width={11.1} height={3} onClick={handleMoveHome}>
-            <Track1LogoIc width={111} height={30} />
-          </ImageWrapper>
-        )} */}
+          <Track1LogoIc width={111} height={30} />
+        )}
         {children}
 
         {/* <ImageWrapper width={3} height={3} onClick={showModal}> */}

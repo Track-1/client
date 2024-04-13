@@ -1,5 +1,5 @@
 import { OverlayProvider } from '@toss/use-overlay';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
@@ -7,24 +7,14 @@ import { ThemeProvider } from 'styled-components';
 import Router from './Router';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
-import { EventListParamsType } from 'track-1-shared/types';
 
 function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 0,
-        suspense: true,
-      },
-    },
-  });
-
-  const test: EventListParamsType = {
-    page: 1,
-    limit: 3,
-  };
-
-  console.log(test);
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { suspense: true } },
+      })
+  );
 
   const isMobile = /Mobi/i.test(window.navigator.userAgent);
 

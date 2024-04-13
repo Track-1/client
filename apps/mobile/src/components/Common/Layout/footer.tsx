@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Text from '../Text';
+
 // import { useConvention } from '../Modal/useConvention';
 
 export default function Footer() {

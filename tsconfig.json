@@ -5,7 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "incremental": false,
+    "incremental": true,
     "isolatedModules": true,
     "lib": ["es2022", "DOM", "DOM.Iterable"],
     "module": "esnext",
@@ -20,6 +20,5 @@
     "jsx": "react-jsx",
     "noImplicitAny": true
   },
-  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

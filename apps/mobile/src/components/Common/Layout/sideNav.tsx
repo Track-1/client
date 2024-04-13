@@ -1,16 +1,15 @@
-import styled, { keyframes } from 'styled-components';
-import { CloseIc, DefaultUserIc, RightArrowIc } from '../../../assets';
-import Text from '../Text';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { loginUserData } from '../../../recoil/common/loginUserData';
-import { Link, useLocation } from 'react-router-dom';
-import { Z_INDEX } from '../../../constant/zIndex';
-import { theme } from '../../../style/theme';
-import * as Dialog from '@radix-ui/react-dialog';
-// import { Background } from '../../Modal/bottomUpModal';
+import { checkIsProducer } from 'track-1-shared';
+import Text from '../Text';
 
-import { getLogout } from 'track-1-shared/src/api';
-import { checkIsProducer, removeCookie } from 'track-1-shared/src/utils';
+import { CoverFrame } from '../UI/Cover';
+import { Link, useLocation } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { theme } from 'src/style/theme';
+import * as Dialog from '@radix-ui/react-dialog';
+import { loginUserData } from 'src/recoil/common/loginUserData';
+import { Z_INDEX } from 'src/constant/style';
+// import { CloseIc, DefaultUserIc, RightArrowIc } from 'src/assets';
 
 interface UserInfoProps {
   unShowModal: () => void;
@@ -24,44 +23,40 @@ function UserInfo(props: UserInfoProps) {
   // const { handleMovePage } = useMovePage();
 
   async function handleLogout() {
-    const isLoggedOut = await getLogout();
-
-    if (isLoggedOut) {
-      unShowModal();
-      resetLoginUserData();
-      removeCookie('accessToken', {
-        path: '',
-        domain: 'http://localhost:3000' || 'https://www.track1.site' || 'https://www.m.track1.site',
-      });
-    }
+    // const isLoggedOut = await getLogout();
+    // if (isLoggedOut) {
+    //   unShowModal();
+    //   resetLoginUserData();
+    //   removeCookie('accessToken', {
+    //     path: '',
+    //     domain: 'http://localhost:3000' || 'https://www.track1.site' || 'https://www.m.track1.site',
+    //   });
+    // }
   }
 
   return (
     <UserInfoContainer>
-      {/* <ImageWrapper width={4} height={4}> */}
       {userId > 0 ? (
         <Link to={checkIsProducer(userType) ? `/producer-profile/${userId}` : `/vocal-profile/${userId}`}>
-          {/* <Cover imageUrl={userImageFile} width={4} height={4} shape="circle" /> */}
+          <CoverFrame imageSrc={userImageFile} imageAlt="유저 이미지" coverSize="md" coverShape="circle" />
         </Link>
       ) : (
-        <DefaultUserIc width={40} height={40} />
+        // <DefaultUserIc width={40} height={40} />
+        <></>
       )}
-      {/* </ImageWrapper> */}
 
       <UserInfoWrapper isLoggedIn={userId > 0}>
         {userId > 0 ? (
           <>
-            {/* <UserProfileWrapper
-              onClick={() => handleMovePage(checkIsProducer(userType) ? 'producer-profile' : 'vocal-profile', userId)}> */}
-            {/* 리팩토링 해야됨 */}
-            <UserProfileWrapper>
+            <UserProfileWrapper
+            // onClick={() => handleMovePage(checkIsProducer(userType) ? 'producer-profile' : 'vocal-profile', userId)}>
+            >
               <UserNameWrapper>
                 <Text as="p" color="white" font="Pre_18_M">
                   {userName}
                 </Text>
-                {/* <ImageWrapper width={0.7} height={1.1}> */}
-                <RightArrowIc width={7} height={11} />
-                {/* </ImageWrapper> */}
+
+                {/* <RightArrowIc width={7} height={11} /> */}
               </UserNameWrapper>
               <Text as="p" color={checkIsProducer(userType) ? 'neon_green' : 'neon_pink'} font="Pre_14_R">
                 {userType}
@@ -147,7 +142,7 @@ export default function SideNav(props: SideNavProps) {
             <Container openModal={openModal}>
               <NavTopItemWrapper>
                 {/* <ImageWrapper as="button" width={1.4} height={1.4}> */}
-                <CloseIc width={14} height={14} onClick={unShowModal} stroke={theme.colors.white} />
+                {/* <CloseIc width={14} height={14} onClick={unShowModal} stroke={theme.colors.white} /> */}
                 {/* </ImageWrapper> */}
               </NavTopItemWrapper>
 
@@ -156,67 +151,67 @@ export default function SideNav(props: SideNavProps) {
               <NavItemWrapper>
                 <Text as="li" font="Pre_40_R" color="white">
                   {/* <a
-                      onClick={() => {
-                        if (location.pathname.includes('signup')) {
-                          if (window.confirm('회원가입을 종료하시겠습니까?')) {
-                            handleMovePage('about');
-                            unShowModal();
-                          }
-                        } else {
+                    onClick={() => {
+                      if (location.pathname.includes('signup')) {
+                        if (window.confirm('회원가입을 종료하시겠습니까?')) {
                           handleMovePage('about');
                           unShowModal();
                         }
-                      }}>
-                      About
-                    </a> */}
+                      } else {
+                        handleMovePage('about');
+                        unShowModal();
+                      }
+                    }}>
+                    About
+                  </a> */}
                 </Text>
                 <Text as="li" font="Pre_40_R" color="white">
                   {/* <a
-                      onClick={() => {
-                        if (location.pathname.includes('signup')) {
-                          if (window.confirm('회원가입을 종료하시겠습니까?')) {
-                            handleMovePage('event');
-                            unShowModal();
-                          }
-                        } else {
+                    onClick={() => {
+                      if (location.pathname.includes('signup')) {
+                        if (window.confirm('회원가입을 종료하시겠습니까?')) {
                           handleMovePage('event');
                           unShowModal();
                         }
-                      }}>
-                      Events
-                    </a> */}
+                      } else {
+                        handleMovePage('event');
+                        unShowModal();
+                      }
+                    }}>
+                    Events
+                  </a> */}
                 </Text>
                 <Text as="li" font="Pre_40_R" color="white">
                   {/* <a
-                      onClick={() => {
-                        if (location.pathname.includes('signup')) {
-                          if (window.confirm('회원가입을 종료하시겠습니까?')) {
-                            handleMovePage('track-search');
-                            unShowModal();
-                          }
-                        } else {
+                    onClick={() => {
+                      if (location.pathname.includes('signup')) {
+                        if (window.confirm('회원가입을 종료하시겠습니까?')) {
                           handleMovePage('track-search');
                           unShowModal();
                         }
-                      }}>
-                      Tracks
-                    </a> */}
+                      } else {
+                        handleMovePage('track-search');
+                        unShowModal();
+                      }
+                    }}>
+                    Tracks
+                  </a> */}
                 </Text>
                 <Text as="li" font="Pre_40_R" color="white">
                   {/* <a
-                      onClick={() => {
-                        if (location.pathname.includes('signup')) {
-                          if (window.confirm('회원가입을 종료하시겠습니까?')) {
-                            handleMovePage('vocal-search');
-                            unShowModal();
-                          }
-                        } else {
+                    onClick={() => {
+                      if (location.pathname.includes('signup')) {
+                        if (window.confirm('회원가입을 종료하시겠습니까?')) {
                           handleMovePage('vocal-search');
                           unShowModal();
                         }
-                      }}>
-                      Vocals
-                    </a> */}
+                      } else {
+                        handleMovePage('vocal-search');
+                        unShowModal();
+                      }
+                    }}>
+                    Vocals
+                  </a> */}
                 </Text>
               </NavItemWrapper>
             </Container>
@@ -246,12 +241,12 @@ const slideOut = keyframes`
   }
 `;
 
+// z-index추가해야됨
 const Container = styled.nav<{ openModal: boolean }>`
   position: fixed;
   top: 0;
   right: ${({ openModal }) => (openModal ? '0' : '-100%')};
   animation: ${({ openModal }) => (openModal ? slideIn : slideOut)} 0.5s ease-in-out;
-  z-index: ${Z_INDEX.SIDE_NAV};
 
   width: 29.7rem;
   height: 100%;

@@ -6,3 +6,5 @@ export const Z_INDEX = {
   LOADING: 30,
   CATEGORY_DROPDOWN: 5,
 };
+
+export const PADDING_SIDE = '2.5rem';

@@ -1,4 +1,4 @@
-import { UserType } from '../common/userType';
+import { UserType } from './common/userType';
 
 export interface ParamsType {
   page: number;
@@ -23,7 +23,7 @@ export interface VocalProfileEditType extends ProfileEditType {
   userTrackSearch: boolean;
 }
 
-interface UserProfileType {
+export interface LoggedInUserProfileType {
   userId: number;
   userImageFile: string;
   userName: string;
@@ -60,7 +60,7 @@ export interface ProducerVocalSearchingType {
 export interface ProducerInfoType {
   userType: UserType;
   userSelf: boolean;
-  userProfile: UserProfileType;
+  userProfile: LoggedInUserProfileType;
 }
 
 export interface VocalInfoParamsType extends ParamsType {
@@ -70,7 +70,7 @@ export interface VocalInfoParamsType extends ParamsType {
 export interface VocalProfileType {
   userType: UserType;
   userSelf: boolean;
-  userProfile: UserProfileType;
+  userProfile: LoggedInUserProfileType;
   userPortfolio: UserPortfolioType[];
 }
 

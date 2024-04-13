@@ -1,4 +1,4 @@
-import { UserType } from '../../types';
+import { UserType } from '../../types/common/userType';
 
 export const PATH = {
   user: '/user',

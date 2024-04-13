@@ -1,4 +1,4 @@
-import { CategoryType } from '../common/category';
+import { CategoryType } from "./common/category";
 
 export interface FilteredTrackParamsType {
   page: number;

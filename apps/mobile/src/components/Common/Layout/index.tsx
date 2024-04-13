@@ -1,8 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { PADDING_SIDE } from 'src/constant/style';
 import styled from 'styled-components';
-
-export const PADDING_SIDE = '2.5rem';
 
 export default function Layout(props: PropsWithChildren) {
   const { children } = props;
@@ -21,7 +20,7 @@ export const StyledLayout = styled.main`
   flex-direction: column;
 
   width: 100%;
-  height: 100svh;
+  height: 100%;
 
   padding: ${`0 ${PADDING_SIDE}`};
 `;
