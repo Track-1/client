@@ -8,6 +8,7 @@ import Router from './Router';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
 import AudioProvider from './context/audioContext';
+import Player from './components/Common/UI/Player';
 
 function App() {
   const queryClient = new QueryClient({

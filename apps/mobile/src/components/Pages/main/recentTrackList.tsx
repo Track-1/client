@@ -8,16 +8,8 @@ import AlbumCard from 'src/components/Common/UI/AlbumCard';
 
 const TRACK_SECTION_TITLE = 'New Tracks\n For vocal';
 
-interface RecentTrackListProps {
-  // playingTrack: number | null;
-  // selectTrack: <T extends number>(trackId: T) => void;
-}
-
-export function RecentTrackList(props: RecentTrackListProps) {
-  // const { playingTrack, selectTrack } = props;
+export function RecentTrackList() {
   const { recentTrackInfo } = useGetRecentTracks(4);
-
-  // const { handleMovePage } = useMovePage();
 
   return (
     <SectionContainer>
@@ -36,7 +28,7 @@ export function RecentTrackList(props: RecentTrackListProps) {
               <AlbumCard
                 imageSrc={trackInfo.trackImageFile}
                 imageAlt={'앨범 자켓 이미지'}
-                coverSize="md"
+                coverSize="lg"
                 coverShape="squre"
                 audioSrc={trackInfo.trackAudioFile}
                 audioTitle={trackInfo.trackTitle}

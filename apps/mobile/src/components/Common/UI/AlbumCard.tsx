@@ -1,4 +1,4 @@
-import { MusicCover, MusicCoverProps } from './Cover';
+import { AudioCover, CoverFrame, MusicCover, MusicCoverProps } from './Cover';
 
 interface AlbumCardProps extends MusicCoverProps {}
 
@@ -8,7 +8,7 @@ export default function AlbumCard(props: AlbumCardProps) {
   return (
     <>
       <h1 style={{ color: 'white', fontSize: '20px', marginBottom: '5px' }}>{audioTitle}</h1>
-      <MusicCover
+      {/* <MusicCover
         imageSrc={imageSrc}
         imageAlt={imageAlt}
         coverSize={coverSize}
@@ -17,7 +17,11 @@ export default function AlbumCard(props: AlbumCardProps) {
         audioTitle={audioTitle}
         userName={userName}
         iconPosition={iconPosition}
-      />
+      /> */}
+
+      <AudioCover audioSrc={audioSrc} audioTitle={audioTitle} userName={userName} iconPosition={iconPosition}>
+        <CoverFrame imageSrc={imageSrc} imageAlt={imageAlt} coverSize={coverSize} coverShape={coverShape} />
+      </AudioCover>
     </>
   );
 }

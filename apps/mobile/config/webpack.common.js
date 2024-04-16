@@ -56,7 +56,6 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      // '@': path.resolve(__dirname, '../src/'),
       src: path.resolve(__dirname, '../src/'),
       'track-1-shared': path.resolve(__dirname, '../../shared/src/index.ts'),
     },

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import Text from 'src/components/Common/Text';
-import { MusicCover } from 'src/components/Common/UI/Cover';
+import { AudioCover, MusicCover } from 'src/components/Common/UI/Cover';
 import { PADDING_SIDE } from 'src/constant/style';
 import { loginUserData } from 'src/recoil/common/loginUserData';
 import styled from 'styled-components';
@@ -69,15 +69,22 @@ function ProducerPlaybar() {
             </Text>
           </a>
 
-          <MusicCover
+          {/* <MusicCover
             imageSrc=""
             imageAlt=""
-            coverSize="xs"
+            coverSize="sm"
             coverShape="circle"
             audioSrc={trackInfo.trackAudioFile}
             audioTitle={trackInfo.trackTitle}
             userName={trackInfo.trackUserName}
-            iconPosition="rightBottom"></MusicCover>
+            iconPosition="center"></MusicCover> */}
+
+          <AudioCover
+            iconType
+            audioSrc={trackInfo.trackAudioFile}
+            audioTitle={trackInfo.trackTitle}
+            userName={trackInfo.trackUserName}
+          />
           {/* <PlayIcon
             imageFile={trackInfo.trackImageFile}
             audioId={trackInfo.trackId}

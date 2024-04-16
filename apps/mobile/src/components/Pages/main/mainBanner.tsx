@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-// import BannerPlaybar from './bannerPlaybar';
 import { useRecoilValue } from 'recoil';
 // import { useMovePage } from '../../hooks/common/useMovePage';
 import { checkIsLogin, checkIsProducer, useGetRecentTracks, useGetRecentVocals } from 'track-1-shared';

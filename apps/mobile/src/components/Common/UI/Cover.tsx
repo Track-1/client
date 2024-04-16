@@ -1,9 +1,12 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { SyntheticEvent } from 'react';
 import Player from './Player';
 import { PauseIc, PlayIc } from 'src/assets';
 import { useAudioContext } from 'src/context/audioContext';
+import { usePlay } from 'src/hooks/usePlay';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { AudioPlayingData, AudioPlayingState } from 'src/recoil/common/audio';
 
 export type CoverShapeTypes = 'circle' | 'squre';
 export type CoverSizeTypes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -36,8 +39,12 @@ export interface MusicCoverProps extends CoverFrameProps {
 export function MusicCover(props: PropsWithChildren<MusicCoverProps>) {
   const { imageSrc, imageAlt, coverSize, coverShape, audioSrc, audioTitle, userName, iconPosition } = props;
 
+  // const { isPlaying, handlePlay } = usePlay(audioSrc);
+
   const [isPlaying, setIsPlaying] = useState(false);
-  const { audio, playingAudioSrc, changePlayingAudioSrc } = useAudioContext();
+  const { audio, playingAudioSrc, changePlayingAudioSrc, playingAudioData, setPlayingAudioData } = useAudioContext();
+
+  const [audioPlayingState, setAudioPlayingState] = useRecoilState(AudioPlayingState);
 
   useEffect(() => {
     if (audioSrc !== playingAudioSrc) {
@@ -71,20 +78,59 @@ export function MusicCover(props: PropsWithChildren<MusicCoverProps>) {
   return (
     <>
       <CoverFrame imageSrc={imageSrc} imageAlt={imageAlt} coverSize={coverSize} coverShape={coverShape}>
-        <div onClick={handlePlay}>
+        <div
+          onClick={() => {
+            handlePlay();
+          }}>
           {playingAudioSrc === audioSrc && isPlaying ? (
-            <PauseIcon coverSize={coverSize} iconPosition={iconPosition} />
+            <PauseIcon iconPosition={iconPosition} />
           ) : (
-            <PlayIcon coverSize={coverSize} iconPosition={iconPosition} />
+            <PlayIcon iconPosition={iconPosition} />
           )}
         </div>
       </CoverFrame>
-      {playingAudioSrc === audioSrc && (
+    </>
+  );
+}
+
+interface AudioCoverProps {
+  iconType?: boolean;
+  audioSrc: string;
+  audioTitle: string;
+  userName: string;
+  iconPosition?: IconPositionTypes;
+}
+
+export function AudioCover(props: PropsWithChildren<AudioCoverProps>) {
+  const { audioSrc, audioTitle, userName, iconType, iconPosition, children } = props;
+
+  const { isPlaying, handlePlay, showPlayer } = usePlay(audioSrc);
+  const [audioPlayingData, setAudioPlayingData] = useRecoilState(AudioPlayingData);
+
+  return (
+    <>
+      <AudioCoverContainer onClick={handlePlay}>
+        {iconType ? (
+          <>{isPlaying ? <PauseIcon /> : <PlayIcon />}</>
+        ) : (
+          <>
+            {children}
+            {isPlaying ? <PauseIcon iconPosition={iconPosition} /> : <PlayIcon iconPosition={iconPosition} />}
+          </>
+        )}
+        {}
+      </AudioCoverContainer>
+
+      {showPlayer && (
         <Player isPlaying={isPlaying} audioTitle={audioTitle} userName={userName} handlePlay={handlePlay} />
       )}
     </>
   );
 }
+
+const AudioCoverContainer = styled.div`
+  position: relative;
+`;
 
 const StyledCoverContainer = styled.div<{ coverSize: CoverSizeTypes; coverShape: CoverShapeTypes }>`
   position: relative;
@@ -100,14 +146,12 @@ const StyledCoverImage = styled.img`
   height: 100%;
 `;
 
-const PlayIcon = styled(PlayIc)<{ coverSize: CoverSizeTypes; iconPosition: IconPositionTypes }>`
-  ${({ coverSize }) => getStylePlayIconSize(coverSize)};
-  ${({ iconPosition }) => getStyleIconPosition(iconPosition)}
+const PlayIcon = styled(PlayIc)<{ iconPosition?: IconPositionTypes }>`
+  ${({ iconPosition }) => iconPosition && getStyleIconPosition(iconPosition)}
 `;
 
-const PauseIcon = styled(PauseIc)<{ coverSize: CoverSizeTypes; iconPosition: IconPositionTypes }>`
-  ${({ coverSize }) => getStylePlayIconSize(coverSize)};
-  ${({ iconPosition }) => getStyleIconPosition(iconPosition)}
+const PauseIcon = styled(PauseIc)<{ iconPosition?: IconPositionTypes }>`
+  ${({ iconPosition }) => iconPosition && getStyleIconPosition(iconPosition)}
 `;
 
 function getStyleCoverShape(shape: CoverShapeTypes) {
