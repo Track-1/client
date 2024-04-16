@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetRecentTracks } from 'track-1-shared';
 import Text from 'src/components/Common/Text';

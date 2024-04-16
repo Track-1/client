@@ -1,18 +1,7 @@
-import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
-
-interface PlayingAudioDataType {
-  audioSrc: string;
-  audioTitle: string;
-  userName: string;
-  isPlaying: boolean;
-}
+import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 
 interface AudioContextTypes {
   audio: HTMLAudioElement;
-  playingAudioSrc: string;
-  changePlayingAudioSrc: (audioSrc: string) => void;
-  playingAudioData: PlayingAudioDataType;
-  setPlayingAudioData: React.Dispatch<React.SetStateAction<PlayingAudioDataType>>;
 }
 
 export const AudioContext = createContext<AudioContextTypes | null>(null);
@@ -20,25 +9,7 @@ export const AudioContext = createContext<AudioContextTypes | null>(null);
 export default function AudioProvider({ children }: PropsWithChildren) {
   const audio = useMemo(() => new Audio(), []);
 
-  const [playingAudioSrc, setPlayingAudioSrc] = useState('');
-
-  const [playingAudioData, setPlayingAudioData] = useState<PlayingAudioDataType>({
-    audioSrc: '',
-    audioTitle: '',
-    userName: '',
-    isPlaying: false,
-  });
-
-  function changePlayingAudioSrc(audioSrc: string) {
-    setPlayingAudioSrc(audioSrc);
-  }
-
-  return (
-    <AudioContext.Provider
-      value={{ audio, playingAudioSrc, changePlayingAudioSrc, playingAudioData, setPlayingAudioData }}>
-      {children}
-    </AudioContext.Provider>
-  );
+  return <AudioContext.Provider value={{ audio }}>{children}</AudioContext.Provider>;
 }
 
 export function useAudioContext() {

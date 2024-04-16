@@ -3,8 +3,6 @@ import styled, { css } from 'styled-components';
 import Player from './Player';
 import { PauseIc, PlayIc } from 'src/assets';
 import { usePlay } from 'src/hooks/usePlay';
-import { useRecoilState } from 'recoil';
-import { AudioTestData } from 'src/recoil/common/audio';
 
 export type ImageCoverShapeTypes = 'circle' | 'squre';
 export type ImageCoverSizeTypes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -43,9 +41,9 @@ export function AudioIconCover(props: AudioIconCoverProps) {
         <>{isPlaying ? <PauseIcon /> : <PlayIcon />}</>
       </AudioCoverContainer>
 
-      {/* {showPlayer && (
+      {showPlayer && (
         <Player isPlaying={isPlaying} audioTitle={audioTitle} userName={userName} handlePlay={handlePlay} />
-      )} */}
+      )}
     </>
   );
 }
@@ -61,21 +59,6 @@ export function AudioCover(props: PropsWithChildren<AudioCoverProps>) {
   const { audioSrc, audioTitle, userName, iconPosition, children } = props;
   const { isPlaying, handlePlay, showPlayer } = usePlay(audioSrc);
 
-  const [audioTestData, setAudioTestData] = useRecoilState(AudioTestData);
-
-  function handleSetAudioTestData() {
-    if (!audioTestData.showPlayer) {
-      setAudioTestData({
-        ...audioTestData,
-        showPlayer,
-      });
-    }
-
-    setAudioTestData({
-      ...audioTestData,
-    });
-  }
-
   return (
     <>
       <AudioCoverContainer onClick={handlePlay}>
@@ -83,9 +66,9 @@ export function AudioCover(props: PropsWithChildren<AudioCoverProps>) {
         {isPlaying ? <PauseIcon iconPosition={iconPosition} /> : <PlayIcon iconPosition={iconPosition} />}
       </AudioCoverContainer>
 
-      {/* {showPlayer && (
+      {showPlayer && (
         <Player isPlaying={isPlaying} audioTitle={audioTitle} userName={userName} handlePlay={handlePlay} />
-      )} */}
+      )}
     </>
   );
 }

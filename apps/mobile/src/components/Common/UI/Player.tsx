@@ -17,9 +17,6 @@ export default function Player(props: PlayerProps) {
   const { isPlaying, audioTitle, userName, handlePlay } = props;
   const { audio } = useAudioContext();
 
-  // const { handlePlay } = usePlay(playingAudioData.audioSrc);
-  // const [audioPlayingState, setAudioPlayingState] = useRecoilState(AudioPlayingState);
-
   const playerElement = document.getElementById('player');
 
   if (!playerElement) return null;
