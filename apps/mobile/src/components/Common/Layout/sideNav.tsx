@@ -2,7 +2,7 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { checkIsProducer } from 'track-1-shared';
 import Text from '../Text';
 
-import { CoverFrame } from '../UI/Cover';
+import { ImageCover } from '../UI/Cover';
 import { Link, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { theme } from 'src/style/theme';
@@ -38,7 +38,7 @@ function UserInfo(props: UserInfoProps) {
     <UserInfoContainer>
       {userId > 0 ? (
         <Link to={checkIsProducer(userType) ? `/producer-profile/${userId}` : `/vocal-profile/${userId}`}>
-          <CoverFrame imageSrc={userImageFile} imageAlt="유저 이미지" coverSize="md" coverShape="circle" />
+          <ImageCover imageSrc={userImageFile} imageAlt="유저 이미지" coverSize="md" coverShape="circle" />
         </Link>
       ) : (
         // <DefaultUserIc width={40} height={40} />

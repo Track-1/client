@@ -1,129 +1,91 @@
-import { PropsWithChildren, useEffect, useMemo, useRef, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
-import { SyntheticEvent } from 'react';
 import Player from './Player';
 import { PauseIc, PlayIc } from 'src/assets';
-import { useAudioContext } from 'src/context/audioContext';
 import { usePlay } from 'src/hooks/usePlay';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { AudioPlayingData, AudioPlayingState } from 'src/recoil/common/audio';
+import { useRecoilState } from 'recoil';
+import { AudioTestData } from 'src/recoil/common/audio';
 
-export type CoverShapeTypes = 'circle' | 'squre';
-export type CoverSizeTypes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+export type ImageCoverShapeTypes = 'circle' | 'squre';
+export type ImageCoverSizeTypes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 export type IconPositionTypes = 'center' | 'middleLeft' | 'middleRight' | 'centerTop' | 'centerBottom' | 'rightBottom';
 
-export interface CoverFrameProps {
+export interface ImageCoverProps {
   imageSrc: string;
   imageAlt: string;
-  coverSize: CoverSizeTypes;
-  coverShape: CoverShapeTypes;
+  coverSize: ImageCoverSizeTypes;
+  coverShape: ImageCoverShapeTypes;
 }
 
-export function CoverFrame(props: PropsWithChildren<CoverFrameProps>) {
+export function ImageCover(props: PropsWithChildren<ImageCoverProps>) {
   const { imageSrc, imageAlt, coverSize, coverShape, children } = props;
   return (
     <StyledCoverContainer coverSize={coverSize} coverShape={coverShape}>
       {children}
-      <StyledCoverImage src={imageSrc} alt={imageAlt} onError={handleErrorImage} />
+      <StyledCoverImage src={imageSrc} alt={imageAlt} />
     </StyledCoverContainer>
   );
 }
 
-export interface MusicCoverProps extends CoverFrameProps {
+interface AudioIconCoverProps {
+  audioSrc: string;
+  audioTitle: string;
+  userName: string;
+}
+
+export function AudioIconCover(props: AudioIconCoverProps) {
+  const { audioSrc, audioTitle, userName } = props;
+  const { isPlaying, handlePlay, showPlayer } = usePlay(audioSrc);
+
+  return (
+    <>
+      <AudioCoverContainer onClick={handlePlay}>
+        <>{isPlaying ? <PauseIcon /> : <PlayIcon />}</>
+      </AudioCoverContainer>
+
+      {/* {showPlayer && (
+        <Player isPlaying={isPlaying} audioTitle={audioTitle} userName={userName} handlePlay={handlePlay} />
+      )} */}
+    </>
+  );
+}
+
+export interface AudioCoverProps extends AudioIconCoverProps {
   audioSrc: string;
   audioTitle: string;
   userName: string;
   iconPosition: IconPositionTypes;
 }
 
-export function MusicCover(props: PropsWithChildren<MusicCoverProps>) {
-  const { imageSrc, imageAlt, coverSize, coverShape, audioSrc, audioTitle, userName, iconPosition } = props;
-
-  // const { isPlaying, handlePlay } = usePlay(audioSrc);
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const { audio, playingAudioSrc, changePlayingAudioSrc, playingAudioData, setPlayingAudioData } = useAudioContext();
-
-  const [audioPlayingState, setAudioPlayingState] = useRecoilState(AudioPlayingState);
-
-  useEffect(() => {
-    if (audioSrc !== playingAudioSrc) {
-      setIsPlaying(false);
-    }
-  }, [playingAudioSrc]);
-
-  function playAudio() {
-    audio.play();
-    setIsPlaying(true);
-  }
-
-  function pauseAudio() {
-    audio.pause();
-    setIsPlaying(false);
-  }
-
-  function handlePlay() {
-    if (playingAudioSrc !== audioSrc) {
-      changePlayingAudioSrc(audioSrc);
-      audio.src = audioSrc;
-    }
-
-    if (isPlaying) {
-      pauseAudio();
-    } else {
-      playAudio();
-    }
-  }
-
-  return (
-    <>
-      <CoverFrame imageSrc={imageSrc} imageAlt={imageAlt} coverSize={coverSize} coverShape={coverShape}>
-        <div
-          onClick={() => {
-            handlePlay();
-          }}>
-          {playingAudioSrc === audioSrc && isPlaying ? (
-            <PauseIcon iconPosition={iconPosition} />
-          ) : (
-            <PlayIcon iconPosition={iconPosition} />
-          )}
-        </div>
-      </CoverFrame>
-    </>
-  );
-}
-
-interface AudioCoverProps {
-  iconType?: boolean;
-  audioSrc: string;
-  audioTitle: string;
-  userName: string;
-  iconPosition?: IconPositionTypes;
-}
-
 export function AudioCover(props: PropsWithChildren<AudioCoverProps>) {
-  const { audioSrc, audioTitle, userName, iconType, iconPosition, children } = props;
-
+  const { audioSrc, audioTitle, userName, iconPosition, children } = props;
   const { isPlaying, handlePlay, showPlayer } = usePlay(audioSrc);
-  const [audioPlayingData, setAudioPlayingData] = useRecoilState(AudioPlayingData);
+
+  const [audioTestData, setAudioTestData] = useRecoilState(AudioTestData);
+
+  function handleSetAudioTestData() {
+    if (!audioTestData.showPlayer) {
+      setAudioTestData({
+        ...audioTestData,
+        showPlayer,
+      });
+    }
+
+    setAudioTestData({
+      ...audioTestData,
+    });
+  }
 
   return (
     <>
       <AudioCoverContainer onClick={handlePlay}>
-        {iconType ? (
-          <>{isPlaying ? <PauseIcon /> : <PlayIcon />}</>
-        ) : (
-          <>
-            {children}
-            {isPlaying ? <PauseIcon iconPosition={iconPosition} /> : <PlayIcon iconPosition={iconPosition} />}
-          </>
-        )}
-        {}
+        {children}
+        {isPlaying ? <PauseIcon iconPosition={iconPosition} /> : <PlayIcon iconPosition={iconPosition} />}
       </AudioCoverContainer>
 
-      {showPlayer && (
+      {/* {showPlayer && (
         <Player isPlaying={isPlaying} audioTitle={audioTitle} userName={userName} handlePlay={handlePlay} />
-      )}
+      )} */}
     </>
   );
 }
@@ -132,7 +94,7 @@ const AudioCoverContainer = styled.div`
   position: relative;
 `;
 
-const StyledCoverContainer = styled.div<{ coverSize: CoverSizeTypes; coverShape: CoverShapeTypes }>`
+const StyledCoverContainer = styled.div<{ coverSize: ImageCoverSizeTypes; coverShape: ImageCoverShapeTypes }>`
   position: relative;
 
   ${({ coverSize }) => getStyleCoverSize(coverSize)}
@@ -154,7 +116,7 @@ const PauseIcon = styled(PauseIc)<{ iconPosition?: IconPositionTypes }>`
   ${({ iconPosition }) => iconPosition && getStyleIconPosition(iconPosition)}
 `;
 
-function getStyleCoverShape(shape: CoverShapeTypes) {
+function getStyleCoverShape(shape: ImageCoverShapeTypes) {
   let radius;
   let ratio;
 
@@ -176,7 +138,7 @@ function getStyleCoverShape(shape: CoverShapeTypes) {
   `;
 }
 
-function getStyleCoverSize(size: CoverSizeTypes) {
+function getStyleCoverSize(size: ImageCoverSizeTypes) {
   let width;
   switch (size) {
     case 'xs':
@@ -231,7 +193,7 @@ function getStyleIconPosition(position: IconPositionTypes) {
   `;
 }
 
-function getStylePlayIconSize(size: CoverSizeTypes) {
+function getStylePlayIconSize(size: ImageCoverSizeTypes) {
   let width;
 
   switch (size) {
@@ -261,8 +223,4 @@ function getStylePlayIconSize(size: CoverSizeTypes) {
   return css`
     width: ${width};
   `;
-}
-
-export function handleErrorImage(e: SyntheticEvent<HTMLImageElement, Event>) {
-  // e.currentTarget.src = FileCorruptedIc;
 }

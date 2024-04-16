@@ -5,6 +5,7 @@ import AlbumCard from 'src/components/Common/UI/AlbumCard';
 import { useRecoilValue } from 'recoil';
 import { loginUserData } from 'src/recoil/common/loginUserData';
 import { RecentTrackList } from './recentTrackList';
+import RecentVocalList from './recentVocalList';
 
 export default function MainPageContainer() {
   const { userType } = useRecoilValue(loginUserData);
@@ -17,15 +18,18 @@ export default function MainPageContainer() {
           {/* <RecentVocalList playingTrack={playingTrack} selectTrack={selectTrack<FilteredVocalType['userId']>} /> */}
 
           {/* <SectionDivider /> */}
-          {/* <RecentTrackList playingTrack={playingTrack} selectTrack={selectTrack<FilteredTrackType['trackId']>} /> */}
+          <RecentVocalList />
           <RecentTrackList />
+
           {/* <SectionDivider /> */}
         </>
       ) : (
         <>
           {/* <RecentTrackList playingTrack={playingTrack} selectTrack={selectTrack<FilteredTrackType['trackId']>} /> */}
           <RecentTrackList />
+          <RecentVocalList />
           {/* <SectionDivider />
+
           <RecentVocalList playingTrack={playingTrack} selectTrack={selectTrack<FilteredVocalType['userId']>} />
           <SectionDivider /> */}
         </>

@@ -4,10 +4,6 @@ import { CloseIc, PauseIc, PlayIc } from 'src/assets';
 import useControlPlayer from 'src/hooks/useControlPlayer';
 import { useAudioContext } from 'src/context/audioContext';
 import { Z_INDEX } from 'src/constant/style';
-import { usePlay } from 'src/hooks/usePlay';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { AudioPlayingData, AudioPlayingState } from 'src/recoil/common/audio';
-import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 interface PlayerProps {
@@ -37,11 +33,9 @@ export default function Player(props: PlayerProps) {
           <TrackInfoWrapper>
             <Text as="span" font="Pre_16_M" color="white">
               {audioTitle}
-              {/* {audioPlayingData.audioTitle} */}
             </Text>
             <Text as="span" font="Pre_16_M" color="white">
               {userName}
-              {/* {audioPlayingData.userName} */}
             </Text>
           </TrackInfoWrapper>
 

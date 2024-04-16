@@ -54,7 +54,7 @@ export function RecentTrackList() {
   );
 }
 
-const SectionHeader = styled.div`
+export const SectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: end;
@@ -64,7 +64,7 @@ const SectionHeader = styled.div`
   margin-bottom: 3rem;
 `;
 
-const SectionContainer = styled.section`
+export const SectionContainer = styled.section`
   margin-bottom: 10rem;
 `;
 

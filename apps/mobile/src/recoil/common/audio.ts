@@ -14,7 +14,21 @@ interface AudioPlayingDataType {
   audioTitle: string;
   userName: string;
   isPlaying: boolean;
+  showPlayer: boolean;
+  handlePlay: () => void;
 }
+
+export const AudioTestData = atom<AudioPlayingDataType>({
+  key: 'AudioTestData',
+  default: {
+    audioSrc: '',
+    audioTitle: '',
+    userName: '',
+    isPlaying: false,
+    showPlayer: false,
+    handlePlay: () => {},
+  },
+});
 
 export const AudioPlayingData = atom<string>({
   key: 'AudioPlayingData',
