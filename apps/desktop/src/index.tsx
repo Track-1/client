@@ -6,10 +6,6 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 // root.render(<App />);
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
-    return;
-  }
-
   const { worker } = await import('../src/api/mocks/browser');
 
   // `worker.start()` returns a Promise that resolves
