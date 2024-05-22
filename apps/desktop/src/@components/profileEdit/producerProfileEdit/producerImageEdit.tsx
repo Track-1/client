@@ -1,7 +1,7 @@
-import styled, { css } from "styled-components";
-import { UploadFileChangeIc } from "../../../assets";
-import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg.png";
-import useFileHover from "../../../hooks/common/useFileHover";
+import styled, { css } from 'styled-components';
+import UploadProducerDefaultImg from '../../../assets/image/uploadProducerDefaultImg.png';
+import useFileHover from '../../../hooks/common/useFileHover';
+import { UploadFileChangeIc } from '../../../assets';
 
 interface ProducerImageEditProps {
   previewImage: string | null;
@@ -17,7 +17,7 @@ export default function ProducerImageEdit(props: ProducerImageEditProps) {
       <ProfileImageContainer>
         <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
           <ProfileImage
-            src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
+            src={previewImage === '' ? UploadProducerDefaultImg : previewImage}
             alt="썸네일 이미지"
             fileHoverState={fileHoverState}
             previewImage={previewImage}

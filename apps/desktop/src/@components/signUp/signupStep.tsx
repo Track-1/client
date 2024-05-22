@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import background from "../../assets/icon/signupBackgroundIc.svg";
-import { SIGNUP_STEP } from "../../core/signUp/stepRenderer";
-import useConventionModal from "../../hooks/common/useConventionModal";
-import { role } from "../../recoil/common/role";
-import ConventionModal from "../@common/conventionModal";
-import Footer from "../@common/footer";
-import SignUpBackButton from "./signUpBackButton";
-import StepFooter from "./stepFooter";
-import StepHeader from "./stepHeader";
-import StepMain from "./stepMain";
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import background from '../../assets/icon/signupBackgroundIc.svg';
+import { SIGNUP_STEP } from '../../core/signUp/stepRenderer';
+import useConventionModal from '../../hooks/common/useConventionModal';
+import { role } from '../../recoil/common/role';
+import ConventionModal from '../@common/modal/conventionModal';
+import Footer from '../@common/layout/footer';
+import SignUpBackButton from './signUpBackButton';
+import StepFooter from './stepFooter';
+import StepHeader from './stepHeader';
+import StepMain from './stepMain';
 
 export default function SignupStep() {
   const [step, setStep] = useState(SIGNUP_STEP.ROLE);
@@ -18,22 +18,22 @@ export default function SignupStep() {
   const [userType, setUserType] = useRecoilState(role);
 
   useEffect(() => {
-    setUserType("");
+    setUserType('');
   }, []);
 
   const preventGoBack = () => {
-    window.history.pushState(null, "", window.location.href);
+    window.history.pushState(null, '', window.location.href);
   };
 
   // 브라우저에 렌더링 시 한 번만 실행하는 코드
   useEffect(() => {
     (() => {
-      window.history.pushState(null, "", window.location.href);
-      window.addEventListener("popstate", preventGoBack);
+      window.history.pushState(null, '', window.location.href);
+      window.addEventListener('popstate', preventGoBack);
     })();
 
     return () => {
-      window.removeEventListener("popstate", preventGoBack);
+      window.removeEventListener('popstate', preventGoBack);
     };
   }, []);
 

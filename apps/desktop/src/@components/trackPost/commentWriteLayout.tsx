@@ -1,6 +1,6 @@
-import { PropsWithChildren } from "react";
-import styled from "styled-components";
-import CommentWriteProfileContainer from "./commentWriteProfileContainer";
+import styled from 'styled-components';
+import CommentWriteProfileContainer from './commentWriteProfileContainer';
+import { PropsWithChildren } from 'react';
 
 export default function CommentWriteLayout(props: PropsWithChildren) {
   const { children } = props;

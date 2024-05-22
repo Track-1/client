@@ -1,90 +1,21 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { CommentBtnIc, TrackPostPauseBtnIc, TrackPostPlayBtnIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import usePaly from "../../hooks/common/usePlay";
-import { useTrackDetail } from "../../hooks/queries/tracks";
-import BackButton from "../@common/backButton";
-import Header from "../@common/header";
-import HomeLogo from "../@common/homeLogo";
-import Player from "../@common/player";
-import TrackSearchHeader from "../trackSearch/trackSearchHeader/trackSearchHeader";
-import AudioInfo from "./audioInfo";
-import AudioTitle from "./audioTitle";
-import Comments from "./comments";
-import Download from "./download";
-import ProducerProfile from "./producerProfile";
-import ShowMore from "./showMore";
-
-export const CommentsPlayerContext = createContext<any>({
-  playAudio: () => {},
-  stopAudio: () => {},
-  quitAudio: () => {},
-  setAudioFile: (url: string) => {},
-  openAudioPlayer: () => {},
-  closeAudioPlayer: () => {},
-  playContextState: (playInnerState?: () => void) => {},
-  stopContextState: (stopInnerState?: () => void) => {},
-  showPlayer: false,
-  contextPlaying: false,
-  audio: new Audio(),
-  playerInfo: {},
-  getPlayerInfo: (info: any) => {},
-  quitAudioForMovePage: () => {},
-});
-
-export function CommentsPlayerProvider({ children }: PropsWithChildren) {
-  const {
-    playAudio,
-    stopAudio,
-    quitAudio,
-    setAudioFile,
-    openAudioPlayer,
-    closeAudioPlayer,
-    playContextState,
-    stopContextState,
-    showPlayer,
-    contextPlaying,
-    audio,
-  } = usePaly();
-  const [playerInfo, setPlayerInfo] = useState();
-
-  function getPlayerInfo(info: any) {
-    setPlayerInfo(info);
-  }
-
-  function quitAudioForMovePage() {
-    quitAudio();
-    closeAudioPlayer();
-  }
-
-  return (
-    <CommentsPlayerContext.Provider
-      value={{
-        playAudio,
-        stopAudio,
-        quitAudio,
-        setAudioFile,
-        openAudioPlayer,
-        closeAudioPlayer,
-        playContextState,
-        stopContextState,
-        showPlayer,
-        contextPlaying,
-        audio,
-        playerInfo,
-        getPlayerInfo,
-        quitAudioForMovePage,
-      }}>
-      {children}
-    </CommentsPlayerContext.Provider>
-  );
-}
+import styled from 'styled-components';
+import BackButton from '../@common/button/backButton';
+import Header from '../@common/layout/header';
+import HomeLogo from '../@common/homeLogo';
+import Player from '../@common/player';
+import TrackSearchHeader from '../trackSearch/trackSearchHeader/trackSearchHeader';
+import AudioInfo from './audioInfo';
+import AudioTitle from './audioTitle';
+import Comments from './comments';
+import Download from './download';
+import ProducerProfile from './producerProfile';
+import ShowMore from './showMore';
+import { useEffect, useState } from 'react';
+import { CommentBtnIc, TrackPostPauseBtnIc, TrackPostPlayBtnIc } from '../../assets';
+import { useTrackDetail } from '../../hooks/queries/tracks';
+import { PlayUseContext } from '../../context/playerContext';
 
 export default function TrackPost() {
-  const [isOpenComment, setIsOpenComment] = useState(false);
-  const { id } = useParams();
   const {
     playAudio,
     stopAudio,
@@ -95,10 +26,10 @@ export default function TrackPost() {
     contextPlaying,
     getPlayerInfo,
     quitAudioForMovePage,
-  } = useContext(PlayerContext);
-  const { contextPlaying: commentContextPlaying } = useContext(CommentsPlayerContext);
-
-  const { trackDetail } = useTrackDetail(Number(id));
+  } = PlayUseContext({});
+  const { contextPlaying: commentContextPlaying } = PlayUseContext({ scope: 'comments' });
+  const { trackDetail } = useTrackDetail();
+  const [isOpenComment, setIsOpenComment] = useState(false);
 
   function handleOpenComment() {
     quitAudioForMovePage();
@@ -111,7 +42,9 @@ export default function TrackPost() {
   }
 
   function play() {
-    setAudioFile(trackDetail?.trackAudioFile);
+    if (!trackDetail) return;
+
+    setAudioFile(trackDetail.trackAudioFile, trackDetail.trackId, trackDetail.trackId);
     openAudioPlayer();
     playContextState();
     playAudio();
@@ -123,18 +56,18 @@ export default function TrackPost() {
   }
 
   useEffect(() => {
+    if (!commentContextPlaying) return;
+
+    quitAudioForMovePage();
+  }, [commentContextPlaying]);
+
+  useEffect(() => {
     getPlayerInfo({
       imageFile: trackDetail?.trackImageFile,
       title: trackDetail?.trackTitle,
       userName: trackDetail?.trackUserName,
     });
-  }, [trackDetail]);
-
-  useEffect(() => {
-    if (!commentContextPlaying) return;
-
-    quitAudioForMovePage();
-  }, [commentContextPlaying]);
+  }, []);
 
   return (
     <>
@@ -142,7 +75,6 @@ export default function TrackPost() {
         <HomeLogo />
         <TrackSearchHeader pageType="tracks" />
       </Header>
-
       <TrackPostWrapper>
         <AudioBasicInfoWrapper>
           <BackButton />
@@ -162,7 +94,7 @@ export default function TrackPost() {
       {isOpenComment && (
         <>
           <Comments handleClosecomment={handleClosecomment} trackContextPlaying={contextPlaying} />
-          <Player comment />
+          <Player scope="comments" />
         </>
       )}
     </>

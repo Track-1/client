@@ -30,12 +30,12 @@ export default function Router() {
         <Route path="/track-post/:id" element={<TrackPostPage />} />
         <Route path="/login" element={<LoginPage />} />
 
-        <Route element={<PrivateRoute authentication />}>
-          <Route path="/signup/profile" element={<SignupProfilePage />} />
-          <Route path="/signup/success" element={<SignupSuccessPage />} />
-          <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
-          <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
-        </Route>
+        {/* <Route element={<PrivateRoute authentication />}> */}
+        <Route path="/signup/profile" element={<SignupProfilePage />} />
+        <Route path="/signup/success" element={<SignupSuccessPage />} />
+        <Route path="/vocal-profile/:vocalId" element={<VocalProfilePage />} />
+        <Route path="/producer-profile/:producerId" element={<ProducerProfilePage />} />
+        {/* </Route> */}
       </Routes>
     </BrowserRouter>
   );

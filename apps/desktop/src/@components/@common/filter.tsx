@@ -1,13 +1,92 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { TrackSearchingFalseIc, TrackSearchingTrueIc } from '../../assets';
-import { CategoryId, EventCategoryId } from '../../core/common/categories';
-import { EventUpperCategoryType, UpperCategoryType } from '../../type/common/category';
+import { EventCategoryId } from '../../core/common/categories';
+import { EventUpperCategoryType } from '../../type/common/category';
 import { PageType } from '../../type/common/pageType';
 import { getInvariantObjectKeys, invariantOf } from '../../utils/common/invarientType';
-import { updateQueryParams } from '../../utils/common/queryString';
 import { CheckBox } from './checkBox';
+import QueryString from 'qs';
+import { useRouter } from '../../hooks/common/useRouter';
+import { STATIC_ROUTES } from '../../core/common/routes';
+
+interface FilterProps {
+  pageType: PageType;
+}
+
+export default function Filter(props: FilterProps) {
+  const { pageType } = props;
+  const { categ } = QueryString.parse(useLocation().search, {
+    ignoreQueryPrefix: true,
+  });
+  const initialCateg = typeof categ === 'string' ? new Set([categ]) : new Set(categ as string[]);
+  const [selectedCategory, setSelectedCategory] = useState<Set<string>>(initialCateg);
+  const [trackSearch, setTrackSearch] = useState(false);
+  const router = useRouter();
+
+  function selectCategory(category: EventUpperCategoryType) {
+    const tempSelectedCategory = new Set(selectedCategory);
+    const categoryId = EventCategoryId[category];
+
+    tempSelectedCategory.has(categoryId)
+      ? tempSelectedCategory.delete(categoryId)
+      : tempSelectedCategory.add(categoryId);
+
+    setSelectedCategory(tempSelectedCategory);
+  }
+
+  function toggleTrackSearching() {
+    trackSearch ? setTrackSearch(false) : setTrackSearch(true);
+  }
+
+  useEffect(() => {
+    if (pageType === 'tracks') {
+      router.push(STATIC_ROUTES.TRACK_SEARCH, { search: { categ: Array.from(selectedCategory) } });
+    } else {
+      router.push(STATIC_ROUTES.VOCAL_SEARCH, { search: { categ: Array.from(selectedCategory) } });
+    }
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (pageType === 'tracks') return;
+
+    router.push(STATIC_ROUTES.VOCAL_SEARCH, { search: { trackSearch: trackSearch } });
+  }, [trackSearch]);
+
+  return (
+    <FilterWrapper>
+      {getInvariantObjectKeys(invariantOf(EventCategoryId)).map((category) => {
+        return (
+          <CheckBox
+            id={category}
+            externalFn={() => selectCategory(category)}
+            key={category}
+            defaultChecked={selectedCategory.has(EventCategoryId[category])}>
+            <CheckBox.Indicator asChild>
+              <CategoryItem pageType={pageType}>
+                <CheckBox.Label>{category}</CheckBox.Label>
+                <CategoryCancelButton>X</CategoryCancelButton>
+              </CategoryItem>
+            </CheckBox.Indicator>
+          </CheckBox>
+        );
+      })}
+      {pageType === 'vocals' && (
+        <CheckBox externalFn={toggleTrackSearching}>
+          <CheckBox.Indicator asChild>
+            <TrackSearchingItem>
+              {trackSearch ? <TrackSearchingTrueIc /> : <TrackSearchingFalseIc />}
+              <CheckBox.Label asChild>
+                <TrackSearchingLabel>Track Searching</TrackSearchingLabel>
+              </CheckBox.Label>
+            </TrackSearchingItem>
+          </CheckBox.Indicator>
+        </CheckBox>
+      )}
+    </FilterWrapper>
+  );
+}
 
 const FilterWrapper = styled.section`
   position: fixed;
@@ -119,72 +198,3 @@ const TrackSearchingLabel = styled.p<{ isChecked?: boolean }>`
       color: ${({ theme }) => theme.colors.sub2};
     `}
 `;
-
-interface FilterProps {
-  pageType: PageType;
-}
-
-export default function Filter(props: FilterProps) {
-  const { pageType } = props;
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [selectedCategory, setSelectedCategory] = useState<Set<string>>(new Set());
-  const [trackSearch, setTrackSearch] = useState(false);
-
-  function selectCategory(category: EventUpperCategoryType) {
-    const tempSelectedCategory = new Set(selectedCategory);
-    const categoryId = EventCategoryId[category];
-
-    tempSelectedCategory.has(categoryId)
-      ? tempSelectedCategory.delete(categoryId)
-      : tempSelectedCategory.add(categoryId);
-
-    setSelectedCategory(tempSelectedCategory);
-  }
-
-  function toggleTrackSearching() {
-    trackSearch ? setTrackSearch(false) : setTrackSearch(true);
-  }
-
-  useEffect(() => {
-    const categString = updateQueryParams('categ', Array.from(selectedCategory));
-
-    navigate(categString);
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    trackSearch && searchParams.set('trackSearch', String(trackSearch));
-    setSearchParams(searchParams);
-    navigate('?' + searchParams.toString());
-  }, [trackSearch]);
-
-  return (
-    <FilterWrapper>
-      {getInvariantObjectKeys(invariantOf(EventCategoryId)).map((category) => {
-        return (
-          <CheckBox id={category} externalFn={() => selectCategory(category)} key={category}>
-            <CheckBox.Indicator asChild>
-              <CategoryItem pageType={pageType}>
-                <CheckBox.Label>{category}</CheckBox.Label>
-                <CategoryCancelButton>X</CategoryCancelButton>
-              </CategoryItem>
-            </CheckBox.Indicator>
-          </CheckBox>
-        );
-      })}
-      {pageType === 'vocals' && (
-        <CheckBox externalFn={toggleTrackSearching}>
-          <CheckBox.Indicator asChild>
-            <TrackSearchingItem>
-              {trackSearch ? <TrackSearchingTrueIc /> : <TrackSearchingFalseIc />}
-              <CheckBox.Label asChild>
-                <TrackSearchingLabel>Track Searching</TrackSearchingLabel>
-              </CheckBox.Label>
-            </TrackSearchingItem>
-          </CheckBox.Indicator>
-        </CheckBox>
-      )}
-    </FilterWrapper>
-  );
-}

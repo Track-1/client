@@ -1,16 +1,17 @@
-import { useFormContext } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import useFileHover from '../../hooks/common/useFileHover';
 import useUploadImageFile from '../../hooks/common/useUploadImageFile';
-import { UserType } from '../../type/common/userType';
 import UploadVocalDefaultImg from '../../assets/image/uploadVocalDefaultImg.png';
-import { UploadFileChangeIc } from '../../assets';
 import UploadProducerDefaultImg from '../../assets/image/uploadProducerDefaultImg.png';
+import { useFormContext } from 'react-hook-form';
+import { UserType } from '../../type/common/userType';
+import { UploadFileChangeIc } from '../../assets';
 import { useEffect } from 'react';
 
 interface ImageInfoProps {
   userType: UserType;
 }
+
 export function ImageInfo(props: ImageInfoProps) {
   const { userType } = props;
   const { register, getValues } = useFormContext();
@@ -75,8 +76,6 @@ export function ImageInfo(props: ImageInfoProps) {
   );
 }
 
-//vocal
-
 const UploadImageContainer = styled.div`
   z-index: 1;
 
@@ -137,8 +136,6 @@ const VocalUploadImageLayout = styled.img<{ fileHoverState: boolean; previewImag
         `}
 `;
 
-//producer
-
 const ProducerUploadImageContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -171,8 +168,6 @@ const ProducerUploadImageLayout = styled.img<{ fileHoverState: boolean; previewI
           filter: default;
         `}
 `;
-
-//common
 
 const UploadImage = styled.div`
   width: 71.9rem;

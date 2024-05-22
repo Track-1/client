@@ -1,7 +1,7 @@
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { commentUpdateData, commentWriteData } from "../../recoil/trackPost/commentWriteData";
-import { CommentIsUpdateProp } from "../../type/trackPost/commentIsUpdateProp";
+import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { commentUpdateData, commentWriteData } from '../../recoil/trackPost/commentWriteData';
+import { CommentIsUpdateProp } from '../../type/trackPost/commentIsUpdateProp';
 
 export default function CommentTextInput(props: CommentIsUpdateProp) {
   const { isUpdate } = props;

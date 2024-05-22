@@ -1,8 +1,9 @@
-import { PropsWithChildren } from "react";
-import styled from "styled-components";
+import styled from 'styled-components';
+import { PropsWithChildren } from 'react';
 
 export default function CommentLayout(props: PropsWithChildren) {
   const { children } = props;
+
   return (
     <CommentContainer>
       <CommentWrapper>{children}</CommentWrapper>

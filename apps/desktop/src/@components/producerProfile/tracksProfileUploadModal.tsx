@@ -1,22 +1,21 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled from 'styled-components';
+import useModal from '../../hooks/common/useModal';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   PortfolioIc,
   PortfolioTextIc,
   ProducerProfileUploadeModalIc,
   VocalSearchingIc,
   VocalSearchingTextIc,
-} from "../../assets";
-import useModal from "../../hooks/common/useModal";
+} from '../../assets';
 
 export default function TracksProfileUploadModal() {
   const navigate = useNavigate();
   const prevURL = useLocation().state.prevURL;
-
   const { modalRef } = useModal();
 
   function moveVocalSearching() {
-    navigate("/upload/producer/vocal-searching", {
+    navigate('/upload/producer/vocal-searching', {
       state: {
         prevURL: prevURL,
       },
@@ -24,7 +23,7 @@ export default function TracksProfileUploadModal() {
   }
 
   function movePortfolio() {
-    navigate("/upload/producer/portfolio", {
+    navigate('/upload/producer/portfolio', {
       state: {
         prevURL: prevURL,
       },
@@ -61,7 +60,6 @@ const ModalBackgroundShadow = styled.section`
   width: 192rem;
   height: 108rem;
 
-  /* position: fixed; */
   background: rgba(0, 0, 0, 0.6);
 `;
 
@@ -86,7 +84,6 @@ const VocalSearchingWrapper = styled.article`
 
   display: flex;
   padding-top: 1.5rem;
-  /* top: 6rem; */
 `;
 
 const VocalSearchingIcon = styled(VocalSearchingIc)`
@@ -98,7 +95,6 @@ const PortfolioWrapper = styled.article`
   position: absolute;
 
   display: flex;
-  /* top: 4rem; */
 `;
 
 const PortfolioIcon = styled(PortfolioIc)`

@@ -1,10 +1,9 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { DeleteIc, EditIc } from "../../assets";
-import { useDeleteTrack } from "../../hooks/queries/tracks";
-import { TrackDetailType } from "../../type/tracks";
-import { useContext } from "react";
-import { PlayerContext } from "../../context/playerContext";
+import styled from 'styled-components';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { DeleteIc, EditIc } from '../../assets';
+import { useDeleteTrack } from '../../hooks/queries/tracks';
+import { TrackDetailType } from '../../type/tracks';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface EditDropDownProps {
   trackDetail: TrackDetailType | undefined;
@@ -16,7 +15,7 @@ export default function EditDropDown(props: EditDropDownProps) {
   const navigate = useNavigate();
   const { deleteTrack } = useDeleteTrack();
   const prevURL = useLocation().pathname;
-  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { quitAudioForMovePage } = PlayUseContext({});
 
   function handleMoveTrackPostEditPage() {
     quitAudioForMovePage();
@@ -29,8 +28,8 @@ export default function EditDropDown(props: EditDropDownProps) {
   }
 
   function handleDeleteTrack() {
-    deleteTrack(Number(id));
-    navigate("/track-search");
+    deleteTrack(id as string);
+    navigate('/track-search');
   }
 
   return (

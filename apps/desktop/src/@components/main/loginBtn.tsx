@@ -1,27 +1,19 @@
-import styled, { CSSProperties } from 'styled-components';
-import SamllButton from '../@common/button/customButton';
+import styled from 'styled-components';
+import useModal from '../../hooks/common/useModal';
+import ProfileBox from './profileBox';
 import { theme } from '../../style/theme';
-import { useContext, useEffect } from 'react';
-import { PlayerContext } from '../../context/playerContext';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { loginUserData } from '../../recoil/common/loginUserData';
 import { ROLE } from '../../core/common/roleType';
-import useModal from '../../hooks/common/useModal';
-import ProfileBox from './profileBox';
+import { PlayUseContext } from '../../context/playerContext';
 
 export default function LoginBtn() {
-  const { quitAudioForMovePage } = useContext(PlayerContext);
-
+  const { quitAudioForMovePage } = PlayUseContext({});
   const userData = useRecoilValue(loginUserData);
-
   const { openModal, unShowModal, handleShowUpdateModal } = useModal();
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    unShowModal();
-  }, []);
 
   function handleMoveToLogin() {
     quitAudioForMovePage();
@@ -37,89 +29,88 @@ export default function LoginBtn() {
     navigate('/signup');
   }
 
+  useEffect(() => {
+    unShowModal();
+  }, []);
+
   return (
-    <Styled.LoginBtnWrapper>
-      {userData.userId > 0 ? (
-        <Styled.LoginedInfoWrapper userType={userData.userType} onClick={handleShowUpdateModal}>
-          <Styled.LoginedUserImage src={userData.userImageFile} userType={userData.userType} />
+    <LoginBtnWrapper>
+      {userData.userId !== -1 ? (
+        <LoginedInfoWrapper userType={userData.userType} onClick={handleShowUpdateModal}>
+          <LoginedUserImage src={userData.userImageFile} userType={userData.userType} />
           {userData.userName}
           {openModal && <ProfileBox />}
-        </Styled.LoginedInfoWrapper>
+        </LoginedInfoWrapper>
       ) : (
         <>
-          <SamllButton btnStyle={LoginBtnStyle} handleClickFunction={handleMoveToLogin}>
-            Login
-          </SamllButton>
-          <SamllButton btnStyle={SignupBtnStyle} handleClickFunction={handleMoveToSignup}>
-            Sign up
-          </SamllButton>
+          <LoginButton onClick={handleMoveToLogin}>Login</LoginButton>
+          <SignupButton onClick={handleMoveToSignup}>Sign up</SignupButton>
         </>
       )}
-    </Styled.LoginBtnWrapper>
+    </LoginBtnWrapper>
   );
 }
 
-const Styled = {
-  LoginBtnWrapper: styled.div`
-    display: flex;
+const LoginButton = styled.button`
+  font-family: Pretendard;
+  font-weight: 500;
+  font-size: 2.2rem;
+  line-height: normal;
 
-    cursor: pointer;
-  `,
+  width: 17.6rem;
+  height: 4.9rem;
 
-  LoginedInfoWrapper: styled.div<{ userType: string }>`
-    display: flex;
-    align-items: center;
-    min-width: 19.5rem;
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.black};
 
-    width: 100%;
-    height: 100%;
+  border: 0.1rem solid ${({ theme }) => theme.colors.white};
+  border-radius: 3rem;
+`;
 
-    color: ${(props) => (props.userType === ROLE.PRODUCER ? theme.colors.sub1 : theme.colors.sub2)};
-    ${({ theme }) => theme.fonts.pretendard_text22};
-  `,
+const SignupButton = styled.button`
+  font-family: Pretendard;
+  font-weight: 500;
+  font-size: 2.2rem;
+  line-height: normal;
 
-  LoginedUserImage: styled.img<{ userType: string }>`
-    width: 5rem;
-    height: 5rem;
+  width: 17.6rem;
+  height: 4.9rem;
 
-    margin-right: 1rem;
+  color: ${({ theme }) => theme.colors.black};
+  background: ${({ theme }) => theme.colors.white};
 
-    border-radius: 50%;
+  border: 0.1rem solid ${({ theme }) => theme.colors.white};
+  border-radius: 3rem;
 
-    border: 0.2rem solid;
-    border-color: ${(props) => (props.userType === ROLE.PRODUCER ? theme.colors.sub1 : theme.colors.sub3)};
-  `,
-};
+  margin-left: 1.2rem;
+`;
 
-const LoginBtnStyle: CSSProperties = {
-  fontFamily: 'Pretendard',
-  fontWeight: 500,
-  fontSize: '2.2rem',
-  lineHeight: 'normal',
+const LoginBtnWrapper = styled.div`
+  display: flex;
 
-  width: '17.6rem',
-  height: '4.9rem',
+  cursor: pointer;
+`;
 
-  color: `${theme.colors.white}`,
-  background: `${theme.colors.black}`,
+const LoginedInfoWrapper = styled.div<{ userType: string }>`
+  display: flex;
+  align-items: center;
+  min-width: 19.5rem;
 
-  border: `0.1rem solid ${theme.colors.white}`,
-  borderRadius: '3rem',
-};
+  width: 100%;
+  height: 100%;
 
-const SignupBtnStyle: CSSProperties = {
-  fontFamily: 'Pretendard',
-  fontWeight: 500,
-  fontSize: '2.2rem',
-  lineHeight: 'normal',
+  color: ${(props) => (props.userType === ROLE.PRODUCER ? theme.colors.sub1 : theme.colors.sub2)};
+  ${({ theme }) => theme.fonts.pretendard_text22};
+`;
 
-  width: '17.6rem',
-  height: '4.9rem',
+const LoginedUserImage = styled.img<{ userType: string }>`
+  width: 5rem;
+  height: 5rem;
 
-  color: `${theme.colors.black}`,
+  margin-right: 1rem;
 
-  background: `${theme.colors.white}`,
-  borderRadius: '3rem',
+  border-radius: 50%;
 
-  marginLeft: '2rem',
-};
+  border: 0.2rem solid;
+  border-color: ${(props) => (props.userType === ROLE.PRODUCER ? theme.colors.sub1 : theme.colors.sub3)};
+`;

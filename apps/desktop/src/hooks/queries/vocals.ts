@@ -1,30 +1,34 @@
-import { useInfiniteQuery, useQuery } from "react-query";
-import { getFilteredVocals, getRecentVocals } from "../../api/vocals";
-import { QUERIES_KEY } from "../../core/common/queriesKey";
-import { FilteredVocalsParamsType } from "../../type/vocals";
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { getFilteredVocals, getRecentVocals } from '../../api/vocals';
+import { QUERIES_KEY } from '../../core/common/queriesKey';
+import { FilteredVocalsParamsType } from '../../type/vocals';
+import { EventLowerCategoryId } from '../../core/common/categories';
 
-export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">) {
-  const fetchVocals = async (pageParams: number) => {
-    const response = await getFilteredVocals({ ...params, page: pageParams });
-
-    return { response, nextPage: pageParams + 1 };
-  };
-
+export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, 'page'>) {
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
     [QUERIES_KEY.GET_VOCAL_INFO, params.categ, params.trackSearch],
-    ({ pageParam = 1 }) => fetchVocals(pageParam),
+    getFilteredVocals,
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.response.data[0].vocalList.length === 0 ? undefined : lastPage.nextPage;
+        return lastPage.data.vocalList.length === 0 ? undefined : 1;
       },
       refetchOnWindowFocus: false,
-    },
+      select: (data) => {
+        return {
+          pageParams: data.pageParams,
+          pages: data.pages.flatMap((data) =>
+            data.data.vocalList.filter((item) =>
+              params.categ.length > 0 ? params.categ.includes(EventLowerCategoryId[item.userCategory[0]]) : item
+            )
+          ),
+        };
+      },
+    }
   );
-
-  const vocalData = data?.pages.flatMap((data) => data.response.data[0].vocalList.map((trackInfo) => trackInfo));
+  const allDatas = data?.pages.flatMap((data) => data);
 
   return {
-    vocalData,
+    vocalData: allDatas,
     fetchNextPage,
     hasNextPage,
     ...restValues,
@@ -32,7 +36,7 @@ export function useFilteredVocals(params: Omit<FilteredVocalsParamsType, "page">
 }
 
 export function useGetRecentVocals(count: number) {
-  const { data: recentVocalInfo } = useQuery(["getRecentVocals"], () => getRecentVocals(count), {
+  const { data: recentVocalInfo } = useQuery(['getRecentVocals'], () => getRecentVocals(count), {
     onError: (err) => {
       console.log(err);
     },

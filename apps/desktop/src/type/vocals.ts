@@ -8,7 +8,7 @@ export interface FilteredVocalsParamsType {
 }
 
 export interface FilteredVocalType {
-  userId: number;
+  userId: string;
   userImageFile: string;
   userAudioFile: string;
   userName: string;
@@ -22,7 +22,6 @@ export interface FilteredVocalType {
 
 export type FilteredVocalListType = {
   vocalList: FilteredVocalType[];
-  hasNextPage: boolean;
 };
 
 export interface PortfoliosParamsType {

@@ -1,24 +1,25 @@
-import { Dispatch, SetStateAction } from "react";
-import styled from "styled-components";
-import { DeleteIc, EditIc } from "../../assets";
-import useModal from "../../hooks/common/useModal";
-import { useDeleteComment } from "../../hooks/queries/comments";
+import styled from 'styled-components';
+import useModal from '../../hooks/common/useModal';
+import { Dispatch, SetStateAction } from 'react';
+import { DeleteIc, EditIc } from '../../assets';
+import { useDeleteComment } from '../../hooks/queries/comments';
 
 interface EditDropDownCommentProps {
   setIsEdit: Dispatch<SetStateAction<boolean>>;
-  commentId: number;
+  commentId: string;
 }
 
 export default function EditDropDownComment(props: EditDropDownCommentProps) {
   const { setIsEdit, commentId } = props;
-  const { modalRef, closeModal, openModal } = useModal();
+  const { modalRef } = useModal();
   const { deleteComment } = useDeleteComment();
+
   function handleStartUpdate() {
     setIsEdit(true);
   }
 
   function handleDelete() {
-    if (window.confirm("Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?")) {
+    if (window.confirm('Are you sure you want to delete the comment?\n댓글을 삭제하시겠습니까?')) {
       deleteComment(commentId);
     }
   }

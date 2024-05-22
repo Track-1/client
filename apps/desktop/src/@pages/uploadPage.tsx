@@ -1,8 +1,8 @@
-import { useRecoilValue } from 'recoil';
 import ProducerUploadBody from '../@components/upload/producerUploadBody';
 import VocalUploadBody from '../@components/upload/vocalUploadBody';
+import Layout from '../@components/@common/layout/layout';
+import { useRecoilValue } from 'recoil';
 import { loginUserData } from '../recoil/common/loginUserData';
-import Layout from '../@components/@common/Layout';
 
 export default function UploadPage() {
   const userType = useRecoilValue(loginUserData).userType;

@@ -1,16 +1,16 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const clickedProfileId = atom({
-  key: "clickedProfileId",
-  default: -1,
+  key: 'clickedProfileId',
+  default: '',
 });
 
 export const hoveredProfileId = atom({
-  key: "hoveredProfileId",
-  default: -1,
+  key: 'hoveredProfileId',
+  default: '',
 });
 
 export const producerState = atom({
-  key: "producerState",
-  default: "Portfolio",
+  key: 'producerState',
+  default: 'Portfolio',
 });

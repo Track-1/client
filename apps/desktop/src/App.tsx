@@ -1,6 +1,5 @@
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
-import MobileLandingPage from './@pages/mobileLandingPage';
 import Router from './Router';
 import { GlobalStyle } from './style/globalStyle';
 import { theme } from './style/theme';
@@ -8,8 +7,6 @@ import { Suspense, useEffect } from 'react';
 import Loading from './@components/@common/loading';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { CookiesProvider } from 'react-cookie';
-import { PlayerProvider } from './context/playerContext';
-import Player from './@components/@common/player';
 
 function App() {
   const queryClient = new QueryClient({
@@ -50,10 +47,7 @@ function App() {
           <ThemeProvider theme={theme}>
             <GlobalStyle />
             <Suspense fallback={<Loading />}>
-              <PlayerProvider>
-                <Router />
-                <Player />
-              </PlayerProvider>
+              <Router />
             </Suspense>
           </ThemeProvider>
         </RecoilRoot>

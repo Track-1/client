@@ -1,6 +1,6 @@
 export interface CommentType {
-  commentUserId: number;
-  commentId: number;
+  commentUserId: string;
+  commentId: string;
   commentAudioFile: string;
   userName: string;
   userImageFile: string;

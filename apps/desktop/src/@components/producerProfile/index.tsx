@@ -1,58 +1,48 @@
-import { useContext, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue, useResetRecoilState } from "recoil";
-import styled from "styled-components";
-import { ProfileEditBtnIc, UploadButtonIc } from "../../assets";
-import ProducerEmptyProfileImg from "../../assets/image/producerEmptyProfileImg.png";
-import { PlayerContext } from "../../context/playerContext";
-import useModal from "../../hooks/common/useModal";
-import useUpdateModal from "../../hooks/common/useUpdateModal";
+import styled from 'styled-components';
+import ProducerEmptyProfileImg from '../../assets/image/producerEmptyProfileImg.png';
+import useModal from '../../hooks/common/useModal';
+import useUpdateModal from '../../hooks/common/useUpdateModal';
+import BackButton from '../@common/button/backButton';
+import Profile from '../profile';
+import ProducerPortfolioInform from './producerPortfolioInform';
+import ProducerPortfolioList from './producerPortfolioList';
+import ProducerProfileShadow from './producerProfileShadow';
+import ProducerVocalSearching from './producerVocalSearching';
+import ProducerVocalSearchingInform from './producerVocalSearchingInform';
+import TracksProfileUploadModal from './tracksProfileUploadModal';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { ProfileEditBtnIc, UploadButtonIc } from '../../assets';
 import {
   useGetProducerPortfolio,
   useGetProducerProfile,
   useGetProducerVocalSearching,
-} from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId, producerState } from "../../recoil/common/profile";
-import BackButton from "../@common/backButton";
-import Profile from "../profile";
-import ProducerPortfolioInform from "./producerPortfolioInform";
-import ProducerPortfolioList from "./producerPortfolioList";
-import ProducerProfileShadow from "./producerProfileShadow";
-import ProducerVocalSearching from "./producerVocalSearching";
-import ProducerVocalSearchingInform from "./producerVocalSearchingInform";
-import TracksProfileUploadModal from "./tracksProfileUploadModal";
+} from '../../hooks/queries/mypage';
+import { clickedProfileId, hoveredProfileId, producerState } from '../../recoil/common/profile';
+import { PlayUseContext } from '../../context/playerContext';
 
 const PAGE_LIMIT = 5;
 
 export default function ProducerProfile() {
-  const { producerId } = useParams();
-  const { producerProfile } = useGetProducerProfile(Number(producerId));
+  const prevURL = useLocation().state?.prevURL;
   const navigate = useNavigate();
   const resetClickedId = useResetRecoilState(clickedProfileId);
   const resetHoveredId = useResetRecoilState(hoveredProfileId);
-  const { producerPortfolios } = useGetProducerPortfolio({
-    limit: PAGE_LIMIT,
-    userId: Number(producerId),
-  });
-  const { producerVocalSearchings } = useGetProducerVocalSearching({
-    limit: PAGE_LIMIT,
-    userId: Number(producerId),
-  });
-
-  const { quitAudioForMovePage } = useContext(PlayerContext);
-
   const dataState = useRecoilValue(producerState);
   const { openModal, showModal, unShowModal } = useModal();
   const { unShowModal: unShowUpdateModal } = useUpdateModal();
-
-  const prevURL = useLocation().state?.prevURL;
-
-  useEffect(() => {
-    resetClickedId();
-    resetHoveredId();
-    unShowModal();
-    unShowUpdateModal();
-  }, []);
+  const { producerId } = useParams();
+  const { data: producerProfile } = useGetProducerProfile(Number(producerId));
+  const { data: producerPortfolios } = useGetProducerPortfolio({
+    limit: PAGE_LIMIT,
+    userId: Number(producerId),
+  });
+  const { data: producerVocalSearchings } = useGetProducerVocalSearching({
+    limit: PAGE_LIMIT,
+    userId: Number(producerId),
+  });
+  const { quitAudioForMovePage } = PlayUseContext({});
 
   function handleMoveProfileEditPage() {
     quitAudioForMovePage();
@@ -62,6 +52,13 @@ export default function ProducerProfile() {
       },
     });
   }
+
+  useEffect(() => {
+    resetClickedId();
+    resetHoveredId();
+    unShowModal();
+    unShowUpdateModal();
+  }, []);
 
   return (
     <>
@@ -82,7 +79,7 @@ export default function ProducerProfile() {
 
         <ProducerProfileShadow />
         <PortfolioSection>
-          {dataState === "Portfolio" ? (
+          {dataState === 'Portfolio' ? (
             <>
               {producerPortfolios && producerPortfolios.length > 0 ? (
                 <>

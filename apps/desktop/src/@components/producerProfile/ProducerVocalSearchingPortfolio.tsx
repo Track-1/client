@@ -1,49 +1,45 @@
-import { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
-import { useGetProducerProfile } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
+import styled from 'styled-components';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { PortfolioPauseIc, PortfolioPlayIc } from '../../assets';
+import { useGetProducerProfile } from '../../hooks/queries/mypage';
+import { ProducerVocalSearchingType, UserPortfolioType } from '../../type/profile';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface ProducerVocalSearchingPortfolioProps {
   producerVocalSearchings: ProducerVocalSearchingType;
-  playingTrack: UserPortfolioType["portfolioId"] | null;
-  selectTrack: (trackId: UserPortfolioType["portfolioId"]) => void;
+  playingTrack: UserPortfolioType['portfolioId'] | null;
+  selectTrack: (trackId: UserPortfolioType['portfolioId']) => void;
 }
 
 export default function ProducerVocalSearchingPortfolio(props: ProducerVocalSearchingPortfolioProps) {
   const { producerVocalSearchings, playingTrack, selectTrack } = props;
-  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = PlayUseContext({});
   const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
     playerContext,
     producerVocalSearchings.trackAudioFile,
     producerVocalSearchings.trackId,
     selectTrack,
+    playingTrack
   );
-  const isSelected = playingTrack === producerVocalSearchings.trackId;
   const { id } = useParams();
-  const { producerProfile } = useGetProducerProfile(Number(id));
-  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
-  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+  const { data: producerProfile } = useGetProducerProfile(Number(id));
+  const isSelected = playingTrack === producerVocalSearchings.trackId;
   const isBig = isSelected && showPlayer;
 
   function handlePlaying(isPause: boolean) {
-    setClickId(producerVocalSearchings.trackId);
-    isPause ? stopAudioItem() : playAudioItem();
+    if (playingTrack === null) return;
+
+    isPause ? stopAudioItem() : playAudioItem(playingTrack);
   }
 
   function handleHoverTrack() {
     hoverTrack();
-    setHoverId(producerVocalSearchings.trackId);
   }
 
   function handleUnhoverTrack() {
     unhoverTrack();
-    setHoverId(-1);
   }
 
   useEffect(() => {
@@ -155,7 +151,7 @@ const Title = styled.h1<{ isLight: boolean }>`
   white-space: normal;
 
   color: ${({ theme }) => theme.colors.gray2};
-  display: ${({ isLight }) => (isLight ? "none" : "flex")};
+  display: ${({ isLight }) => (isLight ? 'none' : 'flex')};
 
   ${({ theme }) => theme.fonts.id}
 

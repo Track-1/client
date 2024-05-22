@@ -1,29 +1,29 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { CommentsPlayerContext } from ".";
-import { EllipsisIc } from "../../assets";
-import { isModalOpen } from "../../recoil/common/isModalOpen";
-import { editSelectId } from "../../recoil/trackPost/commentWriteData";
-import EditDropDownComment from "./editDropDownComment";
+import styled from 'styled-components';
+import EditDropDownComment from './editDropDownComment';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { EllipsisIc } from '../../assets';
+import { isModalOpen } from '../../recoil/common/isModalOpen';
+import { editSelectId } from '../../recoil/trackPost/commentWriteData';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface CommentInfoProps {
   userName: string;
   userSelf: boolean;
   commentContent: string;
-  commentUserId: number;
-  commentId: number;
+  commentUserId: string;
+  commentId: string;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CommentInfo(props: CommentInfoProps) {
   const { userName, userSelf, commentContent, commentUserId, setIsEdit, commentId } = props;
   const navigate = useNavigate();
-  const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useRecoilState<boolean>(isModalOpen);
-  const { quitAudioForMovePage } = useContext(CommentsPlayerContext);
   const [editId, setEditId] = useRecoilState(editSelectId);
+  const { quitAudioForMovePage } = PlayUseContext({ scope: 'comments' });
+  const [editModalToggle, setEditModalToggle] = useState<boolean>(false);
 
   function handleMoveVocalProfile() {
     quitAudioForMovePage();
@@ -32,7 +32,8 @@ export default function CommentInfo(props: CommentInfoProps) {
   }
 
   function handleShowEditDropDownComment() {
-    if (editId !== -1) return;
+    if (editId !== '') return;
+
     setEditId(commentId);
     setEditModalToggle(true);
     setIsOpenModal(true);

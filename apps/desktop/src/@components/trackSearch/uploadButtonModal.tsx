@@ -1,7 +1,7 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { PortfolioIc, PortfolioTextIc, UnionIc, VocalSearchingIc, VocalSearchingTextIc } from "../../assets";
-import useModal from "../../hooks/common/useModal";
+import styled from 'styled-components';
+import useModal from '../../hooks/common/useModal';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { PortfolioIc, PortfolioTextIc, UnionIc, VocalSearchingIc, VocalSearchingTextIc } from '../../assets';
 
 export default function UploadButtonModal() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function UploadButtonModal() {
   const prevURL = useLocation().pathname;
 
   function moveVocalSearching() {
-    navigate("/upload/producer/vocal-searching", {
+    navigate('/upload/producer/vocal-searching', {
       state: {
         prevURL: prevURL,
       },
@@ -17,7 +17,7 @@ export default function UploadButtonModal() {
   }
 
   function movePortfolio() {
-    navigate("/upload/producer/portfolio", {
+    navigate('/upload/producer/portfolio', {
       state: {
         prevURL: prevURL,
       },

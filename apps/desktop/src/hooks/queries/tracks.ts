@@ -14,39 +14,48 @@ import {
 import { QUERIES_KEY } from '../../core/common/queriesKey';
 import { FilteredTrackParamsType } from '../../type/tracks';
 import { loginUserData } from '../../recoil/common/loginUserData';
+import { EventLowerCategoryId } from '../../core/common/categories';
+import { EventCategoryType } from '../../type/common/category';
 
 export function useFilteredTracks(params: Omit<FilteredTrackParamsType, 'page'>) {
-  const fetchTracks = async (pageParams: number) => {
-    const response = await getFilteredTracks({ ...params, page: pageParams });
-
-    return { response, nextPage: pageParams + 1 };
-  };
-
   const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
     [QUERIES_KEY.GET_TRACK_INFO, params.categ, params.limit],
-    ({ pageParam = 1 }) => fetchTracks(pageParam),
+    () => getFilteredTracks(),
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.response.data[0].trackList.length === 0 ? undefined : lastPage.nextPage;
+        return lastPage.data.trackList.length === 0 ? undefined : 1;
       },
       refetchOnWindowFocus: false,
+
+      select: (data) => {
+        return {
+          pageParams: data.pageParams,
+          pages: data.pages.flatMap((data) =>
+            data.data.trackList.filter((item) =>
+              params.categ.length > 0
+                ? params.categ.includes(EventLowerCategoryId[item.trackCategory as EventCategoryType])
+                : item
+            )
+          ),
+        };
+      },
     }
   );
 
-  const trackData = data?.pages.flatMap((data) => data.response.data[0].trackList.map((trackInfo) => trackInfo));
+  const allDatas = data?.pages.flatMap((data) => data);
 
   return {
-    trackData,
+    data: allDatas,
     fetchNextPage,
     hasNextPage,
     ...restValues,
   };
 }
 
-export function useTrackDetail(trackId: number) {
+export function useTrackDetail() {
   const { data, ...restValues } = useQuery({
-    queryKey: [QUERIES_KEY.TRACK_DETAIL, trackId],
-    queryFn: () => getTrackDetail(trackId),
+    queryKey: [QUERIES_KEY.TRACK_DETAIL],
+    queryFn: () => getTrackDetail(),
     onSuccess: () => {},
     onError: () => {},
   });
@@ -139,7 +148,7 @@ export function useCloseTrack() {
 export function useDeleteTrack() {
   const queryClient = useQueryClient();
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (trackId: number) => deleteTrack(trackId),
+    mutationFn: (trackId: string) => deleteTrack(trackId),
     onSuccess: () => {
       queryClient.invalidateQueries('producerVocalSearchings');
     },

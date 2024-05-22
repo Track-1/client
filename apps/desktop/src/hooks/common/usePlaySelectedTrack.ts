@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { PlayerContext } from '../../context/playerContext';
 
-export default function usePlaySelectedTrack(playerContext: any, audioFile: string, id: number, selectTrack: any) {
+export default function usePlaySelectedTrack(
+  playerContext: Omit<PlayerContext, 'showPlayer' | 'contextPlaying' | 'getPlayerInfo' | 'quitAudioForMovePage'>,
+  audioFile: string,
+  id: string,
+  selectTrack: any,
+  playingTrack: string | null
+) {
   const [innerPlaying, setInnerPlaying] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -12,10 +19,10 @@ export default function usePlaySelectedTrack(playerContext: any, audioFile: stri
     setInnerPlaying(false);
   }
 
-  function playAudioItem() {
+  function playAudioItem(currentPlayingTrack: string) {
     playerContext.playContextState(playInnerState);
     playerContext.openAudioPlayer();
-    playerContext.setAudioFile(audioFile);
+    playerContext.setAudioFile(audioFile, playingTrack, currentPlayingTrack);
     playerContext.playAudio();
     selectTrack(id);
   }
@@ -36,6 +43,7 @@ export default function usePlaySelectedTrack(playerContext: any, audioFile: stri
   return {
     innerPlaying,
     isHovered,
+    stopInnerState,
     playAudioItem,
     stopAudioItem,
     hoverTrack,

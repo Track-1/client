@@ -1,6 +1,6 @@
-import { FolderUploadIc, UploadFileIc } from '../../assets';
 import UploadInfoBox from './uploadInfoBox';
 import styled from 'styled-components';
+import { FolderUploadIc, UploadFileIc } from '../../assets';
 import { useFormContext } from 'react-hook-form';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
 import { UploadInputType } from '../../type/common/upload';
@@ -13,11 +13,10 @@ export default function FileUploadInfo() {
     getValues,
     formState: { dirtyFields },
   } = useFormContext<UploadInputType>();
-  const [fileType, setFileType] = useState('');
-  const [isTextOverflow, setIsTextOverflow] = useState(false);
-
   const pathname = useLocation().pathname;
   const { prevUploadData } = useLocation().state;
+  const [fileType, setFileType] = useState('');
+  const [isTextOverflow, setIsTextOverflow] = useState(false);
   const audioFileName = prevUploadData
     ? pathname.includes('portfolio-edit')
       ? prevUploadData.portfolioAudioFileName

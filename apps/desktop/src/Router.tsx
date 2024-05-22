@@ -18,18 +18,12 @@ import UploadEditPage from './@pages/uploadEditPage';
 import VocalProfilePage from './@pages/vocalProfilePage';
 import VocalSearchPage from './@pages/vocalSearchPage';
 import PrivateRoute from './utils/common/privateRouter';
-import EventPage from './@pages/eventPage';
-import AdminPage from './@pages/adminPage';
-import AboutPage from './@pages/aboutPage';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/event" element={<EventPage />} />
-        <Route path="/event/:eventId" element={<EventPage />} />
-        <Route path="/about" element={<AboutPage />} />
         <Route path="/signup" element={<SignupStepPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
@@ -41,7 +35,6 @@ export default function Router() {
 
         {/* 반드시 인증 필요 */}
         <Route element={<PrivateRoute authentication={true} />}>
-          <Route path="/admin" element={<AdminPage />} />
           <Route path="/signup/profile" element={<SignupProfilePage />} />
           <Route path="/signup/success" element={<SignupSuccessPage />} />
           <Route path="/upload/vocal/portfolio" element={<UploadPage />} />

@@ -1,5 +1,5 @@
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 import { loginUserData } from '../../recoil/common/loginUserData';
 
 export default function CommentWriteProfileContainer() {

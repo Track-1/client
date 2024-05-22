@@ -1,9 +1,9 @@
-import { useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import ProducerUploadBody from '../@components/upload/producerUploadBody';
 import VocalUploadBody from '../@components/upload/vocalUploadBody';
+import Layout from '../@components/@common/layout/layout';
+import { useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { loginUserData } from '../recoil/common/loginUserData';
-import Layout from '../@components/@common/Layout';
 
 export default function UploadEditPage() {
   const userType = useRecoilValue(loginUserData).userType;

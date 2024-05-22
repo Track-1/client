@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-interface HashTag {
+interface HashTagProps {
   text: string;
 }
 
-export default function HashTag(props: HashTag) {
+export default function HashTag(props: HashTagProps) {
   const { text } = props;
 
   return (

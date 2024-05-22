@@ -12,7 +12,7 @@ import { client } from './common/client';
 import { USER } from './path';
 
 export async function postJoin(userType: UserType, formData: JoinUserDataPropsType) {
-  const { data } = await client.post<DefaultResponseType>(USER.JOIN(userType), formData, {
+  const { data } = await client.post<DefaultResponseType>(USER.JOIN, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -29,13 +29,6 @@ export async function postLogin(userInfo: UserLoginInfoRequest) {
   const { data } = await client.post<DefaultResponseType<LoginSuccessDataType>>(USER.AUTH_LOGIN, userInfo);
   return data;
 }
-
-// export async function postLogin(userInfo: UserLoginInfoRequest) {
-//   const { data } = await client.post<DefaultResponseType<LoginSuccessDataType>>(USER.AUTH_LOGIN, userInfo);
-
-//   console.log(data);
-//   return data;
-// }
 
 export async function getLogout() {
   const { data } = await client.get<DefaultResponseType>(USER.AUTH_LOGOUT);
@@ -55,7 +48,7 @@ export async function postUserEmail(userEmail: UserEmailRequest) {
 export async function patchPassword(userPassword: UserPasswordRequest) {
   const token = window.location.pathname.replace('/reset-password/', '');
 
-  const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD(token), {
+  const { data } = await client.patch<DefaultResponseType>(USER.BASIC_PASSWORD, {
     userPw: userPassword.userPw,
   });
   return data;
@@ -88,6 +81,6 @@ export async function patchResetPassword(userEmail: UserEmailRequest) {
 
 export async function getTokenVerify() {
   const token = window.location.pathname.replace('/reset-password/', '');
-  const { data } = await client.get(USER.MAIL_PASSWORD_TOKEN(token));
+  const { data } = await client.get(USER.MAIL_PASSWORD_TOKEN);
   return data;
 }

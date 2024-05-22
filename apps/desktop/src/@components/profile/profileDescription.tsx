@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { DescriptionIc } from "../../assets";
-import Empty from "./empty";
+import styled from 'styled-components';
+import Empty from './empty';
+import { DescriptionIc } from '../../assets';
 
 interface ProfileDescriptionProps {
   introduce: string | undefined;

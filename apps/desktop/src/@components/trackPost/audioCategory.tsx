@@ -1,16 +1,14 @@
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { CategoryIc } from "../../assets";
-import { useTrackDetail } from "../../hooks/queries/tracks";
+import styled from 'styled-components';
+import { CategoryIc } from '../../assets';
+import { useTrackDetail } from '../../hooks/queries/tracks';
 
 export default function AudioCategory() {
-  const { id } = useParams();
-  const { trackDetail } = useTrackDetail(Number(id));
+  const { trackDetail } = useTrackDetail();
 
   return (
     <CategoryBox>
       <CategoryIcon />
-      {trackDetail?.trackCategory}
+      {'trackDetail?.trackCategory'}
     </CategoryBox>
   );
 }

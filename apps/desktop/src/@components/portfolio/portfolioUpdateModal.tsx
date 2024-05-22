@@ -1,10 +1,8 @@
-import { useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import useModal from "../../hooks/common/useModal";
-import useUpdateModal from "../../hooks/common/useUpdateModal";
+import styled from 'styled-components';
+import useModal from '../../hooks/common/useModal';
+import useUpdateModal from '../../hooks/common/useUpdateModal';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { PencilUpdateIc, SetIsTitleIc, TrashDeleteIc } from '../../assets';
 import {
   deleteFirstProducer,
   deleteFirstVocal,
@@ -12,15 +10,16 @@ import {
   useDeleteVocalPortfolio,
   useEditProducerTitle,
   useEditVocalTitle,
-} from "../../hooks/queries/mypage";
-import { useDeleteTrack } from "../../hooks/queries/tracks";
-import { ProducerVocalSearchingType, UserPortfolioType } from "../../type/profile";
+} from '../../hooks/queries/mypage';
+import { useDeleteTrack } from '../../hooks/queries/tracks';
+import { ProducerVocalSearchingType, UserPortfolioType } from '../../type/profile';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface PortfolioUpdateModalProp {
   isTitle: boolean;
-  nowTitleId: number;
-  nowTitleNextId: number;
-  portfolioId: number;
+  nowTitleId: string;
+  nowTitleNextId: string;
+  portfolioId: string;
   dataState: string;
   clickedPortfolio?: UserPortfolioType;
   clickedProducerVocalSearching?: ProducerVocalSearchingType;
@@ -40,18 +39,18 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
   const { deleteVocalPortfolio } = useDeleteVocalPortfolio();
   const { deleteProducerPortfolio } = useDeleteProducerPortfolio();
   const { deleteTrack } = useDeleteTrack();
-  const [isDelete, setIsDelete] = useState(false);
   const { editVocalTitle } = useEditVocalTitle();
   const { editProducerTitle } = useEditProducerTitle();
   const { unShowModal } = useModal();
+  const { quitAudioForMovePage } = PlayUseContext({});
   const { modalRef, unShowModal: unShowUpdateModal } = useUpdateModal();
-  const { quitAudioForMovePage } = useContext(PlayerContext);
   const prevURL = useLocation().pathname;
 
   function handleMoveToEditPage() {
     quitAudioForMovePage();
+
     switch (dataState) {
-      case "producer portfolio":
+      case 'producer portfolio':
         navigate(`/portfolio-edit/producer/${portfolioId}`, {
           state: {
             prevURL: prevURL,
@@ -59,7 +58,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
           },
         });
         break;
-      case "producer vocal searching":
+      case 'producer vocal searching':
         navigate(`/vocal-searching-edit/producer/${portfolioId}`, {
           state: {
             prevURL: prevURL,
@@ -67,7 +66,7 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
           },
         });
         break;
-      case "vocal portfolio":
+      case 'vocal portfolio':
         navigate(`/portfolio-edit/vocal/${portfolioId}`, {
           state: {
             prevURL: prevURL,
@@ -82,26 +81,24 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
 
   async function handleAskToDeleteTrack() {
     quitAudioForMovePage();
-    if (window.confirm("Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?")) {
-      if (dataState === "producer vocal searching") {
+    if (window.confirm('Are you sure you want to delete the post?\n게시글을 삭제하시겠습니까?')) {
+      if (dataState === 'producer vocal searching') {
         deleteTrack(portfolioId);
       }
-      //타이틀곡을 삭제하려는 경우
       if (nowTitleId === portfolioId) {
-        if (dataState === "vocal portfolio") {
+        if (dataState === 'vocal portfolio') {
           deleteFirstVocal({ bef: nowTitleId, aft: nowTitleNextId }, portfolioId);
         } else {
           deleteFirstProducer({ bef: nowTitleId, aft: nowTitleNextId }, portfolioId);
         }
-      }
-      // 타이틀 곡 아닌 곡을 삭제하려는 경우
-      else {
-        if (dataState === "vocal portfolio") {
+      } else {
+        if (dataState === 'vocal portfolio') {
           deleteVocalPortfolio(portfolioId);
         } else {
           deleteProducerPortfolio(portfolioId);
         }
       }
+
       unShowModal();
       unShowUpdateModal();
     }
@@ -109,12 +106,13 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
 
   function handleChangeTitle() {
     quitAudioForMovePage();
-    if (dataState === "vocal portfolio") {
+
+    if (dataState === 'vocal portfolio') {
       editVocalTitle({
         bef: nowTitleId,
         aft: portfolioId,
       });
-    } else if (dataState === "producer portfolio") {
+    } else if (dataState === 'producer portfolio') {
       editProducerTitle({ bef: nowTitleId, aft: portfolioId });
     }
   }
@@ -126,11 +124,11 @@ export default function PortfolioUpdateModal(props: PortfolioUpdateModalProp) {
           수정하기
           <PencilUpdateIcon />
         </ModalBox>
-        <ModalBox underline={dataState !== "producer vocal searching" && !isTitle} onClick={handleAskToDeleteTrack}>
+        <ModalBox underline={dataState !== 'producer vocal searching' && !isTitle} onClick={handleAskToDeleteTrack}>
           삭제하기
           <TrashDeleteIcon />
         </ModalBox>
-        {dataState !== "producer vocal searching" && !isTitle && (
+        {dataState !== 'producer vocal searching' && !isTitle && (
           <ModalBox underline={false} onClick={handleChangeTitle}>
             타이틀 설정
             <SetIsTitleIcon />
@@ -179,7 +177,7 @@ const ModalBox = styled.div<{ underline: boolean }>`
   width: 20.1rem;
   height: 5.6rem;
   padding: 1.1rem 1.9rem;
-  border-bottom: 0.1rem solid ${({ underline, theme }) => (underline ? theme.colors.gray3 : "transparent")};
+  border-bottom: 0.1rem solid ${({ underline, theme }) => (underline ? theme.colors.gray3 : 'transparent')};
 
   cursor: pointer;
 `;

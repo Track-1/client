@@ -1,48 +1,38 @@
 import styled from 'styled-components';
-import { CategoryDropDownIc, UploadCategoryIc } from '../../assets';
 import UploadInfoBox from './uploadInfoBox';
 import DropCategory from './dropCategory';
+import { CategoryDropDownIc, UploadCategoryIc } from '../../assets';
 import { Select } from '../@common/selectBox';
-import {
-  EventCategoryId,
-  EventLowerCategoryId,
-  EventReversedCategoryId,
-  ReversedCategoryId,
-} from '../../core/common/categories';
-import {
-  CategoryIdType,
-  EventCategoryIdType,
-  EventCategoryType,
-  EventUpperCategoryType,
-} from '../../type/common/category';
+import { EventLowerCategoryId, EventReversedCategoryId } from '../../core/common/categories';
+import { EventCategoryIdType, EventCategoryType } from '../../type/common/category';
 import { useContext, useEffect } from 'react';
 import { SelectCategoryContext } from '../../context/selectCategoryContext';
 import { useLocation } from 'react-router-dom';
 
 export default function CategoryInfo() {
   const { selectedOption, selectOption } = useContext(SelectCategoryContext);
-
   const pathname = useLocation().pathname;
-
   const prevUploadData = useLocation().state.prevUploadData;
+
+  function selectCategory(option: number | null) {
+    selectOption(String(option) as EventCategoryIdType);
+  }
 
   useEffect(() => {
     if (prevUploadData) {
       if (pathname.includes('portfolio-edit')) {
         const prevCategory: EventCategoryType = prevUploadData.portfolioCategory;
+
         selectCategory(Number(EventLowerCategoryId[prevCategory]));
       }
 
       if (pathname.includes('vocal-searching-edit')) {
         const prevCategory: EventCategoryType = prevUploadData.trackCategory;
+
         selectCategory(Number(EventLowerCategoryId[prevCategory]));
       }
     }
   }, []);
-
-  function selectCategory(option: number | null) {
-    selectOption(String(option) as EventCategoryIdType);
-  }
 
   return (
     <Select externalSelectState={selectCategory}>
@@ -53,7 +43,6 @@ export default function CategoryInfo() {
           </InfoTypeIconWrapper>
           <p>Category</p>
         </InfoType>
-
         <InfoInput>
           <InputWrapper>
             <InputCategoryTextWrapper isSelectedNothing={selectedOption === null}>

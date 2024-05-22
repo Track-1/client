@@ -5,24 +5,21 @@ import FileUploadInfo from './fileUploadInfo';
 import UploadTitle from './uploadTitle';
 import HashtagInfo from './hashtagInfo';
 import DescriptionInfo from './descriptionInfo';
+import Loading from '../@common/loading';
+import Header from '../@common/layout/header';
+import BackButton from '../@common/button/backButton';
+import UploadHeader from './uploadHeader';
 import { useEditVocalPortfolio, useUploadVocalPortfolio } from '../../hooks/queries/mypage';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SelectCategoryContext } from '../../context/selectCategoryContext';
-import Header from '../@common/header';
-import BackButton from '../@common/backButton';
-import UploadHeader from './uploadHeader';
 import { useSelect } from '../../hooks/common/useSelect';
-import { CategoryIdType, EventCategoryIdType, UpperCategoryType } from '../../type/common/category';
+import { EventCategoryIdType, UpperCategoryType } from '../../type/common/category';
 import { ImageInfo } from './imageInfo';
-import { UserPortfolioType } from '../../type/profile';
 import { UploadInputType } from '../../type/common/upload';
-
 import { CategoryId } from '../../core/common/categories';
-import { useLocation, useParams } from 'react-router-dom';
 import { createFileName } from '../../utils/common/createFileName';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
 import { useEffect, useState } from 'react';
-import Loading from '../@common/loading';
 
 type VocalUploadBodyProps =
   | {
@@ -39,21 +36,18 @@ const defaultList = new DataTransfer();
 
 export default function VocalUploadBody(props: VocalUploadBodyProps) {
   const { isEditPage, prevUploadData } = props;
-
-  const [showLoading, setShowLoading] = useState(false);
   const { uploadVocalPortfolio } = useUploadVocalPortfolio();
   const { editVocalPortfolio } = useEditVocalPortfolio();
   const { selectedOption, selectOption } = useSelect<EventCategoryIdType | null>(
     false,
     CategoryId[prevUploadData?.portfolioCategory.toUpperCase() as UpperCategoryType]
   );
-
+  const [showLoading, setShowLoading] = useState(false);
   emptyList.items.add(
     new File([prevUploadData?.portfolioAudioFileName ?? ''], prevUploadData?.portfolioAudioFileName ?? '', {
       type: 'mp3',
     })
   );
-
   const methods = useForm({
     defaultValues: {
       image: '',
@@ -77,7 +71,6 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
     if (selectedOption === null) return;
 
     const formData = new FormData();
-
     const audioFile = data.audioFile[0] && new Blob([data.audioFile[0]], { type: data.audioFile[0]?.type });
     const imageFile = typeof data.image !== 'string' ? new Blob([data?.image[0]], { type: data.image[0]?.type }) : '';
 
@@ -86,8 +79,10 @@ export default function VocalUploadBody(props: VocalUploadBodyProps) {
     formData.append('portfolioTitle', data.title);
     formData.append('portfolioCategory', selectedOption);
     formData.append('portfolioContent', data.description);
+
     for (let i = 0; i < data.hashtag.length; i++) {
       if (data.hashtag[i] === '') continue;
+
       formData.append(`portfolioKeyword[${i}]`, data.hashtag[i]);
     }
 

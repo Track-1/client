@@ -1,8 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react';
 
 export default function usePaly() {
   const audio = useMemo(() => new Audio(), []);
-
   const [showPlayer, setShowPlayer] = useState(false);
   const [contextPlaying, setContextPlaying] = useState(false);
 
@@ -18,8 +17,8 @@ export default function usePaly() {
     audio.load();
   }
 
-  function setAudioFile(url: string) {
-    if (audio.src === url) return;
+  function setAudioFile(url: string, prevPlayingTrack: string | null, currentPlayingTrack: string) {
+    if (audio.src && prevPlayingTrack === currentPlayingTrack) return;
     audio.src = url;
   }
 

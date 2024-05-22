@@ -1,10 +1,80 @@
-import { useContext, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { PlayerPlayIc, PlayerStopIc } from '../../assets';
-import { PlayerContext } from '../../context/playerContext';
-import { FilteredTrackType } from '../../type/tracks';
 import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { PlayerPlayIc, PlayerStopIc } from '../../assets';
+import { PlayUseContext } from '../../context/playerContext';
+import { FilteredTrackType } from '../../type/tracks';
+
+interface TrackItemProps {
+  trackInfo: FilteredTrackType;
+  playingTrack: FilteredTrackType['trackId'] | null;
+  selectTrack: (trackId: FilteredTrackType['trackId']) => void;
+}
+
+export default function TrackItem(props: TrackItemProps) {
+  const { trackInfo, playingTrack, selectTrack } = props;
+  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } = PlayUseContext({});
+  const { innerPlaying, isHovered, stopInnerState, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } =
+    usePlaySelectedTrack(playerContext, trackInfo.trackAudioFile, trackInfo.trackId, selectTrack, playingTrack);
+  const navigate = useNavigate();
+  const prevURL = useLocation().pathname;
+  const isSelected = playingTrack === trackInfo.trackId;
+
+  function handleMoveToTrackDetail() {
+    quitAudioForMovePage();
+    navigate(`/track-post/${trackInfo.trackId}`);
+  }
+
+  function handleMoveToProducer() {
+    quitAudioForMovePage();
+    navigate(`/producer-profile/${trackInfo.trackUserId}`, {
+      state: {
+        prevURL: prevURL,
+      },
+    });
+  }
+
+  useEffect(() => {
+    if (!isSelected) {
+      stopInnerState();
+      return;
+    }
+
+    getPlayerInfo({
+      imageFile: trackInfo.trackImageFile,
+      title: trackInfo.trackTitle,
+      userName: trackInfo.trackUserName,
+    });
+  }, [playingTrack]);
+
+  return (
+    <Container
+      onMouseEnter={hoverTrack}
+      onMouseLeave={unhoverTrack}
+      isHovered={isHovered || (isSelected && showPlayer)}>
+      <ThumnailWrapper isHovered={isHovered || (isSelected && showPlayer)}>
+        <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
+        {(isHovered || (isSelected && showPlayer)) &&
+          (innerPlaying && contextPlaying ? (
+            <StopButton onClick={stopAudioItem} />
+          ) : (
+            <PlayButton onClick={() => playAudioItem(trackInfo.trackId)} />
+          ))}
+      </ThumnailWrapper>
+      <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
+        {trackInfo.trackTitle}
+      </TrackTitle>
+      <Producer isHovered={isHovered} onClick={handleMoveToProducer}>
+        {trackInfo.trackUserName}
+      </Producer>
+      <Category>{trackInfo.trackCategory}</Category>
+      {trackInfo.trackKeyword.map((tag, index) => {
+        return <Tag key={index}>#{tag}</Tag>;
+      })}
+    </Container>
+  );
+}
 
 const Container = styled.li<{ isHovered: boolean }>`
   display: flex;
@@ -136,75 +206,3 @@ const Tag = styled.span`
   background: ${({ theme }) => theme.colors.gray4};
   border-radius: 21px;
 `;
-
-interface TrackItemProps {
-  trackInfo: FilteredTrackType;
-  playingTrack: FilteredTrackType['trackId'] | null;
-  selectTrack: (trackId: FilteredTrackType['trackId']) => void;
-}
-
-export default function TrackItem(props: TrackItemProps) {
-  const { trackInfo, playingTrack, selectTrack } = props;
-  const isSelected = playingTrack === trackInfo.trackId;
-  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } =
-    useContext(PlayerContext);
-  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
-    playerContext,
-    trackInfo.trackAudioFile,
-    trackInfo.trackId,
-    selectTrack
-  );
-  const navigate = useNavigate();
-  const prevURL = useLocation().pathname;
-
-  useEffect(() => {
-    if (!isSelected) return;
-
-    getPlayerInfo({
-      imageFile: trackInfo.trackImageFile,
-      title: trackInfo.trackTitle,
-      userName: trackInfo.trackUserName,
-    });
-  }, [playingTrack]);
-
-  function handleMoveToTrackDetail() {
-    quitAudioForMovePage();
-    navigate(`/track-post/${trackInfo.trackId}`);
-  }
-
-  function handleMoveToProducer() {
-    quitAudioForMovePage();
-    navigate(`/producer-profile/${trackInfo.trackUserId}`, {
-      state: {
-        prevURL: prevURL,
-      },
-    });
-  }
-
-  return (
-    <Container
-      onMouseEnter={hoverTrack}
-      onMouseLeave={unhoverTrack}
-      isHovered={isHovered || (isSelected && showPlayer)}>
-      <ThumnailWrapper isHovered={isHovered || (isSelected && showPlayer)}>
-        <Thumbnail src={trackInfo.trackImageFile} alt="profile-image" />
-        {(isHovered || (isSelected && showPlayer)) &&
-          (innerPlaying && contextPlaying ? (
-            <StopButton onClick={stopAudioItem} />
-          ) : (
-            <PlayButton onClick={playAudioItem} />
-          ))}
-      </ThumnailWrapper>
-      <TrackTitle isHovered={isHovered} onClick={handleMoveToTrackDetail}>
-        {trackInfo.trackTitle}
-      </TrackTitle>
-      <Producer isHovered={isHovered} onClick={handleMoveToProducer}>
-        {trackInfo.trackUserName}
-      </Producer>
-      <Category>{trackInfo.trackCategory}</Category>
-      {trackInfo.trackKeyword.map((tag) => {
-        return <Tag key={tag}>#{tag}</Tag>;
-      })}
-    </Container>
-  );
-}

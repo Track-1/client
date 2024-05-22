@@ -1,8 +1,8 @@
-import { DefaultResponseType, MyInfoResponse } from "../type/api";
-import { MyPageTitleParamsType } from "../type/mypage";
-import { ParamsType } from "../type/profile";
-import { client } from "./common/client";
-import { MYPAGE } from "./path";
+import { DefaultResponseType, MyInfoResponse } from '../type/api';
+import { MyPageTitleParamsType } from '../type/mypage';
+import { ParamsType } from '../type/profile';
+import { client } from './common/client';
+import { MYPAGE } from './path';
 
 export async function getMyInfo(params: ParamsType) {
   const { data } = await client.get<MyInfoResponse>(MYPAGE.INFO, {
@@ -17,7 +17,7 @@ export async function getMyInfo(params: ParamsType) {
 export async function postProducerPortfolio(uploadData: FormData) {
   const { data } = await client.post<DefaultResponseType>(MYPAGE.UPLOAD_PRODUCER_PORTFOLIO, uploadData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
@@ -26,25 +26,25 @@ export async function postProducerPortfolio(uploadData: FormData) {
 export async function postVocalPortfolio(uploadData: FormData) {
   const { data } = await client.post<DefaultResponseType>(MYPAGE.UPLOAD_VOCAL_PORTFOLIO, uploadData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
 }
 
 export async function patchProducerPortfolio(trackId: number, uploadData: FormData) {
-  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_PRODUCER_PORTFOLIO(trackId), uploadData, {
+  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_PRODUCER_PORTFOLIO, uploadData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
 }
 
 export async function patchVocalPortfolio(trackId: number, uploadData: FormData) {
-  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_VOCAL_PORTFOLIO(trackId), uploadData, {
+  const { data } = await client.patch<DefaultResponseType>(MYPAGE.PATCH_VOCAL_PORTFOLIO, uploadData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
@@ -60,12 +60,12 @@ export async function patchVocalTitle(params: MyPageTitleParamsType) {
   return data;
 }
 
-export async function deleteProducerPortfolio(portfolioId: number) {
-  const { data } = await client.delete(MYPAGE.DELETE_PRODUCER_PORTFOLIO(portfolioId));
+export async function deleteProducerPortfolio(portfolioId: string) {
+  const { data } = await client.delete(MYPAGE.DELETE_PRODUCER_PORTFOLIO);
   return data;
 }
 
-export async function deleteVocalPortfolio(portfolioId: number) {
-  const { data } = await client.delete(MYPAGE.DELETE_VOCAL_PORTFOLIO(portfolioId));
+export async function deleteVocalPortfolio(portfolioId: string) {
+  const { data } = await client.delete(MYPAGE.DELETE_VOCAL_PORTFOLIO);
   return data;
 }

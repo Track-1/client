@@ -1,25 +1,25 @@
-import styled from "styled-components";
-import { SleeperAccountIc } from "../../assets";
-import { UserProfileType } from "../../type/profile";
-import ProducerProfileImage from "./producerProfileImage";
-import ProfileCategory from "./profileCategory";
-import ProfileDescription from "./profileDescription";
-import ProfileHashtags from "./profileHashtags";
-import VocalProfileImage from "./vocalProfileImage";
+import styled from 'styled-components';
+import ProducerProfileImage from './producerProfileImage';
+import ProfileCategory from './profileCategory';
+import ProfileDescription from './profileDescription';
+import ProfileHashtags from './profileHashtags';
+import VocalProfileImage from './vocalProfileImage';
+import { SleeperAccountIc } from '../../assets';
+import { UserProfileType } from '../../type/profile';
 
 interface ProfileProps {
-  userType: string | undefined;
-  userSelf: boolean | undefined;
-  userProfile: UserProfileType | undefined;
+  userType?: string;
+  userSelf?: boolean;
+  userProfile?: UserProfileType;
 }
 
 export default function Profile(props: ProfileProps) {
-  const { userType, userSelf, userProfile } = props;
+  const { userType, userProfile } = props;
 
   return (
     <ProfileWrapper>
-      {userType === "vocal" && <VocalProfileImage />}
-      {userType === "producer" && <ProducerProfileImage />}
+      {userType === 'vocal' && <VocalProfileImage />}
+      {userType === 'producer' && <ProducerProfileImage />}
       <Title>
         <Name>{userProfile?.userName}</Name>
         {userProfile?.userTrackSearch && <SleeperAccountIcon />}

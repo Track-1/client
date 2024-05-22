@@ -1,19 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { CommentsPlayerContext } from '.';
-import { AddCommentIc, CloseCommentsBtnIc, ClosedAddCommentIc } from '../../assets';
-import useInfiniteScroll from '../../hooks/common/useInfiniteScroll';
-import { useComments, useUploadComment } from '../../hooks/queries/comments';
-import { useTrackDetail } from '../../hooks/queries/tracks';
-import { commentWriteData } from '../../recoil/trackPost/commentWriteData';
-import { CommentType } from '../../type/trackPost/commentType';
-import { blockAccess } from '../../utils/common/privateRouter';
-import Loading from '../@common/loading';
 import CommentBox from './commentBox';
 import CommentLayout from './commentLayout';
 import CommentWrite from './commentWrite';
+import { useEffect, useState } from 'react';
+import { CloseCommentsBtnIc } from '../../assets';
+import { useComments } from '../../hooks/queries/comments';
+import { CommentType } from '../../type/trackPost/commentType';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface CommentsProp {
   handleClosecomment: (quitCommentAudio: () => void) => void;
@@ -23,32 +16,16 @@ interface CommentsProp {
 const PAGE_LIMIT = 5;
 
 export default function Comments(props: CommentsProp) {
-  const { id } = useParams();
   const { handleClosecomment, trackContextPlaying } = props;
-  const { trackDetail } = useTrackDetail(Number(id));
-  const [comment, setComment] = useRecoilState(commentWriteData);
-  const { uploadComment, isLoading } = useUploadComment();
-  const { trackComments, fetchNextPage, hasNextPage } = useComments({
+  const { trackComments } = useComments({
     limit: PAGE_LIMIT,
-    trackId: Number(id),
+    trackId: -1,
   });
-  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
+  const { quitAudioForMovePage } = PlayUseContext({ scope: 'comments' });
   const [playingTrack, setPLayingTrack] = useState<CommentType['commentId'] | null>(null);
-  const { quitAudioForMovePage } = useContext(CommentsPlayerContext);
-  const navigate = useNavigate();
 
   function selectTrack(trackId: CommentType['commentId']) {
     setPLayingTrack(trackId);
-  }
-
-  function handleUploadComment() {
-    if (!blockAccess()) {
-      if (comment?.commentAudioFile && comment?.commentContent?.length > 0) {
-        uploadComment({ trackId: Number(id), formData: comment });
-      }
-    } else {
-      navigate('/login');
-    }
   }
 
   useEffect(() => {
@@ -62,17 +39,13 @@ export default function Comments(props: CommentsProp) {
   return (
     <>
       <CommentLayout>
-        {isLoading && <Loading />}
         <CloseCommentsBtnIcon
           onClick={() => {
             handleClosecomment(quitAudioForMovePage);
           }}
         />
         <CommentWrite isUpdate={false} />
-        <AddCommentIconWrapper>
-          {!trackDetail?.trackClosed ? <AddCommentIcon onClick={handleUploadComment} /> : <ClosedAddCommentIcon />}
-        </AddCommentIconWrapper>
-        {trackComments?.map((eachComment: CommentType) => (
+        {trackComments.commentList?.map((eachComment: CommentType) => (
           <CommentBox
             key={eachComment?.commentId}
             eachComment={eachComment}
@@ -80,16 +53,10 @@ export default function Comments(props: CommentsProp) {
             selectTrack={selectTrack}
           />
         ))}
-        <Observer ref={observerRef} />
       </CommentLayout>
     </>
   );
 }
-
-const Observer = styled.div`
-  width: 100%;
-  height: 10px;
-`;
 
 const CloseCommentsBtnIcon = styled(CloseCommentsBtnIc)`
   width: 20rem;
@@ -97,22 +64,4 @@ const CloseCommentsBtnIcon = styled(CloseCommentsBtnIc)`
   margin-bottom: 2.7rem;
 
   cursor: pointer;
-`;
-
-const AddCommentIcon = styled(AddCommentIc)`
-  width: 19.9rem;
-  margin-top: 1.9rem;
-  margin-bottom: 1.4rem;
-  cursor: pointer;
-`;
-
-const ClosedAddCommentIcon = styled(ClosedAddCommentIc)`
-  width: 19.9rem;
-  margin-top: 1.9rem;
-  margin-bottom: 1.4rem;
-`;
-
-const AddCommentIconWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;

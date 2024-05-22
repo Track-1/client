@@ -1,12 +1,8 @@
-import { createContext, PropsWithChildren, ReactElement, useState } from "react";
-import { useContextScope } from "../../hooks/common/useContextScope";
-import { CheckBoxProps, IndicatorProps, LabelProps } from "../../type/common/checkbox";
-import { getCustomElement } from "../../utils/common/compound";
-import styled from "styled-components";
-
-const DefaultIndocator = styled.input<{ isChecked: boolean }>``;
-
-const DefaultLabel = styled.label<{ isChecked: boolean }>``;
+import styled from 'styled-components';
+import { createContext, PropsWithChildren, ReactElement, useState } from 'react';
+import { useContextScope } from '../../hooks/common/useContextScope';
+import { CheckBoxProps, IndicatorProps, LabelProps } from '../../type/common/checkbox';
+import { getCustomElement } from '../../utils/common/compound';
 
 type CheckBoxContextType = {
   isChecked: boolean;
@@ -17,7 +13,7 @@ type CheckBoxContextType = {
 const CheckBoxContext = createContext<CheckBoxContextType>({
   isChecked: false,
   check: (externalFn: any) => {},
-  id: "",
+  id: '',
 });
 
 export function CheckBoxRoot(props: PropsWithChildren<CheckBoxProps>) {
@@ -47,7 +43,7 @@ export function Indicator(props: PropsWithChildren<IndicatorProps>) {
       ...restProps,
       isChecked,
       onClick: check,
-      type: "checkbox",
+      type: 'checkbox',
       id: id,
     });
   }
@@ -66,12 +62,17 @@ export function Label(props: PropsWithChildren<LabelProps>) {
   if (asChild) {
     return getCustomElement(children as ReactElement, { ...restProps, htmlFor: id, isChecked });
   }
+
   return (
     <DefaultLabel htmlFor={id} isChecked={isChecked}>
       {children}
     </DefaultLabel>
   );
 }
+
+const DefaultIndocator = styled.input<{ isChecked: boolean }>``;
+
+const DefaultLabel = styled.label<{ isChecked: boolean }>``;
 
 export const CheckBox = Object.assign(CheckBoxRoot, {
   Indicator,

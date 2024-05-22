@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { UserPortfolioType } from "../../type/profile";
-import HashTag from "../profile/hashtag";
+import styled from 'styled-components';
+import HashTag from '../profile/hashtag';
+import { UserPortfolioType } from '../../type/profile';
 
 interface MusicInformationProps {
   portfolio: UserPortfolioType;
@@ -49,12 +49,6 @@ const InformContent = styled.p`
   word-wrap: break-word;
 
   margin-bottom: 2.4rem;
-`;
-
-const InformTag = styled.div<{ textLength: number }>`
-  display: flex;
-
-  padding: 0 1.5rem;
 `;
 
 const InformTagWrapper = styled.div`

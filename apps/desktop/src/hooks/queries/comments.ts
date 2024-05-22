@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { deleteComment, getComments, patchComment, postComment } from '../../api/comments';
 import { QUERIES_KEY } from '../../core/common/queriesKey';
@@ -8,28 +8,12 @@ import { CommentDataType } from '../../type/trackPost/commentDataType';
 import useUploadAudioFile from '../common/useUploadAudioFile';
 
 export function useComments(params: Omit<CommentsRequest, 'page'>) {
-  const fetchVocals = async (pageParams: number) => {
-    const response = await getComments({ ...params, page: pageParams, trackId: params.trackId });
-
-    return { response, nextPage: pageParams + 1 };
-  };
-
-  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    QUERIES_KEY.GET_TRACK_COMMENT,
-    ({ pageParam = 1 }) => fetchVocals(pageParam),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.response.length === 0 ? undefined : lastPage.nextPage;
-      },
-    }
-  );
-
-  const trackComments = data?.pages.flatMap(({ response }) => response.flatMap(({ commentList }) => commentList));
+  const { data, ...restValues } = useQuery(QUERIES_KEY.GET_TRACK_COMMENT, getComments, {
+    staleTime: Infinity,
+  });
 
   return {
-    trackComments,
-    fetchNextPage,
-    hasNextPage,
+    trackComments: data,
     ...restValues,
   };
 }
@@ -40,7 +24,7 @@ export function useUploadComment() {
   const { resetAudio } = useUploadAudioFile();
 
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ trackId, formData }: { trackId: number; formData: CommentDataType }) =>
+    mutationFn: ({ trackId, formData }: { trackId: string; formData: CommentDataType }) =>
       postComment(trackId, formData),
     onSuccess: () => {
       resetAudio();
@@ -60,16 +44,16 @@ export function useUploadComment() {
 export function useEditComment(setIsEdit: (value: React.SetStateAction<boolean>) => void) {
   const queryClient = useQueryClient();
   const resetComment = useResetRecoilState(commentUpdateData);
-  const [editId, setEditId] = useRecoilState(editSelectId);
+  const [, setEditId] = useRecoilState(editSelectId);
   const { resetAudio } = useUploadAudioFile();
 
   const { mutate, ...restValues } = useMutation({
-    mutationFn: ({ commentId, formData }: { commentId: number; formData: CommentDataType }) =>
+    mutationFn: ({ commentId, formData }: { commentId: string; formData: CommentDataType }) =>
       patchComment(commentId, formData),
     onSuccess: () => {
       resetAudio();
       setIsEdit(false);
-      setEditId(-1);
+      setEditId('');
       resetComment();
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
     },
@@ -85,12 +69,12 @@ export function useEditComment(setIsEdit: (value: React.SetStateAction<boolean>)
 
 export function useDeleteComment() {
   const queryClient = useQueryClient();
-  const [editId, setEditId] = useRecoilState(editSelectId);
+  const [, setEditId] = useRecoilState(editSelectId);
 
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (commentId: number) => deleteComment(commentId),
+    mutationFn: (commentId: string) => deleteComment(commentId),
     onSuccess: () => {
-      setEditId(-1);
+      setEditId('');
       queryClient.invalidateQueries(QUERIES_KEY.GET_TRACK_COMMENT);
     },
     onError: (error) => {

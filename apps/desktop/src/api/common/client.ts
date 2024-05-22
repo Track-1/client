@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { getCookie, removeCookie, setCookie } from '../../utils/common/cookie';
 
 //서버통신 함수

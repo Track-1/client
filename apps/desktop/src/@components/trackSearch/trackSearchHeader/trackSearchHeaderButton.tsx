@@ -1,6 +1,6 @@
+import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import { RightArrorIc } from '../../../assets';
 import { ROLE } from '../../../core/common/roleType';
 import { loginUserData } from '../../../recoil/common/loginUserData';
@@ -8,9 +8,7 @@ import { checkIsLogin } from '../../../utils/common/checkIsLogined';
 
 export default function TrackSearchHeaderButton() {
   const userData = useRecoilValue(loginUserData);
-
   const prevURL = useLocation().pathname;
-
   const navigate = useNavigate();
 
   function handleMoveToProfile() {

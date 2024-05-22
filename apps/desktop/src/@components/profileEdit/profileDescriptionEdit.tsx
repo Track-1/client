@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { DescriptionInput } from "../@common/descriptionInput";
-import InputContainer from "../@common/inputContainer";
+import styled from 'styled-components';
+import InputContainer from '../@common/form/inputContainer';
+import { TEXT_LIMIT } from '../../core/common/textLimit';
+import { DescriptionInput } from './descriptionInput';
 
 export default function ProfileDescriptionEdit() {
   return (

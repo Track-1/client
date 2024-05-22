@@ -1,50 +1,46 @@
-import { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { PortfolioPauseIc, PortfolioPlayIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
-import { useGetVocalProfile } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import { UserPortfolioType } from "../../type/profile";
+import styled from 'styled-components';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { PortfolioPauseIc, PortfolioPlayIc } from '../../assets';
+import { useGetVocalProfile } from '../../hooks/queries/mypage';
+import { UserPortfolioType } from '../../type/profile';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface VocalBigPortfolioProps {
   vocalPortfolios: UserPortfolioType;
   isFirst: boolean;
-  playingTrack: UserPortfolioType["portfolioId"] | null;
-  selectTrack: (trackId: UserPortfolioType["portfolioId"]) => void;
+  playingTrack: UserPortfolioType['portfolioId'] | null;
+  selectTrack: (trackId: UserPortfolioType['portfolioId']) => void;
 }
 
 export default function VocalPortfolio(props: VocalBigPortfolioProps) {
   const { vocalPortfolios, isFirst, playingTrack, selectTrack } = props;
-  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = useContext(PlayerContext);
+  const { contextPlaying, getPlayerInfo, showPlayer, ...playerContext } = PlayUseContext({});
   const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
     playerContext,
     vocalPortfolios.portfolioAudioFile,
     vocalPortfolios.portfolioId,
     selectTrack,
+    playingTrack
   );
-  const isSelected = playingTrack === vocalPortfolios.portfolioId;
-  const isBig = isFirst || (isSelected && showPlayer);
   const { id } = useParams();
   const { vocalProfile } = useGetVocalProfile(Number(id));
-  const [hoverId, setHoverId] = useRecoilState(hoveredProfileId);
-  const [clickId, setClickId] = useRecoilState(clickedProfileId);
+  const isSelected = playingTrack === vocalPortfolios.portfolioId;
+  const isBig = isFirst || (isSelected && showPlayer);
 
   function handlePlaying(isPause: boolean) {
-    setClickId(vocalPortfolios.portfolioId);
-    isPause ? stopAudioItem() : playAudioItem();
+    if (playingTrack === null) return;
+
+    isPause ? stopAudioItem() : playAudioItem(playingTrack);
   }
 
   function handleHoverTrack() {
     hoverTrack();
-    setHoverId(vocalPortfolios.portfolioId);
   }
 
   function handleUnhoverTrack() {
     unhoverTrack();
-    setHoverId(-1);
   }
 
   useEffect(() => {
@@ -158,7 +154,7 @@ const Title = styled.h1<{ isLight: boolean }>`
   white-space: normal;
 
   color: ${({ theme }) => theme.colors.gray2};
-  display: ${({ isLight }) => (isLight ? "none" : "flex")};
+  display: ${({ isLight }) => (isLight ? 'none' : 'flex')};
 
   ${({ theme }) => theme.fonts.id}
 

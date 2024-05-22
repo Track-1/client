@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import BackgroundImg from "../../assets/image/backgroundImg.png";
-import BackButton from "../@common/backButton";
-import Footer from "../@common/footer";
-import Header from "../@common/header";
-import ForgotPasswordInput from "./forgotPasswordInput";
+import styled from 'styled-components';
+import BackgroundImg from '../../assets/image/backgroundImg.png';
+import BackButton from '../@common/button/backButton';
+import Footer from '../@common/layout/footer';
+import Header from '../@common/layout/header';
+import ForgotPasswordInput from './forgotPasswordInput';
 
 export default function ForgotPasswordContainer() {
   return (
     <>
       <Header>
-        <BackButton staticPrevURL={"/login"} />
+        <BackButton staticPrevURL={'/login'} />
       </Header>
       <MainContainer>
         <BackgroundImage src={BackgroundImg} alt="배경이미지" />

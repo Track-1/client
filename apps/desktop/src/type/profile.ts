@@ -1,6 +1,6 @@
-import { FieldValues, UseFieldArrayAppend, UseFieldArrayRemove, UseFormGetValues } from "react-hook-form";
-import { CategoryType, UpperCategoryType } from "./common/category";
-import { UserType } from "./common/userType";
+import { FieldValues, UseFieldArrayAppend, UseFieldArrayRemove, UseFormGetValues } from 'react-hook-form';
+import { CategoryType, UpperCategoryType } from './common/category';
+import { UserType } from './common/userType';
 
 export interface ParamsType {
   page: number;
@@ -37,7 +37,7 @@ export interface UserProfileType {
 }
 
 export interface UserPortfolioType {
-  portfolioId: number;
+  portfolioId: string;
   portfolioImageFile: string;
   portfolioAudioFile: string;
   portfolioAudioFileName: string;
@@ -49,7 +49,7 @@ export interface UserPortfolioType {
 }
 
 export interface ProducerVocalSearchingType {
-  trackId: number;
+  trackId: string;
   trackImageFile: string;
   trackAudioFile: string;
   trackAudioFileName: string;
@@ -84,12 +84,10 @@ export interface VocalInfoType {
 }
 
 export interface ProducerPortfolioType {
-  hasNextPage: boolean;
   data: UserPortfolioType[];
 }
 
 export interface ProducerVocalSearchingInfoType {
-  hasNextPage: boolean;
   data: ProducerVocalSearchingType[];
 }
 
@@ -107,7 +105,7 @@ export type FormContextType = {
 };
 
 export type FieldArrayType = {
-  append: UseFieldArrayAppend<FieldValues, "hashtag">;
+  append: UseFieldArrayAppend<FieldValues, 'hashtag'>;
   remove: UseFieldArrayRemove;
-  fields: Record<"id", string>[];
+  fields: Record<'id', string>[];
 };

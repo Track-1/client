@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import TextLength from "./textLength";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import TextareaAutosize from "react-textarea-autosize";
-import { useFormContext } from "react-hook-form";
+import styled from 'styled-components';
+import TextareaAutosize from 'react-textarea-autosize';
+import TextLength from './textLength';
+import { TEXT_LIMIT } from '../../core/common/textLimit';
+import { useFormContext } from 'react-hook-form';
 
 export default function UploadTitle() {
   const { register, watch } = useFormContext();
@@ -15,11 +15,11 @@ export default function UploadTitle() {
           placeholder="Please enter a title"
           spellCheck="false"
           maxLength={36}
-          {...register("title", {
+          {...register('title', {
             required: true,
           })}></TitleInput>
         <TextLengthWrapper>
-          <TextLength inputLength={watch("title").length} limit={TEXT_LIMIT.UPLOAD_TITLE} />
+          <TextLength inputLength={watch('title').length} limit={TEXT_LIMIT.UPLOAD_TITLE} />
         </TextLengthWrapper>
       </TitleInputWrapper>
     </Container>

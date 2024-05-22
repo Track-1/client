@@ -1,15 +1,14 @@
 import styled, { CSSProperties } from 'styled-components';
-import Header from '../@common/header';
-import { MainLogoWhiteIc } from '../../assets';
-import MainNav from './mainNav';
-import { useContext } from 'react';
-import { PlayerContext } from '../../context/playerContext';
-import { useNavigate } from 'react-router-dom';
+import Header from '../@common/layout/header';
 import LoginBtn from './loginBtn';
+import MainNav from './mainNav';
+import { MainLogoWhiteIc } from '../../assets';
+import { useNavigate } from 'react-router-dom';
 import { theme } from '../../style/theme';
+import { PlayUseContext } from '../../context/playerContext';
 
 export default function MainHeader() {
-  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { quitAudioForMovePage } = PlayUseContext({});
   const navigate = useNavigate();
 
   function handleMoveHome() {

@@ -1,13 +1,13 @@
-import { Fragment } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { EllipsisIc, VocalPortfolioTitleTextIc } from "../../assets";
-import useUpdateModal from "../../hooks/common/useUpdateModal";
-import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import MusicInformation from "../portfolio/musicInformation";
-import PortfolioUpdateModal from "../portfolio/portfolioUpdateModal";
+import styled from 'styled-components';
+import useUpdateModal from '../../hooks/common/useUpdateModal';
+import MusicInformation from '../portfolio/musicInformation';
+import PortfolioUpdateModal from '../portfolio/portfolioUpdateModal';
+import { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { EllipsisIc, VocalPortfolioTitleTextIc } from '../../assets';
+import { useGetVocalPortfolio } from '../../hooks/queries/mypage';
+import { clickedProfileId, hoveredProfileId } from '../../recoil/common/profile';
 
 interface VocalPortfolioInformProp {
   isMe: boolean | undefined;
@@ -21,24 +21,24 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
   const clickedId = useRecoilValue(clickedProfileId);
   const hoveredId = useRecoilValue(hoveredProfileId);
   const { openUpdateModal, showModal, unShowModal } = useUpdateModal();
-  const { vocalPortfolios, fetchNextPage, hasNextPage } = useGetVocalPortfolio({
+  const { vocalPortfolios } = useGetVocalPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
-
-  if (vocalPortfolios === undefined) return null;
 
   function handleShowUpdateModal() {
     !openUpdateModal ? showModal() : unShowModal();
   }
 
+  if (vocalPortfolios === undefined) return null;
+
   return (
     <InformContainer>
-      {vocalPortfolios?.map((vocalPortfolio, index) => {
+      {vocalPortfolios.userPortfolio.map((vocalPortfolio, index) => {
         return (
           <Fragment key={vocalPortfolio.portfolioId}>
-            {((hoveredId === -1 && clickedId === vocalPortfolio.portfolioId) ||
-              (hoveredId !== -1 && hoveredId === vocalPortfolio.portfolioId)) && (
+            {((hoveredId === '' && clickedId === vocalPortfolio.portfolioId) ||
+              (hoveredId !== '' && hoveredId === vocalPortfolio.portfolioId)) && (
               <>
                 <TitleSection>
                   <TitleIconWrapper>{index === 0 && <VocalPortfolioTitleTextIcon />}</TitleIconWrapper>
@@ -46,11 +46,11 @@ export default function VocalPortfolioInform(props: VocalPortfolioInformProp) {
                   {openUpdateModal && (
                     <PortfolioUpdateModal
                       isTitle={index === 0}
-                      nowTitleId={vocalPortfolios[0].portfolioId}
-                      nowTitleNextId={vocalPortfolios[1]?.portfolioId}
+                      nowTitleId={vocalPortfolios.userPortfolio[0].portfolioId}
+                      nowTitleNextId={vocalPortfolios.userPortfolio[1]?.portfolioId}
                       portfolioId={vocalPortfolio.portfolioId}
                       dataState="vocal portfolio"
-                      clickedPortfolio={vocalPortfolios[index]}
+                      clickedPortfolio={vocalPortfolios.userPortfolio[index]}
                     />
                   )}
                 </TitleSection>

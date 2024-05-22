@@ -29,7 +29,7 @@ export type UserPasswordRequest = UserPasswordType;
 
 export type VerifyCodeRequest = VerifyCodeType;
 
-export type FilteredTrackResponse = DefaultResponseType<FilteredTrackListType[]>;
+export type FilteredTrackResponse = DefaultResponseType<FilteredTrackListType>;
 
 export type TrackDetailResponse = DefaultResponseType<TrackDetailType>;
 
@@ -37,9 +37,9 @@ export type TrackDownloadResponse = DefaultResponseType<TrackDownloadType>;
 
 export type CommentsRequest = CommentsParamsType & { trackId: number };
 
-export type CommentsResponse = DefaultResponseType<CommentsListType[]>;
+export type CommentsResponse = DefaultResponseType<CommentsListType>;
 
-export type FilteredVocalsResponse = DefaultResponseType<FilteredVocalListType[]>;
+export type FilteredVocalsResponse = DefaultResponseType<FilteredVocalListType>;
 
 export type ProducerInfoResponse = DefaultResponseType<ProducerInfoType>;
 

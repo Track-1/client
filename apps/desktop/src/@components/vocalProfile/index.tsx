@@ -1,18 +1,18 @@
-import { useContext, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { ProfileEditBtnIc, UploadButtonIc } from '../../assets';
 import VocalEmptyProfileImg from '../../assets/image/vocalEmptyProfileImg.png';
-import { PlayerContext } from '../../context/playerContext';
 import useUpdateModal from '../../hooks/common/useUpdateModal';
-import { useGetVocalPortfolio, useGetVocalProfile } from '../../hooks/queries/mypage';
-import { clickedProfileId, hoveredProfileId } from '../../recoil/common/profile';
-import BackButton from '../@common/backButton';
+import BackButton from '../@common/button/backButton';
 import Profile from '../profile';
 import VocalPortfolioInform from './vocalPortfolioInform';
 import VocalPortfolioList from './vocalPortfolioList';
 import VocalProfileShadow from './vocalProfileShadow';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
+import { ProfileEditBtnIc, UploadButtonIc } from '../../assets';
+import { useGetVocalPortfolio, useGetVocalProfile } from '../../hooks/queries/mypage';
+import { clickedProfileId, hoveredProfileId } from '../../recoil/common/profile';
+import { PlayUseContext } from '../../context/playerContext';
 
 const PAGE_LIMIT = 5;
 
@@ -26,15 +26,9 @@ export default function VocalProfile() {
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
-  const { openUpdateModal, modalRef, unShowModal } = useUpdateModal();
-  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { unShowModal } = useUpdateModal();
+  const { quitAudioForMovePage } = PlayUseContext({});
   const prevURL = useLocation().state?.prevURL;
-
-  useEffect(() => {
-    resetClickedId();
-    resetHoveredId();
-    unShowModal();
-  }, []);
 
   function handleMoveProfileEditPage() {
     quitAudioForMovePage();
@@ -51,6 +45,12 @@ export default function VocalProfile() {
     });
   }
 
+  useEffect(() => {
+    resetClickedId();
+    resetHoveredId();
+    unShowModal();
+  }, []);
+
   return (
     <>
       <Container>
@@ -63,7 +63,7 @@ export default function VocalProfile() {
         </ProfileSection>
         {vocalProfile?.userSelf && <UploadButtonIcon onClick={hadnleMoveToUpload} />}
         <PortfolioSection>
-          {vocalPortfolios && vocalPortfolios?.length > 0 ? (
+          {vocalPortfolios && vocalPortfolios?.userPortfolio.length > 0 ? (
             <>
               <VocalPortfolioList />
               <VocalPortfolioInform isMe={vocalProfile?.userSelf} />
@@ -71,7 +71,6 @@ export default function VocalProfile() {
           ) : (
             <VocalEmptyProfileImage src={VocalEmptyProfileImg} />
           )}
-
           <VocalProfileShadow />
         </PortfolioSection>
       </Container>

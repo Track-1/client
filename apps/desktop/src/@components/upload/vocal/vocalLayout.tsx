@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
-import styled, { css } from "styled-components";
-import UploadVocalDefaultImg from "../../../assets/image/uploadVocalDefaultImg.png";
-import UploadVocalLayoutImg from "../../../assets/image/uploadVocalLayoutImg.png";
-import { UploadFileChangeIc } from "../../../assets";
-import useFileHover from "../../../hooks/common/useFileHover";
+import styled, { css } from 'styled-components';
+import UploadVocalDefaultImg from '../../../assets/image/uploadVocalDefaultImg.png';
+import UploadVocalLayoutImg from '../../../assets/image/uploadVocalLayoutImg.png';
+import useFileHover from '../../../hooks/common/useFileHover';
+import { ReactNode } from 'react';
+import { UploadFileChangeIc } from '../../../assets';
 
 interface VocalLayoutProps {
   previewImage: string | ArrayBuffer | null;
@@ -14,6 +14,7 @@ interface VocalLayoutProps {
 export default function VocalLayout(props: VocalLayoutProps) {
   const { previewImage, handleUploadImageFile, children } = props;
   const { fileHoverState, changeFileHoverState } = useFileHover();
+
   return (
     <Container>
       <UploadImageContainer>
@@ -21,7 +22,7 @@ export default function VocalLayout(props: VocalLayoutProps) {
           <VocalImageFrame onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
             <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
               <VocalUploadImageLayout
-                src={previewImage === "" ? UploadVocalDefaultImg : previewImage}
+                src={previewImage === '' ? UploadVocalDefaultImg : previewImage}
                 alt="썸네일 이미지"
                 fileHoverState={fileHoverState} //기능 변경해야됨
               />

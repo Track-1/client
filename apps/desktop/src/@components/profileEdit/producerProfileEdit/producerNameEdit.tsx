@@ -1,9 +1,9 @@
-import InputContainer from "../../@common/inputContainer";
-import { NICKNAME_MESSAGE } from "../../../core/signUp/errorMessage";
-import styled from "styled-components";
-import { CHECK_NICKNAME_FORM } from "../../../core/signUp/checkForm";
-import { InputContainer200 } from "../../@common/styledComponents";
-import { UseFormReturn } from "react-hook-form";
+import styled from 'styled-components';
+import InputContainer from '../../@common/form/inputContainer';
+import { NICKNAME_MESSAGE } from '../../../core/signUp/errorMessage';
+import { CHECK_NICKNAME_FORM } from '../../../core/signUp/checkForm';
+import { InputContainer200 } from '../../@common/layout/styledComponents';
+import { UseFormReturn } from 'react-hook-form';
 
 interface ProducerNameEditProps {
   methods: UseFormReturn<
@@ -26,7 +26,7 @@ export default function ProducerNameEdit(props: ProducerNameEditProps) {
       <NickNameInput
         type="text"
         placeholder="Enter your user name"
-        {...register("nickName", {
+        {...register('nickName', {
           pattern: {
             value: CHECK_NICKNAME_FORM,
             message: NICKNAME_MESSAGE.ERROR,
