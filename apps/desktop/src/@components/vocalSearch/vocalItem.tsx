@@ -1,11 +1,108 @@
-import { useContext, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { VocalSearchPlayIc, VocalSearchStopIc } from '../../assets';
-import { PlayerContext } from '../../context/playerContext';
 import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { VocalSearchPlayIc, VocalSearchStopIc } from '../../assets';
 import { FilteredVocalType } from '../../type/vocals';
 import { blockAccess } from '../../utils/common/privateRouter';
+import { PlayUseContext } from '../../context/playerContext';
+
+interface VocalItemProps {
+  vocalInfo: FilteredVocalType;
+  playingTrack: FilteredVocalType['userId'] | null;
+  selectTrack: (trackId: FilteredVocalType['userId']) => void;
+}
+
+export default function VocalItem(props: VocalItemProps) {
+  const { vocalInfo, playingTrack, selectTrack } = props;
+  const navigate = useNavigate();
+  const isSelected = playingTrack === vocalInfo.userId;
+  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } = PlayUseContext({});
+  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
+    playerContext,
+    vocalInfo.userAudioFile,
+    vocalInfo.userId,
+    selectTrack,
+    playingTrack
+  );
+  const prevURL = useLocation().pathname;
+
+  function moveVocalProfilePage() {
+    quitAudioForMovePage();
+    if (blockAccess()) {
+      navigate('/login', {
+        state: {
+          prevURL: prevURL,
+        },
+      });
+    } else {
+      navigate(`/vocal-profile/${vocalInfo.userId}`, {
+        state: {
+          prevURL: prevURL,
+        },
+      });
+    }
+  }
+
+  function handlePlay() {
+    if (vocalInfo.userAudioFile === '') {
+      alert('해당 음원이 존재하지 않습니다!');
+      return;
+    }
+
+    playAudioItem(vocalInfo.userId);
+  }
+
+  useEffect(() => {
+    if (!isSelected) return;
+
+    getPlayerInfo({
+      imageFile: vocalInfo.userImageFile,
+      title: vocalInfo.userTitle,
+      userName: vocalInfo.userName,
+    });
+
+    return () => {
+      quitAudioForMovePage();
+    };
+  }, [playingTrack]);
+
+  return (
+    <VocalContainer>
+      <UsernameInformWrapper onClick={moveVocalProfilePage}>
+        <Username>{vocalInfo.userName}</Username>
+      </UsernameInformWrapper>
+      <CategoryTextWrapper>
+        <CategoryText>{vocalInfo.userCategory[0]}</CategoryText>
+        <CategoryNum>+{vocalInfo.userCategoryNum}</CategoryNum>
+      </CategoryTextWrapper>
+      <MusicProfileWrapper
+        onMouseLeave={unhoverTrack}
+        onMouseEnter={hoverTrack}
+        isHovered={isHovered || (isSelected && showPlayer)}>
+        <GradientLine>
+          <AlbumCoverImg
+            src={vocalInfo.userImageFile}
+            alt="앨범자켓사진"
+            isHovered={isHovered || (isSelected && showPlayer)}
+          />
+        </GradientLine>
+        <GradientProfile isHovered={isHovered || (isSelected && showPlayer)}></GradientProfile>
+        {(isHovered || (isSelected && showPlayer)) &&
+          (innerPlaying && contextPlaying ? (
+            <StopButton onClick={stopAudioItem} />
+          ) : (
+            <PlayButton onClick={() => handlePlay()} />
+          ))}
+      </MusicProfileWrapper>
+      <HashtagContainer>
+        {vocalInfo.userKeyword.map((keyword, idx) => (
+          <Hashtag key={idx}>#{keyword}</Hashtag>
+        ))}
+      </HashtagContainer>
+    </VocalContainer>
+  );
+}
 
 const VocalContainer = styled.div`
   display: inline-block;
@@ -176,98 +273,3 @@ const Hashtag = styled.li`
   border-radius: 2.1rem;
   background-color: ${({ theme }) => theme.colors.gray5};
 `;
-
-interface VocalItemProps {
-  vocalInfo: FilteredVocalType;
-  playingTrack: FilteredVocalType['userId'] | null;
-  selectTrack: (trackId: FilteredVocalType['userId']) => void;
-}
-
-export default function VocalItem(props: VocalItemProps) {
-  const { vocalInfo, playingTrack, selectTrack } = props;
-  const navigate = useNavigate();
-  const isSelected = playingTrack === vocalInfo.userId;
-  const { contextPlaying, getPlayerInfo, showPlayer, quitAudioForMovePage, ...playerContext } =
-    useContext(PlayerContext);
-  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
-    playerContext,
-    vocalInfo.userAudioFile,
-    vocalInfo.userId,
-    selectTrack
-  );
-  const prevURL = useLocation().pathname;
-
-  function moveVocalProfilePage() {
-    quitAudioForMovePage();
-    if (blockAccess()) {
-      navigate('/login', {
-        state: {
-          prevURL: prevURL,
-        },
-      });
-    } else {
-      navigate(`/vocal-profile/${vocalInfo.userId}`, {
-        state: {
-          prevURL: prevURL,
-        },
-      });
-    }
-  }
-
-  function handlePlay() {
-    if (vocalInfo.userAudioFile === '') {
-      alert('해당 음원이 존재하지 않습니다!');
-      return;
-    }
-
-    playAudioItem();
-  }
-
-  useEffect(() => {
-    if (!isSelected) return;
-
-    getPlayerInfo({
-      imageFile: vocalInfo.userImageFile,
-      title: vocalInfo.userTitle,
-      userName: vocalInfo.userName,
-    });
-  }, [playingTrack]);
-
-  return (
-    <VocalContainer>
-      <UsernameInformWrapper onClick={moveVocalProfilePage}>
-        <Username>{vocalInfo.userName}</Username>
-      </UsernameInformWrapper>
-
-      <CategoryTextWrapper>
-        <CategoryText>{vocalInfo.userCategory[0]}</CategoryText>
-        <CategoryNum>+{vocalInfo.userCategoryNum}</CategoryNum>
-      </CategoryTextWrapper>
-
-      <MusicProfileWrapper
-        onMouseLeave={unhoverTrack}
-        onMouseEnter={hoverTrack}
-        isHovered={isHovered || (isSelected && showPlayer)}>
-        <GradientLine>
-          <AlbumCoverImg
-            src={vocalInfo.userImageFile}
-            alt="앨범자켓사진"
-            isHovered={isHovered || (isSelected && showPlayer)}
-          />
-        </GradientLine>
-        <GradientProfile isHovered={isHovered || (isSelected && showPlayer)}></GradientProfile>
-        {(isHovered || (isSelected && showPlayer)) &&
-          (innerPlaying && contextPlaying ? (
-            <StopButton onClick={stopAudioItem} />
-          ) : (
-            <PlayButton onClick={handlePlay} />
-          ))}
-      </MusicProfileWrapper>
-      <HashtagContainer>
-        {vocalInfo.userKeyword.map((keyword, idx) => (
-          <Hashtag key={idx}>#{keyword}</Hashtag>
-        ))}
-      </HashtagContainer>
-    </VocalContainer>
-  );
-}

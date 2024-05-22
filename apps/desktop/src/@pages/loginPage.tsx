@@ -1,7 +1,7 @@
-import Layout from '../@components/@common/Layout';
-import BackButton from '../@components/@common/backButton';
-import ConventionModal from '../@components/@common/conventionModal';
-import Header from '../@components/@common/header';
+import Layout from '../@components/@common/layout/layout';
+import BackButton from '../@components/@common/button/backButton';
+import ConventionModal from '../@components/@common/modal/conventionModal';
+import Header from '../@components/@common/layout/header';
 import LoginForm from '../@components/login/loginForm';
 import useConventionModal from '../hooks/common/useConventionModal';
 import { checkIsCookieNull, checkIsLogin } from '../utils/common/checkIsLogined';

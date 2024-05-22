@@ -1,3 +1,5 @@
+import useModal from '../common/useModal';
+import useUpdateModal from '../common/useUpdateModal';
 import { useMutation, useQueryClient } from 'react-query';
 import {
   deleteProducerPortfolio,
@@ -10,145 +12,60 @@ import {
   postVocalPortfolio,
 } from '../../api/mypage';
 import { MyPageTitleParamsType } from '../../type/mypage';
-
-import { useInfiniteQuery } from 'react-query';
-
-import { getProducerPortfolio, getProducerVocalSearching, getVocalInfo } from '../../api/profile';
+import { getProducerPortfolio } from '../../api/profile';
 import { PortfoliosParamsType } from '../../type/vocals';
-
 import { useQuery } from 'react-query';
 import { getVocalProfile } from '../../api/profile';
-
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { getProducerProfile } from '../../api/profile';
-import useModal from '../common/useModal';
-import useUpdateModal from '../common/useUpdateModal';
 import { loginUserData } from '../../recoil/common/loginUserData';
 
 export function useGetProducerProfile(userId: number) {
-  const { data: producerProfile, ...restProps } = useQuery(
-    'getProducerProfile',
-    () =>
-      getProducerProfile({
-        userId: userId,
-        page: 1,
-        limit: 1,
-      }),
-    {
-      onError: (err) => {
-        // console.log(err);
-      },
-      enabled: userId > 0,
-    }
-  );
+  const { data, ...restProps } = useQuery('getProducerProfile', () => getProducerProfile(), {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
-  return { producerProfile, ...restProps };
+  return { data, ...restProps };
 }
 
 export function useGetProducerPortfolio(params: Omit<PortfoliosParamsType, 'page'>) {
-  const fetchVocals = async (pageParams: number) => {
-    const response = await getProducerPortfolio({ ...params, page: pageParams, userId: params.userId });
-
-    return { response, nextPage: pageParams + 1 };
-  };
-
-  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    'producerPortfolios',
-    ({ pageParam = 1 }) => fetchVocals(pageParam),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
-      },
-    }
-  );
-
-  const producerPortfolios = data?.pages.flatMap((data) =>
-    data.response.data.filter((producerPortfolio: any) => producerPortfolio)
-  );
+  const { data, ...restValues } = useQuery('producerPortfolios', getProducerPortfolio);
 
   return {
-    producerPortfolios,
-    fetchNextPage,
-    hasNextPage,
+    data: data?.portfolioList.data,
     ...restValues,
   };
 }
 
 export function useGetProducerVocalSearching(params: Omit<PortfoliosParamsType, 'page'>) {
-  const fetchVocals = async (pageParams: number) => {
-    const response = await getProducerVocalSearching({ ...params, page: pageParams, userId: params.userId });
-
-    return { response, nextPage: pageParams + 1 };
-  };
-
-  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    'producerVocalSearchings',
-    ({ pageParam = 1 }) => fetchVocals(pageParam),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
-      },
-    }
-  );
-
-  const producerVocalSearchings = data?.pages.flatMap((data) =>
-    data.response.data.filter((producerVocalSearching: any) => producerVocalSearching)
-  );
+  const { data, ...restValues } = useQuery('producerVocalSearchings', getProducerPortfolio);
 
   return {
-    producerVocalSearchings,
-    fetchNextPage,
-    hasNextPage,
+    data: data?.trackList.data,
     ...restValues,
   };
 }
 
 export function useGetVocalPortfolio(params: Omit<PortfoliosParamsType, 'page'>) {
-  const fetchVocals = async (pageParams: number) => {
-    const response = await getVocalInfo({ ...params, page: pageParams, userId: params.userId });
-
-    return { response, nextPage: pageParams + 1 };
-  };
-
-  const { data, fetchNextPage, hasNextPage, ...restValues } = useInfiniteQuery(
-    'vocalPortfolios',
-    ({ pageParam = 1 }) => fetchVocals(pageParam),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.response.data.length === 0 ? undefined : lastPage.nextPage;
-      },
-    }
-  );
-
-  const vocalPortfolios = data?.pages.flatMap((data) => data.response.data.filter((vocalPortfolio) => vocalPortfolio));
+  const { data, ...restValues } = useQuery('vocalPortfolios', getVocalProfile);
 
   return {
-    vocalPortfolios,
-    fetchNextPage,
-    hasNextPage,
+    vocalPortfolios: data,
     ...restValues,
   };
 }
 
 export function useGetVocalProfile(userId: number) {
-  const { data: vocalProfile, ...restProps } = useQuery(
-    ['getVocalProfile'],
-    () =>
-      getVocalProfile({
-        userId: userId,
-        page: 1,
-        limit: 1,
-      }),
-    {
-      onError: (err) => {
-        console.log(err);
-      },
-      enabled: userId > 0,
-    }
-  );
+  const { data, ...restProps } = useQuery(['getVocalProfile'], getVocalProfile, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
-  return { vocalProfile, ...restProps };
+  return { vocalProfile: data, ...restProps };
 }
 
 export function useUploadProducerPortfolio() {
@@ -292,7 +209,7 @@ export function useDeleteProducerPortfolio() {
   const queryClient = useQueryClient();
 
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (portfolioId: number) => deleteProducerPortfolio(portfolioId),
+    mutationFn: (portfolioId: string) => deleteProducerPortfolio(portfolioId),
     onSuccess: () => {
       queryClient.invalidateQueries('producerVocalSearchings');
       queryClient.invalidateQueries('producerPortfolios');
@@ -312,7 +229,7 @@ export function useDeleteVocalPortfolio() {
   const queryClient = useQueryClient();
 
   const { mutate, ...restValues } = useMutation({
-    mutationFn: (portfoiloId: number) => deleteVocalPortfolio(portfoiloId),
+    mutationFn: (portfoiloId: string) => deleteVocalPortfolio(portfoiloId),
     onSuccess: () => {
       queryClient.invalidateQueries('vocalPortfolios');
       unShowModal();
@@ -325,12 +242,12 @@ export function useDeleteVocalPortfolio() {
   };
 }
 
-export async function deleteFirstVocal(params: MyPageTitleParamsType, portfolioId: number) {
+export async function deleteFirstVocal(params: MyPageTitleParamsType, portfolioId: string) {
   await patchVocalTitle(params);
   return deleteVocalPortfolio(portfolioId);
 }
 
-export async function deleteFirstProducer(params: MyPageTitleParamsType, portfolioId: number) {
+export async function deleteFirstProducer(params: MyPageTitleParamsType, portfolioId: string) {
   await patchProducerTitle(params);
   return deleteProducerPortfolio(portfolioId);
 }

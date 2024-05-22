@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { useGetVocalProfile } from "../../hooks/queries/mypage";
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useGetVocalProfile } from '../../hooks/queries/mypage';
 
 export default function VocalProfileImage() {
   const { vocalId } = useParams();

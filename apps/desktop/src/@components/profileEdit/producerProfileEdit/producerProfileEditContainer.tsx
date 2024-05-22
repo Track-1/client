@@ -1,41 +1,41 @@
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from "../../../assets";
-import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
-import { useEditProdcerProfile } from "../../../hooks/queries/profile";
-import Header from "../../@common/header";
-import ProducerImageEdit from "./producerImageEdit";
-import ProfileDescriptionEdit from "../profileDescriptionEdit";
-import ProfileHashtagEdit from "../profileHashtagEdit";
-import { CategoryIdType, UpperCategoryType } from "../../../type/common/category";
-import BackButton from "../../@common/backButton";
-import { useGetProducerProfile } from "../../../hooks/queries/mypage";
-import { useParams } from "react-router-dom";
-import ProfileNickname from "../../@common/profileNickname";
-import ProfileContact from "../../@common/profileContact";
-import { CategoryId } from "../../../core/common/categories";
-import { convertKeyToValue } from "../../../utils/common/convertKeyToValue";
-import ProfileSelectCategoryEdit from "../profileSelectCategoryEdit";
+import styled from 'styled-components';
+import useUploadImageFile from '../../../hooks/common/useUploadImageFile';
+import Header from '../../@common/layout/header';
+import ProducerImageEdit from './producerImageEdit';
+import ProfileDescriptionEdit from '../profileDescriptionEdit';
+import ProfileHashtagEdit from '../profileHashtagEdit';
+import BackButton from '../../@common/button/backButton';
+import ProfileContact from '../profileContact';
+import ProfileSelectCategoryEdit from '../profileSelectCategoryEdit';
+import ProfileNickname from '../profileNickname';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from '../../../assets';
+import { useEditProdcerProfile } from '../../../hooks/queries/profile';
+import { CategoryIdType, UpperCategoryType } from '../../../type/common/category';
+import { useGetProducerProfile } from '../../../hooks/queries/mypage';
+import { useParams } from 'react-router-dom';
+import { CategoryId } from '../../../core/common/categories';
+import { convertKeyToValue } from '../../../utils/common/convertKeyToValue';
 
 export default function ProducerProfileEditContainer() {
   const { id } = useParams();
   const { editProducerProfile } = useEditProdcerProfile();
-  const prevUserInfo = useGetProducerProfile(Number(id)).producerProfile?.userProfile;
+  const prevUserInfo = useGetProducerProfile(Number(id)).data?.userProfile;
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile(prevUserInfo?.userImageFile);
   const [imageFileSame, setImageFileSame] = useState(true);
 
   const methods = useForm({
     defaultValues: {
-      nickName: prevUserInfo?.userName ?? "",
-      contact: prevUserInfo?.userContact ?? "",
+      nickName: prevUserInfo?.userName ?? '',
+      contact: prevUserInfo?.userContact ?? '',
       category: prevUserInfo?.userCategory
         ? convertKeyToValue<UpperCategoryType, CategoryIdType>(prevUserInfo?.userCategory, CategoryId)
         : [],
       hashtag: prevUserInfo?.userKeyword ?? [],
-      description: prevUserInfo?.userIntroduction ?? "",
+      description: prevUserInfo?.userIntroduction ?? '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function ProducerProfileEditContainer() {
                   userKeyword: hashtag.filter((item) => item.length > 0),
                   userIntroduction: description,
                   userImageFileSame: imageFileSame,
-                }),
+                })
               )}
               type="button">
               <UploadActiveSaveButtonIcon />
@@ -73,7 +73,6 @@ export default function ProducerProfileEditContainer() {
             <ProducerImageEdit previewImage={previewImage} handleUploadImageFile={handleUploadImageFile} />
             <ProfileNickname />
           </ProfileEditTitle>
-
           <ProfileEditInfo>
             <ProfileEditInfoWrapper>
               <ProfileContact />

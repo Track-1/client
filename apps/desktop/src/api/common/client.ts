@@ -1,9 +1,8 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { getCookie, removeCookie, setCookie } from '../../utils/common/cookie';
 
 //서버통신 함수
 export const client = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {},
   withCredentials: true,
 });

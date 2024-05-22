@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { useGetProducerProfile } from "../../hooks/queries/mypage";
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useGetProducerProfile } from '../../hooks/queries/mypage';
 
 export default function ProducerProfileImage() {
   const { producerId } = useParams();
-  const { producerProfile } = useGetProducerProfile(Number(producerId));
+  const { data: producerProfile } = useGetProducerProfile(Number(producerId));
 
   return (
     <Container>

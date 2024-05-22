@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   ProfileEditSleepAcountTextIc,
   ProfileEditSleepAcountTitleIc,
   ProfileEditSleeperButtonIc,
   ProfileEditActiveButtonIc,
-} from "../../../assets";
+} from '../../../assets';
 
 interface PropsType {
   isSleep: boolean;

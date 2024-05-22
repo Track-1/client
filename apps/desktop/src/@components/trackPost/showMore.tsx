@@ -1,13 +1,11 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { EditBtnIc } from "../../assets";
-import { useTrackDetail } from "../../hooks/queries/tracks";
-import EditDropDown from "./editDropDown";
+import styled from 'styled-components';
+import EditDropDown from './editDropDown';
+import { useState } from 'react';
+import { EditBtnIc } from '../../assets';
+import { useTrackDetail } from '../../hooks/queries/tracks';
 
 export default function ShowMore() {
-  const { id } = useParams();
-  const { trackDetail } = useTrackDetail(Number(id));
+  const { trackDetail } = useTrackDetail();
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   function handleOpenEdit() {

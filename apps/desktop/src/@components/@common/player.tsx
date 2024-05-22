@@ -1,9 +1,101 @@
-import { useContext, useEffect } from "react";
-import styled from "styled-components";
-import { PlayerPlayIc, PlayerQuitIc, PlayerStopIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
-import useControlPlayer from "../../hooks/common/useControlPlayer";
-import { CommentsPlayerContext } from "../trackPost";
+import styled from 'styled-components';
+import useControlPlayer from '../../hooks/common/useControlPlayer';
+import { useEffect } from 'react';
+import { PlayerPlayIc, PlayerQuitIc, PlayerStopIc } from '../../assets';
+import { PlayUseContext } from '../../context/playerContext';
+
+interface PlayerProps {
+  scope?: string;
+}
+
+export default function Player({ scope }: PlayerProps) {
+  const {
+    playAudio,
+    stopAudio,
+    quitAudio,
+    closeAudioPlayer,
+    playContextState,
+    stopContextState,
+    showPlayer,
+    contextPlaying,
+    audio,
+    playerInfo,
+  } = PlayUseContext({ scope: scope });
+
+  const {
+    progress,
+    isPlaybarHovered,
+    playBar,
+    currentTimeText,
+    totalTimetext,
+    controlAudio,
+    downMouse,
+    upMouse,
+    moveAudio,
+    hoverPlaybar,
+    detachPlyabar,
+  } = useControlPlayer(audio, contextPlaying);
+
+  window.addEventListener('popstate', quit);
+
+  function play() {
+    playContextState();
+    playAudio();
+  }
+
+  function pause() {
+    stopContextState();
+    stopAudio();
+  }
+
+  function quit() {
+    quitAudio();
+    closeAudioPlayer();
+  }
+
+  useEffect(() => {
+    if (!currentTimeText || !totalTimetext) return;
+
+    if (currentTimeText === totalTimetext) {
+      stopContextState();
+    }
+  }, [currentTimeText]);
+
+  return showPlayer ? (
+    <PlayerContainer>
+      <PlayerWrapper>
+        <Pointer progress={progress} isActive={isPlaybarHovered}></Pointer>
+        <PlayerBarWrapper
+          ref={playBar}
+          onClick={controlAudio}
+          onMouseDown={downMouse}
+          onMouseUp={upMouse}
+          onMouseMove={moveAudio}
+          onMouseOver={hoverPlaybar}
+          onMouseLeave={detachPlyabar}
+          isActive={isPlaybarHovered}>
+          <Playbar progress={progress} isActive={isPlaybarHovered} />
+        </PlayerBarWrapper>
+
+        <PlayerInformWrapper>
+          <ThumbnailWrapper>
+            <Thumbnail src={playerInfo?.imageFile} alt="썸네일 이미지" />
+          </ThumbnailWrapper>
+          <PlayerTitleText>{playerInfo?.title}</PlayerTitleText>
+          <PlayerNameText>{playerInfo?.userName}</PlayerNameText>
+          {contextPlaying ? <PauseIcon onClick={pause} /> : <PlayIcon onClick={play} />}
+          <PlayerInformText width={10} whiteText={true}>
+            {currentTimeText}
+          </PlayerInformText>
+          <PlayerInformText width={30} whiteText={false}>
+            {totalTimetext}
+          </PlayerInformText>
+          <QuitIcon onClick={quit} />
+        </PlayerInformWrapper>
+      </PlayerWrapper>
+    </PlayerContainer>
+  ) : null;
+}
 
 const PlayerContainer = styled.section`
   position: fixed;
@@ -64,7 +156,7 @@ const Pointer = styled.div<{ progress: number; isActive: boolean }>`
 
   pointer-events: none;
 
-  display: ${({ isActive }) => !isActive && "none"};
+  display: ${({ isActive }) => !isActive && 'none'};
 `;
 
 const PlayerBarWrapper = styled.div<{ isActive: boolean }>`
@@ -143,94 +235,3 @@ const QuitIcon = styled(PlayerQuitIc)`
 
   pointer-events: auto;
 `;
-
-interface PlayerProps {
-  comment?: boolean;
-}
-
-export default function Player({ comment }: PlayerProps) {
-  const {
-    playAudio,
-    stopAudio,
-    quitAudio,
-    closeAudioPlayer,
-    playContextState,
-    stopContextState,
-    showPlayer,
-    contextPlaying,
-    audio,
-    playerInfo,
-  } = useContext(comment ? CommentsPlayerContext : PlayerContext);
-
-  const {
-    progress,
-    isPlaybarHovered,
-    playBar,
-    currentTimeText,
-    totalTimetext,
-    controlAudio,
-    downMouse,
-    upMouse,
-    moveAudio,
-    hoverPlaybar,
-    detachPlyabar,
-  } = useControlPlayer(audio, contextPlaying);
-
-  window.addEventListener("popstate", quit);
-
-  function play() {
-    playContextState();
-    playAudio();
-  }
-
-  function pause() {
-    stopContextState();
-    stopAudio();
-  }
-
-  function quit() {
-    quitAudio();
-    closeAudioPlayer();
-  }
-
-  useEffect(() => {
-    if (currentTimeText === totalTimetext) {
-      stopContextState();
-    }
-  }, [currentTimeText]);
-
-  return showPlayer ? (
-    <PlayerContainer>
-      <PlayerWrapper>
-        <Pointer progress={progress} isActive={isPlaybarHovered}></Pointer>
-        <PlayerBarWrapper
-          ref={playBar}
-          onClick={controlAudio}
-          onMouseDown={downMouse}
-          onMouseUp={upMouse}
-          onMouseMove={moveAudio}
-          onMouseOver={hoverPlaybar}
-          onMouseLeave={detachPlyabar}
-          isActive={isPlaybarHovered}>
-          <Playbar progress={progress} isActive={isPlaybarHovered} />
-        </PlayerBarWrapper>
-
-        <PlayerInformWrapper>
-          <ThumbnailWrapper>
-            <Thumbnail src={playerInfo?.imageFile} alt="썸네일 이미지" />
-          </ThumbnailWrapper>
-          <PlayerTitleText>{playerInfo?.title}</PlayerTitleText>
-          <PlayerNameText>{playerInfo?.userName}</PlayerNameText>
-          {contextPlaying ? <PauseIcon onClick={pause} /> : <PlayIcon onClick={play} />}
-          <PlayerInformText width={10} whiteText={true}>
-            {currentTimeText}
-          </PlayerInformText>
-          <PlayerInformText width={30} whiteText={false}>
-            {totalTimetext}
-          </PlayerInformText>
-          <QuitIcon onClick={quit} />
-        </PlayerInformWrapper>
-      </PlayerWrapper>
-    </PlayerContainer>
-  ) : null;
-}

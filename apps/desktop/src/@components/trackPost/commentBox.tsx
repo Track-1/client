@@ -1,22 +1,21 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import styled, { css } from "styled-components";
-import { CommentsPlayerContext } from ".";
-import { CommentUpldatCompleteIc, PlayerPlayIc, PlayerStopIc, QuitIc } from "../../assets";
-import usePlaySelectedTrack from "../../hooks/common/usePlaySelectedTrack";
-import { useEditComment } from "../../hooks/queries/comments";
-import { useTrackDetail } from "../../hooks/queries/tracks";
-import { commentUpdateData } from "../../recoil/trackPost/commentWriteData";
-import { CommentType } from "../../type/trackPost/commentType";
-import Loading from "../@common/loading";
-import CommentInfo from "./commentInfo";
-import CommentWrite from "./commentWrite";
+import styled, { css } from 'styled-components';
+import usePlaySelectedTrack from '../../hooks/common/usePlaySelectedTrack';
+import Loading from '../@common/loading';
+import CommentInfo from './commentInfo';
+import CommentWrite from './commentWrite';
+import { useEffect, useState } from 'react';
+import { CommentUpldatCompleteIc, PlayerPlayIc, PlayerStopIc, QuitIc } from '../../assets';
+import { useEditComment } from '../../hooks/queries/comments';
+import { CommentType } from '../../type/trackPost/commentType';
+import { PlayUseContext } from '../../context/playerContext';
+import { useTrackDetail } from '../../hooks/queries/tracks';
+import { useRecoilState } from 'recoil';
+import { commentUpdateData } from '../../recoil/trackPost/commentWriteData';
 
 interface CommentBoxProps {
   eachComment: CommentType;
-  playingTrack: CommentType["commentId"] | null;
-  selectTrack: (trackId: CommentType["commentId"]) => void;
+  playingTrack: CommentType['commentId'] | null;
+  selectTrack: (trackId: CommentType['commentId']) => void;
 }
 
 export default function CommentBox(props: CommentBoxProps) {
@@ -31,18 +30,19 @@ export default function CommentBox(props: CommentBoxProps) {
     userSelf,
     commentAudioFileName,
   } = eachComment;
-  const { id } = useParams();
-  const { trackDetail } = useTrackDetail(Number(id));
-
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-
+  const { trackDetail } = useTrackDetail();
   const { editComment, isLoading } = useEditComment(() => setIsEdit(false));
-
   const [comment, setComment] = useRecoilState(commentUpdateData);
-
-  useEffect(() => {
-    isEdit && setComment({ ...comment, commentContent: commentContent, commentAudioFileName: commentAudioFileName });
-  }, [isEdit]);
+  const { contextPlaying, getPlayerInfo, showPlayer, ...commentPlayerContext } = PlayUseContext({ scope: 'comments' });
+  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
+    commentPlayerContext,
+    commentAudioFile,
+    commentId,
+    selectTrack,
+    playingTrack
+  );
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const isSelected = playingTrack === commentId;
 
   function handleStopUpdating() {
     setIsEdit(false);
@@ -54,14 +54,9 @@ export default function CommentBox(props: CommentBoxProps) {
     }
   }
 
-  const isSelected = playingTrack === commentId;
-  const { contextPlaying, getPlayerInfo, showPlayer, ...commentPlayerContext } = useContext(CommentsPlayerContext);
-  const { innerPlaying, isHovered, playAudioItem, stopAudioItem, hoverTrack, unhoverTrack } = usePlaySelectedTrack(
-    commentPlayerContext,
-    commentAudioFile,
-    commentId,
-    selectTrack,
-  );
+  useEffect(() => {
+    isEdit && setComment({ ...comment, commentContent: commentContent, commentAudioFileName: commentAudioFileName });
+  }, [isEdit]);
 
   useEffect(() => {
     if (!isSelected) return;
@@ -89,12 +84,11 @@ export default function CommentBox(props: CommentBoxProps) {
             onMouseLeave={unhoverTrack}
             isHovered={isHovered || (isSelected && showPlayer)}>
             <Thumbnail src={userImageFile} alt="profile-image" />
-            {(isHovered || (isSelected && showPlayer)) &&
-              (innerPlaying && contextPlaying ? (
-                <StopButton onClick={stopAudioItem} />
-              ) : (
-                <PlayButton onClick={playAudioItem} />
-              ))}
+            {innerPlaying && contextPlaying ? (
+              <StopButton onClick={stopAudioItem} />
+            ) : (
+              <PlayButton onClick={() => playAudioItem(commentId)} />
+            )}
           </ThumnailWrapper>
           <CommentInfo
             userName={userName}
@@ -121,6 +115,7 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
 
   position: relative;
   height: 14.2rem;
+  margin-top: 2rem;
 
   border: 0.2rem solid transparent;
   border-top-left-radius: 11.7rem;
@@ -136,14 +131,12 @@ const CommentContainer = styled.article<{ commentActive: boolean }>`
       linear-gradient(to right, ${({ theme }) => theme.colors.sub2}, ${({ theme }) => theme.colors.sub3});
   }
 
-  /* &[data-play="true"] { */
   background-image: linear-gradient(${({ theme }) => theme.colors.sub3}, ${({ theme }) => theme.colors.sub3}),
     linear-gradient(
       to right,
       ${({ theme, commentActive }) => commentActive && theme.colors.sub2},
       ${({ theme }) => theme.colors.sub3}
     );
-  /* } */
 `;
 
 const ThumnailWrapper = styled.div<{ isHovered: boolean }>`
@@ -170,7 +163,7 @@ const ThumnailWrapper = styled.div<{ isHovered: boolean }>`
         top: 0;
         right: 0;
 
-        content: "";
+        content: '';
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5); /* 원하는 색상과 투명도를 설정 */

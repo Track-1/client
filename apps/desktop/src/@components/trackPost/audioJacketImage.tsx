@@ -1,16 +1,12 @@
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
-import styled, { css, keyframes } from "styled-components";
-import { CommentsPlayerContext } from ".";
-import { PlayerContext } from "../../context/playerContext";
-import useControlPlayer from "../../hooks/common/useControlPlayer";
-import { useTrackDetail } from "../../hooks/queries/tracks";
+import styled, { css, keyframes } from 'styled-components';
+import useControlPlayer from '../../hooks/common/useControlPlayer';
+import { useTrackDetail } from '../../hooks/queries/tracks';
+import { PlayUseContext } from '../../context/playerContext';
 
 export default function AudioJacketImage() {
-  const { id } = useParams();
-  const { trackDetail } = useTrackDetail(Number(id));
-  const { contextPlaying, audio } = useContext(PlayerContext);
-  const { contextPlaying: commentContextPlaying } = useContext(CommentsPlayerContext);
+  const { trackDetail } = useTrackDetail();
+  const { contextPlaying, audio } = PlayUseContext({});
+  const { contextPlaying: commentContextPlaying } = PlayUseContext({ scope: 'comments' });
   const { currentTimeText, totalTimetext } = useControlPlayer(audio, contextPlaying);
 
   return (

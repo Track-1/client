@@ -1,4 +1,4 @@
-import Layout from '../@components/@common/Layout';
+import Layout from '../@components/@common/layout/layout';
 import VocalProfile from '../@components/vocalProfile';
 
 export default function VocalProfilePage() {

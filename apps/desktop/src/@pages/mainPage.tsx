@@ -1,4 +1,4 @@
-import Layout from '../@components/@common/Layout';
+import Layout from '../@components/@common/layout/layout';
 import MainPageContainer from '../@components/main';
 
 export default function MainPage() {

@@ -1,26 +1,23 @@
-import PasswordContainer from "../@common/passwordContainer";
-import Password from "../signUp/password";
-import { EmailPasswordInputType } from "../../type/signUp/inputType";
-import { useForm } from "react-hook-form";
-import PasswordConfirm from "../signUp/passwordConfirm";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { theme } from "../../style/theme";
-import { checkPasswordForm } from "../../utils/signUp/checkForm";
-import { checkPasswordMatch } from "../../utils/signUp/checkPasswordMatch";
-import { usePatchPassword } from "../../hooks/queries/user";
-import { UserPasswordType } from "../../type/user";
-import { UploadWideActiveSaveButtonIc, UploadWideUnActiveSaveButtonIc } from "../../assets";
+import styled from 'styled-components';
+import Password from '../signUp/password';
+import PasswordConfirm from '../signUp/passwordConfirm';
+import PasswordContainer from './passwordContainer';
+import { EmailPasswordInputType } from '../../type/signUp/inputType';
+import { useForm } from 'react-hook-form';
+import { checkPasswordForm } from '../../utils/signUp/checkForm';
+import { checkPasswordMatch } from '../../utils/signUp/checkPasswordMatch';
+import { usePatchPassword } from '../../hooks/queries/user';
+import { UserPasswordType } from '../../type/user';
+import { UploadWideActiveSaveButtonIc, UploadWideUnActiveSaveButtonIc } from '../../assets';
 
 export default function ResetPasswordInput() {
   const methods = useForm<EmailPasswordInputType>({
     defaultValues: {
-      password: "",
-      passwordConfirm: "",
+      password: '',
+      passwordConfirm: '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
-
   const { patchPassword } = usePatchPassword();
 
   function isActive() {

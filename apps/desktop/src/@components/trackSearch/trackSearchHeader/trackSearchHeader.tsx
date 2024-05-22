@@ -1,7 +1,7 @@
-import PageTypeNav from "./PageTypeNav";
-import TrackSearchHeaderButton from "./trackSearchHeaderButton";
-import styled from "styled-components";
-import { PageType } from "../../../type/common/pageType";
+import styled from 'styled-components';
+import PageTypeNav from './PageTypeNav';
+import TrackSearchHeaderButton from './trackSearchHeaderButton';
+import { PageType } from '../../../type/common/pageType';
 
 interface TrackSearchHeaderProps {
   pageType: PageType;

@@ -1,12 +1,17 @@
-import Layout from '../@components/@common/Layout';
-import TrackPost, { CommentsPlayerProvider } from '../@components/trackPost';
+import Layout from '../@components/@common/layout/layout';
+import Player from '../@components/@common/player';
+import TrackPost from '../@components/trackPost';
+import { PlayerProvider } from '../context/playerContext';
 
 export default function TrackPostPage() {
   return (
     <Layout>
-      <CommentsPlayerProvider>
-        <TrackPost />
-      </CommentsPlayerProvider>
+      <PlayerProvider>
+        <PlayerProvider scope="comments">
+          <TrackPost />
+          <Player />
+        </PlayerProvider>
+      </PlayerProvider>
     </Layout>
   );
 }

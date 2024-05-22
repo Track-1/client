@@ -1,8 +1,8 @@
-import styled, { css } from "styled-components";
-import { ReactNode } from "react";
-import { UploadFileChangeIc } from "../../../assets";
-import UploadProducerDefaultImg from "../../../assets/image/uploadProducerDefaultImg.png";
-import useFileHover from "../../../hooks/common/useFileHover";
+import styled, { css } from 'styled-components';
+import UploadProducerDefaultImg from '../../../assets/image/uploadProducerDefaultImg.png';
+import useFileHover from '../../../hooks/common/useFileHover';
+import { ReactNode } from 'react';
+import { UploadFileChangeIc } from '../../../assets';
 
 interface ProducerLayoutProps {
   previewImage: string | ArrayBuffer | null;
@@ -20,7 +20,7 @@ export default function ProducerLayout(props: ProducerLayoutProps) {
         <ProducerUploadImageContainer>
           <Label onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
             <ProducerUploadImageLayout
-              src={previewImage === "" ? UploadProducerDefaultImg : previewImage}
+              src={previewImage === '' ? UploadProducerDefaultImg : previewImage}
               alt="썸네일 이미지"
               fileHoverState={fileHoverState}
               previewImage={previewImage}
@@ -77,7 +77,7 @@ const ProducerUploadImageLayout = styled.img<{ fileHoverState: boolean; previewI
   border-radius: 50%;
 
   ${(props) =>
-    props.fileHoverState && props.previewImage !== ""
+    props.fileHoverState && props.previewImage !== ''
       ? css`
           background: rgba(30, 32, 37, 0.5);
           filter: blur(3rem);

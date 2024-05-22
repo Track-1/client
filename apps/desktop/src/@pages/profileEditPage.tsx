@@ -1,8 +1,8 @@
-import { useRecoilValue } from 'recoil';
+import Layout from '../@components/@common/layout/layout';
 import ProducerProfileEditContainer from '../@components/profileEdit/producerProfileEdit/producerProfileEditContainer';
 import VocalProfileEditContainer from '../@components/profileEdit/vocalProfileEdit/vocalProfileEditContainer';
 import { loginUserData } from '../recoil/common/loginUserData';
-import Layout from '../@components/@common/Layout';
+import { useRecoilValue } from 'recoil';
 
 export default function ProfileEditPage() {
   const userType = useRecoilValue(loginUserData).userType;

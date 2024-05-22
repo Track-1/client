@@ -1,8 +1,8 @@
-import styled, { css } from "styled-components";
-import UploadVocalDefaultImg from "../../../assets/image/uploadVocalDefaultImg.png";
-import { FileInput, Label } from "../producerProfileEdit/producerImageEdit";
-import useFileHover from "../../../hooks/common/useFileHover";
-import { UploadFileChangeIc } from "../../../assets";
+import styled, { css } from 'styled-components';
+import UploadVocalDefaultImg from '../../../assets/image/uploadVocalDefaultImg.png';
+import useFileHover from '../../../hooks/common/useFileHover';
+import { FileInput, Label } from '../producerProfileEdit/producerImageEdit';
+import { UploadFileChangeIc } from '../../../assets';
 
 interface VocalImageEditProps {
   previewImage: string | null;
@@ -19,7 +19,7 @@ export default function VocalImageEdit(props: VocalImageEditProps) {
         <ImageWrapper onMouseEnter={changeFileHoverState} onMouseLeave={changeFileHoverState}>
           <Label>
             <ProfileImage
-              src={previewImage === "" ? UploadVocalDefaultImg : previewImage}
+              src={previewImage === '' ? UploadVocalDefaultImg : previewImage}
               alt="썸네일 이미지"
               fileHoverState={fileHoverState}
               previewImage={previewImage}

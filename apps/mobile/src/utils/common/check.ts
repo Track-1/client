@@ -42,7 +42,7 @@ export function checkIsClickedNothing(clickedId: number) {
 }
 
 export function checkIsLogin() {
-  return getCookie('accessToken') !== undefined;
+  return localStorage.getItem('userId');
 }
 
 export function isLoggedIn() {

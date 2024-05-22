@@ -1,27 +1,27 @@
-import Footer from "../@common/footer";
-import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from "../../assets";
-import background from "../../assets/icon/signupProfileBackgroundIc.svg";
-import useConventionModal from "../../hooks/common/useConventionModal";
-import { useProfileAfterJoin } from "../../hooks/queries/user";
-import ConventionModal from "../@common/conventionModal";
-import ProfileDescriptionEdit from "../profileEdit/profileDescriptionEdit";
-import ProfileHashtagEdit from "../profileEdit/profileHashtagEdit";
-import SignUpBackButton from "./signUpBackButton";
-import ProfileContact from "../@common/profileContact";
-import ProfileSelectCategoryEdit from "../profileEdit/profileSelectCategoryEdit";
+import Footer from '../@common/layout/footer';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { SignupProfileCompleteTextIc, SignupProfileSkipIc } from '../../assets';
+import background from '../../assets/icon/signupProfileBackgroundIc.svg';
+import useConventionModal from '../../hooks/common/useConventionModal';
+import { useProfileAfterJoin } from '../../hooks/queries/user';
+import ConventionModal from '../@common/modal/conventionModal';
+import ProfileDescriptionEdit from '../profileEdit/profileDescriptionEdit';
+import ProfileHashtagEdit from '../profileEdit/profileHashtagEdit';
+import SignUpBackButton from './signUpBackButton';
+import ProfileSelectCategoryEdit from '../profileEdit/profileSelectCategoryEdit';
+import ProfileContact from './profileContact';
 
 export default function SignupProfile() {
   const methods = useForm({
     defaultValues: {
-      contact: "",
+      contact: '',
       category: [],
-      hashtag: [""],
-      description: "",
+      hashtag: [''],
+      description: '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const {
@@ -33,7 +33,7 @@ export default function SignupProfile() {
   const navigate = useNavigate();
 
   function handleMoveToSuccess() {
-    navigate("/signup/success");
+    navigate('/signup/success');
   }
 
   return (
@@ -54,7 +54,7 @@ export default function SignupProfile() {
                   userCategory: category,
                   userKeyword: hashtag.length > 0 ? hashtag.filter((item) => item.length > 0) : [],
                   userIntroduction: description,
-                }),
+                })
               )}
               type="button">
               <SignupProfileCompleteTextIcon />

@@ -1,4 +1,4 @@
-import { UserType } from "./common/userType";
+import { UserType } from './common/userType';
 
 interface MyProfileType {
   userId: number;
@@ -28,6 +28,6 @@ export interface MyInfoType {
 }
 
 export interface MyPageTitleParamsType {
-  bef: number;
-  aft: number;
+  bef: string;
+  aft: string;
 }

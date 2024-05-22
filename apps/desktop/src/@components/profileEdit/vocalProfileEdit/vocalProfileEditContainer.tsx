@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from "../../../assets";
-import useUploadImageFile from "../../../hooks/common/useUploadImageFile";
-import { useEditVocalProfile } from "../../../hooks/queries/profile";
-import Header from "../../@common/header";
-import ProfileDescriptionEdit from "../profileDescriptionEdit";
-import ProfileHashtagEdit from "../profileHashtagEdit";
-import { CategoryIdType, UpperCategoryType } from "../../../type/common/category";
-import BackButton from "../../@common/backButton";
-import { useGetVocalProfile } from "../../../hooks/queries/mypage";
-import { useParams } from "react-router-dom";
-import VocalImageEdit from "./vocalImageEdit";
-import VocalSleeper from "./vocalSleeper";
-import ProfileNickname from "../../@common/profileNickname";
-import ProfileContact from "../../@common/profileContact";
-import { convertKeyToValue } from "../../../utils/common/convertKeyToValue";
-import { CategoryId } from "../../../core/common/categories";
-import ProfileSelectCategoryEdit from "../profileSelectCategoryEdit";
+import styled from 'styled-components';
+import useUploadImageFile from '../../../hooks/common/useUploadImageFile';
+import Header from '../../@common/layout/header';
+import ProfileDescriptionEdit from '../profileDescriptionEdit';
+import ProfileHashtagEdit from '../profileHashtagEdit';
+import BackButton from '../../@common/button/backButton';
+import VocalImageEdit from './vocalImageEdit';
+import VocalSleeper from './vocalSleeper';
+import ProfileSelectCategoryEdit from '../profileSelectCategoryEdit';
+import ProfileContact from '../profileContact';
+import ProfileNickname from '../profileNickname';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ProfileBackgroundIc, UploadActiveSaveButtonIc, UploadUnActiveSaveButtonIc } from '../../../assets';
+import { useEditVocalProfile } from '../../../hooks/queries/profile';
+import { CategoryIdType, UpperCategoryType } from '../../../type/common/category';
+import { useGetVocalProfile } from '../../../hooks/queries/mypage';
+import { useParams } from 'react-router-dom';
+import { convertKeyToValue } from '../../../utils/common/convertKeyToValue';
+import { CategoryId } from '../../../core/common/categories';
 
 export default function VocalProfileEditContainer() {
   const { id } = useParams();
@@ -26,18 +26,17 @@ export default function VocalProfileEditContainer() {
   const { imageFile, previewImage, handleUploadImageFile } = useUploadImageFile(prevUserInfo?.userImageFile);
   const [isSleep, setIsSleep] = useState(prevUserInfo?.userTrackSearch ?? false);
   const [imageFileSame, setImageFileSame] = useState(true);
-
   const methods = useForm({
     defaultValues: {
-      nickName: prevUserInfo?.userName ?? "",
-      contact: prevUserInfo?.userContact ?? "",
+      nickName: prevUserInfo?.userName ?? '',
+      contact: prevUserInfo?.userContact ?? '',
       category: prevUserInfo?.userCategory
         ? convertKeyToValue<UpperCategoryType, CategoryIdType>(prevUserInfo?.userCategory, CategoryId)
         : [],
       hashtag: prevUserInfo?.userKeyword ?? [],
-      description: prevUserInfo?.userIntroduction ?? "",
+      description: prevUserInfo?.userIntroduction ?? '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   function handleChangeIsSleep() {
@@ -65,7 +64,7 @@ export default function VocalProfileEditContainer() {
                   userIntroduction: description,
                   userImageFileSame: imageFileSame,
                   userTrackSearch: isSleep,
-                }),
+                })
               )}
               type="button">
               <UploadActiveSaveButtonIcon />
@@ -81,7 +80,6 @@ export default function VocalProfileEditContainer() {
             <ProfileNickname />
             <VocalSleeper isSleep={isSleep} handleChangeIsSleep={handleChangeIsSleep} />
           </ProfileEditTitle>
-
           <ProfileEditInfo>
             <ProfileEditInfoWrapper>
               <ProfileContact />

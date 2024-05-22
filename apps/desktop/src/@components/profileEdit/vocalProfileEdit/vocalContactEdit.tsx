@@ -1,6 +1,6 @@
-import InputContainer from "../../@common/inputContainer";
-import styled from "styled-components";
-import { UseFormReturn } from "react-hook-form";
+import styled from 'styled-components';
+import InputContainer from '../../@common/form/inputContainer';
+import { UseFormReturn } from 'react-hook-form';
 
 interface ProducerContactEditProps {
   methods: UseFormReturn<
@@ -21,7 +21,7 @@ export default function VocalContactEdit(props: ProducerContactEditProps) {
   return (
     <Container>
       <InputContainer title="Contact">
-        <ContactInput type="text" placeholder="Enter your phone number or SNS account" {...register("contact", {})} />
+        <ContactInput type="text" placeholder="Enter your phone number or SNS account" {...register('contact', {})} />
       </InputContainer>
     </Container>
   );

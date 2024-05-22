@@ -1,4 +1,4 @@
-import Layout from '../@components/@common/Layout';
+import Layout from '../@components/@common/layout/layout';
 import SignupProfile from '../@components/signUp/signupProfile';
 
 export default function SignupProfilePage() {

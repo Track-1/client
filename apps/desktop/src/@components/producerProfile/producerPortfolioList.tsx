@@ -1,24 +1,21 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
-import { useGetProducerPortfolio } from "../../hooks/queries/mypage";
-import { UserPortfolioType } from "../../type/profile";
-import ProducerPortfolio from "../portfolio/producerPortfolio";
+import styled from 'styled-components';
+import ProducerPortfolio from '../portfolio/producerPortfolio';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetProducerPortfolio } from '../../hooks/queries/mypage';
+import { UserPortfolioType } from '../../type/profile';
 
 const PAGE_LIMIT = 5;
 
 export default function ProducerPortfolioList() {
   const { producerId } = useParams();
-  const { producerPortfolios, fetchNextPage, hasNextPage } = useGetProducerPortfolio({
+  const { data: producerPortfolios } = useGetProducerPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(producerId),
   });
+  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType['portfolioId'] | null>(null);
 
-  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
-  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType["portfolioId"] | null>(null);
-
-  function selectTrack(trackId: UserPortfolioType["portfolioId"]) {
+  function selectTrack(trackId: UserPortfolioType['portfolioId']) {
     setPLayingTrack(trackId);
   }
 
@@ -36,15 +33,9 @@ export default function ProducerPortfolioList() {
           />
         );
       })}
-      <Observer ref={observerRef} />
     </PortfolioWrapper>
   );
 }
-
-const Observer = styled.div`
-  width: 100%;
-  height: 10px;
-`;
 
 const PortfolioWrapper = styled.div`
   display: flex;

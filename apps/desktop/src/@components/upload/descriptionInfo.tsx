@@ -1,8 +1,8 @@
-import { UploadDescriptionIc } from "../../assets";
-import styled from "styled-components";
-import UploadInfoBox from "./uploadInfoBox";
-import { DescriptionInput } from "../@common/descriptionInput";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
+import styled from 'styled-components';
+import UploadInfoBox from './uploadInfoBox';
+import { UploadDescriptionIc } from '../../assets';
+import { TEXT_LIMIT } from '../../core/common/textLimit';
+import { DescriptionInput } from './descriptionInput';
 
 export default function DescriptionInfo() {
   return (

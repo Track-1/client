@@ -1,37 +1,36 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
-import { useGetProducerVocalSearching } from "../../hooks/queries/mypage";
-import { clickedProfileId } from "../../recoil/common/profile";
-import { UserPortfolioType } from "../../type/profile";
-import ProducerVocalSearchingPortfolio from "./ProducerVocalSearchingPortfolio";
+import styled from 'styled-components';
+import ProducerVocalSearchingPortfolio from './ProducerVocalSearchingPortfolio';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { useGetProducerVocalSearching } from '../../hooks/queries/mypage';
+import { clickedProfileId } from '../../recoil/common/profile';
+import { UserPortfolioType } from '../../type/profile';
 
 const PAGE_LIMIT = 5;
 
 export default function ProducerVocalSearching() {
   const { producerId } = useParams();
-  const { producerVocalSearchings, fetchNextPage, hasNextPage } = useGetProducerVocalSearching({
+  const { data: producerVocalSearchings } = useGetProducerVocalSearching({
     limit: PAGE_LIMIT,
     userId: Number(producerId),
   });
+  const [clickId] = useRecoilState(clickedProfileId);
+  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType['portfolioId'] | null>(null);
 
-  const [clickId, setClickId] = useRecoilState(clickedProfileId);
-  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
-  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType["portfolioId"] | null>(null);
-
-  function selectTrack(trackId: UserPortfolioType["portfolioId"]) {
+  function selectTrack(trackId: UserPortfolioType['portfolioId']) {
     setPLayingTrack(trackId);
   }
-  if (producerVocalSearchings === undefined) return null;
 
   function checkFirstTrackPlaying() {
     if (producerVocalSearchings) {
       return clickId === producerVocalSearchings[0].trackId;
     }
+
     return false;
   }
+
+  if (producerVocalSearchings === undefined) return null;
 
   return (
     <PortfolioWrapper isFirstPlaying={checkFirstTrackPlaying()}>
@@ -44,15 +43,9 @@ export default function ProducerVocalSearching() {
           />
         );
       })}
-      <Observer ref={observerRef} />
     </PortfolioWrapper>
   );
 }
-
-const Observer = styled.div`
-  width: 100%;
-  height: 10px;
-`;
 
 const PortfolioWrapper = styled.div<{ isFirstPlaying: boolean }>`
   display: flex;

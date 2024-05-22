@@ -1,36 +1,33 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import styled, { css } from "styled-components";
-import { RequestBlackTextIc, RequestWhiteTextIc, ResendTextIc } from "../../assets";
-import { EMAIL_MESSAGE } from "../../core/signUp/errorMessage";
-import { useResetPassword } from "../../hooks/queries/user";
-import { theme } from "../../style/theme";
-import { UserType } from "../../type/common/userType";
-import { EmailPasswordInputType } from "../../type/signUp/inputType";
-import { Switch } from "../@common/switch";
-import { FormContainer, InputContainer100, InputTitle } from "../@common/styledComponents";
-import { RequestPasswordButtonType } from "../../type/user";
-import { CHECK_EMAIL_FORM } from "../../core/signUp/checkForm";
+import styled, { css } from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { RequestBlackTextIc, RequestWhiteTextIc, ResendTextIc } from '../../assets';
+import { EMAIL_MESSAGE } from '../../core/signUp/errorMessage';
+import { useResetPassword } from '../../hooks/queries/user';
+import { theme } from '../../style/theme';
+import { UserType } from '../../type/common/userType';
+import { Switch } from '../@common/switch';
+import { FormContainer, InputContainer100, InputTitle } from '../@common/layout/styledComponents';
+import { RequestPasswordButtonType } from '../../type/user';
+import { CHECK_EMAIL_FORM } from '../../core/signUp/checkForm';
 
 export default function ForgotPasswordInput() {
   const methods = useForm({
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
   const {
     register,
     setError,
-    formState: { errors, isDirty, isValid },
+    formState: { isDirty, isValid },
     handleSubmit,
   } = methods;
-
   const { data, resetPassword } = useResetPassword(setError);
-
-  const [userType, setUserType] = useState<UserType>("vocal");
+  const [userType, setUserType] = useState<UserType>('vocal');
   const [buttonType, setButtonType] = useState<RequestPasswordButtonType>({
     isActive: false,
-    text: "Request a password reset",
+    text: 'Request a password reset',
   });
 
   function handleRequestResetPassword(email: string) {
@@ -38,16 +35,16 @@ export default function ForgotPasswordInput() {
   }
 
   function switchUseryType() {
-    userType === "producer" ? setUserType("vocal") : setUserType("producer");
+    userType === 'producer' ? setUserType('vocal') : setUserType('producer');
   }
 
   useEffect(() => {
     if (data?.success) {
-      setButtonType({ isActive: true, text: "Resend" });
+      setButtonType({ isActive: true, text: 'Resend' });
     }
 
     if (isDirty && isValid) {
-      setButtonType({ isActive: true, text: "Request a password reset" });
+      setButtonType({ isActive: true, text: 'Request a password reset' });
     }
   }, [data, isDirty, isValid]);
 
@@ -64,7 +61,7 @@ export default function ForgotPasswordInput() {
             <EmailInputWrapper>
               <EmailInput
                 placeholder="Enter your email address"
-                {...register("email", {
+                {...register('email', {
                   pattern: {
                     value: CHECK_EMAIL_FORM,
                     message: EMAIL_MESSAGE.FORM,
@@ -84,7 +81,7 @@ export default function ForgotPasswordInput() {
         </SwitchContainer>
         <SendButton userType={userType} isActive={buttonType.isActive} type="submit">
           {buttonType.isActive ? (
-            buttonType.text === "Resend" ? (
+            buttonType.text === 'Resend' ? (
               <ResendTextIcon />
             ) : (
               <RequestBlackTextIcon />
@@ -141,7 +138,7 @@ const SendButton = styled.button<{ userType: UserType; isActive: boolean }>`
   border-radius: 3.35rem;
 
   ${({ userType, isActive }) =>
-    userType === "producer" &&
+    userType === 'producer' &&
     (isActive
       ? css`
           color: ${({ theme }) => theme.colors.white};
@@ -153,7 +150,7 @@ const SendButton = styled.button<{ userType: UserType; isActive: boolean }>`
         `)}
 
   ${({ userType, isActive }) =>
-    userType === "vocal" &&
+    userType === 'vocal' &&
     (isActive
       ? css`
           color: ${({ theme }) => theme.colors.white};

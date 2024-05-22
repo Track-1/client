@@ -1,5 +1,22 @@
-import styled from "styled-components";
-import { CrossLogoIc, TrackSearchSlogunIc } from "../../assets";
+import styled from 'styled-components';
+import { CrossLogoIc, TrackSearchSlogunIc } from '../../assets';
+
+export default function ListTitle() {
+  return (
+    <Container>
+      <LogoWrapper>
+        <TrackSearchSlogunIcon />
+        <CrossLogoIcon />
+      </LogoWrapper>
+      <TitleWrapper>
+        <TrackTitle>Title</TrackTitle>
+        <Producer>Producer</Producer>
+        <Category>Category</Category>
+        <Hashtag>Hashtag</Hashtag>
+      </TitleWrapper>
+    </Container>
+  );
+}
 
 const Container = styled.div`
   margin-left: 10rem;
@@ -48,23 +65,7 @@ const Producer = styled(TitleText)`
 const Category = styled(TitleText)`
   width: 21.3rem;
 `;
+
 const Hashtag = styled(TitleText)`
   width: 50rem;
 `;
-
-export default function ListTitle() {
-  return (
-    <Container>
-      <LogoWrapper>
-        <TrackSearchSlogunIcon />
-        <CrossLogoIcon />
-      </LogoWrapper>
-      <TitleWrapper>
-        <TrackTitle>Title</TrackTitle>
-        <Producer>Producer</Producer>
-        <Category>Category</Category>
-        <Hashtag>Hashtag</Hashtag>
-      </TitleWrapper>
-    </Container>
-  );
-}

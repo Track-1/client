@@ -1,14 +1,14 @@
-import { Fragment } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { EllipsisIc, ProducerProfileTitleTextIc } from "../../assets";
-import useUpdateModal from "../../hooks/common/useUpdateModal";
-import { useGetProducerVocalSearching } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import PortfolioUpdateModal from "../portfolio/portfolioUpdateModal";
-import ViewMoreButton from "./viewMoreButton";
-import VocalSearchingMusicInform from "./vocalSearchingMusicInform";
+import styled from 'styled-components';
+import useUpdateModal from '../../hooks/common/useUpdateModal';
+import PortfolioUpdateModal from '../portfolio/portfolioUpdateModal';
+import ViewMoreButton from './viewMoreButton';
+import VocalSearchingMusicInform from './vocalSearchingMusicInform';
+import { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { EllipsisIc } from '../../assets';
+import { useGetProducerVocalSearching } from '../../hooks/queries/mypage';
+import { clickedProfileId, hoveredProfileId } from '../../recoil/common/profile';
 
 interface ProducerVocalSearchingInformProp {
   isMe: boolean | undefined;
@@ -19,28 +19,27 @@ const PAGE_LIMIT = 5;
 export default function ProducerVocalSearchingInform(props: ProducerVocalSearchingInformProp) {
   const { isMe } = props;
   const { producerId } = useParams();
-  const { producerVocalSearchings } = useGetProducerVocalSearching({
+  const { data: producerVocalSearchings } = useGetProducerVocalSearching({
     limit: PAGE_LIMIT,
     userId: Number(producerId),
   });
-
   const clickedId = useRecoilValue(clickedProfileId);
   const hoveredId = useRecoilValue(hoveredProfileId);
   const { openUpdateModal, showModal, unShowModal } = useUpdateModal();
 
-  if (producerVocalSearchings === undefined) return null;
-
   function handleShowUpdateModal() {
     !openUpdateModal ? showModal() : unShowModal();
   }
+
+  if (producerVocalSearchings === undefined) return null;
 
   return (
     <InformContainer>
       {producerVocalSearchings?.map((producerVocalSearching, index) => {
         return (
           <Fragment key={producerVocalSearching.trackId}>
-            {((hoveredId === -1 && clickedId === producerVocalSearching.trackId) ||
-              (hoveredId !== -1 && hoveredId === producerVocalSearching.trackId)) && (
+            {((hoveredId === '' && clickedId === producerVocalSearching.trackId) ||
+              (hoveredId !== '' && hoveredId === producerVocalSearching.trackId)) && (
               <>
                 <TitleSection>
                   {clickedId === producerVocalSearching.trackId && (
@@ -84,10 +83,6 @@ const TitleSection = styled.header`
   width: 38rem;
 `;
 
-const ProducerProfileTitleTextIcon = styled(ProducerProfileTitleTextIc)`
-  width: 13.4rem;
-`;
-
 const InformContainer = styled.section`
   width: 44rem;
   height: 100%;
@@ -97,8 +92,4 @@ const InformContainer = styled.section`
   margin-top: 1.6rem;
   position: fixed;
   right: 0;
-`;
-
-const TitleIconWrapper = styled.div`
-  width: 13.4rem;
 `;

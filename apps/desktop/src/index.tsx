@@ -3,4 +3,12 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-root.render(<App />);
+async function enableMocking() {
+  const { worker } = await import('../src/api/mocks/browser');
+
+  return worker.start();
+}
+
+enableMocking().then(() => {
+  root.render(<App />);
+});

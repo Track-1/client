@@ -1,17 +1,16 @@
-import { useState } from "react";
-import { TEXT_LIMIT } from "../../core/common/textLimit";
-import { uploadAudioTypeWarningMessage } from "../../core/common/warningMessage";
-import { checkAudioFileType } from "../../utils/common/checkFileType";
-import { checkMaxInputLength } from "../../utils/common/checkMaxInputLength";
+import { useState } from 'react';
+import { TEXT_LIMIT } from '../../core/common/textLimit';
+import { uploadAudioTypeWarningMessage } from '../../core/common/warningMessage';
+import { checkAudioFileType } from '../../utils/common/checkFileType';
+import { checkMaxInputLength } from '../../utils/common/checkMaxInputLength';
 
 export default function useUploadAudioFile() {
   const [audioFile, setAudioFile] = useState<File | null>(null);
-  const [audioFileName, setAudioFileName] = useState("");
-  const [audioFileType, setAudioFileType] = useState("");
+  const [audioFileName, setAudioFileName] = useState('');
+  const [audioFileType, setAudioFileType] = useState('');
   const [isTextOverflow, setIsTextOverflow] = useState(false);
 
   function changeAudioFileName(fileName: string) {
-    // const audioOnlyFileName = fileName.substring(fileName.length - 4, -1);
     const audioOnlyFileName = fileName;
     const audioFileType = fileName.substring(fileName.length - 4);
 
@@ -27,8 +26,8 @@ export default function useUploadAudioFile() {
 
   function resetAudio() {
     setAudioFile(null);
-    setAudioFileName("");
-    setAudioFileType("");
+    setAudioFileName('');
+    setAudioFileType('');
     setIsTextOverflow(false);
   }
 

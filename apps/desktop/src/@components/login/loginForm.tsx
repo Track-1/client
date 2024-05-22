@@ -1,16 +1,135 @@
+import styled from 'styled-components';
+import background from '../../assets/icon/signupBackgroundIc.svg';
+import Footer from '../@common/layout/footer';
+import InputContainer from '../@common/form/inputContainer';
+import SwitchToggle from './switchToggle';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { LoginButtonIc, PasswordEyeIc } from '../../assets';
-import background from '../../assets/icon/signupBackgroundIc.svg';
 import { ROLE } from '../../core/common/roleType';
 import { useLogin } from '../../hooks/queries/user';
 import { UserType } from '../../type/common/userType';
-import Footer from '../@common/footer';
-import InputContainer from '../@common/inputContainer';
-import SwitchToggle from './switchToggle';
-import { CHECK_EMAIL_FORM, CHECK_PASSWORD_FORM } from '../../core/signUp/checkForm';
+import { CHECK_EMAIL_FORM } from '../../core/signUp/checkForm';
+
+export default function LoginForm() {
+  const {
+    register,
+    formState: { errors, isDirty },
+    setError,
+    clearErrors,
+    handleSubmit,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+  const [userType, setUserType] = useState<UserType>('vocal');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const navigate = useNavigate();
+  const { login, error } = useLogin();
+
+  useEffect(() => {
+    if (error?.response?.data.message === '존재하지 않는 아이디입니다.') {
+      setError('email', {
+        type: 'value',
+        message: 'We don’t have an account with that email address.',
+      });
+      clearErrors('password');
+    }
+
+    if (error?.response?.data.message === '잘못된 비밀번호입니다.') {
+      setError('password', {
+        type: 'value',
+        message: 'Wrong password.',
+      });
+      clearErrors('email');
+    }
+  }, [error]);
+
+  function switchUserType() {
+    userType === 'producer' ? setUserType('vocal') : setUserType('producer');
+  }
+
+  function handleMoveToSignup() {
+    navigate('/signup');
+  }
+
+  function handleMoveToForgotPassword() {
+    navigate('/forgot-password');
+  }
+
+  function toggleHidePassword() {
+    setIsPasswordVisible((prev) => !prev);
+  }
+
+  return (
+    <>
+      <Img src={background} alt="배경" />
+      <Body>
+        <form
+          onChange={handleSubmit(() => {})}
+          onSubmit={handleSubmit((userInfo) => {
+            login({ userEmail: userInfo.email, userPw: userInfo.password, userType: userType });
+          })}>
+          <Container>
+            <TitleWrapper>
+              <FormTitle>Log in</FormTitle>
+              <FormDescription>
+                If you are a new user, <SignupText onClick={handleMoveToSignup}>Sign up here</SignupText>
+              </FormDescription>
+            </TitleWrapper>
+
+            <InputWrapper>
+              <InputContainer title="Email" error={'email' in errors} login>
+                <InputField
+                  placeholder="Enter your email address"
+                  {...register('email', {
+                    required: true,
+                    pattern: {
+                      value: CHECK_EMAIL_FORM,
+                      message: 'Enter a valid email.',
+                    },
+                  })}
+                />
+              </InputContainer>
+              <ErrorMessage>{errors.email?.message}</ErrorMessage>
+            </InputWrapper>
+            <InputWrapper>
+              <InputContainer title="password" error={'password' in errors} login>
+                <PasswordAndEyeWrapper>
+                  <InputField
+                    placeholder="Enter your password"
+                    {...register('password', {
+                      pattern: {
+                        value: /^(?=.*[a-zA-Z])(?=.*[?!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
+                        message: 'Wrong password. Try again or click Forgot password to reset it.',
+                      },
+                    })}
+                    type={isPasswordVisible ? 'text' : 'password'}
+                  />
+                  <PasswordEyeIcon onClick={toggleHidePassword} />
+                </PasswordAndEyeWrapper>
+              </InputContainer>
+              <ErrorMessage>{errors.password?.message}</ErrorMessage>
+            </InputWrapper>
+            <SwitchToggle switchUserType={switchUserType} />
+            <LoginButton
+              type="submit"
+              userType={userType}
+              error={!isDirty || 'email' in errors || 'password' in errors}>
+              <LoginButtonIcon />
+            </LoginButton>
+            <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>
+          </Container>
+        </form>
+      </Body>
+      <Footer />
+    </>
+  );
+}
 
 const Container = styled.section`
   position: absolute;
@@ -156,122 +275,3 @@ const ForgotEmailText = styled.p`
 
   cursor: pointer;
 `;
-
-export default function LoginForm() {
-  const {
-    register,
-    formState: { errors, isDirty },
-    setError,
-    clearErrors,
-    handleSubmit,
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-  const [userType, setUserType] = useState<UserType>('vocal');
-  const navigate = useNavigate();
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { login, error } = useLogin();
-
-  useEffect(() => {
-    if (error?.response?.data.message === '존재하지 않는 아이디입니다.') {
-      setError('email', {
-        type: 'value',
-        message: 'We don’t have an account with that email address.',
-      });
-      clearErrors('password');
-    }
-
-    if (error?.response?.data.message === '잘못된 비밀번호입니다.') {
-      setError('password', {
-        type: 'value',
-        message: 'Wrong password.',
-      });
-      clearErrors('email');
-    }
-  }, [error]);
-
-  function switchUserType() {
-    userType === 'producer' ? setUserType('vocal') : setUserType('producer');
-  }
-
-  function handleMoveToSignup() {
-    navigate('/signup');
-  }
-
-  function handleMoveToForgotPassword() {
-    navigate('/forgot-password');
-  }
-
-  function toggleHidePassword() {
-    setIsPasswordVisible((prev) => !prev);
-  }
-
-  return (
-    <>
-      <Img src={background} alt="배경" />
-      <Body>
-        <form
-          onChange={handleSubmit(() => {})}
-          onSubmit={handleSubmit((userInfo) => {
-            login({ userEmail: userInfo.email, userPw: userInfo.password, userType: userType });
-          })}>
-          <Container>
-            <TitleWrapper>
-              <FormTitle>Log in</FormTitle>
-              <FormDescription>
-                If you are a new user, <SignupText onClick={handleMoveToSignup}>Sign up here</SignupText>
-              </FormDescription>
-            </TitleWrapper>
-
-            <InputWrapper>
-              <InputContainer title="Email" error={'email' in errors} login>
-                <InputField
-                  placeholder="Enter your email address"
-                  {...register('email', {
-                    required: true,
-                    pattern: {
-                      value: CHECK_EMAIL_FORM,
-                      message: 'Enter a valid email.',
-                    },
-                  })}
-                />
-              </InputContainer>
-              <ErrorMessage>{errors.email?.message}</ErrorMessage>
-            </InputWrapper>
-            <InputWrapper>
-              <InputContainer title="password" error={'password' in errors} login>
-                <PasswordAndEyeWrapper>
-                  <InputField
-                    placeholder="Enter your password"
-                    {...register('password', {
-                      pattern: {
-                        value: /^(?=.*[a-zA-Z])(?=.*[?!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
-                        message: 'Wrong password. Try again or click Forgot password to reset it.',
-                      },
-                    })}
-                    type={isPasswordVisible ? 'text' : 'password'}
-                  />
-                  <PasswordEyeIcon onClick={toggleHidePassword} />
-                </PasswordAndEyeWrapper>
-              </InputContainer>
-              <ErrorMessage>{errors.password?.message}</ErrorMessage>
-            </InputWrapper>
-            <SwitchToggle switchUserType={switchUserType} />
-            <LoginButton
-              type="submit"
-              userType={userType}
-              error={!isDirty || 'email' in errors || 'password' in errors}>
-              <LoginButtonIcon />
-            </LoginButton>
-            <ForgotEmailText onClick={handleMoveToForgotPassword}>Forgot password?</ForgotEmailText>
-          </Container>
-        </form>
-      </Body>
-      <Footer />
-    </>
-  );
-}

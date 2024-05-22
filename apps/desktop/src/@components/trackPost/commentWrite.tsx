@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { CommentIsUpdateProp } from "../../type/trackPost/commentIsUpdateProp";
-import CommentContentLength from "./commentContentLength";
-import CommentFileInput from "./commentFileInput";
-import CommentTextInput from "./commentTextInput";
-import CommentWriteLayout from "./commentWriteLayout";
+import styled from 'styled-components';
+import CommentContentLength from './commentContentLength';
+import CommentFileInput from './commentFileInput';
+import CommentTextInput from './commentTextInput';
+import CommentWriteLayout from './commentWriteLayout';
+import { CommentIsUpdateProp } from '../../type/trackPost/commentIsUpdateProp';
 
 export default function CommentWrite(props: CommentIsUpdateProp) {
   const { isUpdate } = props;

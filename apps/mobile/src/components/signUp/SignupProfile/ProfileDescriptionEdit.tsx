@@ -2,9 +2,10 @@ import TextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
 import { useFormContextWithRef } from 'track-1-form-with-react-hook-form';
 import { InputTitle } from '../../common/Form/inputForm';
+import { useFormContext } from 'react-hook-form';
 
 export default function ProfileDescriptionEdit() {
-  const { registerWithRef, ...methods } = useFormContextWithRef();
+  const { register, ...methods } = useFormContext();
 
   const { watch } = methods;
 
@@ -17,7 +18,7 @@ export default function ProfileDescriptionEdit() {
           spellCheck="false"
           maxRows={7}
           maxLength={150}
-          {...registerWithRef('description', {})}
+          {...register('description')}
         />
         <TextLengthWrapper>
           <Container>

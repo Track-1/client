@@ -1,13 +1,13 @@
-import { Fragment } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { EllipsisIc, ProducerProfileTitleTextIc } from "../../assets";
-import useUpdateModal from "../../hooks/common/useUpdateModal";
-import { useGetProducerPortfolio } from "../../hooks/queries/mypage";
-import { clickedProfileId, hoveredProfileId } from "../../recoil/common/profile";
-import MusicInformation from "../portfolio/musicInformation";
-import PortfolioUpdateModal from "../portfolio/portfolioUpdateModal";
+import styled from 'styled-components';
+import useUpdateModal from '../../hooks/common/useUpdateModal';
+import MusicInformation from '../portfolio/musicInformation';
+import PortfolioUpdateModal from '../portfolio/portfolioUpdateModal';
+import { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { EllipsisIc, ProducerProfileTitleTextIc } from '../../assets';
+import { useGetProducerPortfolio } from '../../hooks/queries/mypage';
+import { clickedProfileId, hoveredProfileId } from '../../recoil/common/profile';
 
 interface ProducerPortfolioInformProp {
   isMe: boolean | undefined;
@@ -18,27 +18,27 @@ const PAGE_LIMIT = 5;
 export default function ProducerPortfolioInform(props: ProducerPortfolioInformProp) {
   const { isMe } = props;
   const { producerId } = useParams();
-  const { producerPortfolios } = useGetProducerPortfolio({
+  const { data: producerPortfolios } = useGetProducerPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(producerId),
   });
-
   const clickedId = useRecoilValue(clickedProfileId);
   const hoveredId = useRecoilValue(hoveredProfileId);
   const { openUpdateModal, showModal, unShowModal } = useUpdateModal();
-  if (producerPortfolios === undefined) return null;
 
   function handleShowUpdateModal() {
     !openUpdateModal ? showModal() : unShowModal();
   }
+
+  if (producerPortfolios === undefined) return null;
 
   return (
     <InformContainer>
       {producerPortfolios?.map((producerPortfolio, index) => {
         return (
           <Fragment key={producerPortfolio.portfolioId}>
-            {((hoveredId === -1 && clickedId === producerPortfolio.portfolioId) ||
-              (hoveredId !== -1 && hoveredId === producerPortfolio.portfolioId)) && (
+            {((hoveredId === '' && clickedId === producerPortfolio.portfolioId) ||
+              (hoveredId !== '' && hoveredId === producerPortfolio.portfolioId)) && (
               <>
                 <TitleSection>
                   <TitleIconWrapper>{index === 0 && <ProducerProfileTitleTextIcon />}</TitleIconWrapper>

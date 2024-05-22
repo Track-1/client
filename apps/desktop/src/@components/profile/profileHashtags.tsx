@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { HashtagIc } from "../../assets";
-import Empty from "./empty";
-import HashTag from "./hashtag";
+import styled from 'styled-components';
+import Empty from './empty';
+import HashTag from './hashtag';
+import { HashtagIc } from '../../assets';
 
 interface ProfileHashtagsProps {
   keywords: string[] | undefined;

@@ -1,23 +1,22 @@
-import React from "react";
-import background from "../../assets/image/backgroundImg.png";
-import { useNavigate } from "react-router-dom";
-import ConventionModal from "../@common/conventionModal";
-import styled from "styled-components";
-import { ErrorPageMainIc, ErrorPageTextIc, TrackOneMainLogoIc } from "../../assets";
-import useModal from "../../hooks/common/useModal";
+import styled from 'styled-components';
+import background from '../../assets/image/backgroundImg.png';
+import ConventionModal from '../@common/modal/conventionModal';
+import useModal from '../../hooks/common/useModal';
+import { useNavigate } from 'react-router-dom';
+import { ErrorPageMainIc, ErrorPageTextIc, TrackOneMainLogoIc } from '../../assets';
 
 export default function ErrorPageContainer() {
   const { openModal } = useModal();
   const navigate = useNavigate();
 
   function moveToMain() {
-    navigate("/");
+    navigate('/');
   }
 
   async function copyLink(text: string) {
     try {
       await navigator.clipboard.writeText(text);
-      alert("Copy link completed.\n링크가 복사되었습니다. ");
+      alert('Copy link completed.\n링크가 복사되었습니다. ');
     } catch (err) {
       console.log(err);
     }
@@ -39,7 +38,7 @@ export default function ErrorPageContainer() {
           </DescriptionWrapper>
           <ContactTextWrapper>
             <p>Or Please contact us </p>
-            <EmailLink onClick={() => copyLink("admin@track-1.link")}>admin@track-1.link </EmailLink>
+            <EmailLink onClick={() => copyLink('admin@track-1.link')}>admin@track-1.link </EmailLink>
           </ContactTextWrapper>
         </ErrorPageWrapper>
       </Container>

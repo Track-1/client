@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 interface MainNavProps {
   handleMoveTrackSearch: () => void;
@@ -11,87 +11,83 @@ export default function MainNav(props: MainNavProps) {
   const navigate = useNavigate();
 
   function handleMoveEventPage() {
-    navigate("/event");
+    navigate('/event');
   }
 
   function handleMoveAboutPage() {
-    navigate("/about");
+    navigate('/about');
   }
 
   return (
-    <Styled.NavMenuContainer>
-      <Styled.NavMenuWrapper>
-        <Styled.NavMenu onClick={handleMoveAboutPage}>About</Styled.NavMenu>
-        <Styled.NavMenu onClick={handleMoveEventPage}>Event</Styled.NavMenu>
-      </Styled.NavMenuWrapper>
-
-      <Styled.DivisionLine />
-
-      <Styled.NavMenuWrapper>
-        <Styled.NavMenu className="nav-track" onClick={handleMoveTrackSearch}>
+    <NavMenuContainer>
+      <NavMenuWrapper>
+        <NavMenu onClick={handleMoveAboutPage}>About</NavMenu>
+        <NavMenu onClick={handleMoveEventPage}>Event</NavMenu>
+      </NavMenuWrapper>
+      <DivisionLine />
+      <NavMenuWrapper>
+        <NavMenu className="nav-track" onClick={handleMoveTrackSearch}>
           Tracks
-        </Styled.NavMenu>
-        <Styled.NavMenu className="nav-vocal" onClick={handleMoveVocalSearch}>
+        </NavMenu>
+        <NavMenu className="nav-vocal" onClick={handleMoveVocalSearch}>
           Vocals
-        </Styled.NavMenu>
-      </Styled.NavMenuWrapper>
-    </Styled.NavMenuContainer>
+        </NavMenu>
+      </NavMenuWrapper>
+    </NavMenuContainer>
   );
 }
 
-const Styled = {
-  NavMenuContainer: styled.nav`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+const NavMenuContainer = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    margin-left: 10rem;
+  margin-left: 10rem;
 
-    color: ${({ theme }) => theme.colors.gray2};
-    ${({ theme }) => theme.fonts.pretendard_text22};
-  `,
+  color: ${({ theme }) => theme.colors.gray2};
+  ${({ theme }) => theme.fonts.pretendard_text22};
+`;
 
-  NavMenuWrapper: styled.ul`
-    display: flex;
+const NavMenuWrapper = styled.ul`
+  display: flex;
 
-    li {
-      &:last-child {
-        margin: 0;
-      }
+  li {
+    &:last-child {
+      margin: 0;
     }
-  `,
+  }
+`;
 
-  NavMenu: styled.li`
-    display: flex;
-    align-items: center;
-    margin-right: 8rem;
+const NavMenu = styled.li`
+  display: flex;
+  align-items: center;
+  margin-right: 8rem;
 
-    cursor: pointer;
+  cursor: pointer;
 
+  :hover {
+    color: ${({ theme }) => theme.colors.white};
+  }
+
+  &.nav-track {
     :hover {
-      color: ${({ theme }) => theme.colors.white};
+      color: ${({ theme }) => theme.colors.sub1};
     }
+  }
 
-    &.nav-track {
-      :hover {
-        color: ${({ theme }) => theme.colors.sub1};
-      }
+  &.nav-vocal {
+    :hover {
+      color: ${({ theme }) => theme.colors.sub2};
     }
+  }
+`;
 
-    &.nav-vocal {
-      :hover {
-        color: ${({ theme }) => theme.colors.sub2};
-      }
-    }
-  `,
+const DivisionLine = styled.hr`
+  width: 2.4rem;
 
-  DivisionLine: styled.hr`
-    width: 2.4rem;
+  margin: 0 5rem;
 
-    margin: 0 5rem;
+  border: 0.1rem solid ${({ theme }) => theme.colors.gray2};
 
-    border: 0.1rem solid ${({ theme }) => theme.colors.gray2};
-
-    transform: rotate(90deg);
-  `,
-};
+  transform: rotate(90deg);
+`;

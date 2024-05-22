@@ -5,30 +5,29 @@ export interface FilteredTrackParamsType {
 }
 
 export interface FilteredTrackType {
-  trackId: number;
+  trackId: string;
   trackImageFile: string;
   trackAudioFile: string;
   trackTitle: string;
-  trackUserId: number;
+  trackUserId: string;
   trackUserName: string;
   trackKeyword: string[];
   trackCategory: string;
-  trackAudioFileLength: number;
+  trackAudioFileLength: string;
 }
 
 export interface FilteredTrackListType {
   trackList: FilteredTrackType[];
-  hasNextPage: boolean;
 }
 
 export interface TrackDetailType {
-  trackId: number;
+  trackId: string;
   trackImageFile: string;
   trackAudioFile: string;
   trackAudioFileName: string;
   trackTitle: string;
   trackUserName: string;
-  trackUserId: number;
+  trackUserId: string;
   userImageFile: string;
   trackIntroduction: string;
   trackKeyword: string[];

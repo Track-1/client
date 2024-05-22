@@ -1,14 +1,5 @@
-import styled from "styled-components";
-import { Switch } from "../@common/switch";
-
-const Container = styled.section`
-  width: 55.9rem;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-
-  margin-top: 0.04rem;
-`;
+import styled from 'styled-components';
+import { Switch } from '../@common/switch';
 
 interface SwitchToggleProps {
   switchUserType: () => void;
@@ -28,3 +19,12 @@ export default function SwitchToggle(props: SwitchToggleProps) {
     </Container>
   );
 }
+
+const Container = styled.section`
+  width: 55.9rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin-top: 0.04rem;
+`;

@@ -1,10 +1,10 @@
-import { useFormContext } from "react-hook-form";
-import styled from "styled-components";
-import { CategoryId } from "../../core/common/categories";
-import { ProfileInfoInputType } from "../../type/profile";
-import { getInvariantObjectKeys, invariantOf } from "../../utils/common/invarientType";
-import { CheckBox } from "../@common/checkBox";
-import InputContainer from "../@common/inputContainer";
+import styled from 'styled-components';
+import InputContainer from '../@common/form/inputContainer';
+import { useFormContext } from 'react-hook-form';
+import { CategoryId } from '../../core/common/categories';
+import { ProfileInfoInputType } from '../../type/profile';
+import { getInvariantObjectKeys, invariantOf } from '../../utils/common/invarientType';
+import { CheckBox } from '../@common/checkBox';
 
 export default function ProfileSelectCategoryEdit() {
   const {
@@ -25,7 +25,7 @@ export default function ProfileSelectCategoryEdit() {
                 <CheckBox.Label asChild>
                   <CategoryLabel>
                     <CheckBox.Indicator asChild>
-                      <CategoryItem {...register("category")} value={CategoryId[category]} />
+                      <CategoryItem {...register('category')} value={CategoryId[category]} />
                     </CheckBox.Indicator>
                     {category}
                   </CategoryLabel>

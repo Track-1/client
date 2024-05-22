@@ -4,29 +4,23 @@ import FileUploadInfo from './fileUploadInfo';
 import UploadTitle from './uploadTitle';
 import HashtagInfo from './hashtagInfo';
 import DescriptionInfo from './descriptionInfo';
+import Header from '../@common/layout/header';
+import BackButton from '../@common/button/backButton';
+import UploadHeader from './uploadHeader';
+import Loading from '../@common/loading';
 import { ImageInfo } from './imageInfo';
 import { useSelect } from '../../hooks/common/useSelect';
-import {
-  CategoryIdType,
-  EventCategoryIdType,
-  EventUpperCategoryType,
-  UpperCategoryType,
-} from '../../type/common/category';
+import { EventCategoryIdType, EventUpperCategoryType } from '../../type/common/category';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SelectCategoryContext } from '../../context/selectCategoryContext';
-import Header from '../@common/header';
-import BackButton from '../@common/backButton';
-import UploadHeader from './uploadHeader';
-import { UserPortfolioType } from '../../type/profile';
-import { useEditProducerPortfolio, useUploadProducerPortfolio } from '../../hooks/queries/mypage';
 import { UploadInputType } from '../../type/common/upload';
 import { useEditTrack, useUploadTrack } from '../../hooks/queries/tracks';
-import { useLocation, useParams } from 'react-router-dom';
-import { CategoryId, EventCategoryId } from '../../core/common/categories';
+import { useLocation } from 'react-router-dom';
+import { EventCategoryId } from '../../core/common/categories';
 import { createFileName } from '../../utils/common/createFileName';
 import { TEXT_LIMIT } from '../../core/common/textLimit';
 import { useEffect, useState } from 'react';
-import Loading from '../@common/loading';
+import { useEditProducerPortfolio, useUploadProducerPortfolio } from '../../hooks/queries/mypage';
 
 type ProducerUploadBodyyProps =
   | {
@@ -43,10 +37,7 @@ const defaultList = new DataTransfer();
 
 export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
   const { isEditPage, prevUploadData } = props;
-
   const pathname = useLocation().pathname;
-  const [showLoading, setShowLoading] = useState(false);
-
   const { uploadProducerPortfolio } = useUploadProducerPortfolio();
   const { editProducerPortfolio } = useEditProducerPortfolio();
   const { editTrack } = useEditTrack();
@@ -55,13 +46,12 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
     false,
     EventCategoryId[prevUploadData?.portfolioCategory as EventUpperCategoryType]
   );
-
+  const [showLoading, setShowLoading] = useState(false);
   emptyList.items.add(
     new File([prevUploadData?.portfolioAudioFileName ?? ''], prevUploadData?.portfolioAudioFileName ?? '', {
       type: 'mp3',
     })
   );
-
   const methods = useForm<UploadInputType>({
     defaultValues: {
       image: '',
@@ -92,7 +82,6 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
     if (selectedOption === null) return;
 
     const formData = new FormData();
-
     const audioFile = data.audioFile[0] && new Blob([data.audioFile[0]], { type: data.audioFile[0]?.type });
     const imageFile = typeof data.image !== 'string' ? new Blob([data?.image[0]], { type: data.image[0]?.type }) : '';
 
@@ -101,8 +90,10 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
     formData.append('portfolioTitle', data.title);
     formData.append('portfolioCategory', selectedOption);
     formData.append('portfolioContent', data.description);
+
     for (let i = 0; i < data.hashtag.length; i++) {
       if (data.hashtag[i] === '') continue;
+
       formData.append(`portfolioKeyword[${i}]`, data.hashtag[i]);
     }
 
@@ -120,7 +111,6 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
     if (selectedOption === null) return;
 
     const formData = new FormData();
-
     const audioFile = data.audioFile[0] && new Blob([data.audioFile[0]], { type: data.audioFile[0]?.type });
     const imageFile = typeof data.image !== 'string' ? new Blob([data?.image[0]], { type: data.image[0]?.type }) : '';
 
@@ -132,8 +122,10 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
 
     for (let i = 0; i < data.hashtag.length; i++) {
       if (data.hashtag[i] === '') continue;
+
       formData.append(`trackKeyword[${i}]`, data.hashtag[i]);
     }
+
     audioFile && formData.append('trackAudioFile', audioFile);
     imageFile && formData.append('trackImageFile', imageFile);
 
@@ -146,6 +138,7 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
 
   function upload(data: UploadInputType) {
     let trackId;
+
     if (prevUploadData) {
       trackId = pathname.includes('portfolio') ? prevUploadData.portfolioId : prevUploadData.trackId;
     }
@@ -157,9 +150,11 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
 
     if (pathname.includes('portfolio') || pathname.includes('portfolio-edit')) {
       const uploadData = createProducerUploadFormData(data);
+
       if (uploadData) {
         isEditPage ? editProducerPortfolio({ trackId, uploadData }) : uploadProducerPortfolio(uploadData);
       }
+
       return;
     }
 
@@ -169,6 +164,7 @@ export default function ProducerUploadBody(props: ProducerUploadBodyyProps) {
       if (uploadData) {
         isEditPage ? editTrack({ trackId, uploadData }) : uploadTrack(uploadData);
       }
+
       return;
     }
   }

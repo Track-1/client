@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { PauseButtonIc, PlayButtonIc } from "../../assets";
-import { playMusic } from "../../recoil/common/playMusic";
-import { clickedTrackId } from "../../recoil/trackPost/clickedTrackId";
-import { checkIsSameId } from "../../utils/common/checkHover";
+import styled from 'styled-components';
+import { ReactNode } from 'react';
+import { useRecoilState } from 'recoil';
+import { PauseButtonIc, PlayButtonIc } from '../../assets';
+import { playMusic } from '../../recoil/common/playMusic';
+import { clickedTrackId } from '../../recoil/trackPost/clickedTrackId';
+import { checkIsSameId } from '../../utils/common/checkHover';
 
 interface CommentProfileEventBoxProps {
   currentId: number;
@@ -14,8 +14,8 @@ interface CommentProfileEventBoxProps {
 
 export default function CommentProfileEventBox(props: CommentProfileEventBoxProps) {
   const { currentId, children, hoverState } = props;
-  const [play, setPlay] = useRecoilState<boolean>(playMusic);
-  const [clickId, setClickId] = useRecoilState(clickedTrackId);
+  const [play] = useRecoilState<boolean>(playMusic);
+  const [clickId] = useRecoilState(clickedTrackId);
 
   function checkIsPause() {
     return play && checkIsSameId(currentId, clickId);
@@ -46,8 +46,6 @@ const ProfileImageBox = styled.div<{ hoverState: boolean }>`
 
   filter: blur(${({ hoverState }) => hoverState && 0.6}rem);
 `;
-
-const IconWrapper = styled.i``;
 
 const PlayButtonIcon = styled(PlayButtonIc)`
   position: absolute;

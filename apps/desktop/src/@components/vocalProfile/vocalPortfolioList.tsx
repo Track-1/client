@@ -1,23 +1,21 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import useInfiniteScroll from "../../hooks/common/useInfiniteScroll";
-import { useGetVocalPortfolio } from "../../hooks/queries/mypage";
-import { UserPortfolioType } from "../../type/profile";
-import VocalPortfolio from "../portfolio/vocalPortfolio";
+import styled from 'styled-components';
+import VocalPortfolio from '../portfolio/vocalPortfolio';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetVocalPortfolio } from '../../hooks/queries/mypage';
+import { UserPortfolioType } from '../../type/profile';
 
 const PAGE_LIMIT = 5;
 
 export default function VocalPortfolioList() {
   const { vocalId } = useParams();
-  const { vocalPortfolios, fetchNextPage, hasNextPage } = useGetVocalPortfolio({
+  const { vocalPortfolios } = useGetVocalPortfolio({
     limit: PAGE_LIMIT,
     userId: Number(vocalId),
   });
-  const { observerRef } = useInfiniteScroll(fetchNextPage, hasNextPage);
-  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType["portfolioId"] | null>(null);
+  const [playingTrack, setPLayingTrack] = useState<UserPortfolioType['portfolioId'] | null>(null);
 
-  function selectTrack(trackId: UserPortfolioType["portfolioId"]) {
+  function selectTrack(trackId: UserPortfolioType['portfolioId']) {
     setPLayingTrack(trackId);
   }
 
@@ -28,7 +26,7 @@ export default function VocalPortfolioList() {
       <VocalsBoxHead />
       <VocalsBoxBody>
         <PortfolioWrapper>
-          {vocalPortfolios?.map((vocalPortfolios, index) => {
+          {vocalPortfolios.userPortfolio.map((vocalPortfolios, index) => {
             return (
               <VocalPortfolio
                 vocalPortfolios={vocalPortfolios}
@@ -38,17 +36,11 @@ export default function VocalPortfolioList() {
               />
             );
           })}
-          <Observer ref={observerRef} />
         </PortfolioWrapper>
       </VocalsBoxBody>
     </VocalPortfolioListWrapper>
   );
 }
-
-const Observer = styled.div`
-  width: 100%;
-  height: 10px;
-`;
 
 const VocalPortfolioListWrapper = styled.section`
   width: 87rem;

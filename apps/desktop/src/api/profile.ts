@@ -5,57 +5,37 @@ import {
   ProducerVocalSearchingResponse,
   VocalInfoResponse,
   VocalProfileResponse,
-} from "../type/api";
-import { LoginUserDataType } from "../type/common/userType";
-import { ProducerInfoParamsType, ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from "../type/profile";
-import { client } from "./common/client";
-import { PROFILE } from "./path";
+} from '../type/api';
+import { LoginUserDataType } from '../type/common/userType';
+import { ProfileEditType, VocalInfoParamsType, VocalProfileEditType } from '../type/profile';
+import { client } from './common/client';
+import { PROFILE } from './path';
 
-export async function getProducerProfile(params: ProducerInfoParamsType) {
-  const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_PROFILE(params.userId), {
-    params: {
-      page: 1,
-      limit: 1,
-    },
-  });
+export async function getProducerProfile() {
+  const { data } = await client.get<ProducerInfoResponse>(PROFILE.PRODUCER_PROFILE);
 
   return data.data;
 }
 
-export async function getProducerPortfolio(params: ProducerInfoParamsType) {
-  const { data } = await client.get<ProducerPortfolioResponse>(PROFILE.PRODUCER_INFO(params.userId), {
-    params: {
-      page: params.page,
-      limit: params.limit,
-    },
-  });
+export async function getProducerPortfolio() {
+  const { data } = await client.get<ProducerPortfolioResponse>(PROFILE.PRODUCER_INFO);
 
-  return data.data.portfolioList;
+  return data.data;
 }
 
-export async function getProducerVocalSearching(params: ProducerInfoParamsType) {
-  const { data } = await client.get<ProducerVocalSearchingResponse>(PROFILE.PRODUCER_INFO(params.userId), {
-    params: {
-      page: params.page,
-      limit: params.limit,
-    },
-  });
+export async function getProducerVocalSearching() {
+  const { data } = await client.get<ProducerVocalSearchingResponse>(PROFILE.PRODUCER_INFO);
   return data.data.trackList;
 }
 
-export async function getVocalProfile(params: VocalInfoParamsType) {
-  const { data } = await client.get<VocalProfileResponse>(PROFILE.VOCAL_PROFILE(params.userId), {
-    params: {
-      page: 1,
-      limit: 1,
-    },
-  });
+export async function getVocalProfile() {
+  const { data } = await client.get<VocalProfileResponse>(PROFILE.VOCAL_PROFILE);
 
   return data.data;
 }
 
 export async function getVocalInfo(params: VocalInfoParamsType) {
-  const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_INFO(params.userId), {
+  const { data } = await client.get<VocalInfoResponse>(PROFILE.VOCAL_INFO, {
     params: {
       page: params.page,
       limit: params.limit,
@@ -77,7 +57,7 @@ export async function patchProducerProfile(editData: ProfileEditType) {
 export async function patchVocalProfile(editData: VocalProfileEditType) {
   const { data } = await client.patch<DefaultResponseType<LoginUserDataType>>(PROFILE.PATCH_VOCAL, editData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;

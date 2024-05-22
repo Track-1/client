@@ -1,18 +1,18 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled, { css, keyframes } from "styled-components";
-import { ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc } from "../../assets";
-import { PlayerContext } from "../../context/playerContext";
+import styled, { css, keyframes } from 'styled-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ProducerVocalSearchingArrowIc, ProducerVocalSearchingViewMoreTextIc } from '../../assets';
+import { PlayUseContext } from '../../context/playerContext';
 
 interface ViewMoreButtonProp {
-  id: number;
+  id: string;
 }
 
 export default function ViewMoreButton(props: ViewMoreButtonProp) {
   const { id } = props;
-  const [ishoverd, setIshoverd] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { quitAudioForMovePage } = PlayUseContext({});
+  const [ishoverd, setIshoverd] = useState<boolean>(false);
 
   function checkViewMoreHover() {
     ishoverd ? setIshoverd(false) : setIshoverd(true);

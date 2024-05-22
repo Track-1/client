@@ -1,16 +1,15 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { PlayerContext } from "../../context/playerContext";
-import styled from "styled-components";
-import { HeaderHomeLogoIc } from "../../assets";
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { HeaderHomeLogoIc } from '../../assets';
+import { PlayUseContext } from '../../context/playerContext';
 
 export default function HomeLogo() {
   const navigate = useNavigate();
-  const { quitAudioForMovePage } = useContext(PlayerContext);
+  const { quitAudioForMovePage } = PlayUseContext({});
 
   function handleMoveToHome() {
     quitAudioForMovePage();
-    navigate("/");
+    navigate('/');
   }
 
   return (

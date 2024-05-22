@@ -4,18 +4,17 @@ export interface CommentsParamsType {
 }
 
 interface CommentsType {
-  commentId: number;
+  commentId: string;
   commentAudioFile: string;
   userName: string;
   userImageFile: string;
   userSelf: boolean;
   commentContent: string;
   commentAudioFileLength: number;
-  commentUserId: number;
+  commentUserId: string;
   commentAudioFileName: string;
 }
 
 export type CommentsListType = {
   commentList: CommentsType[];
-  hasNextPage: boolean;
 };
