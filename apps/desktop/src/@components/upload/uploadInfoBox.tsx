@@ -1,0 +1,16 @@
+import styled from 'styled-components';
+import { PropsWithChildren } from 'react';
+
+export default function UploadInfoBox(props: PropsWithChildren) {
+  const { children } = props;
+
+  return <Container>{children}</Container>;
+}
+
+const Container = styled.li`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 6rem;
+`;

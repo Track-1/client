@@ -1,10 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
-import font from './fonts';
 
 export const GlobalStyle = createGlobalStyle`
   :root {
     --vh: 100%;
-  }
+   }
 
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -36,7 +35,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     touch-action: manipulation;
     line-height: 1;
-    background-color: ${({ theme }) => theme.colors.black};
+    background-color: ${({ theme }) => theme.colors.sub3};
 
   }
   menu, ol, ul {
@@ -56,7 +55,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /* 위에가 styled-reset 내용 */
-  ${font}
 
   * {
     box-sizing: border-box;
@@ -68,9 +66,39 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
 
     font-family: sans-serif;
-    font-size: 62.5%;
+    /* font-size: 62.5%; */
     user-select: none;
+    @media (min-width:2800px){
+      font-size: 94%;
+    }
+    @media (min-width:2160px)and (max-width:2799px){
+      font-size: 70%;
+    }
+    @media (min-width:2001px)and (max-width:2159px){
+      font-size: 68%;
+    }
+    @media (min-width:1800px) and (max-width:2000px){
+      font-size: 62.5%;
+    }
+    @media (min-width:1501px) and (max-width:1799px){
+      font-size: 49.2%
+    }
+    @media (min-width:1420px) and (max-width:1500px){
+      font-size: 46.8%;
+    }
+    @media (min-width:1000px) and (max-width:1419px){
+      font-size: 42%;
+    }
+    /* @media (min-width: 768px) and (max-width:899px){
+      font-size: 35%;
+    }
+    @media (max-width:767px){
+      font-size: 32%;
+    }
 
+    @media (min-width: 1000px){
+      font-size: 70%
+    } */
     /* 모바일 */
     @media (min-width: 931px) and (max-width:999px){
       font-size: 42%;
@@ -103,7 +131,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     //iPhone XR & Galaxy S20 Ultra & A51/71
     @media (min-width: 410px) and (max-width:450px){
-      font-size: 66%;
+     font-size: 66%;
     }
     //iPhone 12 Pro
     @media (min-width: 386px) and (max-width:409px){
@@ -126,7 +154,7 @@ export const GlobalStyle = createGlobalStyle`
     }
      //Galaxy S9+
     @media (min-width:301px) and (max-width:330px){
-      font-size: 50%;
+       font-size: 50%;
 
     }
     //Galaxy Fold
@@ -147,32 +175,44 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
-  input, button {
-    padding: 0;
+  input, button, textarea {
     outline: none;
     border: none;
     background-color: transparent;
   }
   button {
     cursor: pointer;
-
+    padding: 0;
   }
   input {
     appearance: none;
-    box-shadow: none;
 
     &:focus {
       outline: none;
     }
   }
+  input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px #16161C inset;
+	box-shadow: 0 0 0 1000px #16161C inset;
+  color:white!important;
+  -webkit-color:white;
+  -webkit-text-fill-color: white !important;
 
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 60px #0D0E11 inset !important;
-    background-color: #0D0E11 !important;
-    background-clip: content-box !important;
-    -webkit-text-fill-color: white;
+  font-family: "Pretendard";
+  font-weight : 400;
+  font-size : 1.8;
+  line-height : 3.5;
+  }
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: transparent !important;
+    color: white !important;
+
+    font-family: "Pretendard";
+    font-weight : 400;
+    font-size : 1.8;
+    line-height : 3.5;
+
   }
 `;
