@@ -20,11 +20,11 @@ export default function MainNav(props: MainNavProps) {
 
   return (
     <NavMenuContainer>
-      <NavMenuWrapper>
+      {/* <NavMenuWrapper>
         <NavMenu onClick={handleMoveAboutPage}>About</NavMenu>
         <NavMenu onClick={handleMoveEventPage}>Event</NavMenu>
-      </NavMenuWrapper>
-      <DivisionLine />
+      </NavMenuWrapper> */}
+      {/* <DivisionLine /> */}
       <NavMenuWrapper>
         <NavMenu className="nav-track" onClick={handleMoveTrackSearch}>
           Tracks
