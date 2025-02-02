@@ -43,8 +43,8 @@ export default function LoginBtn() {
         </LoginedInfoWrapper>
       ) : (
         <>
-          <LoginButton onClick={handleMoveToLogin}>Login</LoginButton>
-          <SignupButton onClick={handleMoveToSignup}>Sign up</SignupButton>
+          {/* <LoginButton onClick={handleMoveToLogin}>Login</LoginButton>
+          <SignupButton onClick={handleMoveToSignup}>Sign up</SignupButton> */}
         </>
       )}
     </LoginBtnWrapper>
